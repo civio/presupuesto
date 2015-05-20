@@ -26,7 +26,7 @@ def search(request):
 
     # Get search results
     c['years'] = map(str, Budget.objects.get_years())
-    c['terms'] = list(GlossaryTerm.objects.search(c['query']))
+    c['terms'] = list(GlossaryTerm.objects.search(c['query'], request.LANGUAGE_CODE))
     if not hasattr(settings, 'SEARCH_ENTITIES') or settings.SEARCH_ENTITIES:
         c['entities'] = list(Entity.objects.search(c['query']))
         c['show_entity_names'] = True

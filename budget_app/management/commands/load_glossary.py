@@ -2,10 +2,18 @@
 from django.core.management.base import BaseCommand
 from django.conf import settings
 from budget_app.loaders import GlossaryLoader
+from optparse import make_option
 import os.path
 
 
 class Command(BaseCommand):
+    option_list = BaseCommand.option_list + (
+      make_option('--language',
+        action='store',
+        dest='language',
+        help='Set data language'),
+    )
+
     help = u"Carga los términos del glosario desde un fichero, _reemplazando el actual_"
 
     def handle(self, *args, **options):
@@ -15,4 +23,9 @@ class Command(BaseCommand):
         else:
           path = args[0]
 
-        GlossaryLoader().load(os.path.join(path, 'glosario.csv'))
+        if options['language']:
+          filename = "glosario_%s.csv" % (options['language'], )
+        else:
+          filename = 'glosario.csv'
+
+        GlossaryLoader().load(os.path.join(path, filename), options['language'])
