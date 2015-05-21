@@ -9,15 +9,8 @@ import re
 # Generic payments loader
 class PaymentsLoader:
 
-    def load(self, level, name, year, path):
+    def load(self, entity, year, path):
         items = self.parse_data(os.path.join(path, 'pagos.csv'))
-
-        # Find the public body the payments relates to
-        entity = Entity.objects.filter(level=level, name=name)
-        if not entity:
-            raise Exception("Entity (%s/%s) not found" % (level, name))
-        else:
-            entity = entity[0]
 
         # Find the budget the payments relates to
         budget = Budget.objects.filter(entity=entity, year=year)
