@@ -29,7 +29,7 @@ def set_title(c, title):
 
 # This assumes there is only one of the MAIN_ENTITY_LEVEL, which is good enough for now
 def get_main_entity(c):
-    return Entity.objects.filter(level=settings.MAIN_ENTITY_LEVEL)[0]
+    return Entity.objects.filter(level=settings.MAIN_ENTITY_LEVEL, language=c['LANGUAGE_CODE'])[0]
 
 def populate_stats(c):  # Convenience: assume it's top level entity
     populate_entity_stats(c, get_main_entity(c))

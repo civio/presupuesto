@@ -31,7 +31,7 @@ def search(request):
         c['entities'] = list(Entity.objects.search(c['query']))
         c['show_entity_names'] = True
 
-    all_items = list(BudgetItem.objects.search(c['query'], year, c['page']))
+    all_items = list(BudgetItem.objects.search(c['query'], budget, c['page']))
     try:
         c['items'] = Paginator(all_items, 10).page(c['page'])
     except EmptyPage:

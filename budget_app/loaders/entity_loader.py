@@ -14,7 +14,7 @@ class EntityLoader:
             if re.match("^#", line[0]):  # Ignore comments
                 continue
 
-            entity = Entity(code=line[0], level=line[1], name=line[2])
+            entity = Entity(code=line[0], level=line[1], name=line[2], language=line[3])
             entity.save()
 
     def _delete_all(self):

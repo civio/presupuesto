@@ -26,7 +26,8 @@ class Entity(models.Model):
     code = models.CharField(max_length=10, db_index=True)
     level = models.CharField(max_length=20, db_index=True)
     name = models.CharField(max_length=200, db_index=True)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(unique=False)
+    language = models.CharField(max_length=5)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
