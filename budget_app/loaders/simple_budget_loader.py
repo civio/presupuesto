@@ -35,7 +35,7 @@ class SimpleBudgetLoader:
                 if re.match("^#", line[0]):         # Ignore comments
                     continue
 
-                if re.match("^ +$", line[0]):       # Ignore empty lines
+                if re.match("^ *$", ''.join(line)): # Ignore empty lines
                     continue
 
                 # Finally, we have useful data
