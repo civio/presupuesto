@@ -7,11 +7,14 @@ def payments(request, render_callback=None):
     # Get request context
     c = get_context(request, css_class='body-payments', title='Inversiones y pagos')
 
+    # Retrieve the entity to display
+    main_entity = get_main_entity(c)
+
     # Payments breakdown
     c['payee_breakdown'] = BudgetBreakdown(['payee', 'area', 'description'])
     c['area_breakdown'] = BudgetBreakdown(['area', 'payee', 'description'])
 
-    for item in Payment.objects.each_denormalized():
+    for item in Payment.objects.each_denormalized("b.entity_id = %s", [main_entity.id]):
         # We add the date to the description, if it exists:
         # TODO: I wanted the date to be in a separate column, but it's complicated right
         # now the way BudgetBreakdown works. Need to think about it

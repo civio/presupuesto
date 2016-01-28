@@ -15,7 +15,7 @@ class PaymentManager(models.Manager):
             "from " \
                 "payments p " \
                 "left join budgets b on p.budget_id = b.id " \
-                "left join economic_categories ec on p.economic_category_id = ec.id " \
+                "left join economic_categories ec on p.economic_category_id = ec.id "
 
         if additional_constraints:
             sql += " where " + additional_constraints

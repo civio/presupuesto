@@ -55,17 +55,17 @@ def write_entity_income_breakdown(c, writer):
 
 def entity_expenses(request, level, slug, format):
     c = get_context(request)
-    entity = Entity.objects.get(level=level, slug=slug)
+    entity = Entity.objects.get(level=level, slug=slug, language=c['LANGUAGE_CODE'])
     return entities_show(request, c, entity, _generator('gastos-%s-%s' % (level, slug), format, write_entity_economic_expense_breakdown))
 
 def entity_fexpenses(request, level, slug, format):
     c = get_context(request)
-    entity = Entity.objects.get(level=level, slug=slug)
+    entity = Entity.objects.get(level=level, slug=slug, language=c['LANGUAGE_CODE'])
     return entities_show(request, c, entity, _generator('gastosf-%s-%s' % (level, slug), format, write_entity_functional_breakdown))
 
 def entity_income(request, level, slug, format):
     c = get_context(request)
-    entity = Entity.objects.get(level=level, slug=slug)
+    entity = Entity.objects.get(level=level, slug=slug, language=c['LANGUAGE_CODE'])
     return entities_show(request, c, entity, _generator('ingresos-%s-%s' % (level, slug), format, write_entity_income_breakdown))
 
 
@@ -87,7 +87,7 @@ def functional_article_breakdown(request, id, format):
 
 def entity_article_fexpenses(request, level, slug, id, format):
     c = get_context(request)
-    entity = Entity.objects.get(level=level, slug=slug)
+    entity = Entity.objects.get(level=level, slug=slug, language=c['LANGUAGE_CODE'])
     return entities_show_policy(request, c, entity, id, '', _generator('gastosf-%s-%s-%s' % (level, slug, id), format, write_entity_functional_breakdown))
 
 
@@ -146,12 +146,12 @@ def economic_article_breakdown(request, id, format):
 
 def entity_article_expenses(request, level, slug, id, format):
     c = get_context(request)
-    entity = Entity.objects.get(level=level, slug=slug)
+    entity = Entity.objects.get(level=level, slug=slug, language=c['LANGUAGE_CODE'])
     return entities_show_article(request, c, entity, id, '', 'expense', _generator('ingresos-%s-%s-%s' % (level, slug, id), format, write_economic_article_expense_breakdown))
 
 def entity_article_income(request, level, slug, id, format):
     c = get_context(request)
-    entity = Entity.objects.get(level=level, slug=slug)
+    entity = Entity.objects.get(level=level, slug=slug, language=c['LANGUAGE_CODE'])
     return entities_show_article(request, c, entity, id, '', 'income', _generator('ingresos-%s-%s-%s' % (level, slug, id), format, write_economic_article_income_breakdown))
 
 
