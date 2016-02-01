@@ -5700,6 +5700,9 @@ Ese "25" es lo que indenta.
 .layout-slider {
   height: 3.5em;
 }
+.data-controllers .layout-slider {
+  margin-top: -6px;
+}
 .form-user-incomings {
   background: #e6e6e6;
   margin: 0 0 1.5em;
