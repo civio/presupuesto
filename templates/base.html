@@ -8,8 +8,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   
   {% include 'shared/fonts.html' %}
+  {% load compress %}
 
-  <link href="{{ STATIC_URL }}stylesheets/main.css" media="all" rel="stylesheet" type="text/css" />
+  {% compress css %}
+  <link href="{{ STATIC_URL }}stylesheets/main.less" media="all" rel="stylesheet" type="text/less" />
+  {% endcompress %}
 
   <link href="{{ STATIC_URL }}assets/favicon.png" rel="icon" type="image/x-icon" />
 
