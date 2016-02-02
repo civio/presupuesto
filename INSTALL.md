@@ -2,11 +2,11 @@
 
 Para instalar la aplicación en local es necesario seguir los siguientes pasos:
 
-* Instalar Python. La aplicación ha sido probada con las versiones 2.6 y 2.7.x.
+* Instalar Python. La aplicación debería funcionar con Python 2.6, pero el desarrollo y los despliegues actuales usan 2.7.x, que es la versión recomendada.
 
 * Instalar los componentes utilizados por la aplicación. Actualmente, la aplicación requiere coffin 0.4.0, así como django 1.4.2:
     
-        $ pip install -r requirements.txt
+        $ pip install -r requirements/local.txt
 
     Incompatibilidad con otras versiones de coffin y django:
     * En coffin > 0.4.0 desaparece `coffin.common.env`.
