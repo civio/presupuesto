@@ -12,8 +12,8 @@ class GlossaryTermManager(models.Manager):
         # return all the terms.
         if query and query != '':
             sql += "and " \
-                "to_tsvector('"+settings.SEARCH_CONFIG+"',title) @@ plainto_tsquery('"+settings.SEARCH_CONFIG+"',%s) or " \
-                "to_tsvector('"+settings.SEARCH_CONFIG+"',description) @@ plainto_tsquery('"+settings.SEARCH_CONFIG+"',%s) "
+                "(to_tsvector('"+settings.SEARCH_CONFIG+"',title) @@ plainto_tsquery('"+settings.SEARCH_CONFIG+"',%s) or " \
+                "to_tsvector('"+settings.SEARCH_CONFIG+"',description) @@ plainto_tsquery('"+settings.SEARCH_CONFIG+"',%s)) "
 
         sql += "order by title asc"
         return self.raw(sql, [query, query])
