@@ -8,7 +8,7 @@ dj-static==0.0.6
 formic==0.9beta8
 jdcal==1.2
 livereload==2.4.1
-openpyxl==2.2.0b1
+openpyxl==2.2.0-b1
 python-dateutil==2.2
 singledispatch==3.4.0.3
 SQLAlchemy==1.0.11
