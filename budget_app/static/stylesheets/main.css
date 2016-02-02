@@ -5686,6 +5686,7 @@ Ese "25" es lo que indenta.
 .quantity-selection select {
   font-size: .875em;
   margin-bottom: .5em;
+  height: 33px;
 }
 .quantity-selection .glossary-link {
   font-size: .75em;
@@ -5694,10 +5695,13 @@ Ese "25" es lo que indenta.
   text-transform: uppercase;
 }
 .data-controllers.functional_view .quantity-selection {
-  margin-left: 2em;
+  text-align: center;
 }
 .layout-slider {
   height: 3.5em;
+}
+.data-controllers .layout-slider {
+  margin-top: -6px;
 }
 .form-user-incomings {
   background: #e6e6e6;

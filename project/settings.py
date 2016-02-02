@@ -130,6 +130,14 @@ STATICFILES_FINDERS = (
     'compressor.finders.CompressorFinder', # add Django Compressor's file finder
 )
 
+#
+#Config to compile LESS files automatically
+#
+
+COMPRESS_PRECOMPILERS = (
+    ('text/less', 'lessc {infile} {outfile}'),
+)
+
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = ')e2qrwa6e$u30r0)w=52!0j1_&amp;$t+y3z!o-(7ej0=#i!c7pjuy'
 
