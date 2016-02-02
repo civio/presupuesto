@@ -2,6 +2,13 @@
 import os
 import sys
 
+from subprocess import call
+
+def compile_less(theme):
+    filepath = ''.join([theme, '/static/stylesheets/main.{}'])
+    call(['lessc',filepath.format('less'),filepath.format('css')])
+
+
 if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project.settings")
 
@@ -18,10 +25,11 @@ if __name__ == "__main__":
 
         application = get_wsgi_application()
         server = Server(Cling(application))
+        compile_less(ENV['THEME'])
 
         # Add your watch
         for filepath in formic.FileSet(include="*/**.less"):
-            server.watch(filepath, './reload_less.sh %s' % ENV['THEME'])
+            server.watch(filepath, lambda: compile_less(ENV['THEME']))
 
         server.serve(port=8000)
     else:
