@@ -5,7 +5,7 @@ certifi==2015.11.20.1
 csvkit==0.9.1
 dbf==0.94.3
 dj-static==0.0.6
-formic==0.9b8
+formic==0.9beta8
 jdcal==1.2
 livereload==2.4.1
 openpyxl==2.2.0b1
