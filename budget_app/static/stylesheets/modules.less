@@ -66,9 +66,15 @@
 // Table grid
 .table-grid {
 	border: 1px solid @color-base;
-	border-radius: 7px;
+	border-radius: 0 0 8px 8px;
 	font-size: .75em; 
 	margin: 0 0 1em;
+
+	.slick-header-column{
+		color: white;
+		line-height: 1.75em;
+		background: @color-base;
+	}
 }
 
 // Data controllers
@@ -351,7 +357,7 @@ table [class^="h-"] {
 // Social sharing
 .social-sharing {
 	background: @white;
-	margin: 0 0 1.5em;
+	margin: 1.5em 0;
 	padding: .5em;
 	text-align: center;
 
