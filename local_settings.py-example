@@ -8,6 +8,10 @@ ENV = {
 #  'DEBUG': True,
 #  'TEMPLATE_DEBUG': True,
 
+  # Google Analytics
+  # If unset, Civio's one will be used
+#  'GA_CODE': '',
+
   # Database
   'DATABASE_NAME': 'presupuestos',
   'DATABASE_USER': '',
