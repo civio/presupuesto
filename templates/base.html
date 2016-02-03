@@ -18,6 +18,7 @@
   {% compress js %}
   <script src="{{ STATIC_URL }}javascripts/jquery-1.8.3.min.js"></script>
   <script src="{{ STATIC_URL }}javascripts/jquery.cookie.min.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/jquery.cookiebar.js"></script>
   <script src="{{ STATIC_URL }}javascripts/jquery.event.drag-2.0.min.js"></script>
   <script src="{{ STATIC_URL }}javascripts/underscore-1-5-2.min.js"></script>
   <script src="{{ STATIC_URL }}javascripts/numeral.min.js"></script>
@@ -87,6 +88,21 @@
   <script src="{{ STATIC_URL }}javascripts/select2.min.js"></script>
   <script src="{{ STATIC_URL }}javascripts/select2_locale_es.js"></script>
   {% endcompress %}
+
+  <!-- Cookies Bar Setup -->
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $.cookieBar({
+        message: "{{ _('Esta web utiliza cookies propias y de terceros para ofrecerles la mejor experiencia de usuario. Si continúan navegando, entendemos que autorizan el uso de estas cockies.') }}",
+        acceptText: 'Aceptar',
+        policyButton: true,
+        policyText: 'Más información',
+        policyURL: '/politica-de-cookies',
+        //acceptOnContinue: true,
+        forceShow: true
+      });
+    });
+  </script>
 
   {% block extra_javascript %}{% endblock %} 
 </body>
