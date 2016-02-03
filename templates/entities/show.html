@@ -194,10 +194,13 @@
       var breakdown = breakdowns[uiState.view],
           hasActualData = breakdown[uiState.field]['actual_'+uiState.year];
       if ( hasActualData && uiState.format!='percentage' ) {
-        $('.secondary-label, .secondary-amount').show();
+        $("#main-total .total-executed").show();
       } else {
-        $('.secondary-label, .secondary-amount').hide();
+        $("#main-total .total-executed").hide();
       }
+
+      // Update year label
+      $('#totals-year').text(uiState.year);
 
       // Fill in the amounts in the totals
       var getTotal = function(breakdown) { return (breakdown[uiState.field][uiState.year]||0); },
@@ -206,11 +209,9 @@
           formatActual = function(amount) { return columnDef.formatter(0, 0, amount, executionColumnDef, breakdown); };
 
       if ( hasActualData ) {
-        $("#main-total .total-executed").show();
         $("#main-total .total-executed-amount").text(formatActual(getActualTotal(breakdown)));
         $("#main-total .total-budgeted-amount").text(format(getTotal(breakdown)));
       } else {
-        $("#main-total .total-executed").hide();
         $("#main-total .total-budgeted-amount").text(format(getTotal(breakdown)));
       }
 

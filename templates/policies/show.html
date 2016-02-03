@@ -288,20 +288,11 @@
         $("#main-total .total-budgeted-amount").text(format(getTotal(breakdown)));
       }
 
-      /*
-      if ( hasActualData ) {
-        $('.secondary-label, .secondary-amount').show();
-        $("#main-total .main-amount").text(formatActual(getActualTotal(breakdown)));
-        $("#main-total .secondary-amount").text(format(getTotal(breakdown)));
-
-      } else {
-        $('.secondary-label, .secondary-amount').hide();
-        $("#main-total .main-amount").text(format(getTotal(breakdown)));
-      }
-      */
+      // Update year label
+      $('#totals-year').text(uiState.year);
 
       var label = uiState.view == 'income' ? '{{ _("Total ingresos") }}' : '{{ _("Total gastos") }}';
-      $("#main-total .box-title").html(label+getExecutionTotalLabel(budgetStatuses[uiState.year], budgetStatusLabels))
+      $("#main-total .main-label").html(label+getExecutionTotalLabel(budgetStatuses[uiState.year], budgetStatusLabels))
 
       onTabSwitch();
     }    
