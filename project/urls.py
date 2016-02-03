@@ -17,6 +17,8 @@ budget_app_urlpatterns = patterns('budget_app.views',
 
     url(r'^pagos$', 'payments'),
 
+    url(r'^politica-de-cookies$', 'pages'),
+
     # Aragón policies (top)
     url(r'^politicas$', 'policies'),
     url(r'^politicas/(?P<id>[0-9]+)$', 'policies_show'),

@@ -6,6 +6,7 @@ from entities import entities_index, entities_show, entities_show_article, entit
 from tax_receipt import tax_receipt
 from terms import terms
 from welcome import welcome
+from pages import pages
 from search import search
 from payments import payments
 from csv_xls import entity_expenses, entity_fexpenses, entity_income, entity_article_expenses, entity_article_fexpenses, entity_article_income
