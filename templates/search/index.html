@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% from 'shared/pagination.html' import render_pagination_controls as render_pagination_controls %}
 {% block content %}
-<h1 class="page-title">{{ _('Resultados') }}</h1>
+<h1 class="page-title">{{ query.capitalize() }}</h1>
 <div class="row-fluid">
   <div class="span6">
     <p class="alert note">
