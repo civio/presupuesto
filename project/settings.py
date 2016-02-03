@@ -2,6 +2,7 @@
 
 import os.path
 import sys
+
 SETTINGS_PATH = os.path.dirname(os.path.abspath(__file__))
 ROOT_PATH = os.path.join(SETTINGS_PATH, '..')
 
@@ -255,7 +256,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.static",
     "django.core.context_processors.tz",
     "django.core.context_processors.request",
-    "django.contrib.messages.context_processors.messages"
+    "django.contrib.messages.context_processors.messages",
+    "budget_app.context_processors.analytics_processor"
 )
 
 SEARCH_CONFIG = ENV.get('SEARCH_CONFIG', 'pg_catalog.english')
@@ -271,3 +273,4 @@ CACHES = ENV.get('CACHES', DEFAULT_CACHES)
 CACHE_MIDDLEWARE_ALIAS = 'default'
 CACHE_MIDDLEWARE_SECONDS = 60 * 60 * 24  # 1 Day: data doesn't actually change
 CACHE_MIDDLEWARE_KEY_PREFIX = 'budget_app'
+
