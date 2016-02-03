@@ -25,38 +25,22 @@
   <div id="pop-up-content"></div>
 </div>
 
-<!--
 <div id="budgets-totals">
   <h1 class="page-title" id="indicadores">{{ _('Ingresos y gastos totales en') }} <span id="totals-year"></span></h1>
-  <div id="totals_panel">
-    <div class="total">
-      <p class="total-title">{{ _('Ingresos totales') }}</p>
-      <p class="total-content total-executed"><span>{{ _('Ejecutado') }}</span> <b id="total-incomes-executed"></b></p>
-      <p class="total-content total-budgeted"><span>{{ _('Presupuestado') }}</span> <b id="total-incomes-budgeted"></b></p>
+  <div id="totals-panel">
+    <div class="box total-incomes">
+      <div class="box-title">{{ _('Ingresos totales') }}</div>
+      <div class="box-content">
+        <p class="total-executed"><span>{{ _('Ejecutado') }}</span> <b id="total-incomes-executed"></b></p>
+        <p class="total-budgeted"><span>{{ _('Presupuestado') }}</span> <b id="total-incomes-budgeted"></b></p>
+      </div>
     </div>
-    <div class="total">
-      <p class="total-title">{{ _('Gastos totales') }}</p>
-      <p class="total-content total-executed"><span>{{ _('Ejecutado') }}</span> <b id="total-expenses-executed"></b></p>
-      <p class="total-content total-budgeted"><span>{{ _('Presupuestado') }}</span> <b id="total-expenses-budgeted"></b></p>
-    </div>
-  </div>
-</div>
--->
-
-<div id="budgets-totals">
-  <h1 class="page-title" id="indicadores">{{ _('Ingresos y gastos totales en') }} <span id="totals-year"></span></h1>
-  <div class="box total-incomes">
-    <div class="box-title">{{ _('Ingresos totales') }}</div>
-    <div class="box-content">
-      <p class="total-executed"><span>{{ _('Ejecutado') }}</span> <b id="total-incomes-executed"></b></p>
-      <p class="total-budgeted"><span>{{ _('Presupuestado') }}</span> <b id="total-incomes-budgeted"></b></p>
-    </div>
-  </div>
-  <div class="box total-expenses">
-    <div class="box-title">{{ _('Gastos totales') }}</div>
-    <div class="box-content">
-      <p class="total-executed"><span>{{ _('Ejecutado') }}</span> <b id="total-expenses-executed"></b></p>
-      <p class="total-budgeted"><span>{{ _('Presupuestado') }}</span> <b id="total-expenses-budgeted"></b></p>
+    <div class="box total-expenses">
+      <div class="box-title">{{ _('Gastos totales') }}</div>
+      <div class="box-content">
+        <p class="total-executed"><span>{{ _('Ejecutado') }}</span> <b id="total-expenses-executed"></b></p>
+        <p class="total-budgeted"><span>{{ _('Presupuestado') }}</span> <b id="total-expenses-budgeted"></b></p>
+      </div>
     </div>
   </div>
 </div>

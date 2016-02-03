@@ -105,14 +105,18 @@
 
 <!-- Same story with the totals -->
 <div class="visuallyhidden">
-  <div id="totals_panel">
-    <p class="total" id="main-total">
-      <span class="main-label"></span> <b class="main-amount"></b>
-      <br/>
-      <span class="secondary-label">{{ _('Presupuestados') }}</span> <b class="secondary-amount"></b>
-    </p>
-  </div>
+  {% include 'entities/totals.html' %}
 </div>
+
+<!--
+<div id="totals_panel">
+  <p class="total" id="main-total">
+    <span class="main-label"></span> <b class="main-amount"></b>
+    <br/>
+    <span class="secondary-label">{{ _('Presupuestados') }}</span> <b class="secondary-amount"></b>
+  </p>
+</div>
+-->
 
 {% if show_treemap %}
 <div id="pop-up">
@@ -276,6 +280,16 @@
           formatActual = function(amount) { return columnDef.formatter(0, 0, amount, executionColumnDef, breakdown); };
 
       if ( hasActualData ) {
+        $("#main-total .total-executed").show();
+        $("#main-total .total-executed-amount").text(formatActual(getActualTotal(breakdown)));
+        $("#main-total .total-budgeted-amount").text(format(getTotal(breakdown)));
+      } else {
+        $("#main-total .total-executed").hide();
+        $("#main-total .total-budgeted-amount").text(format(getTotal(breakdown)));
+      }
+
+      /*
+      if ( hasActualData ) {
         $('.secondary-label, .secondary-amount').show();
         $("#main-total .main-amount").text(formatActual(getActualTotal(breakdown)));
         $("#main-total .secondary-amount").text(format(getTotal(breakdown)));
@@ -284,8 +298,10 @@
         $('.secondary-label, .secondary-amount').hide();
         $("#main-total .main-amount").text(format(getTotal(breakdown)));
       }
+      */
+
       var label = uiState.view == 'income' ? '{{ _("Total ingresos") }}' : '{{ _("Total gastos") }}';
-      $("#main-total .main-label").html(label+getExecutionTotalLabel(budgetStatuses[uiState.year], budgetStatusLabels))
+      $("#main-total .box-title").html(label+getExecutionTotalLabel(budgetStatuses[uiState.year], budgetStatusLabels))
 
       onTabSwitch();
     }    
@@ -435,7 +451,7 @@
       control_panel.appendTo(currentTab.find(".data-controllers-placeholder"));
 
       // Same with totals...
-      var totals = $("#totals_panel").detach();
+      var totals = $("#totals-panel").detach();
       totals.appendTo(currentTab.find(".totals-placeholder"));
     }
 

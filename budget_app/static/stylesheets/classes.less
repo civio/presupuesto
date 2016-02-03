@@ -24,67 +24,6 @@ a.avatar:hover {.box-shadow(0 0 .5em lighten(@black, 75%)); border: 1px solid li
 // Texto introductorio
 .intro-text {font-size: 1.5em; font-style: italic; line-height: @baseLineHeight - .25; margin: 0 0 1em; text-align: center;}
 
-// Sumatorio del grid
-.total {
-  border-bottom: 1px solid @black90; 
-  border-top: 1px solid @black90; 
-  font-size: 1.5em; 
-  margin: 0 0 .5em; 
-  padding: .5em;  
-  text-align: center;
-
-  > p{
-    margin-bottom: 0;
-  }
-
-  .total-title{
-    font-weight: 600;
-    line-height: 1em;
-    text-transform: uppercase;
-  }
-
-  .total-content{
-    .clearfix;
-
-    span {
-      display: block;
-    }
-
-    b{
-      display: block;
-    }
-  }
-
-  .total-executed{
-    span {
-      font-weight: 600;
-    }
-  }
-  .total-budgeted{
-    font-size: 0.875em;
-
-    b{
-      font-weight: 400;
-    }
-  }
-
-
-  .main-amount {
-    display: block;
-  }
-  .main-label {
-    font-weight: 600;
-  }
-  .secondary-label {
-    font-size: 0.875em;
-  }
-  .secondary-amount {
-    display: block;
-    font-size: 0.875em;
-    font-weight: 400;
-  }
-}
-
 // Sombreados
 .tiny-shadow-black {.box-shadow(0 1px 0 0 @black90a);}
 .tiny-shadow-white {.box-shadow(0 1px 0 0 @white90a);}
@@ -113,22 +52,5 @@ a.avatar:hover {.box-shadow(0 0 .5em lighten(@black, 75%)); border: 1px solid li
 @media screen and (min-width: 48em) {
 	.intro-text {
     text-align: left;
-  }
-
-	.total {
-    .clearfix;
-    text-align: left;
-
-    .total-content{
-      span {
-        float: left; 
-        text-align: left;
-      }
-
-      b{
-        float: right; 
-        text-align: right;
-      }
-    }
   }
 }

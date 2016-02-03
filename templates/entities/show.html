@@ -40,9 +40,9 @@
 
 {% include 'shared/data_controllers.html' %}
 
-<div class="table-grid" id="myGrid"></div>
-
 {% include 'entities/totals.html' %}
+
+<div class="table-grid" id="myGrid"></div>
 
 <p class="downloads" id="income-downloads">
   {{ _('Descarga la tabla de <b>Ingresos</b>')|safe }}
@@ -206,10 +206,12 @@
           formatActual = function(amount) { return columnDef.formatter(0, 0, amount, executionColumnDef, breakdown); };
 
       if ( hasActualData ) {
-        $("#main-total .main-amount").text(formatActual(getActualTotal(breakdown)));
-        $("#main-total .secondary-amount").text(format(getTotal(breakdown)));
+        $("#main-total .total-executed").show();
+        $("#main-total .total-executed-amount").text(formatActual(getActualTotal(breakdown)));
+        $("#main-total .total-budgeted-amount").text(format(getTotal(breakdown)));
       } else {
-        $("#main-total .main-amount").text(format(getTotal(breakdown)));
+        $("#main-total .total-executed").hide();
+        $("#main-total .total-budgeted-amount").text(format(getTotal(breakdown)));
       }
 
       if ( uiState.view == 'fexpense' ) {
@@ -223,11 +225,13 @@
           var totalActual = getActualTotal(breakdown);
           if ( !includeFinancialChapters )
             totalActual += getActualTotal(financialExpenseBreakdown);
-          $("#including-financial-total .main-amount").text(formatActual(totalActual));
-          $("#including-financial-total .secondary-amount").text(format(totalBudgeted));
+          $("#including-financial-total .total-executed").show();
+          $("#including-financial-total .total-executed-amount").text(formatActual(totalActual));
+          $("#including-financial-total .total-budgeted-amount").text(format(totalBudgeted));
 
         } else {
-          $("#including-financial-total .main-amount").text(format(totalBudgeted));
+          $("#including-financial-total .total-executed").hide();
+          $("#including-financial-total .total-budgeted-amount").text(format(totalBudgeted));
         }
       }
 

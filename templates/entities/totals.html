@@ -1,3 +1,4 @@
+<!--
 <div id="totals_panel">
   <p class="total" id="main-total">
     <span class="main-label"></span> <b class="main-amount"></b>
@@ -9,4 +10,22 @@
     <br/>
     <span class="secondary-label">{{ _('Presupuestados') }}</span> <b class="secondary-amount"></b>
   </p>
+</div>
+-->
+
+<div id="totals-panel">
+  <div id="main-total" class="box">
+    <div class="box-title"><span class="main-label"></span></div>
+    <div class="box-content">
+      <p class="total-executed"><span>{{ _('Ejecutado') }}</span> <b class="total-amount total-executed-amount"></b></p>
+      <p class="total-budgeted"><span>{{ _('Presupuestado') }}</span> <b class="total-amount total-budgeted-amount"></b></p>
+    </div>
+  </div>
+  <div id="including-financial-total" class="box visuallyhidden">
+    <div class="box-title"><span class="main-label"></span></div>
+    <div class="box-content">
+      <p class="total-executed"><span>{{ _('Ejecutado') }}</span> <b class="total-amount total-executed-amount"></b></p>
+      <p class="total-budgeted"><span>{{ _('Presupuestado') }}</span> <b class="total-amount total-budgeted-amount"></b></p>
+    </div>
+  </div>
 </div>
