@@ -4,6 +4,7 @@ from django.conf import settings
 from budget_app.loaders import GlossaryLoader
 from optparse import make_option
 import os.path
+import project.settings
 
 
 class Command(BaseCommand):
@@ -27,5 +28,17 @@ class Command(BaseCommand):
           filename = "glosario_%s.csv" % (options['language'], )
         else:
           filename = 'glosario.csv'
+        try:
+            GlossaryLoader().load(os.path.join(path, filename), options['language'])
+        except IOError as e:
+            print('Fichero no encontrado. Se va a cargar el glosario por defecto.')
+            GlossaryLoader().load(
+                os.path.join(
+                    settings.ROOT_PATH,
+                    'budget_app',
+                    'static',
+                    'glosario_default.csv'
+                ),
+                options['language']
+            )
 
-        GlossaryLoader().load(os.path.join(path, filename), options['language'])
