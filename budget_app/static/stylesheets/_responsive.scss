@@ -2,30 +2,7 @@
 // -----------------------------------------
 
 @media (min-width: $screen-sm-min) {
-  
-  // City Logo
-  .main-entity-logo{
-    float: left;
-    margin: 0;
-    // We need to put it over the navbar-brand
-    position: relative;
-    z-index: 60;
-  }
 
-  // Header Title
-  .navbar-brand{
-    position: absolute;
-    top: 50%;
-    width: 100%;
-    margin: -0.5em 0 0;
-    padding: 0;
-    z-index: 40; // We need to put it behind the main-entity-logo 
-  }
-
-  // Menu Lang
-  #menu-lang{
-    float: right;
-  }
 }
 
 

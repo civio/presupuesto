@@ -1,4 +1,6 @@
 // Header
+// ------------------------
+
 header > .container{
   position: relative;
   text-align: center;
@@ -43,6 +45,108 @@ header > .container{
 
       .active{
         font-weight: 600;
+      }
+    }
+  }
+}
+
+@media (min-width: $screen-sm-min) {
+  
+  .main-entity-logo{
+    float: left;
+    margin: 0;
+    // We need to put it over the navbar-brand
+    position: relative;
+    z-index: 60;
+  }
+
+  .navbar-brand{
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    margin: -0.5em 0 0;
+    padding: 0;
+    z-index: 40; // We need to put it behind the main-entity-logo 
+  }
+
+  #menu-lang{
+    float: right;
+  }
+}
+
+
+// Main Menu
+// ------------------------
+
+.navbar-default{
+  border: none;
+
+  .navbar-collapse {
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .navbar-nav{
+    float: none;
+    width: 100%;
+    margin: 0;
+
+    > li{
+
+      > a{
+        color: $dvmi-navbar-color;
+        text-align: center;
+        padding-right: 0;
+        padding-left: 0;
+        @include transition( background 0.3s ease-out );
+
+        &:hover,
+        &:focus{
+          color: white;
+          background: mix( $navbar-default-bg, white, 75% );
+        }
+      }
+
+      // Fix default color for dropdown open
+      &.open > a,
+      &.open > a:hover,
+      &.open > a:focus{
+        color: $dvmi-navbar-color;
+        background: mix( $navbar-default-bg, white, 75% );
+      }
+
+      > .dropdown-menu{
+        width: 100%;
+        padding: 0;
+        border: none;
+        background: $navbar-default-bg;
+
+        > li > a{
+          color: $dvmi-navbar-color;
+          padding: $grid-gutter-width/3 0;
+          text-align: center;
+          border-top: 1px solid $navbar-default-bg;
+          border-bottom: 1px solid $navbar-default-bg;
+
+          &:hover{
+            background: mix( $navbar-default-bg, white, 75% );
+          }
+        }
+      }
+    }
+
+    @media (min-width: $grid-float-breakpoint) {
+
+      > li{
+        width: 100% / $dvmi-menu-length;
+
+        > a{
+          border-right: 1px solid mix( $navbar-default-bg, white, 50% );
+        }
+      
+        &:first-child > a{
+          border-left: 1px solid mix( $navbar-default-bg, white, 50% );
+        }
       }
     }
   }
