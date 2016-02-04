@@ -1,19 +1,30 @@
-<footer role="contentinfo">
-  <div class="feder">
-    <div class="container-fluid">
-      <a href="http://www.aragon.es/DepartamentosOrganismosPublicos/Departamentos/HaciendaAdministracionPublica/AreasTematicas/FondosEuropeos"><img src="{{ STATIC_URL }}assets/unionEuropea.gif" alt="Fondo Europeo de Desarrollo Regional (FEDER)"></a>
-    </div>
+<footer class="main-footer">
+  <div class="container">
+    <p class="logo-aragon">
+      <span>{{ _('Un proyecto de') }}</span>
+      <a href="http://www.civio.es/es" target="_blank">
+        <img src="{{ STATIC_URL }}assets/logo-civio.png" alt="Civio">
+      </a>
+      <span>&nbsp;{{ _('basado en el código de') }} </span>
+      <a href="http://opendata.aragon.es" target="_blank">
+        <img src="{{ STATIC_URL }}assets/logoAragonOpenData.png" alt="Open Data Aragón">
+      </a>
+    </p>
   </div>
-  <div class="footer-corp">
-    <div class="container-fluid">
-      <div class="row-fluid">
-        <div class="span10">
-          <p class="legal-text"><b>Gobierno de Aragón</b>. <b><a href="http://opendata.aragon.es/terminos">Terminos de Uso</a> <span class="bar">|</span> <a href="http://www.aragon.es/EnlacesPie/Accesibilidad">Accesibilidad</a></b><br>Edificio Pignatelli. <abbr title="Paseo">P°</abbr> María Agustín, 36. 50071 - Zaragoza. <abbr title="Teléfono">Tfno.</abbr> 976 714 000</p>
-        </div>
-        <div class="span2">
-          <p class="logo-aragon"><a href="http://www.aragon.es"><img src="{{ STATIC_URL }}assets/logoFooterAragon.gif" alt="Gobierno de Aragón"></a></p>
-        </div>
-      </div>
-    </div>
+  <div class="container">
+    <ul class="footer-menu">
+      <!-- Link a la Web del Ayuntamiento -->
+      <li>
+        <a href="http://www.rubi.cat" title="{{ _('Ayuntamiento de ') }}">{{ _('Ayuntamiento de ') }}</a>
+      </li>
+      <!-- Link al Aviso Legal del Ayuntamiento -->
+      <li>
+        <a href="http://www.rubi.cat/es/aviso-legal" title="{{ _('Aviso Legal') }}">{{ _('Aviso Legal') }}</a>
+      </li>
+      <!-- Link a la Política de Privacidad del Ayuntamiento -->
+      <li>
+        <a href="http://www.rubi.cat/es/politica-de-privacidad" title="{{ _('Política de Privacidad') }}">{{ _('Política de Privacidad') }}</a>
+      </li>
+    </ul>
   </div>
 </footer>
