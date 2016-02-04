@@ -1,0 +1,551 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Translators:
+msgid ""
+msgstr ""
+"Project-Id-Version: Donde van mis impuestos\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-05-19 11:38+0200\n"
+"PO-Revision-Date: 2015-09-08 20:17+0100\n"
+"Last-Translator: David Cabo <david@civio.es>\n"
+"Language-Team: Catalan (http://www.transifex.com/projects/p/donde-van-mis-impuestos/language/ca/)\n"
+"Language: ca\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.8.1\n"
+
+#: templates/budgets/budgets_indicators.html:1
+msgid "Indicadores presupuestarios en"
+msgstr "Indicadors pressupostaris el"
+
+#: templates/budgets/budgets_indicators.html:5
+msgid "Resultado presupuestario ajustado"
+msgstr "Resultat pressupostari ajustat"
+
+#: templates/budgets/budgets_indicators.html:12
+msgid "Remanente de tesoreria para gastos generales"
+msgstr "Romanent de tresoreria per a despeses generals"
+
+#: templates/budgets/budgets_indicators.html:19
+msgid "Ahorro neto"
+msgstr "Estalvi net"
+
+#: templates/budgets/budgets_indicators.html:19
+msgid "Ahorro bruto – capítulo IX de gastos (pasivos financieros)"
+msgstr "Estalvi brut – capítol IX de despeses (passius financers)"
+
+#: templates/budgets/budgets_indicators.html:26
+msgid "Capacidad/Necesidad de financiación"
+msgstr "Capacitat/Necessitat de finançament"
+
+#: templates/budgets/budgets_indicators.html:26
+msgid "Ingresos no financieros (capítulos I-VII) – Gastos no financieros (capítulos I-VII)"
+msgstr "Ingressos no financers (capítols I-VII) – Despeses no financeres (capítols I-VII)"
+
+#: templates/budgets/budgets_indicators.html:33
+msgid "Regla del gasto"
+msgstr "Regla de la despesa"
+
+#: templates/budgets/budgets_indicators.html:38
+msgid "Deuda viva"
+msgstr "Deute viu"
+
+#: templates/budgets/budgets_indicators.html:46
+msgid "Cantidades actualizadas con la inflación a fecha 1 de enero de"
+msgstr "Quantitats actualitzades amb la inflació a data 1 de gener de"
+
+#: templates/budgets/budgets_indicators.html:46
+msgid "El cálculo de los indicadores utiliza las cifras del presupuesto aprobado"
+msgstr "El càlcul dels indicadors utilitza les xifres del pressupost aprovat"
+
+#: templates/budgets/budgets_intro.html:5
+msgid "La recaudación"
+msgstr "La recaptació"
+
+#: templates/budgets/budgets_intro.html:6
+msgid "La recaudación de impuestos locales se realiza a través de impuestos directos, principalmente el IBI, y de tasas y precios públicos. Por otro lado la ciudadanía paga impuestos al Estado y a la Generalitat de Cataluña a través de los impuestos directos - como el IRPF y el impuesto de sociedades- y de impuestos indirectos -IVA e impuestos sobre el tabaco, el alcohol o la gasolina."
+msgstr "La recaptació d'impostos locals es realitza a través d'impostos directes, principalment l'IBI, i de taxes i preus públics. D'altra banda la ciutadania paga impostos a l'Estat i la Generalitat a través dels impostos directes - com l'IRPF i l'impost de societats- i d'impostos indirectes -l'IVA i impostos sobre el tabac, l'alcohol o la benzina."
+
+#: templates/budgets/budgets_intro.html:11
+msgid "¿Cómo se reparte?"
+msgstr "Còm es reparteix?"
+
+#: templates/budgets/budgets_intro.html:17
+msgid "¿En qué se emplea?"
+msgstr "En què s'empra?"
+
+#: templates/shared/data_sources.html:3
+msgid "Fuentes de datos"
+msgstr "Fonts de les dades"
+
+#: templates/shared/data_sources.html:7
+msgid "Datos presupuestarios"
+msgstr "Dades pressupostàries"
+
+msgid "Datos de ejecución presupuestaria"
+msgstr "Dades d'execució pressupostària"
+
+#: templates/shared/data_sources.html:9
+msgid "Datos de población"
+msgstr "Dades de població"
+
+#: templates/shared/data_sources.html:9 templates/shared/data_sources.html:10
+msgid "Instituto Nacional de Estadística (INE)"
+msgstr "Institut Nacional d'Estadística (INE)"
+
+#: templates/shared/data_sources.html:10
+msgid "Datos de inflación (Medias anuales de IPC para Cataluña)"
+msgstr "Dades d'inflació (mitjanes anuals d'IPC per a Catalunya)"
+
+#: templates/shared/data_sources.html:13
+msgid "Nota"
+msgstr "Nota"
+
+#: templates/shared/data_sources.html:16
+msgid "El ajuste de la inflación se realiza a <b>1 de enero de"
+msgstr "L'ajust de la inflació es fa l'<b>1 de gener de"
+
+#: templates/shared/footer.html:7
+msgid "Un proyecto de"
+msgstr "Un projecte de"
+
+#: templates/shared/footer.html:9
+msgid "basado en el código de"
+msgstr "basat en el codi de"
+
+#: templates/shared/footer.html:16
+msgid "Aviso Legal"
+msgstr "Avís Legal"
+
+#: templates/shared/footer.html:17
+msgid "Política de Privacidad"
+msgstr "Política de Privadesa"
+
+#: templates/shared/header.html:14
+msgid "Presupuestos"
+msgstr "Pressupostos"
+
+#: templates/shared/header.html:47 templates/shared/header.html.py:51
+msgid "Menú principal"
+msgstr "Menú principal"
+
+#: templates/shared/header.html:54 templates/welcome/index.html:28
+#: templates/welcome/index.html.py:30
+msgid "Visión global"
+msgstr "Visió global"
+
+#: templates/shared/header.html:55 templates/welcome/index.html:36
+msgid "Políticas"
+msgstr "Polítiques"
+
+#: templates/shared/header.html:56 templates/welcome/index.html:40
+#: templates/welcome/index.html.py:42
+msgid "Pagos e inversiones"
+msgstr "Despeses i pagaments"
+
+#: templates/shared/header.html:57 templates/welcome/index.html:46
+#: templates/welcome/index.html.py:48
+msgid "Lo que tú aportas"
+msgstr "El que tu aportes"
+
+#: templates/shared/header.html:58
+msgid "¿Qué significa...?"
+msgstr "Què significa...?"
+
+#: templates/welcome/index.html:9
+msgid "Te mostramos de un modo claro cómo se distribuye nuestro presupuesto. De dónde vienen los ingresos y a qué destinamos el gasto"
+msgstr "Et mostrem d'una forma clara com es distribueix el nostre pressupost. D'on vénen els ingressos i a què destinem les despeses"
+
+#: templates/welcome/index.html:14
+msgid "Algunos ejemplos"
+msgstr "Alguns exemples"
+
+#: templates/welcome/index.html:34
+msgid "Políticas concretas"
+msgstr "Polítiques concretes"
+
+#: templates/welcome/index.html:35
+msgid "Educación, protección y bienestar social, cultura... ¿Qué área te interesa?"
+msgstr "Educació, protecció i benestar social, cultura... Quina àrea t'interessa?"
+
+#: templates/welcome/index.html:47
+msgid "Te explicamos cuál es tu aportación mediante los impuestos municipales"
+msgstr "T'expliquem quina es la teva aportació mitjançant els impostos municipals"
+
+msgid "¿Buscas algo en concreto?"
+msgstr "Cerques alguna cosa en concret?"
+
+msgid "Buscar"
+msgstr "Cercar"
+
+msgid "Ingresos corrientes (capítulos I-V) - Gastos corrientes (capítulos I-V)"
+msgstr "Ingressos corrents (capítols I-V) - Despeses corrents (capítols I-V)"
+
+msgid "Ahorro bruto"
+msgstr "Estalvi brut"
+
+msgid "La recaudación de impuestos locales se realiza a través de impuestos directos, principalmente el IBI y de tasas y precios públicos. Por otro lado la ciudadanía paga impuestos a la Generalitat y al Estado a través de los impuestos directos - como el IRPF y el impuesto de sociedades- y de impuestos indirectos -IVA e impuestos sobre el tabaco, el alcohol o la gasolina."
+msgstr "La recaptació d’impostos locals es du a terme a través d'impostos directes, principalment l'IBI i de taxes i preus públics. D'altra banda, la ciutadania paga impostos a la Generalitat i l'Estat a través dels impostos directes - com l'IRPF i l'impost de societats- i d'impostos indirectes -l'IVA i impostos sobre el tabac, l'alcohol o la benzina."
+
+msgid "El recorrido de mis impuestos"
+msgstr "El recorregut dels meus impostos"
+
+msgid "Elige año"
+msgstr "Tria l'any"
+
+msgid "Volver a la lista de comarcas"
+msgstr "Tornar a la llista de comarques"
+
+msgid "Volver a la lista de municipios"
+msgstr "Tornar a la llista de municipis"
+
+msgid "Comparativa"
+msgstr "Comparativa"
+
+msgid "Comarcas"
+msgstr "Comarques"
+
+msgid "Municipios"
+msgstr "Municipis"
+
+msgid "Habitantes"
+msgstr "Habitants"
+
+msgid "Previsto"
+msgstr "Previst"
+
+msgid "Gastado"
+msgstr "Gastat"
+
+msgid "Descarga la tabla de <b>Ingresos</b>"
+msgstr "Descarrega la taula de <b>Ingressos</b>"
+
+msgid "Descarga la tabla de <b>Gastos</b>"
+msgstr "Descarrega la taula de <b>Despeses</b>"
+
+msgid "Información no disponible"
+msgstr "Informació no disponible"
+
+msgid "Descarga la tabla de <b>Gastos (por programa)</b>"
+msgstr "Descarrega la taula de <b>Despeses (per programa)</b>"
+
+msgid "Ingresado"
+msgstr "Ingressat"
+
+msgid "Presupuestados"
+msgstr "Pressupostats"
+
+msgid "Inversiones y pagos"
+msgstr "Despeses i pagaments"
+
+msgid "Menú de pagos e inversiones"
+msgstr "Menú de despeses i pagaments"
+
+msgid "Por área"
+msgstr "Per àrea"
+
+msgid "Por beneficiario"
+msgstr "Per beneficiari"
+
+msgid "Total de inversiones y pagos"
+msgstr "Total de despeses i pagaments"
+
+msgid "Volver a Políticas"
+msgstr "Tornar a Polítiques"
+
+msgid "Programas, entidades y conceptos"
+msgstr "Programes, entitats i conceptes"
+
+msgid "Menú de programas, entidades y conceptos"
+msgstr "Menú de programes, entitats i conceptes"
+
+msgid "Resultados"
+msgstr "Resultats"
+
+msgid "Hemos encontrado"
+msgstr "Hem trobat"
+
+msgid "resultados</b> relacionados con"
+msgstr "resultats</b> relacionats amb"
+
+msgid "Mostrar resultados de"
+msgstr "Mostrar resultats de"
+
+msgid "cualquier año"
+msgstr "qualsevol any"
+
+msgid "Términos"
+msgstr "Termes"
+
+msgid "Comarcas y municipios"
+msgstr "Comarques i municipis"
+
+msgid "Políticas y Programas"
+msgstr "Polítiques i Programes"
+
+msgid "Política / Programa"
+msgstr "Política / Programa"
+
+msgid "Conceptos"
+msgstr "Conceptes"
+
+msgid "Concepto"
+msgstr "Concepte"
+
+msgid "Gastos / Ingresos"
+msgstr "Despeses / Ingressos"
+
+msgid "Cantidad"
+msgstr "Quantitat"
+
+msgid "Descarga la tabla de"
+msgstr "Descarrega la taula de"
+
+msgid "¡Atención!"
+msgstr "Atenció!"
+
+msgid "Este sitio web no va a funcionar correctamente en tu navegador. La visualización de datos de esta página requieren un navegador con funciones adicionales, como"
+msgstr "Aquesta plana web no funcionarà correctament al teu navegador. La visualització de dades d'aquesta plana requereix un navegador amb funcions addicionals, com"
+
+msgid "Si quieres continuar usando Internet Explorer"
+msgstr "Si vols continuar emprant Internet Explorer"
+
+msgid "puedes instalar el plugin de Google Chrome Frame"
+msgstr "pots instal·lar el plugin de Google Chrome Frame"
+
+msgid "en unos minutos"
+msgstr "en uns minuts"
+
+msgid "Ingresos y gastos"
+msgstr "Ingressos i despeses"
+
+msgid "Ingresos"
+msgstr "Ingressos"
+
+
+#: budget_app/views/entities.py:228
+msgid "¿Cómo se ingresa?"
+msgstr "Com s'ingressa?"
+
+msgid "Tipo de ingresos"
+msgstr "Tipus d'ingressos"
+
+msgid "¿Quién recauda?"
+msgstr "Qui recapta?"
+
+msgid "¿Cómo se gasta?"
+msgstr "Com es gasta?"
+
+msgid "¿En qué se gasta?"
+msgstr "En què es gasta?"
+
+msgid "¿Cómo se financia?"
+msgstr "Com es finança?"
+
+msgid "¿Quién lo gasta?"
+msgstr "Qui ho gasta?"
+
+msgid "Gastos"
+msgstr "Despeses"
+
+msgid "Gastos (por programa)"
+msgstr "Despeses (per programa)"
+
+
+msgid "Cantidades"
+msgstr "Quantitats"
+
+msgid "Año"
+msgstr "Any"
+
+msgid "Nominales"
+msgstr "Nominals"
+
+msgid "Reales (ajustadas a inflación)"
+msgstr "Reals (ajustades a inflació)"
+
+msgid "Porcentaje sobre el total"
+msgstr "Percentatge sobre el total"
+
+msgid "Per-capita (real)"
+msgstr "Per-capita (real)"
+
+msgid "Anterior"
+msgstr "Anterior"
+
+msgid "Siguiente"
+msgstr "Següent"
+
+msgid "Compártelo"
+msgstr "Comparteix-ho"
+
+msgid "Te mostramos de forma aproximada"
+msgstr "Et mostrem de forma aproximada"
+
+msgid "Nota sobre el cálculo realizado"
+msgstr "Nota sobre el càlcul realitzat"
+
+msgid "cómo se distribuye el dinero que aportas con tus impuestos"
+msgstr "com es distribueixen els diners que aportes amb els teus impostos"
+
+msgid "Indica tus ingresos brutos anuales"
+msgstr "Indica els teus ingressos bruts anuals"
+
+msgid "Calcular"
+msgstr "Calcular"
+
+msgid "¿Qué significa?"
+msgstr "Què significa?"
+
+msgid "Consulta"
+msgstr "Consulta"
+
+msgid "Escribe aquí tu término de búsqueda"
+msgstr "Escriu aquí el teu terme de cerca"
+
+#: templates/budgets/index.html:29
+msgid "Ingresos y gastos totales en"
+msgstr "Ingressos i despeses totals el"
+
+#: templates/budgets/index.html:32
+msgid "Ingresos totales"
+msgstr "Ingressos totals"
+
+#: templates/budgets/index.html:34
+msgid "Presupuestado"
+msgstr "Pressupostat"
+
+#: templates/budgets/index.html:37
+msgid "Gastos totales"
+msgstr "Despeses totals"
+
+#: templates/payments/index.html:5
+msgid "Gastos del año vigente"
+msgstr "Despeses de l'any en curs efectuades segons l'execució pressupostària que és actualitzada diàriament."
+
+msgid "Se incluyen únicamente los gastos e ingresos no financieros, es decir, capítulos I al VII."
+msgstr "S'inclouen únicament els ingressos i despeses no financers, és a dir, capítols I al VII."
+
+msgid "Ejecutado"
+msgstr "Executat"
+
+msgid "(Cantidades actualizadas con la inflación)"
+msgstr "(Quantitats actualitzades amb la inflació)"
+
+msgid "Beneficiario"
+msgstr "Beneficiari"
+
+msgid "Área"
+msgstr "Àrea"
+
+msgid "Pago"
+msgstr "Pagament"
+
+msgid "Artículo"
+msgstr "Article"
+
+msgid "Las cantidades de estos indicadores se publicarán una vez liquidado el presupuesto del año corriente en el primer trimestre del año siguiente."
+msgstr "Les quantitats d'aquests indicadors es publicaran un cop liquidat el pressupost de l'any corrent en el primer trimestre de l'any següent."
+
+msgid "Puedes escoger el tipo de situación que mejor refleja tu realidad (<a href=\"#\" id=\"scenario-1\">piso pequeño en el casco antiguo</a>, <a href=\"#\" id=\"scenario-2\">piso de nueva construcción</a>, casa unifamiliar <a href=\"#\" id=\"scenario-3\">en el centro</a>, o <a href=\"#\" id=\"scenario-4\">en una urbanización</a>) o modificar cada uno de los elementos de forma independiente."
+msgstr "Pots escollir el tipus de situació que millor reflecteix la teva realitat (<a href=\"#\" id=\"scenario-1\">pis petit al casc antic</a>, <a href=\"#\" id=\"scenario-2\">pis de nova construcció</a>, casa unifamiliar <a href=\"#\" id=\"scenario-3\">al centre</a> o <a href=\"#\" id=\"scenario-4\">en una urbanització</a>) o modificar cadascun dels elements de forma independent."
+
+msgid "Inmueble"
+msgstr "Immoble"
+
+msgid "Piso de 80 m² situado en la zona del mercado"
+msgstr "Pis de 80 m² situat a la zona del mercat"
+
+msgid "Piso de 110 m² situado en el centro, nueva construcción"
+msgstr "Pis de 110 m² situat a la centre, nova construcció"
+
+msgid "Casa unifamiliar adosada en el centro del pueblo"
+msgstr "Casa unifamiliar entre mitjeres centre poble"
+
+msgid "Casa unifamiliar aislada en urbanización"
+msgstr "Casa unifamiliar aillada urbanització"
+
+msgid "IBI + Tasa de basuras"
+msgstr "IBI + taxa d’escombraries"
+
+msgid "Vehículo"
+msgstr "Vehicle"
+
+msgid "Ninguno"
+msgstr "Cap"
+
+msgid "Coche pequeño"
+msgstr "Cotxe petit"
+
+msgid "Coche mediano/grande"
+msgstr "Cotxe mitjà/gran"
+
+msgid "Impuesto a vehículos motorizados"
+msgstr "Impost a vehicles motoritzats"
+
+msgid "Vehículo adicional"
+msgstr "Vehicle addicional"
+
+msgid "¿Tienes un vado?"
+msgstr "Tens un gual?"
+
+msgid "Sí, comunitario"
+msgstr "Sí, comunitari"
+
+msgid "Sí, privado"
+msgstr "Sí, privat"
+
+msgid "Tasa"
+msgstr "Taxa"
+
+msgid "Política"
+msgstr "Política"
+
+msgid "Gasto"
+msgstr "Despesa"
+
+msgid "Impuestos"
+msgstr "Impostos"
+
+msgid "Tasas"
+msgstr "Taxes"
+
+msgid "Unidad familiar"
+msgstr "Unitat familiar"
+
+msgid "Un adulto y dos menores"
+msgstr "Un adult i dos menors"
+
+msgid "Dos adultos y dos menores"
+msgstr "Dos adults i dos menors"
+
+msgid "Dos adultos jubilados"
+msgstr "Dos adults jubilats"
+
+msgid "Familia numerosa"
+msgstr "Familia nombrosa"
+
+msgid "Tasa de basuras"
+msgstr "Taxa d'escombraries"
+
+msgid "Inicio"
+msgstr "Inici"
+
+msgid "Total gastos no financieros"
+msgstr "Total despeses no financeres"
+
+msgid "Total gastos"
+msgstr "Total despeses"
+
+msgid "Total ingresos"
+msgstr "Total ingressos"
+
+msgid "Otros"
+msgstr "Altres"
+
+msgid "a día de hoy"
+msgstr "a dia d'avui"
