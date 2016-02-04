@@ -95,9 +95,11 @@
         acceptText: 'Aceptar',
         policyButton: true,
         policyText: 'Más información',
+        {% if cookies_url %}
+        policyURL: '{{ cookies_url }}',
+        {% else %}
         policyURL: '/politica-de-cookies',
-        //acceptOnContinue: true,
-        forceShow: true
+        {% endif %}
       });
     });
   </script>
