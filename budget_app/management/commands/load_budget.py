@@ -36,7 +36,7 @@ class Command(BaseCommand):
         try:
             with open(os.path.join(path, '.budget_status'), 'r') as quarter:
                 status = quarter.readlines()[0].strip()
-        except (FileNotFoundError, IndexError) as e:
+        except (IOError, IndexError) as e:
             status = ''
 
         # Import the loader dynamically. See http://stackoverflow.com/questions/301134/dynamic-module-import-in-python

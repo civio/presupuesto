@@ -16,7 +16,7 @@ if __name__ == "__main__":
     from dj_static import Cling, MediaCling
     from local_settings import ENV
 
-    if sys.argv[1] == 'livereload':
+    if len(sys.argv) >= 2 and sys.argv[1] == 'livereload':
 
         import formic
 
