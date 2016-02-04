@@ -1,19 +1,7 @@
+{% load i18n %}
+
 <header>
 	<div class="container">
-
-		<!-- Ayuntamiento Logo & Web Link -->
-		<div class="pull-left">
-			<a href="#" title="">
-				<img src="http://placehold.it/160x160">
-			</a>
-		</div>
-
-		<!-- DVMI Title & Home Link -->
-		<h1 class="navbar-brand">
-      <a href="{{ url('budget_app.views.welcome') }}" title="{{ _('Ir a la home de Presupuestos') }}">
-        {{ _('Presupuestos') }}
-      </a>
-    </h1>
 
 		<!-- Lang Selector -->
 		{% if LANGUAGES|length > 1 %}
@@ -23,7 +11,7 @@
           <li><a href="#{{ language[0] }}"{% if language[0].lower() == LANGUAGE_CODE %} class="active"{% endif %}>{{ language[1]|safe }}</a></li>
         {% endfor %}
       </ul>
-      <form id="menu-lang-form" class="invisible" action="/i18n/setlang/" method="post">
+      <form id="menu-lang-form" class="hidden" action="/i18n/setlang/" method="post">
         {% csrf_token %}
         <input name="next" type="hidden" value="{{ redirect_to }}" />
         <select name="language">
@@ -35,8 +23,23 @@
       </form>
     </div>
     {% endif %}
-	</div>
 
+		<!-- Ayuntamiento Logo & Web Link -->
+		<div class="main-entity-logo">
+			<a href="http://www.rubi.cat" title="{{ _('Ayuntamiento de Rubí') }}">
+				<img src="http://placehold.it/160x160">
+			</a>
+		</div>
+
+		<!-- DVMI Title & Home Link -->
+		<h1 class="navbar-brand">
+      <a href="{{ url('budget_app.views.welcome') }}" title="{{ _('Ir a la home de Presupuestos') }}">
+        {{ _('Presupuestos') }}
+      </a>
+    </h1>
+    
+	</div>
+		
 	<!-- Main Navigation -->
 	<nav class="navbar navbar-default hide-when-embedded">
 		<div class="container">

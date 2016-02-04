@@ -1,0 +1,49 @@
+// Header
+header > .container{
+  position: relative;
+  text-align: center;
+}
+
+// City Logo
+.main-entity-logo{
+  margin: $grid-gutter-width/2 0 0;
+}
+
+// Header Title
+.navbar-brand{
+  float: none;
+  margin: $grid-gutter-width/2 0;
+  padding: 0;
+  font-size: 3em;
+  line-height: 1em;
+  font-weight: 300;
+  text-align: center;
+}
+
+// Menu Lang
+#menu-lang{
+  margin-top: $grid-gutter-width/3;
+
+  ul{
+    display: inline-block;  // We need it to center #menu-lang in screen-sm
+    height: 1em;
+    padding: 0;
+    margin: 0;
+
+    li{
+      list-style: none;
+      float: left;
+      border-left: 1px solid $brand-primary;
+      padding: 0 $grid-gutter-width/6;
+      line-height: 1em;
+
+      &:first-child{
+        border: none;
+      }
+
+      .active{
+        font-weight: 600;
+      }
+    }
+  }
+}

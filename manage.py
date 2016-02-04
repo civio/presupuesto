@@ -6,7 +6,6 @@ from subprocess import call
 
 def compile_less(theme):
     filepath = ''.join([theme, '/static/stylesheets/main.{}'])
-    #call(['lessc',filepath.format('less'),filepath.format('css')])
     call(['sass',filepath.format('scss'),filepath.format('css')])
 
 
