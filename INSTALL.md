@@ -45,8 +45,6 @@ Para instalar la aplicación en local es necesario seguir los siguientes pasos:
 
         $ python manage.py livereload
 
-Para más información, consulta la [documentación técnica del proyecto](docs/Documentación Técnica.pdf).
-
 [4]: https://docs.djangoproject.com/en/1.7/internals/deprecation/#deprecation-removed-in-1-7
 [5]: https://docs.djangoproject.com/en/1.5/topics/python3/#philosophy
 

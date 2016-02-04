@@ -9,10 +9,6 @@ import os.path
 
 class Command(BaseCommand):
     option_list = BaseCommand.option_list + (
-      make_option('--status',
-        action='store',
-        dest='status',
-        help='Set budget status'),
       make_option('--language',
         action='store',
         dest='language',
@@ -27,7 +23,6 @@ class Command(BaseCommand):
             return
 
         year = args[0]
-        status = options['status'] if options['status'] else ''
 
         level = settings.MAIN_ENTITY_LEVEL if len(args)<2 else args[1]
         name = settings.MAIN_ENTITY_NAME if len(args)<3 else args[2]
@@ -37,6 +32,12 @@ class Command(BaseCommand):
             path = os.path.join(settings.ROOT_PATH, settings.THEME, 'data', options['language'], level, year)
         else:
             path = os.path.join(settings.ROOT_PATH, settings.THEME, 'data', level, year)
+
+        try:
+            with open(os.path.join(path, '.budget_status'), 'r') as quarter:
+                status = quarter.readlines()[0].strip()
+        except (FileNotFoundError, IndexError) as e:
+            status = ''
 
         # Import the loader dynamically. See http://stackoverflow.com/questions/301134/dynamic-module-import-in-python
         module = __import__(settings.THEME+'.loaders', globals(), locals(), [settings.BUDGET_LOADER])
