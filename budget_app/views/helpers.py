@@ -4,7 +4,11 @@ from coffin.shortcuts import render_to_response
 from budget_app.models import Budget, BudgetItem, InflationStat, PopulationStat, Entity
 from django.template import RequestContext
 from django.conf import settings
+from contextlib import contextmanager
 import json
+import os
+
+from project.settings import ROOT_PATH
 
 #
 # FILLING REQUEST CONTEXT
@@ -33,7 +37,7 @@ def get_main_entity(c):
 
 def populate_stats(c):  # Convenience: assume it's top level entity
     populate_entity_stats(c, get_main_entity(c))
-    
+
 def populate_entity_stats(c, entity, stats_name='stats'):
     c[stats_name] = json.dumps({
         'inflation': InflationStat.objects.get_table(),
@@ -162,3 +166,11 @@ def render(c, render_callback, template_name):
         return render_to_response(template_name, c)
     else:
         return render_callback.generate_response(c)
+
+
+@contextmanager
+def fix_cwd():
+    old_dir = os.getcwd()
+    os.chdir(ROOT_PATH)
+    yield
+    os.chdir(old_dir)
