@@ -18,50 +18,76 @@
 </a></p>
 {% endif %}
 
-<h1 class="page-title"></h1>
 
+<h1 class="page-title">{{ _('Políticas') }}</h1>
 
-<div id="expenseSummaryContainer"></div>
-<div id="fexpenseSummaryContainer"></div>
-<div id="incomeSummaryContainer"></div>
+<section role="region" class="tab-system">
 
-<div id="expenseChartContainer" class="chart-container" style="width: 100%; margin-bottom: 20px"></div>
-<div id="fexpenseChartContainer" class="chart-container" style="width: 100%; margin-bottom: 20px"></div>
-<div id="incomeChartContainer" class="chart-container" style="width: 100%; margin-bottom: 20px"></div>
-<h3 class="no-data-alert">{{ _('Información no disponible') }}</h3>
-<div id="pop-up">
-  <div id="pop-up-title"></div>
-  <div id="pop-up-content"></div>
-</div>
+  <nav role="navigation" class="tab-menu">
+    <div id="btn-field-wrapper">
+      <div id="btn-field" class="btn-group">
+        <button class="btn {{ 'active' if show_side=='income' }}" id="income">{{ _('Ingresos') }}</button>
+    {% if display_functional_view %}
+        <button class="btn {{ 'active' if not full_breakdown }}" id="expense">{{ _('¿Cómo se gasta?') }}</button>
+        <button class="btn {{ 'active' if full_breakdown }}" id="fexpense">{{ _('¿En qué se gasta?') }}</button>
+    {% else %}
+        <button class="btn {{ 'active' if show_side!='income' }}" id="expense">{{ _('Gastos') }}</button>
+    {% endif %}
+      </div>
+    </div>
+  </nav>
 
-{% if entities %}
-{{ render_entity_select('entity-select', entities, entity) }}
-{% endif %}
+  <div class="tab-contents">
 
-{% include 'shared/data_controllers.html' %}
+    <div class="tab-content">
 
-{% include 'entities/totals.html' %}
+      <h2 class="page-title"></h2>
 
-<div class="table-grid" id="myGrid"></div>
+      <div id="expenseSummaryContainer"></div>
+      <div id="fexpenseSummaryContainer"></div>
+      <div id="incomeSummaryContainer"></div>
 
-<p class="downloads" id="income-downloads">
-  {{ _('Descarga la tabla de <b>Ingresos</b>')|safe }}
-  <a class="icon-file-excel" href="{{ url('budget_app.views.entity_income', entity.level, entity.slug, 'csv') }}"><span class="file-info">CSV</span></a>
-  o
-  <a class="icon-file-excel" href="{{ url('budget_app.views.entity_income', entity.level, entity.slug, 'xls') }}"><span class="file-info">Excel</span></a>
-</p>
-<p class="downloads" id="fexpense-downloads">
-  {{ _('Descarga la tabla de <b>Gastos (por programa)</b>')|safe }}
-  <a class="icon-file-excel" href="{{ url('budget_app.views.entity_fexpenses', entity.level, entity.slug, 'csv') }}"><span class="file-info">CSV</span></a>
-  o
-  <a class="icon-file-excel" href="{{ url('budget_app.views.entity_fexpenses', entity.level, entity.slug, 'xls') }}"><span class="file-info">Excel</span></a>
-</p>
-<p class="downloads" id="expense-downloads">
-  {{ _('Descarga la tabla de <b>Gastos</b>')|safe }}
-  <a class="icon-file-excel" href="{{ url('budget_app.views.entity_expenses', entity.level, entity.slug, 'csv') }}"><span class="file-info">CSV</span></a>
-  o
-  <a class="icon-file-excel" href="{{ url('budget_app.views.entity_expenses', entity.level, entity.slug, 'xls') }}"><span class="file-info">Excel</span></a>
-</p>
+      <div id="expenseChartContainer" class="chart-container" style="width: 100%; margin-bottom: 20px"></div>
+      <div id="fexpenseChartContainer" class="chart-container" style="width: 100%; margin-bottom: 20px"></div>
+      <div id="incomeChartContainer" class="chart-container" style="width: 100%; margin-bottom: 20px"></div>
+      <h3 class="no-data-alert">{{ _('Información no disponible') }}</h3>
+      <div id="pop-up">
+        <div id="pop-up-title"></div>
+        <div id="pop-up-content"></div>
+      </div>
+
+      {% if entities %}
+      {{ render_entity_select('entity-select', entities, entity) }}
+      {% endif %}
+
+      {% include 'shared/data_controllers.html' %}
+
+      {% include 'entities/totals.html' %}
+
+      <div class="table-grid" id="myGrid"></div>
+
+      <p class="downloads" id="income-downloads">
+        {{ _('Descarga la tabla de <b>Ingresos</b>')|safe }}
+        <a class="icon-file-excel" href="{{ url('budget_app.views.entity_income', entity.level, entity.slug, 'csv') }}"><span class="file-info">CSV</span></a>
+        o
+        <a class="icon-file-excel" href="{{ url('budget_app.views.entity_income', entity.level, entity.slug, 'xls') }}"><span class="file-info">Excel</span></a>
+      </p>
+      <p class="downloads" id="fexpense-downloads">
+        {{ _('Descarga la tabla de <b>Gastos (por programa)</b>')|safe }}
+        <a class="icon-file-excel" href="{{ url('budget_app.views.entity_fexpenses', entity.level, entity.slug, 'csv') }}"><span class="file-info">CSV</span></a>
+        o
+        <a class="icon-file-excel" href="{{ url('budget_app.views.entity_fexpenses', entity.level, entity.slug, 'xls') }}"><span class="file-info">Excel</span></a>
+      </p>
+      <p class="downloads" id="expense-downloads">
+        {{ _('Descarga la tabla de <b>Gastos</b>')|safe }}
+        <a class="icon-file-excel" href="{{ url('budget_app.views.entity_expenses', entity.level, entity.slug, 'csv') }}"><span class="file-info">CSV</span></a>
+        o
+        <a class="icon-file-excel" href="{{ url('budget_app.views.entity_expenses', entity.level, entity.slug, 'xls') }}"><span class="file-info">Excel</span></a>
+      </p>
+
+    </div>
+  </div>
+</section>
 
 {% include 'shared/social_sharing.html' %}
 {% include 'shared/data_sources.html' %}
@@ -153,7 +179,7 @@
       // Update labels and show/hide totals plus download links based on view
       var executionLabelPostfix = getExecutionTotalLabel(budgetStatuses[uiState.year], budgetStatusLabels);
       if ( uiState.view == 'fexpense' ) {
-        $(".page-title").text('{{ _("Gastos (por programa)") }}');
+        $("h2.page-title").text('{{ _("Gastos (por programa)") }}');
         if ( includeFinancialChapters ) {
           $("#main-total .main-label").html('{{ _("Total gastos") }}'+executionLabelPostfix);
         } else {
@@ -165,14 +191,14 @@
         $("#expense-downloads").hide();
 
       } else if ( uiState.view == 'income' ) {
-        $(".page-title").text('{{ _("Ingresos") }}');
+        $("h2.page-title").text('{{ _("Ingresos") }}');
         $("#main-total .main-label").html('{{ _("Total ingresos") }}'+executionLabelPostfix);
         $("#income-downloads").show();
         $("#fexpense-downloads").hide();
         $("#expense-downloads").hide();
 
       } else {
-        $(".page-title").text('{{ _("Gastos") }}');
+        $("h2.page-title").text('{{ _("Gastos") }}');
         $("#main-total .main-label").html('{{ _("Total gastos") }}'+executionLabelPostfix);
         $("#income-downloads").hide();
         $("#fexpense-downloads").hide();
