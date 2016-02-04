@@ -1,0 +1,7 @@
+<form class="form-search hide-when-embedded" action="{{ url('budget_app.views.search') }}" method="get">
+  <div class="container-fluid">
+    <label for="q">{{ _('¿Buscas algo en concreto?') }}</label>
+    <input placeholder="{{ _('Escribe aquí tu término de búsqueda') }}" class="medium-f" name="q" id="q" type="text">
+    <button class="button button-3d black tupper icon-search" type="submit">{{ _('Buscar') }}</button>
+  </div>
+</form>
