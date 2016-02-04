@@ -3,10 +3,12 @@
 import json
 import subprocess
 import sys
+import os
 
 import django
 from django.http import HttpResponse
 
+from project.settings import ROOT_PATH
 from local_settings import ENV
 from budget_app.models import InflationStat, Budget
 
@@ -19,9 +21,11 @@ def fix_version(version):
     )
 
 def version_api(request):
-
+    old_path = os.getcwd()
+    os.chdir(ROOT_PATH)
     git_commit = subprocess.check_output(['git', 'rev-parse','HEAD']).strip()
     git_tag = subprocess.check_output(['git', 'describe', '--tags']).strip()
+    os.chdir(old_path)
     python_version = fix_version(sys.version_info)
     django_version = fix_version(django.VERSION)
     last_inflation = InflationStat.objects.get_last_year()
