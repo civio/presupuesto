@@ -257,7 +257,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.tz",
     "django.core.context_processors.request",
     "django.contrib.messages.context_processors.messages",
-    "budget_app.context_processors.analytics_processor"
+    "budget_app.context_processors.analytics_processor",
+    "budget_app.context_processors.cookies_url_processor"
 )
 
 SEARCH_CONFIG = ENV.get('SEARCH_CONFIG', 'pg_catalog.english')

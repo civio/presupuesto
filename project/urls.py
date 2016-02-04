@@ -4,7 +4,7 @@ from django.conf.urls import patterns, url, include
 from django.conf import settings
 from django.views.generic.simple import direct_to_template
 
-budget_app_urlpatterns = patterns('budget_app.views',
+URLS = [
     url(r'^/?$', 'welcome'),
 
     url(r'^resumen$', 'budgets'),
@@ -16,8 +16,6 @@ budget_app_urlpatterns = patterns('budget_app.views',
     url(r'^recibo$', 'tax_receipt'),
 
     url(r'^pagos$', 'payments'),
-
-    url(r'^politica-de-cookies$', 'pages'),
 
     # Aragón policies (top)
     url(r'^politicas$', 'policies'),
@@ -101,7 +99,13 @@ budget_app_urlpatterns = patterns('budget_app.views',
 
     # Internationalization
     (r'^i18n/', include('django.conf.urls.i18n')),
-)
+]
+
+if not settings.CUSTOM_COOKIES:
+
+    URLS.append( url(r'^politica-de-cookies$', 'pages'))
+
+budget_app_urlpatterns = patterns('budget_app.views', *URLS)
 
 # Include Jasmine urls fot JS Unit Tests only in development
 if settings.DEBUG:
