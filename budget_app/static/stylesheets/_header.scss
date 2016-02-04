@@ -80,6 +80,7 @@ header > .container{
 
 .navbar-default{
   border: none;
+  margin-bottom: 0;
 
   .navbar-collapse {
     padding-right: 0;
@@ -147,6 +148,61 @@ header > .container{
         &:first-child > a{
           border-left: 1px solid mix( $navbar-default-bg, white, 50% );
         }
+      }
+    }
+  }
+}
+
+
+// Main Menu
+// ------------------------
+
+.form-search{
+  background: $search-form-bg;
+  padding: $grid-gutter-width/2 0;
+
+  > .container{
+    padding: 0 $grid-gutter-width/2;
+  }
+
+  .form-inline{
+    text-align: center;
+
+    .form-group{
+      width: 70%;
+      display: inline-block;  // Force form-inline in mobile resolution
+      margin-bottom: 0;
+    }
+
+    label{
+      display: none;
+    }
+
+    .form-control{
+      width: 100%;
+    }
+
+    .btn{
+      width: 3*$grid-gutter-width;
+      margin-top: -1px;
+    }
+  }
+
+  @media (min-width: $screen-sm-min) {
+
+    .form-inline{
+
+      .form-group{
+        width: auto;
+      }
+
+      label{
+        display: inline-block;
+      }
+
+      .form-control{
+        width: 340px;
+        margin: 0 $grid-gutter-width/2;
       }
     }
   }
