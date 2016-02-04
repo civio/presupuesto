@@ -101,7 +101,7 @@ URLS = [
     (r'^i18n/', include('django.conf.urls.i18n')),
 ]
 
-if not settings.CUSTOM_COOKIES:
+if not settings.COOKIES_URL:
 
     URLS.append( url(r'^politica-de-cookies$', 'pages'))
 
