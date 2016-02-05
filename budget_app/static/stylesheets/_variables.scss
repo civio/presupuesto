@@ -13,10 +13,14 @@ $gray-lightest:         lighten($gray-base, 96%) !default;
 $text-color:            #414141;
 
 $brand-primary:         #d32e12;
-
 $brand-secondary:       #49647A;
-
 $brand-terciary:        #DDCFC1;
+
+/*
+$brand-primary:         #3F1712;
+$brand-secondary:       #717F4C;
+$brand-terciary:        #FCEEAE;
+*/
 
 $link-color:            $brand-primary;
 $link-hover-color:      $link-color;
@@ -85,7 +89,7 @@ $data-panel-color: $brand-secondary;
 // Data Panel
 // --------------
 
-$data-sources-color: $brand-primary;
+$data-sources-color: $brand-terciary;
 
 /*
 
