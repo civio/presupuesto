@@ -6,8 +6,6 @@ def analytics_processor(request):
 
 def cookies_url_processor(request):
     return { 'cookies_url': False if not settings.COOKIES_URL else settings.COOKIES_URL }
-<<<<<<< HEAD
-=======
 
 def show_options_processor(request):
     return {
@@ -15,4 +13,3 @@ def show_options_processor(request):
       'show_tax_receipt':         settings.SHOW_TAX_RECEIPT,
       'show_counties_and_towns':  settings.SHOW_COUNTIES_AND_TOWNS
     }
->>>>>>> master
