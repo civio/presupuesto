@@ -74,6 +74,12 @@
         @extend .col-sm-6;
       }
 
+      @if $dvmi-menu-length == 5 {
+        &:nth-child(odd){
+          clear: both;
+        }
+      }
+
       > div{
         @extend .panel;
         @extend .panel-default;
@@ -81,6 +87,17 @@
         margin-bottom: $grid-gutter-width;
         border: none;
         text-align: center;
+      }
+
+      h3{
+        font-size: 2;
+        margin: $grid-gutter-width/2 0;
+      }
+
+      .desc{
+        color: $gray;
+        font-size: 1.125em;
+        margin-bottom: $grid-gutter-width/2;
       }
     }
   }
