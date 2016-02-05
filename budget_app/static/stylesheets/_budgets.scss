@@ -71,6 +71,10 @@
   .data-panel{
     margin-bottom: $grid-gutter-width/2;
   }
+
+  .social-sharing-toolbox li a{
+    background-color: $data-panel-color;
+  }
 }
 
 

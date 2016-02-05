@@ -90,18 +90,14 @@
     {% if not include_financial_chapters %}
     <p class="text-center"><small>{{ _('Se incluyen únicamente los gastos e ingresos no financieros, es decir, capítulos I al VII.') }}</small></p>
     {% endif %}
+
+    <!-- Social Sharing Buttons -->
+    {% include 'shared/social_sharing.html' %}
   </div>
 </div>
 
-<!-- Social Sharing Buttons -->
-<div class="container">
-  {% include 'shared/social_sharing.html' %}
-</div>
-
 <!-- Data Sources Panel -->
-<div class="container">
-  {% include 'shared/data_sources.html' %}
-</div>
+{% include 'shared/data_sources.html' %}
 
 
 {% include 'shared/policy_paths.html' %}

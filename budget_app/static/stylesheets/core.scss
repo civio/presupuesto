@@ -6,7 +6,6 @@
 @import "dist/jquery-cookiebar";
 @import "dist/jslider/jslider";
 @import "dist/jslider/jslider.dvmi";
-@import "dist/addthis";
 @import "dist/select2";
 //@import "dist/slick.grid";
 
@@ -22,6 +21,7 @@
 @import "modules/data-controllers";
 @import "modules/data-panel";
 @import "modules/data-sources";
+@import "modules/social-sharing";
 
 // DVMI Viz Styles
 @import "vis/nv.d3";
