@@ -49,9 +49,7 @@
   {% include 'shared/header.html' %}
   {% include 'shared/form-search.html' %}
   <div class="content" role="main">
-    <div class="container-fluid">
-      {% block content %}{% endblock %} 
-    </div>
+    {% block content %}{% endblock %} 
   </div>
   {% include 'shared/footer.html' %}
 

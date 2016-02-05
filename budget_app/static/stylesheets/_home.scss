@@ -1,0 +1,112 @@
+.home-content{
+
+  text-align: center;
+
+  // Home Intro Text
+  .home-intro{
+    padding: 1.5*$grid-gutter-width $grid-gutter-width/2;
+
+    h2{
+      margin: 0.5em 0;
+      font-size: 2em;
+      line-height: 1.25em;
+    }
+
+    p{
+      color: $gray;
+      font-size: 1.25em;
+      font-style: italic;
+    }
+  }
+
+  // Home Expense Examples
+  .expense-examples{
+    padding:  0 $grid-gutter-width/2 1.5*$grid-gutter-width;
+
+    .title{
+      color: $gray;
+      padding-bottom: 0.5em;
+      margin-bottom: $grid-gutter-width/3;
+      font-size: 0.75em;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-align: center;
+      text-transform: uppercase;
+      border-bottom: 1px solid $gray-lighter;
+    }
+
+    ul{
+      padding: 0;
+      margin: 0;
+    }
+
+    li{
+      list-style: none;
+      @extend .well;
+      @extend .well-sm;
+      margin-bottom: $grid-gutter-width/3;
+      background: $gray-lighter;
+
+      a{
+        @include transition( color 0.3s ease-out );
+
+        &:hover{
+          color: $text-color;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+
+  // Home Options
+  .options{
+    padding-top: $grid-gutter-width;
+    background: mix( $brand-primary, white, 25% );
+
+    .option{
+
+      // 3 options -> 3 columns
+      @if $dvmi-menu-length == 4 {
+        @extend .col-sm-4;
+      }
+      // 4 options / 2 options -> 2 columns
+      @else {
+        @extend .col-sm-6;
+      }
+
+      > div{
+        @extend .panel;
+        @extend .panel-default;
+        padding: $grid-gutter-width/2;
+        margin-bottom: $grid-gutter-width;
+        border: none;
+        text-align: center;
+      }
+    }
+  }
+
+  @media (min-width: $screen-sm-min) {
+    
+    .home-intro{
+      padding-left: $grid-gutter-width;
+    }
+
+    .expense-examples{
+      padding-top: 1.5*$grid-gutter-width;
+      padding-right: $grid-gutter-width;
+
+      li b{
+        display: block;
+      }
+    }
+  }
+
+  @media (min-width: $screen-md-min) {
+    
+    text-align: left;
+
+    .expense-examples li b{
+      float: right;
+    }
+  }
+}
