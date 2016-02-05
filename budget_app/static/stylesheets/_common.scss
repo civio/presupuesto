@@ -1,6 +1,85 @@
+// Page Title
 .page-title{
   margin: $grid-gutter-width 0;
   font-size: 2.5em;
   font-weight: 300;
   text-align: center;
+}
+
+// Data controllers
+.data-controllers {
+  margin-bottom: $grid-gutter-width/2;
+  text-align: center;
+
+  /*
+  #btn-field {
+    margin-bottom: 1em;
+    font-size: 1em;
+
+    .btn {
+      padding: 4px 13px;
+    }
+  }
+  */
+
+  .jslider {
+    top: 1.25em;
+
+    // Hide from - to labels
+    .jslider-label{
+      visibility: hidden;
+    }
+  }
+
+  // .quantity-selection label
+  .title{
+    margin: 0;
+    padding: $grid-gutter-width/2 0;
+    line-height: 1.25em;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  /*
+  .tab-content & {
+    background: @black95;
+    margin: 0 -1em 1em;
+    padding: 1em 1.5em;
+    @shadow:
+    0 0 0 1px @black80 inset,
+    0 0 0 2px @white inset;
+    .box-shadow(@shadow);
+  }
+  */
+}
+
+/*
+.data-controllers.functional_view {
+  #btn-field {
+    .btn {
+      font-size: .9em;
+      padding: 6px 6px;
+    }
+  } 
+}
+
+.data-controllers.functional_view .quantity-selection {
+  text-align: center;
+}
+
+#year-selection {}
+.layout-slider {height: 3.5em;}
+
+.data-controllers .layout-slider{
+  margin-top: -6px;
+}
+*/
+
+// jQuery UI
+.ui-widget {
+  font-family: $font-family-base; 
+  margin: 0 0 1.5em;
+}
+.ui-widget-content a {
+  color: $link-color;
 }
