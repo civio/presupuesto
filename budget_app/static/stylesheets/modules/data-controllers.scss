@@ -1,11 +1,3 @@
-// Page Title
-.page-title{
-  margin: $grid-gutter-width 0;
-  font-size: 2.5em;
-  font-weight: 300;
-  text-align: center;
-}
-
 // Data controllers
 .data-controllers {
   margin-bottom: $grid-gutter-width/2;
@@ -74,12 +66,3 @@
   margin-top: -6px;
 }
 */
-
-// jQuery UI
-.ui-widget {
-  font-family: $font-family-base; 
-  margin: 0 0 1.5em;
-}
-.ui-widget-content a {
-  color: $link-color;
-}

@@ -1,0 +1,101 @@
+// Data Panel
+.data-panel {
+  text-align: center;
+  
+  #totals-year{
+    font-weight: 400;
+    margin-left: 0.5em
+  }
+
+  .panel{
+    @extend .panel-default;
+    margin: 0;
+    padding: 0;
+    border-radius: 0;
+    border-color: $data-panel-color;
+
+    &:first-child{
+      border-top-right-radius: 8px;
+      border-top-left-radius: 8px;
+
+      .panel-title{
+        border-radius: 6px 6px 0 0;
+      }
+    }
+    &:last-child{
+      border-bottom-right-radius: 8px;
+      border-bottom-left-radius: 8px;
+    }
+  }
+
+  .panel-title{
+    margin: 0;
+    padding: $grid-gutter-width/2;
+    color: mix( white, $data-panel-color, 95% );
+    background: $data-panel-color;
+    font-size: 1.25em;
+    font-weight: bold;
+    line-height: 1em;
+    text-transform: uppercase;
+  }
+
+  .panel-content{
+    font-size: 1.25em;
+    text-transform: uppercase;
+    padding: $grid-gutter-width/2;
+
+    > p{
+      line-height: 1.375em;
+      margin-bottom: 0;
+      @include clearfix();
+    }
+
+    b{
+      display: block;
+    }
+  
+    .total-executed{
+      font-size: 1.125em;
+      font-weight: 600;
+      margin-bottom: $grid-gutter-width/3;
+    }
+    .total-budgeted{
+      b{
+        font-weight: 400;
+      }
+    }
+  }
+
+  .panel.indicators{
+
+    .panel-content > p{
+      margin-bottom: $grid-gutter-width/3;
+      padding-bottom: $grid-gutter-width/3;
+      border-bottom: 1px solid mix( $data-panel-color, white, 40% );
+
+      &:last-child{
+        margin-bottom: 0;
+        padding-bottom: 0;
+        border: none;
+      }
+    }
+  }
+
+  @media (min-width: $screen-sm-min) {
+  
+    @include clearfix();
+    text-align: left;
+
+    .panel-content{
+
+      .total-executed{       
+        margin-bottom: $grid-gutter-width/6;
+      }
+
+      b{
+        float: right; 
+        text-align: right;
+      }
+    }
+  }
+}

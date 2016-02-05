@@ -19,6 +19,9 @@
 @import "_footer";
 @import "_home";
 @import "_budgets";
+@import "modules/data-controllers";
+@import "modules/data-panel";
+@import "modules/data-sources";
 
 // DVMI Viz Styles
 @import "vis/nv.d3";

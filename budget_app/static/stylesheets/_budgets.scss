@@ -1,6 +1,6 @@
 
-// Budget Stram Intro
-.budget-stream {
+// Budget Intro
+.budget-intro {
   display: none;
   background: mix( $budget-stream-color, white, 8% );
 
@@ -53,7 +53,7 @@
 }
 
 
-// Budgeys Sankey Viz
+// Budgets Sankey Viz
 .budget-viz{
 
   .sankey-container{
@@ -62,9 +62,21 @@
 }
 
 
+// Budgets Data Panel
+.budget-data{
+  margin-top: 2*$grid-gutter-width;
+  padding-bottom: $grid-gutter-width;
+  background: mix( $data-panel-color, white, 8% );
+
+  .data-panel{
+    margin-bottom: $grid-gutter-width/2;
+  }
+}
+
+
 @media (min-width: $screen-sm-min) {
 
-  .budget-stream {
+  .budget-intro {
     display: block;
   }
 }

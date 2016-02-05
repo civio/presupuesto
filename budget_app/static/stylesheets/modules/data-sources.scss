@@ -1,0 +1,48 @@
+
+// Data sources
+.data-sources{
+  @extend .panel-default;
+  border-color: $data-sources-color;
+  margin-bottom: $grid-gutter-width;
+
+  .panel-heading{
+    background: $data-sources-color;
+  }
+
+  .panel-title {
+    color: mix( white, $data-sources-color, 95% );
+    font-size: 1em; 
+    text-transform: uppercase;
+  }
+
+  .source-list {
+    font-size: .875em; 
+    padding-left: $grid-gutter-width;
+    margin-bottom: $grid-gutter-width/2;
+
+    li{
+      margin-bottom: $grid-gutter-width/6;
+    }
+  }
+
+  .alert{
+    font-size: .875em;
+    margin-bottom: 0;
+    color: $gray;
+    background: mix( $data-sources-color, white, 10% );
+
+    .title{
+      margin-bottom: $grid-gutter-width/3;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+
+    ul{
+      padding-left: $grid-gutter-width/2;
+    }
+
+    li{
+      margin-bottom: $grid-gutter-width/6;
+    }
+  }
+}
