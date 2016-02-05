@@ -10,7 +10,13 @@ $gray-light:          lighten($gray-base, 46.7%) !default; // #777
 $gray-lighter:        lighten($gray-base, 93.5%) !default; // #eee
 $gray-lightest:       lighten($gray-base, 96%) !default;
 
+$text-color:          #414141;
+
 $brand-primary:       #d32e12;
+
+$brand-secondary:     #49647A;
+
+$brand-terciary:      #DDCFC1;
 
 
 // Navbar
@@ -30,17 +36,23 @@ $navbar-default-bg: $brand-primary;
 $dvmi-navbar-color: mix( $brand-primary, white, 10% );
 
 
-// Search Form
-// --------------
-
-$search-form-bg: $gray-lighter;
-
-
 // Footer
 // --------------
 
 $footer-color: white;
 $footer-bg: $brand-primary;
+
+
+// Search Form
+// --------------
+
+$search-form-bg: $brand-terciary;
+
+
+// Budget Stream
+// --------------
+
+$budget-stream-color: $brand-secondary;
 
 
 /*
