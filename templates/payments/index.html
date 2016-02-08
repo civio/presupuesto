@@ -6,7 +6,7 @@
 {% include 'payments/payments_intro.html' %}
 
 <section role="region" class="payments-breakdown tab-system">
-  <h1 class="visuallyhidden">{{ _('Pagos e inversiones') }}</h1>
+  <h1 class="hidden">{{ _('Pagos e inversiones') }}</h1>
 
   <div class="data-controllers">
     <p class="title tcenter">{{ _('Elige año') }}</p>
@@ -16,7 +16,7 @@
   </div>
 
   <nav role="navigation" class="tab-menu">
-    <h2 class="visuallyhidden">{{ _('Menú de pagos e inversiones') }}</h2>
+    <h2 class="hidden">{{ _('Menú de pagos e inversiones') }}</h2>
     <ul id="tabs">
       <li class="current"><a href="#tab-area">{{ _('Por área') }}</a></li>
       <li><a href="#tab-payee">{{ _('Por beneficiario') }}</a></li>
@@ -25,7 +25,7 @@
 
   <div class="tab-contents">
     {{ render_tab(_('Por área'), 'area', 'current') }}
-    {{ render_tab(_('Por beneficiario'), 'payee', 'visuallyhidden') }}
+    {{ render_tab(_('Por beneficiario'), 'payee', 'hidden') }}
   </div>
 
   {% include 'shared/social_sharing.html' %}
@@ -34,7 +34,7 @@
 <!-- 
   We render the totals here initially, and move it to the active tab at run-time.
 -->
-<div class="visuallyhidden">
+<div class="hidden">
   <div id="totals_panel">
     <p class="total"><span>{{ _('Total de inversiones y pagos') }}</span> <b id="total"></b></p>
   </div>
@@ -122,8 +122,8 @@
       $('.payments-breakdown .tab-menu li').removeClass('current');
       $(this).parent().addClass('current');
       var currentTab = $(this).attr('href');
-      $('.payments-breakdown .tab-content').removeClass('current').addClass("visuallyhidden");
-      $(currentTab).addClass('current').removeClass("visuallyhidden");
+      $('.payments-breakdown .tab-content').removeClass('current').addClass("hidden");
+      $(currentTab).addClass('current').removeClass("hidden");
 
       // Callback to do some initialization (grid, controllers...) on tab switch
       onTabSwitch();
