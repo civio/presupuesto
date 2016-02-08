@@ -1,7 +1,6 @@
-<div class="container">
-  <h1 class="page-title" id="indicadores">{{ _('Indicadores presupuestarios en') }} <span id="indicators-year"></span></h1>
-
-  <div id="indicators-panel">
+<div class="panel indicators">
+  <div class="panel-title">{{ _('Indicadores presupuestarios') }}</div>
+  <div class="panel-content">
     <p>
       <span><a href="/glosario#ahorro-bruto" class="icon-question" data-toggle="tooltip" data-placement="right" title="" data-original-title="{{ _('Ingresos corrientes (capítulos I-V) - Gastos corrientes (capítulos I-V)') }}"></a> {{ _('Ahorro bruto') }}</span> <b id="total-gross-savings" class="value"></b>
     </p>
@@ -12,6 +11,4 @@
       <span><a href="/glosario#capacidad-necesidad-financiacion" class="icon-question" data-toggle="tooltip" data-placement="right" title="" data-original-title="{{ _('Ingresos no financieros (capítulos I-VII) – Gastos no financieros (capítulos I-VII)') }}"></a> {{ _('Capacidad/Necesidad de financiación') }}</span> <b id="total-funding-capacity" class="value"></b>
     </p>
   </div>
-
-  <p class="footnote tcenter">{{ _('Cantidades actualizadas con la inflación a fecha 1 de enero de') }} {{ last_inflation_year }}. {{ _('El cálculo de los indicadores utiliza las cifras del presupuesto aprobado') }}.</p>
 </div>

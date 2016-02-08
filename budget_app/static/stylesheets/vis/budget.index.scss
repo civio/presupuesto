@@ -3,29 +3,29 @@
  */
 .sankey .link.with-data {
   fill: none;
-  stroke: #1F77B4;
-  stroke-opacity: .4;
+  stroke: $sankey-budget-color;
+  stroke-opacity: .5;
 }
 .sankey .legend-budget circle{
-  fill: #1F77B4;
-  opacity: .4;
+  fill: $sankey-budget-color;
+  opacity: .5;
 }
 
 .sankey .link-execution.with-data {
   fill: none;
-  stroke: #E377C2;
+  stroke: $sankey-execution-color;
   stroke-opacity: .5;
 }
 .sankey .legend-execution circle{
-  fill: #E377C2;
+  fill: $sankey-execution-color;
   opacity: .5;
 }
 
 .sankey .link.no-data,
 .sankey .link-execution.no-data {
   fill: none;
-  stroke: #999;
-  stroke-opacity: .4;
+  stroke: $sankey-budget-color;
+  stroke-opacity: .5;
 }
 
 .sankey .link:hover,
