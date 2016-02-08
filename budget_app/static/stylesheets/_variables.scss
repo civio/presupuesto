@@ -86,10 +86,17 @@ $budget-stream-color: $brand-secondary;
 $data-panel-color: $brand-secondary;
 
 
-// Data Panel
+// Data Sources
 // --------------
 
 $data-sources-color: $brand-terciary;
+
+
+// Sankey Viz
+// --------------
+
+$sankey-budget-color:     saturate( lighten( $brand-secondary, 12% ), 10% );                          // #1F77B4;
+$sankey-execution-color:  saturate( lighten( adjust-hue( $sankey-budget-color, 100% ), 10% ), 10% );  //#E377C2;
 
 /*
 

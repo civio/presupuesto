@@ -1,9 +1,29 @@
+// Body
+body{
+  overflow-x: hidden;
+}
+
 // Page Title
 .page-title{
   margin: $grid-gutter-width 0;
   font-size: 2.5em;
   font-weight: 300;
   text-align: center;
+}
+
+// Nav Tabs Centered
+.nav-tabs-centered{
+  text-align: center;
+
+  > li{
+    float: none;
+    display: inline-block;
+  }
+}
+
+.tab-content{
+  border: 1px solid $nav-tabs-border-color;
+  background: white;
 }
 
 // jQuery UI

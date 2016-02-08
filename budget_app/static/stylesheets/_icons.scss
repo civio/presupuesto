@@ -59,7 +59,7 @@
 
 
 // Meta info de un archivo PDF, XLS, etc.
-[class*="icon-file"] .meta {color: lighten(@black, 20%); font-size: .75em; text-transform: uppercase;}
+[class*="icon-file"] .meta {color: $gray-dark; font-size: .75em; text-transform: uppercase;}
 
 
 

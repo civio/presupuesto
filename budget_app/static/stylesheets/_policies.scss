@@ -1,0 +1,85 @@
+// Policies Header (Title + Tabs Menu)
+.policies-header{
+
+  h2{
+    margin: 0;
+    padding: 1.5*$grid-gutter-width 0;
+  }
+
+  .nav-tabs > li > a{
+    font-size: 1.1  25em;
+    font-weight: bold;
+    padding-left: $grid-gutter-width/3;
+    padding-right: $grid-gutter-width/3;
+
+    &:hover{
+      background: mix( $brand-secondary, white, 8% );
+    }
+  }
+
+  .nav-tabs > li.active > a{
+    background: mix( $brand-secondary, white, 8% );
+  }
+}
+
+// Policies Content
+.policies-content{
+  background: mix( $brand-secondary, white, 8% );
+
+  .page-title{
+    font-size: 2em;
+  }
+
+  .social-sharing{
+    margin-bottom: $grid-gutter-width;
+  }
+  .social-sharing-toolbox li a{
+    background-color: $brand-secondary; 
+  }
+}
+
+// Policies Graph
+.policies-graph{
+  @extend .panel;
+  padding: $grid-gutter-width/2 $grid-gutter-width/2 0;
+}
+
+.panel-downloads{
+  @extend .panel-default;
+  border-color: $brand-secondary;
+  background: mix( $brand-secondary, white, 30% );
+  padding: $grid-gutter-width/2;
+  text-align: center;
+
+  > p{
+    margin-bottom: 0;
+    line-height: 1.5em;
+  }
+
+  a{
+    color: darken( $brand-secondary, 10% );
+    font-weight: bold;
+    margin: 0 3px;
+    @include transition( color 0.3s ease-out );
+
+    &:hover{
+      color: $brand-secondary;
+      text-decoration: none;
+    }
+  }
+}
+
+
+@media (min-width: $screen-sm-min) {
+
+  .policies-header{
+    .nav-tabs > li > a{
+      padding-left: $grid-gutter-width/2;
+      padding-right: $grid-gutter-width/2;
+    }
+  }
+  
+  .policies-graph{
+    padding: $grid-gutter-width $grid-gutter-width 0;
+  }
+}

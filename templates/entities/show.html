@@ -18,11 +18,33 @@
 </a></p>
 {% endif %}
 
+<section role="region">
+  
+  <!-- Politicas Header -->
+  <div class="policies-header">
+    
+    <h2 class="page-title">{{ _('Políticas') }}</h2>
 
-<h1 class="page-title">{{ _('Políticas') }}</h1>
+    <ul id="btn-field" class="nav nav-tabs nav-tabs-centered" role="navigation">
+      {% if display_functional_view %}
+      <li role="presentation" class="{{ 'active' if full_breakdown }}">
+        <a id="fexpense" href="#">{{ _('¿En qué se gasta?') }}</a>
+      </li>
+      <li role="presentation" class="{{ 'active' if not full_breakdown }}">
+        <a id="expense" href="#">{{ _('¿Cómo se gasta?') }}</a>
+      </li>
+      {% else %}
+      <li role="presentation" class="{{ 'active' if show_side!='income' }}">
+        <a id="expense" href="#">{{ _('Gastos') }}</a>
+      </li>
+      {% endif %}
+      <li role="presentation" class="{{ 'active' if show_side=='income' }}">
+        <a id="income" href="#">{{ _('Ingresos') }}</a>
+      </li>
+    </ul>
+  </div>
 
-<section role="region" class="tab-system">
-
+  <!--
   <nav role="navigation" class="tab-menu">
     <div id="btn-field-wrapper">
       <div id="btn-field" class="btn-group">
@@ -36,24 +58,28 @@
       </div>
     </div>
   </nav>
+  -->
 
-  <div class="tab-contents">
+  <!-- Policies Content -->
+  <div class="policies-content">
+    <div class="container">
 
-    <div class="tab-content">
+      <h3 class="page-title"></h3>
 
-      <h2 class="page-title"></h2>
+      <!-- Policies Graph -->
+      <div class="policies-graph">
+        <div id="expenseSummaryContainer"></div>
+        <div id="fexpenseSummaryContainer"></div>
+        <div id="incomeSummaryContainer"></div>
 
-      <div id="expenseSummaryContainer"></div>
-      <div id="fexpenseSummaryContainer"></div>
-      <div id="incomeSummaryContainer"></div>
-
-      <div id="expenseChartContainer" class="chart-container" style="width: 100%; margin-bottom: 20px"></div>
-      <div id="fexpenseChartContainer" class="chart-container" style="width: 100%; margin-bottom: 20px"></div>
-      <div id="incomeChartContainer" class="chart-container" style="width: 100%; margin-bottom: 20px"></div>
-      <h3 class="no-data-alert">{{ _('Información no disponible') }}</h3>
-      <div id="pop-up">
-        <div id="pop-up-title"></div>
-        <div id="pop-up-content"></div>
+        <div id="expenseChartContainer" class="chart-container" style="width: 100%; margin-bottom: 20px"></div>
+        <div id="fexpenseChartContainer" class="chart-container" style="width: 100%; margin-bottom: 20px"></div>
+        <div id="incomeChartContainer" class="chart-container" style="width: 100%; margin-bottom: 20px"></div>
+        <h3 class="no-data-alert">{{ _('Información no disponible') }}</h3>
+        <div id="pop-up">
+          <div id="pop-up-title"></div>
+          <div id="pop-up-content"></div>
+        </div>
       </div>
 
       {% if entities %}
@@ -64,32 +90,35 @@
 
       {% include 'entities/totals.html' %}
 
-      <div class="table-grid" id="myGrid"></div>
+      <!-- Policies Table -->
+      <div id="myGrid" class="table-grid"></div>
 
-      <p class="downloads" id="income-downloads">
-        {{ _('Descarga la tabla de <b>Ingresos</b>')|safe }}
-        <a class="icon-file-excel" href="{{ url('budget_app.views.entity_income', entity.level, entity.slug, 'csv') }}"><span class="file-info">CSV</span></a>
-        o
-        <a class="icon-file-excel" href="{{ url('budget_app.views.entity_income', entity.level, entity.slug, 'xls') }}"><span class="file-info">Excel</span></a>
-      </p>
-      <p class="downloads" id="fexpense-downloads">
-        {{ _('Descarga la tabla de <b>Gastos (por programa)</b>')|safe }}
-        <a class="icon-file-excel" href="{{ url('budget_app.views.entity_fexpenses', entity.level, entity.slug, 'csv') }}"><span class="file-info">CSV</span></a>
-        o
-        <a class="icon-file-excel" href="{{ url('budget_app.views.entity_fexpenses', entity.level, entity.slug, 'xls') }}"><span class="file-info">Excel</span></a>
-      </p>
-      <p class="downloads" id="expense-downloads">
-        {{ _('Descarga la tabla de <b>Gastos</b>')|safe }}
-        <a class="icon-file-excel" href="{{ url('budget_app.views.entity_expenses', entity.level, entity.slug, 'csv') }}"><span class="file-info">CSV</span></a>
-        o
-        <a class="icon-file-excel" href="{{ url('budget_app.views.entity_expenses', entity.level, entity.slug, 'xls') }}"><span class="file-info">Excel</span></a>
-      </p>
+      <div class="panel panel-downloads">
+        <p class="downloads" id="income-downloads">
+          {{ _('Descarga la tabla de <b>Ingresos</b>')|safe }}
+          <a class="icon-file-excel" href="{{ url('budget_app.views.entity_income', entity.level, entity.slug, 'csv') }}"><span class="file-info">CSV</span></a>
+          o
+          <a class="icon-file-excel" href="{{ url('budget_app.views.entity_income', entity.level, entity.slug, 'xls') }}"><span class="file-info">Excel</span></a>
+        </p>
+        <p class="downloads" id="fexpense-downloads">
+          {{ _('Descarga la tabla de <b>Gastos (por programa)</b>')|safe }}
+          <a class="icon-file-excel" href="{{ url('budget_app.views.entity_fexpenses', entity.level, entity.slug, 'csv') }}"><span class="file-info">CSV</span></a>
+          o
+          <a class="icon-file-excel" href="{{ url('budget_app.views.entity_fexpenses', entity.level, entity.slug, 'xls') }}"><span class="file-info">Excel</span></a>
+        </p>
+        <p class="downloads" id="expense-downloads">
+          {{ _('Descarga la tabla de <b>Gastos</b>')|safe }}
+          <a class="icon-file-excel" href="{{ url('budget_app.views.entity_expenses', entity.level, entity.slug, 'csv') }}"><span class="file-info">CSV</span></a>
+          o
+          <a class="icon-file-excel" href="{{ url('budget_app.views.entity_expenses', entity.level, entity.slug, 'xls') }}"><span class="file-info">Excel</span></a>
+        </p>
+      </div>
 
+      {% include 'shared/social_sharing.html' %}
     </div>
   </div>
 </section>
 
-{% include 'shared/social_sharing.html' %}
 {% include 'shared/data_sources.html' %}
 {% include 'shared/policy_paths.html' %}
 
@@ -159,6 +188,8 @@
       if ( uiState && sameUIState(uiState, newUIState) ) return;
       uiState = newUIState;
 
+      console.log( uiState );
+
       // Do work
       var columnDef = getColumnDefinition(uiState);
       var executionColumnDef = getExecutionColumnDefinition(uiState);
@@ -179,7 +210,7 @@
       // Update labels and show/hide totals plus download links based on view
       var executionLabelPostfix = getExecutionTotalLabel(budgetStatuses[uiState.year], budgetStatusLabels);
       if ( uiState.view == 'fexpense' ) {
-        $("h2.page-title").text('{{ _("Gastos (por programa)") }}');
+        $("h3.page-title").text('{{ _("Gastos (por programa)") }}');
         if ( includeFinancialChapters ) {
           $("#main-total .main-label").html('{{ _("Total gastos") }}'+executionLabelPostfix);
         } else {
@@ -191,14 +222,14 @@
         $("#expense-downloads").hide();
 
       } else if ( uiState.view == 'income' ) {
-        $("h2.page-title").text('{{ _("Ingresos") }}');
+        $("h3.page-title").text('{{ _("Ingresos") }}');
         $("#main-total .main-label").html('{{ _("Total ingresos") }}'+executionLabelPostfix);
         $("#income-downloads").show();
         $("#fexpense-downloads").hide();
         $("#expense-downloads").hide();
 
       } else {
-        $("h2.page-title").text('{{ _("Gastos") }}');
+        $("h3.page-title").text('{{ _("Gastos") }}');
         $("#main-total .main-label").html('{{ _("Total gastos") }}'+executionLabelPostfix);
         $("#income-downloads").hide();
         $("#fexpense-downloads").hide();
@@ -391,7 +422,7 @@
 {% endif %}
 
     // Set up controls
-    setRedrawOnButtonGroupChange('.btn-group', redraw);
+    setRedrawOnButtonGroupChange('#btn-field', redraw);
     $('#select-format').change(redraw);
     $('#expenseChartContainer').bind('policy-selected', onEconomicExpenseTreemapClick);
     $('#fexpenseChartContainer').bind('policy-selected', onFunctionalExpenseTreemapClick);

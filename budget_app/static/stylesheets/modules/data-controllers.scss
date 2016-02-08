@@ -1,6 +1,6 @@
 // Data controllers
 .data-controllers {
-  margin-bottom: $grid-gutter-width/2;
+  margin-bottom: 2*$grid-gutter-width;
   text-align: center;
 
   /*
@@ -14,12 +14,20 @@
   }
   */
 
+  .layout-slider{
+    margin: 0 $grid-gutter-width/3;
+  }
+
   .jslider {
-    top: 1.25em;
+    top: $grid-gutter-width/2;
 
     // Hide from - to labels
     .jslider-label{
       visibility: hidden;
+    }
+
+    .jslider-pointer{
+      top: -18px;
     }
   }
 
@@ -66,3 +74,18 @@
   margin-top: -6px;
 }
 */
+
+
+@media (min-width: $screen-sm-min) {
+
+  .data-controllers {
+   
+   .quantity-selection{
+      text-align: left;
+    }
+
+    .layout-slider{
+      margin: 0;
+    }
+  }
+}
