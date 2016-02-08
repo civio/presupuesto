@@ -1,33 +1,73 @@
 // Policies Header (Title + Tabs Menu)
 .policies-header{
 
+  .container{
+    position: relative;
+  }
+
   h2{
     margin: 0;
     padding: 1.5*$grid-gutter-width 0;
   }
 
-  .nav-tabs > li > a{
-    font-size: 1.1  25em;
-    font-weight: bold;
-    padding-left: $grid-gutter-width/3;
-    padding-right: $grid-gutter-width/3;
+  .nav-tabs{
+    border-color: $policies-tabs-border-color;
 
-    &:hover{
-      background: mix( $brand-secondary, white, 8% );
+    > li > a{
+      color: darken( $policies-tabs-border-color, 25% );
+      font-size: 1.25em;
+      padding-left: $grid-gutter-width/3;
+      padding-right: $grid-gutter-width/3;
+
+      &:hover{
+        border-bottom-color: $policies-tabs-border-color;
+        background: $policies-bg;
+      }
+    }
+
+    > li.active > a{
+      border-color: $policies-tabs-border-color;
+      border-bottom-color: transparent;
+      background: $policies-bg;
+      font-weight: bold;
     }
   }
 
-  .nav-tabs > li.active > a{
-    background: mix( $brand-secondary, white, 8% );
+  // Back Button
+  .history-back{
+    position: absolute;
+    bottom: -10px - $grid-gutter-width;
+    left: $grid-gutter-width/2;
+    margin-bottom: 0;
+
+    a{
+      display: inline-block;
+      padding: $grid-gutter-width/6 $grid-gutter-width/3;
+      color: $text-color;
+      font-size: 0.875em;
+      text-transform: uppercase;
+      font-weight: bold;
+      border-left: 2px solid $brand-primary;
+      background: mix( $brand-primary, white, 20% );
+      @include transition( background 0.3s ease-out );
+
+      &:hover{
+        border-left-width: 3px;
+        background: mix( $brand-primary, white, 50% );
+        text-decoration: none;
+      }
+    }
   }
 }
 
 // Policies Content
 .policies-content{
-  background: mix( $brand-secondary, white, 8% );
+  padding-bottom: 1px;
+  background: $policies-bg;
 
-  .page-title{
-    font-size: 2em;
+  .policies-title{
+    @extend .page-title;
+    font-size: 2.25em;
   }
 
   .social-sharing{
@@ -42,6 +82,7 @@
 .policies-graph{
   @extend .panel;
   padding: $grid-gutter-width/2 $grid-gutter-width/2 0;
+  margin: $grid-gutter-width 0 $grid-gutter-width/2;
 }
 
 .panel-downloads{

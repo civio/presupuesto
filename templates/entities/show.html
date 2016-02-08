@@ -18,27 +18,29 @@
 </a></p>
 {% endif %}
 
-<section role="region">
+
+<!-- Politicas -->
+<section class="policies" role="region">
   
   <!-- Politicas Header -->
   <div class="policies-header">
     
     <h2 class="page-title">{{ _('Políticas') }}</h2>
 
-    <ul id="btn-field" class="nav nav-tabs nav-tabs-centered" role="navigation">
+    <ul id="btn-field" class="nav nav-tabs nav-tabs-centered" role="tablist">
       {% if display_functional_view %}
-      <li role="presentation" class="{{ 'active' if full_breakdown }}">
+      <li class="{{ 'active' if full_breakdown }}">
         <a id="fexpense" href="#">{{ _('¿En qué se gasta?') }}</a>
       </li>
-      <li role="presentation" class="{{ 'active' if not full_breakdown }}">
+      <li class="{{ 'active' if not full_breakdown }}">
         <a id="expense" href="#">{{ _('¿Cómo se gasta?') }}</a>
       </li>
       {% else %}
-      <li role="presentation" class="{{ 'active' if show_side!='income' }}">
+      <li class="{{ 'active' if show_side!='income' }}">
         <a id="expense" href="#">{{ _('Gastos') }}</a>
       </li>
       {% endif %}
-      <li role="presentation" class="{{ 'active' if show_side=='income' }}">
+      <li class="{{ 'active' if show_side=='income' }}">
         <a id="income" href="#">{{ _('Ingresos') }}</a>
       </li>
     </ul>
@@ -47,8 +49,6 @@
   <!-- Policies Content -->
   <div class="policies-content">
     <div class="container">
-
-      <h3 class="page-title"></h3>
 
       <!-- Policies Graph -->
       <div class="policies-graph">
@@ -194,7 +194,7 @@
       // Update labels and show/hide totals plus download links based on view
       var executionLabelPostfix = getExecutionTotalLabel(budgetStatuses[uiState.year], budgetStatusLabels);
       if ( uiState.view == 'fexpense' ) {
-        $("h3.page-title").text('{{ _("Gastos (por programa)") }}');
+        $(".policies-title").text('{{ _("Gastos (por programa)") }}');
         if ( includeFinancialChapters ) {
           $("#main-total .main-label").html('{{ _("Total gastos") }}'+executionLabelPostfix);
         } else {
@@ -206,14 +206,14 @@
         $("#expense-downloads").hide();
 
       } else if ( uiState.view == 'income' ) {
-        $("h3.page-title").text('{{ _("Ingresos") }}');
+        $(".policies-title").text('{{ _("Ingresos") }}');
         $("#main-total .main-label").html('{{ _("Total ingresos") }}'+executionLabelPostfix);
         $("#income-downloads").show();
         $("#fexpense-downloads").hide();
         $("#expense-downloads").hide();
 
       } else {
-        $("h3.page-title").text('{{ _("Gastos") }}');
+        $(".policies-title").text('{{ _("Gastos") }}');
         $("#main-total .main-label").html('{{ _("Total gastos") }}'+executionLabelPostfix);
         $("#income-downloads").hide();
         $("#fexpense-downloads").hide();

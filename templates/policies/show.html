@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% from 'shared/breakdown_tab.html' import render_tab as render_tab %}
+
 {% block extra_javascript %}
 <script src="{{ STATIC_URL }}javascripts/vis/d3.v3.min.js"></script>
 {% if show_treemap %}
@@ -10,101 +11,149 @@
 <script src="{{ STATIC_URL }}javascripts/vis/budget-stacked-graph.js"></script>
 {% endif %}
 {% endblock %}
+
 {% block content %}
-{% if programme %}
-<p class="history-back">
-  <a href="{% url 'budget_app.views.policies_show' programme.policy, policy.slug() %}" id="policy-name-link">
-    &larr; {{ descriptions['functional'].get(programme.policy) }}
-  </a>
-</p>
-<h1 class="page-title">{{ name }}</h1>
-{% else %}
-<p class="history-back">
-  <a href="{{ url(show_entity_url, entity.slug) if entity else url('budget_app.views.policies') }}">&larr; {{ _('Volver a Políticas') }}</a>
-</p>
-<h1 class="page-title">{{ entity.name+': ' if entity }}{{ name }}</h1>
-{% endif %}
 
-<section role="region" class="policy-breakdown tab-system">
-  <h1 class="visuallyhidden">{{ _('Programas, entidades y conceptos') }}</h1>
+<!-- Politicas Detalle -->
+<section class="policy-breakdown" role="region">
 
-  <nav role="navigation" class="tab-menu">
-    <h2 class="visuallyhidden">{{ _('Menú de programas, entidades y conceptos') }}</h2>
-    <ul id="tabs">
-{% if full_breakdown %}
-  {% if programme is not defined and show_side != 'income' %}
-      <li class="current"><a href="#tab-functional">{{ _(tab_titles['functional']) }}</a></li>
-      <li><a href="#tab-economic">{{ _(tab_titles['economic']) }}</a></li>
-  {% else %}
-      <li class="current"><a href="#tab-economic">{{ _(tab_titles['economic']) }}</a></li>
-  {% endif %}
-  {% if show_funding_tab %}
-      <li><a href="#tab-funding">{{ tab_titles['funding'] }}</a></li>
-  {% endif %}
-  {% if show_institutional_tab %}
-      <li><a href="#tab-institutional">{{ _(tab_titles['institutional']) }}</a></li>
-  {% endif %}
-{% else %}
-  {% if policy_uid %}
-      <li class="current"><a href="#tab-functional">{{ _(tab_titles['functional']) }}</a></li>
-  {% else %}
-      <li class="current"><a href="#tab-economic">{{ _(tab_titles['economic']) }}</a></li>
-  {% endif %}
-{% endif %}
+  <!-- Politicas Header -->
+  <div class="policies-header">
+
+    <div class="container">
+      {% if programme %}
+      <p class="history-back">
+        <a href="{% url 'budget_app.views.policies_show' programme.policy, policy.slug() %}" id="policy-name-link">
+          &larr; {{ descriptions['functional'].get(programme.policy) }}
+        </a>
+      </p>
+      <h2 class="page-title">{{ name }}</h2>
+      {% else %}
+      <p class="history-back">
+        <a href="{{ url(show_entity_url, entity.slug) if entity else url('budget_app.views.policies') }}">&larr; {{ _('Volver a Políticas') }}</a>
+      </p>
+      <h2 class="page-title">{{ entity.name+': ' if entity }}{{ name }}</h2>
+      {% endif %}
+
+      <!-- TODO!!! Check if we need this lines -->
+      <h2 class="hidden">{{ _('Programas, entidades y conceptos') }}</h2>
+      <h2 class="hidden">{{ _('Menú de programas, entidades y conceptos') }}</h2>
+    </div>
+
+    <ul id="tabs" class="nav nav-tabs nav-tabs-centered" role="tablist">
+    {% if full_breakdown %}
+      {% if programme is not defined and show_side != 'income' %}
+      <li class="active">
+        <a href="#tab-functional">{{ _(tab_titles['functional']) }}</a>
+      </li>
+      <li>
+        <a href="#tab-economic">{{ _(tab_titles['economic']) }}</a>
+      </li>
+      {% else %}
+      <li class="active">
+        <a href="#tab-economic">{{ _(tab_titles['economic']) }}</a>
+      </li>
+      {% endif %}
+      {% if show_funding_tab %}
+      <li>
+        <a href="#tab-funding">{{ tab_titles['funding'] }}</a>
+      </li>
+      {% endif %}
+      {% if show_institutional_tab %}
+      <li>
+        <a href="#tab-institutional">{{ _(tab_titles['institutional']) }}</a>
+      </li>
+      {% endif %}
+    {% else %}
+      {% if policy_uid %}
+      <li class="active">
+        <a href="#tab-functional">{{ _(tab_titles['functional']) }}</a>
+      </li>
+      {% else %}
+      <li class="active">
+        <a href="#tab-economic">{{ _(tab_titles['economic']) }}</a>
+      </li>
+      {% endif %}
+    {% endif %}
     </ul>
-  </nav>
-
-  <div class="tab-contents">
-{% if full_breakdown %}
-  {% if programme is not defined and show_side != 'income' %}
-    {{ render_tab(_(tab_titles['functional']), 'functional', csv_type, csv_id, 'current') }} 
-    {{ render_tab(_(tab_titles['economic']), 'economic', csv_type, csv_id, 'visuallyhidden') }}
-  {% else %}
-    {{ render_tab(_(tab_titles['economic']), 'economic', csv_type, csv_id, 'current') }} 
-  {% endif %}
-  {% if show_funding_tab %}
-    {{ render_tab(tab_titles['funding'], 'funding', csv_type, csv_id, 'visuallyhidden') }} 
-  {% endif %}
-  {% if show_institutional_tab %}
-    {{ render_tab(_(tab_titles['institutional']), 'institutional', csv_type, csv_id, 'visuallyhidden') }} 
-  {% endif %}
-{% else %}
-    {# The download links for small entities are too cumbersome to calculate in the macro #}
-  {% if policy_uid %}
-    {% set download_view_name = 'budget_app.views.entity_article_fexpenses' %}
-    {{ render_tab(_(tab_titles['functional']), 
-                  'functional', 
-                  csv_type, 
-                  csv_id, 
-                  'current', 
-                  csv_link=url(download_view_name, level, entity.slug, csv_id, 'csv'),
-                  xls_link=url(download_view_name, level, entity.slug, csv_id, 'xls') ) }} 
-  {% else %}
-    {% set download_view_name = 'budget_app.views.entity_article_expenses' if show_side=='expense' 
-                                else 'budget_app.views.entity_article_income'%}
-    {{ render_tab(_(tab_titles['economic']), 
-                  'economic', 
-                  csv_type, 
-                  csv_id, 
-                  'current', 
-                  csv_link=url(download_view_name, level, entity.slug, csv_id, 'csv'),
-                  xls_link=url(download_view_name, level, entity.slug, csv_id, 'xls') ) }} 
-  {% endif %}
-{% endif %}
   </div>
-  {% include 'shared/social_sharing.html' %}
+
+  <!-- Policies Content -->
+  <div class="policies-content">
+    <div class="container tab-content">
+
+  {% if full_breakdown %}
+    {% if programme is not defined and show_side != 'income' %}
+      {{ render_tab(_(tab_titles['functional']), 'functional', csv_type, csv_id, 'active') }} 
+      {{ render_tab(_(tab_titles['economic']), 'economic', csv_type, csv_id, '') }}
+    {% else %}
+      {{ render_tab(_(tab_titles['economic']), 'economic', csv_type, csv_id, 'active') }} 
+    {% endif %}
+    {% if show_funding_tab %}
+      {{ render_tab(tab_titles['funding'], 'funding', csv_type, csv_id, '') }} 
+    {% endif %}
+    {% if show_institutional_tab %}
+      {{ render_tab(_(tab_titles['institutional']), 'institutional', csv_type, csv_id, '') }} 
+    {% endif %}
+  {% else %}
+      {# The download links for small entities are too cumbersome to calculate in the macro #}
+    {% if policy_uid %}
+      {% set download_view_name = 'budget_app.views.entity_article_fexpenses' %}
+      {{ render_tab(_(tab_titles['functional']), 
+                    'functional', 
+                    csv_type, 
+                    csv_id, 
+                    'active', 
+                    csv_link=url(download_view_name, level, entity.slug, csv_id, 'csv'),
+                    xls_link=url(download_view_name, level, entity.slug, csv_id, 'xls') ) }} 
+    {% else %}
+      {% set download_view_name = 'budget_app.views.entity_article_expenses' if show_side=='expense' 
+                                  else 'budget_app.views.entity_article_income'%}
+      {{ render_tab(_(tab_titles['economic']), 
+                    'economic', 
+                    csv_type, 
+                    csv_id, 
+                    'active', 
+                    csv_link=url(download_view_name, level, entity.slug, csv_id, 'csv'),
+                    xls_link=url(download_view_name, level, entity.slug, csv_id, 'xls') ) }} 
+    {% endif %}
+  {% endif %}
+    </div>
+  
+
+    {% include 'shared/social_sharing.html' %}
+  </div>
 </section>
+
+<!-- We need this markup in order to get uiState.view from getActiveButton() in grid_controls.js -->
+<ul id="btn-field" class="hidden">
+  <li class="{{ 'active' if show_side=='income' }}">
+    <a id="income">{{ _('Ingresos') }}</a>
+  </li>
+{% if display_functional_view %}
+  <li class="{{ 'active' if not full_breakdown }}">
+    <a id="expense">{{ _('¿Cómo se gasta?') }}</a>
+  </li>
+  <li class="{{ 'active' if full_breakdown }}">
+    <a id="fexpense">{{ _('¿En qué se gasta?') }}</a>
+  </li>
+{% else %}
+  <li class="{{ 'active' if show_side!='income' }}">
+    <a id="expense">{{ _('Gastos') }}</a>
+  </li>
+{% endif %}
+</ul>
 
 <!-- 
   We render the control panel here initially, and move it to the active tab at run-time.
   Having multiple control panels would mean having to sincronize them, messy.
 -->
-<div class="visuallyhidden">
+<div class="hidden">
 {% include 'shared/data_controllers.html' %}
 </div>
 
 <!-- Same story with the totals -->
-<div class="visuallyhidden">
+<div class="hidden">
   {% include 'entities/totals.html' %}
 </div>
 
@@ -189,6 +238,8 @@
       var newUIState = getUIState();
       if ( uiState && sameUIState(uiState, newUIState) )  return;
       uiState = newUIState;
+
+      console.log('uiState', uiState);
 
       // Do work
       var columnDef = getColumnDefinition(uiState);
@@ -304,7 +355,6 @@
     setRedrawOnButtonGroupChange('.btn-group', redrawGrid);
     $('#select-format').change(redrawGrid);
     initSlider("#year-selection", {{ years|safe }}, redrawGrid, {{ latest_year }}, {{ years_scale|safe }});
-    $('#btn-field-wrapper').hide();
 
 
     //
@@ -399,37 +449,33 @@
     // TABS
     //
     // Activar tabs de Política
-    $('.policy-breakdown .tab-menu li a').click(function(){
-      $('.policy-breakdown .tab-menu li').removeClass('current');
-      $(this).parent().addClass('current');
-      var currentTab = $(this).attr('href');
-      $('.policy-breakdown .tab-content').removeClass('current').addClass("visuallyhidden");
-      $(currentTab).addClass('current').removeClass("visuallyhidden");
+    $('#tabs a').click(function (e) {
+      e.preventDefault()
+      $(this).tab('show');
 
       // Callback to do some initialization (grid, controllers...) on tab switch
       onTabSwitch();
-
-      return false;
     });
 
+
     function onTabSwitch() {
-      var currentTab = $(".policy-breakdown .tab-content.current");
+      var currentTab = $(".policy-breakdown .tab-pane.active");
 
       // XXX: This shouldn't be necessary, but there seems to be a bug in Chrome 38 (not 39 afaik):
       // if we hide a tab all its elements should be hidden too, but recently, and only in Chrome,
       // when switching tabs, we sometimes end up with traces of the previous grid. So we go one step
       // further and hide the non-active grids when we switch a tab.
       $('div.table-grid').hide();
-      currentTab.children('div.table-grid').show();
+      currentTab.find('.table-grid').show();
 
       // SlickGrid can't be initialized in a tab that is not visible, so we set explicitInitialization
       // to true, and tell the grid to initialize itself when the time comes, i.e. when the tab is visible
-      var currentGrid = currentTab.children('div.table-grid').data('grid');
+      var currentGrid = currentTab.find('.table-grid').data('grid');
       if ( currentGrid != undefined )
         currentGrid.init();
 
       // Similar story for the charts
-      var currentChart = currentTab.children('.chart-container').data('chart');
+      var currentChart = currentTab.find('.chart-container').data('chart');
       if ( currentChart != undefined )
 {% if show_treemap %}
         currentChart.updateTreemap(getUIState());

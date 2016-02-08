@@ -64,7 +64,7 @@
 
 // Budgets Data Panel
 .budget-data{
-  margin-top: 2*$grid-gutter-width;
+  margin-top: $grid-gutter-width;
   padding-bottom: $grid-gutter-width;
   background: mix( $data-panel-color, white, 8% );
 
