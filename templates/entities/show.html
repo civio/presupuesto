@@ -44,22 +44,6 @@
     </ul>
   </div>
 
-  <!--
-  <nav role="navigation" class="tab-menu">
-    <div id="btn-field-wrapper">
-      <div id="btn-field" class="btn-group">
-        <button class="btn {{ 'active' if show_side=='income' }}" id="income">{{ _('Ingresos') }}</button>
-    {% if display_functional_view %}
-        <button class="btn {{ 'active' if not full_breakdown }}" id="expense">{{ _('¿Cómo se gasta?') }}</button>
-        <button class="btn {{ 'active' if full_breakdown }}" id="fexpense">{{ _('¿En qué se gasta?') }}</button>
-    {% else %}
-        <button class="btn {{ 'active' if show_side!='income' }}" id="expense">{{ _('Gastos') }}</button>
-    {% endif %}
-      </div>
-    </div>
-  </nav>
-  -->
-
   <!-- Policies Content -->
   <div class="policies-content">
     <div class="container">
@@ -422,7 +406,7 @@
 {% endif %}
 
     // Set up controls
-    setRedrawOnButtonGroupChange('#btn-field', redraw);
+    setRedrawOnTabsChange('#btn-field', redraw);
     $('#select-format').change(redraw);
     $('#expenseChartContainer').bind('policy-selected', onEconomicExpenseTreemapClick);
     $('#fexpenseChartContainer').bind('policy-selected', onFunctionalExpenseTreemapClick);

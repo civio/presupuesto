@@ -1,16 +1,25 @@
 // Helper methods for handling controls related to data displays
 
+function setRedrawOnTabsChange(container, callback) {
+  $(container+' a').click(function(event) {
+    event.preventDefault();
+    $(container+' .active').removeClass('active');
+    $(event.target).blur().parent().addClass('active');
+    callback();
+  });
+}
+
 function setRedrawOnButtonGroupChange(selector, callback) {
-  $('.btn-group').click(function(event) {
+  $(selector).click(function(event) {
+    event.preventDefault();
     $(event.target).siblings().removeClass('active');
     $(event.target).addClass('active').blur();
     callback();
-    event.preventDefault();
   });
 }
 
 function getActiveButton(selector) {
-  var button = $(selector+' > .btn.active')[0];
+  var button = $(selector+' .active a')[0];
   return button==undefined ? undefined : button.id;
 }
 
