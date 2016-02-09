@@ -1,25 +1,33 @@
 {% macro render_pagination_controls(items, query_string) %}
 {% if items.has_other_pages() %}
-<div class="pagination">
-  {% if items.has_previous() %}
-    <a class="previous_page" rel="prev" href="?{{ query_string|escape }}page={{ items.previous_page_number() }}">{{ _('Anterior') }}</a>
-  {% else %}
-    <span class="previous_page disabled">{{ _('Anterior') }}</a>
-  {% endif %}
 
-  {% for n in items.paginator.page_range %}
-    {% if n == items.number %}
-      <em class="current">{{ n }}</em>
+<nav class="pagination-container">
+  <ul class="pagination">
+    <li>
+    {% if items.has_previous() %}
+      <a rel="prev" aria-label="Previous" href="?{{ query_string|escape }}page={{ items.previous_page_number() }}"><span aria-hidden="true">&laquo;</span> {{ _('Anterior') }}</a>
     {% else %}
-      <a href="?{{ query_string|escape }}page={{n}}" rel="next">{{ n }}</a>
+      <span class="disabled"><span aria-hidden="true">&laquo;</span> {{ _('Anterior') }}</span>
     {% endif %}
-  {% endfor %}
+    </li>
 
-  {% if items.has_next() %}
-    <a class="next_page" rel="next" href="?{{ query_string|escape }}page={{ items.next_page_number() }}">{{ _('Siguiente') }}</a>
-  {% else %}
-    <span class="next_page disabled">{{ _('Siguiente') }}</a>
-  {% endif %}
-</div>
+    {% for n in items.paginator.page_range %}
+      {% if n == items.number %}
+        <li class="active"><a href="#">{{ n }}</a></li>
+      {% else %}
+        <li><a href="?{{ query_string|escape }}page={{n}}">{{ n }}</a></li>
+      {% endif %}
+    {% endfor %}
+
+    <li>
+    {% if items.has_next() %}
+      <a rel="next" aria-label="Next" href="?{{ query_string|escape }}page={{ items.next_page_number() }}"><span aria-hidden="true">&raquo;</span> {{ _('Siguiente') }}</a>
+    {% else %}
+      <span class="disabled"><span aria-hidden="true">&raquo;</span> {{ _('Siguiente') }}</a>
+    {% endif %}
+    </li>
+  </ul>
+</nav>
+
 {% endif %}
 {% endmacro %}
