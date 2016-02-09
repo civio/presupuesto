@@ -30,6 +30,12 @@ import xlwt
 #
 # ENTITY BREAKDOWNS
 #
+
+GENERATORS = {
+    'csv': CSVGenerator,
+    'xls': XLSGenerator
+}
+
 def write_entity_functional_breakdown(c, writer):
     writer.writerow(['#Año', 'Id Política', 'Nombre Política', 'Id Programa', 'Nombre Programa', 'Presupuesto Gasto', 'Gasto Real'])
     for year in set(c['functional_breakdown'].years.values()):
@@ -292,7 +298,8 @@ class XLSGenerator:
         return response
 
 def _generator(filename, format, content_generator):
-    if format == 'csv':
-        return CSVGenerator('%s.%s' % (filename, format), content_generator)
-    else:
-        return XLSGenerator('%s.%s' % (filename, format), content_generator)
+    try:
+        return GENERATORS[format]('%s.%s' % (filename, format), content_generator)
+    except KeyError as e:
+        raise ValueError("Provided format is not valid: {}. valid values are [csv, xls]".format(format))
+
