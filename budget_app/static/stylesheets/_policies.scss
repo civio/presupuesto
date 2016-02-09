@@ -13,32 +13,40 @@
   .nav-tabs{
     border-color: $policies-tabs-border-color;
 
-    > li > a{
-      color: darken( $policies-tabs-border-color, 25% );
-      font-size: 1.25em;
-      padding-left: $grid-gutter-width/3;
-      padding-right: $grid-gutter-width/3;
+    > li {
+      display: block;
+      margin: 0 $grid-gutter-width/2 $grid-gutter-width/6;
 
-      &:hover{
-        border-bottom-color: $policies-tabs-border-color;
-        background: $policies-bg;
+      > a{
+        color: darken( $policies-tabs-border-color, 25% );
+        font-size: 1.25em;
+        padding-left: $grid-gutter-width/3;
+        padding-right: $grid-gutter-width/3;
+        border: 1px solid $policies-tabs-border-color;
+        border-radius: $nav-pills-border-radius;
+
+        &:hover{
+          border-bottom-color: $policies-tabs-border-color;
+          background: $policies-bg;
+        }
       }
-    }
 
-    > li.active > a{
-      border-color: $policies-tabs-border-color;
-      border-bottom-color: transparent;
-      background: $policies-bg;
-      font-weight: bold;
+      &.active > a{
+        background: $policies-bg;
+        font-weight: bold;
+
+        &:hover{
+          border-color: $policies-tabs-border-color;
+        }
+      }
     }
   }
 
   // Back Button
   .history-back{
-    position: absolute;
-    bottom: -10px - $grid-gutter-width;
-    left: $grid-gutter-width/2;
+    margin-top: $grid-gutter-width/2;
     margin-bottom: 0;
+    text-align: center;
 
     a{
       display: inline-block;
@@ -47,13 +55,13 @@
       font-size: 0.875em;
       text-transform: uppercase;
       font-weight: bold;
-      border-left: 2px solid $brand-primary;
-      background: mix( $brand-primary, white, 20% );
+      border-left: 2px solid $brand-secondary;
+      background: mix( $brand-secondary, white, 20% );
       @include transition( background 0.3s ease-out );
 
       &:hover{
         border-left-width: 3px;
-        background: mix( $brand-primary, white, 50% );
+        background: mix( $brand-secondary, white, 50% );
         text-decoration: none;
       }
     }
@@ -85,6 +93,7 @@
   margin: $grid-gutter-width 0 $grid-gutter-width/2;
 }
 
+// Policies Panel Downloads
 .panel-downloads{
   @extend .panel-default;
   border-color: $brand-secondary;
@@ -114,9 +123,39 @@
 @media (min-width: $screen-sm-min) {
 
   .policies-header{
-    .nav-tabs > li > a{
-      padding-left: $grid-gutter-width/2;
-      padding-right: $grid-gutter-width/2;
+
+    .nav-tabs > li{
+      display: inline-block;
+      margin: 0 0 -1px;
+
+      > a{
+        padding-left: $grid-gutter-width/2;
+        padding-right: $grid-gutter-width/2;
+        border-color: transparent;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+
+        &:hover{
+          border-bottom-color: $policies-tabs-border-color;
+        }
+      }
+
+       &.active > a{
+        border-color: $policies-tabs-border-color;
+        border-bottom-color: transparent;
+
+        &:hover{
+          border-bottom-color: transparent;
+        }
+      }
+    }
+
+    .history-back{
+      position: absolute;
+      bottom: -10px - $grid-gutter-width;
+      left: $grid-gutter-width/2;
+      margin: 0;
+      text-align: left;
     }
   }
   
