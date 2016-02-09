@@ -2,7 +2,7 @@ from local_settings import ENV
 from django.conf import settings
 
 def analytics_processor(request):
-    return { 'analytics_code': ENV.get('GA_CODE', 'UA-36118896-1') }
+    return { 'analytics_code': ENV.get('GA_CODE', '') }
 
 def cookies_url_processor(request):
     return { 'cookies_url': False if not hasattr(settings, 'COOKIES_URL') else settings.COOKIES_URL }
