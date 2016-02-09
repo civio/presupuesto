@@ -95,6 +95,7 @@
 
 // Policies Panel Downloads
 .panel-downloads{
+  @extend .panel;
   @extend .panel-default;
   border-color: $brand-secondary;
   background: mix( $brand-secondary, white, 30% );
