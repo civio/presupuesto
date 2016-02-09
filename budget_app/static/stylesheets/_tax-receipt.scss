@@ -21,15 +21,16 @@
   .form-user-incomings{
     @extend .panel;
     padding: 0 $grid-gutter-width;
-    margin: $grid-gutter-width 0;
+    margin: $grid-gutter-width 0 0;
     background: $page-header-bg;
 
     h4{
-      font-size: 1.375em;
+      color: darken( $brand-secondary, 10% );
+      font-size: 1.5em;
       text-align: center;
       margin: $grid-gutter-width/2 0;
       padding: $grid-gutter-width/2 0 $grid-gutter-width;
-      border-bottom: 1px solid mix($brand-secondary, white, 25%);
+      border-bottom: 1px solid mix($brand-secondary, white, 50%);
     }
 
     .row{
@@ -45,7 +46,8 @@
 
     .form-group{
       @extend .col-sm-6;
-      padding-left: 0;
+      padding: 0;
+      text-align: center;
     }
 
     label{
@@ -55,10 +57,10 @@
 
     .select-info{
       @extend .col-sm-6;
-      padding-right: 0;
       font-size: 1.125em;
-      text-align: right;
-      margin-top: $grid-gutter-width;
+      text-align: center;
+      padding: 0;
+      margin: $grid-gutter-width/2 0;
       line-height: $grid-gutter-width;
 
       span{
@@ -71,17 +73,51 @@
     @extend .panel;
     padding: $grid-gutter-width/2;
     margin: $grid-gutter-width 0;
-    font-size: 1.25em;
-    //border: 1px solid $brand-secondary;
+    font-size: 1.5em;
     text-align: center;
-    //color: mix( white, $brand-secondary, 95% );
-    //background: $brand-secondary;
-    //font-weight: 300;
+    border: 1px solid $brand-secondary;
+    background: $page-header-bg;
   }
 
   #footnote-receipt{
     font-size: 0.875em;
     text-align: center;
     margin: 0 $grid-gutter-width/2 1.5*$grid-gutter-width;
+  }
+}
+
+.tax-receipt-table-content{
+  padding-top: $grid-gutter-width;
+  background: $page-header-bg;
+
+  .tax-detail-intro{
+    font-size: 1.125em;
+    text-align: center;
+    margin-bottom: $grid-gutter-width;
+  }
+}
+
+
+@media (min-width: $screen-sm-min) {
+  
+  .tax-receipt-content{
+  
+    .form-user-incomings{
+
+      h4{
+        text-align: right;
+      }
+
+      .form-group{
+        padding-right: $grid-gutter-width/2;
+        text-align: left;
+      }
+
+      .select-info{
+        padding-left: $grid-gutter-width/2;
+        margin: $grid-gutter-width 0 0;
+        text-align: right;
+      }
+    }
   }
 }
