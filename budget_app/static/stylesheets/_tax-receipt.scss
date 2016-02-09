@@ -1,0 +1,87 @@
+.tax-receipt-header{
+  background: $page-header-bg;
+
+  .page-title{
+    margin: 1.5*$grid-gutter-width 0;
+  }
+
+  .lead{
+    text-align: center;
+    margin-bottom: $grid-gutter-width;
+  }
+}
+
+.tax-receipt-content{
+
+  .intro-text{
+    margin: $grid-gutter-width;
+    font-size: 1.125em;
+  }
+
+  .form-user-incomings{
+    @extend .panel;
+    padding: 0 $grid-gutter-width;
+    margin: $grid-gutter-width 0;
+    background: $page-header-bg;
+
+    h4{
+      font-size: 1.375em;
+      text-align: center;
+      margin: $grid-gutter-width/2 0;
+      padding: $grid-gutter-width/2 0 $grid-gutter-width;
+      border-bottom: 1px solid mix($brand-secondary, white, 25%);
+    }
+
+    .row{
+      border-bottom: 1px solid mix($brand-secondary, white, 25%);
+      margin-bottom: $grid-gutter-width/2;
+      margin-left: 0;
+      margin-right: 0;
+
+      &:last-child{
+        border-bottom: none;
+      }
+    }
+
+    .form-group{
+      @extend .col-sm-6;
+      padding-left: 0;
+    }
+
+    label{
+      margin-bottom: -2px + $grid-gutter-width/2;
+      line-height: $grid-gutter-width/2;
+    }
+
+    .select-info{
+      @extend .col-sm-6;
+      padding-right: 0;
+      font-size: 1.125em;
+      text-align: right;
+      margin-top: $grid-gutter-width;
+      line-height: $grid-gutter-width;
+
+      span{
+        font-weight: bold;
+      }
+    }
+  }
+
+  #tax-amount{
+    @extend .panel;
+    padding: $grid-gutter-width/2;
+    margin: $grid-gutter-width 0;
+    font-size: 1.25em;
+    //border: 1px solid $brand-secondary;
+    text-align: center;
+    //color: mix( white, $brand-secondary, 95% );
+    //background: $brand-secondary;
+    //font-weight: 300;
+  }
+
+  #footnote-receipt{
+    font-size: 0.875em;
+    text-align: center;
+    margin: 0 $grid-gutter-width/2 1.5*$grid-gutter-width;
+  }
+}
