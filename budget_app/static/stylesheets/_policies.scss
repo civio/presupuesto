@@ -1,5 +1,6 @@
 // Policies Header (Title + Tabs Menu)
 .policies-header{
+  background: $page-header-bg;
 
   .container{
     position: relative;
@@ -39,19 +40,12 @@
 // Policies Content
 .policies-content{
   padding-bottom: 1px;
-  background: $nav-tabs-bg;
-
-  .social-sharing{
-    margin-bottom: $grid-gutter-width;
-  }
-  .social-sharing-toolbox li a{
-    background-color: $brand-secondary; 
-  }
 }
 
 // Policies Graph
 .policies-graph{
   @extend .panel;
+  background: $page-header-bg;
   padding: $grid-gutter-width/2 $grid-gutter-width/2 0;
   margin: $grid-gutter-width 0 $grid-gutter-width/2;
 }

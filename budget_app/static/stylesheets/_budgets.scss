@@ -65,15 +65,10 @@
 // Budgets Data Panel
 .budget-data{
   margin-top: $grid-gutter-width;
-  padding-bottom: $grid-gutter-width;
   background: mix( $data-panel-color, white, 8% );
 
   .data-panel{
     margin-bottom: $grid-gutter-width/2;
-  }
-
-  .social-sharing-toolbox li a{
-    background-color: $data-panel-color;
   }
 }
 

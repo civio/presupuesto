@@ -1,5 +1,7 @@
 // Payments Header
 .payments-header{
+  background: $page-header-bg;
+
   .page-title{
     margin: 1.5*$grid-gutter-width 0;
   }
@@ -7,7 +9,6 @@
 
 // Payments Content
 .payments-content{
-  background: $nav-tabs-bg;
 
   > .container{
     max-width: 1010px;
@@ -25,12 +26,9 @@
   .totals-placeholder{
     margin-top: $grid-gutter-width;
     margin-bottom: $grid-gutter-width/2;
-  }
 
-  .social-sharing{
-    margin-bottom: $grid-gutter-width;
-  }
-  .social-sharing-toolbox li a{
-    background-color: $brand-secondary; 
+    .panel{
+      background: $page-header-bg;
+    }
   }
 }
