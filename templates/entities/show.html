@@ -194,7 +194,11 @@
       // Update labels and show/hide totals plus download links based on view
       var executionLabelPostfix = getExecutionTotalLabel(budgetStatuses[uiState.year], budgetStatusLabels);
       if ( uiState.view == 'fexpense' ) {
+<<<<<<< HEAD
         $(".policies-title").text('{{ _("Gastos (por programa)") }}');
+=======
+        $(".page-title").text("{{ entity.name|safe }}: "+'{{ _("Gastos (por programa)") }}');
+>>>>>>> master
         if ( includeFinancialChapters ) {
           $("#main-total .main-label").html('{{ _("Total gastos") }}'+executionLabelPostfix);
         } else {
@@ -206,14 +210,22 @@
         $("#expense-downloads").hide();
 
       } else if ( uiState.view == 'income' ) {
+<<<<<<< HEAD
         $(".policies-title").text('{{ _("Ingresos") }}');
+=======
+        $(".page-title").text("{{ entity.name|safe }}: "+'{{ _("Ingresos") }}');
+>>>>>>> master
         $("#main-total .main-label").html('{{ _("Total ingresos") }}'+executionLabelPostfix);
         $("#income-downloads").show();
         $("#fexpense-downloads").hide();
         $("#expense-downloads").hide();
 
       } else {
+<<<<<<< HEAD
         $(".policies-title").text('{{ _("Gastos") }}');
+=======
+        $(".page-title").text("{{ entity.name|safe }}: "+'{{ _("Gastos") }}');
+>>>>>>> master
         $("#main-total .main-label").html('{{ _("Total gastos") }}'+executionLabelPostfix);
         $("#income-downloads").hide();
         $("#fexpense-downloads").hide();
