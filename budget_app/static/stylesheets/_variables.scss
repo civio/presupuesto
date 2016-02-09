@@ -74,6 +74,13 @@ $footer-bg: $brand-primary;
 $search-form-bg: $brand-terciary;
 
 
+// Nav Tabs
+// --------------
+
+$nav-tabs-bg:            mix( $brand-secondary, white, 8% );
+$nav-tabs-border-color:  mix( $brand-secondary, white, 70% );
+
+
 // Budget Stream
 // --------------
 
@@ -98,12 +105,6 @@ $data-sources-color: $brand-terciary;
 $sankey-budget-color:     saturate( lighten( $brand-secondary, 12% ), 10% );                          // #1F77B4;
 $sankey-execution-color:  saturate( lighten( adjust-hue( $sankey-budget-color, 100% ), 10% ), 10% );  //#E377C2;
 
-
-// Policies Tabs
-// --------------
-
-$policies-bg:                 mix( $brand-secondary, white, 8% );
-$policies-tabs-border-color:  mix( $brand-secondary, white, 70% );
 
 /*
 

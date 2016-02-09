@@ -10,38 +10,6 @@
     padding: 1.5*$grid-gutter-width 0;
   }
 
-  .nav-tabs{
-    border-color: $policies-tabs-border-color;
-
-    > li {
-      display: block;
-      margin: 0 $grid-gutter-width/2 $grid-gutter-width/6;
-
-      > a{
-        color: darken( $policies-tabs-border-color, 25% );
-        font-size: 1.25em;
-        padding-left: $grid-gutter-width/3;
-        padding-right: $grid-gutter-width/3;
-        border: 1px solid $policies-tabs-border-color;
-        border-radius: $nav-pills-border-radius;
-
-        &:hover{
-          border-bottom-color: $policies-tabs-border-color;
-          background: $policies-bg;
-        }
-      }
-
-      &.active > a{
-        background: $policies-bg;
-        font-weight: bold;
-
-        &:hover{
-          border-color: $policies-tabs-border-color;
-        }
-      }
-    }
-  }
-
   // Back Button
   .history-back{
     margin-top: $grid-gutter-width/2;
@@ -71,12 +39,7 @@
 // Policies Content
 .policies-content{
   padding-bottom: 1px;
-  background: $policies-bg;
-
-  .policies-title{
-    @extend .page-title;
-    font-size: 2.25em;
-  }
+  background: $nav-tabs-bg;
 
   .social-sharing{
     margin-bottom: $grid-gutter-width;
@@ -124,32 +87,6 @@
 @media (min-width: $screen-sm-min) {
 
   .policies-header{
-
-    .nav-tabs > li{
-      display: inline-block;
-      margin: 0 0 -1px;
-
-      > a{
-        padding-left: $grid-gutter-width/2;
-        padding-right: $grid-gutter-width/2;
-        border-color: transparent;
-        border-bottom-right-radius: 0;
-        border-bottom-left-radius: 0;
-
-        &:hover{
-          border-bottom-color: $policies-tabs-border-color;
-        }
-      }
-
-       &.active > a{
-        border-color: $policies-tabs-border-color;
-        border-bottom-color: transparent;
-
-        &:hover{
-          border-bottom-color: transparent;
-        }
-      }
-    }
 
     .history-back{
       position: absolute;

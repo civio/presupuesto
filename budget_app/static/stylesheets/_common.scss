@@ -11,14 +11,11 @@ body{
   text-align: center;
 }
 
-// Nav Tabs Centered
-.nav-tabs-centered{
-  text-align: center;
-
-  > li{
-    float: none;
-    display: inline-block;
-  }
+// Lead
+.lead{
+  color: $gray;
+  font-size: 1.25em;
+  font-style: italic;
 }
 
 

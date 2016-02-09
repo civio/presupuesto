@@ -34,7 +34,7 @@ function initSlider(selector, years, callback, startValue, labels) {
       to: mostRecentYear + 0.01,
       step: 1,
       scale: labels || years,
-      format: { format: '####', locale: 'es' }, 
+      format: { format: '####', locale: 'es' },
       skin: "presus",
       callback: callback
     });
@@ -50,7 +50,7 @@ function getUIState() {
     view: getActiveButton('#btn-field'),
     format: $('#select-format').val(),
     year: $("#year-selection").val()
-  }
+  };
 }
 
 function sameUIState(a, b) {

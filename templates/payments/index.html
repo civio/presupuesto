@@ -1,42 +1,85 @@
 {% extends 'base.html' %}
 {% from 'shared/payment_tab.html' import render_tab as render_tab %}
 {% block content %}
-<h1 class="page-title">{{ _('Inversiones y pagos') }}</h1>
+<div class="container">
+  
+</div>
 
-{% include 'payments/payments_intro.html' %}
+<section class="payments-breakdown" role="region">
 
-<section role="region" class="payments-breakdown tab-system">
-  <h1 class="hidden">{{ _('Pagos e inversiones') }}</h1>
+  <!-- Payments Header -->
+  <div class="payments-header">
 
-  <div class="data-controllers">
-    <p class="title tcenter">{{ _('Elige año') }}</p>
-    <div class="layout-slider">
-      <input id="year-selection" type="slider" value="2015"/>
+    <div class="container">
+      <!-- TODO!!! We need this line? -->
+      <h1 class="hidden">{{ _('Pagos e inversiones') }}</h1>
+
+      <h2 class="page-title">{{ _('Inversiones y pagos') }}</h2>
+      
+    </div>
+
+    <ul id="tabs" class="nav nav-tabs nav-tabs-centered" role="tablist">
+      <li class="active">
+        <a href="#tab-area">{{ _('Por área') }}</a>
+      </li>
+      <li>
+        <a href="#tab-payee">{{ _('Por beneficiario') }}</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="payments-content">
+    <div class="container tab-content">
+      
+      {% include 'payments/payments_intro.html' %}
+      
+      <div class="data-controllers">
+        <p class="title tcenter">{{ _('Elige año') }}</p>
+        <div class="layout-slider">
+          <input id="year-selection" type="slider" value="2015"/>
+        </div>
+      </div>
+
+      {{ render_tab(_('Por área'), 'area', 'active') }}
+      {{ render_tab(_('Por beneficiario'), 'payee', '') }}
+
+      {% include 'shared/social_sharing.html' %}
     </div>
   </div>
-
-  <nav role="navigation" class="tab-menu">
-    <h2 class="hidden">{{ _('Menú de pagos e inversiones') }}</h2>
-    <ul id="tabs">
-      <li class="current"><a href="#tab-area">{{ _('Por área') }}</a></li>
-      <li><a href="#tab-payee">{{ _('Por beneficiario') }}</a></li>
-    </ul>
-  </nav>
-
-  <div class="tab-contents">
-    {{ render_tab(_('Por área'), 'area', 'current') }}
-    {{ render_tab(_('Por beneficiario'), 'payee', 'hidden') }}
-  </div>
-
-  {% include 'shared/social_sharing.html' %}
 </section>
+
+<!-- 
+  We need this markup in order to get uiState.view 
+  from getActiveButton() in grid_controls.js 
+-->
+<ul id="btn-field" class="hidden">
+  <li class="{{ 'active' if show_side=='income' }}">
+    <a id="income">{{ _('Ingresos') }}</a>
+  </li>
+{% if display_functional_view %}
+  <li class="{{ 'active' if not full_breakdown }}">
+    <a id="expense">{{ _('¿Cómo se gasta?') }}</a>
+  </li>
+  <li class="{{ 'active' if full_breakdown }}">
+    <a id="fexpense">{{ _('¿En qué se gasta?') }}</a>
+  </li>
+{% else %}
+  <li class="{{ 'active' if show_side!='income' }}">
+    <a id="expense">{{ _('Gastos') }}</a>
+  </li>
+{% endif %}
+</ul>
 
 <!-- 
   We render the totals here initially, and move it to the active tab at run-time.
 -->
 <div class="hidden">
-  <div id="totals_panel">
-    <p class="total"><span>{{ _('Total de inversiones y pagos') }}</span> <b id="total"></b></p>
+  <div id="totals_panel" class="data-panel">
+    <div class="panel">
+      <div class="panel-content">
+        <p class="total"><span>{{ _('Total de inversiones y pagos') }}</span> <b id="total"></b></p>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -66,6 +109,7 @@
     // Do all the hard work of drawing the grids
     function redrawGrid() {
       var uiState = getUIState();
+      console.log('uiState', uiState);
       var columnDef = getColumnDefinition(uiState);
 
       $("#payeeGrid").data('grid', createBudgetGrid( "#payeeGrid", 
@@ -118,25 +162,21 @@
     //
     // TABS
     //
-    $('.payments-breakdown .tab-menu li a').click(function(){
-      $('.payments-breakdown .tab-menu li').removeClass('current');
-      $(this).parent().addClass('current');
-      var currentTab = $(this).attr('href');
-      $('.payments-breakdown .tab-content').removeClass('current').addClass("hidden");
-      $(currentTab).addClass('current').removeClass("hidden");
+    $('#tabs a').click(function (e) {
+      e.preventDefault()
+      $(this).tab('show');
 
       // Callback to do some initialization (grid, controllers...) on tab switch
       onTabSwitch();
-
-      return false;
     });
 
+
     function onTabSwitch() {
-      var currentTab = $(".payments-breakdown .tab-content.current");
+      var currentTab = $(".payments-breakdown .tab-pane.active");
 
       // SlickGrid can't be initialized in a tab that is not visible, so we set explicitInitialization
       // to true, and tell the grid to initialize itself when the time comes, i.e. when the tab is visible
-      var currentGrid = currentTab.children('div.table-grid').data('grid');
+      var currentGrid = currentTab.find('.table-grid').data('grid');
       if ( currentGrid != undefined )
         currentGrid.init();
 
