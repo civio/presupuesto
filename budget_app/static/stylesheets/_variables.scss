@@ -106,6 +106,26 @@ $sankey-budget-color:     saturate( lighten( $brand-secondary, 12% ), 10% );    
 $sankey-execution-color:  saturate( lighten( adjust-hue( $sankey-budget-color, 100% ), 10% ), 10% );  //#E377C2;
 
 
+// Pagination
+// --------------
+
+$pagination-color:                     $brand-secondary;
+$pagination-bg:                        #fff !default;
+$pagination-border:                    #ddd !default;
+
+$pagination-hover-color:               $brand-secondary;
+$pagination-hover-bg:                  $gray-lighter !default;
+$pagination-hover-border:              #ddd !default;
+
+$pagination-active-color:              #fff !default;
+$pagination-active-bg:                 $brand-secondary;
+$pagination-active-border:             $brand-secondary;
+
+$pagination-disabled-color:            $gray-light !default;
+$pagination-disabled-bg:               #fff !default;
+$pagination-disabled-border:           #ddd !default
+
+
 /*
 
 // Color: Harmony
