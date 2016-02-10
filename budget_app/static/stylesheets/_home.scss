@@ -81,18 +81,43 @@
         margin-bottom: $grid-gutter-width;
         border: none;
         text-align: center;
+
+        .icon{
+          color: $brand-secondary;
+          height: 64px;
+          margin: $grid-gutter-width/2 0;
+        }
+
+        h3{
+          font-size: 2em;
+          margin: $grid-gutter-width/2 0 $grid-gutter-width/3;
+        }
+
+        .desc{
+          color: $gray;
+          font-size: 1.125em;
+          margin: 0 auto $grid-gutter-width/2;
+          max-width: 360px;
+        }
+
+        .btn{
+          margin: $grid-gutter-width/3 0;
+
+          .icon-plus:before {
+            position: relative;
+            top: 1px;
+            margin-right: $grid-gutter-width/3; 
+          }
+        }
+
+        &:hover{
+
+        }
       }
 
-      h3{
-        font-size: 2;
-        margin: $grid-gutter-width/2 0;
-      }
-
-      .desc{
-        color: $gray;
-        font-size: 1.125em;
-        margin-bottom: $grid-gutter-width/2;
-      }
+      .option-payments .icon{
+        font-size: 0.875em;
+      }      
     }
   }
 

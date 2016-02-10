@@ -40,7 +40,7 @@
           <div data-icon="B" aria-hidden="true" class="icon mega"></div>
           <h3>{{ _('Visión global') }}</h3>
           <p class="desc">{{ _('Para que tengas una idea general de los ingresos y gastos del Gobierno de Aragón') }}.</p>
-          <p><a href="{{ url('budget_app.views.budgets') }}" class="btn btn-default btn-primary magenta icon-plus">{{ _('Visión global') }}</a></p>
+          <a href="{{ url('budget_app.views.budgets') }}" class="btn btn-default btn-primary magenta icon-plus">{{ _('Visión global') }}</a>
         </div>
       </div>
 
@@ -56,7 +56,7 @@
               <li><a href="{{ url('budget_app.views.towns') }}">{{ _('Municipios') }}</a></li>
             </ul>
           {% endif %}
-          <p><a href="{{ url('budget_app.views.policies') }}" class="btn btn-default btn-primary blue icon-plus">{{ _('Políticas') }}</a></p>
+          <a href="{{ url('budget_app.views.policies') }}" class="btn btn-default btn-primary blue icon-plus">{{ _('Políticas') }}</a>
         </div>
       </div>
 
@@ -67,7 +67,7 @@
           <div data-icon="&#xe604;" aria-hidden="true" class="icon mega"></div>
           <h3>{{ _('Pagos e inversiones') }}</h3>
           <p class="desc">{{ _('Te mostramos en detalle todos las facturas y pagos efectuados por el Ayuntamiento') }}.</p>
-          <p><a href="{{ url('budget_app.views.payments') }}" class="btn btn-default btn-primary green icon-plus">{{ _('Pagos e inversiones') }}</a></p>
+          <a href="{{ url('budget_app.views.payments') }}" class="btn btn-default btn-primary green icon-plus">{{ _('Pagos e inversiones') }}</a>
         </div>
       </div>
       {% endif %}
@@ -79,7 +79,7 @@
           <div data-icon="&#x63;" aria-hidden="true" class="icon mega"></div>
           <h3>{{ _('¿Y qué aporto yo?') }}</h3>
           <p class="desc">{{ _('Te contamos en qué se invierte el dinero que recaudamos de tus impuestos') }}.</p>
-          <p><a href="{{ url('budget_app.views.tax_receipt') }}" class="btn btn-default btn-primary green icon-plus">{{ _('Lo que tú aportas') }}</a></p>
+          <a href="{{ url('budget_app.views.tax_receipt') }}" class="btn btn-default btn-primary green icon-plus">{{ _('Lo que tú aportas') }}</a>
         </div>
       </div>
       {% endif %}
