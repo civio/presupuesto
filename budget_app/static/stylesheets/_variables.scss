@@ -110,20 +110,10 @@ $sankey-execution-color:  saturate( lighten( adjust-hue( $sankey-budget-color, 1
 // --------------
 
 $pagination-color:                     $brand-secondary;
-$pagination-bg:                        #fff !default;
-$pagination-border:                    #ddd !default;
-
 $pagination-hover-color:               $brand-secondary;
-$pagination-hover-bg:                  $gray-lighter !default;
-$pagination-hover-border:              #ddd !default;
 
-$pagination-active-color:              #fff !default;
 $pagination-active-bg:                 $brand-secondary;
 $pagination-active-border:             $brand-secondary;
-
-$pagination-disabled-color:            $gray-light !default;
-$pagination-disabled-bg:               #fff !default;
-$pagination-disabled-border:           #ddd !default
 
 
 /*
