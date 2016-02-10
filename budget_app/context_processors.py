@@ -21,3 +21,10 @@ def main_entity_processor(request):
       'main_entity_legal_url':     hasattr(settings, 'MAIN_ENTITY_LEGAL_URL') and settings.MAIN_ENTITY_LEGAL_URL,
       'main_entity_privacy_url':   hasattr(settings, 'MAIN_ENTITY_PRIVACY_URL') and settings.MAIN_ENTITY_PRIVACY_URL
     }
+
+def data_sources_processor(request):
+    return {
+      'data_source_budget':        hasattr(settings, 'DATA_SOURCE_BUDGET') and settings.DATA_SOURCE_BUDGET,
+      'data_source_population':    hasattr(settings, 'DATA_SOURCE_POPULATION') and settings.DATA_SOURCE_POPULATION,
+      'data_source_inflation':     hasattr(settings, 'DATA_SOURCE_INFLATION') and settings.DATA_SOURCE_INFLATION
+    }
