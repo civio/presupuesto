@@ -3,10 +3,12 @@ function BudgetSummary(selector, breakdown, areaNames, colorScale, field, year) 
   // Group breakdown by area
   var areaAmounts = {};
   var totalAmount = 0;
-  for (var i in breakdown.sub) {
+  var i, area;
+
+  for (i in breakdown.sub) {
     var policyAmount = breakdown.sub[i][field][year];
-    if ( policyAmount != undefined ) {
-      var area = i[0];
+    if ( policyAmount !== undefined ) {
+      area = i[0];
       areaAmounts[area] = (areaAmounts[area]||0) + policyAmount;
       totalAmount = totalAmount + policyAmount;
     }
@@ -14,32 +16,37 @@ function BudgetSummary(selector, breakdown, areaNames, colorScale, field, year) 
 
   // Sort areas
   var existingAreas = [];
-  for (var area in areaAmounts) existingAreas.push(area);
-  existingAreas.sort(function(a, b) { return areaAmounts[b] - areaAmounts[a] });
+  for (area in areaAmounts) existingAreas.push(area);
+  existingAreas.sort(function(a, b) { return areaAmounts[b] - areaAmounts[a]; });
 
   // Render
-  $(selector).empty();
-  $(selector).append( '<table style="table-layout: fixed; border-collapse: separate; margin-bottom: 1em">'+
-                        '<tr class="budget-summary-top"></tr>'+
-                        '<tr class="budget-summary-bottom"></tr>'+
-                      '</table>');
-  var topRow = $(selector+" tr.budget-summary-top");
-  var bottomRow = $(selector+" tr.budget-summary-bottom");
+  var $bar = $('<div class="budget-summary"></div>');
+  $(selector).empty().append( $bar );
 
-  for (var i = 0; i < existingAreas.length; i++) {
-    var area = existingAreas[i];
+  for (i = 0; i < existingAreas.length; i++) {
+    area = existingAreas[i];
     var percentage = 100 * areaAmounts[area] / totalAmount;
-    var label = (percentage > 4 ) ? (areaNames[area]+' ('+formatDecimal(percentage, 1)+'%)') : '';
-    if ( i%2 == 0 ) {
-      topRow.append('<td style="width: '+percentage+
-                    '%; border-bottom-style: solid; border-bottom-color: '+colorScale[Number(area)]+
-                    '; border-bottom-width: 10px; vertical-align: bottom;">'+label+'</td>');
-      bottomRow.append('<td></td>');
-    } else {
-      topRow.append('<td style="width: '+percentage+
-                    '%; border-bottom-style: solid; border-bottom-color: '+colorScale[Number(area)]+
-                    '; border-bottom-width: 10px; "></td>');
-      bottomRow.append('<td>'+label+'</td>');
-    }
+    // Hide  Labels if area is small (< 6% width)
+    var label = (percentage >= 6 ) ? areaNames[area] : '';
+    var amountLabel = ( percentage >= 6 ) ? formatDecimal(percentage, 1)+'<small>%</small>' : '';
+    
+    $bar.append( '<div class="budget-summary-item" style="width:'+percentage+'%;">'+
+                  '<div class="budget-summary-bar" data-id="'+area+'" style="background-color: '+colorScale[Number(area)]+';">'+amountLabel+
+                  '</div><div class="budget-summary-label">'+label+'</div></div>');
   }
+
+  var $barItems = $bar.find('.budget-summary-item');
+  
+  // Hover styles
+  $barItems.find('.budget-summary-bar')
+    .mouseover(function(e){
+      $barItems.addClass('inactive');
+      $(this).parent().removeClass('inactive').addClass('active');
+      // Hover Treemap Chart related items
+      $( selector.replace('Summary', 'Chart') ).find('.cell:not(.cell-'+$(this).data('id')+')').addClass('out');
+    })
+    .mouseout(function(e){
+      $barItems.removeClass('inactive active');
+      $( selector.replace('Summary', 'Chart') ).find('.cell.out').removeClass('out');
+    });
 }

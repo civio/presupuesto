@@ -256,9 +256,9 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
 
     g.style("opacity",0)
       .append("rect")
-      .attr("class", "cell")
-      .attr("rx", '3')
-      .attr("ry", '3')
+      .attr("class", function(d){ return "cell cell-"+d.id.charAt(0); })
+      //.attr("rx", '3')
+      //.attr("ry", '3')
       .style("fill", function(d) { return colors(parseInt(d.id[0], 10)); })
       .on("mouseover", mover)
       .on("mouseout", mout)

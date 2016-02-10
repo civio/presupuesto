@@ -1,0 +1,58 @@
+// Budget Summary In Policies
+.budget-summary{
+  height: 20px;
+  margin: $grid-gutter-width/2 0;
+}
+
+.budget-summary-item{
+  float: left;
+  position: relative;
+  font-size: 0.875em;
+  color: white;
+  
+  .budget-summary-bar{
+    cursor: pointer;
+    height: 20px;
+    line-height: 20px;
+    text-indent: 5px;
+    border-right: 1px solid $page-header-bg;
+
+    small{
+      margin-left: 5px;
+    }
+  }
+
+  &:last-children .budget-summary-bar{
+    border-right: none;
+  }
+
+  .budget-summary-label{
+    position: absolute;
+    top: -20px;
+    left: 0;
+    color: $text-color;
+    height: 20px;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    visibility: visible;
+  }
+  
+  &.active{
+    .budget-summary-label{
+      overflow: visible;
+      text-overflow: normal;
+      width: auto;
+    }
+  }
+
+  &.inactive{
+    .budget-summary-label{
+      visibility: hidden;
+    }
+    .budget-summary-bar{
+      background-color: #868686 !important;
+    }
+  }
+}

@@ -9,14 +9,20 @@
 // Bootstrap
 @import "_bootstrap";
 
-// DVMI Styles
+// DVMI Common Styles
 @import "_common";
+
+// DVMI Modules Styles
+@import "modules/budget-sankey";
+@import "modules/budget-summary";
 @import "modules/data-controllers";
 @import "modules/data-panel";
 @import "modules/data-sources";
 @import "modules/navtabs";
 @import "modules/social-sharing";
 @import "modules/table-grid";
+
+// DVMI Sections Styles
 @import "_icons";
 @import "_header";
 @import "_footer";
@@ -28,10 +34,8 @@
 @import "_glossary";
 @import "_search";
 
-
 // DVMI Viz Styles
 @import "vis/nv.d3";
-@import "vis/budget.index";
 @import "vis/policies.index";
 @import "vis/infobox";
 @import "vis/map";
