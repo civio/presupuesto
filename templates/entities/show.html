@@ -52,9 +52,12 @@
 
       <!-- Policies Graph -->
       <div class="policies-graph">
+        <div id="budget-summary"></div>
+        <!--
         <div id="expenseSummaryContainer"></div>
         <div id="fexpenseSummaryContainer"></div>
         <div id="incomeSummaryContainer"></div>
+        -->
 
         <div id="expenseChartContainer" class="chart-container" style="width: 100%; margin-bottom: 20px"></div>
         <div id="fexpenseChartContainer" class="chart-container" style="width: 100%; margin-bottom: 20px"></div>
@@ -172,8 +175,6 @@
       if ( uiState && sameUIState(uiState, newUIState) ) return;
       uiState = newUIState;
 
-      console.log( uiState );
-
       // Do work
       var columnDef = getColumnDefinition(uiState);
       var executionColumnDef = getExecutionColumnDefinition(uiState);
@@ -277,39 +278,39 @@
         }
       }
 
-      // Create budget legends (they require UI state since we don't have a draw() method, will do for now)
-      // TODO: Have a draw() method to get rid of all this clunky extra parameters (year and field)
-      var year = $("#year-selection").val();
 
-      var expenseSummary = new BudgetSummary('#expenseSummaryContainer', breakdowns['expense'], expenseAreas, expenseTreemap.colorScale(), 'expense', year);
-      var fexpenseSummary = new BudgetSummary('#fexpenseSummaryContainer', breakdowns['fexpense'], fexpenseAreas, fexpenseTreemap.colorScale(), 'expense', year);
-      var incomeSummary = new BudgetSummary('#incomeSummaryContainer', breakdowns['income'], incomeAreas, incomeTreemap.colorScale(), 'income', year);
+      // Setup & Update Budget Summary
 
+      var areas, colorScale;
+
+      if (uiState.view === 'expense') {
+        areas       = expenseAreas;
+        colorScale  = expenseTreemap.colorScale();
+      } else if (uiState.field === 'income') {
+        areas       = incomeAreas;
+        colorScale  = incomeTreemap.colorScale();
+      } else{
+        areas       = fexpenseAreas;
+        colorScale  = fexpenseTreemap.colorScale();
+      }
+
+      budgetSummary.update( breakdowns[uiState.view], areas, colorScale, uiState.field, uiState.view, uiState.year );
 
       if ( uiState.view == 'expense' ) {
-        $('#incomeSummaryContainer').hide();
         $('#incomeChartContainer').hide();
-        $('#fexpenseSummaryContainer').hide();
         $('#fexpenseChartContainer').hide();
-        $('#expenseSummaryContainer').show();
         $('#expenseChartContainer').show();
         expenseTreemap.createTreemap(uiState); // Won't do anything if already created
         expenseTreemap.updateTreemap(uiState);
       } else if ( uiState.view == 'income' ) {
-        $('#expenseSummaryContainer').hide();
         $('#expenseChartContainer').hide();
-        $('#fexpenseSummaryContainer').hide();
         $('#fexpenseChartContainer').hide();
-        $('#incomeSummaryContainer').show();
         $('#incomeChartContainer').show();
         incomeTreemap.createTreemap(uiState); // Won't do anything if already created
         incomeTreemap.updateTreemap(uiState);
       } else {
-        $('#expenseSummaryContainer').hide();
         $('#expenseChartContainer').hide();
-        $('#fexpenseSummaryContainer').show();
         $('#fexpenseChartContainer').show();
-        $('#incomeSummaryContainer').hide();
         $('#incomeChartContainer').hide();
         fexpenseTreemap.createTreemap(uiState); // Won't do anything if already created
         fexpenseTreemap.updateTreemap(uiState);
@@ -417,6 +418,10 @@
     // TODO: Should handle year also
     var state = $.deparam.fragment();
     $("#"+state.view).click();
+
+    // Create Budget Summary
+    var budgetSummary = new BudgetSummary('#budget-summary');
+
 
     // Used to create the treemap here, when there was only one, but now we have two, and they need to be
     // created once the UI state 'field' is correct; otherwise they transition on update and doesn't work.
