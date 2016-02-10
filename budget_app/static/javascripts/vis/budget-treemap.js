@@ -477,8 +477,8 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
   
   function mout(d) {
     if (!mouseOver) return;
-    var policies = svg.selectAll("rect");
-    policies.attr("class", "cell");
+    var policies = svg.selectAll("rect.cell");
+    policies.attr("class", function(d){ return "cell cell-"+d.id.charAt(0); });
     $("#pop-up").hide();
   }
   
