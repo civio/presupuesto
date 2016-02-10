@@ -5,10 +5,15 @@
 <section class="glossary" role="region">
 
   <!-- Tax Receipt Header -->
-  <div class="glossary-header">
+  <div class="glossary-header section-header">
 
     <div class="container">
       <h2 class="page-title">{{ _('¿Qué significa?') }}</h2>
+    </div>
+  </div>
+
+  <div class="glossary-content">
+    <div class="container">
       
       <form class="form-search-glossary form-inline" action="{{ url('budget_app.views.terms') }}" method="get">
           <div class="form-group">
@@ -17,20 +22,19 @@
           </div>
           <button class="btn btn-default btn-primary icon-search" type="button">{{ _('Buscar') }}</button>
       </form>
-    </div>
-  </div>
 
-  <div class="glossary-content">
-    <div class="container">
-
-      <ul class="glossary-terms">
+      <table class="glossary-terms table">
+        <tbody>
         {% for term in terms %}
-        <li>
-          <h3 class="icon-term">{{ term.title }}</h3>
-          <div class="term-description">{{ term.description|safe }}</div>
-        </li>
+        <tr>
+          <td>
+            <h3 class="icon-term">{{ term.title }}</h3>
+            <div class="term-description">{{ term.description|safe }}</div>
+          </td>
+        </tr>
         {% endfor %}
-      </ul>
+        </tbody>
+      </table>
 
       {{ render_pagination_controls(terms, query) }}
 

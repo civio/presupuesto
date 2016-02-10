@@ -1,12 +1,3 @@
-// Payments Header
-.payments-header{
-  background: $page-header-bg;
-
-  .page-title{
-    margin: 1.5*$grid-gutter-width 0;
-  }
-}
-
 // Payments Content
 .payments-content{
 
@@ -15,7 +6,6 @@
   }
 
   .lead{
-    text-align: center;
     margin: 1.5*$grid-gutter-width $grid-gutter-width $grid-gutter-width; 
   }
 
