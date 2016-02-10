@@ -8,13 +8,23 @@ header > .container{
 
 // City Logo
 .main-entity-logo{
-  margin: $grid-gutter-width/2 0 0;
+  margin: $grid-gutter-width auto;
+
+  a{
+    display: block;
+    width: $main-entity-logo-width;
+    height: $main-entity-logo-height;
+    margin: 0 auto;
+    overflow: hidden;
+    text-indent: -9999px;
+    background: url(../assets/logo.png) no-repeat center center transparent;
+  }
 }
 
 // Header Title
 .navbar-brand{
   float: none;
-  margin: $grid-gutter-width/2 0;
+  margin: $grid-gutter-width 0;
   padding: 0;
   font-size: 3em;
   line-height: 1em;
@@ -59,7 +69,6 @@ header > .container{
   
   .main-entity-logo{
     float: left;
-    margin: 0;
     // We need to put it over the navbar-brand
     position: relative;
     z-index: 60;
