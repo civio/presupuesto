@@ -15,16 +15,20 @@
     <ul class="footer-menu">
       <!-- Link a la Web del Ayuntamiento -->
       <li>
-        <a href="http://www.rubi.cat" title="{{ _('Ayuntamiento de Rubí') }}">{{ _('Ayuntamiento de Rubí') }}</a>
+        <a href="{{ main_entity_web_url }}" title="{{ _('Ayuntamiento de Rubí') }}" target="_blank">{{ _('Ayuntamiento de Rubí') }}</a>
       </li>
       <!-- Link al Aviso Legal del Ayuntamiento -->
+      {% if main_entity_legal_url %}
       <li>
-        <a href="http://www.rubi.cat/es/aviso-legal" title="{{ _('Aviso Legal') }}">{{ _('Aviso Legal') }}</a>
+        <a href="{{ main_entity_legal_url }}" title="{{ _('Aviso Legal') }}" target="_blank">{{ _('Aviso Legal') }}</a>
       </li>
+      {% endif %}
       <!-- Link a la Política de Privacidad del Ayuntamiento -->
+      {% if main_entity_privacy_url %}
       <li>
-        <a href="http://www.rubi.cat/es/politica-de-privacidad" title="{{ _('Política de Privacidad') }}">{{ _('Política de Privacidad') }}</a>
+        <a href="{{ main_entity_privacy_url }}" title="{{ _('Política de Privacidad') }}" target="_blank">{{ _('Política de Privacidad') }}</a>
       </li>
+      {% endif %}
     </ul>
   </div>
 </footer>
