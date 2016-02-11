@@ -467,12 +467,10 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
     var areaPrefix = areas[d.id[0]] ? "<span style='color:"+colors(Number(d.id[0]))+"'>"+areas[d.id[0]]+"</span><br>" : '';
     $("#pop-up-title").html(areaPrefix+d.name);
     $("#pop-up-content").html(valueFormat(d.value, uiState));
-    var w = $("div#pop-up").width();
-    var h = $("div#pop-up").height();
-    var popLeft = d3.event.pageX - w/2;
-    var popTop = d3.event.pageY -h-15; // 15 ~ offset set not to be moving the tooltip inside a link all the time
-    $("#pop-up").css({"left":popLeft,"top":popTop});
-    $("#pop-up").show();
+    var popParentOffset = $(selector).offset();
+    var popLeft = d3.event.pageX - popParentOffset.left - $("#pop-up").width()/2;
+    var popTop = d3.event.pageY - popParentOffset.top + $("#pop-up").height() - 15; // 15 ~ offset set not to be moving the tooltip inside a link all the time
+    $("#pop-up").css({"left":popLeft,"top":popTop}).show();
   }
   
   function mout(d) {
