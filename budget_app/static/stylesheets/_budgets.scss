@@ -2,7 +2,7 @@
 // Budget Intro
 .budget-intro {
   display: none;
-  background: mix( $budget-stream-color, white, 8% );
+  background: $page-header-bg;
 
   .budget-step {
     @extend .panel;
@@ -70,7 +70,7 @@
 // Budgets Data Panel
 .budget-data{
   margin-top: $grid-gutter-width;
-  background: mix( $data-panel-color, white, 8% );
+  background: $page-header-bg;
 
   .data-panel{
     margin-bottom: $grid-gutter-width/2;
