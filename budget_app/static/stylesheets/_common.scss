@@ -31,6 +31,17 @@ body{
   }
 }
 
+// Graph No Data Alert
+.no-data-alert {   
+  position: absolute; 
+  top: 50%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 1.375em;
+  font-weight: bold;
+}
+
 // jQuery UI
 .ui-widget {
   font-family: $font-family-base; 
