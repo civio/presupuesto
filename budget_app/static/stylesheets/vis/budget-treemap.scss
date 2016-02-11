@@ -17,14 +17,16 @@
 	}
 
 	.treemap-text {
-		font-size: 15px;
+		font-size: 1em;
 		padding: 4px;
-		line-height: 1.1;
+		line-height: 1.1em;
 		display: block;
 		fill: #fff;
 		pointer-events: none;
 		text-align: center;
 		text-anchor: middle;
+		font-weight: $font-weight-300;
+    }
 	}
 
 	text.nv-legend-text:hover{

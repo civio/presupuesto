@@ -28,6 +28,7 @@
         color: $gray;
         font-size: .875em;
         padding: $grid-gutter-width/6 0;
+        font-weight: $font-weight-600;
       }
     }
 
@@ -47,7 +48,11 @@
       font-size: .875em;
       margin: 0;
       padding: $grid-gutter-width/2;
-      font-weight: 300;
+      font-weight: $font-weight-300;
+
+      b{
+        font-weight: $font-weight-600;
+      }
     }
   }
 }

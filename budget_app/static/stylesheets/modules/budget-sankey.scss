@@ -41,7 +41,7 @@
   .legend-item text,
   .node text {
     pointer-events: none;
-    font-weight: bold;
+    font-weight: $font-weight-700;
     font-size: 12px;
   }
 
@@ -50,7 +50,7 @@
       fill: none;
     }
     text{
-      font-weight: normal !important;
+      font-weight: $font-weight-400 !important;
     }
   }
 }

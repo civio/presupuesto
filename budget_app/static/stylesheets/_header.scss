@@ -28,7 +28,7 @@ header > .container{
   padding: 0;
   font-size: 3em;
   line-height: 1em;
-  font-weight: 300;
+  font-weight: $font-weight-300;
   text-align: center;
 
   a:hover{
@@ -59,7 +59,7 @@ header > .container{
       }
 
       .active{
-        font-weight: 600;
+        font-weight: $font-weight-600;
       }
     }
   }
@@ -113,6 +113,7 @@ header > .container{
         text-align: center;
         padding-right: 0;
         padding-left: 0;
+        font-weight: $font-weight-300;
         @include transition( background 0.3s ease-out );
 
         &:hover,

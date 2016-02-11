@@ -22,7 +22,7 @@
       color: $text-color;
       font-size: 0.875em;
       text-transform: uppercase;
-      font-weight: bold;
+      font-weight: $font-weight-700;
       border-left: 2px solid $brand-secondary;
       background: mix( $brand-secondary, white, 20% );
       @include transition( background 0.3s ease-out );
@@ -48,33 +48,6 @@
   background: $page-header-bg;
   padding: $grid-gutter-width/2 $grid-gutter-width/2 0;
   margin: $grid-gutter-width 0 $grid-gutter-width/2;
-}
-
-// Policies Panel Downloads
-.panel-downloads{
-  @extend .panel;
-  @extend .panel-default;
-  border-color: $brand-secondary;
-  background: mix( $brand-secondary, white, 30% );
-  padding: $grid-gutter-width/2;
-  text-align: center;
-
-  > p{
-    margin-bottom: 0;
-    line-height: 1.5em;
-  }
-
-  a{
-    color: darken( $brand-secondary, 10% );
-    font-weight: bold;
-    margin: 0 3px;
-    @include transition( color 0.3s ease-out );
-
-    &:hover{
-      color: $brand-secondary;
-      text-decoration: none;
-    }
-  }
 }
 
 

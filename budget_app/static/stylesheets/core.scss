@@ -15,10 +15,12 @@
 // DVMI Modules Styles
 @import "modules/budget-sankey";
 @import "modules/budget-summary";
+@import "modules/budget-treemap";
 @import "modules/data-controllers";
 @import "modules/data-panel";
 @import "modules/data-sources";
 @import "modules/navtabs";
+@import "modules/panel-downloads";
 @import "modules/social-sharing";
 @import "modules/table-grid";
 
@@ -36,6 +38,5 @@
 
 // DVMI Viz Styles
 @import "vis/nv.d3";
-@import "vis/policies.index";
 @import "vis/infobox";
 @import "vis/map";

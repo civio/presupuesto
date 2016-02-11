@@ -1,12 +1,20 @@
 .search-content{
 
   padding-top: $grid-gutter-width;
+
+  .table th{
+    font-weight: $font-weight-600;
+  }
   
   .alert{
     display: inline-block;
     font-size: 1.125em;
     background: $page-header-bg;
     margin-bottom: $grid-gutter-width/2;
+
+    b{
+      font-weight: $font-weight-600;
+    }
   }
 
   #form-search-controls{
@@ -15,11 +23,11 @@
     margin-left: $grid-gutter-width/2;
 
     label{
-      font-weight: normal;
+      font-weight: $font-weight-400;
     }
 
     #year-dropdown{
-      font-weight: bold;
+      font-weight: $font-weight-600;
     }
   }
 
@@ -71,7 +79,7 @@
       color: white;
       padding: $grid-gutter-width/6 $grid-gutter-width/3;
       text-transform: uppercase;
-      font-weight: 400;
+      font-weight: $font-weight-400;
 
       &:hover{
         background: $gray;
@@ -88,12 +96,12 @@
     }
 
     .concept-block {
-      font-weight: 600;
+      font-weight: $font-weight-600;
     }
 
     .concept {
       font-size: 1.125em; 
-      font-weight: 800; 
+      font-weight: $font-weight-600; 
       //margin: 0 0 .25em;
     }
   

@@ -58,7 +58,7 @@
       line-height: $grid-gutter-width;
 
       span{
-        font-weight: bold;
+        font-weight: $font-weight-600;
       }
     }
   }
@@ -71,6 +71,10 @@
     text-align: center;
     border: 1px solid $brand-secondary;
     background: $page-header-bg;
+
+    b{
+      font-weight: $font-weight-600;
+    }
   }
 
   #footnote-receipt{

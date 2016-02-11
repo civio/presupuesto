@@ -6,7 +6,7 @@
   .title{
     color: $gray;
     font-size: 1em;
-    font-weight: bold;
+    font-weight: $font-weight-700;
     text-transform: uppercase;
     margin-bottom: $grid-gutter-width/2;
   }

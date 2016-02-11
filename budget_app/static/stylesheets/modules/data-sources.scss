@@ -10,7 +10,7 @@
     font-size: 1.125em;
     text-align: center;
     text-transform: uppercase;
-    font-weight: bold;
+    font-weight: $font-weight-700;
   }
 
   .panel{
@@ -41,6 +41,10 @@
     a{
       color: darken( $data-sources-color, 50% );
     }
+
+    b{
+      font-weight: $font-weight-600;
+    }
   }
 
   .alert{
@@ -51,7 +55,7 @@
 
     .title{
       margin-bottom: $grid-gutter-width/3;
-      font-weight: bold;
+      font-weight: $font-weight-700;
       text-transform: uppercase;
     }
 
@@ -61,6 +65,10 @@
 
     li{
       margin-bottom: $grid-gutter-width/6;
+    }
+
+    b{
+      font-weight: $font-weight-600;
     }
   }
 }
