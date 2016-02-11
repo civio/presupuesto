@@ -38,8 +38,11 @@
       list-style: none;
       @extend .well;
       @extend .well-sm;
+      @include box-shadow( none );
       margin-bottom: $grid-gutter-width/3;
-      background: $gray-lighter;
+      background: $page-header-bg;
+      border: none;
+      border-radius: $border-radius-base;
 
       a{
         @include transition( color 0.3s ease-out );
@@ -59,7 +62,7 @@
   // Home Options
   .options{
     padding-top: $grid-gutter-width;
-    background: mix( $brand-secondary, white, 25% );
+    background: $page-header-bg;
 
     .option{
 
