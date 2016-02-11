@@ -15,16 +15,18 @@
     border-color: $data-panel-color;
 
     &:first-child{
-      border-top-right-radius: 8px;
-      border-top-left-radius: 8px;
+      border-top-right-radius: $panel-border-radius;
+      border-top-left-radius: $panel-border-radius;
 
+      /*
       .panel-title{
         border-radius: 6px 6px 0 0;
       }
+      */
     }
     &:last-child{
-      border-bottom-right-radius: 8px;
-      border-bottom-left-radius: 8px;
+      border-bottom-right-radius: $panel-border-radius;
+      border-bottom-left-radius: $panel-border-radius;
     }
   }
 
