@@ -74,6 +74,16 @@ $navbar-default-bg: $brand-primary;
 $dvmi-navbar-color: mix( $brand-primary, white, 10% );
 
 
+// Pagination
+// --------------
+
+$pagination-color:                     $brand-secondary;
+$pagination-hover-color:               $brand-secondary;
+
+$pagination-active-bg:                 $brand-secondary;
+$pagination-active-border:             $brand-secondary;
+
+
 // Footer
 // --------------
 
@@ -117,37 +127,3 @@ $data-sources-color: $brand-terciary;
 
 $sankey-budget-color:     saturate( lighten( $brand-secondary, 12% ), 10% );                          // #1F77B4;
 $sankey-execution-color:  saturate( lighten( adjust-hue( $sankey-budget-color, 100% ), 10% ), 10% );  //#E377C2;
-
-
-// Pagination
-// --------------
-
-$pagination-color:                     $brand-secondary;
-$pagination-hover-color:               $brand-secondary;
-
-$pagination-active-bg:                 $brand-secondary;
-$pagination-active-border:             $brand-secondary;
-
-
-/*
-
-// Color: Harmony
-@brightness: 10%;// Cantidad de brillo añadir/restar a los colores de la paleta de color para crear semitonos
-@degrees: 35%;
-
-@color-base: 		#b72f00;
-@complementary:	spin(@color-base, 180);
-@accented-1:		spin(@color-base, -(@degrees));
-@accented-2:		spin(@color-base, @degrees);
-@linkColor: @color-base;
-
-
-// Color: helpers
-@formControlFocus: @color-base;
-@yellow-mark: #ff9;
-@yellow-note: #ff9;
-@red: #c00;
-
-// Entities compared
-@entity1: @accented-1;
-@entity2: @accented-2; */
