@@ -36,8 +36,8 @@
         </div>
       </div>
 
-      {{ render_tab(_('Por área'), 'area', 'active') }}
-      {{ render_tab(_('Por beneficiario'), 'payee', '') }}
+      {{ render_tab(_('Por área'), 'area', 'active', entity) }}
+      {{ render_tab(_('Por beneficiario'), 'payee', '', entity) }}
 
       {% include 'shared/social_sharing.html' %}
     </div>

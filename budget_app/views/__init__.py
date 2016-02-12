@@ -9,7 +9,7 @@ from welcome import welcome
 from pages import pages
 from search import search
 from payments import payments
-from csv_xls import entity_expenses, entity_fexpenses, entity_income, entity_article_expenses, entity_article_fexpenses, entity_article_income
+from csv_xls import entity_expenses, entity_fexpenses, entity_income, entity_article_expenses, entity_article_fexpenses, entity_article_income, entity_payments
 from csv_xls import functional_policy_breakdown, economic_policy_breakdown, funding_policy_breakdown, institutional_policy_breakdown
 from csv_xls import economic_programme_breakdown, funding_programme_breakdown, institutional_programme_breakdown
 from csv_xls import economic_article_breakdown, funding_article_breakdown, institutional_article_breakdown, functional_article_breakdown

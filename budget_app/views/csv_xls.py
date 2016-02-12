@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 
 from django.http import HttpResponse
-from budget_app.models import Entity
+from budget_app.models import Entity, Payment
 from budget_app.views import policies, policies_show, programmes_show, income_articles_show, expense_articles_show
 from budget_app.views import entities_index, entities_show, entities_show_article, entities_show_policy
 from helpers import get_context
@@ -70,7 +70,29 @@ def entity_income(request, level, slug, format):
     entity = Entity.objects.get(level=level, slug=slug, language=c['LANGUAGE_CODE'])
     return entities_show(request, c, entity, _generator('ingresos-%s-%s' % (level, slug), format, write_entity_income_breakdown))
 
+#
+# PAYMENTS
+#
 
+
+def write_entity_payment_breakdown(c, writer):
+    writer.writerow(['#Año', 'Area', 'Beneficiario', 'Tipo de contrato', 'Concepto', 'Cantidad'])
+    for payment in c['payments']:
+        writer.writerow([
+            payment.budget.year,
+            payment.area.encode("utf-8"),
+            payment.payee.encode("utf-8"),
+            payment.contract_type.encode("utf-8"),
+            payment.description.encode('utf-8'),
+            payment.amount
+        ])
+
+
+def entity_payments(request, slug, format):
+    c = get_context(request)
+    c['payments'] = Payment.objects.all().prefetch_related('budget').order_by("-budget__year")
+    generator = _generator('pagos-%s' % (slug), format, write_entity_payment_breakdown)
+    return generator.generate_response(c)
 
 #
 # FUNCTIONAL BREAKDOWN
