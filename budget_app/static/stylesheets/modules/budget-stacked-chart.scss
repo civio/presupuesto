@@ -1,0 +1,45 @@
+.stacked-area-chart{
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+  }
+
+  .axis text{
+    fill: $text-color;
+    font-size: 0.875em;
+    font-weight: $font-weight-300;
+  }
+}
+
+.stacked-area-chart-legend{
+  margin-left: 80px;
+  margin-right: 20px;
+  @extend .clearfix;
+
+  .label{
+    display: inline-block;
+    color: $text-color;
+    font-size: 0.875em;
+    font-weight: $font-weight-300;
+    padding: 0 5px;
+    margin-right: 5px;
+    margin-bottom: 4px;
+    line-height: 20px;
+    cursor: pointer;
+
+    &:hover{
+      background: $gray-lighter;
+    }
+
+    span{
+      float: left;
+      width: 10px;
+      height: 10px;
+      border-radius: 5px;
+      margin-top: 5px;
+      margin-right: 5px;
+    }
+  }
+}

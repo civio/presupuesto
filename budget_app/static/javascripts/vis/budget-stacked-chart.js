@@ -24,12 +24,12 @@ function BudgetStackedChart(selector, theStats, i18n) {
   var format = function(d) { return formatAmount(d); };
 
   // The ticks in the Y axis sometimes get too long, so we show them as thousands/millions
-  var formatAxis = function(d) { 
+  var formatAxis = function(d) {
     if ( uiState.format=="nominal" || uiState.format=="real" ) {
-      return formatSimplifiedAmount(d, 1); 
+      return formatSimplifiedAmount(d, 1);
 
     } else {
-      return formatAmount(d); 
+      return formatAmount(d);
     }
   };
 
@@ -49,29 +49,11 @@ function BudgetStackedChart(selector, theStats, i18n) {
   var height = width / 2;
   var uiState;
 
-  var svg = d3.select(selector)
-              .append("svg:svg")
-              .attr("height", height)
-              .attr("width", width)
-              .attr("id", "stacked-area-chart");
+  
+  console.log('BudgetStackedChart set chart');
 
-  var chart = nv.models.stackedAreaChart()
-                 .x(function(d) { return d[0]; })
-                 .y(function(d) { return d[1]; })
-                 .color(keyColor)
-                 .showControls(false)
-                 .margin({left: 100})
-                 .useInteractiveGuideline(true)   // Why true? see below
-                 .tooltip(tooltipContent);
-  // WHY: Originally we had tooltips at a particular data point, i.e. interactive guideline was false.
-  // However this made Chrome crash under some circumstances, hard to reproduce but somehow
-  // related to the Voronoi mesh needed to identify the closest data point. It happened a lot
-  // in a particular page in Murcia budget. Changing the zoom level or removing the legend made
-  // the error disappear; toggling items in the legend on and off made it appear. It was maybe
-  // caused by two points being too close together. All this is not an issue when the interactive
-  // guideline is set to true, since no Voronoi is needed. And, to be honest, once the tooltip
-  // layout is improved a bit, showing data for the whole year is a better solution than the one
-  // we had before, where picking one particular series could be extremely hard.
+  var chart = new StackedAreaChart().setup(selector);
+  //chart.color = keyColor;
 
   function loadBreakdownField(breakdown, field) {
     // Pick the right dataset for each year: execution preferred over 'just' budget
@@ -122,6 +104,9 @@ function BudgetStackedChart(selector, theStats, i18n) {
   }
 
   this.loadBreakdown = function(theBreakdown, field) {
+
+    console.log('loadBreakdown', theBreakdown, field);
+
     breakdown = theBreakdown;
     data = loadBreakdownField(theBreakdown, field);
     // Deep copy the data array in order to be able to change when a new category of data is selected
@@ -134,16 +119,18 @@ function BudgetStackedChart(selector, theStats, i18n) {
       return; // Do nothing if only the year changed
     uiState = newUIState;
     
+    console.log(years);
+
     chart.xAxis
-        .tickValues(years)  // We make sure years only show up once in the axis
-        .tickFormat(function(d) { return d3.time.format('%Y')(new Date(d,1,1,0,0,0,0)); });
+        .tickValues( years )  // We make sure years only show up once in the axis
+        .tickFormat( d3.format("d") );
+    
     chart.yAxis
         .tickFormat( uiState.format == "percentage" ? formatPercentage : formatAxis );
 
-    svg.datum(this.getNewData())
-        .transition()
-        .duration(500)
-        .call(chart);
+    chart.x.domain( d3.extent( years.map(function(d){ return parseInt(d); }) ) );
+
+    chart.setData( this.getNewData() ).draw();
   };
 
 
