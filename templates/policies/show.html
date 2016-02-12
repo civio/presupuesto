@@ -7,8 +7,8 @@
 <script src="{{ STATIC_URL }}javascripts/vis/bigtext.js"></script>
 <script src="{{ STATIC_URL }}javascripts/vis/budget-treemap.js"></script>
 {% else %}
-<script src="{{ STATIC_URL }}javascripts/vis/nv.d3.1-1-15b.js"></script>
-<script src="{{ STATIC_URL }}javascripts/vis/budget-stacked-graph.js"></script>
+<script src="{{ STATIC_URL }}javascripts/vis/stacked-area-chart.js"></script>
+<script src="{{ STATIC_URL }}javascripts/vis/budget-stacked-chart.js"></script>
 {% endif %}
 {% endblock %}
 
@@ -396,6 +396,9 @@
     };
 
     function setupGraph(chartWidth, container, breakdown, areas) {
+
+      console.log('setup graph', container, breakdown, areas);
+
       // We explicitely set the dimensions of the container, otherwise we got an strange behaviour in 
       // an iPad, where the height of the chart would explode for no apparent reason
       $(container).css('width', chartWidth);
@@ -422,6 +425,7 @@
 {% endif %}
 
 {% if full_breakdown or article %}
+
     if ( chartWidth == undefined )
       var chartWidth = $('#economicChartContainer').width();
     var economicAreas = {{ (expense_areas if show_side=='expense' else income_areas)|safe }};
@@ -429,6 +433,7 @@
                 '#economicChartContainer', 
                 economicBreakdown,
                 economicAreas);
+
 {% endif %}
 
 {% if full_breakdown %}
@@ -437,6 +442,7 @@
                 '#fundingChartContainer', 
                 fundingBreakdown,
                 fundingAreas);
+
 {% endif %}
 
 
