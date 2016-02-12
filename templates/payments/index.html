@@ -24,8 +24,8 @@
   </nav>
 
   <div class="tab-contents">
-    {{ render_tab(_('Por área'), 'area', 'current') }}
-    {{ render_tab(_('Por beneficiario'), 'payee', 'visuallyhidden') }}
+    {{ render_tab(_('Por área'), 'area', 'current', entity) }}
+    {{ render_tab(_('Por beneficiario'), 'payee', 'visuallyhidden', entity) }}
   </div>
 
   {% include 'shared/social_sharing.html' %}

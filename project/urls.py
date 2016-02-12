@@ -94,6 +94,9 @@ budget_app_urlpatterns = patterns('budget_app.views',
     url(r'^(?P<level>.+)_(?P<slug>.+)_gastos_(?P<id>[0-9]+)\.(?P<format>.+)$', 'entity_article_expenses'),
     url(r'^(?P<level>.+)_(?P<slug>.+)_ingresos_(?P<id>[0-9]+)\.(?P<format>.+)$', 'entity_article_income'),
 
+    # Payments
+    url(r'^(?P<slug>.+)_pagos\.(?P<format>.+)$', 'entity_payments'),
+
     # Runtime info
     url(r'^version.json$', 'version_api'),
 
