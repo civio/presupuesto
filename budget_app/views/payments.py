@@ -6,6 +6,7 @@ from helpers import *
 def payments(request, render_callback=None):
     # Get request context
     c = get_context(request, css_class='body-payments', title='Inversiones y pagos')
+    c['LANGUAGE_CODE'] = request.LANGUAGE_CODE
 
     # Retrieve the entity to display
     main_entity = get_main_entity(c)
@@ -28,4 +29,4 @@ def payments(request, render_callback=None):
     populate_stats(c)
     populate_years(c, 'area_breakdown')
 
-    return render_to_response('payments/index.html', c)
+    return render_to_response('payments/index.html', {'entity': main_entity}, c)
