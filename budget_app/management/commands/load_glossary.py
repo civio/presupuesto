@@ -17,7 +17,7 @@ class Command(BaseCommand):
             help='Set data language'),
         make_option(
             '--extend',
-            action='store_false',
+            action='store_true',
             dest='extend',
             help='Extend default glossary with theme one'),
     )
