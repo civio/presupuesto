@@ -11,10 +11,12 @@ function StackedAreaChart() {
 
   _this.xAxis = d3.svg.axis()
       .scale(_this.x)
+      .tickPadding(10)
       .orient('bottom');
 
   _this.yAxis = d3.svg.axis()
       .scale(_this.y)
+      .tickPadding(6)
       .orient('left')
       .ticks(4);
 
@@ -41,6 +43,9 @@ function StackedAreaChart() {
     // Setup X & Y scale range
     _this.x.range([0, _this.width]);
     _this.y.range([_this.height, 0]);
+
+    _this.xAxis.tickSize(-_this.height);
+    _this.yAxis.tickSize(-_this.width);
 
     // Add SVG
     _this.svg = d3.select(selector).append('svg')
@@ -94,18 +99,6 @@ function StackedAreaChart() {
 
     console.log('* StackedAreaChart.draw', _this.data);
 
-    // Setup Areas containers
-    _this.areas = _this.svg.selectAll('.area')
-      .data( _this.data )
-      .enter().append('g')
-        .attr('class', 'area');
-
-    // Setup Areas Paths
-    _this.areas.append('path')
-      .attr('class', 'area')
-      .attr('d', function(d) { return _this.area(d.values); })
-      .style('fill', function(d) { return _this.color(d.id); });
-
     // Setup X Axis
     _this.svg.append('g')
       .attr('class', 'x axis')
@@ -116,6 +109,50 @@ function StackedAreaChart() {
     _this.svg.append('g')
       .attr('class', 'y axis')
       .call(_this.yAxis);
+
+    // Setup Areas containers
+    _this.areas = _this.svg.selectAll('.area')
+      .data( _this.data )
+      .enter().append('g')
+        .attr('class', 'area');
+
+    // Setup Areas Paths
+    _this.areas.append('path')
+      .attr('class', 'area')
+      .attr('d', function(d) { return _this.area(d.values); })
+      .style('fill', function(d) { return _this.color(d.id); })
+      .style('opacity', 0.7)
+      .on('mouseover', function(){
+        d3.select(this).style('opacity', 0.9);
+      })
+      .on('mouseout', function(){
+        d3.select(this).style('opacity', 0.7);
+      })
+      .on('mousemove', _this.onMouseMove);
+
+    _this.circles = _this.svg.selectAll('.points')
+      .data( _this.data )
+      .enter().append('g')
+        .attr('class', 'area-points');
+
+    _this.circles.selectAll('.point')
+      .data(function(d) { return d.values.map(function(e){ e.id = d.id; return e; }); }) //d3.select(this).data.map( function(d){ return d.values; } ) )
+      //.attr('class', function(d){ console.log(d); return'area-points'; });
+      .enter().append('circle')
+      .attr('class', function(d){ console.log(d); return'point'; })
+      .attr('cx', function(d){ return _this.x(d.x); })
+      .attr('cy', function(d){ return _this.y(d.y0+d.y); })
+      .attr('r', 2)
+      .style('fill', function(d) { return _this.color(d.id); });
+      
+      /*
+    _this.areaPoitns = _this.areas.selectAll('.area-points')
+      .data( this.data.map( function(d){ return d.values; }) )
+      .enter().append('circle')
+      */
+
+      //.attr('class', 'point')
+      //.attr('transform', function(d){ return 'translate(0,' + _this.height + ')'; })
 
     // Setup Legand labels
     _this.legend.selectAll('div')
@@ -128,6 +165,14 @@ function StackedAreaChart() {
 
     return _this;
   };
+
+  _this.onMouseMove = function(){
+
+    var xPos = d3.mouse(this)[0];
+
+    console.log(xPos);
+  };
+
 
   return _this;
 }

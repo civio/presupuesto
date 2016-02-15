@@ -1,22 +1,42 @@
 .stacked-area-chart{
+
   .axis path,
   .axis line {
     fill: none;
-    stroke: #000;
+    stroke: mix( $gray-light, $gray-lighter, 30% );
     shape-rendering: crispEdges;
   }
+
+  .axis.x path,
+  .axis.x line {
+    stroke: mix( $gray-light, $gray-lighter, 70% );
+  }
+
+  /*
+  .axis .tick:first-child line{
+    stroke: $gray-dark;
+    stroke-width: 2px;
+  }
+  */
 
   .axis text{
     fill: $text-color;
     font-size: 0.875em;
     font-weight: $font-weight-300;
   }
+
+  .axis.x text{
+    font-weight: 400;
+  }
+
+  path.area{
+    @include transition( opacity 0.3s ease-out );
+  }
 }
 
 .stacked-area-chart-legend{
   margin-left: 80px;
   margin-right: 20px;
-  @extend .clearfix;
 
   .label{
     display: inline-block;
@@ -30,7 +50,7 @@
     cursor: pointer;
 
     &:hover{
-      background: $gray-lighter;
+      background: white;
     }
 
     span{
