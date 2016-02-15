@@ -1,4 +1,7 @@
 # -*- coding: UTF-8 -*-
+
+from django.core.exceptions import ObjectDoesNotExist
+
 from budget_app.models import GlossaryTerm
 import csv
 import re
@@ -6,7 +9,6 @@ import re
 
 class GlossaryLoader:
     def load(self, filename, language):
-        self._delete_all(language)
 
         print "Cargando glosario de %s..." % filename
         reader = csv.reader(open(filename, 'rb'))
@@ -15,8 +17,12 @@ class GlossaryLoader:
                 continue
 
             print "  Cargando término %s..." % line[0]
-            term = GlossaryTerm(title=line[0], description=line[1], language=language)
+            try:
+                term = GlossaryTerm.objects.get(title=line[0], language=language)
+                term.description = line[1]
+            except ObjectDoesNotExist:
+                term = GlossaryTerm(title=line[0], description=line[1], language=language)
             term.save()
 
-    def _delete_all(self, language):
+    def delete_all(self, language):
         GlossaryTerm.objects.filter(language=language).delete()
