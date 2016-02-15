@@ -68,7 +68,7 @@ function StackedAreaChart() {
   };
 
   // Setup Data
-  _this.setData = function( _data, _years ){
+  _this.setData = function( _data, _years, _budgetStatuses ){
     
     console.log('* StackedAreaChart.setData', _data);
 
@@ -104,6 +104,9 @@ function StackedAreaChart() {
       });
     });
     _this.y.domain([0, d3.max(vals)]);
+
+    // Get Last Year with Execution
+    _this.budgetExecutionLastYear = _this.budgetExecutionLastYear(_budgetStatuses);
 
     return _this;
   };
@@ -171,6 +174,16 @@ function StackedAreaChart() {
         _this.$popover.css( _this.popoverPosition(d3.mouse(this)) ).show();
       });
 
+    // Check Execution is Completed & Draw Opacity Mask if not
+    if( _this.budgetExecutionLastYear !== null ){
+      var budgetExecutionLastYearWidth = _this.years[_this.years.length-1] - (_this.years[_this.budgetExecutionLastYear]-1);
+      _this.svg.append('rect')
+        .attr('class', 'nonexecuted-overlay')
+        .attr('height', _this.height)
+        .attr('width', _this.x(_this.years[budgetExecutionLastYearWidth]) )
+        .attr('x', _this.x(_this.years[_this.budgetExecutionLastYear]-1) );
+    }
+
     // Setup Area Points
     _this.circles = _this.svg.selectAll('.points')
       .data( _this.data )
@@ -236,12 +249,10 @@ function StackedAreaChart() {
 
     if( _this.$popover.data('id') == data.id ) return;  // Avoid redundancy
 
-    console.log('setupPopover', data);
-
     _this.$popover.data('id', data.id);
     _this.$popover.find('.popover-title').html( data.label );
     _this.$popover.find('.popover-content').html( '<table class="table table-condensed"><tbody>'+data.values.map(function(d){
-      return '<tr class="year-'+d.x+'"><td>'+d.x+'</td><th>'+Math.ceil(d.y).toLocaleString('es-ES')+' €</th></tr>';
+      return (d.y > 0) ? '<tr class="year-'+d.x+'"><td>'+d.x+'</td><th>'+Math.ceil(d.y).toLocaleString('es-ES')+' €</th></tr>' : '';
     }).join('')+'</tbody></table>' );
     if( _this.currentYear ){
       _this.$popover.find('.popover-content .table tr.year-'+_this.years[_this.currentYear]).addClass('active');
@@ -253,6 +264,19 @@ function StackedAreaChart() {
       'bottom': _this.height+_this.margin.top+_this.margin.bottom-_mouse[1]+10,
       'left': _mouse[0]+_this.margin.left-(_this.$popover.width()*0.5)
     };
+  };
+
+  _this.budgetExecutionLastYear = function( _budgetStatuses ){
+    var status = null, i = 0;
+
+    while( i < _this.years.length || status === null ){
+      if( _budgetStatuses[i] !== '' ){
+        status = i;
+      }
+      i++;
+    }
+
+    return status;
   };
 
   return _this;

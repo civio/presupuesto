@@ -128,7 +128,7 @@ function BudgetStackedChart(selector, theStats, i18n) {
     chart.yAxis
         .tickFormat( uiState.format == "percentage" ? formatPercentage : formatAxis );
 
-    chart.setData( this.getNewData(), years.map(function(d){ return parseInt(d); }) ).draw();
+    chart.setData( this.getNewData(), years.map(function(d){ return parseInt(d); }), budgetStatuses ).draw();
   };
 
 

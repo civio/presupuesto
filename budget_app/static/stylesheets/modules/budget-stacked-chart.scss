@@ -5,6 +5,11 @@
     cursor: auto;
   }
 
+  .nonexecuted-overlay{
+    fill: white;
+    opacity: 0.5;
+  }
+
   .axis path,
   .axis line {
     fill: none;
