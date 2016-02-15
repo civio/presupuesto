@@ -1,5 +1,6 @@
+
 <header role="banner" class="hide-when-embedded">
-	<div class="container-fluid">
+  <div class="container-fluid">
 		<div class="row-fluid">
 			<div class="span6">
 				<p class="logo-gobierno-aragon"><a href="http://www.aragon.es/" title="Ir a la home de Gobierno de Aragón"><img src="{{ STATIC_URL }}assets/logo-gobierno-aragon.png" alt="Logo de Gobierno de Aragón"></a></p>
@@ -23,7 +24,34 @@
 				Presupuestos de Aragón
 			</a>
 		</h1>
+{#
+    <div id="menu-lang">
+      <ul>
+        {% for language in LANGUAGES %}
+          <li>
+            <form id="form_{{language[0]}}" method="post" action="/i18n/setlang/">
+              {% csrf_token %}
+              <input type="hidden" name="next" value="{{ request.path|redirect_url(language[0]) }}" />
+              <input type="hidden" name="language" value="{{ language[0] }}"/>
+              {#<a for="form_{{language[0]}}" href="javascript: document.form_{{language[0]}}.submitform()"{% if language[0].lower() == LANGUAGE_CODE %} class="active"{% endif %}>{{ language[1]|safe }}</a>#}
+              <input type="submit" value="{{ language[1]|safe }}" form="form_{{language[0]}}" {% if language[0].lower() == LANGUAGE_CODE %} class="active"{% endif %}/>
+            </form>
+          </li>
+        {% endfor %}
+      </ul>
+      <form id="menu-lang-form" action="/i18n/setlang/" method="post">
+        {% csrf_token %}
+        <input name="next" type="hidden" value="{{ redirect_to }}" />
+        <select name="language">
+          {% for language in LANGUAGES %}
+            <option value="{{ language[0] }}">{{ language[1]|safe }}</option>
+          {% endfor %}
+        </select>
+        <input type="submit" value="Go" />
+      </form>
+    </div>
 	</div>
+#}
 
 	<a class="main-menu-toggle" href="main-menu">Menú principal</a>
 	

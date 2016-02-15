@@ -1,10 +1,15 @@
 # -*- coding: UTF-8 -*-
 
+from django.conf.urls.i18n import i18n_patterns
 from django.conf.urls import patterns, url, include
 from django.conf import settings
 from django.views.generic.simple import direct_to_template
 
-budget_app_urlpatterns = patterns('budget_app.views',
+budget_app_urlpatterns = patterns('',
+    url(r'^i18n/', include('django.conf.urls.i18n'))
+)
+
+budget_app_urlpatterns += i18n_patterns('budget_app.views',
     url(r'^/?$', 'welcome'),
 
     url(r'^resumen$', 'budgets'),
@@ -100,8 +105,6 @@ budget_app_urlpatterns = patterns('budget_app.views',
     # Runtime info
     url(r'^version.json$', 'version_api'),
 
-    # Internationalization
-    (r'^i18n/', include('django.conf.urls.i18n')),
 )
 
 # Include Jasmine urls fot JS Unit Tests only in development
