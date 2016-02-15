@@ -401,8 +401,8 @@
 
       // We explicitely set the dimensions of the container, otherwise we got an strange behaviour in 
       // an iPad, where the height of the chart would explode for no apparent reason
-      $(container).css('width', chartWidth);
-      $(container).css('height', chartWidth/2);
+      //$(container).css('width', chartWidth);
+      //$(container).css('height', chartWidth/2);
       {% if show_treemap %}
       var treemap = new BudgetTreemap(container, breakdown, stats, areas).i18n(i18n).maxLevels(2).budgetStatuses(budgetStatuses);
       treemap.createTreemap(getUIState());
