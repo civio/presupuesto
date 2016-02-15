@@ -12,12 +12,9 @@
     stroke: mix( $gray-light, $gray-lighter, 70% );
   }
 
-  /*
-  .axis .tick:first-child line{
-    stroke: $gray-dark;
-    stroke-width: 2px;
+  .axis.y .domain{
+    stroke: none;
   }
-  */
 
   .axis text{
     fill: $text-color;
@@ -30,7 +27,28 @@
   }
 
   path.area{
+    opacity: 0.8;
     @include transition( opacity 0.3s ease-out );
+
+    &.hover{
+      opacity: 0.6;
+    }
+  }
+
+  .line{
+    fill: none;
+    stroke-width: 2px;
+  }
+
+  .point{
+    stroke-width: 0;
+    stroke-opacity: 0.7;
+    stroke: white;
+    @include transition( all 0.3s ease-out );
+
+    &.hover{
+      stroke-width: 1px;
+    }
   }
 }
 
@@ -42,7 +60,7 @@
     display: inline-block;
     color: $text-color;
     font-size: 0.875em;
-    font-weight: $font-weight-300;
+    font-weight: $font-weight-400;
     padding: 0 5px;
     margin-right: 5px;
     margin-bottom: 4px;
@@ -50,7 +68,9 @@
     cursor: pointer;
 
     &:hover{
+      color: black;
       background: white;
+      //font-weight: $font-weight-400; 
     }
 
     span{
@@ -60,6 +80,44 @@
       border-radius: 5px;
       margin-top: 5px;
       margin-right: 5px;
+    }
+  }
+}
+
+
+.chart-container{
+  position: relative;
+
+  .popover{
+    top: auto;
+
+    .popover-title{
+      margin: 0;
+      padding-bottom: 0;
+      background: white;
+      border: none;
+      font-size: 1.375em;
+      line-height: 1.25em;
+      font-weight: 400;
+    }
+
+    .table{
+      margin-bottom: 0;
+
+      th{
+        font-weight: $font-weight-400;
+        text-align: right;
+      }
+
+      tr.active{
+        //font-size: 1.125em;
+        background: $brand-secondary;
+        font-weight: $font-weight-600;
+
+        th{
+          font-weight: $font-weight-600;
+        }
+      }
     }
   }
 }
