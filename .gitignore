@@ -7,3 +7,5 @@ fabfile.*
 presupuesto-*
 *config.codekit
 /.sass-cache
+budget_app/static/stylesheets/config.codekit
+.env
