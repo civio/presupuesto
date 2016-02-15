@@ -6,7 +6,7 @@ register = template.Library()
 
 
 def redirect_url(value, lang):
-    result = re.sub(r'^/[^/]+(/.+)$', r'/%s\1' % lang, value)
+    result = re.sub(r'^/[^/]+(/.*)$', r'/%s\1' % lang, value)
     return result
 
 
