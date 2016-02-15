@@ -113,6 +113,11 @@ function StackedAreaChart() {
 
     console.log('* StackedAreaChart.draw', _this.data);
 
+    _this.svg.append('rect')
+      .attr('class', 'bkg-rect')
+      .attr('width', _this.width)
+      .attr('height', _this.height);
+
     // Setup X Axis
     _this.svg.append('g')
       .attr('class', 'x axis')
@@ -159,6 +164,12 @@ function StackedAreaChart() {
         .attr('d', function(d){ return _this.line(d.values); })
         .attr('class', 'line')
         .style('stroke', function(d) { return _this.color(d.id); });
+
+    _this.lines.on('mouseover', function(d){
+        d3.select(this).classed('hover', true);
+        _this.setupPopover(d);
+        _this.$popover.css( _this.popoverPosition(d3.mouse(this)) ).show();
+      });
 
     // Setup Area Points
     _this.circles = _this.svg.selectAll('.points')
@@ -222,6 +233,12 @@ function StackedAreaChart() {
   };
 
   _this.setupPopover = function( data ){
+
+    if( _this.$popover.data('id') == data.id ) return;  // Avoid redundancy
+
+    console.log('setupPopover', data);
+
+    _this.$popover.data('id', data.id);
     _this.$popover.find('.popover-title').html( data.label );
     _this.$popover.find('.popover-content').html( '<table class="table table-condensed"><tbody>'+data.values.map(function(d){
       return '<tr class="year-'+d.x+'"><td>'+d.x+'</td><th>'+Math.ceil(d.y).toLocaleString('es-ES')+' €</th></tr>';

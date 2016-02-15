@@ -1,5 +1,10 @@
 .stacked-area-chart{
 
+  .bkg-rect{
+    fill: white;
+    cursor: auto;
+  }
+
   .axis path,
   .axis line {
     fill: none;
@@ -28,6 +33,7 @@
 
   path.area{
     opacity: 0.8;
+    cursor: pointer;
     @include transition( opacity 0.3s ease-out );
 
     &.hover{
