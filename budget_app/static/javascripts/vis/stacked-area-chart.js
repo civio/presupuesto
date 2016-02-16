@@ -38,6 +38,16 @@ function StackedAreaChart() {
   // Setup SVG Object
   _this.setup = function(selector){
 
+    _this.selector = selector;
+
+    console.log('* StackedAreaChart.setup', selector);
+
+    // Remove charts previously created
+    if( $(selector+' .stacked-area-chart').size() > 0 ){
+      $(selector+' .stacked-area-chart').remove();
+      $(selector+' .stacked-area-chart-legend').remove();
+    }
+
     // Add legend
     _this.legend = d3.select(selector).append('div')
       .attr('class', 'stacked-area-chart-legend');
@@ -45,9 +55,29 @@ function StackedAreaChart() {
     // Setup Popover
     _this.$popover = $(selector).find('.popover');
 
+    // Add SVG
+    _this.svg = d3.select(selector).append('svg')
+        .attr('class', 'stacked-area-chart')
+      .append('g')
+        .attr('transform', 'translate(' + _this.margin.left + ',' + _this.margin.top + ')');
+
+    // Set dimensions & add resize event
+    setDimensions();
+    d3.select(window).on('resize', _this.resize);
+
+    return _this;
+  };
+
+  // Set Dimensions
+  var setDimensions = function(){
     // Setup width & height based on container
-    _this.width   = $(selector).width() - _this.margin.left - _this.margin.right;
-    _this.height  = 0.5*$(selector).width() - _this.margin.top - _this.margin.bottom;
+    _this.width   = $(_this.selector).width() - _this.margin.left - _this.margin.right;
+    _this.height  = 0.5*$(_this.selector).width() - _this.margin.top - _this.margin.bottom;
+
+    // Setup SVG dimensions
+    d3.select(_this.selector+' .stacked-area-chart')
+      .attr('width', _this.width + _this.margin.left + _this.margin.right)
+      .attr('height', _this.height + _this.margin.top + _this.margin.bottom);
 
     // Setup X & Y scale range
     _this.x.range([0, _this.width]);
@@ -55,22 +85,43 @@ function StackedAreaChart() {
 
     _this.xAxis.tickSize(-_this.height);
     _this.yAxis.tickSize(-_this.width);
+  };
 
-    // Add SVG
-    _this.svg = d3.select(selector).append('svg')
-        .attr('class', 'stacked-area-chart')
-        .attr('width', _this.width + _this.margin.left + _this.margin.right)
-        .attr('height', _this.height + _this.margin.top + _this.margin.bottom)
-      .append('g')
-        .attr('transform', 'translate(' + _this.margin.left + ',' + _this.margin.top + ')');
+  // Resize Event Handler
+  _this.resize = function(){
+    
+    if( parseInt(_this.svg.attr('width')) === $(_this.selector).width() ) return;
 
-    return _this;
+    setDimensions();
+    _this.update(0);
+
+    // Update Axis
+    _this.svg.select('.x.axis')
+      .attr('transform', 'translate(0,' + _this.height + ')')
+      .call(_this.xAxis);
+
+    _this.svg.select('.y.axis')
+      .call(_this.yAxis);
+
+    // Update background rect
+    _this.svg.select('.bkg-rect')
+      .attr('width', _this.width)
+      .attr('height', _this.height);
+
+    // Update nonexecuted overlay if exists
+    if( _this.budgetExecutionLastYear !== null ){
+      var budgetExecutionLastYearWidth = _this.years[_this.years.length-1] - (_this.years[_this.budgetExecutionLastYear]-1);
+      _this.svg.select('.nonexecuted-overlay')
+        .attr('height', _this.height)
+        .attr('width', _this.x(_this.years[budgetExecutionLastYearWidth]) )
+        .attr('x', _this.x(_this.years[_this.budgetExecutionLastYear]-1) );
+    }
   };
 
   // Setup Data
   _this.setData = function( _data, _years, _budgetStatuses ){
     
-    console.log('* StackedAreaChart.setData', _data);
+    console.log('* StackedAreaChart.setData', _data, _years, _budgetStatuses);
 
     // Setup Stack Data
     _this.data = _data.map(function(d){
@@ -124,7 +175,7 @@ function StackedAreaChart() {
     _this.y.domain([0, d3.max(vals)]);
 
     // Get Last Year with Execution
-    _this.budgetExecutionLastYear = _this.budgetExecutionLastYear(_budgetStatuses);
+    _this.budgetExecutionLastYear = getBudgetExecutionLastYear(_budgetStatuses);
 
     return _this;
   };
@@ -164,13 +215,13 @@ function StackedAreaChart() {
       .style('fill', function(d) { return _this.color(d.id); })
       .on('mouseover', function(d){
         d3.select(this).classed('hover', true);
-        _this.setupPopover(d);
-        _this.$popover.css( _this.popoverPosition(d3.mouse(this)) ).show();
+        setupPopover(d);
+        _this.$popover.css( popoverPosition(d3.mouse(this)) ).show();
       })
       .on('mouseout', function(){
         d3.select(this).classed('hover', false);
       })
-      .on('mousemove', _this.onMouseMove);
+      .on('mousemove', onMouseMove);
 
     _this.svg.on('mouseout', function(e){
       _this.svg.selectAll('.point').classed('hover', false);
@@ -201,8 +252,8 @@ function StackedAreaChart() {
 
     _this.lines.on('mouseover', function(d){
         d3.select(this).classed('hover', true);
-        _this.setupPopover(d);
-        _this.$popover.css( _this.popoverPosition(d3.mouse(this)) ).show();
+        setupPopover(d);
+        _this.$popover.css( popoverPosition(d3.mouse(this)) ).show();
       });
 
     // Setup Area Points
@@ -213,7 +264,7 @@ function StackedAreaChart() {
         .attr('class', 'area-points');
 
     _this.circles.selectAll('.point')
-      .data(function(d){ return _this.getPointsData(d); })
+      .data(function(d){ return getPointsData(d); })
       .enter().append('circle')
       .attr('class', 'point')
       .attr('transform', function(d){ return 'translate('+_this.x(d.x)+','+_this.y(d.y0+d.y)+')'; })
@@ -240,7 +291,7 @@ function StackedAreaChart() {
         .on('click', function(d){
           var val = d3.select(this).classed('inactive');
           d3.select(this).classed('inactive', !val);
-          _this.updateDataActive(d.id, val);
+          updateDataActive(d.id, val);
           _this.update();
         })
         .append('span')
@@ -251,30 +302,33 @@ function StackedAreaChart() {
   };
 
   // Upate Elements 
-  _this.update = function(){
+  _this.update = function( transitionDuration ){
+
+    // Set default transition duration value to 500ms
+    transitionDuration = typeof transitionDuration !== 'undefined' ? transitionDuration : 500;
 
     // Update Areas Paths
     _this.areas.data( _this.stack(_this.stackData) );
     _this.areas.selectAll('.area')
-      .transition().ease('cubic-out').duration(500)
+      .transition().ease('cubic-out').duration(transitionDuration)
       .attr('d', function(d) { return _this.area(d.values); });
 
     // Update Areas Lines
     _this.lines.data( _this.stackData )
-      .transition().ease('cubic-out').duration(500)
+      .transition().ease('cubic-out').duration(transitionDuration)
       .style('opacity', function(d){ return (d.active) ? 1 : 0; })
       .attr('d', function(d){ return _this.line(d.values); });
 
     // Update Area Points
     _this.circles.data( _this.stackData );
     _this.circles.selectAll('.point')
-      .transition().ease('cubic-out').duration(500)
+      .transition().ease('cubic-out').duration(transitionDuration)
       .style('opacity', function(d){ return (d.y !== 0) ? 1 : 0; })
       .attr('transform', function(d){ return 'translate('+_this.x(d.x)+','+_this.y(d.y0+d.y)+')'; });
   };
 
   // Mouse Move Event
-  _this.onMouseMove = function(){
+  var onMouseMove = function(){
 
     var xPos  = d3.mouse(this)[0],
         w     = _this.width /( _this.x.domain()[1] - _this.x.domain()[0] ),
@@ -295,18 +349,18 @@ function StackedAreaChart() {
       });
     }
 
-    _this.$popover.css( _this.popoverPosition(d3.mouse(this)) );
+    _this.$popover.css( popoverPosition(d3.mouse(this)) );
   };
 
   // Setup Popover Content
-  _this.setupPopover = function( data ){
+  var setupPopover = function( data ){
 
     if( _this.$popover.data('id') == data.id ) return;  // Avoid redundancy
 
     _this.$popover.data('id', data.id);
     _this.$popover.find('.popover-title').html( data.label );
     _this.$popover.find('.popover-content').html( '<table class="table table-condensed"><tbody>'+data.values.map(function(d){
-      return (d.y > 0) ? '<tr class="year-'+d.x+'"><td>'+d.x+'</td><th>'+Math.ceil(d.y).toLocaleString('es-ES')+' €</th></tr>' : '';
+      return (d.y > 0) ? '<tr class="year-'+d.x+'"><td>'+d.x+'</td><th>'+(d.y*0.01).toLocaleString('es-ES', {maximumFractionDigits: 2, minimumFractionDigits: 2})+' €</th></tr>' : '';
     }).join('')+'</tbody></table>' );
     if( _this.currentYear ){
       _this.$popover.find('.popover-content .table tr.year-'+_this.years[_this.currentYear]).addClass('active');
@@ -314,7 +368,7 @@ function StackedAreaChart() {
   };
 
   // Setup Popover Position
-   _this.popoverPosition = function( _mouse ){
+  var popoverPosition = function( _mouse ){
     return {
       'bottom': _this.height+_this.margin.top+_this.margin.bottom-_mouse[1]+10,
       'left': _mouse[0]+_this.margin.left-(_this.$popover.width()*0.5)
@@ -322,7 +376,7 @@ function StackedAreaChart() {
   };
 
   // Update Active State
-  _this.updateDataActive = function( _id, _value){
+  var updateDataActive = function( _id, _value){
 
     // Get area to update
     var areaData = _this.stackData.filter(function(d){ return d.id == _id; })[0];
@@ -337,9 +391,9 @@ function StackedAreaChart() {
   };
 
 
-   // Auxiliar Methods
+  // Auxiliar Methods
 
-  _this.getPointsData =  function( _data ) {
+  var getPointsData =  function( _data ) {
     return _data.values.map(function(d){
       d.id = _data.id;    // Add breakdown id to point data
       return d;
@@ -349,7 +403,7 @@ function StackedAreaChart() {
     });
   };
 
-  _this.budgetExecutionLastYear = function( _budgetStatuses ){
+  var getBudgetExecutionLastYear = function( _budgetStatuses ){
     var status = null, i = 0;
 
     while( i < _this.years.length || status === null ){

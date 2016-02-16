@@ -1,4 +1,5 @@
-function BudgetStackedChart(selector, theStats, i18n) {
+function BudgetStackedChart(theSelector, theStats, i18n) {
+  var selector = theSelector;
   var stats = theStats;
   var budgetStatuses = {};
   var _ = i18n;
@@ -19,7 +20,7 @@ function BudgetStackedChart(selector, theStats, i18n) {
   // Formatting functions
   var formatSPercent = d3.format("+.2%");
   var formatSPercentage = function(d) { return formatSPercent(d).replace(".",","); };
-  var formatPercent = d3.format(".2%");
+  var formatPercent = d3.format("%");
   var formatPercentage = function(d) { return formatPercent(d).replace(".",","); };
   var format = function(d) { return formatAmount(d); };
 
@@ -45,16 +46,9 @@ function BudgetStackedChart(selector, theStats, i18n) {
     return colors(d['id'].length == 1 ? Number(d['id']) : i);
   };
 
-  var width = $(selector).width();
-  var height = width / 2;
   var uiState;
 
   
-  console.log('BudgetStackedChart set chart');
-
-  var chart = new StackedAreaChart().setup(selector);
-  //chart.color = keyColor;
-
   function loadBreakdownField(breakdown, field) {
     // Pick the right dataset for each year: execution preferred over 'just' budget
     // TODO: This bit is duplicated in BudgetTreemap
@@ -121,6 +115,9 @@ function BudgetStackedChart(selector, theStats, i18n) {
     
     console.log(years);
 
+    var chart = new StackedAreaChart().setup(selector);
+    //chart.color = keyColor;
+
     chart.xAxis
         .tickValues( years )  // We make sure years only show up once in the axis
         .tickFormat( d3.format("d") );
@@ -170,6 +167,7 @@ function BudgetStackedChart(selector, theStats, i18n) {
     }
   };
 
+  /*
   // Build the html that will be shown in the SAG tooltip once a specific area and year are mousedOver
   function tooltipContent(key, x, y, e, graph) {
     var value = e.point[1];
@@ -185,4 +183,5 @@ function BudgetStackedChart(selector, theStats, i18n) {
     }
     return html;
   }
+  */
 }
