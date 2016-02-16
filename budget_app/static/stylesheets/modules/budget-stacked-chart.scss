@@ -88,9 +88,18 @@
       float: left;
       width: 10px;
       height: 10px;
+      border-width: 2px;
+      border-style: solid;
       border-radius: 5px;
       margin-top: 5px;
       margin-right: 5px;
+    }
+
+    &.inactive{
+      color: $gray-light;
+      span{
+        background: none !important;
+      }
     }
   }
 }
