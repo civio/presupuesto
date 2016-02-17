@@ -6,6 +6,10 @@ All notable changes to this project will be documented in this file
 - Version info API on /version.json
 - Add a default glossary to be loaded if the theme does not contain one
 - Add the option to extend the default glossary with the theme file
+- Extended options for load_budget: supports lists of years and languages
+- Enabled URL localization
+- Payment information can now be downloaded in CSV or XLS formats
+- Add variables for entity and data sources links in theme settings
 
 ### Changed
 - Google Analytics ID is now set via local\_settings
