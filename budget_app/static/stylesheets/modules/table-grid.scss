@@ -1,0 +1,12 @@
+.table-grid {
+  border: 1px solid $brand-secondary;
+  //border-radius: 0 0 8px 8px;
+  font-size: .75em; 
+  //margin: 0 0 1em;
+
+  .slick-header-column{
+    color: white;
+    line-height: 1.75em;
+    background: $brand-secondary;
+  }
+}

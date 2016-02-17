@@ -1,0 +1,30 @@
+// Policies Panel Downloads
+.panel-downloads{
+  @extend .panel;
+  @extend .panel-default;
+  border-color: $brand-secondary;
+  background: mix( $brand-secondary, white, 30% );
+  padding: $grid-gutter-width/2;
+  text-align: center;
+
+  > p{
+    margin-bottom: 0;
+    line-height: 1.5em;
+  }
+
+  a{
+    color: darken( $brand-secondary, 10% );
+    font-weight: $font-weight-600;
+    margin: 0 3px;
+    @include transition( color 0.3s ease-out );
+
+    &:hover{
+      color: $brand-secondary;
+      text-decoration: none;
+    }
+  }
+
+  b{
+    font-weight: $font-weight-600;
+  }
+}

@@ -1,0 +1,78 @@
+.form-search-glossary{
+  text-align: center;
+  margin: $grid-gutter-width 0;
+
+  .form-control{
+    min-width: 340px;
+    margin: 0;
+    border-color: $brand-secondary;
+  }
+
+  label{
+    margin-bottom: $grid-gutter-width/3;
+  }
+
+  .btn-default{
+    border-color: $brand-secondary;
+    background: $brand-secondary;
+    margin-top: -1px; 
+  }
+}
+
+.glossary-terms{
+  padding: 0;
+  margin: $grid-gutter-width $grid-gutter-width/2;
+
+  > tbody{
+    border-bottom: 1px solid $table-border-color;
+  }
+
+  h3,
+  h4{
+    font-size: 1.75em;
+    font-weight: $font-weight-400;
+    margin: $grid-gutter-width/2 0;
+
+    &:before{
+      color: $brand-secondary;
+      position: relative;
+      top: 2px;
+    }
+  }
+
+  .term-description{
+    font-size: 1.125em;
+    margin-bottom: $grid-gutter-width/2;
+
+    ul{
+      margin-top: 1em;
+
+      li{
+        margin-bottom: 0.25em;
+      }
+    }
+  }
+}
+
+.glossary-content{
+
+  .pagination-container{
+    text-align: center;
+    margin: $grid-gutter-width 0;
+  }
+}
+
+
+@media (min-width: $screen-sm-min) {
+
+  .form-search-glossary{
+    .form-control{
+      margin: 0 $grid-gutter-width/2;
+    }
+  }
+
+ .glossary-terms{
+    margin-left: $grid-gutter-width;
+    margin-right: $grid-gutter-width;
+  }
+}

@@ -1,0 +1,72 @@
+// Policies Header (Title + Tabs Menu)
+.policies-header{
+  
+  .container{
+    position: relative;
+  }
+
+  .page-title{
+    margin: 0;
+    padding: 1.5*$grid-gutter-width 0;
+  }
+
+  // Back Button
+  .history-back{
+    margin-top: $grid-gutter-width/2;
+    margin-bottom: 0;
+    text-align: center;
+
+    a{
+      display: inline-block;
+      padding: $grid-gutter-width/6 $grid-gutter-width/3;
+      color: $text-color;
+      font-size: 0.875em;
+      text-transform: uppercase;
+      font-weight: $font-weight-700;
+      border-left: 2px solid $brand-secondary;
+      background: mix( $brand-secondary, white, 20% );
+      @include transition( background 0.3s ease-out );
+
+      &:hover{
+        border-left-width: 3px;
+        background: mix( $brand-secondary, white, 50% );
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+// Policies Content
+.policies-content{
+  padding-bottom: 1px;
+}
+
+// Policies Graph
+.policies-graph{
+  @extend .panel;
+  position: relative;
+  background: $page-header-bg;
+  padding: $grid-gutter-width $grid-gutter-width/2 $grid-gutter-width/2;
+  margin: $grid-gutter-width 0 $grid-gutter-width/2;
+}
+
+
+@media (min-width: $screen-sm-min) {
+
+  .policies-header{
+
+    .history-back{
+      position: absolute;
+      bottom: -5px - $grid-gutter-width;
+      left: $grid-gutter-width/2;
+      margin: 0;
+      text-align: left;
+    }
+  }
+  
+  /*
+  .policies-graph{
+    padding-top: $grid-gutter-width;
+  }
+  */
+}

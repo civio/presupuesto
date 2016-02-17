@@ -1,0 +1,75 @@
+<p class="intro-text">{{ _('Puedes escoger el tipo de situación que mejor refleja tu realidad (<a href="#" id="scenario-1">piso pequeño en el casco antiguo</a>, <a href="#" id="scenario-2">piso de nueva construcción</a>, casa unifamiliar <a href="#" id="scenario-3">en el centro</a>, o <a href="#" id="scenario-4">en una urbanización</a>) o modificar cada uno de los elementos de forma independiente.')|safe }}</p>
+
+
+<form class="form-user-incomings" action="#" method="get">
+
+  <h3>{{ _('Impuestos') }}</h3>
+
+  <div class="row">
+    <div class="form-group">
+      <label for="select-house">{{ _('Inmueble') }}</label>
+      <select id="select-house" class="form-control">
+        <option value="0" type="text" selected="selected">{{ _('Piso de 80 m\u00B2 situado en la zona del mercado') }}</option>
+        <option value="1" type="text">{{ _('Piso de 110 m\u00B2 situado en el centro, nueva construcción') }}</option>
+        <option value="2" type="text">{{ _('Casa unifamiliar adosada en el centro del pueblo') }}</option>
+        <option value="3" type="text">{{ _('Casa unifamiliar aislada en urbanización') }}</option>
+      </select>
+    </div>
+    <div class="select-info">{{ _('IBI') }}: <span id="select-house-tax"></span></div>
+  </div>
+    
+  <div class="row">
+    <div class="form-group">
+      <label for="select-vehicle">{{ _('Vehículo') }}</label>
+      <select id="select-vehicle" class="form-control">
+        <option value="0" type="text" selected="selected">{{ _('Ninguno') }}</option>
+        <option value="1" type="text">{{ _('Coche pequeño') }}</option>
+        <option value="2" type="text">{{ _('Coche mediano/grande') }}</option>
+      </select>
+    </div>
+    <div class="select-info">{{ _('Impuesto a vehículos motorizados') }}: <span id="select-vehicle-tax"></span></div>
+  </div>
+    
+  <div class="row">
+    <div class="form-group">
+      <label for="select-extra-vehicle">{{ _('Vehículo adicional') }}</label>
+      <select id="select-extra-vehicle" class="form-control">
+        <option value="0" type="text" selected="selected">{{ _('Ninguno') }}</option>
+        <option value="1" type="text">{{ _('Coche pequeño') }}</option>
+        <option value="2" type="text">{{ _('Coche mediano/grande') }}</option>
+      </select>
+    </div>
+    <div class="select-info">{{ _('Impuesto a vehículos motorizados') }}: <span id="select-extra-vehicle-tax"></span></div>
+  </div>
+    
+  
+  <h3>{{ _('Tasas') }}</h3>
+
+  <div class="row">
+    <div class="form-group"> 
+      <label for="select-garbage">{{ _('Unidad familiar') }}</label>
+      <select id="select-garbage" class="form-control">
+        <option value="0" type="text" selected="selected">{{ _('Un adulto y dos menores') }}</option>
+        <option value="1" type="text">{{ _('Dos adultos y dos menores') }}</option>
+        <option value="2" type="text">{{ _('Dos adultos jubilados') }}</option>
+        <option value="3" type="text">{{ _('Familia numerosa') }}</option>
+      </select>
+    </div>
+    <div class="select-info">{{ _('Tasa de basuras') }}: <span id="select-garbage-tax"></span></div>
+  </div>
+
+  <div class="row">
+    <div class="form-group">
+      <label for="select-parking">{{ _('¿Tienes un vado?') }}</label>
+      <select id="select-parking" class="form-control">
+        <option value="0" type="text" selected="selected">{{ _('No') }}</option>
+        <option value="1" type="text">{{ _('Sí, comunitario') }}</option>
+        <option value="2" type="text">{{ _('Sí, privado') }}</option>
+      </select>
+    </div>
+    <div class="select-info">{{ _('Tasa') }}: <span id="select-parking-tax"></span></div>
+  </div>
+
+</form>
+
+<p id="tax-amount">{{ _('Contribuyes con un total de <b id="tax-amount-paid"></b> a los presupuestos del Ayuntamiento de Rubí')|safe }}.</p>

@@ -1,0 +1,87 @@
+// Body
+body{
+  overflow-x: hidden;
+  font-weight: $font-weight-400;
+}
+
+// Page Title
+.page-title{
+  margin: $grid-gutter-width 0;
+  font-size: 2.5em;
+  font-weight: $font-weight-300;
+  text-align: center;
+}
+
+// Lead
+.lead{
+  color: $gray;
+  font-size: 1.25em;
+  font-style: italic;
+}
+
+// Section Header
+.section-header{
+  background: $page-header-bg;
+
+  .page-title{
+    margin: 1.5*$grid-gutter-width 0;
+  }
+
+  .lead{
+    text-align: center;
+  }
+}
+
+// Graph No Data Alert
+.no-data-alert {   
+  position: absolute; 
+  top: 50%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 1.375em;
+  font-weight: $font-weight-700;
+}
+
+// Form Label
+label{
+  font-weight: $font-weight-600;
+}
+
+// Charts
+.chart-container{
+  position: relative;
+
+  .popover{
+    top: auto;
+
+    .popover-title{
+      margin: 0 $grid-gutter-width/2;
+      padding: 8px 0;
+      background: white;
+      border-color: mix( $gray-light, $gray-lighter, 25% );
+      font-size: 1.5em;
+      font-weight: $font-weight-300;
+      text-align: center;
+    }
+
+    .popover-content{
+      padding-bottom: $grid-gutter-width/2;
+      text-align: right;
+
+      .label{
+        font-size: 0.875em;
+        font-weight: $font-weight-400;
+      }
+    }
+  }
+}
+
+// jQuery UI
+.ui-widget {
+  font-family: $font-family-base; 
+  margin: 0 0 1.5em;
+}
+.ui-widget-content a {
+  color: $link-color;
+}

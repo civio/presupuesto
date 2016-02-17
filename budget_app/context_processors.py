@@ -1,3 +1,4 @@
+import project.settings as settings
 from local_settings import ENV
 from django.conf import settings
 
@@ -9,7 +10,6 @@ def cookies_url_processor(request):
 
 def show_options_processor(request):
     return {
-      # False by default if setting is not found
       'show_payments':            hasattr(settings, 'SHOW_PAYMENTS') and settings.SHOW_PAYMENTS,
       'show_tax_receipt':         hasattr(settings, 'SHOW_TAX_RECEIPT') and settings.SHOW_TAX_RECEIPT,
       'show_counties_and_towns':  hasattr(settings, 'SHOW_COUNTIES_AND_TOWNS') and settings.SHOW_COUNTIES_AND_TOWNS

@@ -1,0 +1,74 @@
+
+// Data sources
+.data-sources{
+  padding-bottom: $grid-gutter-width;
+  background: mix( $data-sources-color, white, 50% );
+
+  .data-sources-title{
+    color: $gray;
+    margin: $grid-gutter-width 0;
+    font-size: 1.125em;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: $font-weight-700;
+  }
+
+  .panel{
+    @extend .panel-default;
+    border-color: $data-sources-color;
+
+    .panel-heading{
+      background: $data-sources-color;
+    }
+
+    .panel-title {
+      color: mix( white, $data-sources-color, 95% );
+      font-size: 1em; 
+      text-transform: uppercase;
+    }
+  }
+
+  .source-list {
+    font-size: .875em; 
+    padding-left: $grid-gutter-width;
+    margin-bottom: $grid-gutter-width/6;
+    margin-bottom: $grid-gutter-width/2;
+
+    li{
+      margin-bottom: $grid-gutter-width/6;
+    }
+
+    a{
+      color: darken( $data-sources-color, 50% );
+    }
+
+    b{
+      font-weight: $font-weight-600;
+    }
+  }
+
+  .alert{
+    font-size: .875em;
+    margin-bottom: 0;
+    color: $gray;
+    background: mix( $data-sources-color, white, 20% );
+
+    .title{
+      margin-bottom: $grid-gutter-width/3;
+      font-weight: $font-weight-700;
+      text-transform: uppercase;
+    }
+
+    ul{
+      padding-left: $grid-gutter-width/2;
+    }
+
+    li{
+      margin-bottom: $grid-gutter-width/6;
+    }
+
+    b{
+      font-weight: $font-weight-600;
+    }
+  }
+}

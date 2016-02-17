@@ -1,18 +1,19 @@
 {% macro render_tab(title, category, additional_css, entity) %}
-<section role="region" class="tab-content {{additional_css}}" id='tab-{{category}}'>
-  <h1 class="tab-title">{{ title }}</h1>
+<div id="tab-{{category}}" class="tab-pane {{additional_css}}" role="tabpanel">
   <div class="totals-placeholder"></div>
   <div class="table-grid" id='{{category}}Grid'></div>
-
-  <p class="downloads">
-    {{ _('Descarga la tabla de') }} <b>{{title}}</b> en 
-    <a class="icon-file-excel" href="{{ url('budget_app.views.entity_payments', entity.slug, 'csv') }}">
-    <span class="file-info">CSV</span>
-    </a>
-    o
-    <a class="icon-file-excel" href="{{ url('budget_app.views.entity_payments', entity.slug, 'xls') }}">
-    Excel
-    </a>
-  </p>
-</section>
+  <div class="panel-downloads">
+    <p class="downloads">
+      <!-- TODO!!! We need to ad links to CSV/Excel files -->
+      {{ _('Descarga la tabla de') }} <b>{{title}}</b> en 
+      <a class="icon-file-excel" href="{{ url('budget_app.views.entity_payments', entity.slug, 'csv') }}">
+      <span class="file-info">CSV</span>
+      </a>
+      o
+      <a class="icon-file-excel" href="{{ url('budget_app.views.entity_payments', entity.slug, 'xls') }}">
+      Excel
+      </a>
+    </p>
+  </div>
+</div>
 {% endmacro %}

@@ -1,0 +1,148 @@
+.stacked-area-chart{
+
+  .bkg-rect{
+    fill: white;
+    cursor: auto;
+  }
+
+  .nonexecuted-overlay{
+    rect{
+      fill: white;
+      opacity: 0.5;
+      pointer-events: none; // Desactivate element as target of mouse events; 
+    }
+    text{
+      display: none;
+      font-size: 0.875em;
+      fill: $gray-light;
+      text-anchor: middle;
+      font-style: italic;
+    }
+  }
+
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: mix( $gray-light, $gray-lighter, 30% );
+    shape-rendering: crispEdges;
+  }
+
+  .axis.x path,
+  .axis.x line {
+    stroke: mix( $gray-light, $gray-lighter, 70% );
+  }
+
+  .axis.y .domain{
+    stroke: none;
+  }
+
+  .axis text{
+    fill: $text-color;
+    font-size: 0.875em;
+    font-weight: $font-weight-300;
+  }
+
+  .axis.x text{
+    font-weight: 400;
+  }
+
+  path.area{
+    opacity: 0.8;
+    cursor: pointer;
+    @include transition( opacity 0.3s ease-out );
+
+    &.hover{
+      opacity: 0.6;
+    }
+  }
+
+  .line{
+    fill: none;
+    stroke-width: 2px;
+    cursor: pointer;
+  }
+
+  .point{
+    stroke-width: 0;
+    stroke-opacity: 0.7;
+    stroke: white;
+    cursor: pointer;
+    @include transition( all 0.3s ease-out );
+
+    &.hover{
+      stroke-width: 1.5px;
+    }
+  }
+}
+
+.stacked-area-chart-legend{
+  margin-left: 80px;
+  margin-right: 20px;
+
+  .label{
+    display: inline-block;
+    color: $text-color;
+    font-size: 0.875em;
+    font-weight: $font-weight-400;
+    padding: 0 5px;
+    margin-right: 5px;
+    margin-bottom: 4px;
+    line-height: 20px;
+    cursor: pointer;
+
+    &:hover{
+      color: black;
+      background: white;
+      //font-weight: $font-weight-400; 
+    }
+
+    span{
+      float: left;
+      width: 10px;
+      height: 10px;
+      border-width: 2px;
+      border-style: solid;
+      border-radius: 5px;
+      margin-top: 5px;
+      margin-right: 5px;
+    }
+
+    &.inactive{
+      color: $gray-light;
+      span{
+        background: none !important;
+      }
+    }
+  }
+}
+
+
+.policy-breakdown .chart-container{
+  
+  .popover-content-year{
+    font-size: 1.125em;
+    color: $gray-light;
+    margin-bottom: 0;
+  }
+  .popover-content-value{
+    font-size: 1.25em;
+    margin-bottom: 5px;
+
+    b{
+      font-weight: $font-weight-600;
+    }
+  }
+  .popover-content .label{
+    font-size: 0.875em;
+    font-weight: $font-weight-400;
+  }
+}
+
+
+@media (min-width: $screen-sm-min) {
+  .stacked-area-chart{
+    .nonexecuted-overlay text{
+      display: block;
+    }
+  }
+}

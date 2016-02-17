@@ -1,0 +1,136 @@
+.search-content{
+
+  padding-top: $grid-gutter-width;
+
+  .table th{
+    font-weight: $font-weight-600;
+  }
+  
+  .alert{
+    display: inline-block;
+    font-size: 1.125em;
+    background: $page-header-bg;
+    margin-bottom: $grid-gutter-width/2;
+
+    b{
+      font-weight: $font-weight-600;
+    }
+  }
+
+  #form-search-controls{
+    padding: $grid-gutter-width/3 0;
+    margin-right: $grid-gutter-width/2;
+    margin-left: $grid-gutter-width/2;
+
+    label{
+      font-weight: $font-weight-400;
+    }
+
+    #year-dropdown{
+      font-weight: $font-weight-600;
+    }
+  }
+
+  .panel{
+    @extend .panel-default;
+    border-color: darken($page-header-bg, 10%);
+    margin-bottom: $grid-gutter-width;
+
+    .panel-heading{
+      background: $page-header-bg;
+
+      h3{
+        margin: $grid-gutter-width/3 0;
+
+        &:before{
+          color: $brand-secondary;
+        }
+      }
+    }
+
+    .panel-body{
+      padding: $grid-gutter-width/3 $grid-gutter-width/2 0;
+    }
+  }
+
+  .glossary-terms{
+    margin: 0;
+
+    h4{
+      font-size: 1.5em;
+    }
+
+    > tbody{
+      border-bottom: none;
+
+      > tr:first-child > td{
+        border-top: none;
+      }
+    }
+  }
+
+  .policy {
+    font-size: .75em;
+    margin: $grid-gutter-width/6 0;
+
+    a {
+      display: inline-block;
+      background: $gray-light;
+      color: white;
+      padding: $grid-gutter-width/6 $grid-gutter-width/3;
+      text-transform: uppercase;
+      font-weight: $font-weight-400;
+
+      &:hover{
+        background: $gray;
+        text-decoration: none;
+      }
+    }
+  }
+
+  .results-concepts{
+
+    th#inout,
+    [headers^="concept2"]{
+      text-align: right;
+    }
+
+    .concept-block {
+      font-weight: $font-weight-600;
+    }
+
+    .concept {
+      font-size: 1.125em; 
+      font-weight: $font-weight-600; 
+      //margin: 0 0 .25em;
+    }
+  
+    .programme {
+      display: block; 
+      font-size: .875em; 
+      font-style: italic; 
+      margin: 0 0 .5em;
+    }
+  
+    .date {margin: 0;}
+  }
+
+  .pagination-container{
+    text-align: center;
+    margin: $grid-gutter-width 0;
+  }
+}
+
+@media (min-width: $screen-sm-min) {
+
+  .search-content{
+
+    .alert{
+      margin-bottom: $grid-gutter-width;
+    }
+
+    #form-search-controls{
+      text-align: right;
+    }
+  }
+}

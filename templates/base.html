@@ -16,8 +16,12 @@
   {% load compress %}
 
   {% compress js %}
-  <script src="{{ STATIC_URL }}javascripts/jquery-1.8.3.min.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/jquery-2.2.0.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/jquery-migrate-1.2.1.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/jquery.ba-bbq.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/jquery.ba-hashchange.js"></script>
   <script src="{{ STATIC_URL }}javascripts/jquery.cookie.min.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/jquery.cookiebar.js"></script>
   <script src="{{ STATIC_URL }}javascripts/jquery.event.drag-2.0.min.js"></script>
   <script src="{{ STATIC_URL }}javascripts/underscore-1-5-2.min.js"></script>
   <script src="{{ STATIC_URL }}javascripts/numeral.min.js"></script>
@@ -30,11 +34,13 @@
   <script src="{{ STATIC_URL }}javascripts/grid_helpers.js"></script>
   <script src="{{ STATIC_URL }}javascripts/modernizr-2.6.3.min.js"></script>
   <script src="{{ STATIC_URL }}javascripts/respond.min.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/jquery.ba-bbq.min.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/bootstrap/bootstrap-modal.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/bootstrap/bootstrap-tooltip.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/bootstrap/bootstrap-popover.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/bootstrap/bootstrap-transition.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/bootstrap/collapse.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/bootstrap/dropdown.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/bootstrap/modal.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/bootstrap/tooltip.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/bootstrap/popover.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/bootstrap/tab.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/bootstrap/transition.js"></script>
   {% endcompress %}
 
   {% include 'shared/meta.html' %}
@@ -42,17 +48,9 @@
 </head>
 <body class="{{ page_css_class }}">
   {% include 'shared/header.html' %}
-  <form class="form-search hide-when-embedded" action="{{ url('budget_app.views.search') }}" method="get">
-    <div class="container-fluid">
-      <label for="q">{{ _('¿Buscas algo en concreto?') }}</label>
-      <input placeholder="{{ _('Escribe aquí tu término de búsqueda') }}" class="medium-f" name="q" id="q" type="text">
-      <button class="button button-3d black tupper icon-search" type="submit">{{ _('Buscar') }}</button>
-    </div>
-  </form>
+  {% include 'shared/form-search.html' %}
   <div class="content" role="main">
-    <div class="container-fluid">
-      {% block content %}{% endblock %} 
-    </div>
+    {% block content %}{% endblock %} 
   </div>
   {% include 'shared/footer.html' %}
 
@@ -87,6 +85,23 @@
   <script src="{{ STATIC_URL }}javascripts/select2.min.js"></script>
   <script src="{{ STATIC_URL }}javascripts/select2_locale_es.js"></script>
   {% endcompress %}
+
+  <!-- Cookies Bar Setup -->
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $.cookieBar({
+        message: "{{ _('Esta web utiliza cookies propias y de terceros para ofrecerles la mejor experiencia de usuario. Si continúan navegando, entendemos que autorizan el uso de estas cockies.') }}",
+        acceptText: 'Aceptar',
+        policyButton: true,
+        policyText: 'Más información',
+        {% if cookies_url %}
+        policyURL: '{{ cookies_url }}',
+        {% else %}
+        policyURL: '/politica-de-cookies',
+        {% endif %}
+      });
+    });
+  </script>
 
   {% block extra_javascript %}{% endblock %} 
 </body>

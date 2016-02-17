@@ -1,0 +1,89 @@
+<script>
+  $(function () {
+    var totalTaxPaid = 0;
+
+    // Display amount as expense per capita
+    function calculatePersonalTax(row, cell, value, columnDef, dataContext) {
+      if (value == null) return null;
+      var percentage = value / columnValueExtractor(dataContext.root, columnDef);
+      return formatDecimal(percentage * totalTaxPaid) + " €";
+    }
+
+    function formatTaxAmount(value) {
+      return numeral(value).format( '0,0.00', Math.floor ) + " €";
+    }
+
+    function getHouseTaxPaid() {
+      return [333.91, 754.22, 1266.23, 1732.10][$("#select-house").val()];
+    }
+    function getVehicleTaxPaid() {
+      return [0, 68.16, 143.88][$("#select-vehicle").val()];
+    }
+    function getExtraVehicleTaxPaid() {
+      return [0, 68.16, 143.88][$("#select-extra-vehicle").val()];
+    }
+    function getGarbageTaxPaid() {
+      return [112.50, 115.09, 109.86, 94.18][$("#select-garbage").val()];
+    }
+    function getParkingTaxPaid() {
+      return [0, 24.96, 163.52][$("#select-parking").val()];
+    }
+
+    function redrawGrid() {
+      var houseTaxPaid = getHouseTaxPaid();
+      $('#select-house-tax').text(formatTaxAmount(houseTaxPaid));
+
+      var vehicleTaxPaid = getVehicleTaxPaid();
+      $('#select-vehicle-tax').text(formatTaxAmount(vehicleTaxPaid));
+
+      var extraVehicleTaxPaid = getExtraVehicleTaxPaid();
+      $('#select-extra-vehicle-tax').text(formatTaxAmount(extraVehicleTaxPaid));
+
+      var garbageTaxPaid = getGarbageTaxPaid();
+      $('#select-garbage-tax').text(formatTaxAmount(garbageTaxPaid));
+
+      var parkingTaxPaid = getParkingTaxPaid();
+      $('#select-parking-tax').text(formatTaxAmount(parkingTaxPaid));
+
+      totalTaxPaid = houseTaxPaid + vehicleTaxPaid + extraVehicleTaxPaid + garbageTaxPaid + parkingTaxPaid;
+      $("#tax-amount-paid").text(formatTaxAmount(totalTaxPaid));
+      // XXX: window.location.hash = 'ingresos='+getIncomeInEuros();
+
+      createBudgetGrid("#myGrid", gridData, [
+        {field: "label", name: '{{ _("Política") }}', formatter: policyLinkFormatter, width: 300},
+        {
+          field: 'expense',
+          name: '{{ _("Gasto") }}',
+          formatter: calculatePersonalTax, 
+          headerCssClass: 'slick-header-right',
+          getter: getBreakdownValue, 
+          column: '{{ latest_budget.name() }}',
+          year: breakdown.years['{{ latest_budget.name() }}']
+        }
+      ]);
+    }
+
+    function setStatus(house, vehicle, extraVehicle, garbage, parking) {
+      $('#select-house').val(house);
+      $('#select-vehicle').val(vehicle);
+      $('#select-extra-vehicle').val(extraVehicle);
+      $('#select-garbage').val(garbage);
+      $('#select-parking').val(parking);
+    }
+    $("#scenario-1").click(function() { setStatus(0, 1, 2, 0, 0); redrawGrid(); return false; });
+    $("#scenario-2").click(function() { setStatus(1, 1, 2, 1, 1); redrawGrid(); return false; });
+    $("#scenario-3").click(function() { setStatus(2, 0, 0, 2, 0); redrawGrid(); return false; });
+    $("#scenario-4").click(function() { setStatus(3, 1, 2, 3, 2); redrawGrid(); return false; });
+
+    var breakdown = {{ breakdown.to_json( labels=descriptions['functional'] )|safe }};
+    var gridData = breakdownToTable(breakdown);
+
+    // var state = $.deparam.fragment();
+    // if ( state['ingresos'] ) {
+    //   $('#ingresos').val(state['ingresos']);
+    // }
+
+    $("select").change(redrawGrid);
+    redrawGrid();
+  })
+</script>

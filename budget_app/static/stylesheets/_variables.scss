@@ -1,0 +1,143 @@
+
+// Colors
+// -------------
+
+$gray-base:             #000 !default;
+$gray-darker:           lighten($gray-base, 13.5%) !default; // #222
+$gray-dark:             lighten($gray-base, 20%) !default;   // #333
+$gray:                  lighten($gray-base, 33.5%) !default; // #555
+$gray-light:            lighten($gray-base, 46.7%) !default; // #777
+$gray-lighter:          lighten($gray-base, 93.5%) !default; // #eee
+$gray-lightest:         lighten($gray-base, 96%) !default;
+
+$text-color:            #414141;
+
+$brand-primary:         #d32e12;
+$brand-secondary:       #49647A;
+$brand-terciary:        #DDCFC1;
+
+/*
+$brand-primary:         #3F1712;
+$brand-secondary:       #717F4C;
+$brand-terciary:        #FCEEAE;
+*/
+
+$link-color:            $brand-primary;
+$link-hover-color:      $link-color;
+$link-hover-decoration: underline;
+
+
+// Typography
+// -------------
+
+$font-family-sans-serif:  "Source Sans Pro", Helvetica, Arial, sans-serif;
+$font-family-serif:       Georgia, "Times New Roman", Times, serif;
+$font-family-base:        $font-family-sans-serif;
+
+$font-weight-300:         300;
+$font-weight-400:         400;
+$font-weight-600:         600; 
+$font-weight-700:         700; 
+
+$headings-font-weight:    $font-weight-600;
+
+// Container sizes
+// -------------
+
+$grid-gutter-width:        30px;
+
+// Large screen / wide desktop
+$container-large-desktop:  (1050px + $grid-gutter-width);
+
+
+// Main Entity Logo
+// -------------
+
+$main-entity-logo-width:   200px;
+$main-entity-logo-height:  200px;
+
+
+// Navbar
+// -------------
+
+$navbar-border-radius: 0;
+
+// Point at which the navbar becomes uncollapsed
+// $grid-float-breakpoint: 992px;  // $screen-md
+
+$dvmi-menu-length: 5;  // Number of items in main menu
+
+// Navbar background color
+$navbar-default-bg: $brand-primary;
+
+// Navbar options text color
+$dvmi-navbar-color: mix( $brand-primary, white, 10% );
+
+
+// Popover
+// --------------
+
+$popover-max-width:                   200px;
+
+$popover-border-color:                transparent;
+$popover-fallback-border-color:       transparent;
+
+$popover-arrow-width:                 6px;
+
+$popover-arrow-outer-color:           white;
+$popover-arrow-outer-fallback-color:  white;
+
+
+// Pagination
+// --------------
+
+$pagination-color:                     $brand-secondary;
+$pagination-hover-color:               $brand-secondary;
+
+$pagination-active-bg:                 $brand-secondary;
+$pagination-active-border:             $brand-secondary;
+
+
+// Footer
+// --------------
+
+$footer-color: white;
+$footer-bg: $brand-primary;
+
+
+// Search Form
+// --------------
+
+$search-form-bg: $brand-terciary;
+
+
+// Page Header
+// --------------
+
+$page-header-bg:            mix( $brand-secondary, white, 8% );
+$page-header-border-color:  mix( $brand-secondary, white, 70% );
+
+
+// Budget Stream
+// --------------
+
+$budget-stream-color: $brand-secondary;
+
+
+// Data Panel
+// --------------
+
+$data-panel-color: $brand-secondary;
+
+
+// Data Sources
+// --------------
+
+$data-sources-color: $brand-terciary;
+
+
+// Sankey Viz
+// --------------
+
+$sankey-budget-color:     saturate( lighten( $brand-secondary, 12% ), 10% );                          // #1F77B4;
+$sankey-execution-color:  saturate( lighten( adjust-hue( $sankey-budget-color, 100% ), 10% ), 10% );  //#E377C2;

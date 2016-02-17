@@ -1,0 +1,155 @@
+.home-content{
+
+  text-align: center;
+
+  // Home Intro Text
+  .home-intro{
+    padding: 1.5*$grid-gutter-width $grid-gutter-width/2;
+
+    h2{
+      margin: 0.5em 0;
+      font-size: 2em;
+      line-height: 1.25em;
+    }
+  }
+
+  // Home Expense Examples
+  .expense-examples{
+    padding:  0 $grid-gutter-width/2 1.5*$grid-gutter-width;
+
+    .title{
+      color: $gray;
+      padding-bottom: 0.5em;
+      margin-bottom: $grid-gutter-width/3;
+      font-size: 0.75em;
+      font-weight: $font-weight-600;
+      letter-spacing: 0.1em;
+      text-align: center;
+      text-transform: uppercase;
+      border-bottom: 1px solid $gray-lighter;
+    }
+
+    ul{
+      padding: 0;
+      margin: 0;
+    }
+
+    li{
+      list-style: none;
+      @extend .well;
+      @extend .well-sm;
+      @include box-shadow( none );
+      margin-bottom: $grid-gutter-width/3;
+      background: $page-header-bg;
+      border: none;
+      border-radius: $border-radius-base;
+
+      a{
+        @include transition( color 0.3s ease-out );
+
+        &:hover{
+          color: $text-color;
+          text-decoration: none;
+        }
+      }
+
+      b{
+        font-weight: $font-weight-600;
+      }
+    }
+  }
+
+  // Home Options
+  .options{
+    padding-top: $grid-gutter-width;
+    background: $page-header-bg;
+
+    .option{
+
+      // 3 options -> 3 columns
+      @if $dvmi-menu-length == 4 {
+        @extend .col-sm-4;
+      }
+      // 4 options / 2 options -> 2 columns
+      @else {
+        @extend .col-sm-6;
+      }
+
+      @if $dvmi-menu-length == 5 {
+        &:nth-child(odd){
+          clear: both;
+        }
+      }
+
+      > div{
+        @extend .panel;
+        @extend .panel-default;
+        padding: $grid-gutter-width/2;
+        margin-bottom: $grid-gutter-width;
+        border: none;
+        text-align: center;
+
+        .icon{
+          color: $brand-secondary;
+          height: 64px;
+          margin: $grid-gutter-width/2 0;
+        }
+
+        h3{
+          font-size: 2em;
+          margin: $grid-gutter-width/2 0 $grid-gutter-width/3;
+        }
+
+        .desc{
+          color: $gray;
+          font-size: 1.125em;
+          margin: 0 auto $grid-gutter-width/2;
+          max-width: 360px;
+        }
+
+        .btn{
+          margin: $grid-gutter-width/3 0;
+
+          .icon-plus:before {
+            position: relative;
+            top: 1px;
+            margin-right: $grid-gutter-width/3; 
+          }
+        }
+
+        &:hover{
+
+        }
+      }
+
+      .option-payments .icon{
+        font-size: 0.875em;
+      }      
+    }
+  }
+
+  @media (min-width: $screen-sm-min) {
+    
+    .home-intro{
+      padding-left: $grid-gutter-width;
+    }
+
+    .expense-examples{
+      padding-top: 1.5*$grid-gutter-width;
+      padding-right: $grid-gutter-width;
+
+      li b{
+        display: block;
+      }
+    }
+  }
+
+  @media (min-width: $screen-md-min) {
+    
+    text-align: left;
+
+    .expense-examples li b{
+      float: right;
+    }
+  }
+}

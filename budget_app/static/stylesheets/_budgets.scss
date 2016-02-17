@@ -1,0 +1,97 @@
+
+// Budget Intro
+.budget-intro {
+  display: none;
+  background: $page-header-bg;
+
+  .budget-step {
+    @extend .panel;
+    @extend .panel-default;
+    margin-bottom: $grid-gutter-width;
+    border-color: darken( $budget-stream-color, 10% ); 
+    text-align: left;
+
+    h3{
+      margin: 0;
+      padding: $grid-gutter-width/3 $grid-gutter-width/2;
+
+      span {
+        display: block;
+        color: lighten( $budget-stream-color, 10% );
+        font-size: 3.5em;
+        background-position: right center;
+        background-repeat: no-repeat;
+      }
+
+      b {
+        display: block;
+        color: $gray;
+        font-size: .875em;
+        padding: $grid-gutter-width/6 0;
+        font-weight: $font-weight-600;
+      }
+    }
+
+    &.budget-step-1 h3 span {
+      background-image: url(../assets/busget-stream-1.png);
+    }
+    &.budget-step-2 h3 span {
+      background-image: url(../assets/busget-stream-2.png);
+    }
+    &.budget-step-3 h3 span {
+      background-image: url(../assets/busget-stream-3.png);
+    }
+
+    .desc {
+      color: mix( white, $budget-stream-color, 90% );
+      background: darken( $budget-stream-color, 10% );
+      font-size: .875em;
+      margin: 0;
+      padding: $grid-gutter-width/2;
+      font-weight: $font-weight-300;
+
+      b{
+        font-weight: $font-weight-600;
+      }
+    }
+  }
+}
+
+
+// Budgets Sankey Viz
+.budget-viz{
+
+  .sankey-container{
+    margin: 0;
+  }
+}
+
+
+// Budgets Data Panel
+.budget-data{
+  margin-top: $grid-gutter-width;
+  background: $page-header-bg;
+
+  .data-panel{
+    margin-bottom: $grid-gutter-width/2;
+  }
+}
+
+
+@media (min-width: $screen-sm-min) {
+
+  .budget-intro {
+    display: block;
+  }
+}
+
+@media (min-width: $screen-md-min) {
+
+  .budget-viz{
+
+    .sankey-container{
+      margin: -$grid-gutter-width $grid-gutter-width 0;
+    }
+  }
+}
+

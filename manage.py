@@ -6,7 +6,7 @@ from subprocess import call
 
 def compile_less(theme):
     filepath = ''.join([theme, '/static/stylesheets/main.{}'])
-    call(['lessc',filepath.format('less'),filepath.format('css')])
+    call(['sass',filepath.format('scss'),filepath.format('css')])
 
 
 if __name__ == "__main__":
@@ -28,7 +28,7 @@ if __name__ == "__main__":
         compile_less(ENV['THEME'])
 
         # Add your watch
-        for filepath in formic.FileSet(include="**/*.less"):
+        for filepath in formic.FileSet(include="**/*.scss"):
             server.watch(filepath, lambda: compile_less(ENV['THEME']))
         for filepath in formic.FileSet(include=["**/*.html", "**/*.js"]):
             server.watch(filepath)

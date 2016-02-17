@@ -12,6 +12,10 @@ ENV = {
   # If unset, Civio's one will be used
 #  'GA_CODE': '',
 
+  # Cookies warning url
+  # If unset, default one will be used
+#  'COOKIES_URL': ''
+
   # Database
   'DATABASE_NAME': 'presupuestos',
   'DATABASE_USER': '',

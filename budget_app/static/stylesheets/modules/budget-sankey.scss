@@ -1,0 +1,77 @@
+// Budget Sankey Chart Styles
+
+.sankey{
+
+  .link,
+  .link-execution{
+    @include transition( stroke-opacity 0.3s ease-out );
+  }
+
+  .link.with-data {
+    fill: none;
+    stroke: $sankey-budget-color;
+    stroke-opacity: .5;
+  }
+
+  .legend-budget circle{
+    fill: $sankey-budget-color;
+    opacity: .5;
+  }
+
+  .link-execution.with-data {
+    fill: none;
+    stroke: $sankey-execution-color;
+    stroke-opacity: .5;
+  }
+
+  .legend-execution circle{
+    fill: $sankey-execution-color;
+    opacity: .5;
+  }
+
+  .link.no-data,
+  .link-execution.no-data {
+    fill: none;
+    stroke: $sankey-budget-color;
+    stroke-opacity: .5;
+  }
+
+  .link:hover,
+  .node:hover,
+  .link-execution:hover {
+    stroke-opacity: .9;
+    cursor:pointer;
+  }
+
+  .legend-item text,
+  .node text {
+    pointer-events: none;
+    font-weight: $font-weight-600;
+    font-size: 1em;
+  }
+
+  .legend-note {
+    circle{
+      fill: none;
+    }
+    text{
+      font-weight: $font-weight-400 !important;
+    }
+  }
+
+  .popover-content{
+
+    .budgeted{
+      color: $sankey-budget-color;
+    }
+    .executed{
+      color: $sankey-execution-color;
+    }
+
+    b{
+      font-size: 1.25em;
+      font-weight: $font-weight-600;
+      margin-bottom: $grid-gutter-width/3;
+    }
+  }
+}

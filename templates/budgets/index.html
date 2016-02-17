@@ -1,57 +1,95 @@
 {% extends 'base.html' %}
+
 {% block extra_javascript %}
 <script src="{{ STATIC_URL }}javascripts/vis/d3.v3.min.js"></script>
 <script src="{{ STATIC_URL }}javascripts/vis/d3.sankey.js"></script>
 <script src="{{ STATIC_URL }}javascripts/vis/budget-sankey.js"></script>
 {% endblock %}
-{% block content %}
-<h1 class="page-title">{{ _('El recorrido de mis impuestos') }}</h1>
 
+{% block content %}
+
+<!-- Budget Stream Intro -->
 {% include 'budgets/budgets_intro.html' %}
 
-<h1 class="page-title" style="margin-top: 50px">{{ _('Ingresos y gastos en el Gobierno de Aragón') }}</h1>
+<!-- Budget Sankey Viz -->
+<div class="budget-viz">
+  <div class="container">
+    <h2 class="page-title">{{ _('Ingresos y gastos en el Gobierno de Aragón') }}</h2>
 
-<div class="sankey" id="chart" style="margin-top: -10px"></div>
+    <div class="sankey-container">
+      <div class="sankey chart-container" id="chart">
+        <div id="pop-up" class="popover top" role="tooltip">
+          <div class="arrow"></div>
+          <h4 class="popover-title"></h4>
+          <div class="popover-content"></div>
+        </div>
+      </div>
 
-<div class="data-controllers">
-  <p class="title tcenter">{{ _('Elige año') }}</p>
-  <div class="layout-slider">
-    <input id="year-selection" type="slider" name="price" value="20" />
-  </div>
-</div>
-
-<div id="pop-up">
-  <div id="pop-up-title"></div>
-  <div id="pop-up-content"></div>
-</div>
-
-<div id="budgets-totals">
-  <h1 class="page-title" id="indicadores">{{ _('Ingresos y gastos totales en') }} <span id="totals-year"></span></h1>
-  <div id="totals_panel">
-    <div class="total">
-      <span class="main-label">{{ _('Ingresos totales') }}</span> <b id="total-incomes-executed"></b>
-      <br/>
-      <span class="secondary-label">{{ _('Presupuestado') }}</span> <b id="total-incomes-budgeted" class="secondary-amount"></b>
-    </div>
-    <div class="total">
-      <span class="main-label">{{ _('Gastos totales') }}</span> <b id="total-expenses-executed"></b>
-      <br/>
-      <span class="secondary-label">{{ _('Presupuestado') }}</span> <b id="total-expenses-budgeted" class="secondary-amount"></b>
+      <div class="data-controllers">
+        <p class="title">{{ _('Elige año') }}</p>
+        <div class="layout-slider">
+          <input id="year-selection" type="slider" name="price" value="20" />
+        </div>
+      </div>
     </div>
   </div>
 </div>
 
-{% if not include_financial_chapters %}
-<p class="footnote tcenter">{{ _('Se incluyen únicamente los gastos e ingresos no financieros, es decir, capítulos I al VII.') }}</p>
-{% endif %}
+<!-- Budget Data -->
+<div id="budgets-totals" class="budget-data">
+  <div class="container">
 
-{% include 'budgets/budgets_indicators.html' %}
+    <h2 class="page-title" id="indicadores">{{ _('Datos presupuestarios en') }} <span id="totals-year"></span></h2>
+    
+    <div id="totals-panel" class="data-panel">
 
-{% include 'shared/social_sharing.html' %}
+      <!-- Budget Total Incomes -->
+      <div class="panel total-incomes">
+        <div class="panel-title">{{ _('Ingresos totales') }}</div>
+        <div class="panel-content">
+          <p class="total-executed">
+            <span>{{ _('Ejecutado') }}</span> <b id="total-incomes-executed"></b>
+          </p>
+          <p class="total-budgeted">
+            <span>{{ _('Presupuestado') }}</span> <b id="total-incomes-budgeted"></b>
+          </p>
+        </div>
+      </div>
 
+      <!-- Budget Total Expenses -->
+      <div class="panel total-expenses">
+        <div class="panel-title">{{ _('Gastos totales') }}</div>
+        <div class="panel-content">
+          <p class="total-executed">
+            <span>{{ _('Ejecutado') }}</span> <b id="total-expenses-executed"></b>
+          </p>
+          <p class="total-budgeted">
+            <span>{{ _('Presupuestado') }}</span> <b id="total-expenses-budgeted"></b>
+          </p>
+        </div>
+      </div>
+
+      <!-- Budget Indicators -->
+      {% include 'budgets/budgets_indicators.html' %}
+
+    </div>
+
+    <p class="text-center"><small>{{ _('Cantidades actualizadas con la inflación a fecha 1 de enero de') }} {{ last_inflation_year }}. {{ _('El cálculo de los indicadores utiliza las cifras del presupuesto aprobado') }}.</small></p>
+    {% if not include_financial_chapters %}
+    <p class="text-center"><small>{{ _('Se incluyen únicamente los gastos e ingresos no financieros, es decir, capítulos I al VII.') }}</small></p>
+    {% endif %}
+
+    <!-- Social Sharing Buttons -->
+    {% include 'shared/social_sharing.html' %}
+  </div>
+</div>
+
+<!-- Data Sources Panel -->
 {% include 'shared/data_sources.html' %}
 
+
 {% include 'shared/policy_paths.html' %}
+
 <script>
   $(function() {
     function redraw() {

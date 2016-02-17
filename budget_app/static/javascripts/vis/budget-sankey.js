@@ -10,10 +10,11 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
   var incomeNodes = [];
   var expenseNodes = [];
 
+  var selector;
   var svg;
   var sankey;
   var uiState;
-  var popUp = $("div#pop-up");
+  var $popup = $("#pop-up");
   var color = d3.scale.category20();
 
   var transitionLength = 1000;
@@ -165,7 +166,9 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
   };
 
   // Visualize the data with D3
-  this.draw = function(selector, newUIState) {
+  this.draw = function(theSelector, newUIState) {
+
+    selector = theSelector;
     uiState = newUIState;
 
     var margin = {top: 1, right: 1, bottom: 25, left: 1},
@@ -328,34 +331,40 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
   }
   
   function setupCallbacks() {
-    this.on("mouseover", mover)
-        .on("mouseout", mout)
+    this.on("mouseover", onMouseOver)
+        .on("mouseout", onMouseOut)
+        .on("mousemove", onMouseMove)
         .on("click", click);
   }
 
-  function mover(d) {
-    d.name ? $("#pop-up-title").html(d.name) : (d.source.name ? $("#pop-up-title").html(d.source.name) : $("#pop-up-title").html(d.target.name));
+  function onMouseOver(d) {
+    d.name ? $popup.find(".popover-title").html(d.name)
+           : (d.source.name ? $popup.find(".popover-title").html(d.source.name) : $popup.find(".popover-title").html(d.target.name));
 
     if ( d.missingData ) {
-      $("#pop-up-content").html('');
+      $popup.find(".popover-content").html('');
     } else {  // Flow
       // TODO: Display actual income/expense on nodes, not just flows
-      $("#pop-up-content").html((d.budgeted ? _['budgeted']+': '+formatAmount(d.budgeted)+'<br/>' : '') +
-                                (d.actual ? _['executed']+': '+formatAmount(d.actual) : '') );
+      $popup.find(".popover-content").html((d.budgeted ? '<span class="budgeted">'+_['budgeted']+'</span><br/><b>'+formatAmount(d.budgeted)+'</b><br/>' : '') +
+                                (d.actual ? '<span class="executed">'+_['executed']+'</span><br/><b>'+formatAmount(d.actual)+'</b>' : '') );
     }
 
-    var popLeft = d3.event.pageX - popUp.width() / 2;
-    var popTop = d3.event.pageY - popUp.height() - 15;
-    popLeft = (popLeft < 0 ) ? 0 : popLeft;
-    if (popLeft+popUp.width() < $('body').width()) {
-      popUp.css({"left":popLeft,"top":popTop}).show();
-    } else {
-      popUp.css({"rigth":0,"top":popTop}).show();
-    }
+    $popup.show();
   }
   
-  function mout(d) {
-    popUp.hide();
+  function onMouseMove(d) {
+    var popParentOffset = $(selector).offset();
+    var popLeft         = d3.event.pageX - popParentOffset.left - $popup.width()/2;
+    var popBottom       = $(selector).height() - d3.event.pageY + popParentOffset.top + 15;
+
+    popLeft = (popLeft < 0 ) ? 0 : popLeft;
+    popLeft = (popLeft+$popup.width() < $('body').width()) ? popLeft : 0;
+
+    $popup.css({"left":popLeft, "bottom":popBottom});
+  }
+
+  function onMouseOut(d) {
+    $popup.hide();
   }
 
   function click(d) {

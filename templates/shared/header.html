@@ -1,30 +1,10 @@
+{% load i18n %}
 
-<header role="banner" class="hide-when-embedded">
-  <div class="container-fluid">
-		<div class="row-fluid">
-			<div class="span6">
-				<p class="logo-gobierno-aragon"><a href="http://www.aragon.es/" title="Ir a la home de Gobierno de Aragón"><img src="{{ STATIC_URL }}assets/logo-gobierno-aragon.png" alt="Logo de Gobierno de Aragón"></a></p>
-			</div>
-			<div class="span6">
-				<nav role="navigation" class="aragon-access">
-					<h1 class="visuallyhidden">Accesos varios de Gobierno de Aragón</h1>
-					<ul>
-						<li><a href="http://www.aragon.es/EnlacesCabecera/WebsA_Z">webs a-z</a></li>
-						<li><a href="http://servicios.aragon.es/sus_publico/PublicoServlet?accion=1" target="_blank">Suscripciones</a></li>
-					</ul>
-				</nav>
-				<p class="aragones"><a href="http://opendata.aragon.es">
-					<img src="{{ STATIC_URL }}assets/logoAragonOpenData.png" alt="Logo de Open Data Aragón">
-				</a></p>
-			</div>
-		</div>
-		<h1 class="main-title">
-			<a href="{{ url('budget_app.views.welcome') }}" title="Ir a la home de Presupuestos del Gobierno de Aragón">
-				<img id="title-icon" src="{{ STATIC_URL }}assets/logoAragonOpenBudget.png" alt="Logo de Open Budget Aragón" width="40">
-				Presupuestos de Aragón
-			</a>
-		</h1>
+<header>
+	<div class="container">
 
+		<!-- Lang Selector -->
+		{% if LANGUAGES|length > 1 %}
     <div id="menu-lang">
       <ul>
         {% for language in LANGUAGES %}
@@ -39,38 +19,74 @@
           </li>
         {% endfor %}
       </ul>
-      <form id="menu-lang-form" action="/i18n/setlang/" method="post">
-        {% csrf_token %}
-        <input name="next" type="hidden" value="{{ redirect_to }}" />
-        <select name="language">
-          {% for language in LANGUAGES %}
-            <option value="{{ language[0] }}">{{ language[1]|safe }}</option>
-          {% endfor %}
-        </select>
-        <input type="submit" value="Go" />
-      </form>
     </div>
-	</div>
+    {% endif %}
 
-	<a class="main-menu-toggle" href="main-menu">Menú principal</a>
-	
-	<nav role="navigation" id="main-menu">
-		<div class="container-fluid">
-			<h1 class="visuallyhidden">Menú principal</h1>
-
-			<ul class="nav-rwd">
-				<li class="page-budgets"><a href="{{ url('budget_app.views.budgets') }}" class="icon-budget">Visión global</a></li>
-				<li class="page-policies">
-					<a href="{{ url('budget_app.views.policies') }}" class="icon-policy parent">Políticas</a>
-					<ul>
-						<li><a href="{{ url('budget_app.views.policies') }}">Gobierno de Aragón</a></li>
-						<li><a href="{{ url('budget_app.views.counties') }}">Comarcas</a></li>
-						<li><a href="{{ url('budget_app.views.towns') }}">Municipios</a></li>
-					</ul>
-				</li>
-				<li class="page-tax-receipt"><a href="{{ url('budget_app.views.tax_receipt') }}" class="icon-aportacion">Lo que tú aportas</a></li>
-				<li class="page-glossary"><a href="{{ url('budget_app.views.terms') }}" class="icon-glossary">¿Qué significa...?</a></li>
-			</ul>
+		<!-- Ayuntamiento Logo & Web Link -->
+    <!-- Your logo must be located in "theme-folder/static/assets/logo.png" -->
+		<div class="main-entity-logo">
+			<a href="{{ main_entity_web_url }}" title="{{ _('Ayuntamiento de Rubí') }}" target="_blank">{{ _('Ayuntamiento de Rubí') }}</a>
 		</div>
+
+		<!-- DVMI Title & Home Link -->
+		<h1 class="navbar-brand">
+      <a href="{{ url('budget_app.views.welcome') }}" title="{{ _('Ir a la home de Presupuestos') }}">
+        {{ _('Presupuestos') }}
+      </a>
+    </h1>
+
+	</div>
+		
+	<!-- Main Navigation -->
+	<nav class="navbar navbar-default hide-when-embedded">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+	        <span class="sr-only">Toggle navigation</span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </button>
+			</div>
+	    <div id="navbar" class="collapse navbar-collapse">
+	      <ul class="nav navbar-nav">
+	      	<li class="page-budgets">
+	      		<a href="{{ url('budget_app.views.budgets') }}" class="icon-budget">{{ _('Visión global') }}</a>
+	      	</li>
+	      	
+          {% if show_counties_and_towns %}
+          <li class="page-policies dropdown">
+						<a href="{{ url('budget_app.views.policies') }}" class="icon-policy dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ _('Políticas') }} <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a href="{{ url('budget_app.views.policies') }}">{{ _('Gobierno de Aragón') }}</a></li>
+							<li><a href="{{ url('budget_app.views.counties') }}">{{ _('Comarcas') }}</a></li>
+							<li><a href="{{ url('budget_app.views.towns') }}">{{ _('Municipios') }}</a></li>
+						</ul>
+					</li>
+          {% else %}
+          <li class="page-policies">
+            <a href="{{ url('budget_app.views.policies') }}" class="icon-policy">{{ _('Políticas') }}</a>
+          </li>
+          {% endif %}
+					
+          {% if show_payments %}
+          <li class="page-payments">
+            <a href="{{ url('budget_app.views.payments') }}" class="icon-payments">{{ _('Pagos e inversiones') }}</a>
+          </li>
+					{% endif %}
+
+          {% if show_tax_receipt %}
+          <li class="page-tax-receipt">
+						<a href="{{ url('budget_app.views.tax_receipt') }}" class="icon-aportacion">{{ _('Lo que tú aportas') }}</a>
+					</li>
+					{% endif %}
+          
+          <li class="page-glossary">
+						<a href="{{ url('budget_app.views.terms') }}" class="icon-glossary">{{ _('¿Qué significa...?') }}</a>
+					</li>
+	      </ul>
+	    </div>
+	  </div>
 	</nav>
+
 </header>

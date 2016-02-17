@@ -1,0 +1,240 @@
+// Header
+// ------------------------
+
+header > .container{
+  position: relative;
+  text-align: center;
+}
+
+// City Logo
+.main-entity-logo{
+  margin: $grid-gutter-width auto;
+
+  a{
+    display: block;
+    width: $main-entity-logo-width;
+    height: $main-entity-logo-height;
+    margin: 0 auto;
+    overflow: hidden;
+    text-indent: -9999px;
+    background: url(../assets/logo.png) no-repeat center center transparent;
+  }
+}
+
+// Header Title
+.navbar-brand{
+  float: none;
+  margin: $grid-gutter-width 0;
+  padding: 0;
+  font-size: 3em;
+  line-height: 1em;
+  font-weight: $font-weight-300;
+  text-align: center;
+
+  a:hover{
+    opacity: 0.7;
+    text-decoration: none;
+  }
+}
+
+// Menu Lang
+#menu-lang{
+  margin-top: $grid-gutter-width/3;
+
+  ul{
+    display: inline-block;  // We need it to center #menu-lang in screen-sm
+    height: 1em;
+    padding: 0;
+    margin: 0;
+
+    li{
+      list-style: none;
+      float: left;
+      border-left: 1px solid $brand-primary;
+      padding: 0 $grid-gutter-width/6;
+      line-height: 1em;
+
+      &:first-child{
+        border: none;
+      }
+
+      .active{
+        font-weight: $font-weight-600;
+      }
+
+      input[type=submit] {
+        color: $brand-primary;
+        line-height: 1em;
+        padding: 0;
+        -webkit-appearance: none;
+        -moz-appearance:    none;
+        appearance:         none;
+        background:         none;
+        border:             none;
+
+        &:hover{
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: $screen-sm-min) {
+  
+  .main-entity-logo{
+    float: left;
+    // We need to put it over the navbar-brand
+    position: relative;
+    z-index: 60;
+  }
+
+  .navbar-brand{
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    margin: -0.5em 0 0;
+    padding: 0;
+    z-index: 40; // We need to put it behind the main-entity-logo 
+  }
+
+  #menu-lang{
+    float: right;
+  }
+}
+
+
+// Main Menu
+// ------------------------
+
+.navbar-default{
+  border: none;
+  margin-bottom: 0;
+
+  .navbar-collapse {
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .navbar-nav{
+    float: none;
+    width: 100%;
+    margin: 0;
+
+    > li{
+
+      > a{
+        color: $dvmi-navbar-color;
+        text-align: center;
+        padding-right: 0;
+        padding-left: 0;
+        font-weight: $font-weight-300;
+        @include transition( background 0.3s ease-out );
+
+        &:hover,
+        &:focus{
+          color: white;
+          background: mix( $navbar-default-bg, white, 75% );
+        }
+      }
+
+      // Fix default color for dropdown open
+      &.open > a,
+      &.open > a:hover,
+      &.open > a:focus{
+        color: $dvmi-navbar-color;
+        background: mix( $navbar-default-bg, white, 75% );
+      }
+
+      > .dropdown-menu{
+        width: 100%;
+        padding: 0;
+        border: none;
+        background: $navbar-default-bg;
+
+        > li > a{
+          color: $dvmi-navbar-color;
+          padding: $grid-gutter-width/3 0;
+          text-align: center;
+          border-top: 1px solid $navbar-default-bg;
+          border-bottom: 1px solid $navbar-default-bg;
+
+          &:hover{
+            background: mix( $navbar-default-bg, white, 75% );
+          }
+        }
+      }
+    }
+
+    @media (min-width: $grid-float-breakpoint) {
+
+      > li{
+        width: 100% / $dvmi-menu-length;
+
+        > a{
+          border-right: 1px solid mix( $navbar-default-bg, white, 50% );
+        }
+      
+        &:first-child > a{
+          border-left: 1px solid mix( $navbar-default-bg, white, 50% );
+        }
+      }
+    }
+  }
+}
+
+
+// Main Menu
+// ------------------------
+
+.form-search{
+  background: $search-form-bg;
+  padding: $grid-gutter-width/2 0;
+
+  > .container{
+    padding: 0 $grid-gutter-width/2;
+  }
+
+  .form-inline{
+    text-align: center;
+
+    .form-group{
+      width: 70%;
+      display: inline-block;  // Force form-inline in mobile resolution
+      margin-bottom: 0;
+    }
+
+    label{
+      display: none;
+    }
+
+    .form-control{
+      width: 100%;
+      border-color: $brand-primary;
+    }
+
+    .btn{
+      width: 3*$grid-gutter-width;
+      margin-top: -1px;
+    }
+  }
+
+  @media (min-width: $screen-sm-min) {
+
+    .form-inline{
+
+      .form-group{
+        width: auto;
+      }
+
+      label{
+        display: inline-block;
+      }
+
+      .form-control{
+        width: 340px;
+        margin: 0 $grid-gutter-width/2;
+      }
+    }
+  }
+}

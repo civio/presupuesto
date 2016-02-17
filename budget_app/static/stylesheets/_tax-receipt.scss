@@ -1,0 +1,121 @@
+.tax-receipt-header{
+
+  .lead{
+    margin-bottom: $grid-gutter-width;
+  }
+}
+
+.tax-receipt-content{
+
+  .intro-text{
+    margin: $grid-gutter-width;
+    font-size: 1.125em;
+  }
+
+  .form-user-incomings{
+    @extend .panel;
+    padding: 0 $grid-gutter-width;
+    margin: $grid-gutter-width 0 0;
+    background: $page-header-bg;
+
+    h3{
+      color: darken( $brand-secondary, 10% );
+      font-size: 1.5em;
+      text-align: center;
+      margin: $grid-gutter-width/2 0;
+      padding: $grid-gutter-width/2 0 $grid-gutter-width;
+      border-bottom: 1px solid mix($brand-secondary, white, 50%);
+    }
+
+    .row{
+      border-bottom: 1px solid mix($brand-secondary, white, 25%);
+      margin-bottom: $grid-gutter-width/2;
+      margin-left: 0;
+      margin-right: 0;
+
+      &:last-child{
+        border-bottom: none;
+      }
+    }
+
+    .form-group{
+      @extend .col-sm-6;
+      padding: 0;
+      text-align: center;
+    }
+
+    label{
+      margin-bottom: -2px + $grid-gutter-width/2;
+      line-height: $grid-gutter-width/2;
+    }
+
+    .select-info{
+      @extend .col-sm-6;
+      font-size: 1.125em;
+      text-align: center;
+      padding: 0;
+      margin: $grid-gutter-width/2 0;
+      line-height: $grid-gutter-width;
+
+      span{
+        font-weight: $font-weight-600;
+      }
+    }
+  }
+
+  #tax-amount{
+    @extend .panel;
+    padding: $grid-gutter-width/2;
+    margin: $grid-gutter-width 0;
+    font-size: 1.5em;
+    text-align: center;
+    border: 1px solid $brand-secondary;
+    background: $page-header-bg;
+
+    b{
+      font-weight: $font-weight-600;
+    }
+  }
+
+  #footnote-receipt{
+    font-size: 0.875em;
+    text-align: center;
+    margin: 0 $grid-gutter-width/2 1.5*$grid-gutter-width;
+  }
+}
+
+.tax-receipt-table-content{
+  padding-top: $grid-gutter-width;
+  background: $page-header-bg;
+
+  .tax-detail-intro{
+    font-size: 1.125em;
+    text-align: center;
+    margin-bottom: $grid-gutter-width;
+  }
+}
+
+
+@media (min-width: $screen-sm-min) {
+  
+  .tax-receipt-content{
+  
+    .form-user-incomings{
+
+      h3{
+        text-align: right;
+      }
+
+      .form-group{
+        padding-right: $grid-gutter-width/2;
+        text-align: left;
+      }
+
+      .select-info{
+        padding-left: $grid-gutter-width/2;
+        margin: $grid-gutter-width 0 0;
+        text-align: right;
+      }
+    }
+  }
+}

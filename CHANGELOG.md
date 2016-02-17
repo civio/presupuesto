@@ -3,6 +3,13 @@ All notable changes to this project will be documented in this file
 
 ## [Unreleased]
 ### Added
+
+### Changed
+- Major front-end rewrite, now using Bootstrap 3
+- Policy chart now reimplemented using plain D3.js. NVD3 dependency removed
+
+## [3.1] - 2016-02-02
+### Added
 - Version info API on /version.json
 - Add a default glossary to be loaded if the theme does not contain one
 - Add the option to extend the default glossary with the theme file
@@ -30,6 +37,7 @@ All notable changes to this project will be documented in this file
 ## Forked from [aragonopendata/presupuesto] - 2016-01-28
 
 
-[Unreleased]: https://github.com/civio/presupuesto/compare/3.0...HEAD
-[3.0]: https://github.com/civio/presupuesto/compare/f7409fd...3.0
+[Unreleased]: https://github.com/civio/presupuesto/compare/3.1...HEAD
+[3.1]: https://github.com/civio/presupuesto/releases/tag/3.1
+[3.0]: https://github.com/civio/presupuesto/releases/tag/3.0
 [aragonopendata/presupuesto]: https://github.com/aragonopendata/presupuesto/
