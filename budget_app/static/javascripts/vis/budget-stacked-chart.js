@@ -18,11 +18,8 @@ function BudgetStackedChart(theSelector, theStats, i18n) {
   };
 
   // Formatting functions
-  var formatSPercent = d3.format("+.2%");
-  var formatSPercentage = function(d) { return formatSPercent(d).replace(".",","); };
   var formatPercent = d3.format("%");
   var formatPercentage = function(d) { return formatPercent(d).replace(".",","); };
-  var format = function(d) { return formatAmount(d); };
 
   // The ticks in the Y axis sometimes get too long, so we show them as thousands/millions
   var formatAxis = function(d) {
@@ -119,6 +116,8 @@ function BudgetStackedChart(theSelector, theStats, i18n) {
     var chart = new StackedAreaChart().setup(selector);
     //chart.color = keyColor;
 
+    chart.budgeted = _.budgeted;
+
     chart.xAxis
         .tickValues( years )  // We make sure years only show up once in the axis
         .tickFormat( d3.format("d") );
@@ -172,22 +171,4 @@ function BudgetStackedChart(theSelector, theStats, i18n) {
         return newData;
     }
   };
-
-  /*
-  // Build the html that will be shown in the SAG tooltip once a specific area and year are mousedOver
-  function tooltipContent(key, x, y, e, graph) {
-    var value = e.point[1];
-    var formattedValue = uiState.format != "percentage" ? format(value) : formatPercentage(value);
-    var html = '<h3>' + key + '</h3><p class="amount">' + formattedValue + ' <span class="year">'+ _['in'] + x + '</span></p>';
-    if (e.pointIndex > 0) {
-      var yearAnt = e.series.values[(e.pointIndex-1)][0];
-      var valueAnt = e.series.values[(e.pointIndex-1)][1];
-      if (valueAnt != 0) {
-        var percent = value/valueAnt -1;
-        html += '<p class="percentage"><span class="highlight">'+formatSPercentage(percent)+'</span>'+_['versus']+yearAnt+'</p';
-      }
-    }
-    return html;
-  }
-  */
 }

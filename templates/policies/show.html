@@ -355,7 +355,7 @@
     //
     // CONTROL SETUP
     //
-    setRedrawOnButtonGroupChange('.btn-group', redrawGrid);
+    //setRedrawOnButtonGroupChange('.btn-group', redrawGrid);
     $('#select-format').change(redrawGrid);
     initSlider("#year-selection", {{ years|safe }}, redrawGrid, {{ latest_year }}, {{ years_scale|safe }});
 
@@ -390,9 +390,7 @@
 {% endif %}
 
     var i18n = {
-      'budgeted': 'Presupuestado',
-      'in': 'en ',
-      'versus': ' respecto a '
+      'budgeted': '{{ _("Presupuestado") }}'
     };
 
     function setupGraph(chartWidth, container, breakdown, areas) {

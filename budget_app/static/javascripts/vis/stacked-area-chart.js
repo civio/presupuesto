@@ -116,10 +116,14 @@ function StackedAreaChart() {
     // Update nonexecuted overlay if exists
     if( _this.budgetExecutionLastYear !== null ){
       var budgetExecutionLastYearWidth = _this.years[_this.years.length-1] - (_this.years[_this.budgetExecutionLastYear]-1);
-      _this.svg.select('.nonexecuted-overlay')
+      _this.nonexecutedOverlay.select('rect')
         .attr('height', _this.height)
         .attr('width', _this.x(_this.years[budgetExecutionLastYearWidth]) )
         .attr('x', _this.x(_this.years[_this.budgetExecutionLastYear]-1) );
+
+      _this.nonexecutedOverlay.select('text')
+        .attr('x',  _this.x(_this.years[_this.budgetExecutionLastYear]-0.5))
+        .attr('y', _this.height+18);
     }
   };
 
@@ -239,11 +243,18 @@ function StackedAreaChart() {
     // Check Execution is Completed & Draw Opacity Mask if not
     if( _this.budgetExecutionLastYear !== null ){
       var budgetExecutionLastYearWidth = _this.years[_this.years.length-1] - (_this.years[_this.budgetExecutionLastYear]-1);
-      _this.svg.append('rect')
-        .attr('class', 'nonexecuted-overlay')
+      _this.nonexecutedOverlay = _this.svg.append('g')
+        .attr('class', 'nonexecuted-overlay');
+
+      _this.nonexecutedOverlay.append('rect')
         .attr('height', _this.height)
         .attr('width', _this.x(_this.years[budgetExecutionLastYearWidth]) )
         .attr('x', _this.x(_this.years[_this.budgetExecutionLastYear]-1) );
+
+      _this.nonexecutedOverlay.append('text')
+        .attr('x',  _this.x(_this.years[_this.budgetExecutionLastYear]-0.5))
+        .attr('y', _this.height+18)
+        .text( _this.budgeted );
     }
 
     // Setup Areas Lines
