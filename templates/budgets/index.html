@@ -17,7 +17,13 @@
     <h2 class="page-title">{{ _('Ingresos y gastos en el Gobierno de Aragón') }}</h2>
 
     <div class="sankey-container">
-      <div class="sankey" id="chart"></div>
+      <div class="sankey chart-container" id="chart">
+        <div id="pop-up" class="popover top" role="tooltip">
+          <div class="arrow"></div>
+          <h4 class="popover-title"></h4>
+          <div class="popover-content"></div>
+        </div>
+      </div>
 
       <div class="data-controllers">
         <p class="title">{{ _('Elige año') }}</p>
@@ -25,13 +31,7 @@
           <input id="year-selection" type="slider" name="price" value="20" />
         </div>
       </div>
-
-      <div id="pop-up">
-        <div id="pop-up-title"></div>
-        <div id="pop-up-content"></div>
-      </div>
     </div>
-    
   </div>
 </div>
 
