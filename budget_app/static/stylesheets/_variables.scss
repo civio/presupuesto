@@ -74,6 +74,20 @@ $navbar-default-bg: $brand-primary;
 $dvmi-navbar-color: mix( $brand-primary, white, 10% );
 
 
+// Popover
+// --------------
+
+$popover-max-width:                   200px;
+
+$popover-border-color:                transparent;
+$popover-fallback-border-color:       transparent;
+
+$popover-arrow-width:                 6px;
+
+$popover-arrow-outer-color:           white;
+$popover-arrow-outer-fallback-color:  white;
+
+
 // Pagination
 // --------------
 
