@@ -1,15 +1,16 @@
-function BudgetStackedChart(theSelector, theStats, i18n) {
-  var selector = theSelector;
-  var stats = theStats;
-  var budgetStatuses = {};
-  var _ = i18n;
+function BudgetStackedChart(theSelector, theStats, theColorScale, i18n) {
+  var selector        = theSelector;
+  var stats           = theStats;
+  var budgetStatuses  = {};
+  var _               = i18n;
 
   var breakdown;
   var years;
-  var data = [];
-  var modifiedData = [];
-  var totals = {};
-
+  var data            = [];
+  var modifiedData    = [];
+  var totals          = {};
+  var uiState;
+  
   // Getters/setters
   this.budgetStatuses = function(_) {
     if (!arguments.length) return _;
@@ -31,19 +32,10 @@ function BudgetStackedChart(theSelector, theStats, i18n) {
     }
   };
 
-  // The color palette. It should probably match the treemap one, but may be tweaked if needed
-  // (most probably sorted around, so certain categories match certain colors).
-  var category10 = [ "#A9A69F", "#D3C488", "#2BA9A0", "#E8A063", "#9EBF7B", "#dbb0c0", "#7d8f69", "#a29ac8", "#6c6592", "#9e9674", "#e377c2", "#e7969c", "#bcbd22", "#17becf" ];
-  var colors = d3.scale.ordinal().range(category10).domain([0,1,2,3,4,5,6,7,8,9]);
-
-  // Return a color for a given item. This relies a bit too much on domain knowledge: when
-  // displaying programmes, just use the position (i), but when displaying a 0-9 category
-  // (economic/funding), use the actual item value so color is consistent across programmes.
-  var keyColor = function(d, i) {
-    return colors(d['id'].length == 1 ? Number(d['id']) : i);
-  };
-
-  var uiState;
+  // The color palette
+  var colorScale =  (theColorScale && theColorScale.length > 0) ?
+                    theColorScale :
+                    [ "#A9A69F", "#D3C488", "#2BA9A0", "#E8A063", "#9EBF7B", "#dbb0c0", "#7d8f69", "#a29ac8", "#6c6592", "#9e9674", "#e377c2", "#e7969c", "#bcbd22", "#17becf" ];
 
   
   function loadBreakdownField(breakdown, field) {
@@ -96,8 +88,6 @@ function BudgetStackedChart(theSelector, theStats, i18n) {
 
   this.loadBreakdown = function(theBreakdown, field) {
 
-    console.log('loadBreakdown', theBreakdown, field);
-
     breakdown = theBreakdown;
     data = loadBreakdownField(theBreakdown, field);
     // Deep copy the data array in order to be able to change when a new category of data is selected
@@ -110,24 +100,28 @@ function BudgetStackedChart(theSelector, theStats, i18n) {
     if ( uiState && uiState.format==newUIState.format && uiState.field==newUIState.field ) return;
 
     uiState = newUIState;
-    
-    console.log(years);
 
+    // Create chart
     var chart = new StackedAreaChart().setup(selector);
-    //chart.color = keyColor;
-
-    chart.budgeted = _.budgeted;
-
+    
+    // Setup X & Y axis
     chart.xAxis
         .tickValues( years )  // We make sure years only show up once in the axis
         .tickFormat( d3.format("d") );
     
-    chart.yAxis
-        .tickFormat( uiState.format == "percentage" ? formatPercentage : formatAxis );
+    chart.yAxis.tickFormat( uiState.format == "percentage" ? formatPercentage : formatAxis );
 
-    if( uiState.format == "percentage" ) chart.dataIsPercentage = true; // Update dataIsPercentage variable
+    // Setup Color Scale
+    chart.color = d3.scale.ordinal().range(colorScale);
 
-    chart.setData( this.getNewData(), years.map(function(d){ return parseInt(d); }), budgetStatuses ).draw();
+    // Setup budgeted literal
+    chart.budgeted = _.budgeted;
+
+    // Setup if we use percentage format
+    if( uiState.format == "percentage" ) chart.dataIsPercentage = true;
+
+    // Chart set data & draw
+    chart.setData( this.getNewData().sort(sortData), years.map(function(d){ return parseInt(d); }), budgetStatuses ).draw();
   };
 
 
@@ -171,4 +165,9 @@ function BudgetStackedChart(theSelector, theStats, i18n) {
         return newData;
     }
   };
+
+  // Data order function
+  function sortData(a,b){
+    return b.values[0][1] - a.values[0][1];
+  }
 }

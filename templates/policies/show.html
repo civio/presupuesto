@@ -397,17 +397,19 @@
 
       console.log('setup graph', container, breakdown, areas);
 
+      var colorScale = {{ color_scale|safe }};
+
       // We explicitely set the dimensions of the container, otherwise we got an strange behaviour in 
       // an iPad, where the height of the chart would explode for no apparent reason
       //$(container).css('width', chartWidth);
       //$(container).css('height', chartWidth/2);
       {% if show_treemap %}
-      var treemap = new BudgetTreemap(container, breakdown, stats, areas).i18n(i18n).maxLevels(2).budgetStatuses(budgetStatuses);
+      var treemap = new BudgetTreemap(container, breakdown, stats, areas, 2, colorScale).i18n(i18n).maxLevels(2).budgetStatuses(budgetStatuses);
       treemap.createTreemap(getUIState());
       treemap.updateTreemap(getUIState());
       $(container).data('chart', treemap);
       {% else %}
-      var chart = new BudgetStackedChart(container, stats, i18n).budgetStatuses(budgetStatuses);;
+      var chart = new BudgetStackedChart(container, stats, colorScale, i18n).budgetStatuses(budgetStatuses);
       $(container).data('chart', chart);
       chart.loadBreakdown(breakdown, '{{ show_side }}');
       {% endif %}
