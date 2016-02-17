@@ -53,14 +53,31 @@
       <!-- Policies Graph -->
       <div class="policies-graph">
         <div id="budget-summary"></div>
-        <div id="expenseChartContainer" class="chart-container"></div>
-        <div id="fexpenseChartContainer" class="chart-container"></div>
-        <div id="incomeChartContainer" class="chart-container"></div>
-        <p class="no-data-alert">{{ _('Información no disponible') }}</p>
-        <div id="pop-up">
-          <div id="pop-up-title"></div>
-          <div id="pop-up-content"></div>
+        <div id="expenseChartContainer" class="chart-container">
+          <div class="popover top" role="tooltip">
+            <div class="arrow"></div>
+            <p class="popover-subtitle"></p>
+            <h4 class="popover-title"></h4>
+            <div class="popover-content"></div>
+          </div>
         </div>
+        <div id="fexpenseChartContainer" class="chart-container">
+          <div class="popover top" role="tooltip">
+            <div class="arrow"></div>
+            <p class="popover-subtitle"></p>
+            <h4 class="popover-title"></h4>
+            <div class="popover-content"></div>
+          </div>
+        </div>
+        <div id="incomeChartContainer" class="chart-container">
+          <div class="popover top" role="tooltip">
+            <div class="arrow"></div>
+            <p class="popover-subtitle"></p>
+            <h4 class="popover-title"></h4>
+            <div class="popover-content"></div>
+          </div>
+        </div>
+        <p class="no-data-alert">{{ _('Información no disponible') }}</p>
       </div>
 
       {% if entities %}

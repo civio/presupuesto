@@ -48,6 +48,35 @@ label{
   font-weight: $font-weight-600;
 }
 
+// Charts
+.chart-container{
+  position: relative;
+
+  .popover{
+    top: auto;
+
+    .popover-title{
+      margin: 0 $grid-gutter-width/2;
+      padding: 8px 0;
+      background: white;
+      border-color: mix( $gray-light, $gray-lighter, 25% );
+      font-size: 1.5em;
+      font-weight: $font-weight-300;
+      text-align: center;
+    }
+
+    .popover-content{
+      padding-bottom: $grid-gutter-width/2;
+      text-align: right;
+
+      .label{
+        font-size: 0.875em;
+        font-weight: $font-weight-400;
+      }
+    }
+  }
+}
+
 // jQuery UI
 .ui-widget {
   font-family: $font-family-base; 

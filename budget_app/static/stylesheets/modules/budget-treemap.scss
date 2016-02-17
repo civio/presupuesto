@@ -1,7 +1,8 @@
 // TREEMAP
-.chart-container {
+.treemap-chart {
 	rect {
 		cursor: pointer;
+		@include transition( fill 0.3s ease-out );
 
 		&.out{
 			fill: rgb(134,134,134) !important;
@@ -26,10 +27,26 @@
 		text-align: center;
 		text-anchor: middle;
 		font-weight: $font-weight-300;
-
+		@include transition( opacity 0.3s ease-out );
 	}
+}
 
-	text.nv-legend-text:hover{
-		font-weight: $font-weight-600;
+.policies .chart-container{
+	.popover{
+		.popover-title{
+			border: none;
+			font-size: 1.75em;
+		}			
+	  .popover-subtitle{
+	  	line-height: 1.125em;
+	    text-align: center;
+	    margin-bottom: 0;
+	    padding: $grid-gutter-width/3 $grid-gutter-width/2 $grid-gutter-width/6;
+	  }
+	  .popover-content{
+	  	font-size: 1.25em;
+	  	font-weight: $font-weight-600;
+			text-align: center;
+		}
 	}
 }

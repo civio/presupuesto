@@ -117,44 +117,24 @@
 }
 
 
-.chart-container{
-  position: relative;
+.policy-breakdown .chart-container{
+  
+  .popover-content-year{
+    font-size: 1.125em;
+    color: $gray-light;
+    margin-bottom: 0;
+  }
+  .popover-content-value{
+    font-size: 1.25em;
+    margin-bottom: 5px;
 
-  .popover{
-    top: auto;
-
-    .popover-title{
-      margin: 0 $grid-gutter-width/2;
-      padding: 8px 0;
-      background: white;
-      border-color: mix( $gray-light, $gray-lighter, 25% );
-      font-size: 1.5em;
-      font-weight: $font-weight-300;
-      text-align: center;
+    b{
+      font-weight: $font-weight-600;
     }
-
-    .popover-content-year{
-      font-size: 1.125em;
-      color: $gray-light;
-      margin-bottom: 0;
-    }
-    .popover-content-value{
-      font-size: 1.25em;
-      margin-bottom: 5px;
-
-      b{
-        font-weight: $font-weight-600;
-      }
-    }
-    .popover-content{
-      padding-bottom: $grid-gutter-width/2;
-      text-align: right;
-
-      .label{
-        font-size: 0.875em;
-        font-weight: $font-weight-400;
-      }
-    }
+  }
+  .popover-content .label{
+    font-size: 0.875em;
+    font-weight: $font-weight-400;
   }
 }
 

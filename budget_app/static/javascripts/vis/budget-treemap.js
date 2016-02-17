@@ -15,10 +15,11 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
   var mouseOver = true;
   var paddedYears = {};
   var maxLevels = -1; // By default, don't limit treemap depth
+  var $popup = $(selector+" .popover");
 
   // D3 category10 scale as starting point
-  var category10 = (colorScale && colorScale.length > 0) ? 
-                    colorScale : 
+  var category10 = (colorScale && colorScale.length > 0) ?
+                    colorScale :
                     [ "#A9A69F", "#D3C488", "#2BA9A0", "#E8A063", "#9EBF7B", "#dbb0c0", "#7d8f69", "#a29ac8", "#6c6592", "#9e9674", "#e377c2", "#e7969c", "#bcbd22", "#17becf" ];
   var colors = d3.scale.ordinal().range(category10).domain([0,1,2,3,4,5,6,7,8,9]);
 
@@ -65,6 +66,7 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
   // Initialization
   var svg = d3.select(selector)
           .append("svg:svg")
+          .attr("class", "treemap-chart")
           .style("position","relative")
           .style("width",width + "px")
           .style("height",height + "px")
@@ -260,8 +262,9 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
       //.attr("rx", '3')
       //.attr("ry", '3')
       .style("fill", function(d) { return colors(parseInt(d.id[0], 10)); })
-      .on("mouseover", mover)
-      .on("mouseout", mout)
+      .on("mouseover",  onMouseOver)
+      .on("mousemove",  onMouseMove)
+      .on("mouseout",   onMouseOut)
       .on("click", function(d, i) {
         $(selector).trigger('policy-selected', d);
       });
@@ -299,7 +302,7 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
       // See https://github.com/mbostock/d3/wiki/Treemap-Layout#wiki-sticky
       if ( treemap.sticky() != shouldBeSticky )
         treemap.sticky(shouldBeSticky);
-    } 
+    }
 
     uiState = newUIState;
 
@@ -456,28 +459,36 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
     return i18n[s] || s;
   }
   
-  function mover(d) {
+  function onMouseOver(d) {
     if (!mouseOver) return;
+
+    d3.select(this.parentNode).select('text').style('opacity', 0.5);
 
     var selected = this;
     var policies = svg.selectAll("rect.cell");
     policies.attr("class", function() {
       return (this == selected) ? "cell in" : "cell out";
     });
-    var areaPrefix = areas[d.id[0]] ? "<span style='color:"+colors(Number(d.id[0]))+"'>"+areas[d.id[0]]+"</span><br>" : '';
-    $("#pop-up-title").html(areaPrefix+d.name);
-    $("#pop-up-content").html(valueFormat(d.value, uiState));
+    var areaPrefix = areas[d.id[0]] ? areas[d.id[0]] : '';
+    $popup.find(".popover-subtitle").css('color', colors(Number(d.id[0]))).html(areaPrefix);
+    $popup.find(".popover-title").html(d.name);
+    $popup.find(".popover-content").html(valueFormat(d.value, uiState));
+    $popup.show();
+  }
+
+  function onMouseMove(d) {
     var popParentOffset = $(selector).offset();
-    var popLeft = d3.event.pageX - popParentOffset.left - $("#pop-up").width()/2;
-    var popTop = d3.event.pageY - popParentOffset.top + $("#pop-up").height() - 15; // 15 ~ offset set not to be moving the tooltip inside a link all the time
-    $("#pop-up").css({"left":popLeft,"top":popTop}).show();
+    var popLeft         = d3.event.pageX - popParentOffset.left - $popup.width()/2;
+    var popBottom       = $(selector).height() - d3.event.pageY + popParentOffset.top + 15;
+    $popup.css({"left":popLeft, "bottom":popBottom});
   }
   
-  function mout(d) {
+  function onMouseOut(d) {
     if (!mouseOver) return;
+    d3.select(this.parentNode).select('text').style('opacity', 1);
     var policies = svg.selectAll("rect.cell");
     policies.attr("class", function(d){ return "cell cell-"+d.id.charAt(0); });
-    $("#pop-up").hide();
+    $popup.hide();
   }
   
   function getValue(value, format, field, year) {
