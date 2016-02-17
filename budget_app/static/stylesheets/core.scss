@@ -20,6 +20,7 @@
 @import "modules/data-controllers";
 @import "modules/data-panel";
 @import "modules/data-sources";
+@import "modules/map";
 @import "modules/navtabs";
 @import "modules/panel-downloads";
 @import "modules/social-sharing";
@@ -36,7 +37,3 @@
 @import "_tax-receipt";
 @import "_glossary";
 @import "_search";
-
-// DVMI Viz Styles
-@import "vis/infobox";
-@import "vis/map";
