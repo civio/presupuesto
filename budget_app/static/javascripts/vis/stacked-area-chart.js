@@ -34,6 +34,8 @@ function StackedAreaChart() {
   _this.stack = d3.layout.stack()
       .values(function(d) { return d.values; });
 
+  _this.dataIsPercentage = false;
+
 
   // Setup SVG Object
   _this.setup = function(selector){
@@ -85,6 +87,9 @@ function StackedAreaChart() {
 
     _this.xAxis.tickSize(-_this.height);
     _this.yAxis.tickSize(-_this.width);
+
+    // Set X section width
+    _this.xSectionWidth = _this.width /( _this.x.domain()[1] - _this.x.domain()[0] );
   };
 
   // Resize Event Handler
@@ -160,6 +165,9 @@ function StackedAreaChart() {
     // Setup X domain
     _this.x.domain( d3.extent(_this.years) );
 
+    // Set X section width
+    _this.xSectionWidth = _this.width /( _this.x.domain()[1] - _this.x.domain()[0] );
+
     // Setup Y domain
     var values = _data.map(function(d){ return d.values; });
     var vals = [];
@@ -215,8 +223,7 @@ function StackedAreaChart() {
       .style('fill', function(d) { return _this.color(d.id); })
       .on('mouseover', function(d){
         d3.select(this).classed('hover', true);
-        setupPopover(d);
-        _this.$popover.css( popoverPosition(d3.mouse(this)) ).show();
+        setupPopover(d, d3.mouse(this));
       })
       .on('mouseout', function(){
         d3.select(this).classed('hover', false);
@@ -224,7 +231,7 @@ function StackedAreaChart() {
       .on('mousemove', onMouseMove);
 
     _this.svg.on('mouseout', function(e){
-      _this.svg.selectAll('.point').classed('hover', false);
+      _this.svg.selectAll('.point').attr('r', 4).classed('hover', false);
       _this.$popover.hide();
       _this.currentYear = null;
     });
@@ -252,8 +259,7 @@ function StackedAreaChart() {
 
     _this.lines.on('mouseover', function(d){
         d3.select(this).classed('hover', true);
-        setupPopover(d);
-        _this.$popover.css( popoverPosition(d3.mouse(this)) ).show();
+        setupPopover(d, d3.mouse(this));
       });
 
     // Setup Area Points
@@ -268,10 +274,12 @@ function StackedAreaChart() {
       .enter().append('circle')
       .attr('class', 'point')
       .attr('transform', function(d){ return 'translate('+_this.x(d.x)+','+_this.y(d.y0+d.y)+')'; })
-      //.attr('cx', function(d){ return _this.x(d.x); })
-      //.attr('cy', function(d){ return _this.y(d.y0+d.y); })
       .attr('r', 4)
       .style('fill', function(d) { return _this.color(d.id); });
+
+    _this.circles.on('mouseover', function(d){
+        setupPopover(d, d3.mouse(this));
+      });
 
     // Setup Legend labels
     _this.legend.selectAll('div')
@@ -330,47 +338,94 @@ function StackedAreaChart() {
   // Mouse Move Event
   var onMouseMove = function(){
 
-    var xPos  = d3.mouse(this)[0],
-        w     = _this.width /( _this.x.domain()[1] - _this.x.domain()[0] ),
-        j     = 0;
+    var newYear = getCurrentYear( d3.mouse(this) );
 
-    while(xPos > ((j*w)+(w*0.5))){ j++; }
-
-    if( _this.currentYear != j ){
-      _this.currentYear = j;
+    if( _this.currentYear != newYear ){
+      _this.currentYear = newYear;
       _this.circles.selectAll('circle').attr('r', 4).classed('hover', false);
-      _this.$popover.find('.popover-content .table tr').removeClass('active').filter('.year-'+_this.years[_this.currentYear]).addClass('active');
       _this.circles.each(function(d){
         d3.select(this).selectAll('circle').each(function(e,i){
-          if(i==j){
-            d3.select(this).attr('r', 5).classed('hover', true);
+          if(i==_this.currentYear){
+            d3.select(this).attr('r', 6).classed('hover', true);
           }
         });
       });
+      setupPopoverContent();
     }
 
     _this.$popover.css( popoverPosition(d3.mouse(this)) );
   };
 
+  var getCurrentYear = function( _mouse ){
+    var xPos  = _mouse[0],
+        j     = 0;
+
+    while(xPos > ((j*_this.xSectionWidth)+(_this.xSectionWidth*0.5))){ j++; }
+
+    return j;
+  };
+
   // Setup Popover Content
-  var setupPopover = function( data ){
+  var setupPopover = function( _data, _mouse ){
 
-    if( _this.$popover.data('id') == data.id ) return;  // Avoid redundancy
+    if( _this.$popover.data('id') !== _data.id ){  // Avoid redundancy
 
-    _this.$popover.data('id', data.id);
-    _this.$popover.find('.popover-title').html( data.label );
-    _this.$popover.find('.popover-content').html( '<table class="table table-condensed"><tbody>'+data.values.map(function(d){
-      return (d.y > 0) ? '<tr class="year-'+d.x+'"><td>'+d.x+'</td><th>'+(d.y*0.01).toLocaleString('es-ES', {maximumFractionDigits: 2, minimumFractionDigits: 2})+' €</th></tr>' : '';
-    }).join('')+'</tbody></table>' );
-    if( _this.currentYear ){
-      _this.$popover.find('.popover-content .table tr.year-'+_this.years[_this.currentYear]).addClass('active');
+      _this.popoverData = _data;
+      _this.$popover.data('id', _data.id);
+      _this.$popover.find('.popover-title').html( _data.label );
     }
+
+    // Get currentYear if undefined
+    if( _this.currentYear === null ){
+      _this.currentYear = getCurrentYear( _mouse );
+    }
+    
+    // Setup Popover Content
+    setupPopoverContent();
+
+    // Positioning Popover
+    _this.$popover.css( popoverPosition(_mouse) ).show();
+  };
+
+  var setupPopoverContent = function(){
+
+    if( _this.popoverData === null) return; // Avoid unexpected errors
+
+    var popoverId = _this.$popover.data('id');
+
+    // Get currentYear values
+    var popoverValues = _this.popoverData.values.filter(function(d){ return d.x == _this.years[_this.currentYear]; })[0];
+     
+    // Get currentYear values
+    var popoverPrevValues = (_this.currentYear > 0) ? _this.popoverData.values.filter(function(d){ return d.x == _this.years[_this.currentYear]-1; })[0].y : null;
+
+    // Setup html content
+    _this.$popover.find('.popover-content').html( getPopoverContent(_this.years[_this.currentYear], popoverValues.y, popoverPrevValues) );
+  };
+
+  var getPopoverContent = function( _year, _value, _prevValue ){
+   
+    var str = '<p class="popover-content-year">'+_year+'</p>';
+
+    if( !_this.dataIsPercentage ){
+      str += '<p class="popover-content-value"><b>'+(_value*0.01).toLocaleString('es-ES', {maximumFractionDigits: 2, minimumFractionDigits: 2})+'</b> €</p>';
+    } else{
+      str += '<p class="popover-content-value"><b>'+(_value*100).toLocaleString('es-ES', {maximumFractionDigits: 2, minimumFractionDigits: 2})+'</b> %</p>';
+    }
+
+    if( _prevValue ){
+      var percentageValue = ((_value/_prevValue)-1)*100;
+      var labelClass      = (percentageValue >= 0) ? 'label-success' : 'label-danger';
+      str += '<span class="label '+labelClass+'">'+percentageValue.toLocaleString('es-ES', {maximumFractionDigits: 1, minimumFractionDigits: 1})+' %</span>';
+    }
+
+    return str;
   };
 
   // Setup Popover Position
   var popoverPosition = function( _mouse ){
     return {
-      'bottom': _this.height+_this.margin.top+_this.margin.bottom-_mouse[1]+10,
+      'bottom': _this.height+_this.margin.top+_this.margin.bottom-_mouse[1],
       'left': _mouse[0]+_this.margin.left-(_this.$popover.width()*0.5)
     };
   };

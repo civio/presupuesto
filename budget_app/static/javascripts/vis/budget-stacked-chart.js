@@ -109,8 +109,9 @@ function BudgetStackedChart(theSelector, theStats, i18n) {
 
   // Function used to display the selected SAG
   this.draw = function(newUIState) {
-    if ( uiState && uiState.format==newUIState.format && uiState.field==newUIState.field )
-      return; // Do nothing if only the year changed
+    // Do nothing if only the year changed
+    if ( uiState && uiState.format==newUIState.format && uiState.field==newUIState.field ) return;
+
     uiState = newUIState;
     
     console.log(years);
@@ -125,30 +126,34 @@ function BudgetStackedChart(theSelector, theStats, i18n) {
     chart.yAxis
         .tickFormat( uiState.format == "percentage" ? formatPercentage : formatAxis );
 
+    if( uiState.format == "percentage" ) chart.dataIsPercentage = true; // Update dataIsPercentage variable
+
     chart.setData( this.getNewData(), years.map(function(d){ return parseInt(d); }), budgetStatuses ).draw();
   };
 
 
   // Given the user selection get the newData we need to display in the SAG
   this.getNewData = function() {
-    var newData = modifiedData;
+    var newData = modifiedData,
+        i, j;
 
     switch (uiState.format) {
       case "nominal":
         return data;
 
       case "real": // Adjust Inflation
-        for (var i = 0; i < newData.length; i++) {
-            for (var j = 0; j < newData[i].values.length; j++) {
+        for (i = 0; i < newData.length; i++) {
+            for (j = 0; j < newData[i].values.length; j++) {
               newData[i].values[j][1] = adjustInflation(data[i].values[j][1], stats, data[i].values[j][0]);
             }
         }
         return newData;
 
       case "percentage":
-        for (var i = 0; i < newData.length; i++) {
-            for (var j = 0; j < newData[i].values.length; j++) {
-              var total = uiState.field == "expense" ?
+        var total;
+        for (i = 0; i < newData.length; i++) {
+            for (j = 0; j < newData[i].values.length; j++) {
+              total = uiState.field == "expense" ?
                                             breakdown.expense[(data[i].values[j][0])] :
                                             breakdown.income[(data[i].values[j][0])];
               newData[i].values[j][1] = data[i].values[j][1] / totals[data[i].values[j][0]];
@@ -157,9 +162,10 @@ function BudgetStackedChart(theSelector, theStats, i18n) {
         return newData;
 
       case "per_capita":
-        for (var i = 0; i < newData.length; i++) {
-            for (var j = 0; j < newData[i].values.length; j++) {
-              var population = getPopulationFigure(stats, data[i].values[j][0]);
+        var population;
+        for (i = 0; i < newData.length; i++) {
+            for (j = 0; j < newData[i].values.length; j++) {
+              population = getPopulationFigure(stats, data[i].values[j][0]);
               newData[i].values[j][1] = adjustInflation(data[i].values[j][1], stats, data[i].values[j][0]) / population;
             }
         }
