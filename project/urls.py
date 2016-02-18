@@ -5,7 +5,6 @@ from django.conf.urls import patterns, url, include
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-from django.shortcuts import redirect
 from django.views.generic.simple import direct_to_template
 
 budget_app_urlpatterns = patterns('',
