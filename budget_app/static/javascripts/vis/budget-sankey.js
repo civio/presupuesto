@@ -48,13 +48,20 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
       return adjustInflation(value, stats, year);
     }
 
-    // Given an array of item ids, return an array of breakdown items.
-    // For backwards compatibility, a string with one item id is also accepted as input.
+    // Given an array of item ids, return an array of breakdown items. An item id
+    // can be a two-element array, i.e. [article id, concept id].
+    // For backwards compatibility, a string with one article id is also accepted as input.
     function getBreakdownItems(breakdown, item_ids) {
-      if ( typeof item_ids == 'string' ) {    // Standard, an id
+      if ( typeof item_ids == 'string' ) {      // Standard, an id
         return [ breakdown.sub[item_ids] ];
-      } else {                                // We got ourselves a hash
-        return _.map(item_ids, function(item) { return breakdown.sub[item]; });
+      } else {                                  // We got ourselves a hash
+        return _.map(item_ids, function(item) {
+          if ( typeof item == 'string' ) {      // Standard, an article id
+            return breakdown.sub[item];
+          } else {                              // A two-element array, a concept id
+            return breakdown.sub[item[0]].sub[item[1]];
+          }
+        });
       }
     }
 
@@ -69,8 +76,11 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
     }
 
     // Retrieve information for a given id. We support two formats:
-    //   - simple: a string with an id
-    //   - advanced: a hash with 'nodes' and 'label' for custom behaviours
+    //   - simple: a string with an article id
+    //   - advanced: a hash with 'nodes' and 'label' for custom behaviours.
+    // We also support the hash node ids to be an array to traverse the tree.
+    // (I initially thought I'd be smart and guess the path automatically, but
+    // this way I don't have to be smart and make assumptions, always dangerous.)
     function getNodeInfo(breakdown, item_id, field) {
       if ( typeof item_id == 'string' ) {   // Standard, an id
         var items = getBreakdownItems(breakdown, item_id);
