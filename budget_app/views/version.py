@@ -1,4 +1,4 @@
-# -*- coding: latin-1 -*-
+# -*- coding: ISO-8859-1 -*-
 
 import json
 import subprocess
