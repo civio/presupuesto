@@ -425,14 +425,13 @@
     $('#incomeChartContainer').bind('policy-selected', onIncomeTreemapClick);
     initSlider("#year-selection", {{ years|safe }}, redraw, {{ latest_year }}, {{ years_scale|safe }});
 
+    // Create Budget Summary
+    var budgetSummary = new BudgetSummary('#budget-summary');
+
     // Select income/expense based on location hash
     // TODO: Should handle year also
     var state = $.deparam.fragment();
     $("#"+state.view).click();
-
-    // Create Budget Summary
-    var budgetSummary = new BudgetSummary('#budget-summary');
-
 
     // Used to create the treemap here, when there was only one, but now we have two, and they need to be
     // created once the UI state 'field' is correct; otherwise they transition on update and doesn't work.
