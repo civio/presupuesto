@@ -45,28 +45,6 @@
 </section>
 
 <!-- 
-  We need this markup in order to get uiState.view 
-  from getActiveButton() in grid_controls.js 
--->
-<ul id="btn-field" class="hidden">
-  <li class="{{ 'active' if show_side=='income' }}">
-    <a id="income">{{ _('Ingresos') }}</a>
-  </li>
-{% if display_functional_view %}
-  <li class="{{ 'active' if not full_breakdown }}">
-    <a id="expense">{{ _('¿Cómo se gasta?') }}</a>
-  </li>
-  <li class="{{ 'active' if full_breakdown }}">
-    <a id="fexpense">{{ _('¿En qué se gasta?') }}</a>
-  </li>
-{% else %}
-  <li class="{{ 'active' if show_side!='income' }}">
-    <a id="expense">{{ _('Gastos') }}</a>
-  </li>
-{% endif %}
-</ul>
-
-<!-- 
   We render the totals here initially, and move it to the active tab at run-time.
 -->
 <div class="hidden">
@@ -105,7 +83,6 @@
     // Do all the hard work of drawing the grids
     function redrawGrid() {
       var uiState = getUIState();
-      console.log('uiState', uiState);
       var columnDef = getColumnDefinition(uiState);
 
       $("#payeeGrid").data('grid', createBudgetGrid( "#payeeGrid", 
