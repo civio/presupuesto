@@ -3,14 +3,18 @@
 from django.conf.urls.i18n import i18n_patterns
 from django.conf.urls import patterns, url, include
 from django.conf import settings
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect
 from django.views.generic.simple import direct_to_template
 
 budget_app_urlpatterns = patterns('',
-    url(r'^i18n/', include('django.conf.urls.i18n'))
+    url(r'^i18n/', include('django.conf.urls.i18n')),
+    url(r'^$', lambda x: HttpResponseRedirect(reverse('budget_app_welcome')))
 )
 
 budget_app_urlpatterns += i18n_patterns('budget_app.views',
-    url(r'^/?$', 'welcome'),
+    url(r'^/?$', 'welcome', name="budget_app_welcome"),
 
     url(r'^resumen$', 'budgets'),
 
