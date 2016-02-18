@@ -3,6 +3,7 @@ All notable changes to this project will be documented in this file
 
 ## [Unreleased]
 ### Added
+- Nodes in the global view chart can now be customized and combined as needed.
 
 ### Changed
 - Major front-end rewrite, now using Bootstrap 3
