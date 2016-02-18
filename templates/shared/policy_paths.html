@@ -3,7 +3,7 @@
 // with quite limited handling of accented characters
 function parameterize(s) {
   return s && s.toLowerCase()
-                .replace(/ /g, '-')
+                .replace(/[ ']/g, '-')
                 .replace(/\./g, '')
                 .replace(/á/, 'a')
                 .replace(/é/, 'e')

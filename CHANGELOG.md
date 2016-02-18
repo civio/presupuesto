@@ -8,6 +8,9 @@ All notable changes to this project will be documented in this file
 - Major front-end rewrite, now using Bootstrap 3
 - Policy chart now reimplemented using plain D3.js. NVD3 dependency removed
 
+### Fixed
+- Friendly URLs were cut at the first single quote. Not anymore.
+
 ## [3.1] - 2016-02-02
 ### Added
 - Version info API on /version.json
