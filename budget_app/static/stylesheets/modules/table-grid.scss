@@ -1,12 +1,79 @@
 .table-grid {
-  border: 1px solid $brand-secondary;
-  //border-radius: 0 0 8px 8px;
-  font-size: .75em; 
-  //margin: 0 0 1em;
+  border: 1px solid $brand-primary;
+  border-top: none;
+  margin-bottom: $grid-gutter-width/2;
+
+  .slick-header{
+    border: none;
+    text-transform: uppercase;
+  }
 
   .slick-header-column{
     color: white;
-    line-height: 1.75em;
-    background: $brand-secondary;
+    background: $brand-primary;
+    border-color: white;
+    padding: $grid-gutter-width/2;
+    font-size: 1.125em;
+    line-height: 1em;
+
+    &:hover{
+      color: mix( white, $gray-lighter, 50% );
+    }
+
+    &:last-child{
+      border-right: none;
+    }
+
+    .slick-column-name{
+      font-weight: $font-weight-400;
+    }
+
+    .slick-sort-indicator{
+      width: $grid-gutter-width/6;
+      height: $grid-gutter-width/3;
+      margin-left: $grid-gutter-width/3;
+      background-color: $brand-primary;
+    }
+  }
+
+  .grid-canvas{
+    .slick-row .slick-cell{
+      height: 42px;
+      color: $text-color;
+      font-weight: $font-weight-400;
+      border-color: $brand-primary;
+      border-left: none;
+      border-top: none;
+      border-right-style: solid;
+      padding: $grid-gutter-width/3;
+
+      &:last-child{
+        border-right: none;
+      }
+
+      &.l0:hover{
+        color: $text-color;
+        border-color: mix(white, $brand-primary, 80%);
+        background: mix(white, $brand-primary, 80%);
+      }
+
+      a{
+        color: $brand-primary;
+      }
+
+      .toggle.expand,
+      .toggle.collapse{
+        background-color: $gray-light;
+        margin-top: -1px;
+
+        &:hover{
+          background-color: $brand-primary;
+        }
+      }
+    }
+
+    .slick-row.indent-1 .slick-cell{
+      height: 40px;
+    }
   }
 }
