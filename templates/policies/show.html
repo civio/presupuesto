@@ -126,28 +126,6 @@
 </section>
 
 <!-- 
-  We need this markup in order to get uiState.view 
-  from getActiveButton() in grid_controls.js 
--->
-<ul id="btn-field" class="hidden">
-  <li class="{{ 'active' if show_side=='income' }}">
-    <a id="income">{{ _('Ingresos') }}</a>
-  </li>
-{% if display_functional_view %}
-  <li class="{{ 'active' if not full_breakdown }}">
-    <a id="expense">{{ _('¿Cómo se gasta?') }}</a>
-  </li>
-  <li class="{{ 'active' if full_breakdown }}">
-    <a id="fexpense">{{ _('¿En qué se gasta?') }}</a>
-  </li>
-{% else %}
-  <li class="{{ 'active' if show_side!='income' }}">
-    <a id="expense">{{ _('Gastos') }}</a>
-  </li>
-{% endif %}
-</ul>
-
-<!-- 
   We render the control panel here initially, and move it to the active tab at run-time.
   Having multiple control panels would mean having to sincronize them, messy.
 -->
@@ -355,7 +333,6 @@
     //
     // CONTROL SETUP
     //
-    //setRedrawOnButtonGroupChange('.btn-group', redrawGrid);
     $('#select-format').change(redrawGrid);
     initSlider("#year-selection", {{ years|safe }}, redrawGrid, {{ latest_year }}, {{ years_scale|safe }});
 
