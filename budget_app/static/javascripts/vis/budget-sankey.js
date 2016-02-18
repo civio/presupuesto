@@ -85,12 +85,12 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
       if ( typeof item_id == 'string' ) {   // Standard, an id
         var items = getBreakdownItems(breakdown, item_id);
         var amount_info = getBreakdownItemsAmounts(items, field);
-        return $.extend(amount_info, {label: items[0]['label']});
+        return $.extend(amount_info, {label: items[0]['label'], link_id: item_id});
 
       } else {                              // We got ourselves a hash
         var items = getBreakdownItems(breakdown, item_id.nodes);
         var amount_info = getBreakdownItemsAmounts(items, field);
-        return $.extend(amount_info, {label: item_id.label});
+        return $.extend(amount_info, {label: item_id.label, link_id: item_id.nodes});
       }
     }
 
@@ -107,7 +107,7 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
                         "value": item.amount,
                         "budgeted": item.amount,
                         "actual": item.actualAmount,
-                        "link": linkGenerator(id, item.label) } );
+                        "link": linkGenerator(item.link_id, item.label) } );
         }
       });
 
