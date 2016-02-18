@@ -80,15 +80,17 @@
   margin-right: 20px;
 
   .label{
+    position: relative;
     display: inline-block;
     color: $text-color;
     font-size: 0.875em;
     font-weight: $font-weight-400;
-    padding: 0 5px;
-    margin-right: 5px;
+    padding: 0 $grid-gutter-width/6;
+    margin-right: $grid-gutter-width/6;
     margin-bottom: 4px;
     line-height: 20px;
     cursor: pointer;
+    text-indent: $grid-gutter-width/2;
 
     &:hover{
       color: black;
@@ -97,14 +99,16 @@
     }
 
     span{
-      float: left;
-      width: 10px;
-      height: 10px;
+      position: absolute;
+      top: 0;
+      left: $grid-gutter-width/6;
+      width: $grid-gutter-width/3;
+      height: $grid-gutter-width/3;
       border-width: 2px;
       border-style: solid;
-      border-radius: 5px;
-      margin-top: 5px;
-      margin-right: 5px;
+      border-radius: $grid-gutter-width/6;
+      margin-top: $grid-gutter-width/6;
+      margin-right: $grid-gutter-width/6;
     }
 
     &.inactive{
