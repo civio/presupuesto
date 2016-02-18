@@ -82,6 +82,23 @@
         border: none;
       }
     }
+
+    .icon-question {
+      float: left;
+      display: block;
+      width: 22px;
+      height: 22px;
+      margin-top: 1px;
+      margin-right: 8px;
+      border-radius: 11px;
+      background: url(../assets/bugget-stream-question.png) no-repeat 6px 3px $gray-light;
+      @include transition( background-color 0.3s ease-out );
+
+      &:hover{
+        background-color: $brand-primary;
+      }
+    }
+
   }
 
   @media (min-width: $screen-sm-min) {
