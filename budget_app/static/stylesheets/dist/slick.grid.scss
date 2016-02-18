@@ -38,12 +38,12 @@ classes should alter those!
     margin-left: .5em;
     vertical-align: middle;
     width: 24px;
-    box-shadow: 0 0 0 .125em white, 0 0 .25em $gray inset;
+    //box-shadow: 0 0 0 .125em white, 0 0 .25em $gray inset;
 }
 .slick-sort-indicator:hover {
     background-color: $brand-primary;
     cursor: pointer;
-    box-shadow: 0 0 0 2px white, 0 0 .25em $gray inset, 0 0 .5em .125em fadeout($brand-secondary, 50%);
+    //box-shadow: 0 0 0 2px white, 0 0 .25em $gray inset, 0 0 .5em .125em fadeout($brand-secondary, 50%);
 }
 .slick-sort-indicator-desc {
     background-image: url(../assets/slick/sort-desc.png);
@@ -149,7 +149,7 @@ classes should alter those!
     display: inline-block;
     height: 24px;
     width: 24px;
-    box-shadow: 0 0 .25em fadeout(black, 50%) inset;
+    //box-shadow: 0 0 .25em fadeout(black, 50%) inset;
 }
 
 $shadow-st: 0 0 0 .125em fadeout($brand-terciary, 50%), 0 0 .25em fadeout(black, 50%) inset;
@@ -163,7 +163,7 @@ $shadow-st-h: 0 0 0 2px white, 0 0 .25em fadeout(black, 50%) inset, 0 0 .5em .12
 .slick-cell .toggle.expand,
 .slick-cell .toggle.collapse {
     background-color: $gray-dark;
-    box-shadow: $shadow-st;
+    //box-shadow: $shadow-st;
 }
 .slick-cell .toggle.expand {
     background-image: url(../assets/slick/expand.png);
@@ -174,7 +174,7 @@ $shadow-st-h: 0 0 0 2px white, 0 0 .25em fadeout(black, 50%) inset, 0 0 .5em .12
 .slick-cell .toggle.expand:hover,
 .slick-cell .toggle.collapse:hover {
     background-color: darken($brand-terciary, 10%);
-    box-shadow: $shadow-st-h;
+    //box-shadow: $shadow-st-h;
 }
 /* Column styles */
 
@@ -191,7 +191,7 @@ $shadow-st-h: 0 0 0 2px white, 0 0 .25em fadeout(black, 50%) inset, 0 0 .5em .12
 .slick-cell.l0:hover {
     background: lighten($brand-primary, 60%);
     cursor: pointer;
-    box-shadow: 0 0 0 1px white inset, 0 .125em .25em lighten($brand-primary, 40%) inset;
+    //box-shadow: 0 0 0 1px white inset, 0 .125em .25em lighten($brand-primary, 40%) inset;
 }
 .slick-cell.l0:hover a {
     color: lighten($brand-primary, 30%);
