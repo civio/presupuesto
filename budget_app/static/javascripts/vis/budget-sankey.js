@@ -49,22 +49,27 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
       return adjustInflation(value, stats, year);
     }
 
-    // Retrieve a given id from a breakdown. Since the breakdown is multilevel we
-    // also support the id to be an array to traverse the tree. (I initially thought
-    // I'd be smart and guess the path automatically, but then I need the parent
-    // node id anyway to generate the link, so this is good, plus I don't have to
-    // be smart and make assumptions, always dangerous.)
-    function getBreakdownItem(breakdown, item_id) {
-      if ( typeof item_id == 'string' ) {   // Standard, an id
-        return breakdown.sub[item_id];
+    // Retrieve amount information for a given id
+    function getBreakdownItemAmount(item, field) {
+      return {
+        amount: real(item[field][year]),
+        actualAmount: real(item[field]["actual_"+year]||0)
+      };
+    }
 
-      } else {                              // We got ourselves an array
-        // This will only work if an array has two elements. Fine with me.
-        var parent = breakdown.sub[item_id[0]];
-        var child = getBreakdownItem(parent, item_id[1]);
-        // Keep track of the parent, will be handy below
-        child.parent = parent;
-        return child;
+    // Retrieve information for a given id. We support two formats:
+    //   - simple: a string with an id
+    //   - advanced: a hash with 'nodes' and 'label' for custom behaviours
+    function getBreakdownItem(breakdown, item_id, field) {
+      if ( typeof item_id == 'string' ) {   // Standard, an id
+        var item = breakdown.sub[item_id];
+        var amount_info = getBreakdownItemAmount(item, field);
+        return $.extend(amount_info, {label: item['label']});
+
+      } else {                              // We got ourselves a hash
+        var item = breakdown.sub[item_id.nodes];
+        var amount_info = getBreakdownItemAmount(item, field);
+        return $.extend(amount_info, {label: item_id.label});
       }
     }
 
@@ -73,27 +78,17 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
       var accumulatedTotal = 0;
       var accumulatedActualTotal = 0;
       $.each(ids, function(i, id) {
-        var item = getBreakdownItem(breakdown, id);
+        var item = getBreakdownItem(breakdown, id, field);
         if ( item != null ) {
-          var amount = real(item[field][year]);
-          accumulatedTotal += amount;
+          accumulatedTotal += item.amount;
+          accumulatedActualTotal += item.actualAmount;
 
-          var actualAmount = real(item[field]["actual_"+year]||0);
-          accumulatedActualTotal += actualAmount;
+          var link = linkGenerator(id, item.label);
 
-          // Generate link. If we have an array of ids, we need to use the first one
-          if ( typeof id != 'string' ) {
-            var label = item.parent.label + ": " + item.label;
-            var link = linkGenerator(id[0], label);
-          } else {
-            var label = item.label;
-            var link = linkGenerator(id, label);
-          }
-
-          nodes.push( { "name": label,
-                        "value": amount,
-                        "budgeted": amount,
-                        "actual": actualAmount,
+          nodes.push( { "name": item.label,
+                        "value": item.amount,
+                        "budgeted": item.amount,
+                        "actual": item.actualAmount,
                         "link": link } );
         }
       });
