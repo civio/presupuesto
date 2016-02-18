@@ -16,6 +16,7 @@
 
   .layout-slider{
     margin: 0 $grid-gutter-width/3;
+    max-width: 995px;
   }
 
   .jslider {
@@ -85,7 +86,7 @@
     }
 
     .layout-slider{
-      margin: 0;
+      margin: 0 auto;
     }
   }
 }

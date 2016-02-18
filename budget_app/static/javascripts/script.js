@@ -25,7 +25,7 @@ $(document).ready(function(){
 	}
 
 	// Initialice tooltips at Budget Indicators
-	$('#totals_panel .icon-question').tooltip();
+	$('#totals-panel .icon-question').tooltip();
 
 	// Support a 'chrome-less' mode to improve the look of the site when embedded via iframe.
 	// Just add a query parameter 'embedded', with any value, and the chrome-less model will be
