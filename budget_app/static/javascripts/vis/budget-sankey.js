@@ -4,7 +4,6 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
   var economicBreakdown = theEconomicBreakdown;
   var stats = theStats;
   var budgetStatuses = theBudgetStatuses;
-  var _ = i18n;
   var maxAmountEver = 0;
 
   var incomeNodes = [];
@@ -49,26 +48,38 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
       return adjustInflation(value, stats, year);
     }
 
+    // Given an array of item ids, return an array of breakdown items.
+    // For backwards compatibility, a string with one item id is also accepted as input.
+    function getBreakdownItems(breakdown, item_ids) {
+      if ( typeof item_ids == 'string' ) {    // Standard, an id
+        return [ breakdown.sub[item_ids] ];
+      } else {                                // We got ourselves a hash
+        return _.map(item_ids, function(item) { return breakdown.sub[item]; });
+      }
+    }
+
     // Retrieve amount information for a given id
-    function getBreakdownItemAmount(item, field) {
-      return {
-        amount: real(item[field][year]),
-        actualAmount: real(item[field]["actual_"+year]||0)
-      };
+    function getBreakdownItemsAmounts(items, field) {
+      var amounts = { amount: 0, actualAmount: 0 }
+      $.each(items, function(i, item) {
+        amounts.amount += real(item[field][year]||0);
+        amounts.actualAmount += real(item[field]["actual_"+year]||0);
+      });
+      return amounts;
     }
 
     // Retrieve information for a given id. We support two formats:
     //   - simple: a string with an id
     //   - advanced: a hash with 'nodes' and 'label' for custom behaviours
-    function getBreakdownItem(breakdown, item_id, field) {
+    function getNodeInfo(breakdown, item_id, field) {
       if ( typeof item_id == 'string' ) {   // Standard, an id
-        var item = breakdown.sub[item_id];
-        var amount_info = getBreakdownItemAmount(item, field);
-        return $.extend(amount_info, {label: item['label']});
+        var items = getBreakdownItems(breakdown, item_id);
+        var amount_info = getBreakdownItemsAmounts(items, field);
+        return $.extend(amount_info, {label: items[0]['label']});
 
       } else {                              // We got ourselves a hash
-        var item = breakdown.sub[item_id.nodes];
-        var amount_info = getBreakdownItemAmount(item, field);
+        var items = getBreakdownItems(breakdown, item_id.nodes);
+        var amount_info = getBreakdownItemsAmounts(items, field);
         return $.extend(amount_info, {label: item_id.label});
       }
     }
@@ -78,7 +89,7 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
       var accumulatedTotal = 0;
       var accumulatedActualTotal = 0;
       $.each(ids, function(i, id) {
-        var item = getBreakdownItem(breakdown, id, field);
+        var item = getNodeInfo(breakdown, id, field);
         if ( item != null ) {
           accumulatedTotal += item.amount;
           accumulatedActualTotal += item.actualAmount;
@@ -96,7 +107,7 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
       // Add an extra node for the remaining amount
       var budgetedRemainder = real(breakdown[field][year]) - accumulatedTotal;
       var actualRemainder = real(breakdown[field]["actual_"+year]) - accumulatedActualTotal;
-      nodes.push( { "name": _['other'],
+      nodes.push( { "name": i18n['other'],
                     "value": budgetedRemainder,
                     "budgeted": budgetedRemainder,
                     "actual": actualRemainder,
@@ -227,10 +238,10 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
 
     // Add a basic legend. Not the most elegant implementation...
     var legend = svg.append('g').attr("transform", "translate(5,"+height+")");
-    addLegendItem(legend, 0, _['budgeted'], 'legend-budget');
-    addLegendItem(legend, 1, _['executed'], 'legend-execution');
+    addLegendItem(legend, 0, i18n['budgeted'], 'legend-budget');
+    addLegendItem(legend, 1, i18n['executed'], 'legend-execution');
     var note = svg.append('g').attr("transform", "translate(-10,"+(height+20)+")");
-    addLegendItem(note, 0, _['amounts.are.real'], 'legend-note');
+    addLegendItem(note, 0, i18n['amounts.are.real'], 'legend-note');
 
     updateExecution();
   };
@@ -275,9 +286,9 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
 
     // Update execution text based on budgetStatuses
     if (hasExecution && budgetStatuses) {
-      var txt = _['executed'];
+      var txt = i18n['executed'];
       if(budgetStatuses[uiState.year] && budgetStatuses[uiState.year] !== ''){
-        txt += ' '+_[budgetStatuses[uiState.year]];
+        txt += ' '+i18n[budgetStatuses[uiState.year]];
       }
       d3.select('.legend-execution text').text( txt );
     }
@@ -340,8 +351,8 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
       $popup.find(".popover-content").html('');
     } else {  // Flow
       // TODO: Display actual income/expense on nodes, not just flows
-      $popup.find(".popover-content").html((d.budgeted ? '<span class="budgeted">'+_['budgeted']+'</span><br/><b>'+formatAmount(d.budgeted)+'</b><br/>' : '') +
-                                (d.actual ? '<span class="executed">'+_['executed']+'</span><br/><b>'+formatAmount(d.actual)+'</b>' : '') );
+      $popup.find(".popover-content").html((d.budgeted ? '<span class="budgeted">'+i18n['budgeted']+'</span><br/><b>'+formatAmount(d.budgeted)+'</b><br/>' : '') +
+                                (d.actual ? '<span class="executed">'+i18n['executed']+'</span><br/><b>'+formatAmount(d.actual)+'</b>' : '') );
     }
 
     $popup.show();
