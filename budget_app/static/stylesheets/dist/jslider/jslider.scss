@@ -18,7 +18,7 @@
 .jslider .jslider-pointer-to {left: 80%;}
 .jslider .jslider-label {font-size: .75em; line-height: 12px; color: black; opacity: .4; white-space: nowrap;  position: absolute; top: -1.5em; left: 0px;}
 .jslider .jslider-label-to {left: auto; right: 0;}
-.jslider .jslider-value {font-weight: 800; white-space: nowrap; padding: .25em; position: absolute; top: -2.25em; left: 20%; background: $gray-darker; color: white; line-height: 1.125; border-radius: .25em; }
+.jslider .jslider-value {font-weight: $font-weight-600; white-space: nowrap; padding: .25em; position: absolute; top: -2.25em; left: 20%; background: $gray-dark; color: white; line-height: 1.125; border-radius: 4px; }
 .jslider .jslider-value-to {left: 80%;}
 .jslider .jslider-label small, .jslider .jslider-value small {position: relative; top: -0.4em;}
 .jslider .jslider-scale {position: relative; top: 9px;}
