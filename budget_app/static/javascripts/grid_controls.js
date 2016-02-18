@@ -4,7 +4,7 @@ function setRedrawOnTabsChange(container, callback) {
   $(container+' a').click(function(event) {
     event.preventDefault();
     $(container+' .active').removeClass('active');
-    $(event.target).blur().parent().addClass('active');
+    $(event.target).blur().parents(container+' li').addClass('active');
     callback();
   });
 }
