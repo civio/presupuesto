@@ -114,11 +114,12 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
       // Add an extra node for the remaining amount
       var budgetedRemainder = real(breakdown[field][year]) - accumulatedTotal;
       var actualRemainder = real(breakdown[field]["actual_"+year]) - accumulatedActualTotal;
-      nodes.push( { "name": i18n['other'],
-                    "value": budgetedRemainder,
-                    "budgeted": budgetedRemainder,
-                    "actual": actualRemainder,
-                    "link": linkGenerator(null, null) });
+      if ( budgetedRemainder != 0 )
+        nodes.push( { "name": i18n['other'],
+                      "value": budgetedRemainder,
+                      "budgeted": budgetedRemainder,
+                      "actual": actualRemainder,
+                      "link": linkGenerator(null, null) });
 
       return nodes;
     }
