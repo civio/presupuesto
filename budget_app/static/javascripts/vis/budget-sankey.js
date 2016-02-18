@@ -103,14 +103,11 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
         if ( item != null ) {
           accumulatedTotal += item.amount;
           accumulatedActualTotal += item.actualAmount;
-
-          var link = linkGenerator(id, item.label);
-
           nodes.push( { "name": item.label,
                         "value": item.amount,
                         "budgeted": item.amount,
                         "actual": item.actualAmount,
-                        "link": link } );
+                        "link": linkGenerator(id, item.label) } );
         }
       });
 

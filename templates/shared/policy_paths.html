@@ -12,10 +12,12 @@ function parameterize(s) {
                 .replace(/ú/, 'u');
 }
 
-// Return path to a policy page
+// Return path to a policy page.
+// Note: we ignore policy ids that are not a simple string, which happens when we have
+// a custom Sankey chart: we default to the parent policies page.
 function getPolicyLink(policy_id, title) {
   var url = "{{ url('budget_app.views.policies') }}";
-  if ( policy_id )
+  if ( policy_id && typeof article_id=="string" )
     url = url + '/'+policy_id+'/'+parameterize(title);
   return url;
 }
@@ -35,7 +37,9 @@ function getExpenseArticleLink(article_id, title) {
     return "{{ url('budget_app.views.policies') }}#field=expense";
 }
 function getIncomeArticleLink(article_id, title) {
-  if ( article_id )
+  // Note: we ignore policy ids that are not a simple string, which happens when we have
+  // a custom Sankey chart: we default to the parent policies page.
+  if ( article_id && typeof article_id=="string" )
     return "{{ url('budget_app.views.income_articles_show') }}/"+article_id+'/'+parameterize(title);
   else
     return "{{ url('budget_app.views.policies') }}#view=income";
