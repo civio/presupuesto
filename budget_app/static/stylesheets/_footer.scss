@@ -9,13 +9,18 @@
     margin-bottom: $grid-gutter-width;
 
     > a{
-      padding-right: $grid-gutter-width/6;
-      padding-left: $grid-gutter-width/6;
+      padding-right: $grid-gutter-width/3;
+      padding-left: $grid-gutter-width/3;
       @include transition( opacity 0.3s ease-out );
 
       &:hover{
         opacity: 0.7;
+        text-decoration: none;
       }
+    }
+
+    .img-aragon{
+      margin-top: -4px;
     }
   }
 
