@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-18 13:17+0100\n"
+"POT-Creation-Date: 2016-02-18 17:27+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -67,25 +67,25 @@ msgid "El recorrido de mis impuestos"
 msgstr ""
 
 #: templates/budgets/budgets_intro.html:9
-msgid "La recaudación"
+msgid "La recaudación local"
 msgstr ""
 
 #: templates/budgets/budgets_intro.html:10
 msgid ""
-"Se realiza a través de <b>impuestos directos</b> - como el IRPF y el "
-"impuesto de sociedades - y de <b>impuestos indirectos</b> - el IVA e "
-"impuestos sobre el tabaco, el alcohol o la gasolina -."
+"Se realiza a través de impuestos directos -como el impuesto de bienes "
+"inmuebles (IBI) o el de vehículos de tracción mecánica (IVTM)- y de tasas -"
+"como la de recogida de basura"
 msgstr ""
 
 #: templates/budgets/budgets_intro.html:15
-msgid "¿Cómo se reparte?"
+msgid "Otras fuentes de ingresos"
 msgstr ""
 
 #: templates/budgets/budgets_intro.html:16
 msgid ""
-"Una parte del dinero recaudado se queda en la <b>Administración General del "
-"Estado</b>, mientras que otra parte se transfiere al <b>Gobierno de Aragón</"
-"b>"
+"El dinero recaudado localmente se complementa con las transferencias de la "
+"Administración General del Estado y del Gobierno de Aragón, que son los "
+"encargados de recaudar otros ingresos como el IVA y el IRPF"
 msgstr ""
 
 #: templates/budgets/budgets_intro.html:21
@@ -94,9 +94,9 @@ msgstr ""
 
 #: templates/budgets/budgets_intro.html:22
 msgid ""
-"El <b>Gobierno de Aragón</b> utiliza el dinero recaudado, junto con otras "
-"fuentes de financiación como puede ser la deuda, para <b>mantener los "
-"servicios públicos</b>"
+"El ayuntamiento utiliza el dinero recaudado, junto con otras fuentes de "
+"financiación como la deuda, para mantener los servicios públicos y la "
+"infraestructura de la ciudad."
 msgstr ""
 
 #: templates/budgets/index.html:17
@@ -229,21 +229,21 @@ msgstr ""
 msgid "Descarga la tabla de <b>Gastos</b>"
 msgstr ""
 
-#: templates/entities/show.html:33
-msgid "¿En qué se gasta?"
+#: templates/entities/show.html:32 templates/entities/show.html.py:221
+#: templates/policies/show.html:157
+msgid "Ingresos"
 msgstr ""
 
 #: templates/entities/show.html:36 templates/policies/show.html:160
 msgid "¿Cómo se gasta?"
 msgstr ""
 
-#: templates/entities/show.html:40 templates/entities/show.html.py:228
-msgid "Gastos"
+#: templates/entities/show.html:39
+msgid "¿En qué se gasta?"
 msgstr ""
 
-#: templates/entities/show.html:44 templates/entities/show.html.py:221
-#: templates/policies/show.html:157
-msgid "Ingresos"
+#: templates/entities/show.html:43 templates/entities/show.html.py:228
+msgid "Gastos"
 msgstr ""
 
 #: templates/entities/show.html:80

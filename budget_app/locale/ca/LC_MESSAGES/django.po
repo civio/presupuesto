@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-18 13:18+0100\n"
+"POT-Creation-Date: 2016-02-18 17:27+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,7 +23,6 @@ msgid "Presupuestos del Gobierno de Aragón"
 msgstr "Pressupostos del Gobierno de Aragón"
 
 #: templates/base.html:93
-#, fuzzy
 msgid ""
 "Esta web utiliza cookies propias y de terceros para ofrecerte la mejor "
 "experiencia de usuario. Si continúas navegando, entendemos que autorizas el "
@@ -74,29 +73,26 @@ msgid "El recorrido de mis impuestos"
 msgstr "El recorregut dels meus impostos"
 
 #: templates/budgets/budgets_intro.html:9
-msgid "La recaudación"
-msgstr "La recaptació"
+msgid "La recaudación local"
+msgstr "La recaptació local"
 
 #: templates/budgets/budgets_intro.html:10
 msgid ""
-"Se realiza a través de <b>impuestos directos</b> - como el IRPF y el "
-"impuesto de sociedades - y de <b>impuestos indirectos</b> - el IVA e "
-"impuestos sobre el tabaco, el alcohol o la gasolina -."
-msgstr ""
-"Es realitza a través <b>d'impostos directes</b> - com l'IRPF i l'impost de "
-"societats - i <b>d'impostos indirectes</b> - l'IVA i impostos sobre el "
-"tabac, l'alcohol o la benzina."
+"Se realiza a través de impuestos directos -como el impuesto de bienes "
+"inmuebles (IBI) o el de vehículos de tracción mecánica (IVTM)- y de tasas -"
+"como la de recogida de basura"
+msgstr "Es realitza a través d'impostos directes, principalment l'IBI, i de taxes del municipi -com la d'escombraries"
 
 #: templates/budgets/budgets_intro.html:15
-msgid "¿Cómo se reparte?"
-msgstr "Còm es reparteix?"
+msgid "Otras fuentes de ingresos"
+msgstr "Altres fonts d'ingressos"
 
 #: templates/budgets/budgets_intro.html:16
 msgid ""
-"Una parte del dinero recaudado se queda en la <b>Administración General del "
-"Estado</b>, mientras que otra parte se transfiere al <b>Gobierno de Aragón</"
-"b>"
-msgstr "Una part dels diners recaptats es queda en <b>l'Administració General de l'Estat</b>, mentre que una altra part es transfereix al <b>Gobierno de Aragón</b>"
+"El dinero recaudado localmente se complementa con las transferencias de la "
+"Administración General del Estado y del Gobierno de Aragón, que son los "
+"encargados de recaudar otros ingresos como el IVA y el IRPF"
+msgstr "El pressupost municipal inclou altres ingressos provinents, principalment, de l'Administració General de l'Estat i del Gobierno de Aragón, que són els encarregats de recaudar altres ingressos com l'IVA i o l'IRPF"
 
 #: templates/budgets/budgets_intro.html:21
 msgid "¿En qué se emplea?"
@@ -104,10 +100,10 @@ msgstr "En què s'empra?"
 
 #: templates/budgets/budgets_intro.html:22
 msgid ""
-"El <b>Gobierno de Aragón</b> utiliza el dinero recaudado, junto con otras "
-"fuentes de financiación como puede ser la deuda, para <b>mantener los "
-"servicios públicos</b>"
-msgstr "El <b>Gobierno de Aragón</b> utilitza els diners recaptats, juntament amb altres fonts de finançament com pot ser el deute, per <b>mantenir els serveis públics</b>"
+"El ayuntamiento utiliza el dinero recaudado, junto con otras fuentes de "
+"financiación como la deuda, para mantener los servicios públicos y la "
+"infraestructura de la ciudad."
+msgstr "L'Ajuntament utilitza el pressupost municipal per mantenir els serveis públics i les infraestructures de la ciutat"
 
 #: templates/budgets/index.html:17
 msgid "Ingresos y gastos en el Gobierno de Aragón"
@@ -241,22 +237,22 @@ msgstr "Descarrega la taula de <b>Ingressos</b>"
 msgid "Descarga la tabla de <b>Gastos</b>"
 msgstr "Descarrega la taula de <b>Despeses</b>"
 
-#: templates/entities/show.html:33
-msgid "¿En qué se gasta?"
-msgstr "En què es gasta?"
+#: templates/entities/show.html:32 templates/entities/show.html.py:221
+#: templates/policies/show.html:157
+msgid "Ingresos"
+msgstr "Ingressos"
 
 #: templates/entities/show.html:36 templates/policies/show.html:160
 msgid "¿Cómo se gasta?"
 msgstr "Com es gasta?"
 
-#: templates/entities/show.html:40 templates/entities/show.html.py:228
+#: templates/entities/show.html:39
+msgid "¿En qué se gasta?"
+msgstr "En què es gasta?"
+
+#: templates/entities/show.html:43 templates/entities/show.html.py:228
 msgid "Gastos"
 msgstr "Despeses"
-
-#: templates/entities/show.html:44 templates/entities/show.html.py:221
-#: templates/policies/show.html:157
-msgid "Ingresos"
-msgstr "Ingressos"
 
 #: templates/entities/show.html:80
 msgid "Información no disponible"
@@ -783,3 +779,24 @@ msgstr ""
 #: views/terms.py:9 views/welcome.py:10
 msgid "Inicio"
 msgstr "Inici"
+
+#~ msgid ""
+#~ "Se realiza a través de <b>impuestos directos</b> - como el IRPF y el "
+#~ "impuesto de sociedades - y de <b>impuestos indirectos</b> - el IVA e "
+#~ "impuestos sobre el tabaco, el alcohol o la gasolina -."
+#~ msgstr ""
+#~ "Es realitza a través <b>d'impostos directes</b> - com l'IRPF i l'impost "
+#~ "de societats - i <b>d'impostos indirectes</b> - l'IVA i impostos sobre el "
+#~ "tabac, l'alcohol o la benzina."
+
+#~ msgid "¿Cómo se reparte?"
+#~ msgstr "Còm es reparteix?"
+
+#~ msgid ""
+#~ "Una parte del dinero recaudado se queda en la <b>Administración General "
+#~ "del Estado</b>, mientras que otra parte se transfiere al <b>Gobierno de "
+#~ "Aragón</b>"
+#~ msgstr ""
+#~ "Una part dels diners recaptats es queda en <b>l'Administració General de "
+#~ "l'Estat</b>, mentre que una altra part es transfereix al <b>Gobierno de "
+#~ "Aragón</b>"
