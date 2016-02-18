@@ -422,15 +422,15 @@ function StackedAreaChart() {
     var str = '<p class="popover-content-year">'+_year+'</p>';
 
     if( !_this.dataIsPercentage ){
-      str += '<p class="popover-content-value"><b>'+(_value*0.01).toLocaleString('es-ES', {maximumFractionDigits: 2, minimumFractionDigits: 2})+'</b> €</p>';
+      str += '<p class="popover-content-value"><b>'+formatAmount(_value)+'</b></p>';
     } else{
-      str += '<p class="popover-content-value"><b>'+(_value*100).toLocaleString('es-ES', {maximumFractionDigits: 2, minimumFractionDigits: 2})+'</b> %</p>';
+      str += '<p class="popover-content-value"><b>'+formatDecimal(_value*100,2)+'</b> %</p>';
     }
 
     if( _prevValue ){
       var percentageValue = ((_value/_prevValue)-1)*100;
       var labelClass      = (percentageValue >= 0) ? 'label-success' : 'label-danger';
-      str += '<span class="label '+labelClass+'">'+percentageValue.toLocaleString('es-ES', {maximumFractionDigits: 1, minimumFractionDigits: 1})+' %</span>';
+      str += '<span class="label '+labelClass+'">'+formatDecimal(percentageValue,1)+' %</span>';
     }
 
     return str;
