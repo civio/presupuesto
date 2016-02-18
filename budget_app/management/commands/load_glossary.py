@@ -53,8 +53,8 @@ class Command(BaseCommand):
                 glossary_loader.load(os.path.join(path, filename), options['language'])
             except IOError:
                 print('Fichero no encontrado. Se va a cargar el glosario por defecto.')
-            glossary_loader.load(
-                os.path.join(PATH_TO_DEFAULT, default_filename),
-                options['language']
-            )
+                glossary_loader.load(
+                    os.path.join(PATH_TO_DEFAULT, default_filename),
+                    options['language']
+                )
 
