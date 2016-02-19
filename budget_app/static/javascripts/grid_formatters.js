@@ -54,7 +54,7 @@ function formatDecimal(value, precision) {
     }
   }
 
-  return numeral( value ).format( rule, Math.floor );
+  return numeral( value ).format( rule, Math.round );
 }
 
 // Pretty print a number by inserting ',' thousand separator
