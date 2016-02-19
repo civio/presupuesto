@@ -221,7 +221,8 @@ function StackedAreaChart() {
       .style('fill', function(d) { return _this.color(d.id); })
       .on('mouseover',  onAreaMouseOver)
       .on('mouseout',   onAreaMouseOut)
-      .on('mousemove',  onAreaMouseMove);
+      .on('mousemove',  onAreaMouseMove)
+      .on('click',      function(d){ $(_this.selector).trigger('policy-selected', d); }); // trigger 'policy-selected' event to be listened in the template
 
     _this.svg.on('mouseout', function(e){
       _this.svg.selectAll('.point').attr('r', 4).classed('hover', false);
