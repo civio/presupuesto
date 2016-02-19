@@ -518,7 +518,6 @@
       if ( state.item ) {
         unfoldItem(economicGridData, state.item);
         redrawGrid();
-        $("a[href=#tab-concepts]").click();
         window.setTimeout(function(){ $(".toggle.collapse")[0].scrollIntoView() }, 1000);
 
       } else {
