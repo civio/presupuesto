@@ -65,8 +65,8 @@ TIME_ZONE = 'Europe/Madrid'
 
 # Location of translation files (used by themes to override certain strings)
 LOCALE_PATHS = (
-    os.path.join(ROOT_PATH, 'budget_app', 'locale'),
     os.path.join(os.path.dirname(__file__), '..', THEME, 'locale'),
+    os.path.join(ROOT_PATH, 'budget_app', 'locale'),
 )
 
 # Ensure LANGUAGES is defined for LocaleMiddleware. Multilingual themes
