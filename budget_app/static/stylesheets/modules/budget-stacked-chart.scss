@@ -128,6 +128,7 @@
     color: $gray-light;
     margin-bottom: 0;
   }
+
   .popover-content-value{
     font-size: 1.25em;
     margin-bottom: 5px;
@@ -136,9 +137,21 @@
       font-weight: $font-weight-600;
     }
   }
-  .popover-content .label{
-    font-size: 0.875em;
-    font-weight: $font-weight-400;
+  
+  .popover-content-variation{
+    margin-bottom: 0;
+  }
+
+  .popover-content-variation-label {
+    margin-bottom: $grid-gutter-width/6;
+    font-size: 0.913em;
+    font-style: italic;
+    font-weight: $font-weight-300;
+
+    .variation-year{
+      font-weight: 400;
+      font-style: normal
+    }
   }
 }
 
