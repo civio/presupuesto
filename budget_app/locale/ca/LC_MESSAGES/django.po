@@ -800,3 +800,6 @@ msgstr "Inici"
 #~ "Una part dels diners recaptats es queda en <b>l'Administració General de "
 #~ "l'Estat</b>, mentre que una altra part es transfereix al <b>Gobierno de "
 #~ "Aragón</b>"
+
+msgid "¿Quién lo gasta?"
+msgstr "Qui ho gasta?"

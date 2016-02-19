@@ -56,7 +56,7 @@
       {% endif %}
       {% if show_funding_tab %}
       <li>
-        <a href="#tab-funding"><h3>{{ tab_titles['funding'] }}</h3></a>
+        <a href="#tab-funding"><h3>{{ _(tab_titles['funding']) }}</h3></a>
       </li>
       {% endif %}
       {% if show_institutional_tab %}
@@ -90,7 +90,7 @@
       {{ render_tab(_(tab_titles['economic']), 'economic', csv_type, csv_id, 'active') }} 
     {% endif %}
     {% if show_funding_tab %}
-      {{ render_tab(tab_titles['funding'], 'funding', csv_type, csv_id, '') }} 
+      {{ render_tab(_(tab_titles['funding']), 'funding', csv_type, csv_id, '') }} 
     {% endif %}
     {% if show_institutional_tab %}
       {{ render_tab(_(tab_titles['institutional']), 'institutional', csv_type, csv_id, '') }} 
