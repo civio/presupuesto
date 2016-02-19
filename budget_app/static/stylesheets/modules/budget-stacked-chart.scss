@@ -126,12 +126,12 @@
   .popover-content-year{
     font-size: 1.125em;
     color: $gray-light;
-    margin-bottom: 0;
+    margin-bottom: $grid-gutter-width/6;
   }
 
   .popover-content-value{
     font-size: 1.25em;
-    margin-bottom: 5px;
+    margin-bottom: $grid-gutter-width/6;
 
     b{
       font-weight: $font-weight-600;
