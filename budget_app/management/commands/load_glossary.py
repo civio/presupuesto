@@ -14,6 +14,7 @@ class Command(BaseCommand):
             '--language',
             action='store',
             dest='language',
+            default=settings.LANGUAGE_CODE,
             help='Set data language'),
         make_option(
             '--extend',
@@ -34,27 +35,24 @@ class Command(BaseCommand):
         else:
             path = args[0]
 
-        if options['language']:
-            filename = "glosario_%s.csv" % (options['language'], )
-            default_filename = "glosario_default_%s.csv" % (options['language'])
-        else:
-            filename = 'glosario.csv'
-            default_filename = 'glosario_default.csv'
+        language = options.get('language')
+        filename = "glosario_%s.csv" % (language, )
+        default_filename = "glosario_default_%s.csv" % (options['language'])
 
-        glossary_loader.delete_all(options.get('language', 'es-es'))
+        glossary_loader.delete_all(language)
         if options.get('extend', False):
             glossary_loader.load(
                 os.path.join(PATH_TO_DEFAULT, default_filename),
                 options['language']
             )
-            glossary_loader.load(os.path.join(path, filename), options['language'])
+            glossary_loader.load(os.path.join(path, filename), language)
         else:
             try:
-                glossary_loader.load(os.path.join(path, filename), options['language'])
+                glossary_loader.load(os.path.join(path, filename), language)
             except IOError:
                 print('Fichero no encontrado. Se va a cargar el glosario por defecto.')
                 glossary_loader.load(
                     os.path.join(PATH_TO_DEFAULT, default_filename),
-                    options['language']
+                    language
                 )
 

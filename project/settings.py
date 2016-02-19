@@ -74,7 +74,7 @@ LOCALE_PATHS = (
 if not 'LANGUAGES' in locals():
     # All choices can be found here: http://www.i18nguy.com/unicode/language-identifiers.html
     LANGUAGES = (
-      ('es-ES', 'Castellano'),
+      ('es', 'Castellano'),
     )
 
 # Base language code for this installation. Selects the first from the list of available ones.
