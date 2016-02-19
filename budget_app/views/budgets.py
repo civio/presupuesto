@@ -33,5 +33,7 @@ def budgets(request):
 
     c['income_nodes'] = json.dumps(settings.OVERVIEW_INCOME_NODES)
     c['expense_nodes'] = json.dumps(settings.OVERVIEW_EXPENSE_NODES)
+    if hasattr(settings, 'OVERVIEW_RELAX_FACTOR'):
+        c['relax_factor'] = settings.OVERVIEW_RELAX_FACTOR
 
     return render_to_response('budgets/index.html', c)

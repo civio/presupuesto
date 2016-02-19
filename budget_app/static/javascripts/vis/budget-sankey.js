@@ -5,6 +5,7 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
   var stats = theStats;
   var budgetStatuses = theBudgetStatuses;
   var maxAmountEver = 0;
+  var relaxFactor = 0.79;
 
   var incomeNodes = [];
   var expenseNodes = [];
@@ -24,6 +25,12 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
   this.maxAmountEver = function(_) {
     if (!arguments.length) return maxAmountEver;
     maxAmountEver = _;
+    return this;
+  };
+
+  this.relaxFactor = function(_) {
+    if (!arguments.length) return relaxFactor;
+    relaxFactor = _;
     return this;
   };
 
@@ -203,6 +210,7 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
     sankey = d3.sankey(width, height)
         .nodeWidth(2)
         .nodePadding(10)
+        .relaxFactor(relaxFactor)
         .size([width, height]);
     if ( maxAmountEver != 0 )
       sankey.maxAmountEver(maxAmountEver);
