@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-18 17:27+0100\n"
+"POT-Creation-Date: 2016-02-19 18:12+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -81,7 +81,9 @@ msgid ""
 "Se realiza a través de impuestos directos -como el impuesto de bienes "
 "inmuebles (IBI) o el de vehículos de tracción mecánica (IVTM)- y de tasas -"
 "como la de recogida de basura"
-msgstr "Es realitza a través d'impostos directes, principalment l'IBI, i de taxes del municipi -com la d'escombraries"
+msgstr ""
+"Es realitza a través d'impostos directes, principalment l'IBI, i de taxes "
+"del municipi -com la d'escombraries"
 
 #: templates/budgets/budgets_intro.html:15
 msgid "Otras fuentes de ingresos"
@@ -92,7 +94,10 @@ msgid ""
 "El dinero recaudado localmente se complementa con las transferencias de la "
 "Administración General del Estado y del Gobierno de Aragón, que son los "
 "encargados de recaudar otros ingresos como el IVA y el IRPF"
-msgstr "El pressupost municipal inclou altres ingressos provinents, principalment, de l'Administració General de l'Estat i del Gobierno de Aragón, que són els encarregats de recaudar altres ingressos com l'IVA i o l'IRPF"
+msgstr ""
+"El pressupost municipal inclou altres ingressos provinents, principalment, "
+"de l'Administració General de l'Estat i del Gobierno de Aragón, que són els "
+"encarregats de recaudar altres ingressos com l'IVA i o l'IRPF"
 
 #: templates/budgets/budgets_intro.html:21
 msgid "¿En qué se emplea?"
@@ -103,7 +108,9 @@ msgid ""
 "El ayuntamiento utiliza el dinero recaudado, junto con otras fuentes de "
 "financiación como la deuda, para mantener los servicios públicos y la "
 "infraestructura de la ciudad."
-msgstr "L'Ajuntament utilitza el pressupost municipal per mantenir els serveis públics i les infraestructures de la ciutat"
+msgstr ""
+"L'Ajuntament utilitza el pressupost municipal per mantenir els serveis "
+"públics i les infraestructures de la ciutat"
 
 #: templates/budgets/index.html:17
 msgid "Ingresos y gastos en el Gobierno de Aragón"
@@ -129,7 +136,7 @@ msgstr "Executat"
 
 #: templates/budgets/index.html:54 templates/budgets/index.html.py:67
 #: templates/budgets/index.html:128 templates/entities/totals.html:21
-#: templates/entities/totals.html.py:28 templates/policies/show.html:384
+#: templates/entities/totals.html.py:28 templates/policies/show.html:382
 msgid "Presupuestado"
 msgstr "Pressupostat"
 
@@ -165,22 +172,22 @@ msgid "Gobierno de Aragón"
 msgstr ""
 
 #: templates/budgets/index.html:130 templates/entities/show.html:377
-#: templates/policies/show.html:360
+#: templates/policies/show.html:358
 msgid "hasta el primer trimestre"
 msgstr "fins al primer trimestre"
 
 #: templates/budgets/index.html:131 templates/entities/show.html:378
-#: templates/policies/show.html:361
+#: templates/policies/show.html:359
 msgid "hasta el segundo trimestre"
 msgstr "fins al segon trimestre"
 
 #: templates/budgets/index.html:132 templates/entities/show.html:379
-#: templates/policies/show.html:362
+#: templates/policies/show.html:360
 msgid "hasta el tercer trimestre"
 msgstr "fins al tercer trimestre"
 
 #: templates/budgets/index.html:133 templates/entities/show.html:380
-#: templates/policies/show.html:363
+#: templates/policies/show.html:361
 msgid "a día de hoy"
 msgstr "a dia d'avui"
 
@@ -280,7 +287,7 @@ msgid "Gastos (por programa)"
 msgstr "Despeses (per programa)"
 
 #: templates/entities/show.html:211 templates/entities/show.html.py:214
-#: templates/entities/show.html:229 templates/policies/show.html:340
+#: templates/entities/show.html:229 templates/policies/show.html:338
 msgid "Total gastos"
 msgstr "Total despeses"
 
@@ -288,7 +295,7 @@ msgstr "Total despeses"
 msgid "Total gastos no financieros"
 msgstr "Total despeses no financeres"
 
-#: templates/entities/show.html:222 templates/policies/show.html:340
+#: templates/entities/show.html:222 templates/policies/show.html:338
 msgid "Total ingresos"
 msgstr "Total ingressos"
 
@@ -399,7 +406,11 @@ msgstr "Despeses i pagaments"
 msgid "Cantidad"
 msgstr "Quantitat"
 
-#: templates/shared/breakdown_tab.html:17 templates/shared/payment_tab.html:8
+#: templates/shared/breakdown_tab.html:11
+msgid "variación respecto a"
+msgstr "variació respecte a"
+
+#: templates/shared/breakdown_tab.html:22 templates/shared/payment_tab.html:8
 msgid "Descarga la tabla de"
 msgstr "Descarrega la taula de"
 
@@ -801,5 +812,5 @@ msgstr "Inici"
 #~ "l'Estat</b>, mentre que una altra part es transfereix al <b>Gobierno de "
 #~ "Aragón</b>"
 
-msgid "¿Quién lo gasta?"
-msgstr "Qui ho gasta?"
+#~ msgid "¿Quién lo gasta?"
+#~ msgstr "Qui ho gasta?"

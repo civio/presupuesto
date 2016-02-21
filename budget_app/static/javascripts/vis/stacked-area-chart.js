@@ -221,7 +221,8 @@ function StackedAreaChart() {
       .style('fill', function(d) { return _this.color(d.id); })
       .on('mouseover',  onAreaMouseOver)
       .on('mouseout',   onAreaMouseOut)
-      .on('mousemove',  onAreaMouseMove);
+      .on('mousemove',  onAreaMouseMove)
+      .on('click',      function(d){ $(_this.selector).trigger('policy-selected', d); }); // trigger 'policy-selected' event to be listened in the template
 
     _this.svg.on('mouseout', function(e){
       _this.svg.selectAll('.point').attr('r', 4).classed('hover', false);
@@ -413,27 +414,25 @@ function StackedAreaChart() {
     // Get currentYear values
     var popoverPrevValues = (_this.currentYear > 0) ? _this.popoverData.values.filter(function(d){ return d.x == _this.years[_this.currentYear]-1; })[0].y : null;
 
-    // Setup html content
-    _this.$popover.find('.popover-content').html( getPopoverContent(_this.years[_this.currentYear], popoverValues.y, popoverPrevValues) );
-  };
+    // Setup year
+    _this.$popover.find('.popover-content-year').html( _this.years[_this.currentYear] );
 
-  var getPopoverContent = function( _year, _value, _prevValue ){
-   
-    var str = '<p class="popover-content-year">'+_year+'</p>';
-
+    // Setup value
     if( !_this.dataIsPercentage ){
-      str += '<p class="popover-content-value"><b>'+formatAmount(_value)+'</b></p>';
+      _this.$popover.find('.popover-content-value').html('<b>'+formatAmount(popoverValues.y)+'</b>');
     } else{
-      str += '<p class="popover-content-value"><b>'+formatDecimal(_value*100,2)+'</b> %</p>';
+      _this.$popover.find('.popover-content-value').html('<b>'+formatDecimal(popoverValues.y*100,2)+'</b> %');
     }
 
-    if( _prevValue ){
-      var percentageValue = ((_value/_prevValue)-1)*100;
+    // Setup variation
+    if( popoverPrevValues ){
+      var percentageValue = ((popoverValues.y/popoverPrevValues)-1)*100;
       var labelClass      = (percentageValue >= 0) ? 'label-success' : 'label-danger';
-      str += '<span class="label '+labelClass+'">'+formatDecimal(percentageValue,1)+' %</span>';
+      _this.$popover.find('.popover-content-variation').html('<span class="label '+labelClass+'">'+formatDecimal(percentageValue,1)+' %</span>').show();
+      _this.$popover.find('.popover-content-variation-label').show().find('.variation-year').html( _this.years[_this.currentYear-1] );
+    } else{
+      _this.$popover.find('.popover-content-variation, .popover-content-variation-label').hide();
     }
-
-    return str;
   };
 
   // Setup Popover Position
