@@ -117,8 +117,8 @@ function BudgetStackedChart(theSelector, theStats, theColorScale, i18n) {
     // Setup budgeted literal
     chart.budgeted = _.budgeted;
 
-    // Setup if we use percentage format
-    if( uiState.format == "percentage" ) chart.dataIsPercentage = true;
+    // Setup data format
+    chart.dataFormat = uiState.format;
 
     // Chart set data & draw
     chart.setData( this.getNewData(), years.map(function(d){ return parseInt(d); }), budgetStatuses ).draw();

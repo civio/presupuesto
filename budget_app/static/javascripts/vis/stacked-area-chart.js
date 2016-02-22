@@ -34,7 +34,7 @@ function StackedAreaChart() {
   _this.stack = d3.layout.stack()
       .values(function(d) { return d.values; });
 
-  _this.dataIsPercentage = false;
+  _this.dataFormat = null;
 
 
   // Setup SVG Object
@@ -419,10 +419,12 @@ function StackedAreaChart() {
     _this.$popover.find('.popover-content-year').html( _this.years[_this.currentYear] );
 
     // Setup value
-    if( !_this.dataIsPercentage ){
-      _this.$popover.find('.popover-content-value').html('<b>'+formatAmount(popoverValues.y)+'</b>');
+    if( _this.dataFormat === "percentage" ){
+      _this.$popover.find('.popover-content-value').html('<b>'+formatDecimal(popoverValues.y*100,2)+' %</b>');
+    } else if( _this.dataFormat === "per_capita" ){
+      _this.$popover.find('.popover-content-value').html('<b>'+formatDecimal(popoverValues.y,2)+' €</b>');
     } else{
-      _this.$popover.find('.popover-content-value').html('<b>'+formatDecimal(popoverValues.y*100,2)+'</b> %');
+      _this.$popover.find('.popover-content-value').html('<b>'+formatAmount(popoverValues.y)+'</b>');
     }
 
     // Setup variation
