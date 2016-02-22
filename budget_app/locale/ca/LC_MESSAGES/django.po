@@ -3,34 +3,28 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-02-19 18:12+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2016-02-22 03:03+0100\n"
+"Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Last-Translator: David Cabo <david@civio.es>\n"
+"Language-Team: \n"
+"X-Generator: Poedit 1.8.7\n"
 
 #: templates/base.html:4 templates/shared/social_sharing.html:5
 msgid "Presupuestos del Gobierno de Aragón"
 msgstr "Pressupostos del Gobierno de Aragón"
 
 #: templates/base.html:93
-msgid ""
-"Esta web utiliza cookies propias y de terceros para ofrecerte la mejor "
-"experiencia de usuario. Si continúas navegando, entendemos que autorizas el "
-"uso de estas cookies."
-msgstr ""
-"Aquesta web utilitza cookies pròpies i de tercers per oferir-te la millor "
-"experiència d'usuari. Si continues navegant, entenem que autoritzes l'ús "
-"d'aquestes cookies."
+msgid "Esta web utiliza cookies propias y de terceros para ofrecerte la mejor experiencia de usuario. Si continúas navegando, entendemos que autorizas el uso de estas cookies."
+msgstr "Aquesta web utilitza cookies pròpies i de tercers per oferir-te la millor experiència d'usuari. Si continues navegant, entenem que autoritzes l'ús d'aquestes cookies."
 
 #: templates/base.html:96
 msgid "Más información"
@@ -57,12 +51,8 @@ msgid "Ahorro neto"
 msgstr "Estalvi net"
 
 #: templates/budgets/budgets_indicators.html:11
-msgid ""
-"Ingresos no financieros (capítulos I-VII) – Gastos no financieros (capítulos "
-"I-VII)"
-msgstr ""
-"Ingressos no financers (capítols I-VII) – Despeses no financeres (capítols I-"
-"VII)"
+msgid "Ingresos no financieros (capítulos I-VII) – Gastos no financieros (capítulos I-VII)"
+msgstr "Ingressos no financers (capítols I-VII) – Despeses no financeres (capítols I-VII)"
 
 #: templates/budgets/budgets_indicators.html:11
 msgid "Capacidad/Necesidad de financiación"
@@ -77,40 +67,24 @@ msgid "La recaudación local"
 msgstr "La recaptació local"
 
 #: templates/budgets/budgets_intro.html:10
-msgid ""
-"Se realiza a través de impuestos directos -como el impuesto de bienes "
-"inmuebles (IBI) o el de vehículos de tracción mecánica (IVTM)- y de tasas -"
-"como la de recogida de basura"
-msgstr ""
-"Es realitza a través d'impostos directes, principalment l'IBI, i de taxes "
-"del municipi -com la d'escombraries"
+msgid "Se realiza a través de impuestos directos -como el impuesto de bienes inmuebles (IBI) o el de vehículos de tracción mecánica (IVTM)- y de tasas -como la de recogida de basura"
+msgstr "Es realitza a través d'impostos directes, principalment l'IBI, i de taxes del municipi -com la d'escombraries"
 
 #: templates/budgets/budgets_intro.html:15
 msgid "Otras fuentes de ingresos"
 msgstr "Altres fonts d'ingressos"
 
 #: templates/budgets/budgets_intro.html:16
-msgid ""
-"El dinero recaudado localmente se complementa con las transferencias de la "
-"Administración General del Estado y del Gobierno de Aragón, que son los "
-"encargados de recaudar otros ingresos como el IVA y el IRPF"
-msgstr ""
-"El pressupost municipal inclou altres ingressos provinents, principalment, "
-"de l'Administració General de l'Estat i del Gobierno de Aragón, que són els "
-"encarregats de recaudar altres ingressos com l'IVA i o l'IRPF"
+msgid "El dinero recaudado localmente se complementa con las transferencias de la Administración General del Estado y del Gobierno de Aragón, que son los encargados de recaudar otros ingresos como el IVA y el IRPF"
+msgstr "El pressupost municipal inclou altres ingressos provinents, principalment, de l'Administració General de l'Estat i del Gobierno de Aragón, que són els encarregats de recaudar altres ingressos com l'IVA i o l'IRPF"
 
 #: templates/budgets/budgets_intro.html:21
 msgid "¿En qué se emplea?"
 msgstr "En què s'empra?"
 
 #: templates/budgets/budgets_intro.html:22
-msgid ""
-"El ayuntamiento utiliza el dinero recaudado, junto con otras fuentes de "
-"financiación como la deuda, para mantener los servicios públicos y la "
-"infraestructura de la ciudad."
-msgstr ""
-"L'Ajuntament utilitza el pressupost municipal per mantenir els serveis "
-"públics i les infraestructures de la ciutat"
+msgid "El ayuntamiento utiliza el dinero recaudado, junto con otras fuentes de financiación como la deuda, para mantener los servicios públicos y la infraestructura de la ciudad."
+msgstr "L'Ajuntament utilitza el pressupost municipal per mantenir els serveis públics i les infraestructures de la ciutat"
 
 #: templates/budgets/index.html:17
 msgid "Ingresos y gastos en el Gobierno de Aragón"
@@ -149,17 +123,12 @@ msgid "Cantidades actualizadas con la inflación a fecha 1 de enero de"
 msgstr "Quantitats actualitzades amb la inflació a data 1 de gener de"
 
 #: templates/budgets/index.html:77
-msgid ""
-"El cálculo de los indicadores utiliza las cifras del presupuesto aprobado"
+msgid "El cálculo de los indicadores utiliza las cifras del presupuesto aprobado"
 msgstr "El càlcul dels indicadors utilitza les xifres del pressupost aprovat"
 
 #: templates/budgets/index.html:79
-msgid ""
-"Se incluyen únicamente los gastos e ingresos no financieros, es decir, "
-"capítulos I al VII."
-msgstr ""
-"S'inclouen únicament els ingressos i despeses no financers, és a dir, "
-"capítols I al VII."
+msgid "Se incluyen únicamente los gastos e ingresos no financieros, es decir, capítulos I al VII."
+msgstr "S'inclouen únicament els ingressos i despeses no financers, és a dir, capítols I al VII."
 
 #: templates/budgets/index.html:126
 msgid "Otros"
@@ -419,14 +388,8 @@ msgid "¡Atención!"
 msgstr "Atenció!"
 
 #: templates/shared/chromeframe.html:4
-msgid ""
-"Este sitio web no va a funcionar correctamente en tu navegador. La "
-"visualización de datos de esta página requieren un navegador con funciones "
-"adicionales, como"
-msgstr ""
-"Aquesta plana web no funcionarà correctament al teu navegador. La "
-"visualització de dades d'aquesta plana requereix un navegador amb funcions "
-"addicionals, com"
+msgid "Este sitio web no va a funcionar correctamente en tu navegador. La visualización de datos de esta página requieren un navegador con funciones adicionales, como"
+msgstr "Aquesta plana web no funcionarà correctament al teu navegador. La visualització de dades d'aquesta plana requereix un navegador amb funcions addicionals, com"
 
 #: templates/shared/chromeframe.html:4
 msgid "Si quieres continuar usando Internet Explorer"
@@ -489,22 +452,16 @@ msgid "Nota"
 msgstr "Nota"
 
 #: templates/shared/data_sources.html:14
-msgid ""
-"Los ingresos y gastos mostrados incluyen únicamente al Gobierno de Aragón"
-msgstr ""
-"Els ingressos i despeses mostrades inclouen únicament al Gobierno de Aragón"
+msgid "Los ingresos y gastos mostrados incluyen únicamente al Gobierno de Aragón"
+msgstr "Els ingressos i despeses mostrades inclouen únicament al Gobierno de Aragón"
 
 #: templates/shared/data_sources.html:15
 msgid "El ajuste de la inflación se realiza a <b>1 de enero de"
 msgstr "L'ajust de la inflació es fa l'<b>1 de gener de"
 
 #: templates/shared/data_sources.html:15
-msgid ""
-"La tasa de inflación anual es la media de la tasa interanual de los doce "
-"meses del año."
-msgstr ""
-"La taxa d'inflació anual és la mitjana de la taxa interanual dels dotze "
-"mesos de l'any."
+msgid "La tasa de inflación anual es la media de la tasa interanual de los doce meses del año."
+msgstr "La taxa d'inflació anual és la mitjana de la taxa interanual dels dotze mesos de l'any."
 
 #: templates/shared/footer.html:4
 msgid "Un proyecto de"
@@ -597,19 +554,8 @@ msgid "Detalle de tu contribución en"
 msgstr "Detall de la teva contribució en"
 
 #: templates/tax_receipt/tax_receipt_form.html:1
-msgid ""
-"Puedes escoger el tipo de situación que mejor refleja tu realidad (<a href="
-"\"#\" id=\"scenario-1\">piso pequeño en el casco antiguo</a>, <a href=\"#\" "
-"id=\"scenario-2\">piso de nueva construcción</a>, casa unifamiliar <a href="
-"\"#\" id=\"scenario-3\">en el centro</a>, o <a href=\"#\" id="
-"\"scenario-4\">en una urbanización</a>) o modificar cada uno de los "
-"elementos de forma independiente."
-msgstr ""
-"Pots escollir el tipus de situació que millor reflecteix la teva realitat "
-"(<a href=\"#\" id=\"scenario-1\">pis petit al casc antic</a>, <a href=\"#\" "
-"id=\"scenario-2\">pis de nova construcció</a>, casa unifamiliar <a href=\"#"
-"\" id=\"scenario-3\">al centre</a> o <a href=\"#\" id=\"scenario-4\">en una "
-"urbanització</a>) o modificar cadascun dels elements de forma independent."
+msgid "Puedes escoger el tipo de situación que mejor refleja tu realidad (<a href=\"#\" id=\"scenario-1\">piso pequeño en el casco antiguo</a>, <a href=\"#\" id=\"scenario-2\">piso de nueva construcción</a>, casa unifamiliar <a href=\"#\" id=\"scenario-3\">en el centro</a>, o <a href=\"#\" id=\"scenario-4\">en una urbanización</a>) o modificar cada uno de los elementos de forma independiente."
+msgstr "Pots escollir el tipus de situació que millor reflecteix la teva realitat (<a href=\"#\" id=\"scenario-1\">pis petit al casc antic</a>, <a href=\"#\" id=\"scenario-2\">pis de nova construcció</a>, casa unifamiliar <a href=\"#\" id=\"scenario-3\">al centre</a> o <a href=\"#\" id=\"scenario-4\">en una urbanització</a>) o modificar cadascun dels elements de forma independent."
 
 #: templates/tax_receipt/tax_receipt_form.html:6
 msgid "Impuestos"
@@ -716,12 +662,8 @@ msgid "Tasa"
 msgstr "Taxa"
 
 #: templates/tax_receipt/tax_receipt_form.html:75
-msgid ""
-"Contribuyes con un total de <b id=\"tax-amount-paid\"></b> a los "
-"presupuestos del Gobierno de Aragón"
-msgstr ""
-"Contribueixes amb un total de <b id=\"tax-amount-paid\"></b> als "
-"pressupostos del Gobierno de Aragón"
+msgid "Contribuyes con un total de <b id=\"tax-amount-paid\"></b> a los presupuestos del Gobierno de Aragón"
+msgstr "Contribueixes amb un total de <b id=\"tax-amount-paid\"></b> als pressupostos del Gobierno de Aragón"
 
 #: templates/tax_receipt/tax_receipt_script.html:56
 msgid "Gasto"
@@ -740,77 +682,58 @@ msgid "¿Cómo y en qué gasta el Gobierno de Aragón?"
 msgstr "Com i en què gasta el Gobierno de Aragón?"
 
 #: templates/welcome/index.html:13
-msgid ""
-"Te mostramos de un modo claro cómo se distribuye nuestro presupuesto. De "
-"dónde vienen los ingresos y a qué destinamos el gasto"
-msgstr ""
-"Et mostrem d'una forma clara com es distribueix el nostre pressupost. D'on "
-"vénen els ingressos i a què destinem les despeses"
+msgid "Te mostramos de un modo claro cómo se distribuye nuestro presupuesto. De dónde vienen los ingresos y a qué destinamos el gasto"
+msgstr "Et mostrem d'una forma clara com es distribueix el nostre pressupost. D'on vénen els ingressos i a què destinem les despeses"
 
 #: templates/welcome/index.html:18
 msgid "Algunos ejemplos"
 msgstr "Alguns exemples"
 
 #: templates/welcome/index.html:42
-msgid ""
-"Para que tengas una idea general de los ingresos y gastos del Gobierno de "
-"Aragón"
-msgstr ""
-"Perquè et facis una idea general dels ingressos i les despeses del Gobierno "
-"de Aragón"
+msgid "Para que tengas una idea general de los ingresos y gastos del Gobierno de Aragón"
+msgstr "Perquè et facis una idea general dels ingressos i les despeses del Gobierno de Aragón"
 
 #: templates/welcome/index.html:51
 msgid "Políticas concretas"
 msgstr "Polítiques concretes"
 
 #: templates/welcome/index.html:59
-msgid ""
-"Educación, protección y bienestar social, cultura... ¿Qué área te interesa?"
-msgstr ""
-"Educació, protecció i benestar social, cultura... Quina àrea t'interessa?"
+msgid "Educación, protección y bienestar social, cultura... ¿Qué área te interesa?"
+msgstr "Educació, protecció i benestar social, cultura... Quina àrea t'interessa?"
 
 #: templates/welcome/index.html:71
-msgid ""
-"Te mostramos en detalle todos las facturas y pagos efectuados por el "
-"Ayuntamiento"
-msgstr ""
-"Et mostrem en detall totes les factures i pagaments efectuats per "
-"l'Ajuntament"
+msgid "Te mostramos en detalle todos las facturas y pagos efectuados por el Ayuntamiento"
+msgstr "Et mostrem en detall totes les factures i pagaments efectuats per l'Ajuntament"
 
 #: templates/welcome/index.html:82
 msgid "¿Y qué aporto yo?"
 msgstr "I què aporto jo?"
 
 #: templates/welcome/index.html:83
-msgid ""
-"Te contamos en qué se invierte el dinero que recaudamos de tus impuestos"
-msgstr ""
-"T'expliquem en què s'inverteix els diners que recaptem dels teus impostos"
+msgid "Te contamos en qué se invierte el dinero que recaudamos de tus impuestos"
+msgstr "T'expliquem en què s'inverteix els diners que recaptem dels teus impostos"
 
 #: views/terms.py:9 views/welcome.py:10
 msgid "Inicio"
 msgstr "Inici"
 
-#~ msgid ""
-#~ "Se realiza a través de <b>impuestos directos</b> - como el IRPF y el "
-#~ "impuesto de sociedades - y de <b>impuestos indirectos</b> - el IVA e "
-#~ "impuestos sobre el tabaco, el alcohol o la gasolina -."
-#~ msgstr ""
-#~ "Es realitza a través <b>d'impostos directes</b> - com l'IRPF i l'impost "
-#~ "de societats - i <b>d'impostos indirectes</b> - l'IVA i impostos sobre el "
-#~ "tabac, l'alcohol o la benzina."
+msgid "Se realiza a través de <b>impuestos directos</b> - como el IRPF y el impuesto de sociedades - y de <b>impuestos indirectos</b> - el IVA e impuestos sobre el tabaco, el alcohol o la gasolina -."
+msgstr "Es realitza a través <b>d'impostos directes</b> - com l'IRPF i l'impost de societats - i <b>d'impostos indirectes</b> - l'IVA i impostos sobre el tabac, l'alcohol o la benzina."
 
-#~ msgid "¿Cómo se reparte?"
-#~ msgstr "Còm es reparteix?"
+msgid "¿Cómo se reparte?"
+msgstr "Còm es reparteix?"
 
-#~ msgid ""
-#~ "Una parte del dinero recaudado se queda en la <b>Administración General "
-#~ "del Estado</b>, mientras que otra parte se transfiere al <b>Gobierno de "
-#~ "Aragón</b>"
-#~ msgstr ""
-#~ "Una part dels diners recaptats es queda en <b>l'Administració General de "
-#~ "l'Estat</b>, mentre que una altra part es transfereix al <b>Gobierno de "
-#~ "Aragón</b>"
+msgid "Una parte del dinero recaudado se queda en la <b>Administración General del Estado</b>, mientras que otra parte se transfiere al <b>Gobierno de Aragón</b>"
+msgstr "Una part dels diners recaptats es queda en <b>l'Administració General de l'Estat</b>, mentre que una altra part es transfereix al <b>Gobierno de Aragón</b>"
 
-#~ msgid "¿Quién lo gasta?"
-#~ msgstr "Qui ho gasta?"
+msgid "¿Quién lo gasta?"
+msgstr "Qui ho gasta?"
+
+msgid "¿Cómo se ingresa?"
+msgstr "Com s'ingressa?"
+
+msgid "¿Quién recauda?"
+msgstr "Qui recapta?"
+
+msgid "Entidad"
+msgstr "Entitat"

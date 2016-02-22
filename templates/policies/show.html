@@ -243,7 +243,7 @@
                           functionalGridData, [
                             {
                               field: "label", 
-                              name: 'Programa', 
+                              name: "{{ _('Programa') }}",
 {% if full_breakdown %}
                               formatter: policyLinkFormatter, 
 {% else %}
@@ -270,10 +270,10 @@
                             {
                               field: "label",
 {% if is_chapter %}
-                              name: 'Artículo',
+                              name: "{{ _('Artículo') }}",
                               formatter: articleLinkFormatter
 {% else %}
-                              name: 'Concepto',
+                              name: "{{ _('Concepto') }}",
                               formatter: rowNameFormatter
 {% endif %}
                             },
@@ -290,7 +290,7 @@
 {% if show_institutional_tab %}
       $("#institutionalGrid").data('grid', createBudgetGrid(  "#institutionalGrid", 
                         institutionalGridData, [
-                          {field: "label", formatter: rowNameFormatter, name: 'Entidad'},
+                          {field: "label", formatter: rowNameFormatter, name: "{{ _('Entidad') }}"},
                           columnDef
 {% if show_actual %}
                           ,executionColumnDef
