@@ -1,14 +1,25 @@
 # -*- coding: UTF-8 -*-
 # Small utility functions shared by all views
+import json
+import os
+import re
+from contextlib import contextmanager
 from coffin.shortcuts import render_to_response
 from budget_app.models import Budget, BudgetItem, InflationStat, PopulationStat, Entity
 from django.template import RequestContext
 from django.conf import settings
-from contextlib import contextmanager
-import json
-import os
+from django.core import urlresolvers
 
 from project.settings import ROOT_PATH
+
+
+TABS = {
+    'general': r'^budget.*',
+    'policies': r'^policies.*',
+    'payments': r'^payments.*',
+    'calculator': r'^tax-receipt.*',
+    'glossary': r'^glossary.*'
+}
 
 #
 # FILLING REQUEST CONTEXT
@@ -26,7 +37,27 @@ def get_context(request, css_class='', title=''):
 
     c['color_scale'] = getattr(settings, 'COLOR_SCALE', [])
 
+    c['active_tab'] = filter(
+        lambda k: current_url_equals(c, TABS[k]),
+        TABS.keys()
+    )[0]
+
     return c
+
+
+def current_url_equals(context, url_name_pattern, **kwargs):
+    try:
+        resolved = urlresolvers.resolve(context.get('request').path)
+    except:
+        resolved = None
+    matches = resolved and re.match(url_name_pattern, resolved.url_name)
+    if matches and kwargs:
+        for key in kwargs:
+            kwarg = kwargs.get(key)
+            resolved_kwarg = resolved.kwargs.get(key)
+            if not resolved_kwarg or kwarg != resolved_kwarg:
+                return False
+    return matches
 
 def set_title(c, title):
     c['title_prefix'] = title

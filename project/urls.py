@@ -15,35 +15,35 @@ budget_app_urlpatterns = patterns('',
 budget_app_urlpatterns += i18n_patterns('budget_app.views',
     url(r'^/?$', 'welcome', name="budget_app_welcome"),
 
-    url(r'^resumen$', 'budgets'),
+    url(r'^resumen$', 'budgets', name="budgets"),
 
-    url(r'^glosario$', 'terms'),
+    url(r'^glosario$', 'terms', name="glossary"),
 
     url(r'^busqueda$', 'search'),
 
-    url(r'^recibo$', 'tax_receipt'),
+    url(r'^recibo$', 'tax_receipt', name="tax-receipt"),
 
-    url(r'^pagos$', 'payments'),
+    url(r'^pagos$', 'payments', name="payments"),
 
     # Aragón policies (top)
-    url(r'^politicas$', 'policies'),
-    url(r'^politicas/(?P<id>[0-9]+)$', 'policies_show'),
-    url(r'^politicas/(?P<id>[0-9]+)/(?P<title>.+)$', 'policies_show'),
+    url(r'^politicas$', 'policies', name="policies"),
+    url(r'^politicas/(?P<id>[0-9]+)$', 'policies_show', name="policies-show"),
+    url(r'^politicas/(?P<id>[0-9]+)/(?P<title>.+)$', 'policies_show', name="policies-show-2"),
 
     # Aragón programme pages
-    url(r'^programas$', 'programmes_show'),
-    url(r'^programas/(?P<id>[0-9A-Z]+)$', 'programmes_show'),
-    url(r'^programas/(?P<id>[0-9A-Z]+)/(?P<title>.+)$', 'programmes_show'),
+    url(r'^programas$', 'programmes_show', name="policies-programmes"),
+    url(r'^programas/(?P<id>[0-9A-Z]+)$', 'programmes_show', name="policies-programmes-2"),
+    url(r'^programas/(?P<id>[0-9A-Z]+)/(?P<title>.+)$', 'programmes_show', name="policies-programmes-3"),
 
     # Aragón expense pages (economic breakdown)
-    url(r'^articulos/g$', 'expense_articles_show'),
-    url(r'^articulos/g/(?P<id>[0-9]+)$', 'expense_articles_show'),
-    url(r'^articulos/g/(?P<id>[0-9]+)/(?P<title>.+)$', 'expense_articles_show'),
+    url(r'^articulos/g$', 'expense_articles_show', name="policies-articles"),
+    url(r'^articulos/g/(?P<id>[0-9]+)$', 'expense_articles_show', name="policies-articles-2"),
+    url(r'^articulos/g/(?P<id>[0-9]+)/(?P<title>.+)$', 'expense_articles_show', name="policies-articles-3"),
 
     # Aragón income pages
-    url(r'^articulos/i$', 'income_articles_show'),
-    url(r'^articulos/i/(?P<id>[0-9]+)$', 'income_articles_show'),
-    url(r'^articulos/i/(?P<id>[0-9]+)/(?P<title>.+)$', 'income_articles_show'),
+    url(r'^articulos/i$', 'income_articles_show', name="policies-articles"),
+    url(r'^articulos/i/(?P<id>[0-9]+)$', 'income_articles_show', name="policies-articles"),
+    url(r'^articulos/i/(?P<id>[0-9]+)/(?P<title>.+)$', 'income_articles_show', name="policies-articles"),
 
     # Counties
     url(r'^comarcas$', 'counties'),
