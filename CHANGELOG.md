@@ -4,15 +4,21 @@ All notable changes to this project will be documented in this file
 ## [Unreleased]
 ### Added
 - Nodes in the global view chart can now be customized and combined as needed.
+- Nodes in Sankey chart can now be combined and labelled as will.
+- Sankey chart layout aggressiveness can be configured from the theme settings.
 
 ### Changed
 - Major front-end rewrite, now using Bootstrap 3
 - Policy chart now reimplemented using plain D3.js. NVD3 dependency removed
+- Default locale changed from 'es_ES' to just 'es' for clarity and simplicity.
 
 ### Fixed
+- Site cache is now working again, after fixing HTTP headers.
+- Root url now works again in production when no locale is specified.
 - Friendly URLs were cut at the first single quote. Not anymore.
+- Added missing translation strings. Catalan default translation completed.
 
-## [3.1] - 2016-02-02
+## [3.1] - 2016-02-15
 ### Added
 - Version info API on /version.json
 - Add a default glossary to be loaded if the theme does not contain one
