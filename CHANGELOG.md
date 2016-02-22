@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file
 - Major front-end rewrite, now using Bootstrap 3
 - Policy chart now reimplemented using plain D3.js. NVD3 dependency removed
 - Default locale changed from 'es_ES' to just 'es' for clarity and simplicity.
+- Improve year slider changing jslider plugin by [bootstrap-slider](http://seiyria.com/bootstrap-slider/)
 
 ### Fixed
 - Site cache is now working again, after fixing HTTP headers.
