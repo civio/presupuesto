@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file
 - Nodes in the global view chart can now be customized and combined as needed.
 - Nodes in Sankey chart can now be combined and labelled as will.
 - Sankey chart layout aggressiveness can be configured from the theme settings.
+- Styles for selected option in main navagation menu.
 
 ### Changed
 - Major front-end rewrite, now using Bootstrap 3
