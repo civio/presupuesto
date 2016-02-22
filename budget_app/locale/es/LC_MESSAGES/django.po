@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-18 17:27+0100\n"
+"POT-Creation-Date: 2016-02-22 12:18+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -123,7 +123,7 @@ msgstr ""
 
 #: templates/budgets/index.html:54 templates/budgets/index.html.py:67
 #: templates/budgets/index.html:128 templates/entities/totals.html:21
-#: templates/entities/totals.html.py:28 templates/policies/show.html:384
+#: templates/entities/totals.html.py:28 templates/policies/show.html:382
 msgid "Presupuestado"
 msgstr ""
 
@@ -151,28 +151,28 @@ msgid "Otros"
 msgstr ""
 
 #: templates/budgets/index.html:127 templates/shared/data_sources.html:7
-#: templates/shared/footer.html:18 templates/shared/header.html:28
-#: templates/shared/header.html.py:61 templates/welcome/index.html:54
+#: templates/shared/footer.html:18 templates/shared/header.html:27
+#: templates/shared/header.html.py:55 templates/welcome/index.html:54
 msgid "Gobierno de Aragón"
 msgstr ""
 
 #: templates/budgets/index.html:130 templates/entities/show.html:377
-#: templates/policies/show.html:360
+#: templates/policies/show.html:358
 msgid "hasta el primer trimestre"
 msgstr ""
 
 #: templates/budgets/index.html:131 templates/entities/show.html:378
-#: templates/policies/show.html:361
+#: templates/policies/show.html:359
 msgid "hasta el segundo trimestre"
 msgstr ""
 
 #: templates/budgets/index.html:132 templates/entities/show.html:379
-#: templates/policies/show.html:362
+#: templates/policies/show.html:360
 msgid "hasta el tercer trimestre"
 msgstr ""
 
 #: templates/budgets/index.html:133 templates/entities/show.html:380
-#: templates/policies/show.html:363
+#: templates/policies/show.html:361
 msgid "a día de hoy"
 msgstr ""
 
@@ -193,17 +193,17 @@ msgid "Comparativa"
 msgstr ""
 
 #: templates/entities/compare.html:30 templates/entities/compare.html.py:45
-#: templates/entities/show.html:28 templates/shared/header.html:59
-#: templates/shared/header.html.py:68 templates/welcome/index.html:61
+#: templates/entities/show.html:28 templates/shared/header.html:53
+#: templates/shared/header.html.py:62 templates/welcome/index.html:61
 msgid "Políticas"
 msgstr ""
 
-#: templates/entities/index.html:11 templates/shared/header.html:62
+#: templates/entities/index.html:11 templates/shared/header.html:56
 #: templates/welcome/index.html:55
 msgid "Comarcas"
 msgstr ""
 
-#: templates/entities/index.html:13 templates/shared/header.html:63
+#: templates/entities/index.html:13 templates/shared/header.html:57
 #: templates/welcome/index.html:56
 msgid "Municipios"
 msgstr ""
@@ -263,7 +263,7 @@ msgstr ""
 msgid "Política"
 msgstr ""
 
-#: templates/entities/show.html:195
+#: templates/entities/show.html:195 templates/policies/show.html:273
 msgid "Artículo"
 msgstr ""
 
@@ -272,7 +272,7 @@ msgid "Gastos (por programa)"
 msgstr ""
 
 #: templates/entities/show.html:211 templates/entities/show.html.py:214
-#: templates/entities/show.html:229 templates/policies/show.html:340
+#: templates/entities/show.html:229 templates/policies/show.html:338
 msgid "Total gastos"
 msgstr ""
 
@@ -280,7 +280,7 @@ msgstr ""
 msgid "Total gastos no financieros"
 msgstr ""
 
-#: templates/entities/show.html:222 templates/policies/show.html:340
+#: templates/entities/show.html:222 templates/policies/show.html:338
 msgid "Total ingresos"
 msgstr ""
 
@@ -337,6 +337,19 @@ msgstr ""
 msgid "Menú de programas, entidades y conceptos"
 msgstr ""
 
+#: templates/policies/show.html:246
+msgid "Programa"
+msgstr ""
+
+#: templates/policies/show.html:276 templates/search/index.html:156
+#: templates/search/index.html.py:266
+msgid "Concepto"
+msgstr ""
+
+#: templates/policies/show.html:293
+msgid "Entidad"
+msgstr ""
+
 #: templates/search/index.html:24
 msgid "Hemos encontrado"
 msgstr ""
@@ -373,16 +386,12 @@ msgstr ""
 msgid "Conceptos"
 msgstr ""
 
-#: templates/search/index.html:156 templates/search/index.html.py:266
-msgid "Concepto"
-msgstr ""
-
 #: templates/search/index.html:157
 msgid "Gastos / Ingresos"
 msgstr ""
 
 #: templates/search/index.html:259 templates/search/index.html.py:263
-#: templates/shared/header.html:74 templates/welcome/index.html:70
+#: templates/shared/header.html:68 templates/welcome/index.html:70
 #: templates/welcome/index.html.py:72
 msgid "Pagos e inversiones"
 msgstr ""
@@ -391,7 +400,11 @@ msgstr ""
 msgid "Cantidad"
 msgstr ""
 
-#: templates/shared/breakdown_tab.html:17 templates/shared/payment_tab.html:8
+#: templates/shared/breakdown_tab.html:11
+msgid "variación respecto a"
+msgstr ""
+
+#: templates/shared/breakdown_tab.html:22 templates/shared/payment_tab.html:8
 msgid "Descarga la tabla de"
 msgstr ""
 
@@ -509,25 +522,29 @@ msgstr ""
 msgid "Buscar"
 msgstr ""
 
-#: templates/shared/header.html:33
+#: templates/shared/header.html:32
 msgid "Ir a la home de Presupuestos"
 msgstr ""
 
-#: templates/shared/header.html:34
+#: templates/shared/header.html:33
 msgid "Presupuestos"
 msgstr ""
 
-#: templates/shared/header.html:54 templates/welcome/index.html:41
+#: templates/shared/header.html:43
+msgid "Menú principal"
+msgstr ""
+
+#: templates/shared/header.html:48 templates/welcome/index.html:41
 #: templates/welcome/index.html.py:43
 msgid "Visión global"
 msgstr ""
 
-#: templates/shared/header.html:80 templates/tax_receipt/index.html:14
+#: templates/shared/header.html:74 templates/tax_receipt/index.html:14
 #: templates/welcome/index.html:84
 msgid "Lo que tú aportas"
 msgstr ""
 
-#: templates/shared/header.html:85
+#: templates/shared/header.html:79
 msgid "¿Qué significa...?"
 msgstr ""
 

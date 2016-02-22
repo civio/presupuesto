@@ -116,6 +116,35 @@ header > .container{
     padding-left: 0;
   }
 
+  .navbar-toggle{
+    float: none;
+    width: 100%;
+    margin: 0;
+    padding: $grid-gutter-width/2 0;
+    color: white;
+    border: none;
+    border-radius: 0;
+    font-size: 1.125em;
+    line-height: 20px;
+    font-weight: $font-weight-300;
+
+    &:before {
+      content: "⇡";
+      margin-right: .5em;
+      font-size: 0.875em;
+    }
+
+    &:hover,
+    &:focus{
+      color: $navbar-default-bg;
+      font-weight: $font-weight-400;
+    }
+
+    &.collapsed:before{
+      content: "⇣";
+    }
+  }
+
   .navbar-nav{
     float: none;
     width: 100%;
@@ -128,6 +157,7 @@ header > .container{
         text-align: center;
         padding-right: 0;
         padding-left: 0;
+        border-bottom: 1px solid mix(white, $navbar-default-bg, 50%);
         font-weight: $font-weight-300;
         @include transition( background 0.3s ease-out );
 
@@ -136,6 +166,10 @@ header > .container{
           color: white;
           background: mix( $navbar-default-bg, white, 75% );
         }
+      }
+
+      &:last-child > a{
+        border-bottom: none;
       }
 
       // Fix default color for dropdown open
@@ -173,6 +207,7 @@ header > .container{
 
         > a{
           border-right: 1px solid mix( $navbar-default-bg, white, 50% );
+          border-bottom: none;
         }
       
         &:first-child > a{
