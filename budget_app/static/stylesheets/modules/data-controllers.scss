@@ -3,32 +3,73 @@
   margin-bottom: 2*$grid-gutter-width;
   text-align: center;
 
-  /*
-  #btn-field {
-    margin-bottom: 1em;
-    font-size: 1em;
-
-    .btn {
-      padding: 4px 13px;
-    }
+  .title{
+    color: $gray;
   }
-  */
 
   .layout-slider{
     margin: 0 $grid-gutter-width/3;
-    max-width: 995px;
   }
 
-  .jslider {
-    top: $grid-gutter-width/2;
+  .slider.slider-horizontal{
+    width: 100%;
+    margin-top: 5px;
 
-    // Hide from - to labels
-    .jslider-label{
-      visibility: hidden;
+    .slider-track{
+      height: 6px;
+      margin-top: -2px;
+      border-radius: 0;
+      background: $slider-bg;
+      @include box-shadow( none );
     }
 
-    .jslider-pointer{
-      top: -18px;
+    .slider-track-low, 
+    .slider-track-high{
+      border-radius: 0;
+    }
+
+    .slider-tick{
+      width: 12px;
+      height: 12px;
+      margin-left: -6px;
+      margin-top: -3px;
+      background: $slider-bg;
+      opacity: 1;
+      @include box-shadow( none );
+
+      &.in-selection{
+        background: $slider-color;
+      }
+    }
+
+    .slider-selection{
+      border-radius: 0;
+      background: $slider-color;
+    }
+
+    .slider-handle{
+      margin-top: -7px;
+      background: $slider-color;
+      border: 2px solid white;
+      @include box-shadow( none );
+    }
+
+    .slider-tick-label{
+      color: $gray;
+      font-size: 0.875em;
+      cursor: pointer;
+    }
+
+    .tooltip.top{
+      margin-left: -22px;
+      margin-top: -38px;
+    }
+    .tooltip-inner{
+      font-size: 1.25em;
+      background: $slider-color;
+    }
+    .tooltip-arrow{
+      border-top-color: $slider-color;
     }
   }
 
@@ -83,10 +124,6 @@
    
    .quantity-selection{
       text-align: left;
-    }
-
-    .layout-slider{
-      margin: 0 auto;
     }
   }
 }

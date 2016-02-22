@@ -28,7 +28,7 @@
       <div class="data-controllers">
         <p class="title">{{ _('Elige año') }}</p>
         <div class="layout-slider">
-          <input id="year-selection" type="slider" name="price" value="20" />
+          <input id="year-selection" type="text" />
         </div>
       </div>
     </div>
@@ -94,6 +94,7 @@
   $(function() {
     function redraw() {
       var uiState = getUIState();
+      console.log('redraw', uiState);
       sankey.update(uiState);
       updateIndicators(uiState);
     }

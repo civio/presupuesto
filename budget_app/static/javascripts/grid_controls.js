@@ -27,17 +27,17 @@ function getActiveButton(selector) {
 function initSlider(selector, years, callback, startValue, labels) {
   var mostRecentYear = Number(years[years.length-1]);
   if ( years.length > 1 ) {
-    $(selector).val(startValue ? startValue : mostRecentYear);
-    jQuery(selector).slider({
-      from: Number(years[0]),
-      // JSlider gets stuck if from==to (i.e. only one year), so workaround that #wtf
-      to: mostRecentYear + 0.01,
-      step: 1,
-      scale: labels || years,
-      format: { format: '####', locale: 'es' },
-      skin: "presus",
-      callback: callback
-    });
+    
+    // Setup bootstrap-slider
+    $(selector).slider({
+      min: parseInt(years[0]),
+      max: mostRecentYear,
+      value: startValue ? startValue : mostRecentYear,
+      tooltip: 'always',
+      ticks: years.map(function(d){ return parseInt(d); }),
+      ticks_labels: years
+    }).on('change', callback );
+    
   } else {
     $(selector).val(mostRecentYear).hide();
     $(selector).parent().append('<p>'+mostRecentYear+'</p>');
