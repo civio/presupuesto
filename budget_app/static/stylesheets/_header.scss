@@ -168,6 +168,12 @@ header > .container{
         }
       }
 
+      &.active > a,
+      &.active > a:hover,
+      &.active > a:focus{
+        font-weight: $font-weight-400;
+      }
+
       &:last-child > a{
         border-bottom: none;
       }
