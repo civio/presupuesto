@@ -384,7 +384,7 @@
 
     // Link to policy handlers
     function onProgrammeSelected(event, d) {
-      window.location=getProgrammeLink(d.id, d.name, getUIState());
+      window.location=getProgrammeLink(d.id, d.label, getUIState());
     }
   
     // Setup Graph
@@ -415,11 +415,10 @@
                 '#functionalChartContainer', 
                 functionalBreakdown,
                 functionalAreas);
-    $('#functionalChartContainer').bind('policy-selected', onProgrammeSelected);
+    $('#functionalChartContainer').bind('area-selected', onProgrammeSelected);
 {% endif %}
 
 {% if full_breakdown or article %}
-
     if ( chartWidth == undefined )
     var chartWidth = $('#economicChartContainer').width();
     var economicAreas = {{ (expense_areas if show_side=='expense' else income_areas)|safe }};
@@ -427,9 +426,6 @@
                 '#economicChartContainer', 
                 economicBreakdown,
                 economicAreas);
-    // TODO!!! Cambiar onProgrammeSelected por el método correcto de policy_paths.html
-    //$('#economicChartContainer').bind('policy-selected', onProgrammeSelected);
-
 {% endif %}
 
 {% if full_breakdown %}
@@ -438,8 +434,6 @@
                 '#fundingChartContainer', 
                 fundingBreakdown,
                 fundingAreas);
-    // TODO!!! Cambiar onProgrammeSelected por el método correcto de policy_paths.html
-    //$('#economicChartContainer').bind('policy-selected', onProgrammeSelected);
 {% endif %}
 
 
