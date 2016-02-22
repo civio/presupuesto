@@ -37,10 +37,13 @@ def get_context(request, css_class='', title=''):
 
     c['color_scale'] = getattr(settings, 'COLOR_SCALE', [])
 
-    c['active_tab'] = filter(
-        lambda k: current_url_equals(c, TABS[k]),
-        TABS.keys()
-    )[0]
+    try:
+        c['active_tab'] = filter(
+            lambda k: current_url_equals(c, TABS[k]),
+            TABS.keys()
+        )[0]
+    except:
+        c['active_tab'] = None
 
     return c
 
