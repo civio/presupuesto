@@ -289,20 +289,9 @@ function StackedAreaChart() {
         .attr('class', 'label')
         .attr('data-id', function(d){ return d.id; })
         .text(function(d){ return d.label; })
-        .on('mouseover', function(d){
-          d3.select('#area-'+d.id).classed('hover', true);
-          d3.selectAll('#area-points-'+d.id+' .point').classed('hover', true);
-        })
-        .on('mouseout', function(d){
-          d3.select('#area-'+d.id).classed('hover', false);
-          d3.selectAll('#area-points-'+d.id+' .point').classed('hover', false);
-        })
-        .on('click', function(d){
-          var val = d3.select(this).classed('inactive');
-          d3.select(this).classed('inactive', !val);
-          updateDataActive(d.id, val);
-          _this.update();
-        })
+        .on('mouseover',  onLegendLabelOver)
+        .on('mouseout',   onLegendLabelOut)
+        .on('click',      onLegendLabelClick)
         .append('span')
           .style('background-color', function(d) { return _this.color(d.id); })
           .style('border-color', function(d) { return _this.color(d.id); });
@@ -363,6 +352,43 @@ function StackedAreaChart() {
 
     _this.$popover.css( popoverPosition(d3.mouse(this)) );
   };
+
+  // Legend Label Mouse Events
+  var onLegendLabelOver = function(d){
+    d3.select('#area-'+d.id).classed('hover', true);
+    d3.selectAll('#area-points-'+d.id+' .point').classed('hover', true);
+  };
+
+  var onLegendLabelOut = function(d){
+    d3.select('#area-'+d.id).classed('hover', false);
+    d3.selectAll('#area-points-'+d.id+' .point').classed('hover', false);
+  };
+
+  var onLegendLabelClick = function(d){
+
+    var labelsInactives = _this.legend.selectAll('.label.inactive').size();
+
+    // Desactivate all labels except clicked if there's no labels inactives
+    if( labelsInactives === 0 ){
+      _this.legend.selectAll('.label').classed('inactive', true);
+      d3.select(this).classed('inactive', false);
+      updateAllDataActive();
+    }
+    // Activate all labels if there's only one label active & we are going to desactivate
+    else if( labelsInactives === _this.legend.selectAll('.label').size()-1 && !d3.select(this).classed('inactive') ){
+      _this.legend.selectAll('.label').classed('inactive', false);
+      updateAllDataActive();
+    }
+    // Toogle inactive value
+    else{
+      var val = d3.select(this).classed('inactive');
+      d3.select(this).classed('inactive', !val);
+      updateDataActive(d.id, val);
+    }
+
+    _this.update();
+  };
+
 
   var hoverPoints = function(){
 
@@ -462,6 +488,30 @@ function StackedAreaChart() {
     } else{
       areaData.values.forEach(function(d,j){ d.y = 0; });
     }
+  };
+
+  var updateAllDataActive = function(){
+
+    var active;
+
+    _this.stackData.forEach(function(d){
+      // Get active state based on related legend label inactive classed
+      active = !_this.legend.select('[data-id="'+d.id+'"').classed('inactive');
+      // Update area values if update active state
+      if( d.active !== active ){
+        d.active = active;
+        // Update values based on active state
+        if( d.active ){
+          d.values.forEach(function(e,f){
+            e.y = _this.data[d.i].values[f].y;
+          });
+        } else{
+          d.values.forEach(function(e,f){
+            e.y = 0;
+          });
+        }
+      }
+    });
   };
 
 
