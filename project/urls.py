@@ -7,12 +7,20 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.views.generic.simple import direct_to_template
 
+MULTILANGUAGE = 1 < len(settings.LANGUAGES)
+
+url_patterns = i18n_patterns if MULTILANGUAGE else patterns
+
 budget_app_urlpatterns = patterns('',
     url(r'^i18n/', include('django.conf.urls.i18n')),
-    url(r'^$', lambda x: HttpResponseRedirect(reverse('budget_app_welcome')))
 )
 
-budget_app_urlpatterns += i18n_patterns('budget_app.views',
+if MULTILANGUAGE:
+    budget_app_urlpatterns = patterns('',
+        url(r'^$', lambda x: HttpResponseRedirect(reverse('budget_app_welcome'))),
+    )
+
+budget_app_urlpatterns += url_patterns('budget_app.views',
     url(r'^/?$', 'welcome', name="budget_app_welcome"),
 
     url(r'^resumen$', 'budgets', name="budgets"),
