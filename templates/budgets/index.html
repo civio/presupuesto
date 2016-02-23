@@ -43,31 +43,8 @@
     
     <div id="totals-panel" class="data-panel">
 
-      <!-- Budget Total Incomes -->
-      <div class="panel total-incomes">
-        <div class="panel-title">{{ _('Ingresos totales') }}</div>
-        <div class="panel-content">
-          <p class="total-executed">
-            <span>{{ _('Ejecutado') }}</span> <b id="total-incomes-executed"></b>
-          </p>
-          <p class="total-budgeted">
-            <span>{{ _('Presupuestado') }}</span> <b id="total-incomes-budgeted"></b>
-          </p>
-        </div>
-      </div>
-
-      <!-- Budget Total Expenses -->
-      <div class="panel total-expenses">
-        <div class="panel-title">{{ _('Gastos totales') }}</div>
-        <div class="panel-content">
-          <p class="total-executed">
-            <span>{{ _('Ejecutado') }}</span> <b id="total-expenses-executed"></b>
-          </p>
-          <p class="total-budgeted">
-            <span>{{ _('Presupuestado') }}</span> <b id="total-expenses-budgeted"></b>
-          </p>
-        </div>
-      </div>
+      <!-- Budget Totals -->
+      {% include 'budgets/budgets_totals.html' %}
 
       <!-- Budget Indicators -->
       {% include 'budgets/budgets_indicators.html' %}
