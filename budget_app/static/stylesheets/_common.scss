@@ -67,7 +67,12 @@ label{
 
     .popover-content{
       padding-bottom: $grid-gutter-width/2;
-      text-align: right;
+
+      .popover-content-value{
+        font-size: 1.375em;
+        font-weight: $font-weight-600;
+        line-height: 1em;
+      }
 
       .label{
         font-size: 0.875em;

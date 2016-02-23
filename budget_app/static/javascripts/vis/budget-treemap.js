@@ -472,7 +472,7 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
     var areaPrefix = areas[d.id[0]] ? areas[d.id[0]] : '';
     $popup.find(".popover-subtitle").css('color', colors(Number(d.id[0]))).html(areaPrefix);
     $popup.find(".popover-title").html(d.name);
-    $popup.find(".popover-content").html(valueFormat(d.value, uiState));
+    $popup.find(".popover-content-value").html(valueFormat(d.value, uiState));
     $popup.show();
   }
 

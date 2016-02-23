@@ -61,17 +61,17 @@
 
   .popover-content{
 
+    .executed, .budgeted{
+      display: inline-block;
+      margin-bottom: $grid-gutter-width/6;
+    }
+    
     .budgeted{
       color: $sankey-budget-color;
     }
     .executed{
       color: $sankey-execution-color;
-    }
-
-    b{
-      font-size: 1.25em;
-      font-weight: $font-weight-600;
-      margin-bottom: $grid-gutter-width/3;
+      margin-top: $grid-gutter-width/3;
     }
   }
 }

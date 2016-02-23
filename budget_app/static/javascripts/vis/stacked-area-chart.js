@@ -36,6 +36,8 @@ function StackedAreaChart() {
 
   _this.dataFormat = null;
 
+  _this.percentageFormat = d3.format('+.1f'); // used in popover percentage variation
+
 
   // Setup SVG Object
   _this.setup = function(selector){
@@ -420,21 +422,22 @@ function StackedAreaChart() {
 
     // Setup value
     if( _this.dataFormat === "percentage" ){
-      _this.$popover.find('.popover-content-value').html('<b>'+formatDecimal(popoverValues.y*100,2)+' %</b>');
+      _this.$popover.find('.popover-content-value').html(formatDecimal(popoverValues.y*100,2)+' %');
     } else if( _this.dataFormat === "per_capita" ){
-      _this.$popover.find('.popover-content-value').html('<b>'+formatDecimal(popoverValues.y,2)+' €</b>');
+      _this.$popover.find('.popover-content-value').html(formatDecimal(popoverValues.y,2)+' €');
     } else{
-      _this.$popover.find('.popover-content-value').html('<b>'+formatAmount(popoverValues.y)+'</b>');
+      _this.$popover.find('.popover-content-value').html(formatAmount(popoverValues.y));
     }
 
     // Setup variation
     if( popoverPrevValues ){
       var percentageValue = ((popoverValues.y/popoverPrevValues)-1)*100;
       var labelClass      = (percentageValue >= 0) ? 'label-success' : 'label-danger';
-      _this.$popover.find('.popover-content-variation').html('<span class="label '+labelClass+'">'+formatDecimal(percentageValue,1)+' %</span>').show();
-      _this.$popover.find('.popover-content-variation-label').show().find('.variation-year').html( _this.years[_this.currentYear-1] );
+      _this.$popover.find('.popover-content-variation .label').removeClass('label-success, label-danger').addClass(labelClass).html(_this.percentageFormat(percentageValue)+' %');
+      _this.$popover.find('.popover-content-variation-year').html( _this.years[_this.currentYear-1] );
+      _this.$popover.find('.popover-content-variation').show();
     } else{
-      _this.$popover.find('.popover-content-variation, .popover-content-variation-label').hide();
+      _this.$popover.find('.popover-content-variation').hide();
     }
   };
 
