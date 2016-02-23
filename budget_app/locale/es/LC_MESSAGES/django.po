@@ -401,7 +401,7 @@ msgid "Cantidad"
 msgstr ""
 
 #: templates/shared/breakdown_tab.html:11
-msgid "variación respecto a"
+msgid "respecto a"
 msgstr ""
 
 #: templates/shared/breakdown_tab.html:22 templates/shared/payment_tab.html:8
