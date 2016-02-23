@@ -416,8 +416,8 @@ msgid "Cantidad"
 msgstr "Quantitat"
 
 #: templates/shared/breakdown_tab.html:11
-msgid "variación respecto a"
-msgstr "variació respecte a"
+msgid "respecto a"
+msgstr "respecte a"
 
 #: templates/shared/breakdown_tab.html:22 templates/shared/payment_tab.html:8
 msgid "Descarga la tabla de"
