@@ -75,6 +75,75 @@
   .data-panel{
     margin-bottom: $grid-gutter-width/2;
   }
+
+  // Budges Totals Table
+  .budget-totals{
+    margin-bottom: $grid-gutter-width;
+    text-align: left;
+
+    .panel{
+      margin-bottom: $grid-gutter-width/2;
+    }
+
+    .panel-title{
+      display: none;
+
+      .col-sm-4{
+        padding-right: 0;
+        padding-left: 0;
+      }
+    }
+
+    .panel-content{
+      padding-top: $grid-gutter-width/6;
+      padding-bottom: 0;
+
+      .row{
+        margin-left:  0;
+        margin-right: 0;
+        padding-bottom: $grid-gutter-width/3;
+        border-top: 1px solid mix( $data-panel-color, white, 40% );
+      }
+
+      .col-sm-4{
+        padding: $grid-gutter-width/3 0 0;
+      }
+
+      .data-label{
+        float: left;
+        text-transform: none;
+      }
+
+      .total-executed{
+        border: none;
+        font-weight: $font-weight-600;
+        margin-bottom: 0;
+
+        > .col-sm-4{
+          padding-bottom: 0;
+        }
+      }
+
+      .total-budgeted{
+        border-top: none;
+      }
+
+      .chapters{
+        text-transform: none;
+      }
+      .chapters-sub{
+        font-weight: $font-weight-300;
+        border-top-color: mix( $data-panel-color, white, 20% );
+
+        &.chapters-sub-first{
+          border-top-color: mix( $data-panel-color, white, 40% );
+        }
+      }
+      .chapters-first{
+        border-top-color: $data-panel-color;
+      }
+    }
+  }
 }
 
 
@@ -82,6 +151,23 @@
 
   .budget-intro {
     display: block;
+  }
+  
+  .budget-data .budget-totals{
+    .panel-title{
+      display: block;
+    }
+    .panel-content{
+      .row{
+        padding-bottom: 0;
+      }
+      .col-sm-4{
+        padding: $grid-gutter-width/3;
+      }
+      .data-label{
+        display: none;
+      }
+    }
   }
 }
 

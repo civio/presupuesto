@@ -1,6 +1,5 @@
 // Data Panel
 .data-panel {
-  text-align: center;
   
   #totals-year{
     font-weight: $font-weight-400;
@@ -17,12 +16,6 @@
     &:first-child{
       border-top-right-radius: $panel-border-radius;
       border-top-left-radius: $panel-border-radius;
-
-      /*
-      .panel-title{
-        border-radius: 6px 6px 0 0;
-      }
-      */
     }
     &:last-child{
       border-bottom-right-radius: $panel-border-radius;
@@ -55,6 +48,8 @@
     b{
       display: block;
       font-weight: $font-weight-600;
+      float: right; 
+      text-align: right;
     }
   
     .total-executed{
@@ -82,39 +77,33 @@
         border: none;
       }
     }
-
-    .icon-question {
-      float: left;
-      display: block;
-      width: 22px;
-      height: 22px;
-      margin-top: 1px;
-      margin-right: 8px;
-      border-radius: 11px;
-      background: url(../assets/bugget-stream-question.png) no-repeat 6px 3px $gray-light;
-      @include transition( background-color 0.3s ease-out );
-
-      &:hover{
-        background-color: $brand-primary;
-      }
-    }
-
   }
+
+  .icon-question {
+    float: left;
+    display: block;
+    width: 22px;
+    height: 22px;
+    margin-top: 1px;
+    margin-right: 8px;
+    border-radius: 11px;
+    background: url(../assets/bugget-stream-question.png) no-repeat 6px 3px $gray-light;
+    @include transition( background-color 0.3s ease-out );
+
+    &:hover{
+      background-color: $brand-primary;
+    }
+  }
+
 
   @media (min-width: $screen-sm-min) {
   
     @include clearfix();
-    text-align: left;
 
     .panel-content{
 
       .total-executed{       
         margin-bottom: $grid-gutter-width/6;
-      }
-
-      b{
-        float: right; 
-        text-align: right;
       }
     }
   }
