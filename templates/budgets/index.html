@@ -71,7 +71,6 @@
   $(function() {
     function redraw() {
       var uiState = getUIState();
-      console.log('redraw', uiState);
       sankey.update(uiState);
       updateIndicators(uiState);
     }

@@ -18,7 +18,8 @@ function StackedAreaChart() {
   _this.xAxis = d3.svg.axis()
       .scale(_this.x)
       .tickPadding(10)
-      .orient('bottom');
+      .orient('bottom')
+      .tickSize(0);
 
   _this.yAxis = d3.svg.axis()
       .scale(_this.y)
@@ -85,7 +86,6 @@ function StackedAreaChart() {
     _this.x.range([0, _this.width]);
     _this.y.range([_this.height, 0]);
 
-    _this.xAxis.tickSize(-_this.height);
     _this.yAxis.tickSize(-_this.width);
 
     // Set X section width
@@ -199,10 +199,13 @@ function StackedAreaChart() {
       .attr('height', _this.height);
 
     // Setup X Axis
-    _this.svg.append('g')
+    var x_axis = _this.svg.append('g')
       .attr('class', 'x axis')
       .attr('transform', 'translate(0,' + _this.height + ')')
       .call(_this.xAxis);
+
+    x_axis.selectAll('g')
+      .attr('data-year', function(d){ return d; });
 
     // Setup Y Axis
     _this.svg.append('g')
@@ -228,7 +231,7 @@ function StackedAreaChart() {
       .on('click',      function(d){ $(_this.selector).trigger('area-selected', d); });
 
     _this.svg.on('mouseout', function(e){
-      _this.svg.selectAll('.point').attr('r', 4).classed('hover', false);
+      pointsOut();
       _this.$popover.hide();
       _this.currentYear = null;
     });
@@ -276,6 +279,7 @@ function StackedAreaChart() {
       .attr('class', function(d){ return 'point point-'+d.x; })
       .attr('transform', function(d){ return 'translate('+_this.x(d.x)+','+_this.y(d.y0+d.y)+')'; })
       .attr('r', 4)
+      .style('stroke', function(d) { return _this.color(d.id); })
       .style('fill', function(d) { return _this.color(d.id); });
 
     _this.circles.on('mouseover', function(d){
@@ -332,7 +336,7 @@ function StackedAreaChart() {
 
     if( !_this.currentYear )  _this.currentYear = getCurrentYear( d3.mouse(this) );
 
-    hoverPoints();
+    pointsOver();
     setupPopover(d, d3.mouse(this));
   };
 
@@ -346,7 +350,7 @@ function StackedAreaChart() {
 
     if( _this.currentYear != newYear ){
       _this.currentYear = newYear;
-      hoverPoints();
+      pointsOver();
       setupPopoverContent();
     }
 
@@ -390,14 +394,34 @@ function StackedAreaChart() {
   };
 
 
-  var hoverPoints = function(){
+  // Points select & unselect
+  var pointsOver = function(){
 
-    _this.circles.selectAll('.point')
-      .attr('r', 4)
-      .classed('hover', false);
+    // Unselect all points
+    pointsOut();
+
+    // Select current year points
     _this.circles.selectAll('.point-'+_this.years[_this.currentYear])
-      .attr('r', 6)
+      .attr('r', 5)
+      .style('fill', 'white')
       .classed('hover', true);
+
+    // Select current year at x axis
+    _this.svg.selectAll('.x.axis .tick[data-year="'+_this.years[_this.currentYear]+'"]')
+      .classed('active', true);
+  };
+
+  var pointsOut = function(){
+
+    // Unselect all points
+    _this.svg.selectAll('.point')
+      .attr('r', 4)
+      .style('fill', function(d) { return _this.color(d.id); })
+      .classed('hover', false);
+
+    // Unselect all years at x axis
+    _this.svg.selectAll('.x.axis .tick')
+      .classed('active', false);
   };
 
   var getCurrentYear = function( _mouse ){

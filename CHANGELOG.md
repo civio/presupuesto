@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file
 - Nodes in Sankey chart can now be combined and labelled as will.
 - Sankey chart layout aggressiveness can be configured from the theme settings.
 - Styles for selected option in main navagation menu.
+- Added subtotals list in Overview totals panel.
 
 ### Changed
 - Major front-end rewrite, now using Bootstrap 3

@@ -1,10 +1,12 @@
+// Global function getSum
+function getSum(breakdown, ids, field, year) {
+  // TODO: Take into account whether actual spending figures exists (and whether they cover whole year)
+  return _.reduce(ids, function(sum, id) { return sum + (breakdown.sub[id][field][year]||0); }, 0);
+}
+
 // Update global budget indicators
 function updateIndicators(uiState) {
-  function getSum(breakdown, ids, field, year) {
-    // TODO: Take into account whether actual spending figures exists (and whether they cover whole year)
-    return _.reduce(ids, function(sum, id) { return sum + (breakdown.sub[id][field][year]||0); }, 0);
-  }
-
+  
   function format(amount) {
     return formatAmount(adjustInflation(amount, stats, uiState.year));
   }
@@ -20,6 +22,13 @@ function updateIndicators(uiState) {
   var total_incomes_executed = economicBreakdown.income['actual_'+uiState.year];
   var total_expenses_budgeted = economicBreakdown.expense[uiState.year];
   var total_expenses_executed = economicBreakdown.expense['actual_'+uiState.year];
+
+  var chapters_1_5_incomes   = getSum(chapterBreakdown, [1, 2, 3, 4, 5], 'income', uiState.year);
+  var chapters_1_5_expenses  = getSum(chapterBreakdown, [1, 2, 3, 4, 5], 'expense', uiState.year);
+  var chapters_6_7_incomes   = getSum(chapterBreakdown, [6, 7], 'income', uiState.year);
+  var chapters_6_7_expenses  = getSum(chapterBreakdown, [6, 7], 'expense', uiState.year);
+  var chapters_8_9_incomes   = getSum(chapterBreakdown, [8, 9], 'income', uiState.year);
+  var chapters_8_9_expenses  = getSum(chapterBreakdown, [8, 9], 'expense', uiState.year);
 
   // Check if executed data is available
   if (total_incomes_executed){
@@ -39,4 +48,13 @@ function updateIndicators(uiState) {
   $('#total-gross-savings').text(format(gross_savings));
   $('#total-net-savings').text(format(net_savings));
   $('#total-funding-capacity').text(format(funding_capacity));
+
+  $('#chapters-1-5-incomes').text(format(chapters_1_5_incomes));
+  $('#chapters-1-5-expenses').text(format(chapters_1_5_expenses));
+  $('#chapters-6-7-incomes').text(format(chapters_6_7_incomes));
+  $('#chapters-6-7-expenses').text(format(chapters_6_7_expenses));
+  $('#chapters-1-7-incomes').text(format(chapters_1_5_incomes+chapters_6_7_incomes));
+  $('#chapters-1-7-expenses').text(format(chapters_1_5_expenses+chapters_6_7_expenses));
+  $('#chapters-8-9-incomes').text(format(chapters_8_9_incomes));
+  $('#chapters-8-9-expenses').text(format(chapters_8_9_expenses));
 }

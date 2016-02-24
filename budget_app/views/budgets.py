@@ -36,4 +36,8 @@ def budgets(request):
     if hasattr(settings, 'OVERVIEW_RELAX_FACTOR'):
         c['relax_factor'] = settings.OVERVIEW_RELAX_FACTOR
 
+    c['show_overview_subtotals'] = False
+    if hasattr(settings, 'SHOW_OVERVIEW_SUBTOTALS'):
+        c['show_overview_subtotals'] = settings.SHOW_OVERVIEW_SUBTOTALS
+
     return render_to_response('budgets/index.html', c)
