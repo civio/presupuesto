@@ -11,14 +11,13 @@ MULTILANGUAGE = 1 < len(settings.LANGUAGES)
 
 url_patterns = i18n_patterns if MULTILANGUAGE else patterns
 
-budget_app_urlpatterns = patterns('',
-    url(r'^i18n/', include('django.conf.urls.i18n')),
-)
-
 if MULTILANGUAGE:
     budget_app_urlpatterns = patterns('',
+        url(r'^i18n/', include('django.conf.urls.i18n')),
         url(r'^$', lambda x: HttpResponseRedirect(reverse('budget_app_welcome'))),
     )
+else:
+    budget_app_urlpatterns = patterns('', )
 
 budget_app_urlpatterns += url_patterns('budget_app.views',
     url(r'^/?$', 'welcome', name="budget_app_welcome"),
