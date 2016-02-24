@@ -82,48 +82,38 @@
     text-transform: uppercase;
   }
 
-  /*
-  .tab-content & {
-    background: @black95;
-    margin: 0 -1em 1em;
-    padding: 1em 1.5em;
-    @shadow:
-    0 0 0 1px @black80 inset,
-    0 0 0 2px @white inset;
-    .box-shadow(@shadow);
-  }
-  */
-}
+  .single-year{
 
-/*
-.data-controllers.functional_view {
-  #btn-field {
-    .btn {
-      font-size: .9em;
-      padding: 6px 6px;
+    #year-selection{
+      display: none;
     }
-  } 
-}
 
-.data-controllers.functional_view .quantity-selection {
-  text-align: center;
-}
+    .layout-slider{
 
-#year-selection {}
-.layout-slider {height: 3.5em;}
-
-.data-controllers .layout-slider{
-  margin-top: -6px;
+      > p{
+        font-size: 1.25em;
+        line-height: $grid-gutter-width;
+        font-weight: $font-weight-600;
+      }
+    }
+  }
 }
-*/
 
 
 @media (min-width: $screen-sm-min) {
 
   .data-controllers {
-   
+
    .quantity-selection{
       text-align: left;
+    }
+
+    .single-year{
+      text-align: right;
+
+      .layout-slider{
+        margin: 0;
+      }
     }
   }
 }
