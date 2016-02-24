@@ -12,10 +12,10 @@
     margin-bottom: $grid-gutter-width/3;
   }
 
-  .btn-default{
+  .btn-primary{
     border-color: $brand-secondary;
-    background: $brand-secondary;
-    margin-top: -1px; 
+    background-color: $brand-secondary;
+    margin-top: -1px;
   }
 }
 
