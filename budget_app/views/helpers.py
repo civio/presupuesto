@@ -14,7 +14,7 @@ from project.settings import ROOT_PATH
 
 
 TABS = {
-    'general': r'^budget.*',
+    'general': r'^budgets.*',
     'policies': r'^policies.*',
     'payments': r'^payments.*',
     'calculator': r'^tax-receipt.*',
