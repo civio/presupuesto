@@ -20,6 +20,11 @@ function BudgetSummary(selector) {
     areaNames   = _areaNames;
     colorScale  = _colorScale;
 
+    // Reset variables holding the data.
+    // Note that a BudgetSummary object can be setup a number of times, so this is needed.
+    areaAmounts = {};
+    totalAmount = 0;
+
     // Group breakdown by area
     var i, area;
     for (i in _breakdown.sub) {
