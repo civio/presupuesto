@@ -1,0 +1,806 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-02-23 19:21+0100\n"
+"PO-Revision-Date: 2016-02-24 03:40+0100\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Last-Translator: David Cabo <david@civio.es>\n"
+"Language-Team: \n"
+"X-Generator: Poedit 1.8.7\n"
+
+#: templates/base.html:4 templates/shared/social_sharing.html:5
+msgid "Presupuestos del Gobierno de Aragón"
+msgstr "Barcelona City Council Budget"
+
+#: templates/base.html:86
+msgid ""
+"Esta web utiliza cookies propias y de terceros para ofrecerte la mejor "
+"experiencia de usuario. Si continúas navegando, entendemos que autorizas el uso "
+"de estas cookies."
+msgstr ""
+
+#: templates/base.html:89
+msgid "Más información"
+msgstr "More information"
+
+#: templates/budgets/budgets_indicators.html:2
+msgid "Indicadores presupuestarios"
+msgstr "Budget indicators"
+
+#: templates/budgets/budgets_indicators.html:5
+msgid "Ingresos corrientes (capítulos I-V) - Gastos corrientes (capítulos I-V)"
+msgstr ""
+
+#: templates/budgets/budgets_indicators.html:5
+msgid "Ahorro bruto"
+msgstr ""
+
+#: templates/budgets/budgets_indicators.html:8
+msgid "Ahorro bruto – capítulo IX de gastos (pasivos financieros)"
+msgstr ""
+
+#: templates/budgets/budgets_indicators.html:8
+msgid "Ahorro neto"
+msgstr ""
+
+#: templates/budgets/budgets_indicators.html:11
+msgid ""
+"Ingresos no financieros (capítulos I-VII) – Gastos no financieros (capítulos I-"
+"VII)"
+msgstr ""
+
+#: templates/budgets/budgets_indicators.html:11
+msgid "Capacidad/Necesidad de financiación"
+msgstr ""
+
+#: templates/budgets/budgets_intro.html:5
+msgid "El recorrido de mis impuestos"
+msgstr ""
+
+#: templates/budgets/budgets_intro.html:9
+msgid "La recaudación local"
+msgstr "Total revenues"
+
+#: templates/budgets/budgets_intro.html:10
+msgid ""
+"Se realiza a través de impuestos directos -como el impuesto de bienes inmuebles "
+"(IBI) o el de vehículos de tracción mecánica (IVTM)- y de tasas -como la de "
+"recogida de basura"
+msgstr ""
+
+#: templates/budgets/budgets_intro.html:15
+msgid "Otras fuentes de ingresos"
+msgstr "Other revenue sources"
+
+#: templates/budgets/budgets_intro.html:16
+msgid ""
+"El dinero recaudado localmente se complementa con las transferencias de la "
+"Administración General del Estado y del Gobierno de Aragón, que son los "
+"encargados de recaudar otros ingresos como el IVA y el IRPF"
+msgstr ""
+
+#: templates/budgets/budgets_intro.html:21
+msgid "¿En qué se emplea?"
+msgstr "What is it used for?"
+
+#: templates/budgets/budgets_intro.html:22
+msgid ""
+"El ayuntamiento utiliza el dinero recaudado, junto con otras fuentes de "
+"financiación como la deuda, para mantener los servicios públicos y la "
+"infraestructura de la ciudad."
+msgstr ""
+
+#: templates/budgets/budgets_totals.html:7 templates/budgets/budgets_totals.html:13
+#: templates/budgets/budgets_totals.html:18 templates/budgets/budgets_totals.html:24
+#: templates/budgets/budgets_totals.html:29 templates/budgets/budgets_totals.html:34
+#: templates/budgets/budgets_totals.html:39 templates/entities/show.html:32
+#: templates/entities/show.html.py:227 templates/policies/show.html:157
+msgid "Ingresos"
+msgstr "Revenues"
+
+#: templates/budgets/budgets_totals.html:8 templates/budgets/budgets_totals.html:14
+#: templates/budgets/budgets_totals.html:19 templates/budgets/budgets_totals.html:25
+#: templates/budgets/budgets_totals.html:30 templates/budgets/budgets_totals.html:35
+#: templates/budgets/budgets_totals.html:40 templates/entities/show.html:43
+#: templates/entities/show.html.py:234
+msgid "Gastos"
+msgstr "Expenditures"
+
+#: templates/budgets/budgets_totals.html:12
+msgid "Total Ejecutado"
+msgstr ""
+
+#: templates/budgets/budgets_totals.html:17
+msgid "Total Presupuestado"
+msgstr ""
+
+#: templates/budgets/budgets_totals.html:23
+msgid "Capítulos I-VII"
+msgstr ""
+
+#: templates/budgets/budgets_totals.html:23
+msgid "Subtotal No Financiero"
+msgstr ""
+
+#: templates/budgets/budgets_totals.html:28
+msgid "Capítulos I-V"
+msgstr ""
+
+#: templates/budgets/budgets_totals.html:28
+msgid "Subtotal Corriente"
+msgstr ""
+
+#: templates/budgets/budgets_totals.html:33
+msgid "Capítulos VI-VII"
+msgstr ""
+
+#: templates/budgets/budgets_totals.html:33
+msgid "Subtotal de Capital"
+msgstr ""
+
+#: templates/budgets/budgets_totals.html:38
+msgid "Capítulos VIII-IX"
+msgstr ""
+
+#: templates/budgets/budgets_totals.html:38
+msgid "Subtotal Financiero"
+msgstr ""
+
+#: templates/budgets/budgets_totals.html:47
+msgid "El cálculo de los subtotales utiliza las cifras del presupuesto aprobado"
+msgstr ""
+
+#: templates/budgets/index.html:17
+msgid "Ingresos y gastos en el Gobierno de Aragón"
+msgstr ""
+
+#: templates/budgets/index.html:29 templates/payments/index.html:33
+msgid "Elige año"
+msgstr "Pick a year"
+
+#: templates/budgets/index.html:42
+msgid "Datos presupuestarios en"
+msgstr ""
+
+#: templates/budgets/index.html:54
+msgid "Cantidades actualizadas con la inflación a fecha 1 de enero de"
+msgstr ""
+
+#: templates/budgets/index.html:54
+msgid "El cálculo de los indicadores utiliza las cifras del presupuesto aprobado"
+msgstr ""
+
+#: templates/budgets/index.html:56
+msgid ""
+"Se incluyen únicamente los gastos e ingresos no financieros, es decir, capítulos "
+"I al VII."
+msgstr ""
+
+#: templates/budgets/index.html:103
+msgid "Otros"
+msgstr "Other"
+
+#: templates/budgets/index.html:104 templates/shared/data_sources.html:7
+#: templates/shared/footer.html:18 templates/shared/header.html:27
+#: templates/shared/header.html.py:55 templates/welcome/index.html:54
+msgid "Gobierno de Aragón"
+msgstr ""
+
+#: templates/budgets/index.html:105 templates/entities/totals.html:21
+#: templates/entities/totals.html.py:28 templates/policies/show.html:382
+msgid "Presupuestado"
+msgstr "Budgeted"
+
+#: templates/budgets/index.html:106 templates/entities/totals.html:20
+#: templates/entities/totals.html.py:27
+msgid "Ejecutado"
+msgstr "Actual"
+
+#: templates/budgets/index.html:107 templates/entities/show.html:383
+#: templates/policies/show.html:358
+msgid "hasta el primer trimestre"
+msgstr "up to the first quarter"
+
+#: templates/budgets/index.html:108 templates/entities/show.html:384
+#: templates/policies/show.html:359
+msgid "hasta el segundo trimestre"
+msgstr "up to the second quarter"
+
+#: templates/budgets/index.html:109 templates/entities/show.html:385
+#: templates/policies/show.html:360
+msgid "hasta el tercer trimestre"
+msgstr "up to the third quarter"
+
+#: templates/budgets/index.html:110 templates/entities/show.html:386
+#: templates/policies/show.html:361
+msgid "a día de hoy"
+msgstr "up to today"
+
+#: templates/budgets/index.html:111
+msgid "(Cantidades actualizadas con la inflación)"
+msgstr "(Amounts are inflation adjusted)"
+
+#: templates/entities/compare.html:14 templates/entities/show.html:14
+msgid "Volver a la lista de comarcas"
+msgstr ""
+
+#: templates/entities/compare.html:16 templates/entities/show.html:16
+msgid "Volver a la lista de municipios"
+msgstr ""
+
+#: templates/entities/compare.html:20
+msgid "Comparativa"
+msgstr ""
+
+#: templates/entities/compare.html:30 templates/entities/compare.html.py:45
+#: templates/entities/show.html:28 templates/shared/header.html:53
+#: templates/shared/header.html.py:62 templates/welcome/index.html:61
+msgid "Políticas"
+msgstr "Policies"
+
+#: templates/entities/index.html:11 templates/shared/header.html:56
+#: templates/welcome/index.html:55
+msgid "Comarcas"
+msgstr "Counties"
+
+#: templates/entities/index.html:13 templates/shared/header.html:57
+#: templates/welcome/index.html:56
+msgid "Municipios"
+msgstr "Cities"
+
+#: templates/entities/index.html:26
+msgid "Habitantes"
+msgstr "Population"
+
+#: templates/entities/index.html:30 templates/entities/show.html:143
+msgid "Previsto"
+msgstr "Budgeted"
+
+#: templates/entities/index.html:31 templates/entities/show.html:158
+#: templates/policies/show.html:223
+msgid "Gastado"
+msgstr "Actual"
+
+#: templates/entities/index.html:42 templates/entities/show.html:102
+msgid "Descarga la tabla de <b>Ingresos</b>"
+msgstr "Download the <b>Revenues</b> table"
+
+#: templates/entities/index.html:48 templates/entities/show.html:114
+msgid "Descarga la tabla de <b>Gastos</b>"
+msgstr "Download the <b>Expenditures</b> table"
+
+#: templates/entities/show.html:36 templates/policies/show.html:160
+msgid "¿Cómo se gasta?"
+msgstr "How is it spent?"
+
+#: templates/entities/show.html:39
+msgid "¿En qué se gasta?"
+msgstr "What is it spent for?"
+
+#: templates/entities/show.html:86
+msgid "Información no disponible"
+msgstr "Data not available"
+
+#: templates/entities/show.html:108
+msgid "Descarga la tabla de <b>Gastos (por programa)</b>"
+msgstr "Download the <b>Expenditures (by program)</b> table"
+
+#: templates/entities/show.html:158 templates/policies/show.html:223
+msgid "Ingresado"
+msgstr "Actual"
+
+#: templates/entities/show.html:201 templates/tax_receipt/tax_receipt_script.html:53
+msgid "Política"
+msgstr "Policy"
+
+#: templates/entities/show.html:201 templates/policies/show.html:273
+msgid "Artículo"
+msgstr "Article"
+
+#: templates/entities/show.html:215
+msgid "Gastos (por programa)"
+msgstr "Expenditures (by program)"
+
+#: templates/entities/show.html:217 templates/entities/show.html.py:220
+#: templates/entities/show.html:235 templates/policies/show.html:338
+msgid "Total gastos"
+msgstr "Total expenditures"
+
+#: templates/entities/show.html:219
+msgid "Total gastos no financieros"
+msgstr "Total non-financial expenditures"
+
+#: templates/entities/show.html:228 templates/policies/show.html:338
+msgid "Total ingresos"
+msgstr "Total revenues"
+
+#: templates/entities/totals.html:6 templates/entities/totals.html.py:11
+#: templates/policies/show.html:146
+msgid "Presupuestados"
+msgstr "Budgeted"
+
+#: templates/pages/cookies.html:3 views/pages.py:8
+msgid "Política de Cookies"
+msgstr "Cookie policy"
+
+#: templates/payments/index.html:14
+msgid "Inversiones y pagos"
+msgstr "Third-party payments"
+
+#: templates/payments/index.html:19
+msgid "Por área"
+msgstr "By area"
+
+#: templates/payments/index.html:22
+msgid "Por beneficiario"
+msgstr "By payee"
+
+#: templates/payments/index.html:54
+msgid "Total de inversiones y pagos"
+msgstr "Total third-party payments"
+
+#: templates/payments/index.html:71
+msgid "Pago"
+msgstr "Payment"
+
+#: templates/payments/index.html:92
+msgid "Beneficiario"
+msgstr "Payee"
+
+#: templates/payments/index.html:104
+msgid "Área"
+msgstr "Area"
+
+#: templates/payments/payments_intro.html:1
+msgid "Gastos del año vigente"
+msgstr "Expenditures for current year"
+
+#: templates/policies/show.html:33
+msgid "Volver a Políticas"
+msgstr "Back to policies"
+
+#: templates/policies/show.html:39
+msgid "Programas, entidades y conceptos"
+msgstr "Programs, entities and items"
+
+#: templates/policies/show.html:40
+msgid "Menú de programas, entidades y conceptos"
+msgstr "Programs, entities and items"
+
+#: templates/policies/show.html:246
+msgid "Programa"
+msgstr "Program"
+
+#: templates/policies/show.html:276 templates/search/index.html:156
+#: templates/search/index.html.py:266
+msgid "Concepto"
+msgstr "Item"
+
+#: templates/policies/show.html:293
+msgid "Entidad"
+msgstr "Entity"
+
+#: templates/search/index.html:24
+msgid "Hemos encontrado"
+msgstr "We've found"
+
+#: templates/search/index.html:25
+msgid "resultados</b> relacionados con"
+msgstr "results</b> related to"
+
+#: templates/search/index.html:32
+msgid "Mostrar resultados de"
+msgstr "Show results for"
+
+#: templates/search/index.html:35 templates/search/index.html.py:37
+msgid "cualquier año"
+msgstr "any year"
+
+#: templates/search/index.html:56
+msgid "Términos"
+msgstr "Terms"
+
+#: templates/search/index.html:79 templates/search/index.html.py:83
+msgid "Comarcas y municipios"
+msgstr "Counties and towns"
+
+#: templates/search/index.html:107
+msgid "Políticas y Programas"
+msgstr "Policies and programs"
+
+#: templates/search/index.html:111 templates/search/index.html.py:114
+msgid "Política / Programa"
+msgstr "Policies / Programs"
+
+#: templates/search/index.html:149 templates/search/index.html.py:153
+msgid "Conceptos"
+msgstr "Items"
+
+#: templates/search/index.html:157
+msgid "Gastos / Ingresos"
+msgstr "Expenditures / Revenues"
+
+#: templates/search/index.html:259 templates/search/index.html.py:263
+#: templates/shared/header.html:68 templates/welcome/index.html:70
+#: templates/welcome/index.html.py:72
+msgid "Pagos e inversiones"
+msgstr "Third-party payments"
+
+#: templates/search/index.html:267
+msgid "Cantidad"
+msgstr "Amount"
+
+#: templates/shared/breakdown_tab.html:12
+msgid "respecto a"
+msgstr "compared to"
+
+#: templates/shared/breakdown_tab.html:23 templates/shared/payment_tab.html:8
+msgid "Descarga la tabla de"
+msgstr "Download the table: "
+
+#: templates/shared/chromeframe.html:3
+msgid "¡Atención!"
+msgstr ""
+
+#: templates/shared/chromeframe.html:4
+msgid ""
+"Este sitio web no va a funcionar correctamente en tu navegador. La visualización "
+"de datos de esta página requieren un navegador con funciones adicionales, como"
+msgstr ""
+
+#: templates/shared/chromeframe.html:4
+msgid "Si quieres continuar usando Internet Explorer"
+msgstr ""
+
+#: templates/shared/chromeframe.html:4
+msgid "puedes instalar el plugin de Google Chrome Frame"
+msgstr ""
+
+#: templates/shared/chromeframe.html:4
+msgid "en unos minutos"
+msgstr ""
+
+#: templates/shared/data_controllers.html:5
+msgid "Cantidades"
+msgstr "Amounts"
+
+#: templates/shared/data_controllers.html:10
+msgid "Año"
+msgstr "Year"
+
+#: templates/shared/data_controllers_select.html:2
+msgid "Nominales"
+msgstr "Nominal"
+
+#: templates/shared/data_controllers_select.html:3
+msgid "Reales (ajustadas a inflación)"
+msgstr "Real (inflation adjusted)"
+
+#: templates/shared/data_controllers_select.html:5
+msgid "Porcentaje sobre el total"
+msgstr "As percentage of total"
+
+#: templates/shared/data_controllers_select.html:7
+msgid "Per-capita (real)"
+msgstr "Per capita (real)"
+
+#: templates/shared/data_sources.html:3
+msgid "Fuentes de datos"
+msgstr "Data sources"
+
+#: templates/shared/data_sources.html:7
+msgid "Datos presupuestarios"
+msgstr "Budget data"
+
+#: templates/shared/data_sources.html:8
+msgid "Datos de población"
+msgstr "Population data"
+
+#: templates/shared/data_sources.html:8 templates/shared/data_sources.html:9
+msgid "Instituto Nacional de Estadística (INE)"
+msgstr "Spanish Statistical Office (INE)"
+
+#: templates/shared/data_sources.html:9
+msgid "Datos de inflación (Medias anuales de IPC para Aragón)"
+msgstr "Inflacion data (Annual average)"
+
+#: templates/shared/data_sources.html:12
+msgid "Nota"
+msgstr "Note"
+
+#: templates/shared/data_sources.html:14
+msgid "Los ingresos y gastos mostrados incluyen únicamente al Gobierno de Aragón"
+msgstr ""
+
+#: templates/shared/data_sources.html:15
+msgid "El ajuste de la inflación se realiza a <b>1 de enero de"
+msgstr "Inflation is adjusted to <b>1st of January, "
+
+#: templates/shared/data_sources.html:15
+msgid ""
+"La tasa de inflación anual es la media de la tasa interanual de los doce meses "
+"del año."
+msgstr "The annual inflation rate is the 12-month average of the year-on-year rate."
+
+#: templates/shared/footer.html:4
+msgid "Un proyecto de"
+msgstr "A project by"
+
+#: templates/shared/footer.html:8
+msgid "basado en el código de"
+msgstr "based on code by"
+
+#: templates/shared/footer.html:23
+msgid "Aviso Legal"
+msgstr "Legal terms"
+
+#: templates/shared/footer.html:29
+msgid "Política de Privacidad"
+msgstr "Privacy policy"
+
+#: templates/shared/form-search.html:5
+msgid "¿Buscas algo en concreto?"
+msgstr "Searching for something in particular?"
+
+#: templates/shared/form-search.html:6 templates/terms/index.html:21
+msgid "Escribe aquí tu término de búsqueda"
+msgstr "Enter your search term"
+
+#: templates/shared/form-search.html:8 templates/terms/index.html:23
+msgid "Buscar"
+msgstr "Search"
+
+#: templates/shared/header.html:32
+msgid "Ir a la home de Presupuestos"
+msgstr "Go to the Budget home"
+
+#: templates/shared/header.html:33
+msgid "Presupuestos"
+msgstr "Budget"
+
+msgid "Presupuesto"
+msgstr "Budget"
+
+#: templates/shared/header.html:43
+msgid "Menú principal"
+msgstr "Main menu"
+
+#: templates/shared/header.html:48 templates/welcome/index.html:41
+#: templates/welcome/index.html.py:43
+msgid "Visión global"
+msgstr "Overview"
+
+#: templates/shared/header.html:74 templates/tax_receipt/index.html:14
+#: templates/welcome/index.html:84
+msgid "Lo que tú aportas"
+msgstr ""
+
+#: templates/shared/header.html:79
+msgid "¿Qué significa...?"
+msgstr "What does it mean...?"
+
+#: templates/shared/pagination.html:8 templates/shared/pagination.html:10
+msgid "Anterior"
+msgstr "Previous"
+
+#: templates/shared/pagination.html:24 templates/shared/pagination.html:26
+msgid "Siguiente"
+msgstr "Next"
+
+#: templates/shared/social_sharing.html:2
+msgid "Compártelo"
+msgstr "Share it"
+
+#: templates/shared/social_sharing.html:5
+msgid "Comparte esta página en Twitter"
+msgstr "Share this page in Twitter"
+
+#: templates/shared/social_sharing.html:10
+msgid "Comparte esta página en Facebook"
+msgstr "Share this page in Facebook"
+
+#: templates/shared/social_sharing.html:14
+msgid "Comparte esta página en Google Plus"
+msgstr "Share this page in Google+"
+
+#: templates/tax_receipt/index.html:15
+msgid "Te mostramos de forma aproximada"
+msgstr ""
+
+#: templates/tax_receipt/index.html:15
+msgid "Nota sobre el cálculo realizado"
+msgstr ""
+
+#: templates/tax_receipt/index.html:15
+msgid "cómo se distribuye el dinero que aportas con tus impuestos"
+msgstr ""
+
+#: templates/tax_receipt/index.html:31
+msgid "Detalle de tu contribución en"
+msgstr ""
+
+#: templates/tax_receipt/tax_receipt_form.html:1
+msgid ""
+"Puedes escoger el tipo de situación que mejor refleja tu realidad (<a href=\"#\" "
+"id=\"scenario-1\">piso pequeño en el casco antiguo</a>, <a href=\"#\" id="
+"\"scenario-2\">piso de nueva construcción</a>, casa unifamiliar <a href=\"#\" id="
+"\"scenario-3\">en el centro</a>, o <a href=\"#\" id=\"scenario-4\">en una "
+"urbanización</a>) o modificar cada uno de los elementos de forma independiente."
+msgstr ""
+
+#: templates/tax_receipt/tax_receipt_form.html:6
+msgid "Impuestos"
+msgstr ""
+
+#: templates/tax_receipt/tax_receipt_form.html:10
+msgid "Inmueble"
+msgstr ""
+
+#: templates/tax_receipt/tax_receipt_form.html:12
+msgid "Piso de 80 m\\u00B2 situado en la zona del mercado"
+msgstr ""
+
+#: templates/tax_receipt/tax_receipt_form.html:13
+msgid "Piso de 110 m\\u00B2 situado en el centro, nueva construcción"
+msgstr ""
+
+#: templates/tax_receipt/tax_receipt_form.html:14
+msgid "Casa unifamiliar adosada en el centro del pueblo"
+msgstr ""
+
+#: templates/tax_receipt/tax_receipt_form.html:15
+msgid "Casa unifamiliar aislada en urbanización"
+msgstr ""
+
+#: templates/tax_receipt/tax_receipt_form.html:18
+msgid "IBI"
+msgstr ""
+
+#: templates/tax_receipt/tax_receipt_form.html:23
+msgid "Vehículo"
+msgstr ""
+
+#: templates/tax_receipt/tax_receipt_form.html:25
+#: templates/tax_receipt/tax_receipt_form.html:37
+msgid "Ninguno"
+msgstr ""
+
+#: templates/tax_receipt/tax_receipt_form.html:26
+#: templates/tax_receipt/tax_receipt_form.html:38
+msgid "Coche pequeño"
+msgstr ""
+
+#: templates/tax_receipt/tax_receipt_form.html:27
+#: templates/tax_receipt/tax_receipt_form.html:39
+msgid "Coche mediano/grande"
+msgstr ""
+
+#: templates/tax_receipt/tax_receipt_form.html:30
+#: templates/tax_receipt/tax_receipt_form.html:42
+msgid "Impuesto a vehículos motorizados"
+msgstr ""
+
+#: templates/tax_receipt/tax_receipt_form.html:35
+msgid "Vehículo adicional"
+msgstr ""
+
+#: templates/tax_receipt/tax_receipt_form.html:46
+msgid "Tasas"
+msgstr ""
+
+#: templates/tax_receipt/tax_receipt_form.html:50
+msgid "Unidad familiar"
+msgstr ""
+
+#: templates/tax_receipt/tax_receipt_form.html:52
+msgid "Un adulto y dos menores"
+msgstr ""
+
+#: templates/tax_receipt/tax_receipt_form.html:53
+msgid "Dos adultos y dos menores"
+msgstr ""
+
+#: templates/tax_receipt/tax_receipt_form.html:54
+msgid "Dos adultos jubilados"
+msgstr ""
+
+#: templates/tax_receipt/tax_receipt_form.html:55
+msgid "Familia numerosa"
+msgstr ""
+
+#: templates/tax_receipt/tax_receipt_form.html:58
+msgid "Tasa de basuras"
+msgstr ""
+
+#: templates/tax_receipt/tax_receipt_form.html:63
+msgid "¿Tienes un vado?"
+msgstr ""
+
+#: templates/tax_receipt/tax_receipt_form.html:65
+msgid "No"
+msgstr ""
+
+#: templates/tax_receipt/tax_receipt_form.html:66
+msgid "Sí, comunitario"
+msgstr ""
+
+#: templates/tax_receipt/tax_receipt_form.html:67
+msgid "Sí, privado"
+msgstr ""
+
+#: templates/tax_receipt/tax_receipt_form.html:70
+msgid "Tasa"
+msgstr ""
+
+#: templates/tax_receipt/tax_receipt_form.html:75
+msgid ""
+"Contribuyes con un total de <b id=\"tax-amount-paid\"></b> a los presupuestos del "
+"Gobierno de Aragón"
+msgstr ""
+
+#: templates/tax_receipt/tax_receipt_script.html:56
+msgid "Gasto"
+msgstr "Expenditures"
+
+#: templates/terms/index.html:11
+msgid "¿Qué significa?"
+msgstr "What does it mean?"
+
+#: templates/terms/index.html:20
+msgid "Busca dentro del glosario"
+msgstr "Search inside the glossary"
+
+#: templates/welcome/index.html:12
+msgid "¿Cómo y en qué gasta el Gobierno de Aragón?"
+msgstr ""
+
+#: templates/welcome/index.html:13
+msgid ""
+"Te mostramos de un modo claro cómo se distribuye nuestro presupuesto. De dónde "
+"vienen los ingresos y a qué destinamos el gasto"
+msgstr ""
+"We show you how the budget is allocated. Where revenues comes from and what it is "
+"spent for"
+
+#: templates/welcome/index.html:18
+msgid "Algunos ejemplos"
+msgstr "Some examples"
+
+#: templates/welcome/index.html:42
+msgid ""
+"Para que tengas una idea general de los ingresos y gastos del Gobierno de Aragón"
+msgstr ""
+
+#: templates/welcome/index.html:51
+msgid "Políticas concretas"
+msgstr "Policies"
+
+#: templates/welcome/index.html:59
+msgid "Educación, protección y bienestar social, cultura... ¿Qué área te interesa?"
+msgstr "Education, social services, culture... What are your interests?"
+
+#: templates/welcome/index.html:71
+msgid ""
+"Te mostramos en detalle todos las facturas y pagos efectuados por el Ayuntamiento"
+msgstr ""
+
+#: templates/welcome/index.html:82
+msgid "¿Y qué aporto yo?"
+msgstr ""
+
+#: templates/welcome/index.html:83
+msgid "Te contamos en qué se invierte el dinero que recaudamos de tus impuestos"
+msgstr ""
+
+#: views/terms.py:9 views/welcome.py:10
+msgid "Inicio"
+msgstr "Start"
