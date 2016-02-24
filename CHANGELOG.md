@@ -8,12 +8,14 @@ All notable changes to this project will be documented in this file
 - Sankey chart layout aggressiveness can be configured from the theme settings.
 - Styles for selected option in main navagation menu.
 - Added subtotals list in Overview totals panel.
+- Clicking on a functional stacked area chart takes you to the programme page.
 
 ### Changed
 - Major front-end rewrite, now using Bootstrap 3
 - Policy chart now reimplemented using plain D3.js. NVD3 dependency removed
 - Default locale changed from 'es_ES' to just 'es' for clarity and simplicity.
 - Improve year slider changing jslider plugin by [bootstrap-slider](http://seiyria.com/bootstrap-slider/)
+- Localised URLs don't have a language prefix if only one language is available.
 
 ### Fixed
 - Site cache is now working again, after fixing HTTP headers.
