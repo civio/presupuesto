@@ -38,9 +38,10 @@ function initSlider(selector, years, callback, startValue, labels) {
       ticks_labels: years
     }).on('change', callback );
     
-  } 
+  }
   // Hide year slider & add current year
   else {
+    $(selector).val(mostRecentYear);
     $(selector).parent().parent().addClass('single-year');
     $(selector).parent().append('<p>'+mostRecentYear+'</p>');
   }

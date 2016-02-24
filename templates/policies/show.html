@@ -129,7 +129,7 @@
   We render the control panel here initially, and move it to the active tab at run-time.
   Having multiple control panels would mean having to sincronize them, messy.
 -->
-<div class="">
+<div class="hidden">
 {% include 'shared/data_controllers.html' %}
 </div>
 
@@ -343,13 +343,6 @@
 
 
     //
-    // CONTROL SETUP
-    //
-    $('#select-format').change(redrawGrid);
-    initSlider("#year-selection", {{ years|safe }}, redrawGrid, {{ latest_year }}, {{ years_scale|safe }});
-
-
-    //
     // POLICY DATA
     //
     var stats = {{ stats|safe }};
@@ -515,14 +508,17 @@
         unfoldItem(economicGridData, state.item);
         redrawGrid();
         window.setTimeout(function(){ $(".toggle.collapse")[0].scrollIntoView() }, 1000);
-
       } else {
         redrawGrid();
-        onTabSwitch();  // Do some tab initialization
       }
     }
 
-    parseLocationHash();      // Handle the hash the page may have loaded with.
+    // Handle the hash the page may have loaded with.
+    parseLocationHash();
+
+    // Control Setup
+    $('#select-format').change(redrawGrid);
+    initSlider("#year-selection", {{ years|safe }}, redrawGrid, {{ latest_year }}, {{ years_scale|safe }});
   })
 </script>
 {% endblock %}
