@@ -384,7 +384,11 @@
 
     // Link to policy handlers
     function onProgrammeSelected(event, d) {
+{% if article %}
+      window.location=getPolicyLink(d.id, d.label, getUIState());
+{% else %}
       window.location=getProgrammeLink(d.id, d.label, getUIState());
+{% endif %}
     }
   
     // Setup Graph
