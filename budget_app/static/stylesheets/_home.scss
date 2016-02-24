@@ -86,13 +86,28 @@
         @extend .panel-default;
         padding: $grid-gutter-width/2;
         margin-bottom: $grid-gutter-width;
-        border: none;
+        border-color: transparent;
         text-align: center;
+        @include transition( border-color 0.3s ease-out );
+
+        &:hover{
+          border-color: $brand-primary;
+        }
 
         .icon{
-          color: $brand-secondary;
+          color: $brand-primary;
           height: 64px;
           margin: $grid-gutter-width/2 0;
+        }
+
+        .option-title{
+          color: $text-color;
+          @include transition( color 0.3s ease-out );
+
+          &:hover{
+            color: $brand-primary;
+            text-decoration: none;
+          }
         }
 
         h3{
@@ -115,10 +130,6 @@
             top: 1px;
             margin-right: $grid-gutter-width/3; 
           }
-        }
-
-        &:hover{
-
         }
       }
 
