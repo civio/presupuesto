@@ -250,26 +250,7 @@
         </div>
       </div>
 
-      <nav class="pagination-container">
-        <ul class="pagination">
-          {% if items.has_previous() %}
-          <li>
-            <a rel="previous" aria-label="Previous" href="{{ request.get_full_path() | paginate(items.previous_page_number()) }}"><span aria-hidden="true">«</span> Anterior</a>
-          </li>
-          {% endif %}
-          {% for num in items.page_range %}
-            {% if not num %} ...
-            {% else %}
-            <li class="{{'active' if items.number == num else ''}}"><a href="{{ '#' if items.number == num else request.get_full_path() | paginate(num)}}" >{{num}}</a></li>
-            {% endif %}
-          {% endfor %}
-          {% if items.has_next() %}
-          <li>
-            <a rel="next" aria-label="Next" href="{{ request.get_full_path() | paginate(items.next_page_number()) }}"><span aria-hidden="true">»</span> Siguiente</a>
-          </li>
-          {% endif %}
-        </ul>
-      </nav>
+      {{ render_pagination_controls(items, request) }}
       {% endif %}
 
       {% if payments %}
@@ -329,28 +310,8 @@
         </div>
       </div>
 
-      <nav class="pagination-container">
-        <ul class="pagination">
-          {% if payments.has_previous() %}
-          <li>
-            <a rel="previous" aria-label="Previous" href="{{ request.get_full_path() | paginate(payments.previous_page_number()) }}"><span aria-hidden="true">«</span> Anterior</a>
-          </li>
-          {% endif %}
-          {% for num in payments.page_range %}
-            {% if not num %} ...
-            {% else %}
-            <li class="{{'active' if payments.number == num else ''}}"><a href="{{ '#' if payments.number == num else request.get_full_path() | paginate(num)}}" >{{num}}</a></li>
-            {% endif %}
-          {% endfor %}
-          {% if payments.has_next() %}
-          <li>
-            <a rel="next" aria-label="Next" href="{{ request.get_full_path() | paginate(payments.next_page_number()) }}"><span aria-hidden="true">»</span> Siguiente</a>
-          </li>
-          {% endif %}
-        </ul>
-      </nav>
+      {{ render_pagination_controls(payments, request) }}
       {% endif %}
-
     </div>
   </div>
 </section>
