@@ -119,6 +119,11 @@
     // equally big). Note: 4% margin to avoid clipping, as there is some spacing between the items.
     sankey.maxAmountEver( calculateMaximumSankeyAmount(functionalBreakdown, stats) * 1.04 );
 
+    {# If we have multiple languages, let the Sankey chart know which one to use #}
+    {% if LANGUAGES|length > 1 %}
+    sankey.language('{{ LANGUAGE_CODE }}');
+    {% endif %}
+
     {# The aggressiveness of the Sankey layout algorithm can be customized for best results. #}
     {% if relax_factor %}
     var relaxFactor = {{ relax_factor }};

@@ -16,11 +16,18 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
   var uiState;
   var $popup = $("#pop-up");
   var color = d3.scale.category20();
+  var language = null;
 
   var transitionLength = 1000;
   var transitionDelay = 100;
 
   var hasExecution = false;
+
+  this.language = function(_) {
+    if (!arguments.length) return language;
+    language = _;
+    return this;
+  };
 
   this.maxAmountEver = function(_) {
     if (!arguments.length) return maxAmountEver;
@@ -89,15 +96,17 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
     // (I initially thought I'd be smart and guess the path automatically, but
     // this way I don't have to be smart and make assumptions, always dangerous.)
     function getNodeInfo(breakdown, item_id, field) {
+      var labelName = language ? 'label.'+language : 'label';
+
       if ( typeof item_id == 'string' ) {   // Standard, an id
         var items = getBreakdownItems(breakdown, item_id);
         var amount_info = getBreakdownItemsAmounts(items, field);
-        return $.extend(amount_info, {label: items[0]['label'], link_id: item_id});
+        return $.extend(amount_info, {label: items[0][labelName], link_id: item_id});
 
       } else {                              // We got ourselves a hash
         var items = getBreakdownItems(breakdown, item_id.nodes);
         var amount_info = getBreakdownItemsAmounts(items, field);
-        return $.extend(amount_info, {label: item_id.label, link_id: item_id.nodes});
+        return $.extend(amount_info, {label: item_id[labelName], link_id: item_id.nodes});
       }
     }
 
