@@ -250,7 +250,7 @@
         </div>
       </div>
 
-      {{ render_pagination_controls(items, query_string) }} 
+      {{ render_pagination_controls(items, request) }}
       {% endif %}
 
       {% if payments %}
@@ -310,9 +310,8 @@
         </div>
       </div>
 
-      {{ render_pagination_controls(payments, query_string) }} 
+      {{ render_pagination_controls(payments, request) }}
       {% endif %}
-    
     </div>
   </div>
 </section>

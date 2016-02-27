@@ -23,12 +23,12 @@ function getActiveButton(selector) {
   return button==undefined ? undefined : button.id;
 }
 
-// Activar slider de años (Documentation: http://egorkhmelev.github.com/jslider/)
+// Activar slider de años (Documentation: http://seiyria.com/bootstrap-slider/)
 function initSlider(selector, years, callback, startValue, labels) {
   var mostRecentYear = Number(years[years.length-1]);
+
+  // Setup bootstrap-slider
   if ( years.length > 1 ) {
-    
-    // Setup bootstrap-slider
     $(selector).slider({
       min: parseInt(years[0]),
       max: mostRecentYear,
@@ -38,8 +38,11 @@ function initSlider(selector, years, callback, startValue, labels) {
       ticks_labels: years
     }).on('change', callback );
     
-  } else {
-    $(selector).val(mostRecentYear).hide();
+  }
+  // Hide year slider & add current year
+  else {
+    $(selector).val(mostRecentYear);
+    $(selector).parent().parent().addClass('single-year');
     $(selector).parent().append('<p>'+mostRecentYear+'</p>');
   }
 }

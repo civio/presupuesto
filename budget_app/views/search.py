@@ -1,8 +1,11 @@
 from coffin.shortcuts import render_to_response
-from django.core.paginator import Paginator, EmptyPage
+from django.core.paginator import EmptyPage
 from django.conf import settings
 from budget_app.models import Budget, Payment, GlossaryTerm, FunctionalCategory, BudgetItem, Entity
 from helpers import *
+from paginator import DiggPaginator as Paginator
+
+PAGE_LENGTH = 10
 
 
 def search(request):
@@ -33,13 +36,13 @@ def search(request):
 
     all_items = list(BudgetItem.objects.search(c['query'], budget, c['page']))
     try:
-        c['items'] = Paginator(all_items, 10).page(c['page'])
+        c['items'] = Paginator(all_items, PAGE_LENGTH, body=6, padding=2).page(c['page'])
     except EmptyPage:
         pass
 
     all_payments = list(Payment.objects.search(c['query'], year))
     try:
-        c['payments'] = Paginator(all_payments, 10).page(c['page'])
+        c['payments'] = Paginator(all_payments, PAGE_LENGTH, body=6, padding=2).page(c['page'])
     except EmptyPage:
         pass
 
@@ -67,5 +70,9 @@ def search(request):
     # Count the size of the programme sets
     for programmes in c['programmes_per_policy'].values():
         c['results_size'] += len(programmes)
+
+    # Calculate the page numbers to be shown
+
+    c['data'] = all_items
 
     return render_to_response('search/index.html', c)

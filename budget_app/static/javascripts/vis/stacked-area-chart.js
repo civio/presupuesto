@@ -520,7 +520,7 @@ function StackedAreaChart() {
 
     _this.stackData.forEach(function(d){
       // Get active state based on related legend label inactive classed
-      active = !_this.legend.select('[data-id="'+d.id+'"').classed('inactive');
+      active = !_this.legend.select('[data-id="'+d.id+'"]').classed('inactive');
       // Update area values if update active state
       if( d.active !== active ){
         d.active = active;

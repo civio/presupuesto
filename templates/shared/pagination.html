@@ -1,31 +1,28 @@
-{% macro render_pagination_controls(items, query_string) %}
+{% macro render_pagination_controls(items, request) %}
 {% if items.has_other_pages() %}
 
 <nav class="pagination-container">
   <ul class="pagination">
-    <li>
     {% if items.has_previous() %}
-      <a rel="prev" aria-label="Previous" href="?{{ query_string|escape }}page={{ items.previous_page_number() }}"><span aria-hidden="true">&laquo;</span> {{ _('Anterior') }}</a>
-    {% else %}
-      <span class="disabled"><span aria-hidden="true">&laquo;</span> {{ _('Anterior') }}</span>
-    {% endif %}
+    <li>
+      <a rel="previous" aria-label="Previous" href="{{ request.get_full_path() | paginate(items.previous_page_number()) }}"><span aria-hidden="true">&laquo;</span> {{ _('Anterior') }}</a>
     </li>
+    {% endif %}
 
-    {% for n in items.paginator.page_range %}
-      {% if n == items.number %}
-        <li class="active"><a href="#">{{ n }}</a></li>
+    {% for num in items.page_range %}
+      {% if not num %} 
+      <li><span>...</span></li>
       {% else %}
-        <li><a href="?{{ query_string|escape }}page={{n}}">{{ n }}</a></li>
+      <li class="{{'active' if items.number == num else ''}}"><a href="{{ '#' if items.number == num else request.get_full_path() | paginate(num)}}" >{{num}}</a></li>
       {% endif %}
     {% endfor %}
 
-    <li>
+    
     {% if items.has_next() %}
-      <a rel="next" aria-label="Next" href="?{{ query_string|escape }}page={{ items.next_page_number() }}"><span aria-hidden="true">&raquo;</span> {{ _('Siguiente') }}</a>
-    {% else %}
-      <span class="disabled"><span aria-hidden="true">&raquo;</span> {{ _('Siguiente') }}</a>
-    {% endif %}
+    <li>
+      <a rel="next" aria-label="Next" href="{{ request.get_full_path() | paginate(items.next_page_number()) }}"><span aria-hidden="true">&raquo;</span> {{ _('Siguiente') }}</a>
     </li>
+    {% endif %}
   </ul>
 </nav>
 
