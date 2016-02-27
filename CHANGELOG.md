@@ -6,9 +6,11 @@ All notable changes to this project will be documented in this file
 - Nodes in the global view chart can now be customized and combined as needed.
 - Nodes in Sankey chart can now be combined and labelled as will.
 - Sankey chart layout aggressiveness can be configured from the theme settings.
+- Labels in Sankey chart can now be localized.
 - Styles for selected option in main navagation menu.
 - Added subtotals list in Overview totals panel.
 - Clicking on a functional stacked area chart takes you to the programme page.
+- Started English translation of the user interface.
 
 ### Changed
 - Major front-end rewrite, now using Bootstrap 3
@@ -22,6 +24,7 @@ All notable changes to this project will be documented in this file
 - Root url now works again in production when no locale is specified.
 - Friendly URLs were cut at the first single quote. Not anymore.
 - Added missing translation strings. Catalan default translation completed.
+- Pagination controls fixed to show only a range of pages, not all available.
 
 ## [3.1] - 2016-02-15
 ### Added
