@@ -6,7 +6,6 @@ from helpers import *
 def payments(request, render_callback=None):
     # Get request context
     c = get_context(request, css_class='body-payments', title='Inversiones y pagos')
-    c['LANGUAGE_CODE'] = request.LANGUAGE_CODE
 
     # Retrieve the entity to display
     main_entity = get_main_entity(c)
