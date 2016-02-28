@@ -13,7 +13,7 @@ def terms(request):
     c['query_string'] = "q=%s&" % (c['query'])
     c['page'] = request.GET.get('page', 1)
 
-    results = Paginator(list(GlossaryTerm.objects.search(c['query'], request.LANGUAGE_CODE)), PAGE_LENGTH, body=6, padding=2)
+    results = Paginator(list(GlossaryTerm.objects.search(c['query'], c['LANGUAGE_CODE'])), PAGE_LENGTH, body=6, padding=2)
     c['terms'] = results.page(c['page'])
 
     return render_to_response('terms/index.html', c)
