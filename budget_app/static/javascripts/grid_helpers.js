@@ -19,15 +19,15 @@ var id = 0;
 // Display column name depending on multi-level status
 function rowNameFormatter(value, type, item) {
   var spacer = "<span style='display:inline-block;height:1px;width:" + (25 * item["indent"]) + "px'></span>";
-  var valuewrap = "<span class='slick-cell-text toggle'>" + value + "</span>";
+  var valuewrap = "<span class='toggle'>" + value + "</span>";
   if (item.sub && !$.isEmptyObject(item.sub)) {
     if (item._expanded) {
-      return spacer + " <span class='toggle collapse'></span>" + valuewrap;
+      return "<span class='toggle collapse'></span>" + valuewrap;
     } else {
-      return spacer + " <span class='toggle expand'></span>" + valuewrap;
+      return "<span class='toggle expand'></span>" + valuewrap;
     }
   } else {
-    return spacer + " <span class='toggle'></span>" + valuewrap;
+    return "<span class='toggle'></span>" + valuewrap;
   }
 }
 
@@ -173,7 +173,8 @@ function createBudgetGrid(containerName, data, userColumns) {
     columns: columns,
     // Sort at startup by the previously chosen column; or by the rightmost column at startup
     // TODO: Actually, we're going to sort by the second column, I should use the rightmost... with data
-    order: [[1, 'desc']]
+    order: [[1, 'desc']],
+    rowCallback: function(row, data) { $(row).addClass('indent-'+data.indent); }
   });
 
   // Handle toggling of items
