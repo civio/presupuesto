@@ -178,11 +178,14 @@ function createBudgetGrid(containerName, data, userColumns) {
   });
 
   // Handle toggling of items
-  $(containerName+' tbody').off('click', 'span.toggle').on('click', 'span.toggle', function () {
-    var cell = grid.cell( $(this).parent() )[0][0];
-    var item = data[cell.row];
-    item._expanded = !item._expanded;
-    grid.draw();
+  $(containerName+' tbody').off('click', 'span.toggle').on('click', 'span.toggle', function (e) {
+    if ($(e.target).hasClass("toggle")) {
+      var cell = grid.cell( $(this).parent() )[0][0];
+      var item = data[cell.row];
+      item._expanded = !item._expanded;
+      grid.draw();
+      // e.stopImmediatePropagation();
+    }
   });
 
   return grid;
