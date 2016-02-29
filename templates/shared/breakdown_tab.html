@@ -1,4 +1,4 @@
-{% macro render_tab(title, category, csv_type, id, additional_css, csv_link, xls_link) %}
+{% macro render_tab(title, category, hasTable, csv_type, id, additional_css, csv_link, xls_link) %}
 <div id="tab-{{category}}" class="tab-pane {{additional_css}}" role="tabpanel">
   <div class="policies-graph">
     <div id='{{category}}ChartContainer' class="chart-container">
@@ -16,6 +16,8 @@
     </div>
   </div>
   <div class="data-controllers-placeholder"></div>
+  
+  {% if hasTable %}
   <div class="totals-placeholder"></div>
   <div class="table-grid" id='{{category}}Grid'></div>
   <div class="panel-downloads">
@@ -30,5 +32,6 @@
       </a>
     </p>
   </div>
+  {% endif %}
 </div>
 {% endmacro %}

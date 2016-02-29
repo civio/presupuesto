@@ -49,10 +49,15 @@ def policies_show(request, id, title, render_callback=None):
     _set_show_side(c, show_side)
     _set_full_breakdown(c, True)
 
+
     c['name'] = c['descriptions']['functional'].get(c['policy_uid'])
     c['title_prefix'] = c['name']
 
-    return render(c, render_callback, 'policies/show.html')
+
+    # if parameter widget defined use policies/widget template instead of policies/show
+    template = 'policies/widget.html' if _isWidget(request) else 'policies/show.html'
+
+    return render(c, render_callback, template )
 
 
 def programmes_show(request, id, title, render_callback=None):
@@ -109,7 +114,11 @@ def programmes_show(request, id, title, render_callback=None):
     _set_show_side(c, show_side)
     _set_full_breakdown(c, True)
 
-    return render(c, render_callback, 'policies/show.html')
+
+    # if parameter widget defined use policies/widget template instead of policies/show
+    template = 'policies/widget.html' if _isWidget(request) else 'policies/show.html'
+
+    return render(c, render_callback, template )
 
 
 def income_articles_show(request, id, title, render_callback=None):
@@ -171,7 +180,10 @@ def articles_show(request, id, title, show_side, render_callback=None):
     _set_show_side(c, show_side)
     _set_full_breakdown(c, True)
 
-    return render(c, render_callback, 'policies/show.html')
+    # if parameter widget defined use policies/widget template instead of policies/show
+    template = 'policies/widget.html' if _isWidget(request) else 'policies/show.html'
+
+    return render(c, render_callback, template )
 
 
 # Unfortunately institutions id change sometimes over the years, so we need to
@@ -210,3 +222,7 @@ def _set_show_side(c, side):
 # Do we have an exhaustive budget, classified along four dimensions? I.e. display all tabs?
 def _set_full_breakdown(c, full_breakdown):
     c['full_breakdown'] = full_breakdown
+
+# Get widget parameter
+def _isWidget(request):
+    return request.GET.get('widget',False)

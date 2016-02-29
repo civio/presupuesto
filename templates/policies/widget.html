@@ -1,0 +1,98 @@
+{% extends 'base-widget.html' %}
+{% from 'shared/breakdown_tab.html' import render_tab as render_tab %}
+
+{% block extra_javascript %}
+<script src="{{ STATIC_URL }}javascripts/vis/d3.v3.min.js"></script>
+{% if show_treemap %}
+<script src="{{ STATIC_URL }}javascripts/vis/bigtext.js"></script>
+<script src="{{ STATIC_URL }}javascripts/vis/budget-treemap.js"></script>
+{% else %}
+<script src="{{ STATIC_URL }}javascripts/vis/stacked-area-chart.js"></script>
+<script src="{{ STATIC_URL }}javascripts/vis/budget-stacked-chart.js"></script>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<!-- Politicas Detalle -->
+<section class="policy-breakdown" role="region">
+
+  <!-- Policies Content -->
+  <div class="policies-content">
+    <div class="tab-content">
+
+    {% if programme %}
+      <h2 class="page-title">{{ name }}</h2>
+    {% else %}
+      <h2 class="page-title">{{ entity.name+': ' if entity }}{{ name }}</h2>
+    {% endif %}
+
+  {% if full_breakdown %}
+    {% if programme is not defined and show_side != 'income' %}
+      {{ render_tab(_(tab_titles['functional']), 'functional', false, csv_type, csv_id, 'active') }} 
+    {% else %}
+      {{ render_tab(_(tab_titles['economic']), 'economic', false, csv_type, csv_id, 'active') }} 
+    {% endif %}
+  {% else %}
+      {# The download links for small entities are too cumbersome to calculate in the macro #}
+    {% if policy_uid %}
+      {% set download_view_name = 'budget_app.views.entity_article_fexpenses' %}
+      {{ render_tab(_(tab_titles['functional']), 
+                    'functional',
+                    false,
+                    csv_type, 
+                    csv_id, 
+                    'active', 
+                    csv_link=url(download_view_name, level, entity.slug, csv_id, 'csv'),
+                    xls_link=url(download_view_name, level, entity.slug, csv_id, 'xls') ) }} 
+    {% else %}
+      {% set download_view_name = 'budget_app.views.entity_article_expenses' if show_side=='expense' 
+                                  else 'budget_app.views.entity_article_income'%}
+      {{ render_tab(_(tab_titles['economic']), 
+                    'economic',
+                    false,
+                    csv_type, 
+                    csv_id, 
+                    'active', 
+                    csv_link=url(download_view_name, level, entity.slug, csv_id, 'csv'),
+                    xls_link=url(download_view_name, level, entity.slug, csv_id, 'xls') ) }} 
+    {% endif %}
+  {% endif %}
+    </div>
+  
+  </div>
+</section>
+
+<!-- 
+  We render the control panel here initially, and move it to the active tab at run-time.
+  Having multiple control panels would mean having to sincronize them, messy.
+-->
+<div class="hidden">
+  {% include 'shared/data_controllers.html' %}
+</div>
+
+<!--
+  We need this markup in order to get uiState.view
+  from getActiveButton() in grid_controls.js
+-->
+<ul id="btn-field" class="hidden">
+  <li class="{{ 'active' if show_side=='income' }}">
+    <a id="income">{{ _('Ingresos') }}</a>
+  </li>
+  <li class="{{ 'active' if show_side=='expense' }}">
+    <a id="expense">{{ _('¿Cómo se gasta?') }}</a>
+  </li>
+</ul>
+
+
+{% if show_treemap %}
+<div id="pop-up">
+  <div id="pop-up-title"></div>
+  <div id="pop-up-content"></div>
+</div>
+{% endif %}
+
+{% include 'shared/policy_paths.html' %}
+{% include 'policies/policies_javascript.html' %}
+
+{% endblock %}
