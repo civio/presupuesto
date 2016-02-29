@@ -36,44 +36,58 @@
     }
   }
 
-  .grid-canvas{
-    .slick-row .slick-cell{
-      height: 42px;
+  tr td{
+    height: 42px;
+    color: $text-color;
+    font-weight: $font-weight-400;
+    border-color: $brand-primary;
+    border-left: none;
+    border-top: none;
+    border-right-style: solid;
+    padding: $grid-gutter-width/3;
+
+    &:last-child{
+      border-right: none;
+    }
+
+    &.l0:hover{
       color: $text-color;
-      font-weight: $font-weight-400;
-      border-color: $brand-primary;
-      border-left: none;
-      border-top: none;
-      border-right-style: solid;
-      padding: $grid-gutter-width/3;
-
-      &:last-child{
-        border-right: none;
-      }
-
-      &.l0:hover{
-        color: $text-color;
-        border-color: mix(white, $brand-primary, 80%);
-        background: mix(white, $brand-primary, 80%);
-      }
-
-      a{
-        color: $brand-primary;
-      }
-
-      .toggle.expand,
-      .toggle.collapse{
-        background-color: $gray-light;
-        margin-top: -1px;
-
-        &:hover{
-          background-color: $brand-primary;
-        }
-      }
+      border-color: mix(white, $brand-primary, 80%);
+      background: mix(white, $brand-primary, 80%);
     }
 
-    .slick-row.indent-1 .slick-cell{
-      height: 40px;
+    a{
+      color: $brand-primary;
     }
+
+    .toggle.expand,
+    .toggle.collapse{
+      background-color: $gray-light;
+      margin-top: -1px;
+
+      &:hover{
+        background-color: $brand-primary;
+      }
+    }
+  }
+
+  tr.indent-1 td{
+    height: 40px;
+  }
+
+
+
+  /* DataTables migration */
+  span.toggle.expand {
+      background-image: url(../assets/slick/expand.png);
+    display: inline-block;
+    height: 24px;
+    width: 24px;
+  }
+  span.toggle.collapse {
+      background-image: url(../assets/slick/collapse.png);
+    display: inline-block;
+    height: 24px;
+    width: 24px;
   }
 }

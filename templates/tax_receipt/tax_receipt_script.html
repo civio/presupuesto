@@ -3,9 +3,11 @@
     var totalTaxPaid = 0;
 
     // Display amount as expense per capita
-    function calculatePersonalTax(row, cell, value, columnDef, dataContext) {
+    function calculatePersonalTax(value, type, item) {
       if (value == null) return null;
-      var percentage = value / columnValueExtractor(dataContext.root, columnDef);
+      if (type === 'filter') return value;  // We filter based on the raw data
+
+      var percentage = value / getBreakdownValue(item.root);
       return formatDecimal(percentage * totalTaxPaid) + " €";
     }
 
@@ -50,14 +52,11 @@
       // XXX: window.location.hash = 'ingresos='+getIncomeInEuros();
 
       createBudgetGrid("#myGrid", gridData, [
-        {field: "label", name: '{{ _("Política") }}', formatter: policyLinkFormatter, width: 300},
+        { data: "label", title: '{{ _("Política") }}', render: getPolicyLinkFormatter() },
         {
-          field: 'expense',
-          name: '{{ _("Gasto") }}',
-          formatter: calculatePersonalTax, 
-          headerCssClass: 'slick-header-right',
-          getter: getBreakdownValue, 
-          column: '{{ latest_budget.name() }}',
+          data: getBreakdownValue,
+          title: '{{ _("Gasto") }}',
+          render: calculatePersonalTax,
           year: breakdown.years['{{ latest_budget.name() }}']
         }
       ]);
@@ -77,11 +76,7 @@
 
     var breakdown = {{ breakdown.to_json( labels=descriptions['functional'] )|safe }};
     var gridData = breakdownToTable(breakdown);
-
-    // var state = $.deparam.fragment();
-    // if ( state['ingresos'] ) {
-    //   $('#ingresos').val(state['ingresos']);
-    // }
+    var getBreakdownValue = getBreakdownValueFunction('expense', '{{ latest_budget.name() }}');
 
     $("select").change(redrawGrid);
     redrawGrid();
