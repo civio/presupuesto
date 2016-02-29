@@ -118,6 +118,8 @@
                     xls_link=url(download_view_name, level, entity.slug, csv_id, 'xls') ) }} 
     {% endif %}
   {% endif %}
+
+      <table class="table-grid" id='myGrid' width='100%'></table>
     </div>
   
 
@@ -178,150 +180,118 @@
     //
     
     // Shows the uid next to an item
-    function fullIdFormatter(row, cell, value, columnDef, dataContext) {
-      var fullName = (value||'') + " (" + dataContext.key + ")";
-      return rowNameFormatter(row, cell, fullName, columnDef, dataContext);
+    function fullIdFormatter(value, type, item) {
+      var fullName = (value||'') + " (" + item.key + ")";
+      return rowNameFormatter(value, type, item);
     };
 
 {% if is_chapter %}
     // Convert an article name into a link
-    function articleLinkFormatter(row, cell, value, columnDef, dataContext) {
-      if ( dataContext.indent==0 )  
-        return rowNameFormatter(row, cell, value, columnDef, dataContext);
+    function articleLinkFormatter(value, type, item) {
+      if ( item.indent==0 )
+        return rowNameFormatter(value, type, item);
 
       var getIncomeLink = {{ 'getCountyIncomeLink' if is_county else 'getTownIncomeLink' }};
       var getExpenseLink = {{ 'getCountyExpenseLink' if is_county else 'getTownExpenseLink' }};
       var getLink = (uiState.view == 'expense') ? getExpenseLink : getIncomeLink;
-      var link = getLink('{{ entity.slug }}', dataContext.key);
+      var link = getLink('{{ entity.slug }}', item.key);
       var linkedValue = "<a href='"+link+"'>"+value+"</a>";
-      return rowNameFormatter(row, cell, linkedValue, columnDef, dataContext);
+      return rowNameFormatter(value, type, item);
     };
 {% endif %}
 
-    function getColumnDefinition(uiState, link) {
-      return { 
-        field: uiState.field,
+    function getColumnDefinition(uiState) {
+      var getBreakdownValue = getBreakdownValueFunction(uiState.field, uiState.year);
+      return {
 {% if show_actual %}
-        name: "{{ _('Presupuesto') }}",
+        title: "{{ _('Presupuesto') }}",
 {% else %}
-        name: uiState.field=='expense' ? 'Gastos' : 'Ingresos',       
+        title: uiState.field=='expense' ? "{{ _('Gastos') }}" : "{{ _('Ingresos') }}",
 {% endif %}
-        formatter: getFormatter(uiState.format),
-        sortable: true, 
-        headerCssClass: 'slick-header-right',
-        column: uiState.year, 
-        getter: getBreakdownValue, 
-        year: Number(uiState.year),
-        stats: stats,
-        width: 150,
-        resizable: false
+        data: getBreakdownValue,
+        render: getFormatter(uiState.format, stats, Number(uiState.year), getBreakdownValue)
       }; 
     }
 
     function getExecutionColumnDefinition(uiState) {
       var columnDef = getColumnDefinition(uiState);
-      var label = uiState.field == 'expense' ? '{{ _("Gastado") }}' : '{{ _("Ingresado") }}';
-      columnDef.column = "actual_" + uiState.year;
-      columnDef.name = getExecutionColumnName(budgetStatuses[uiState.year], label, budgetStatusLabels);
+      var title = uiState.field == 'expense' ? '{{ _("Gastado") }}' : '{{ _("Ingresado") }}';
+      columnDef.title = getExecutionColumnName(budgetStatuses[uiState.year], title, budgetStatusLabels);
+      columnDef.data = getBreakdownValueFunction(uiState.field, "actual_" + uiState.year);
       return columnDef;
+    }
+
+    function getLabelColumnTitle(tab) {
+      var titles = {
+{% if is_chapter %}
+        'tab-economic': "{{ _('Artículo') }}",
+{% else %}
+        'tab-economic': "{{ _('Concepto') }}",
+{% endif %}
+        'tab-functional': "{{ _('Programa') }}",
+        'tab-institutional': "{{ _('Entidad') }}",
+        'tab-funding': "{{ _('Fondo') }}"
+      };
+      return titles[tab];
+    }
+
+    function getLabelColumnRender(tab) {
+      var renders = {
+{% if is_chapter %}
+        'tab-economic': articleLinkFormatter,
+{% else %}
+        'tab-economic': rowNameFormatter,
+{% endif %}
+{% if full_breakdown %}
+{% if policy_uid %}
+        'tab-functional': getPolicyLinkFormatter(0),  // Programmes at root level
+{% else %}  // Showing an article
+        'tab-functional': getPolicyLinkFormatter(1),  // Programmes at root level
+{% endif %}
+{% else %}
+        'tab-functional': rowNameFormatter
+{% endif %}
+        'tab-institutional': rowNameFormatter,
+        'tab-funding': rowNameFormatter
+      };
+      return renders[tab];
     }
 
     // Do all the hard work of drawing the grids
     var uiState = null;
+    var currentTab = null;
     function redrawGrid() {
       // Avoid unnecessary redrawings (the slider is trigger happy)
       var newUIState = getUIState();
-      if ( uiState && sameUIState(uiState, newUIState) )  return;
+      var newCurrentTab = $(".policy-breakdown .tab-pane.active").attr('id');
+      if ( uiState && sameUIState(uiState, newUIState) && currentTab && currentTab==newCurrentTab)  return;
       uiState = newUIState;
+      currentTab = newCurrentTab;
 
       // Do work
       var columnDef = getColumnDefinition(uiState);
       var executionColumnDef = getExecutionColumnDefinition(uiState);
 
-      if ( $("#functionalGrid").length > 0 ) {
-        $("#functionalGrid").data('grid', createBudgetGrid( "#functionalGrid", 
-                          functionalGridData, [
-                            {
-                              field: "label", 
-                              name: "{{ _('Programa') }}",
-{% if full_breakdown %}
-                              formatter: policyLinkFormatter, 
-{% else %}
-                              formatter: rowNameFormatter, 
-{% endif %}
-{% if policy_uid %}
-                              programme_level: 0  // Programmes at root level. Used to generate links
-{% else %}  // Showing an article
-                              programme_level: 1  // Policies at root level. Used to generate links
-{% endif %}
-                            },
-                            columnDef
-{% if show_actual %}
-                            ,executionColumnDef
-{% endif %}
-                          ], {
-                            explicitInitialization: true
-                          }));
-      }
-      
-      if ( $("#economicGrid").length > 0 ) {
-        $("#economicGrid").data('grid', createBudgetGrid( "#economicGrid", 
-                          economicGridData, [ 
-                            {
-                              field: "label",
-{% if is_chapter %}
-                              name: "{{ _('Artículo') }}",
-                              formatter: articleLinkFormatter
-{% else %}
-                              name: "{{ _('Concepto') }}",
-                              formatter: rowNameFormatter
-{% endif %}
-                            },
-                            columnDef
-{% if show_actual %}
-                            ,executionColumnDef
-{% endif %}
-                          ], {
-                            explicitInitialization: true
-                          }));
-      }
-
-{% if full_breakdown %}
-{% if show_institutional_tab %}
-      $("#institutionalGrid").data('grid', createBudgetGrid(  "#institutionalGrid", 
-                        institutionalGridData, [
-                          {field: "label", formatter: rowNameFormatter, name: "{{ _('Entidad') }}"},
+      if ( myGrid !== undefined )  myGrid.destroy();
+      myGrid = createBudgetGrid( "#myGrid", gridData[currentTab], [
+                          {
+                            data: "label",
+                            title: getLabelColumnTitle(currentTab), 
+                            render: getLabelColumnRender(currentTab), 
+                          },
                           columnDef
 {% if show_actual %}
                           ,executionColumnDef
 {% endif %}
-                        ], {
-                          explicitInitialization: true
-                        }));
-{% endif %}
-
-{% if show_funding_tab %}
-      $("#fundingGrid").data('grid', createBudgetGrid(  "#fundingGrid", 
-                        fundingGridData, [
-                          {field: "label", formatter: rowNameFormatter, name: 'Fondo'},
-                          columnDef
-{% if show_actual %}
-                          ,executionColumnDef
-{% endif %}
-                        ], {
-                          explicitInitialization: true
-                        }));
-{% endif %}
-
-{% endif %}
+                        ]);
 
       // Total amounts are the same whichever way you break down the items, so any breakdown will do
       var breakdown = economicBreakdown,
-          hasActualData = breakdown[uiState.field]['actual_'+uiState.year],
-          getTotal = function(breakdown) { return (breakdown[uiState.field][uiState.year]||0); },
-          getActualTotal = function(breakdown) { return (breakdown[uiState.field]['actual_'+uiState.year]||0); },
-          format = function(amount) { return columnDef.formatter(0, 0, amount, columnDef, breakdown); },
-          formatActual = function(amount) { return columnDef.formatter(0, 0, amount, executionColumnDef, breakdown); };
+          hasActualData = executionColumnDef.data(breakdown),
+          getTotal = function(breakdown) { return columnDef.data(breakdown)||0; },
+          getActualTotal = function(breakdown) { return executionColumnDef.data(breakdown)||0; },
+          format = function(amount) { return columnDef.render(amount, 'display', breakdown); },
+          formatActual = function(amount) { return executionColumnDef.render(amount, 'display', breakdown); };
 
       if ( hasActualData ) {
         $("#main-total .total-executed").show();
@@ -358,19 +328,22 @@
     // i.e. the same code, '2', means different things for income and expenses, so
     // we need to use the right descriptions
     var economicBreakdown = {{ economic_breakdown.to_json( labels=descriptions[show_side] )|safe }};
-    var economicGridData = breakdownToTable(economicBreakdown);
-
     var functionalBreakdown = {{ functional_breakdown.to_json( labels=descriptions['functional'] )|safe }};
-    var functionalGridData = breakdownToTable(functionalBreakdown);
 
 {% if full_breakdown %}
     var institutionalBreakdown = {{ institutional_breakdown.to_json( labels=descriptions['institutional'] )|safe }};
-    var institutionalGridData = breakdownToTable(institutionalBreakdown);
-
     var fundingBreakdown = {{ funding_breakdown.to_json( labels=descriptions['funding'] )|safe }};
-    var fundingGridData = breakdownToTable(fundingBreakdown);
 {% endif %}
 
+    var gridData = {
+      'tab-economic': breakdownToTable(economicBreakdown),
+      'tab-functional': breakdownToTable(functionalBreakdown),
+{% if full_breakdown %}
+      'tab-institutional': breakdownToTable(institutionalBreakdown),
+      'tab-funding': breakdownToTable(fundingBreakdown),
+{% endif %}
+    }
+    var myGrid;
     var i18n = {
       'budgeted': '{{ _("Presupuestado") }}'
     };
@@ -450,20 +423,8 @@
     function onTabSwitch() {
       var currentTab = $(".policy-breakdown .tab-pane.active");
 
-      // XXX: This shouldn't be necessary, but there seems to be a bug in Chrome 38 (not 39 afaik):
-      // if we hide a tab all its elements should be hidden too, but recently, and only in Chrome,
-      // when switching tabs, we sometimes end up with traces of the previous grid. So we go one step
-      // further and hide the non-active grids when we switch a tab.
-      $('div.table-grid').hide();
-      currentTab.find('.table-grid').show();
-
-      // SlickGrid can't be initialized in a tab that is not visible, so we set explicitInitialization
-      // to true, and tell the grid to initialize itself when the time comes, i.e. when the tab is visible
-      var currentGrid = currentTab.find('.table-grid').data('grid');
-      if ( currentGrid != undefined )
-        currentGrid.init();
-
-      // Similar story for the charts
+      // Charts can't be initialized in a tab that is not visible
+      // TODO: Really? Is this still valid?
       var currentChart = currentTab.find('.chart-container').data('chart');
       if ( currentChart != undefined )
 {% if show_treemap %}
@@ -479,6 +440,9 @@
       // Same with totals...
       var totals = $("#totals-panel").detach();
       totals.appendTo(currentTab.find(".totals-placeholder"));
+
+      // Redraw the grid
+      redrawGrid();
     }
 
 
@@ -505,7 +469,7 @@
 
       // Highlight a particular item
       if ( state.item ) {
-        unfoldItem(economicGridData, state.item);
+        unfoldItem(gridData['tab-economic'], state.item);
         redrawGrid();
         window.setTimeout(function(){ $(".toggle.collapse")[0].scrollIntoView() }, 1000);
       } else {
