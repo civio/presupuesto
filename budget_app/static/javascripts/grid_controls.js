@@ -25,6 +25,10 @@ function getActiveButton(selector) {
 
 // Activar slider de años (Documentation: http://seiyria.com/bootstrap-slider/)
 function initSlider(selector, years, callback, startValue, labels) {
+
+  // Skip if container not exists
+  if ($(selector).size()===0) return;
+
   var mostRecentYear = Number(years[years.length-1]);
 
   // Setup bootstrap-slider

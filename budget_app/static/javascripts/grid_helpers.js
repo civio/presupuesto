@@ -83,6 +83,9 @@ function columnValueExtractor(item, columnDef) {
 // Create a SlickGrid with budget data
 function createBudgetGrid(containerName, data, userColumns, extraGridOptions) {
 
+  // Skip if container element not exists
+  if( $(containerName).size() === 0 ) return;
+
   // Get a full SlickGrid column definition combining basic defaults with given options
   function getColumnDefinition(options) {
     var columnDefinition = {}; // No defaults right now, but they'd go here
