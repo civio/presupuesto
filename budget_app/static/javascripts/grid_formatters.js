@@ -57,15 +57,17 @@ function formatDecimal(value, precision) {
   return numeral( value ).format( rule, Math.round );
 }
 
-function getFormatter(formatter, stats, year) {
+function getFormatter(formatter, stats, year, getter) {
   // Pretty print a number by inserting ',' thousand separator
   function formatCellNumber(value, type, item) {
+    if (type === 'filter') return value;  // We filter based on the raw data
     return formatAmount(value);
   }
 
   // Display amount adjusted for inflation (real, versus nominal)
   function formatReal(value, type, item) {
     if (value == null) return '';
+    if (type === 'filter') return value;  // We filter based on the raw data
     var realValue = adjustInflation(value, stats, year);
     return formatAmount(realValue);
   }
@@ -73,13 +75,15 @@ function getFormatter(formatter, stats, year) {
   // Display amount as percentage of total
   function formatPercentage(value, type, item) {
     if (value == null) return '';
+    if (type === 'filter') return value;  // We filter based on the raw data
     if (item.root == null) return "100,00 %"; // No root => independent object
-    return formatDecimal(value / columnValueExtractor(item.root, columnDef) * 100) + " %";
+    return formatDecimal(value / columnValueExtractor(item.root, getter) * 100) + " %";
   }
 
   // Display amount as expense per capita
   function formatPerCapita(value, type, item) {
     if (value == null) return '';
+    if (type === 'filter') return value;  // We filter based on the raw data
     // Note value is in cents originally
     var realValue = adjustInflation(value/100, stats, year);
 

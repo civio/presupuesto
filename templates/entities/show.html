@@ -95,7 +95,7 @@
       {% include 'entities/totals.html' %}
 
       <!-- Policies Table -->
-      <div id="myGrid" class="table-grid"></div>
+      <table id="myGrid" class="table-grid" width="100%"></table>
 
       <div class="panel-downloads">
         <p class="downloads" id="income-downloads">
@@ -138,50 +138,43 @@
     });
 
     function getColumnDefinition(uiState) {
-      return { 
-        field: uiState.field, 
-        name: '{{ _("Previsto") }}',
-        formatter: getFormatter(uiState.format),
-        sortable: true, 
-        headerCssClass: 'slick-header-right',
-        getter: getBreakdownValue, 
-        column: uiState.year,
-        year: Number(uiState.year),
-        stats: stats,
-        width: 150,
-        resizable: false
+      var getBreakdownValue = getBreakdownValueFunction(uiState.field, uiState.year);
+      return {
+        title: '{{ _("Previsto") }}',
+        data: getBreakdownValue,
+        render: getFormatter(uiState.format, stats, Number(uiState.year), getBreakdownValue)
       }; 
     }
 
     function getExecutionColumnDefinition(uiState) {
       var columnDef = getColumnDefinition(uiState);
-      var label = uiState.field == 'expense' ? '{{ _("Gastado") }}' : '{{ _("Ingresado") }}';
-      columnDef.column = "actual_" + uiState.year;
-      columnDef.name = getExecutionColumnName(budgetStatuses[uiState.year], label, budgetStatusLabels);
+      var title = uiState.field == 'expense' ? '{{ _("Gastado") }}' : '{{ _("Ingresado") }}';
+      columnDef.title = getExecutionColumnName(budgetStatuses[uiState.year], title, budgetStatusLabels);
+      columnDef.data = getBreakdownValueFunction(uiState.field, "actual_" + uiState.year);
       return columnDef;
     }
 
 {% if entities %}
     // Convert an article name into a link
-    function entityLinkFormatter(row, cell, value, columnDef, dataContext) {
+    function entityLinkFormatter(value, type, item) {
       var getIncomeLink = {{ 'getCountyIncomeLink' if is_county else 'getTownIncomeLink' }};
       var getFExpenseLink = {{ 'getCountyFExpenseLink' if is_county else 'getTownFExpenseLink' }};
       var getExpenseLink = {{ 'getCountyExpenseLink' if is_county else 'getTownExpenseLink' }};
       var getLink = (uiState.view == 'expense') ? getExpenseLink : (uiState.view == 'income' ? getIncomeLink : getFExpenseLink);
-      var link = getLink('{{ entity.slug }}', dataContext.key);
+      var link = getLink('{{ entity.slug }}', item.key);
       var linkedValue = "<a href='"+link+"'>"+value+"</a>";
-      return rowNameFormatter(row, cell, linkedValue, columnDef, dataContext);
+      return rowNameFormatter(value, type, item);
     };
 {% else %}
     // The top level and small entities have different URLs at this point
-    function entityLinkFormatter(row, cell, value, columnDef, dataContext) {
+    function entityLinkFormatter(value, type, item) {
       if ( uiState.view == 'fexpense' )
-        var formatter = policyLinkFormatter;
+        var formatter = getPolicyLinkFormatter();
       else if ( uiState.view == 'expense' )
         var formatter = expenseArticleLinkFormatter;
       else
         var formatter = incomeArticleLinkFormatter;
-      return formatter(row, cell, value, columnDef, dataContext);
+      return formatter(value, type, item);
     }
 {% endif %}
 
@@ -195,13 +188,13 @@
       // Do work
       var columnDef = getColumnDefinition(uiState);
       var executionColumnDef = getExecutionColumnDefinition(uiState);
-      var grid = createBudgetGrid("#myGrid", gridData[uiState.view], [
+
+      if ( myGrid !== undefined )  myGrid.destroy();
+      myGrid = createBudgetGrid("#myGrid", gridData[uiState.view], [
         {
-          field: "label", 
-          name: ( uiState.view == 'fexpense' ? '{{ _("Política") }}' : '{{ _("Artículo") }}' ),
-          formatter: entityLinkFormatter,
-          sortable: true,
-          uiState: uiState
+          data: "label",
+          title: ( uiState.view == 'fexpense' ? '{{ _("Política") }}' : '{{ _("Artículo") }}' ),
+          render: entityLinkFormatter
         },
         columnDef
 {% if show_actual %}
@@ -262,10 +255,10 @@
       $('#totals-year').text(uiState.year);
 
       // Fill in the amounts in the totals
-      var getTotal = function(breakdown) { return (breakdown[uiState.field][uiState.year]||0); },
-          getActualTotal = function(breakdown) { return (breakdown[uiState.field]['actual_'+uiState.year]||0); },
-          format = function(amount) { return columnDef.formatter(0, 0, amount, columnDef, breakdown); },
-          formatActual = function(amount) { return columnDef.formatter(0, 0, amount, executionColumnDef, breakdown); };
+      var getTotal = function(breakdown) { return columnDef.data(breakdown)||0; },
+          getActualTotal = function(breakdown) { return executionColumnDef.data(breakdown)||0; },
+          format = function(amount) { return columnDef.render(amount, 'display', breakdown); },
+          formatActual = function(amount) { return executionColumnDef.render(amount, 'display', breakdown); };
 
       if ( hasActualData ) {
         $("#main-total .total-executed-amount").text(formatActual(getActualTotal(breakdown)));
@@ -334,7 +327,7 @@
       }
     
       // Show an alert if no data is available
-      if ( grid.getDataLength() != 0 ) {
+      if ( myGrid.page.info().recordsDisplay != 0 ) {
         $('.no-data-alert').hide();
         $('#expenseChartContainer').css('visibility', 'visible');
         $('#fexpenseChartContainer').css('visibility', 'visible');
@@ -403,6 +396,7 @@
       'fexpense': breakdownToTable(breakdowns['fexpense']),
       'expense': breakdownToTable(breakdowns['expense'])
     };
+    var myGrid;
 
     var i18n = {
       'Presupuestado': 'Presupuestado'
