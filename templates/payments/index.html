@@ -44,6 +44,8 @@
         </div>
       </div>
 
+      <table class="table-grid" id='myGrid' width="100%"></table>
+
       {{ render_tab(_('Por área'), 'area', 'active', entity) }}
       {{ render_tab(_('Por beneficiario'), 'payee', '', entity) }}
 
@@ -73,25 +75,20 @@
       var uiState = getUIState();
       var columnDef = getColumnDefinition(uiState);
 
-      $("#payeeGrid").data('grid', createBudgetGrid( "#payeeGrid", 
-                        payeeGridData, [
-                          {
-                            data: "key",
-                            title: '{{ _("Beneficiario") }}',
-                            render: rowNameFormatter
-                          },
-                          columnDef
-                        ]));
+      var currentTab = $(".payments-breakdown .tab-pane.active").attr('id');
+      var title = (currentTab == 'tab-area') ? '{{ _("Área") }}' : '{{ _("Beneficiario") }}';
+      var data = (currentTab == 'tab-area') ? areaGridData : payeeGridData;
 
-      $("#areaGrid").data('grid', createBudgetGrid( "#areaGrid", 
-                        areaGridData, [
+      if ( myGrid !== undefined )  myGrid.destroy();
+      myGrid = createBudgetGrid("#myGrid", data,
+                        [
                           {
                             data: "key",
-                            title: '{{ _("Área") }}',
+                            title: title,
                             render: rowNameFormatter
                           },
                           columnDef
-                        ]));
+                        ]);
 
       // Total amounts are the same whichever way you break down the items, so any breakdown will do
       $("#total").text( columnDef.render(columnDef.data(payeeBreakdown) || 'n/a' ) );
@@ -110,13 +107,16 @@
     var years = {{ years|safe }};
     var stats = {{ stats|safe }};
 
+    var myGrid;
+
 
     //
     // TABS
     //
     $('#tabs a').click(function (e) {
-      e.preventDefault()
+      e.preventDefault();
       $(this).tab('show');
+      redrawGrid();
     });
 
 
