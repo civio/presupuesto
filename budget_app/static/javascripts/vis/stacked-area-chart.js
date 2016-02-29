@@ -129,7 +129,7 @@ function StackedAreaChart() {
 
   // Setup Data
   _this.setData = function( _data, _years, _budgetStatuses ){
-   
+
     // Setup Stack Data
     _this.data = _data.map(function(d){
       return {
@@ -474,7 +474,7 @@ function StackedAreaChart() {
     if( _this.dataFormat === "percentage" ){
       _this.$popover.find('.popover-content-value').html(formatDecimal(popoverValues.y*100,2)+' %');
     } else if( _this.dataFormat === "per_capita" ){
-      _this.$popover.find('.popover-content-value').html(formatDecimal(popoverValues.y,2)+' €');
+      _this.$popover.find('.popover-content-value').html(formatDecimal(popoverValues.y*0.01,2)+' €');
     } else{
       _this.$popover.find('.popover-content-value').html(formatAmount(popoverValues.y));
     }
