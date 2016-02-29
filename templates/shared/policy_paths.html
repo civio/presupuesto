@@ -95,7 +95,7 @@ function getTownCompareLink(left_slug, right_slug) {
 // Convert a programme/policy name into a link
 function getPolicyLinkFormatter(programme_level) {
   return function(value, type, item) {
-    var programme_level = programme_level || 1;
+    programme_level = (typeof programme_level==='undefined') ? 1 : programme_level;
     if ( item.indent >= programme_level ) {
       var link = getProgrammeLink(item.key, value);
     } else {
