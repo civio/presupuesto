@@ -1,13 +1,4 @@
 $(document).ready(function(){
-	// Breakpoints
-	$(window).setBreakpoints({
-		// use only largest available vs use all available
-		distinct: true,
-		// array of widths in pixels where breakpoints should be triggered
-		breakpoints: [320, 480, 768, 1024]
-	});
-	$(window).setBreakpoints();
-	
 
 	// Use cookies to check is user arrives to 'articulo' from 'politicas' or 'resumen'
 	if ($('body').hasClass('body-summary')) {
