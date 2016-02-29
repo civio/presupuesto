@@ -36,6 +36,14 @@
         </div>
       </div>
 
+      <div id="totals_panel" class="totals-placeholder data-panel">
+        <div class="panel">
+          <div class="panel-content">
+            <p class="total"><span>{{ _('Total de inversiones y pagos') }}</span> <b id="total"></b></p>
+          </div>
+        </div>
+      </div>
+
       {{ render_tab(_('Por área'), 'area', 'active', entity) }}
       {{ render_tab(_('Por beneficiario'), 'payee', '', entity) }}
 
@@ -43,19 +51,6 @@
     </div>
   </div>
 </section>
-
-<!-- 
-  We render the totals here initially, and move it to the active tab at run-time.
--->
-<div class="hidden">
-  <div id="totals_panel" class="data-panel">
-    <div class="panel">
-      <div class="panel-content">
-        <p class="total"><span>{{ _('Total de inversiones y pagos') }}</span> <b id="total"></b></p>
-      </div>
-    </div>
-  </div>
-</div>
 
 {% include 'shared/data_sources.html' %}
 
@@ -67,16 +62,9 @@
 
     function getColumnDefinition(uiState) {
       return { 
-        field: 'expense',
-        name: '{{ _("Pago") }}',
-        formatter: getFormatter('nominal'),
-        sortable: true, 
-        headerCssClass: 'slick-header-right',
-        column: uiState.year,
-        getter: getBreakdownValue, 
-        year: Number(uiState.year),
-        width: 150,
-        resizable: false
+        data: getBreakdownValueFunction('expense', uiState.year),
+        title: '{{ _("Pago") }}',
+        render: getFormatter('nominal', stats, Number(uiState.year))
       }; 
     }
 
@@ -88,34 +76,25 @@
       $("#payeeGrid").data('grid', createBudgetGrid( "#payeeGrid", 
                         payeeGridData, [
                           {
-                            field: "key",
-                            name: '{{ _("Beneficiario") }}',
-                            formatter: rowNameFormatter
+                            data: "key",
+                            title: '{{ _("Beneficiario") }}',
+                            render: rowNameFormatter
                           },
                           columnDef
-                        ], {
-                          explicitInitialization: true
-                        }));
+                        ]));
 
       $("#areaGrid").data('grid', createBudgetGrid( "#areaGrid", 
                         areaGridData, [
                           {
-                            field: "key",
-                            name: '{{ _("Área") }}',
-                            formatter: rowNameFormatter
+                            data: "key",
+                            title: '{{ _("Área") }}',
+                            render: rowNameFormatter
                           },
                           columnDef
-                        ], {
-                          explicitInitialization: true
-                        }));
-      onTabSwitch();  // Do some tab initialization
+                        ]));
 
       // Total amounts are the same whichever way you break down the items, so any breakdown will do
-      $("#total").text( 
-        columnDef.formatter(  0, 0, 
-          payeeBreakdown['expense'][uiState.year],
-          columnDef, 
-          payeeBreakdown) || 'n/a' );
+      $("#total").text( columnDef.render(columnDef.data(payeeBreakdown) || 'n/a' ) );
     }    
 
 
@@ -138,25 +117,7 @@
     $('#tabs a').click(function (e) {
       e.preventDefault()
       $(this).tab('show');
-
-      // Callback to do some initialization (grid, controllers...) on tab switch
-      onTabSwitch();
     });
-
-
-    function onTabSwitch() {
-      var currentTab = $(".payments-breakdown .tab-pane.active");
-
-      // SlickGrid can't be initialized in a tab that is not visible, so we set explicitInitialization
-      // to true, and tell the grid to initialize itself when the time comes, i.e. when the tab is visible
-      var currentGrid = currentTab.find('.table-grid').data('grid');
-      if ( currentGrid != undefined )
-        currentGrid.init();
-
-      // Move totals to the right tab
-      var totals = $("#totals_panel").detach();
-      totals.appendTo(currentTab.find(".totals-placeholder"));
-    }
 
 
     //
@@ -195,7 +156,6 @@
 
       } else {
         redrawGrid();
-        onTabSwitch();  // Do some tab initialization
       }
     }
 

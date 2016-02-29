@@ -57,40 +57,50 @@ function formatDecimal(value, precision) {
   return numeral( value ).format( rule, Math.round );
 }
 
-// Pretty print a number by inserting ',' thousand separator
-function formatCellNumber(row, cell, value, columnDef, dataContext) {
-  return formatAmount(value);
+function getFormatter(formatter, stats, year) {
+  // Pretty print a number by inserting ',' thousand separator
+  function formatCellNumber(value, type, item) {
+    return formatAmount(value);
+  }
+
+  // Display amount adjusted for inflation (real, versus nominal)
+  function formatReal(value, type, item) {
+    if (value == null) return '';
+    var realValue = adjustInflation(value, stats, year);
+    return formatAmount(realValue);
+  }
+
+  // Display amount as percentage of total
+  function formatPercentage(value, type, item) {
+    if (value == null) return '';
+    if (item.root == null) return "100,00 %"; // No root => independent object
+    return formatDecimal(value / columnValueExtractor(item.root, columnDef) * 100) + " %";
+  }
+
+  // Display amount as expense per capita
+  function formatPerCapita(value, type, item) {
+    if (value == null) return '';
+    // Note value is in cents originally
+    var realValue = adjustInflation(value/100, stats, year);
+
+    // Our stats for year X indicate the population for December 31st of that year so,
+    // since we're adjusting inflation for January 1st it seems more accurate to use the
+    // population for that date, i.e. the one for the last day of the previous year.
+    // XXX: Don't think this is still so, and it's confusing, so I've changed it. But
+    // would like to recheck it.
+    var population = getPopulationFigure(stats, year, item.key);
+
+    return formatDecimal(realValue / population) + " €";
+  }
+
+  switch (formatter) {
+    case "nominal":     return formatCellNumber;
+    case "real":        return formatReal;
+    case "percentage":  return formatPercentage;
+    case "per_capita":  return formatPerCapita;
+  }
 }
 
-// Display amount adjusted for inflation (real, versus nominal)
-function formatReal(row, cell, value, columnDef, dataContext) {
-  if (value == null) return '';
-  var realValue = adjustInflation(value, columnDef.stats, columnDef.year);
-  return formatAmount(realValue);
-}
-
-// Display amount as percentage of total
-function formatPercentage(row, cell, value, columnDef, dataContext) {
-  if (value == null) return '';
-  if (dataContext.root == null) return "100,00 %"; // No root => independent object
-  return formatDecimal(value / columnValueExtractor(dataContext.root, columnDef) * 100) + " %";
-}
-
-// Display amount as expense per capita
-function formatPerCapita(row, cell, value, columnDef, dataContext) {
-  if (value == null) return '';
-  // Note value is in cents originally
-  var realValue = adjustInflation(value/100, columnDef.stats, columnDef.year);
-
-  // Our stats for year X indicate the population for December 31st of that year so,
-  // since we're adjusting inflation for January 1st it seems more accurate to use the
-  // population for that date, i.e. the one for the last day of the previous year.
-  // XXX: Don't think this is still so, and it's confusing, so I've changed it. But 
-  // would like to recheck it.
-  var population = getPopulationFigure(columnDef.stats, columnDef.year, dataContext.key);
-
-  return formatDecimal(realValue / population) + " €";
-}
 
 // Convenience methods
 
@@ -123,12 +133,4 @@ function adjustInflation(value, stats, year) {
   // Think of it like this: when looking at the budget for 2012 in 2012, nominal=real. This is
   // so because the inflation index at December 31st 2011 is 100, i.e. nominal=real.
   return value / stats['inflation'][year-1].inflation_index * 100.0;
-}
-
-function getFormatter(formatter) {
-  var formatters = {  nominal: formatCellNumber,
-                      real: formatReal,
-                      percentage: formatPercentage,
-                      per_capita: formatPerCapita };
-  return formatters[formatter];
 }

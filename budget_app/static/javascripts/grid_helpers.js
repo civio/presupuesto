@@ -85,7 +85,7 @@ function columnValueExtractor(item, getter) {
 }
 
 // Create a DataTable with budget data
-function createBudgetGrid(containerName, data, userColumns, extraGridOptions) {
+function createBudgetGrid(containerName, data, userColumns) {
   // Add some default settings to the column definitions given by the user
   var columns = [];
   $.each(userColumns, function(i, column) {
@@ -97,7 +97,7 @@ function createBudgetGrid(containerName, data, userColumns, extraGridOptions) {
   // based on whether its ancestors are expanded.
   $.fn.dataTable.ext.search = [
     function(settings, row, dataIndex) {
-      item = data[dataIndex];
+      item = settings.oInit.data[dataIndex];
 
       // Check the parents' status
       var parent = item.parent;
@@ -161,11 +161,11 @@ function createBudgetGrid(containerName, data, userColumns, extraGridOptions) {
       return multiLevelComparer(a, b, false);
     };
 
-    return data;
+    return settings.oInit.data;
   };
 
   // Create the data table
-  var grid = $(containerName).DataTable({
+  grid = $(containerName).DataTable({
     data: data,
     paging: false,
     dom: 't', // Only the table
@@ -177,7 +177,7 @@ function createBudgetGrid(containerName, data, userColumns, extraGridOptions) {
   });
 
   // Handle toggling of items
-  $(containerName+' tbody').on('click', 'span.toggle', function () {
+  $(containerName+' tbody').off('click', 'span.toggle').on('click', 'span.toggle', function () {
     var cell = grid.cell( $(this).parent() )[0][0];
     var item = data[cell.row];
     item._expanded = !item._expanded;

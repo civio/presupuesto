@@ -51,7 +51,8 @@
       $("#tax-amount-paid").text(formatTaxAmount(totalTaxPaid));
       // XXX: window.location.hash = 'ingresos='+getIncomeInEuros();
 
-      createBudgetGrid("#myGrid", gridData, [
+      if ( myGrid !== undefined )  myGrid.destroy();
+      myGrid = createBudgetGrid("#myGrid", gridData, [
         { data: "label", title: '{{ _("Política") }}', render: getPolicyLinkFormatter() },
         {
           data: getBreakdownValue,
@@ -77,6 +78,7 @@
     var breakdown = {{ breakdown.to_json( labels=descriptions['functional'] )|safe }};
     var gridData = breakdownToTable(breakdown);
     var getBreakdownValue = getBreakdownValueFunction('expense', '{{ latest_budget.name() }}');
+    var myGrid;
 
     $("select").change(redrawGrid);
     redrawGrid();
