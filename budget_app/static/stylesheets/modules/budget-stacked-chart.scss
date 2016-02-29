@@ -54,7 +54,6 @@
 
   path.area{
     opacity: 0.8;
-    cursor: pointer;
     @include transition( opacity 0.3s ease-out );
 
     &.hover{
@@ -78,6 +77,11 @@
       //fill-opacity: 0.7;
     }
   }
+}
+
+// Add cursor pointer only in policies index in functional chart 
+#functionalChartContainer .stacked-area-chart path.area{
+  cursor: pointer;
 }
 
 .stacked-area-chart-legend{
