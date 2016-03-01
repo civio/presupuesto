@@ -31,7 +31,6 @@
   <script src="{{ STATIC_URL }}javascripts/respond.min.js"></script>
   <script src="{{ STATIC_URL }}javascripts/bootstrap/tooltip.js"></script>
   <script src="{{ STATIC_URL }}javascripts/bootstrap/popover.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/pym.min.js"></script>
   {% endcompress %}
 
   {% include 'shared/meta.html' %}
@@ -59,6 +58,7 @@
   <![endif]-->
 
   {% compress js %}
+  <script src="{{ STATIC_URL }}javascripts/iframeResizer.contentWindow.min.js"></script>
   <script src="{{ STATIC_URL }}javascripts/bootstrap-slider.js"></script>
   {% endcompress %}
 
