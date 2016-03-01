@@ -22,6 +22,9 @@
     <div class="tab-content">
 
     {% if programme %}
+      <p class="history-back">
+        <a href="{% url 'budget_app.views.policies_show' programme.policy, policy.slug() %}?widget=1" id="policy-name-link" title="{{ descriptions['functional'].get(programme.policy) }}">&larr;</a>
+      </p>
       <h2 class="page-title">{{ name }}</h2>
     {% else %}
       <h2 class="page-title">{{ entity.name+': ' if entity }}{{ name }}</h2>
@@ -91,6 +94,13 @@
   <div id="pop-up-content"></div>
 </div>
 {% endif %}
+
+<script type="text/javascript">
+  // Show history-back button if we come from other widget
+  if (document.referrer.indexOf('?widget=1') !== -1) {
+    $('.history-back').show();
+  }
+</script>
 
 {% include 'shared/policy_paths.html' %}
 {% include 'policies/policies_javascript.html' %}

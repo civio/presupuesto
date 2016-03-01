@@ -1,5 +1,52 @@
 body.widget{
 
+  .widget-title{
+    text-align: center;
+    
+    h1{
+      color: $text-color;
+      font-size: 1.125em;
+      text-transform: uppercase;
+      font-weight: $font-weight-400;
+      margin: $grid-gutter-width/2 0 0;
+    }
+
+    &:hover{
+      text-decoration: none;
+
+      h1{
+        color: $brand-primary;  
+      }
+    }
+  }
+
+  .page-title{
+    margin: 2*$grid-gutter-width/3 0;
+  }
+
+  .history-back{
+    display: none;
+    position: absolute;
+    top: $grid-gutter-width/3;
+    left: $grid-gutter-width/2;
+
+    a{
+      color: $brand-primary;
+      display: block;
+      font-size: 1.125em;
+      padding: 2px 10px 2px 8px;
+      background: mix( $brand-primary, white, 25% );
+      border-left: 3px solid $brand-primary;
+
+      &:hover,
+      &:focus{
+        color: white;
+        background: $brand-primary;
+        text-decoration: none;
+      }
+    }
+  }
+
   .policies-graph{
     padding: 0;
   }
