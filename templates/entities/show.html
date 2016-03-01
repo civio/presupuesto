@@ -317,20 +317,26 @@
         $('#incomeChartContainer').hide();
         $('#fexpenseChartContainer').hide();
         $('#expenseChartContainer').show();
-        expenseTreemap.createTreemap(uiState); // Won't do anything if already created
-        expenseTreemap.updateTreemap(uiState);
+        if ( !expenseTreemap.initialized() )
+          expenseTreemap.createTreemap(uiState);
+        else
+          expenseTreemap.updateTreemap(uiState);
       } else if ( uiState.view == 'income' ) {
         $('#expenseChartContainer').hide();
         $('#fexpenseChartContainer').hide();
         $('#incomeChartContainer').show();
-        incomeTreemap.createTreemap(uiState); // Won't do anything if already created
-        incomeTreemap.updateTreemap(uiState);
+        if ( !incomeTreemap.initialized() )
+          incomeTreemap.createTreemap(uiState);
+        else
+          incomeTreemap.updateTreemap(uiState);
       } else {
         $('#expenseChartContainer').hide();
         $('#fexpenseChartContainer').show();
         $('#incomeChartContainer').hide();
-        fexpenseTreemap.createTreemap(uiState); // Won't do anything if already created
-        fexpenseTreemap.updateTreemap(uiState);
+        if ( !fexpenseTreemap.initialized() )
+          fexpenseTreemap.createTreemap(uiState);
+        else
+          fexpenseTreemap.updateTreemap(uiState);
       }
     
       // Show an alert if no data is available

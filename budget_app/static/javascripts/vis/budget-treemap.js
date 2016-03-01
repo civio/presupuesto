@@ -25,6 +25,10 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
 
 
   // Getters/setters
+  this.initialized = function() {
+    return treemap !== null;
+  };
+
   this.i18n = function(_) {
     if (!arguments.length) return _;
     i18n = _;
@@ -67,12 +71,11 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
   var svg = d3.select(selector)
           .append("svg:svg")
           .attr("class", "treemap-chart")
-          .style("position","relative")
-          .style("width",width + "px")
-          .style("height",height + "px")
+          .style("position", "relative")
+          .style("width", width + "px")
+          .style("height", height + "px")
           .append("svg:g")
-          .attr("transform", "translate(-.5,-.5)")
-          .attr("id", "TreemapGroup");
+          .attr("transform", "translate(-.5,-.5)");
 
   // Calculate year totals, needed for percentage calculations later on
   function calculateYearTotals(breakdown, field, columns) {
@@ -227,8 +230,6 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
       .append("rect")
       .attr('x', '0px')
       .attr('y', '0px')
-      .attr('rx', '3')
-      .attr('ry', '3')
       .attr('width', width+'px')
       .attr('height', height+'px')
       .on("mouseover", function(d, i) {
@@ -250,17 +251,15 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
 
     // Create the initial layout
     var data = uiState.field == "expense" ? expenseData : incomeData;
-    g = svg.data([data]).selectAll("g")
+    var g = svg.data([$.extend({}, data)]).selectAll("g")
         .data(treemap.nodes)
         .enter()
         .append("g")
         .attr("class", "cell");
 
-    g.style("opacity",0)
+    g.style("opacity", 1)
       .append("rect")
       .attr("class", function(d){ return "cell cell-"+d.id.charAt(0); })
-      //.attr("rx", '3')
-      //.attr("ry", '3')
       .style("fill", function(d) { return colors(parseInt(d.id[0], 10)); })
       .on("mouseover",  onMouseOver)
       .on("mousemove",  onMouseMove)
@@ -268,9 +267,8 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
       .on("click", function(d, i) {
         $(selector).trigger('policy-selected', d);
       });
-      
-    g.transition().duration(transitionDuration)
-      .style("opacity",1);
+
+    this.drawTreemap(uiState);
   };
 
   // Function used when changing years or data field inside a treemap visualization
@@ -278,6 +276,9 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
     // Do nothing before initialization
     if ( treemap === null )
       return;
+
+    // Do nothing if there's no change
+    if ( uiState && sameUIState(uiState, newUIState) ) return;
 
     // Do nothing if there's no data
     if ( !yearTotals[newUIState.year] || !yearTotals[newUIState.year][newUIState.field] ) {
@@ -304,15 +305,38 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
         treemap.sticky(shouldBeSticky);
     }
 
-    uiState = newUIState;
-
     // Remove text inside the treemap and create once the animation has ended
     svg.selectAll(".treemap-text").remove();
 
+    uiState = newUIState;
+    this.drawTreemap(uiState);
+  };
+
+  // Animation to slide out the current treemap
+  this.removeTreemap = function(uiState) {
+    var count = svg.selectAll("rect")[0].length;
+    var treemap = this;
+    svg.selectAll("rect").transition()
+      .duration(500)
+      .attr("x", function(d, i) { return width;})
+      .attr("width", function() { return "0px";})
+      .each("end", function(d) {
+        d3.select(this.parentNode).remove();
+        count--;
+        // Ended the animation - load the newData
+        if (count === 0) treemap.createTreemap(uiState);
+      });
+
+    // Remove the text, we'll create it later again
+    svg.selectAll(".treemap-text").remove();
+  };
+
+  //
+  this.drawTreemap = function(uiState) {
     // We update the selected value in the treemap
     this.adjustTreemapSize(uiState);
     var data = uiState.field == "expense" ? expenseData : incomeData;
-    var g = svg.data([data]).selectAll("g.cell").data(treemap.nodes);
+    var g = svg.data([$.extend({}, data)]).selectAll("g.cell").data(treemap.nodes);
     
     var count = svg.selectAll("rect.cell").length;
     g.selectAll("rect.cell")
@@ -324,7 +348,7 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
         // Ended the animation - create the new texts
         if ( count === 0 ) {
           svg.selectAll("rect.cell").each(function(d) {
-            d3.select(this).attr("foo", d.name).attr("leaf", d.leaf);
+            d3.select(this).attr("leaf", d.leaf);
 
             var text = d3.select(this.parentNode)
               .append("text");
@@ -355,26 +379,8 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
           })
         }
       });
-  };
+  }
 
-  // Animation to slide out the current treemap
-  this.removeTreemap = function(uiState) {
-    var count = svg.selectAll("rect")[0].length;
-    var treemap = this;
-    svg.selectAll("rect").transition()
-      .duration(500)
-      .attr("x", function(d, i) { return width;})
-      .attr("width", function() { return "0px";})
-      .each("end", function(d) {
-        d3.select(this.parentNode).remove();
-        count--;
-        // Ended the animation - load the newData
-        if (count === 0) treemap.createTreemap(uiState);
-      });
-
-    // Remove the text, we'll create it later again
-    svg.selectAll(".treemap-text").remove();
-  };
 
   // Treemap functions
   function cell() {
