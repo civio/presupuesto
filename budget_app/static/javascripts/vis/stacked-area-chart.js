@@ -130,36 +130,40 @@ function StackedAreaChart() {
   // Setup Data
   _this.setData = function( _data, _years, _budgetStatuses ){
 
-    // Setup Stack Data
-    _this.data = _data.map(function(d){
-      return {
+    _this.data = [];
+    _this.stackData = [];
+
+    var dataValues;
+
+    // Fill data & stackData arrays
+    _data.forEach(function(d, i){
+      
+      // Check gaps in values array & fill with 0
+      fillGapsInValues( d.values );
+
+      dataValues = d.values.map(function(e){
+        return {
+          x: e[0],
+          y: e[1]
+        };
+      });
+
+      _this.data.push({
         id: d.id,
         label: d.key,
-        values: d.values.map(function(e){
-          return {
-            x: e[0],
-            y: e[1]
-          };
-        })
-      };
-    });
+        values: dataValues
+      });
 
-    _this.stackData = _data.map(function(d, i){
-      return {
+      _this.stackData.push({
         i: i,
         id: d.id,
         label: d.key,
         active: true,
-        values: d.values.map(function(e){
-          return {
-            x: e[0],
-            y: e[1]
-          };
-        })
-      };
+        values: dataValues
+      });
     });
 
-    _this.years = _years;
+    _this.years = fillGapsInYears( _years );
 
     // Setup Color domain
     _this.color.domain( _data.map(function(d){ return d.id; }) );
@@ -462,10 +466,12 @@ function StackedAreaChart() {
     var popoverId = _this.$popover.data('id');
 
     // Get currentYear values
-    var popoverValues = _this.popoverData.values.filter(function(d){ return d.x == _this.years[_this.currentYear]; })[0];
+    var values = _this.popoverData.values.filter(function(d){ return d.x == _this.years[_this.currentYear]; });
+    var popoverValues = (values.length > 0) ? values[0] : 0;
      
     // Get currentYear values
-    var popoverPrevValues = (_this.currentYear > 0) ? _this.popoverData.values.filter(function(d){ return d.x == _this.years[_this.currentYear]-1; })[0].y : null;
+    var prevValues = _this.popoverData.values.filter(function(d){ return d.x == _this.years[_this.currentYear]-1; });
+    var popoverPrevValues = (prevValues.length > 0) ? prevValues[0].y : null;
 
     // Setup year
     _this.$popover.find('.popover-content-year').html( _this.years[_this.currentYear] );
@@ -541,7 +547,33 @@ function StackedAreaChart() {
 
   // Auxiliar Methods
 
-  var getPointsData =  function( _data ) {
+  var fillGapsInYears = function( _years ){
+    if ( _years.length !== _years[_years.length-1]-_years[0]+1 ) {
+      var i;
+      for (i = 0; i < _years.length-1; i++) {
+        if(_years[i+1] - _years[i] > 1){
+          _years.push(_years[i]+1);  // Fill gap
+        }
+      }
+      _years.sort(function(a,b){ return a-b; });
+    }
+    return _years;
+  };
+
+  var fillGapsInValues = function( _values ) {
+    // Check if array_length equals last_year_value - first_year_value + 1
+    if ( _values.length !== _values[_values.length-1][0]-_values[0][0]+1 ) {
+      var i;
+      for (i = 0; i < _values.length-1; i++) {
+        if(_values[i+1][0] - _values[i][0] > 1){
+          _values.push([ _values[i][0]+1, 0 ]);  // Fill gap with 0 value
+        }
+      }
+      _values.sort(function(a,b){ return a[0] - b[0]; });
+    }
+  };
+
+  var getPointsData = function( _data ) {
     return _data.values.map(function(d){
       d.id = _data.id;    // Add breakdown id to point data
       return d;
