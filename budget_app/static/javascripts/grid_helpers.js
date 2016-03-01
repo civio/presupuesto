@@ -18,7 +18,6 @@ var id = 0;
 
 // Display column name depending on multi-level status
 function rowNameFormatter(value, type, item) {
-  console.log("rendering "+value);
   var spacer = "<span style='display:inline-block;height:1px;width:" + (25 * item["indent"]) + "px'></span>";
   var valuewrap = "<span class='toggle'>" + value + "</span>";
   if (item.sub && !$.isEmptyObject(item.sub)) {
