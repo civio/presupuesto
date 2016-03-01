@@ -224,7 +224,6 @@
       {% if show_treemap %}
       var treemap = new BudgetTreemap(container, breakdown, stats, areas, 2, colorScale).i18n(i18n).maxLevels(2).budgetStatuses(budgetStatuses);
       treemap.createTreemap(getUIState());
-      treemap.updateTreemap(getUIState());
       $(container).data('chart', treemap);
       {% else %}
       var chart = new BudgetStackedChart(container, stats, colorScale, i18n).budgetStatuses(budgetStatuses);
