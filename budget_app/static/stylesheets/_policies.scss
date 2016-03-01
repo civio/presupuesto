@@ -50,6 +50,15 @@
   margin: $grid-gutter-width 0 $grid-gutter-width/2;
 }
 
+// Policies Modal Embed
+#modal-embed{
+  .modal-body{
+    textarea{
+      resize: none;
+      background: $brand-secondary;
+    }
+  }
+}
 
 @media (min-width: $screen-sm-min) {
 
