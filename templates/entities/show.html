@@ -317,26 +317,17 @@
         $('#incomeChartContainer').hide();
         $('#fexpenseChartContainer').hide();
         $('#expenseChartContainer').show();
-        if ( !expenseTreemap.initialized() )
-          expenseTreemap.createTreemap(uiState);
-        else
-          expenseTreemap.updateTreemap(uiState);
+        expenseTreemap.updateTreemap(uiState);
       } else if ( uiState.view == 'income' ) {
         $('#expenseChartContainer').hide();
         $('#fexpenseChartContainer').hide();
         $('#incomeChartContainer').show();
-        if ( !incomeTreemap.initialized() )
-          incomeTreemap.createTreemap(uiState);
-        else
-          incomeTreemap.updateTreemap(uiState);
+        incomeTreemap.updateTreemap(uiState);
       } else {
         $('#expenseChartContainer').hide();
         $('#fexpenseChartContainer').show();
         $('#incomeChartContainer').hide();
-        if ( !fexpenseTreemap.initialized() )
-          fexpenseTreemap.createTreemap(uiState);
-        else
-          fexpenseTreemap.updateTreemap(uiState);
+        fexpenseTreemap.updateTreemap(uiState);
       }
     
       // Show an alert if no data is available
@@ -445,8 +436,17 @@
     var state = $.deparam.fragment();
     $("#"+state.view).click();
 
-    // Used to create the treemap here, when there was only one, but now we have two, and they need to be
-    // created once the UI state 'field' is correct; otherwise they transition on update and doesn't work.
+    // XXX: Because of a really weird bug in Chrome 48 (OS X, not Linux), the
+    // browser was crashing when trying to create the treemaps on demand, i.e. 
+    // when a tab was shown for the first time. There was some sort of memory
+    // leak or corruption that we couldn't sort out. So we now create the
+    // treemaps at the beginning, and update them as usual.
+    // See issue civio/presupuesto-management#52
+    expenseTreemap.createTreemap( $.extend(getUIState(), { field: 'expense' }) );
+    incomeTreemap.createTreemap( $.extend(getUIState(), { field: 'income' }) );
+    fexpenseTreemap.createTreemap( $.extend(getUIState(), { field: 'expense' }) );
+
+    // Ready to go
     redraw();
   });
 </script>

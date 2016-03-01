@@ -1,8 +1,7 @@
 function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScale) {
   var width = $(selector).width();
   var height = width / (aspectRatio===undefined ? 2 : aspectRatio);
-  var expenseData;
-  var incomeData;
+  var treemapData;
   var treemap = null;
   var yearTotals = {};
   var maxTreemapValueEver = 0;
@@ -151,7 +150,7 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
     };
   }
 
-  function loadBreakdown(breakdown) {
+  function loadBreakdown(breakdown, field) {
     // Pick the right column for each year: execution preferred over 'just' budget...
     // TODO: This bit is duplicated in BudgetStackedChart
     var columns = {};
@@ -168,11 +167,8 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
         columns[year] = column_name;
     }
 
-    calculateYearTotals(breakdown, 'expense', columns);
-    expenseData = loadBreakdownField(breakdown, 'expense', columns);
-
-    calculateYearTotals(breakdown, 'income', columns);
-    incomeData = loadBreakdownField(breakdown, 'income', columns);
+    calculateYearTotals(breakdown, field, columns);
+    treemapData = loadBreakdownField(breakdown, field, columns);
   }
 
   // Calculate the maximum value of the treemap along the years.
@@ -205,10 +201,7 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
       .attr('height', newHeight+'px');
   };
 
-  // Function used to display the selected treemap, using a fade-in animation.
-  // XXX: You need to call updateTreemap after this, otherwise the treemap is not fully rendered.
-  // This is to avoid duplicating work (text rendering...). Not sure it makes sense anymore to
-  // expose the create/update divide to the outside: we always call these two together.
+  // Initialize and display the treemap, using a fade-in animation.
   this.createTreemap = function(newUIState) {
     // Do nothing if called multiple times
     if ( treemap !== null )
@@ -216,7 +209,7 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
 
     // Load the data. We do it here, and not at object creation time, so we have time
     // to change default settings (treemap depth, f.ex.) if needed
-    loadBreakdown(breakdown);
+    loadBreakdown(breakdown, newUIState.field);
 
     // Do nothing if there's no data
     if ( !yearTotals[newUIState.year] || !yearTotals[newUIState.year][newUIState.field] )
@@ -250,8 +243,7 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
                 .sticky(true);
 
     // Create the initial layout
-    var data = uiState.field == "expense" ? expenseData : incomeData;
-    var g = svg.data([$.extend({}, data)]).selectAll("g")
+    var g = svg.data([treemapData]).selectAll("g")
         .data(treemap.nodes)
         .enter()
         .append("g")
@@ -268,10 +260,12 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
         $(selector).trigger('policy-selected', d);
       });
 
+    // Render the treemap
     this.drawTreemap(uiState);
   };
 
-  // Function used when changing years or data field inside a treemap visualization
+  // Update the year or format of a treemap.
+  // Note: you can't change the field being displayed, i.e. expense vs. income.
   this.updateTreemap = function(newUIState) {
     // Do nothing before initialization
     if ( treemap === null )
@@ -286,12 +280,6 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
       return;
     } else
       svg.style("opacity", 1);
-
-    // Switching between income and expense requires rebuilding the whole treemap
-    if ( uiState.field != newUIState.field ) {
-      this.removeTreemap(newUIState);
-      return;
-    }
     
     // We prefer the 'sticky' layout in the treemap, but it needs to have a consistent data structure
     // across the years. (One item more or less is bearable, but a whole level appearing breaks
@@ -308,35 +296,17 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
     // Remove text inside the treemap and create once the animation has ended
     svg.selectAll(".treemap-text").remove();
 
+    // Render the treemap
     uiState = newUIState;
     this.drawTreemap(uiState);
   };
 
-  // Animation to slide out the current treemap
-  this.removeTreemap = function(uiState) {
-    var count = svg.selectAll("rect")[0].length;
-    var treemap = this;
-    svg.selectAll("rect").transition()
-      .duration(500)
-      .attr("x", function(d, i) { return width;})
-      .attr("width", function() { return "0px";})
-      .each("end", function(d) {
-        d3.select(this.parentNode).remove();
-        count--;
-        // Ended the animation - load the newData
-        if (count === 0) treemap.createTreemap(uiState);
-      });
 
-    // Remove the text, we'll create it later again
-    svg.selectAll(".treemap-text").remove();
-  };
-
-  //
+  // Render the treemap
   this.drawTreemap = function(uiState) {
     // We update the selected value in the treemap
     this.adjustTreemapSize(uiState);
-    var data = uiState.field == "expense" ? expenseData : incomeData;
-    var g = svg.data([$.extend({}, data)]).selectAll("g.cell").data(treemap.nodes);
+    var g = svg.data([treemapData]).selectAll("g.cell").data(treemap.nodes);
     
     var count = svg.selectAll("rect.cell").length;
     g.selectAll("rect.cell")
