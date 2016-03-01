@@ -204,7 +204,7 @@
 
     // Link to policy handlers
     function onProgrammeSelected(event, d) {
-      var widget = $('body').hasClass('widget') ? '?widget=1' : '';
+      var widget = $('body').hasClass('widget') ? window.location.search : '';
 
 {% if article %}
       window.location=getPolicyLink(d.id, d.label, getUIState())+widget;
@@ -347,5 +347,14 @@
     // Control Setup
     $('#select-format').change(redrawGrid);
     initSlider("#year-selection", {{ years|safe }}, redrawGrid, {{ latest_year }}, {{ years_scale|safe }});
+
+    // Setup widget pym
+    if ($('body').hasClass('widget')) {
+      var embeded = new pym.Child();
+      embeded.sendHeight();
+      $(window).bind("resize", function(){
+        embeded.sendHeight();
+      });
+    }
   })
 </script>

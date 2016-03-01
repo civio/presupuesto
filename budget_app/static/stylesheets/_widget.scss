@@ -8,7 +8,7 @@ body.widget{
       font-size: 1.125em;
       text-transform: uppercase;
       font-weight: $font-weight-400;
-      margin: $grid-gutter-width/2 0 0;
+      margin: $grid-gutter-width/2;
     }
 
     &:hover{
@@ -51,7 +51,38 @@ body.widget{
     padding: 0;
   }
 
-  .data-controllers .col-sm-9{
-    display: none;
+  .tab-pane{
+    position: relative;
+    padding-bottom: $grid-gutter-width/2;
+  }
+
+  .data-controllers-placeholder{
+    width: 150px;
+    margin: -10px auto 0;
+  }
+
+  .data-controllers{
+    margin-bottom: $grid-gutter-width/2;
+
+    .title{
+      padding: $grid-gutter-width/6 0;
+      font-weight: $font-weight-600;
+      text-align: center;
+    }
+
+    .col-sm-3{
+      width: 100%;
+      font-size: 0.875em;
+      text-align: right;
+
+      .form-control{
+        height: 30px;
+        font-size: 12px;
+      }
+    }
+
+    .col-sm-9{
+      display: none;
+    }
   }
 }

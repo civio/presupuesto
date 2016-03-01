@@ -23,7 +23,7 @@
 
     {% if programme %}
       <p class="history-back">
-        <a href="{% url 'budget_app.views.policies_show' programme.policy, policy.slug() %}?widget=1" id="policy-name-link" title="{{ descriptions['functional'].get(programme.policy) }}">&larr;</a>
+        <a href="{% url 'budget_app.views.policies_show' programme.policy, policy.slug() %}" id="policy-name-link" title="{{ descriptions['functional'].get(programme.policy) }}">&larr;</a>
       </p>
       <h2 class="page-title">{{ name }}</h2>
     {% else %}
@@ -98,6 +98,8 @@
 <script type="text/javascript">
   // Show history-back button if we come from other widget
   if (document.referrer.indexOf('?widget=1') !== -1) {
+    // Add current url parameters to back button link
+    $('.history-back > a').attr('href', $('.history-back > a').attr('href')+window.location.search);
     $('.history-back').show();
   }
 </script>
