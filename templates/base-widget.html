@@ -39,6 +39,7 @@
 <body class="{{ page_css_class }} widget">
   
   <div class="content" role="main">
+    <a href="{{ url('budget_app.views.welcome') }}" class="widget-title" target="_parent" title="{{ _('Presupuestos del Gobierno de Aragón') }}"><h1>{{ _('Presupuestos del Gobierno de Aragón') }}</h1></a>
     {% block content %}{% endblock %} 
   </div>
 
