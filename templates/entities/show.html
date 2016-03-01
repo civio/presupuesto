@@ -31,18 +31,12 @@
       <li class="{{ 'active' if show_side=='income' }}">
         <a id="income" href="#"><h3>{{ _('Ingresos') }}</h3></a>
       </li>
-      {% if display_functional_view %}
       <li class="{{ 'active' if not full_breakdown }}">
         <a id="expense" href="#"><h3>{{ _('¿Cómo se gasta?') }}</h3></a>
       </li>
       <li class="{{ 'active' if full_breakdown }}">
         <a id="fexpense" href="#"><h3>{{ _('¿En qué se gasta?') }}</h3></a>
       </li>
-      {% else %}
-      <li class="{{ 'active' if show_side!='income' }}">
-        <a id="expense" href="#"><h3>{{ _('Gastos') }}</h3></a>
-      </li>
-      {% endif %}
     </ul>
   </div>
 
