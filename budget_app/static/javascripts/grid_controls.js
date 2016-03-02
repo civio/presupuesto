@@ -1,12 +1,28 @@
 // Helper methods for handling controls related to data displays
 
 function setRedrawOnTabsChange(container, callback) {
-  $(container+' a').click(function(event) {
-    event.preventDefault();
-    $(container+' .active').removeClass('active');
-    $(event.target).blur().parents(container+' li').addClass('active');
-    callback();
+
+  // Listen changes on url hash
+  $(window).bind('hashchange', function(e){
+
+    // Get hash states    
+    var state = $.deparam.fragment();
+
+    if( state.view ){
+      $(container+' .active').removeClass('active');
+      $('#'+state.view).blur().parents(container+' li').addClass('active');
+      callback();
+    }
   });
+
+  // Handle click on tabs with pushState
+  $(container+' a').click(function(e) {
+    e.preventDefault();
+    $.bbq.pushState( {'view': $(this).attr('id')} );
+  });
+
+  // Initially trigger hashchange
+  $(window).trigger('hashchange');
 }
 
 function setRedrawOnButtonGroupChange(selector, callback) {

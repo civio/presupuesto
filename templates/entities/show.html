@@ -29,13 +29,19 @@
 
     <ul id="btn-field" class="nav nav-tabs nav-tabs-centered" role="tablist">
       <li class="{{ 'active' if show_side=='income' }}">
-        <a id="income" href="#"><h3>{{ _('Ingresos') }}</h3></a>
+        <a id="income" href="#" title="{{ _('Ingresos') }}">
+          <h3>{{ _('Ingresos') }}</h3>
+        </a>
       </li>
       <li class="{{ 'active' if not full_breakdown }}">
-        <a id="expense" href="#"><h3>{{ _('¿Cómo se gasta?') }}</h3></a>
+        <a id="expense" href="#" title="{{ _('¿Cómo se gasta?') }}">
+          <h3>{{ _('¿Cómo se gasta?') }}</h3>
+        </a>
       </li>
       <li class="{{ 'active' if full_breakdown }}">
-        <a id="fexpense" href="#"><h3>{{ _('¿En qué se gasta?') }}</h3></a>
+        <a id="fexpense" href="#" title="{{ _('¿En qué se gasta?') }}">
+          <h3>{{ _('¿En qué se gasta?') }}</h3>
+        </a>
       </li>
     </ul>
   </div>
@@ -415,7 +421,6 @@
 {% endif %}
 
     // Set up controls
-    setRedrawOnTabsChange('#btn-field', redraw);
     $('#select-format').change(redraw);
     $('#expenseChartContainer').bind('policy-selected', onEconomicExpenseTreemapClick);
     $('#fexpenseChartContainer').bind('policy-selected', onFunctionalExpenseTreemapClick);
@@ -424,11 +429,6 @@
 
     // Create Budget Summary
     var budgetSummary = new BudgetSummary('#budget-summary');
-
-    // Select income/expense based on location hash
-    // TODO: Should handle year also
-    var state = $.deparam.fragment();
-    $("#"+state.view).click();
 
     // XXX: Because of a really weird bug in Chrome 48 (OS X, not Linux), the
     // browser was crashing when trying to create the treemaps on demand, i.e. 
@@ -439,6 +439,9 @@
     expenseTreemap.createTreemap( $.extend(getUIState(), { field: 'expense' }) );
     incomeTreemap.createTreemap( $.extend(getUIState(), { field: 'income' }) );
     fexpenseTreemap.createTreemap( $.extend(getUIState(), { field: 'expense' }) );
+
+    // Setup tabs navigation
+    setRedrawOnTabsChange('#btn-field', redraw);
 
     // Ready to go
     redraw();
