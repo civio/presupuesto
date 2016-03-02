@@ -20,26 +20,26 @@
 
 
 <!-- Politicas -->
-<section class="policies" role="region">
+<section class="policies" role="region" data-field="{% if show_side=='income' %}income{% elif full_breakdown %}fexpense{% else %}expense{% endif %}">
   
   <!-- Politicas Header -->
   <div class="policies-header section-header">
     
     <h2 class="page-title">{{ _('Políticas') }}</h2>
 
-    <ul id="btn-field" class="nav nav-tabs nav-tabs-centered" role="tablist">
+    <ul id="tabs" class="nav nav-tabs nav-tabs-centered" role="tablist">
       <li class="{{ 'active' if show_side=='income' }}">
-        <a id="income" href="#" title="{{ _('Ingresos') }}">
+        <a href="#income" title="{{ _('Ingresos') }}">
           <h3>{{ _('Ingresos') }}</h3>
         </a>
       </li>
       <li class="{{ 'active' if not full_breakdown }}">
-        <a id="expense" href="#" title="{{ _('¿Cómo se gasta?') }}">
+        <a href="#expense" title="{{ _('¿Cómo se gasta?') }}">
           <h3>{{ _('¿Cómo se gasta?') }}</h3>
         </a>
       </li>
       <li class="{{ 'active' if full_breakdown }}">
-        <a id="fexpense" href="#" title="{{ _('¿En qué se gasta?') }}">
+        <a href="#fexpense" title="{{ _('¿En qué se gasta?') }}">
           <h3>{{ _('¿En qué se gasta?') }}</h3>
         </a>
       </li>
@@ -187,6 +187,9 @@
 
     var uiState = null;
     function redraw() {
+      // Update data-field before getUIState based on active tab anchor link
+      $('section.policies').data('field', $('#tabs .active a').attr('href').substring(1) );
+
       // Avoid unnecessary redrawings (the slider is trigger happy)
       var newUIState = getUIState();
       if ( uiState && sameUIState(uiState, newUIState) ) return;
@@ -441,7 +444,7 @@
     fexpenseTreemap.createTreemap( $.extend(getUIState(), { field: 'expense' }) );
 
     // Setup tabs navigation
-    setRedrawOnTabsChange('#btn-field', redraw);
+    setRedrawOnTabsChange('#tabs', redraw);
 
     // Ready to go
     redraw();

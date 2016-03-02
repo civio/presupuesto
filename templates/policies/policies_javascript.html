@@ -265,18 +265,23 @@
     //
     // TABS
     //
-    // Activar tabs de Política
-    $('#tabs a').click(function (e) {
-      e.preventDefault()
-      $(this).tab('show');
-
-      // Callback to do some initialization (grid, controllers...) on tab switch
-      onTabSwitch();
-    });
-
+    
+    // Setup tabs navigation
+    setRedrawOnTabsChange('#tabs', onTabSwitch);
 
     function onTabSwitch() {
-      var currentTab = $(".policy-breakdown .tab-pane.active");
+
+      if( uiState === null ) return;
+
+      // Update or get current tab
+      var currentTab;
+      if( $('#tabs').size() > 0 ) {
+        $('.policy-breakdown .tab-pane').removeClass('active');   // Remove active tabs
+        var tabId = $('#tabs .active a').attr('href').substring(1);
+        currentTab = $('.policy-breakdown #tab-'+tabId).addClass('active');
+      } else{
+        currentTab = $('.policy-breakdown .tab-pane.active');
+      }
 
       // XXX: This shouldn't be necessary, but there seems to be a bug in Chrome 38 (not 39 afaik):
       // if we hide a tab all its elements should be hidden too, but recently, and only in Chrome,

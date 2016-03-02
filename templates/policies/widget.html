@@ -15,7 +15,7 @@
 {% block content %}
 
 <!-- Politicas Detalle -->
-<section class="policy-breakdown" role="region">
+<section class="policies policy-breakdown" role="region" data-field="{{ show_side }}">
 
   <!-- Policies Content -->
   <div class="policies-content">
@@ -73,20 +73,6 @@
 <div class="hidden">
   {% include 'shared/data_controllers.html' %}
 </div>
-
-<!--
-  We need this markup in order to get uiState.view
-  from getActiveButton() in grid_controls.js
--->
-<ul id="btn-field" class="hidden">
-  <li class="{{ 'active' if show_side=='income' }}">
-    <a id="income">{{ _('Ingresos') }}</a>
-  </li>
-  <li class="{{ 'active' if show_side=='expense' }}">
-    <a id="expense">{{ _('¿Cómo se gasta?') }}</a>
-  </li>
-</ul>
-
 
 {% if show_treemap %}
 <div id="pop-up">

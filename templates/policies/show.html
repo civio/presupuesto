@@ -15,7 +15,7 @@
 {% block content %}
 
 <!-- Politicas Detalle -->
-<section class="policy-breakdown" role="region">
+<section class="policies policy-breakdown" role="region" data-field="{{ show_side }}">
 
   <!-- Politicas Header -->
   <div class="policies-header section-header">
@@ -44,34 +44,48 @@
     {% if full_breakdown %}
       {% if programme is not defined and show_side != 'income' %}
       <li class="active">
-        <a href="#tab-functional"><h3>{{ _(tab_titles['functional']) }}</h3></a>
+        <a href="#functional" title="{{ _(tab_titles['functional']) }}">
+          <h3>{{ _(tab_titles['functional']) }}</h3>
+        </a>
       </li>
       <li>
-        <a href="#tab-economic"><h3>{{ _(tab_titles['economic']) }}</h3></a>
+        <a href="#economic" title="{{ _(tab_titles['economic']) }}">
+          <h3>{{ _(tab_titles['economic']) }}</h3>
+        </a>
       </li>
       {% else %}
       <li class="active">
-        <a href="#tab-economic"><h3>{{ _(tab_titles['economic']) }}</h3></a>
+        <a href="#economic" title="{{ _(tab_titles['economic']) }}">
+          <h3>{{ _(tab_titles['economic']) }}</h3>
+        </a>
       </li>
       {% endif %}
       {% if show_funding_tab %}
       <li>
-        <a href="#tab-funding"><h3>{{ _(tab_titles['funding']) }}</h3></a>
+        <a href="#funding" title="{{ _(tab_titles['funding']) }}">
+          <h3>{{ _(tab_titles['funding']) }}</h3>
+        </a>
       </li>
       {% endif %}
       {% if show_institutional_tab %}
       <li>
-        <a href="#tab-institutional"><h3>{{ _(tab_titles['institutional']) }}</h3></a>
+        <a href="#institutional" title="{{ _(tab_titles['institutional']) }}">
+          <h3>{{ _(tab_titles['institutional']) }}</h3>
+        </a>
       </li>
       {% endif %}
     {% else %}
       {% if policy_uid %}
       <li class="active">
-        <a href="#tab-functional"><h3>{{ _(tab_titles['functional']) }}</h3></a>
+        <a href="#functional" title="{{ _(tab_titles['functional']) }}">
+          <h3>{{ _(tab_titles['functional']) }}</h3>
+        </a>
       </li>
       {% else %}
       <li class="active">
-        <a href="#tab-economic"><h3>{{ _(tab_titles['economic']) }}</h3></a>
+        <a href="#economic" title="{{ _(tab_titles['economic']) }}">
+          <h3>{{ _(tab_titles['economic']) }}</h3>
+        </a>
       </li>
       {% endif %}
     {% endif %}
@@ -139,29 +153,6 @@
 <div class="hidden">
   {% include 'entities/totals.html' %}
 </div>
-
-<!--
-<div id="totals_panel">
-  <p class="total" id="main-total">
-    <span class="main-label"></span> <b class="main-amount"></b>
-    <br/>
-    <span class="secondary-label">{{ _('Presupuestados') }}</span> <b class="secondary-amount"></b>
-  </p>
-</div>
--->
-
-<!--
-  We need this markup in order to get uiState.view
-  from getActiveButton() in grid_controls.js
--->
-<ul id="btn-field" class="hidden">
-  <li class="{{ 'active' if show_side=='income' }}">
-    <a id="income">{{ _('Ingresos') }}</a>
-  </li>
-  <li class="{{ 'active' if show_side=='expense' }}">
-    <a id="expense">{{ _('¿Cómo se gasta?') }}</a>
-  </li>
-</ul>
 
 
 {% if show_treemap %}
