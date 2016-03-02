@@ -2,12 +2,9 @@
  *  Helper methods for SlickGrid instances
  */
 
-// TODO: Can we get rid of this now that we removed SlickGrid?
-// We use these ugly global variables to remember the sorting status on UI updates (i.e.
-// when changing the year), since we rebuild the grid on each page update. Is there any
-// other way?
-var currentSortColumn = -1;
-var currentSortOrder = null;
+// We use this to remember the sorting status on UI updates (i.e. when changing
+// the year), since we rebuild the grid on each page update.
+var lastSort = null;
 
 // TODO: Can we get rid of this now that we removed SlickGrid?
 // Poor-man's auto key generator
@@ -155,6 +152,9 @@ function createBudgetGrid(containerName, data, userColumns) {
       return multiLevelComparer(a, b, false);
     };
 
+    // Keep track of the last order, so we can keep it when recreating the table
+    lastSort = settings.aaSorting;
+
     return settings.oInit.data;
   };
 
@@ -167,7 +167,7 @@ function createBudgetGrid(containerName, data, userColumns) {
     columns: columns,
     // Sort at startup by the previously chosen column; or by the rightmost column at startup
     // TODO: Actually, we're going to sort by the second column, I should use the rightmost... with data
-    order: [[1, 'desc']],
+    order: lastSort ? lastSort : [[1, 'desc']],
     rowCallback: function(row, data) { $(row).addClass('indent-'+data.indent); }
   });
 
@@ -179,7 +179,6 @@ function createBudgetGrid(containerName, data, userColumns) {
       item._expanded = !item._expanded;
       cell.invalidate();
       grid.draw();
-      // e.stopImmediatePropagation();
     }
   });
 
