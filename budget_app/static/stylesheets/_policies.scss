@@ -50,6 +50,12 @@
   margin: $grid-gutter-width 0 $grid-gutter-width/2;
 }
 
+.policy-breakdown{
+  .panel-downloads > p{
+    display: none;
+  }
+}
+
 // Policies Modal Embed
 #modal-embed{
   .modal-body{

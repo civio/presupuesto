@@ -49,13 +49,14 @@ def policies_show(request, id, title, render_callback=None):
     _set_show_side(c, show_side)
     _set_full_breakdown(c, True)
 
+    _set_policy_type(c, 'functional')
 
     c['name'] = c['descriptions']['functional'].get(c['policy_uid'])
     c['title_prefix'] = c['name']
 
 
     # if parameter widget defined use policies/widget template instead of policies/show
-    template = 'policies/widget.html' if _isWidget(request) else 'policies/show.html'
+    template = 'policies/show_widget.html' if _isWidget(request) else 'policies/show.html'
 
     return render(c, render_callback, template )
 
@@ -114,9 +115,10 @@ def programmes_show(request, id, title, render_callback=None):
     _set_show_side(c, show_side)
     _set_full_breakdown(c, True)
 
+    _set_policy_type(c, 'functional')
 
     # if parameter widget defined use policies/widget template instead of policies/show
-    template = 'policies/widget.html' if _isWidget(request) else 'policies/show.html'
+    template = 'policies/show_widget.html' if _isWidget(request) else 'policies/show.html'
 
     return render(c, render_callback, template )
 
@@ -180,8 +182,10 @@ def articles_show(request, id, title, show_side, render_callback=None):
     _set_show_side(c, show_side)
     _set_full_breakdown(c, True)
 
+    _set_policy_type(c, 'economic')
+
     # if parameter widget defined use policies/widget template instead of policies/show
-    template = 'policies/widget.html' if _isWidget(request) else 'policies/show.html'
+    template = 'policies/show_widget.html' if _isWidget(request) else 'policies/show.html'
 
     return render(c, render_callback, template )
 
@@ -222,6 +226,9 @@ def _set_show_side(c, side):
 # Do we have an exhaustive budget, classified along four dimensions? I.e. display all tabs?
 def _set_full_breakdown(c, full_breakdown):
     c['full_breakdown'] = full_breakdown
+
+def _set_policy_type(c, type):
+    c['type'] = type;
 
 # Get widget parameter
 def _isWidget(request):

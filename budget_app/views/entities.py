@@ -71,7 +71,10 @@ def entities_show(request, c, entity, render_callback=None):
     _set_full_breakdown(c, entity.level == settings.MAIN_ENTITY_LEVEL)
     c['entity'] = entity
 
-    return render(c, render_callback, 'entities/show.html')
+    # if parameter widget defined use policies/widget template instead of policies/show
+    template = 'entities/show_widget.html' if _isWidget(request) else 'entities/show.html'
+
+    return render(c, render_callback, template)
 
 
 def entities_compare(request, c, entity_left, entity_right):
@@ -250,3 +253,7 @@ def _set_show_side(c, side):
 # Do we have an exhaustive budget, classified along four dimensions? I.e. display all tabs?
 def _set_full_breakdown(c, full_breakdown):
     c['full_breakdown'] = full_breakdown
+    
+# Get widget parameter
+def _isWidget(request):
+    return request.GET.get('widget',False)

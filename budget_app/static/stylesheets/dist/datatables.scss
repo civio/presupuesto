@@ -12,8 +12,9 @@
 
 table.dataTable {
     clear: both;
-    margin-top: 6px !important;
-    margin-bottom: 6px !important;
+    // EDITED: Remove margins top & bottom
+    //margin-top: 6px !important;
+    //margin-bottom: 6px !important;
     max-width: none !important
 }
 table.dataTable td,

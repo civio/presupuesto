@@ -1,0 +1,71 @@
+{% extends 'base-widget.html' %}
+{% from 'shared/entity_select.html' import render_entity_select as render_entity_select %}
+{% block extra_javascript %}
+<script src="{{ STATIC_URL }}javascripts/vis/d3.v3.min.js"></script>
+<script src="{{ STATIC_URL }}javascripts/vis/bigtext.js"></script>
+<script src="{{ STATIC_URL }}javascripts/vis/budget-treemap.js"></script>
+<script src="{{ STATIC_URL }}javascripts/vis/budget-summary.js"></script>
+<script src="{{ STATIC_URL }}javascripts/comparator.js"></script>
+{% endblock %}
+{% block content %}
+
+<!-- Politicas -->
+<section class="policies" role="region" data-field="{% if show_side=='income' %}income{% elif full_breakdown %}fexpense{% else %}expense{% endif %}">
+
+  <!-- Policies Content -->
+  <div class="policies-content">
+    <div class="container">
+
+      <h2 class="page-title">{{ _('Políticas') }}</h2>
+
+      <!-- Policies Graph -->
+      <div class="policies-graph">
+        <div id="budget-summary"></div>
+        <div id="expenseChartContainer" class="chart-container">
+          <div class="popover top" role="tooltip">
+            <div class="arrow"></div>
+            <p class="popover-subtitle"></p>
+            <h4 class="popover-title"></h4>
+            <div class="popover-content">
+              <span class="popover-content-value"></span>
+            </div>
+          </div>
+        </div>
+        <div id="fexpenseChartContainer" class="chart-container">
+          <div class="popover top" role="tooltip">
+            <div class="arrow"></div>
+            <p class="popover-subtitle"></p>
+            <h4 class="popover-title"></h4>
+            <div class="popover-content">
+              <span class="popover-content-value"></span>
+            </div>
+          </div>
+        </div>
+        <div id="incomeChartContainer" class="chart-container">
+          <div class="popover top" role="tooltip">
+            <div class="arrow"></div>
+            <p class="popover-subtitle"></p>
+            <h4 class="popover-title"></h4>
+            <div class="popover-content">
+              <span class="popover-content-value"></span>
+            </div>
+          </div>
+        </div>
+        <p class="no-data-alert">{{ _('Información no disponible') }}</p>
+      </div>
+
+      {% if entities %}
+      {{ render_entity_select('entity-select', entities, entity) }}
+      {% endif %}
+
+      {% include 'shared/data_controllers.html' %}
+
+    </div>
+  </div>
+</section>
+
+{% include 'shared/policy_paths.html' %}
+
+{% include 'entities/show_script.html' %}
+
+{% endblock %}

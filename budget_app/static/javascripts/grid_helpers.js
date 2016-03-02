@@ -86,6 +86,9 @@ function columnValueExtractor(item, getter) {
 
 // Create a DataTable with budget data
 function createBudgetGrid(containerName, data, userColumns) {
+
+  console.log('createBudgetGrid', containerName, data, userColumns);
+
   // Add some default settings to the column definitions given by the user
   var columns = [];
   $.each(userColumns, function(i, column) {

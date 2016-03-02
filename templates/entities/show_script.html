@@ -1,0 +1,318 @@
+<script>
+  $(function () {
+    // Entity select dropdown
+    $('#entity-select').submit(function(e) {
+      e.preventDefault();
+      entity_slug = $('#entity-select select').val();
+      if ( entity_slug != '' ) {
+        window.location.href = {{ 'getCountyCompareLink' if is_county else 'getTownCompareLink' }}('{{ entity.slug }}', entity_slug);
+      }
+    });
+
+    function getColumnDefinition(uiState) {
+      var getBreakdownValue = getBreakdownValueFunction(uiState.field, uiState.year);
+      return {
+        title: '{{ _("Previsto") }}',
+        data: getBreakdownValue,
+        render: getFormatter(uiState.format, stats, Number(uiState.year), getBreakdownValue)
+      }; 
+    }
+
+    function getExecutionColumnDefinition(uiState) {
+      var columnDef = getColumnDefinition(uiState);
+      var title = uiState.field == 'expense' ? '{{ _("Gastado") }}' : '{{ _("Ingresado") }}';
+      columnDef.title = getExecutionColumnName(budgetStatuses[uiState.year], title, budgetStatusLabels);
+      columnDef.data = getBreakdownValueFunction(uiState.field, "actual_" + uiState.year);
+      return columnDef;
+    }
+
+{% if entities %}
+    // Convert an article name into a link
+    function entityLinkFormatter(value, type, item) {
+      var getIncomeLink = {{ 'getCountyIncomeLink' if is_county else 'getTownIncomeLink' }};
+      var getFExpenseLink = {{ 'getCountyFExpenseLink' if is_county else 'getTownFExpenseLink' }};
+      var getExpenseLink = {{ 'getCountyExpenseLink' if is_county else 'getTownExpenseLink' }};
+      var getLink = (uiState.view == 'expense') ? getExpenseLink : (uiState.view == 'income' ? getIncomeLink : getFExpenseLink);
+      var link = getLink('{{ entity.slug }}', item.key);
+      var linkedValue = "<a href='"+link+"'>"+value+"</a>";
+      return rowNameFormatter(value, type, item);
+    };
+{% else %}
+    // The top level and small entities have different URLs at this point
+    function entityLinkFormatter(value, type, item) {
+      if ( uiState.view == 'fexpense' )
+        var formatter = getPolicyLinkFormatter();
+      else if ( uiState.view == 'expense' )
+        var formatter = expenseArticleLinkFormatter;
+      else
+        var formatter = incomeArticleLinkFormatter;
+      return formatter(value, type, item);
+    }
+{% endif %}
+
+    var uiState = null;
+    function redraw() {
+      // Update data-field before getUIState based on active tab anchor link
+      $('section.policies').data('field', $('#tabs .active a').attr('href').substring(1) );
+
+      // Avoid unnecessary redrawings (the slider is trigger happy)
+      var newUIState = getUIState();
+      if ( uiState && sameUIState(uiState, newUIState) ) return;
+      uiState = newUIState;
+
+      // Do work
+      var columnDef = getColumnDefinition(uiState);
+      var executionColumnDef = getExecutionColumnDefinition(uiState);
+
+      if ( myGrid !== undefined )  myGrid.destroy();
+      myGrid = createBudgetGrid("#myGrid", gridData[uiState.view], [
+        {
+          data: "label",
+          title: ( uiState.view == 'fexpense' ? '{{ _("Política") }}' : '{{ _("Artículo") }}' ),
+          render: entityLinkFormatter
+        },
+        columnDef
+{% if show_actual %}
+        ,executionColumnDef
+{% endif %}
+      ]);
+
+      // Update labels and show/hide totals plus download links based on view
+      var executionLabelPostfix = getExecutionTotalLabel(budgetStatuses[uiState.year], budgetStatusLabels);
+      if ( uiState.view == 'fexpense' ) {
+        $(".policies-title").text('{{ _("Gastos (por programa)") }}');
+        if ( includeFinancialChapters ) {
+          $("#main-total .main-label").html('{{ _("Total gastos") }}'+executionLabelPostfix);
+        } else {
+          $("#main-total .main-label").html('{{ _("Total gastos no financieros") }}'+executionLabelPostfix);
+          $("#including-financial-total .main-label").html('{{ _("Total gastos") }}'+executionLabelPostfix);
+        }
+        $("#income-downloads").hide();
+        $("#fexpense-downloads").show();
+        $("#expense-downloads").hide();
+
+      } else if ( uiState.view == 'income' ) {
+        $(".policies-title").text('{{ _("Ingresos") }}');
+        $("#main-total .main-label").html('{{ _("Total ingresos") }}'+executionLabelPostfix);
+        $("#income-downloads").show();
+        $("#fexpense-downloads").hide();
+        $("#expense-downloads").hide();
+
+      } else {
+        $(".policies-title").text('{{ _("Gastos") }}');
+        $("#main-total .main-label").html('{{ _("Total gastos") }}'+executionLabelPostfix);
+        $("#income-downloads").hide();
+        $("#fexpense-downloads").hide();
+        $("#expense-downloads").show();
+      }
+
+      // We show financial/non-financial split only in the functional breakdown view.
+      // (This is basically for historical reasons, Aragon wanted it so. It could be argued that
+      // it may be more consistent to show the split in all views; that'd require changes in the
+      // controller when calculating the breakdowns.)
+      if ( !includeFinancialChapters && uiState.view == 'fexpense' ) {
+        $('#including-financial-total').show();
+      } else {
+        $('#including-financial-total').hide();
+      }
+
+      // Show actual/budgeted split only when there's data available
+      // (and the field format is not '% of total', gets confusing otherwise)
+      var breakdown = breakdowns[uiState.view],
+          hasActualData = breakdown[uiState.field]['actual_'+uiState.year];
+      if ( hasActualData && uiState.format!='percentage' ) {
+        $("#main-total .total-executed").show();
+      } else {
+        $("#main-total .total-executed").hide();
+      }
+
+      // Update year label
+      $('#totals-year').text(uiState.year);
+
+      // Fill in the amounts in the totals
+      var getTotal = function(breakdown) { return columnDef.data(breakdown)||0; },
+          getActualTotal = function(breakdown) { return executionColumnDef.data(breakdown)||0; },
+          format = function(amount) { return columnDef.render(amount, 'display', breakdown); },
+          formatActual = function(amount) { return executionColumnDef.render(amount, 'display', breakdown); };
+
+      if ( hasActualData ) {
+        $("#main-total .total-executed-amount").text(formatActual(getActualTotal(breakdown)));
+        $("#main-total .total-budgeted-amount").text(format(getTotal(breakdown)));
+      } else {
+        $("#main-total .total-budgeted-amount").text(format(getTotal(breakdown)));
+      }
+
+      if ( uiState.view == 'fexpense' ) {
+        // We have two totals for the functional expense view (non-financial/financial), so
+        // we have some extra work in this case.
+        var totalBudgeted = getTotal(breakdown);
+        if ( !includeFinancialChapters )
+          totalBudgeted += getTotal(financialExpenseBreakdown);
+
+        if ( hasActualData ) {
+          var totalActual = getActualTotal(breakdown);
+          if ( !includeFinancialChapters )
+            totalActual += getActualTotal(financialExpenseBreakdown);
+          $("#including-financial-total .total-executed").show();
+          $("#including-financial-total .total-executed-amount").text(formatActual(totalActual));
+          $("#including-financial-total .total-budgeted-amount").text(format(totalBudgeted));
+
+        } else {
+          $("#including-financial-total .total-executed").hide();
+          $("#including-financial-total .total-budgeted-amount").text(format(totalBudgeted));
+        }
+      }
+
+
+      // Setup & Update Budget Summary
+
+      var areas, colorScale;
+
+      if (uiState.view === 'expense') {
+        areas       = expenseAreas;
+        colorScale  = expenseTreemap.colorScale();
+      } else if (uiState.field === 'income') {
+        areas       = incomeAreas;
+        colorScale  = incomeTreemap.colorScale();
+      } else{
+        areas       = fexpenseAreas;
+        colorScale  = fexpenseTreemap.colorScale();
+      }
+
+      budgetSummary.update( breakdowns[uiState.view], areas, colorScale, uiState.field, uiState.view, uiState.year );
+
+      if ( uiState.view == 'expense' ) {
+        $('#incomeChartContainer').hide();
+        $('#fexpenseChartContainer').hide();
+        $('#expenseChartContainer').show();
+        expenseTreemap.updateTreemap(uiState);
+      } else if ( uiState.view == 'income' ) {
+        $('#expenseChartContainer').hide();
+        $('#fexpenseChartContainer').hide();
+        $('#incomeChartContainer').show();
+        incomeTreemap.updateTreemap(uiState);
+      } else {
+        $('#expenseChartContainer').hide();
+        $('#fexpenseChartContainer').show();
+        $('#incomeChartContainer').hide();
+        fexpenseTreemap.updateTreemap(uiState);
+      }
+    
+      // Show an alert if no data is available
+      if ( myGrid.page.info().recordsDisplay != 0 ) {
+        $('.no-data-alert').hide();
+        $('#expenseChartContainer').css('visibility', 'visible');
+        $('#fexpenseChartContainer').css('visibility', 'visible');
+        $('#incomeChartContainer').css('visibility', 'visible');
+      } else {
+        $('.no-data-alert').show();
+        $('#expenseChartContainer').css('visibility', 'hidden');
+        $('#fexpenseChartContainer').css('visibility', 'hidden');
+        $('#incomeChartContainer').css('visibility', 'hidden');
+      }
+    }
+
+    function onEconomicExpenseTreemapClick(event, d) {
+{% if entities %}
+      var getExpenseLink = {{ 'getCountyExpenseLink' if is_county else 'getTownExpenseLink' }};
+      var entitySlug = '{{ entity.slug }}';
+      window.location=getExpenseLink(entitySlug, d.id);
+{% else %}
+      window.location=getExpenseArticleLink(d.id, d.name);
+{% endif %}
+    }
+
+    function onFunctionalExpenseTreemapClick(event, d) {
+{% if entities %}
+      var getExpenseLink = {{ 'getCountyFExpenseLink' if is_county else 'getTownFExpenseLink' }};
+      var entitySlug = '{{ entity.slug }}';
+      window.location=getExpenseLink(entitySlug, d.id);
+{% else %}
+      window.location=getPolicyLink(d.id, d.name);
+{% endif %}
+    }
+
+    function onIncomeTreemapClick(event, d) {
+{% if entities %}
+      var getIncomeLink = {{ 'getCountyIncomeLink' if is_county else 'getTownIncomeLink' }};
+      var entitySlug = '{{ entity.slug }}';
+      window.location=getIncomeLink(entitySlug, d.id);
+{% else %}
+      window.location=getIncomeArticleLink(d.id, d.name);
+{% endif %}
+    }
+
+    var stats = {{ stats|safe }};
+    var budgetStatuses = {{ budget_statuses|safe }};
+    var budgetStatusLabels = {
+      '1T': '{{ _("hasta el primer trimestre") }}',
+      '2T': '{{ _("hasta el segundo trimestre") }}',
+      '3T': '{{ _("hasta el tercer trimestre") }}',
+      'D': '{{ _("a día de hoy") }}'
+    };
+
+{% if include_financial_chapters %}
+    var includeFinancialChapters = true;
+{% else %}
+    var financialExpenseBreakdown = {{ financial_expense_breakdown.to_json()|safe }},
+        includeFinancialChapters = false;
+{% endif %}
+
+    var breakdowns = {
+      'income': {{ economic_breakdown.to_json( labels=descriptions['income'] )|safe }},
+      'fexpense': {{ functional_breakdown.to_json( labels=descriptions['functional'] )|safe }},
+      'expense': {{ economic_breakdown.to_json( labels=descriptions['expense'] )|safe }}
+    };
+    var gridData = {
+      'income': breakdownToTable(breakdowns['income']),
+      'fexpense': breakdownToTable(breakdowns['fexpense']),
+      'expense': breakdownToTable(breakdowns['expense'])
+    };
+    var myGrid;
+
+    var i18n = {
+      'Presupuestado': 'Presupuestado'
+    };
+
+    var incomeAreas = {{ income_areas|safe }};
+    var fexpenseAreas = {{ functional_areas|safe }};
+    var expenseAreas = {{ expense_areas|safe }};
+
+    var colorScale = {{ color_scale|safe }};
+    var incomeTreemap = new BudgetTreemap("#incomeChartContainer", breakdowns['income'], stats, incomeAreas, 2, colorScale).i18n(i18n).budgetStatuses(budgetStatuses);
+    var fexpenseTreemap = new BudgetTreemap("#fexpenseChartContainer", breakdowns['fexpense'], stats, fexpenseAreas, 2, colorScale).i18n(i18n).budgetStatuses(budgetStatuses);
+    var expenseTreemap = new BudgetTreemap("#expenseChartContainer", breakdowns['expense'], stats, expenseAreas, 2, colorScale).i18n(i18n).budgetStatuses(budgetStatuses);
+{% if not entities %}
+    // Limit treemap depth for top-level entities
+    incomeTreemap.maxLevels(1);
+    fexpenseTreemap.maxLevels(1);
+    expenseTreemap.maxLevels(1);
+{% endif %}
+
+    // Set up controls
+    $('#select-format').change(redraw);
+    $('#expenseChartContainer').bind('policy-selected', onEconomicExpenseTreemapClick);
+    $('#fexpenseChartContainer').bind('policy-selected', onFunctionalExpenseTreemapClick);
+    $('#incomeChartContainer').bind('policy-selected', onIncomeTreemapClick);
+    initSlider("#year-selection", {{ years|safe }}, redraw, {{ latest_year }}, {{ years_scale|safe }});
+
+    // Create Budget Summary
+    var budgetSummary = new BudgetSummary('#budget-summary');
+
+    // XXX: Because of a really weird bug in Chrome 48 (OS X, not Linux), the
+    // browser was crashing when trying to create the treemaps on demand, i.e. 
+    // when a tab was shown for the first time. There was some sort of memory
+    // leak or corruption that we couldn't sort out. So we now create the
+    // treemaps at the beginning, and update them as usual.
+    // See issue civio/presupuesto-management#52
+    expenseTreemap.createTreemap( $.extend(getUIState(), { field: 'expense' }) );
+    incomeTreemap.createTreemap( $.extend(getUIState(), { field: 'income' }) );
+    fexpenseTreemap.createTreemap( $.extend(getUIState(), { field: 'expense' }) );
+
+    // Setup tabs navigation
+    setRedrawOnTabsChange('#tabs', redraw);
+
+    // Ready to go
+    redraw();
+  });
+</script>
