@@ -1,93 +1,126 @@
-.table-grid {
-  border: 1px solid $brand-primary;
+table.table-grid {
+  border: 1px solid $table-color;
   border-top: none;
   margin-bottom: $grid-gutter-width/2;
 
-  .slick-header{
+  thead{
     border: none;
     text-transform: uppercase;
-  }
-
-  .slick-header-column{
-    color: white;
-    background: $brand-primary;
-    border-color: white;
-    padding: $grid-gutter-width/2;
-    font-size: 1.125em;
-    line-height: 1em;
-
-    &:hover{
-      color: mix( white, $gray-lighter, 50% );
-    }
-
-    &:last-child{
-      border-right: none;
-    }
-
-    .slick-column-name{
+  
+    th{
+      color: white;
+      background: $table-color;
+      border-color: white;
+      padding: $grid-gutter-width/2;
+      font-size: 1.125em;
       font-weight: $font-weight-400;
+      line-height: 1em;
+
+      &:hover{
+        background: mix( $table-color, white, 90% );
+      }
+
+      &:last-child{
+        border-right: none;
+      }
     }
 
-    .slick-sort-indicator{
-      width: $grid-gutter-width/6;
-      height: $grid-gutter-width/3;
-      margin-left: $grid-gutter-width/3;
-      background-color: $brand-primary;
+    .sorting, 
+    .sorting_asc,
+    .sorting_desc,
+    .sorting_asc_disabled, 
+    .sorting_desc_disabled{
+
+      &:after{
+        bottom: auto;
+        top: 16px;
+        font-size: 12px;
+        
+      }
+    }
+
+    .sorting:after,
+    .sorting_asc_disabled:after, 
+    .sorting_desc_disabled:after{
+      opacity: 0.4;
+    }
+
+    .sorting_asc:after,
+    .sorting_desc:after{
+      opacity: 0.8;
     }
   }
 
   tr td{
-    height: 42px;
+    font-size: 1.25em;
     color: $text-color;
     font-weight: $font-weight-400;
-    border-color: $brand-primary;
-    border-left: none;
-    border-top: none;
-    border-right-style: solid;
+    border-bottom: 1px solid mix( $table-color, white, 50% );
     padding: $grid-gutter-width/3;
+    text-align: right;
 
-    &:last-child{
-      border-right: none;
+    &:first-child{
+      text-align: left;
     }
 
     &.l0:hover{
       color: $text-color;
-      border-color: mix(white, $brand-primary, 80%);
-      background: mix(white, $brand-primary, 80%);
+      border-color: mix(white, $table-color, 80%);
+      background: mix(white, $table-color, 80%);
     }
 
     a{
-      color: $brand-primary;
+      color: $table-color;
     }
 
-    .toggle.expand,
-    .toggle.collapse{
-      background-color: $gray-light;
-      margin-top: -1px;
+    .toggle{
 
-      &:hover{
-        background-color: $brand-primary;
+      &.expand,
+      &.collapse{
+        display: block;
+        float: left;
+        height: 22px;
+        width: 22px;
+        margin-top: 1px;
+        margin-right: $grid-gutter-width/3;
+        background-color: mix( $table-color, white, 80% );
+        background-position: center center;
+        background-repeat: no-repeat;
+        cursor: pointer;
+
+         &:hover{
+          background-color: $table-color;
+        }
+      }
+
+      &.expand {
+        background-image: url(../assets/slick/expand.png);
+      }
+      &.collapse {
+        background-image: url(../assets/slick/collapse.png);
       }
     }
   }
 
-  tr.indent-1 td{
-    height: 40px;
+  tr:last-child td{
+    border-bottom: none;
   }
 
-
-
-  /* DataTables migration */
-  span.toggle.expand {
-      background-image: url(../assets/slick/expand.png);
-    display: inline-block;
-    height: 24px;
-    width: 24px;
+  tr.indent-1,
+  tr.indent-2,
+  tr.indent-3{
+    td{
+      font-size: 1.125em;
+    }
   }
-  span.toggle.collapse {
-      background-image: url(../assets/slick/collapse.png);
-    display: inline-block;
-    height: 24px;
-    width: 24px;
+
+  tr.indent-1 td:first-child{
+    padding-left: 40px; //32px;
+  }
+  tr.indent-2 td:first-child{
+    padding-left: 70px; //54px;
+  }
+  tr.indent-3 td:first-child{
+    padding-left: 100px;  //90px;
   }
 }
