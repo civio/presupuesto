@@ -82,10 +82,13 @@
       return renders[tab];
     }
 
-    // Do all the hard work of drawing the grids
+    
     var uiState = null;
     var currentTab = null;
-    function redrawGrid() {
+
+    // Redraw all
+    function redraw(){
+
       // Avoid unnecessary redrawings (the slider is trigger happy)
       var newUIState = getUIState();
       var newCurrentTab = $(".policy-breakdown .tab-pane.active").attr('id');
@@ -93,10 +96,26 @@
       uiState = newUIState;
       currentTab = newCurrentTab;
 
+      // Update grid
+      redrawGrid();
+
+       // Update year label
+      $('#totals-year').text(uiState.year);
+
+      var label = uiState.view == 'income' ? '{{ _("Total ingresos") }}' : '{{ _("Total gastos") }}';
+      $("#main-total .main-label").html(label+getExecutionTotalLabel(budgetStatuses[uiState.year], budgetStatusLabels))
+
+      onTabSwitch();
+    }
+    
+    // Do all the hard work of drawing the grids
+    function redrawGrid() {
+     
+      if( $('#myGrid').size() == 0 ) return;
+
       // Do work
       var columnDef = getColumnDefinition(uiState);
       var executionColumnDef = getExecutionColumnDefinition(uiState);
-
 
       if ( myGrid !== undefined )  myGrid.destroy();
       myGrid = createBudgetGrid( "#myGrid", gridData[currentTab], [
@@ -110,7 +129,7 @@
                           ,executionColumnDef
 {% endif %}
                         ]);
-
+      
       // Total amounts are the same whichever way you break down the items, so any breakdown will do
       var breakdown = economicBreakdown,
           hasActualData = executionColumnDef.data(breakdown),
@@ -127,15 +146,7 @@
         $("#main-total .total-executed").hide();
         $("#main-total .total-budgeted-amount").text(format(getTotal(breakdown)));
       }
-
-      // Update year label
-      $('#totals-year').text(uiState.year);
-
-      var label = uiState.view == 'income' ? '{{ _("Total ingresos") }}' : '{{ _("Total gastos") }}';
-      $("#main-total .main-label").html(label+getExecutionTotalLabel(budgetStatuses[uiState.year], budgetStatusLabels))
-
-      onTabSwitch();
-    }    
+    }
 
 
     //
@@ -299,10 +310,10 @@
       // Highlight a particular item
       if ( state.item ) {
         unfoldItem(economicGridData, state.item);
-        redrawGrid();
+        redraw();
         window.setTimeout(function(){ $(".toggle.collapse")[0].scrollIntoView() }, 1000);
       } else {
-        redrawGrid();
+        redraw();
       }
     }
 
@@ -310,8 +321,8 @@
     parseLocationHash();
 
     // Control Setup
-    $('#select-format').change(redrawGrid);
-    initSlider("#year-selection", {{ years|safe }}, redrawGrid, {{ latest_year }}, {{ years_scale|safe }});
+    $('#select-format').change(redraw);
+    initSlider("#year-selection", {{ years|safe }}, redraw, {{ latest_year }}, {{ years_scale|safe }});
 
     // Add click embed btn event
     $('.chart-container .chart-embed-btn').click(function(e){
