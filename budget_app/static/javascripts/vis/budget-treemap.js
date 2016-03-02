@@ -11,6 +11,7 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
   var i18n = [];
   var budgetStatuses = {};
   var transitionDuration = 650;
+  var minSizeWithLabel = 70;
   var mouseOver = true;
   var paddedYears = {};
   var maxLevels = -1; // By default, don't limit treemap depth
@@ -329,7 +330,7 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
             if ( !d.leaf )  return;
 
             // Skip too small rectangles
-            if ( d.dx < 20 || d.dy < 20 ) return;
+            if ( d.dx < minSizeWithLabel || d.dy < minSizeWithLabel ) return;
 
             // This is our initial best guess about font size
             var width = Math.max(d.dx - 8, 0) * .9;     // .9 is a safety margin
