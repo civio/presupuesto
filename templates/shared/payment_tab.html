@@ -1,7 +1,5 @@
 {% macro render_tab(title, category, additional_css, entity) %}
 <div id="tab-{{category}}" class="tab-pane {{additional_css}}" role="tabpanel">
-  <div class="totals-placeholder"></div>
-  <div class="table-grid" id='{{category}}Grid'></div>
   <div class="panel-downloads">
     <p class="downloads">
       <!-- TODO!!! We need to ad links to CSV/Excel files -->

@@ -93,45 +93,47 @@ function getTownCompareLink(left_slug, right_slug) {
 
 
 // Convert a programme/policy name into a link
-function policyLinkFormatter(row, cell, value, columnDef, dataContext) {
-  var programme_level = (columnDef.programme_level == undefined) ? 1 : columnDef.programme_level;
-  if ( dataContext.indent >= programme_level ) {
-    var link = getProgrammeLink(dataContext.key, value);
-  } else {
-    var link = getPolicyLink(dataContext.key, value);
+function getPolicyLinkFormatter(programme_level) {
+  return function(value, type, item) {
+    programme_level = (typeof programme_level==='undefined') ? 1 : programme_level;
+    if ( item.indent >= programme_level ) {
+      var link = getProgrammeLink(item.key, value);
+    } else {
+      var link = getPolicyLink(item.key, value);
+    }
+    var linkedValue = "<a href='"+link+"'>"+value+"</a>";
+    return rowNameFormatter(linkedValue, type, item);
   }
-  var linkedValue = "<a href='"+link+"'>"+value+"</a>";
-  return rowNameFormatter(row, cell, linkedValue, columnDef, dataContext);
 };
 
 // Convert an article name into a link
-function articleLinkFormatter(row, cell, value, columnDef, dataContext, linkGetter) {
-  if ( dataContext.indent > 0 ) {
-    var link = linkGetter(dataContext.parent.key, dataContext.parent.label);
+function articleLinkFormatter(value, type, item, linkGetter) {
+  if ( item.indent > 0 ) {
+    var link = linkGetter(item.parent.key, item.parent.label);
   } else {
-    var link = linkGetter(dataContext.key, value);
+    var link = linkGetter(item.key, value);
   }
   var linkedValue = "<a href='"+link+"'>"+value+"</a>";
-  return rowNameFormatter(row, cell, linkedValue, columnDef, dataContext);
+  return rowNameFormatter(linkedValue, type, item);
 };
-function incomeArticleLinkFormatter(row, cell, value, columnDef, dataContext) {
-  return articleLinkFormatter(row, cell, value, columnDef, dataContext, getIncomeArticleLink);
+function incomeArticleLinkFormatter(value, type, item) {
+  return articleLinkFormatter(value, type, item, getIncomeArticleLink);
 };
-function expenseArticleLinkFormatter(row, cell, value, columnDef, dataContext) {
-  return articleLinkFormatter(row, cell, value, columnDef, dataContext, getExpenseArticleLink);
+function expenseArticleLinkFormatter(value, type, item) {
+  return articleLinkFormatter(value, type, item, getExpenseArticleLink);
 };
 
 // Convert a region name into a link
-function countyLinkFormatter(row, cell, value, columnDef, dataContext) {
+function countyLinkFormatter(value, type, item) {
   var link = getCountyLink(columnDef.entities[value].slug);
   var linkedValue = "<a href='"+link+"'>"+value+"</a>";
-  return rowNameFormatter(row, cell, linkedValue, columnDef, dataContext);
+  return rowNameFormatter(linkedValue, type, item);
 };
 
 // Convert a town name into a link
-function townLinkFormatter(row, cell, value, columnDef, dataContext) {
+function townLinkFormatter(value, type, item) {
   var link = getTownLink(columnDef.entities[value].slug);
   var linkedValue = "<a href='"+link+"'>"+value+"</a>";
-  return rowNameFormatter(row, cell, linkedValue, columnDef, dataContext);
+  return rowNameFormatter(value, type, item);
 };
 </script>
