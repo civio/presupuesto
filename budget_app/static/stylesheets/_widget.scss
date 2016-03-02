@@ -51,6 +51,14 @@ body.widget{
     padding: 0;
   }
 
+  .tab-content > a:hover{
+    text-decoration: none;
+
+    h2{
+      color: $text-color;
+    }
+  }
+
   .tab-pane{
     position: relative;
     padding-bottom: $grid-gutter-width/2;

@@ -25,9 +25,13 @@
       <p class="history-back">
         <a href="{% url 'budget_app.views.policies_show' programme.policy, policy.slug() %}" id="policy-name-link" title="{{ descriptions['functional'].get(programme.policy) }}">&larr;</a>
       </p>
-      <h2 class="page-title">{{ name }}</h2>
+      <a href="{{ request.path|urlencode }}" target="_parent" title="{{ name }}">
+        <h2 class="page-title">{{ name }}</h2>
+      </a>
     {% else %}
-      <h2 class="page-title">{{ entity.name+': ' if entity }}{{ name }}</h2>
+      <a href="{{ request.path|urlencode }}" target="_parent" title="{{ entity.name+': ' if entity }}{{ name }}">
+        <h2 class="page-title">{{ entity.name+': ' if entity }}{{ name }}</h2>
+      </a>
     {% endif %}
 
   {% if full_breakdown %}
