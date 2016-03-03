@@ -82,9 +82,63 @@
       return renders[tab];
     }
 
-    
-    var uiState = null;
-    var currentChart = null;
+
+    //
+    // POLICY DATA
+    //
+    var stats = {{ stats|safe }};
+    var budgetStatuses = {{ budget_statuses|safe }};
+    var budgetStatusLabels = {
+      '1T': '{{ _("hasta el primer trimestre") }}',
+      '2T': '{{ _("hasta el segundo trimestre") }}',
+      '3T': '{{ _("hasta el tercer trimestre") }}',
+      'D': '{{ _("a día de hoy") }}'
+    };
+
+    // The income and expense descriptions for the economic breakdowns do not match,
+    // i.e. the same code, '2', means different things for income and expenses, so
+    // we need to use the right descriptions
+    var economicBreakdown = {{ economic_breakdown.to_json( labels=descriptions[show_side] )|safe }};
+    var functionalBreakdown = {{ functional_breakdown.to_json( labels=descriptions['functional'] )|safe }};
+
+{% if full_breakdown %}
+    var institutionalBreakdown = {{ institutional_breakdown.to_json( labels=descriptions['institutional'] )|safe }};
+    var fundingBreakdown = {{ funding_breakdown.to_json( labels=descriptions['funding'] )|safe }};
+{% endif %}
+
+    // Grid Data onjets
+    var gridData = {
+      'economic':       breakdownToTable(economicBreakdown),
+      'functional':     breakdownToTable(functionalBreakdown),
+{% if full_breakdown %}
+      'institutional':  breakdownToTable(institutionalBreakdown),
+      'funding':        breakdownToTable(fundingBreakdown),
+{% endif %}
+    }
+
+    // Areas Data object
+    var areasData = {
+{% if full_breakdown or article %}
+      'economic':       {{ (expense_areas if show_side=='expense' else income_areas)|safe }},
+{% endif %}
+
+{% if programme is not defined and show_side != 'income' %}
+      'functional':     {{ functional_areas|safe }},
+{% endif %}
+
+{% if full_breakdown %}
+      'funding':        {{ funding_areas|safe }},
+{% endif %}
+    };
+
+
+    //
+    // SETTING ELEMENTS
+    //
+    var myGrid,
+        uiState       = null,
+        currentChart  = null,
+        i18n          = { 'budgeted': '{{ _("Presupuestado") }}' };
 
     //Update Tab
     function updateTab() {
@@ -103,18 +157,13 @@
     // Redraw all
     function redraw(){
 
-      // Avoid unnecessary redrawings (the slider is trigger happy)
       uiState = getUIState();
-      //if ( uiState && sameUIState(uiState, newUIState)) return;
-      console.log('redraw', uiState);
-      console.log('------');
 
       // Show/hide panel downloads
       $('.panel-downloads > p').hide();
       $('#'+uiState.type+'-downloads').show();
 
-      redrawGraph();
-
+      redrawChart();
       redrawGrid();
     }
 
@@ -165,97 +214,52 @@
       }
     }
 
-    function redrawGraph() {
-      // Charts can't be initialized in a tab that is not visible
-      // TODO: Really? Is this still valid?
-      //var currentChart = $('#policy-chart-container').data('chart');
-      //if ( currentChart != undefined ) {
-{% if show_treemap %}
-        //currentChart.updateTreemap(getUIState());
-{% else %}
-        //currentChart.draw(getUIState());
-{% endif %}
+    function redrawChart() {
 
-        console.log('redrawGraph', uiState);
+      if (uiState === null) return;
 
+      // We skip graph setup in institutional tab
+      if (uiState.type === 'institutional'){
+        $('#policy-chart-container .stacked-area-chart').remove();
+        $('#policy-chart-container').hide();
+        return;
+      }
+      else{
+        $('#policy-chart-container').show();
+      }
 
-        if (uiState === null) return;
+      // Setup Graph
+      var breakdown = (uiState.type === 'economic') ? economicBreakdown :  
+                      (uiState.type === 'functional') ? functionalBreakdown :
+                      (uiState.type === 'institutional') ? institutionalBreakdown :
+                      fundingBreakdown;
 
-        // We skip graph setup in institutional tab
-        if (uiState.type === 'institutional'){
-          $('#policy-chart-container .stacked-area-chart').remove();
-          $('#policy-chart-container').hide();
-          return;
-        }
-        else{
-          $('#policy-chart-container').show();
-        }
+      var colorScale = {{ color_scale|safe }};
 
-        // Setup Graph
-        var breakdown = (uiState.type === 'economic') ? economicBreakdown :  
-                        (uiState.type === 'functional') ? functionalBreakdown :
-                        (uiState.type === 'institutional') ? institutionalBreakdown :
-                        fundingBreakdown;
+      // We explicitely set the dimensions of the container, otherwise we got an strange behaviour in 
+      // an iPad, where the height of the chart would explode for no apparent reason
+      //$(container).css('width', chartWidth);
+      //$(container).css('height', chartWidth/2);
 
-        setupGraph( $('#policy-chart-container').width(), 
-                '#policy-chart-container', 
-                breakdown,
-                areasData[uiState.type]);
-      //}
-    };
-
-
-    //
-    // POLICY DATA
-    //
-    var stats = {{ stats|safe }};
-    var budgetStatuses = {{ budget_statuses|safe }};
-    var budgetStatusLabels = {
-      '1T': '{{ _("hasta el primer trimestre") }}',
-      '2T': '{{ _("hasta el segundo trimestre") }}',
-      '3T': '{{ _("hasta el tercer trimestre") }}',
-      'D': '{{ _("a día de hoy") }}'
-    };
-
-    // The income and expense descriptions for the economic breakdowns do not match,
-    // i.e. the same code, '2', means different things for income and expenses, so
-    // we need to use the right descriptions
-    var economicBreakdown = {{ economic_breakdown.to_json( labels=descriptions[show_side] )|safe }};
-    var functionalBreakdown = {{ functional_breakdown.to_json( labels=descriptions['functional'] )|safe }};
-
-{% if full_breakdown %}
-    var institutionalBreakdown = {{ institutional_breakdown.to_json( labels=descriptions['institutional'] )|safe }};
-    var fundingBreakdown = {{ funding_breakdown.to_json( labels=descriptions['funding'] )|safe }};
-{% endif %}
-
-    // Grid Data onjets
-    var gridData = {
-      'economic':       breakdownToTable(economicBreakdown),
-      'functional':     breakdownToTable(functionalBreakdown),
-{% if full_breakdown %}
-      'institutional':  breakdownToTable(institutionalBreakdown),
-      'funding':        breakdownToTable(fundingBreakdown),
-{% endif %}
-    }
-
-    // Areas Data object
-    var areasData = {
-{% if full_breakdown or article %}
-      'economic':       {{ (expense_areas if show_side=='expense' else income_areas)|safe }},
-{% endif %}
-
-{% if programme is not defined and show_side != 'income' %}
-      'functional':     {{ functional_areas|safe }},
-{% endif %}
-
-{% if full_breakdown %}
-      'funding':        {{ funding_areas|safe }},
-{% endif %}
-    };
-
-    var myGrid;
-    var i18n = {
-      'budgeted': '{{ _("Presupuestado") }}'
+      // Setup treemap chart
+      {% if show_treemap %}
+      if (currentChart !== null) $('#policy-chart-container .treemap-chart').remove();
+      currentChart = new BudgetTreemap('#policy-chart-container', breakdown, stats, areasData[uiState.type], 2, colorScale)
+        .i18n(i18n)
+        .maxLevels(2)
+        .budgetStatuses(budgetStatuses);
+      currentChart.createTreemap( uiState );
+      // Setup stacked area chart
+      {% else %}
+      currentChart = new BudgetStackedChart('#policy-chart-container', stats, colorScale, i18n)
+        .budgetStatuses(budgetStatuses);
+      currentChart.loadBreakdown(breakdown, '{{ show_side }}');
+      currentChart.draw( uiState );
+      // Add area click event if type is functional
+      if (uiState.type == 'functional') {
+        $('#policy-chart-container').bind('area-selected', onProgrammeSelected);
+      }
+      {% endif %}
     };
 
     // Link to policy handlers
@@ -268,33 +272,6 @@
       window.location = getProgrammeLink(d.id, d.label, getUIState())+widget;
 {% endif %}
     }
-  
-    // Setup Graph
-    function setupGraph(chartWidth, container, breakdown, areas) {
-
-      console.log('setupGraph', chartWidth, container, breakdown, areas);
-
-      var colorScale = {{ color_scale|safe }};
-
-      // We explicitely set the dimensions of the container, otherwise we got an strange behaviour in 
-      // an iPad, where the height of the chart would explode for no apparent reason
-      //$(container).css('width', chartWidth);
-      //$(container).css('height', chartWidth/2);
-      {% if show_treemap %}
-      var treemap = new BudgetTreemap(container, breakdown, stats, areas, 2, colorScale).i18n(i18n).maxLevels(2).budgetStatuses(budgetStatuses);
-      treemap.createTreemap(getUIState());
-      $(container).data('chart', treemap);
-      {% else %}
-      currentChart = new BudgetStackedChart(container, stats, colorScale, i18n).budgetStatuses(budgetStatuses);
-      //$(container).data('chart', chart);
-      currentChart.loadBreakdown(breakdown, '{{ show_side }}');
-      currentChart.draw( uiState );
-      // Add area click event if type is functional
-      if (uiState.type == 'functional') {
-        $('#policy-chart-container').bind('area-selected', onProgrammeSelected);
-      }
-      {% endif %}
-    };
 
 
     //
