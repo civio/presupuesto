@@ -135,7 +135,8 @@ class PaymentsLoader:
     def _get_amount(self, item):
         return self._read_english_number(item[9])
 
-    # TODO: These below are probably useful enough to move to some base/utils class
+    # TODO: These below are probably useful enough to move to some base/utils class.
+    # They are needed sometimes by the SimpleBudgetLoader.
     # (It may be worth checking also what other loaders are doing regarding Unicode, since it's always
     # a tricky business.)
 

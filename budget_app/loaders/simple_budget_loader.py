@@ -230,3 +230,11 @@ class SimpleBudgetLoader:
     def _parse_amount(self, amount):
         return self._read_english_number(amount)
 
+    # If the given string is all uppercase, convert to 'spanish titlecase', i.e. only first letter is upper
+    def _spanish_titlecase(self, s):
+        if s.isupper():
+          # We need to do the casing operation on an Unicode string so it handles accented characters correctly
+          s = unicode(s, encoding='utf8')
+          return s[0].upper() + s[1:].lower()
+        else:
+          return s
