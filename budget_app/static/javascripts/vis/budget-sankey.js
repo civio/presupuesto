@@ -101,7 +101,7 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
       if ( typeof item_id == 'string' ) {   // Standard, an id
         var items = getBreakdownItems(breakdown, item_id);
         var amount_info = getBreakdownItemsAmounts(items, field);
-        return $.extend(amount_info, {label: items[0][labelName], link_id: item_id});
+        return $.extend(amount_info, {label: items[0].label, link_id: item_id});
 
       } else {                              // We got ourselves a hash
         var items = getBreakdownItems(breakdown, item_id.nodes);
