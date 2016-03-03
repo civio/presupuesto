@@ -12,6 +12,7 @@ class Command(BaseCommand):
             '--language',
             action='store',
             dest='language',
+            default=settings.LANGUAGE_CODE,
             help='Set data language'
         ),
     )
