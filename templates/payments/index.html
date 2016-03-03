@@ -149,7 +149,7 @@
       if ( state.description ) {
         unfoldItem(payeeGridData, state.description);
         redrawGrid();
-        $("a[href=#tab-payee]").click();
+        $("#tab-payee a").click();
         window.setTimeout(function(){ $(".toggle.collapse")[0].scrollIntoView() }, 1000);
 
       } else {
