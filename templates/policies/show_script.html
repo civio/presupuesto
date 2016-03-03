@@ -128,26 +128,7 @@
       'funding':        {{ funding_areas|safe }},
 {% endif %}
     };
-
-
-    //
-    // LOCATION HASH
-    //
-    function unfoldItem(gridData, itemId) {
-      var found = false;
-      for ( i=0; i<gridData.length && !found; i++ ) {
-        if ( gridData[i].key == itemId ) {
-          var parent = gridData[i].parent;
-          while (parent != null) {
-            parent._expanded = true;
-            parent = parent.parent;
-          }
-          found = true;
-        }
-      }
-      return found;
-    }
-
+    
 
     //
     // SETTING ELEMENTS

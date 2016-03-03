@@ -14,7 +14,7 @@ function setRedrawOnTabsChange(container, callback) {
     if (state.view) {
       // Clear item hash if exists
       if (state.item) $.bbq.removeState('item');
-      setDataType(state.view);
+      setDataTab(state.view);
       callback();
     }
     // First call
@@ -33,8 +33,9 @@ function setRedrawOnTabsChange(container, callback) {
   $(window).trigger('hashchange');
 }
 
-function setDataType( type ){
-  $('section.policies').data('type', type);
+function setDataTab( type ){
+  console.log('setDataTab', type);
+  $('section').data('tab', type);
 }
 
 function setRedrawOnButtonGroupChange(selector, callback) {
@@ -44,6 +45,21 @@ function setRedrawOnButtonGroupChange(selector, callback) {
     $(event.target).addClass('active').blur();
     callback();
   });
+}
+
+function unfoldItem(gridData, itemId) {
+  var found = false;
+  for ( i=0; i<gridData.length && !found; i++ ) {
+    if ( gridData[i].key == itemId ) {
+      var parent = gridData[i].parent;
+      while (parent != null) {
+        parent._expanded = true;
+        parent = parent.parent;
+      }
+      found = true;
+    }
+  }
+  return found;
 }
 
 // Activar slider de años (Documentation: http://seiyria.com/bootstrap-slider/)
@@ -75,9 +91,9 @@ function initSlider(selector, years, callback, startValue, labels) {
 }
 
 function getUIState() {
-  var field = $('section.policies').data('field');
+  var field = $('section').data('field');
   return {
-    type:   $('section.policies').data('type'),
+    type:   $('section').data('tab'),
     field:  field == 'income' ? 'income' : 'expense',
     view:   field,
     format: $('#select-format').val(),

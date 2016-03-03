@@ -5,7 +5,7 @@
   
 </div>
 
-<section class="payments-breakdown" role="region">
+<section class="payments-breakdown" role="region" data-tab="area">
 
   <!-- Payments Header -->
   <div class="payments-header section-header">
@@ -15,11 +15,11 @@
     </div>
 
     <ul id="tabs" class="nav nav-tabs nav-tabs-centered" role="tablist">
-      <li class="active" id="tab-area">
-        <a href="#tab-area"><h3>{{ _('Por área') }}</h3></a>
+      <li class="active">
+        <a href="#area"><h3>{{ _('Por área') }}</h3></a>
       </li>
-      <li id="tab-payee">
-        <a href="#tab-payee"><h3>{{ _('Por beneficiario') }}</h3></a>
+      <li>
+        <a href="#payee"><h3>{{ _('Por beneficiario') }}</h3></a>
       </li>
     </ul>
   </div>
@@ -70,16 +70,25 @@
       }; 
     }
 
+    //Update Tab
+    function updateTab() {
+      var uiState = getUIState();
+
+      console.log('updateTab', uiState);
+
+      $('#tabs .active').removeClass('active');
+      $('a[href="#'+uiState.type+'"]').blur().parent().addClass('active');
+      
+      redrawGrid();
+    }
+
     // Do all the hard work of drawing the grids
     function redrawGrid() {
-      var uiState = getUIState();
+      var uiState   = getUIState();
       var columnDef = getColumnDefinition(uiState);
-
-      // TODO: We should adapt getUIState() so it picks up the current tab
-      var currentTab = $("#tabs li.active").attr('id');
-      var title = (currentTab == 'tab-area') ? '{{ _("Área") }}' : '{{ _("Beneficiario") }}';
-      var data = (currentTab == 'tab-area') ? areaGridData : payeeGridData;
-
+      var title     = (uiState.type == 'area') ? '{{ _("Área") }}' : '{{ _("Beneficiario") }}';
+      var data      = (uiState.type == 'area') ? areaGridData : payeeGridData;
+      
       if ( myGrid !== undefined )  myGrid.destroy();
       myGrid = createBudgetGrid("#myGrid", data,
                         [
@@ -111,57 +120,23 @@
     var myGrid;
 
 
-    //
-    // TABS
-    //
-    // Setup tabs navigation
-    setRedrawOnTabsChange('#tabs', redrawGrid);
-
-
-    //
-    // LOCATION HASH
-    //
-
-    // XXX: This method is very similar to the one for policies, but not quite the same :/
-    function unfoldItem(gridData, itemId) {
-      var found = false;
-      for ( i=0; i<gridData.length && !found; i++ ) {
-        // XXX: Not proud of this matching (both passing a description via URL and using indexOf
-        // to match), but a) we don't have a better id at the moment, the breakdown only gives us
-        // amounts and the dimension keys, and b) because of the former we've added the date to the
-        // item description, so we can't get an exact match.
-        if ( gridData[i].key.indexOf(itemId) == 0 ) {
-          var parent = gridData[i].parent;
-          while (parent != null) {
-            parent._expanded = true;
-            parent = parent.parent;
-          }
-          found = true;
-        }
-      }
-      return found;
-    }
-
-    function parseLocationHash() {
-      state = $.deparam.fragment();
-
-      // Highlight a particular item
-      if ( state.description ) {
-        unfoldItem(payeeGridData, state.description);
-        redrawGrid();
-        $("#tab-payee a").click();
-        window.setTimeout(function(){ $(".toggle.collapse")[0].scrollIntoView() }, 1000);
-
-      } else {
-        redrawGrid();
-      }
-    }
-
     initSlider("#year-selection", years, redrawGrid, {{ latest_year }});
     if (years.length==1) $(".data-controllers").hide();
 
-    parseLocationHash();      // Handle the hash the page may have loaded with.
-  })
+    // Handle the hash the page may have loaded with.
+    state = $.deparam.fragment();
+    // Highlight a particular item
+    if (state.description) {
+      unfoldItem(payeeGridData, state.description);
+      redrawGrid();
+      $('a[href="#payee"]').parent().addClass('active');
+      //$("#tab-payee a").click();
+      //window.setTimeout(function(){ $(".toggle.collapse")[0].scrollIntoView() }, 1000);
+    }
+
+    // Setup tabs navigation
+    setRedrawOnTabsChange('#tabs', updateTab);
+  });
 </script>
 
 {% endblock %}

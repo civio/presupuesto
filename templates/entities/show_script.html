@@ -53,7 +53,7 @@
     var uiState = null;
     function redraw() {
       // Update data-field before getUIState based on active tab anchor link
-      $('section.policies').data('field', $('#tabs .active a').attr('href').substring(1) );
+      $('section').data('field', $('#tabs .active a').attr('href').substring(1) );
 
       // Avoid unnecessary redrawings (the slider is trigger happy)
       var newUIState = getUIState();
