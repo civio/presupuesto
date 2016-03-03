@@ -41,8 +41,8 @@
   padding-bottom: 1px;
 }
 
-// Policies Graph
-.policies-graph{
+// Policies Chart
+.policies-chart{
   @extend .panel;
   position: relative;
   background: $page-header-bg;
@@ -50,7 +50,17 @@
   margin: $grid-gutter-width 0 $grid-gutter-width/2;
 }
 
-.policy-breakdown{
+.policies.policy-breakdown{
+
+  // Remove cursor pointer in policy-breakdown treemap
+  .policies-chart .treemap-chart rect{
+    cursor: auto; 
+  }
+  
+  .chart-container.stacked-area-chart .popover .popover-content {
+    text-align: left;
+  }
+
   .panel-downloads > p{
     display: none;
   }
@@ -78,10 +88,4 @@
       text-align: left;
     }
   }
-  
-  /*
-  .policies-graph{
-    padding-top: $grid-gutter-width;
-  }
-  */
 }

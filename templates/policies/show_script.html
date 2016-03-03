@@ -121,11 +121,9 @@
 {% if full_breakdown or article %}
       'economic':       {{ (expense_areas if show_side=='expense' else income_areas)|safe }},
 {% endif %}
-
 {% if programme is not defined and show_side != 'income' %}
       'functional':     {{ functional_areas|safe }},
 {% endif %}
-
 {% if full_breakdown %}
       'funding':        {{ funding_areas|safe }},
 {% endif %}
@@ -218,7 +216,7 @@
 
       if (uiState === null) return;
 
-      // We skip graph setup in institutional tab
+      // We skip chart setup in institutional tab
       if (uiState.type === 'institutional'){
         $('#policy-chart-container .stacked-area-chart').remove();
         $('#policy-chart-container').hide();
@@ -257,6 +255,7 @@
       currentChart.draw( uiState );
       // Add area click event if type is functional
       if (uiState.type == 'functional') {
+        $('#policy-chart-container .stacked-area-chart').addClass('clickable');
         $('#policy-chart-container').bind('area-selected', onProgrammeSelected);
       }
       {% endif %}
