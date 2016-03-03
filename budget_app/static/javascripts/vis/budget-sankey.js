@@ -81,7 +81,10 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
 
     // Retrieve amount information for a given id
     function getBreakdownItemsAmounts(items, field) {
-      var amounts = { amount: 0, actualAmount: 0 }
+      // Normally we'd start adding from cero, but the Sankey layout seems to get very
+      // confused when some elements are zero. What we'll do is have always a tiny
+      // minimum amount, and show/hide the element later on based on its value.
+      var amounts = { amount: 0.01, actualAmount: 0.01 }
       $.each(items, function(i, item) {
         amounts.amount += real(item[field][year]||0);
         amounts.actualAmount += real(item[field]["actual_"+year]||0);
@@ -337,6 +340,8 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
     link
       .attr("d", sankey.link())
       .attr("class", function(d) { return d.missingData ? "link no-data" : "link with-data"; })
+      // Hide elements who are practically zero: our workaround for Sankey layout and null elements
+      .attr("opacity", function(d) { return ((d.budgeted||0)+(d.actual||0)) > 1 ? 1 : 0; })
       .style("stroke-width", function(d) { return Math.max(1, d.dy); });
   }
 
@@ -352,12 +357,16 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
     rect
       .attr("height", function(d) { return d.dy; })
       .attr("width", sankey.nodeWidth())
+      // Hide elements who are practically zero: our workaround for Sankey layout and null elements
+      .attr("opacity", function(d) { return ((d.budgeted||0)+(d.actual||0)) > 1 ? 1 : 0; })
       .style("fill", function(d) { return d.color = "#666"; })
       .style("stroke", function(d) { return d3.rgb(d.color).darker(2); });
   }
 
   function setupNodeText(text) {
     text
+      // Hide elements who are practically zero: our workaround for Sankey layout and null elements
+      .attr("opacity", function(d) { return ((d.budgeted||0)+(d.actual||0)) > 1 ? 1 : 0; })
       .attr("y", function(d) { return d.dy / 2; });
   }
   
