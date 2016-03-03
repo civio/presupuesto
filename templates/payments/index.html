@@ -15,10 +15,10 @@
     </div>
 
     <ul id="tabs" class="nav nav-tabs nav-tabs-centered" role="tablist">
-      <li class="active">
+      <li class="active" id="tab-area">
         <a href="#tab-area"><h3>{{ _('Por área') }}</h3></a>
       </li>
-      <li>
+      <li id="tab-payee">
         <a href="#tab-payee"><h3>{{ _('Por beneficiario') }}</h3></a>
       </li>
     </ul>
@@ -75,7 +75,8 @@
       var uiState = getUIState();
       var columnDef = getColumnDefinition(uiState);
 
-      var currentTab = $(".payments-breakdown .tab-pane.active").attr('id');
+      // TODO: We should adapt getUIState() so it picks up the current tab
+      var currentTab = $("#tabs li.active").attr('id');
       var title = (currentTab == 'tab-area') ? '{{ _("Área") }}' : '{{ _("Beneficiario") }}';
       var data = (currentTab == 'tab-area') ? areaGridData : payeeGridData;
 
@@ -113,11 +114,8 @@
     //
     // TABS
     //
-    $('#tabs a').click(function (e) {
-      e.preventDefault();
-      $(this).tab('show');
-      redrawGrid();
-    });
+    // Setup tabs navigation
+    setRedrawOnTabsChange('#tabs', redrawGrid);
 
 
     //
