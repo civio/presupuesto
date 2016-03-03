@@ -302,13 +302,14 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
     this.drawTreemap(uiState);
   };
 
-
   // Render the treemap
   this.drawTreemap = function(uiState) {
-    // We update the selected value in the treemap
+    // Update the overall size of the treemap,...
     this.adjustTreemapSize(uiState);
+
+    // and the size and position of each of its rectangles.
+    // Do it through a transition so there's a smooth animation on year change.
     var g = svg.data([treemapData]).selectAll("g.cell").data(treemap.nodes);
-    
     var count = svg.selectAll("rect.cell").length;
     g.selectAll("rect.cell")
       .transition()
@@ -322,9 +323,8 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
             d3.select(this).attr("leaf", d.leaf);
 
             var text = d3.select(this.parentNode)
-              .append("text");
-
-            text.attr("class", "treemap-text");
+              .append("text")
+              .attr("class", "treemap-text");
 
             // Render text only for leaf nodes
             if ( !d.leaf )  return;
