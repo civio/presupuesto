@@ -49,13 +49,13 @@
     function getLabelColumnTitle(tab) {
       var titles = {
 {% if is_chapter %}
-        'tab-economic': "{{ _('Artículo') }}",
+        'economic': "{{ _('Artículo') }}",
 {% else %}
-        'tab-economic': "{{ _('Concepto') }}",
+        'economic': "{{ _('Concepto') }}",
 {% endif %}
-        'tab-functional': "{{ _('Programa') }}",
-        'tab-institutional': "{{ _('Entidad') }}",
-        'tab-funding': "{{ _('Fondo') }}"
+        'functional': "{{ _('Programa') }}",
+        'institutional': "{{ _('Entidad') }}",
+        'funding': "{{ _('Fondo') }}"
       };
       return titles[tab];
     }
@@ -63,21 +63,21 @@
     function getLabelColumnRender(tab) {
       var renders = {
 {% if is_chapter %}
-        'tab-economic': articleLinkFormatter,
+        'economic': articleLinkFormatter,
 {% else %}
-        'tab-economic': rowNameFormatter,
+        'economic': rowNameFormatter,
 {% endif %}
 {% if full_breakdown %}
 {% if policy_uid %}
-        'tab-functional': getPolicyLinkFormatter(0),  // Programmes at root level
+        'functional': getPolicyLinkFormatter(0),  // Programmes at root level
 {% else %}  // Showing an article
-        'tab-functional': getPolicyLinkFormatter(1),  // Programmes at root level
+        'functional': getPolicyLinkFormatter(1),  // Programmes at root level
 {% endif %}
 {% else %}
-        'tab-functional': rowNameFormatter
+        'functional': rowNameFormatter
 {% endif %}
-        'tab-institutional': rowNameFormatter,
-        'tab-funding': rowNameFormatter
+        'institutional': rowNameFormatter,
+        'funding': rowNameFormatter
       };
       return renders[tab];
     }
