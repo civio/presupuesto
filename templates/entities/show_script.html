@@ -51,14 +51,28 @@
 {% endif %}
 
     var uiState = null;
+
+    //Update Tab
+    function updateTab() {
+      uiState = getUIState();
+      
+      // Update current tab (if is not widget)
+      if (!$('body').hasClass('widget')) {
+        $('#tabs .active').removeClass('active');
+        $('a[href="#'+uiState.type+'"]').blur().parent().addClass('active');
+      }
+      // Setup widget tab title
+      else{
+        $('.tab-title h3.'+uiState.type).show();
+      }
+      redraw();
+    }
+
     function redraw() {
       // Update data-field before getUIState based on active tab anchor link
       $('section').data('field', $('#tabs .active a').attr('href').substring(1) );
 
-      // Avoid unnecessary redrawings (the slider is trigger happy)
-      var newUIState = getUIState();
-      if ( uiState && sameUIState(uiState, newUIState) ) return;
-      uiState = newUIState;
+      uiState = getUIState();
 
       // Do work
       var columnDef = getColumnDefinition(uiState);
@@ -302,7 +316,7 @@
     // Setup tabs navigation
     // This will also show the tab selected in the URL hash (if any). Do it
     // before creating the treemaps, so the active one has time to render fully.
-    setRedrawOnTabsChange('#tabs', redraw);
+    setRedrawOnTabsChange('#tabs', updateTab);
 
     // XXX: Because of a really weird bug in Chrome 48 (OS X, not Linux), the
     // browser was crashing when trying to create the treemaps on demand, i.e. 
@@ -314,7 +328,6 @@
     incomeTreemap.createTreemap( $.extend(getUIState(), { field: 'income' }) );
     fexpenseTreemap.createTreemap( $.extend(getUIState(), { field: 'expense' }) );
 
-    // Ready to go
-    redraw();
+    
   });
 </script>

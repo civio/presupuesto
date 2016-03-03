@@ -8,8 +8,6 @@ function setRedrawOnTabsChange(container, callback) {
     // Get hash states    
     var state = $.deparam.fragment();
 
-    console.log('hashchange', state);
-
     // Change tab
     if (state.view) {
       // Clear item hash if exists
@@ -34,7 +32,6 @@ function setRedrawOnTabsChange(container, callback) {
 }
 
 function setDataTab( type ){
-  console.log('setDataTab', type);
   $('section').data('tab', type);
 }
 
