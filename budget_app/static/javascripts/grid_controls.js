@@ -12,6 +12,8 @@ function setRedrawOnTabsChange(container, callback) {
 
     // Change tab
     if (state.view) {
+      // Clear item hash if exists
+      if (state.item) $.bbq.removeState('item');
       setDataType(state.view);
       callback();
     }
