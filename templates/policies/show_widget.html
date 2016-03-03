@@ -20,6 +20,7 @@
   <div class="policies-content">
     <div class="tab-content">
 
+      <!-- Title -->
       {% if programme %}
         <p class="history-back">
           <a href="{% url 'budget_app.views.policies_show' programme.policy, policy.slug() %}" id="policy-name-link" title="{{ descriptions['functional'].get(programme.policy) }}">&larr;</a>
@@ -32,7 +33,32 @@
           <h2 class="page-title">{{ entity.name+': ' if entity }}{{ name }}</h2>
         </a>
       {% endif %}
+      
+      <!-- Subtitle -->
+      <div class="tab-title">
+      {% if full_breakdown %}
+        {% if programme is not defined and show_side != 'income' %}
+        <h3 class="functional">{{ _(tab_titles['functional']) }}</h3>
+        <h3 class="economic">{{ _(tab_titles['economic']) }}</h3>
+        {% else %}
+        <h3 class="economic">{{ _(tab_titles['economic']) }}</h3>
+        {% endif %}
+        {% if show_funding_tab %}
+        <h3 class="funding">{{ _(tab_titles['funding']) }}</h3>
+        {% endif %}
+        {% if show_institutional_tab %}
+        <h3 class="institutional">{{ _(tab_titles['institutional']) }}</h3>
+        {% endif %}
+      {% else %}
+        {% if policy_uid %}
+        <h3 class="functional">{{ _(tab_titles['functional']) }}</h3>
+        {% else %}
+        <h3 class="economic">{{ _(tab_titles['economic']) }}</h3>
+        {% endif %}
+      {% endif %}
+      </div>
 
+      <!-- Chart -->
       <div class="policies-chart">
         <div id="policy-chart-container" class="chart-container {{ 'treemap-chart' if show_treemap else 'stacked-area-chart' }}">
           <div class="popover top" role="tooltip">

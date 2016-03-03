@@ -131,6 +131,25 @@
 
 
     //
+    // LOCATION HASH
+    //
+    function unfoldItem(gridData, itemId) {
+      var found = false;
+      for ( i=0; i<gridData.length && !found; i++ ) {
+        if ( gridData[i].key == itemId ) {
+          var parent = gridData[i].parent;
+          while (parent != null) {
+            parent._expanded = true;
+            parent = parent.parent;
+          }
+          found = true;
+        }
+      }
+      return found;
+    }
+
+
+    //
     // SETTING ELEMENTS
     //
     var myGrid,
@@ -140,10 +159,17 @@
 
     //Update Tab
     function updateTab() {
-      // Update data type based on selected tab
-      if ($('#tabs').size() > 0) {
-        var type = $('#tabs li.active > a').attr('href').substring(1);
-        $('section.policies').data('type', type);
+      uiState = getUIState();
+      
+      // Update current tab (if is not widget)
+      if (!$('body').hasClass('widget')) {
+        $('#tabs .active').removeClass('active');
+        //$('a[href="#'+uiState.type+'"]').blur().parents('#tabs li').addClass('active');
+        $('a[href="#'+uiState.type+'"]').blur().parent().addClass('active');
+      }
+      // Setup widget tab title
+      else{
+        $('.tab-title h3.'+uiState.type).show();
       }
       redraw();
     }
@@ -158,7 +184,7 @@
     function redraw(){
 
       uiState = getUIState();
-
+    
       // Show/hide panel downloads
       $('.panel-downloads > p').hide();
       $('#'+uiState.type+'-downloads').show();
@@ -177,6 +203,18 @@
 
       var label = uiState.view == 'income' ? '{{ _("Total ingresos") }}' : '{{ _("Total gastos") }}';
       $("#main-total .main-label").html(label+getExecutionTotalLabel(budgetStatuses[uiState.year], budgetStatusLabels))
+
+      // Handle the hash the page may have loaded with.
+      var state = $.deparam.fragment();
+      // Highlight a particular item
+      if ( state.item ) {
+        unfoldItem( gridData[uiState.type], state.item );
+        window.setTimeout(function(){ 
+          $('html, body').animate({
+            scrollTop: $('#myGrid').offset().top
+          }, 500);
+        }, 1000);
+      }
 
       // Do work
       var columnDef = getColumnDefinition(uiState);
@@ -221,6 +259,7 @@
       // We skip chart setup in institutional tab
       if (uiState.type === 'institutional'){
         $('#policy-chart-container .stacked-area-chart').remove();
+        $('#policy-chart-container .stacked-area-chart-legend').remove();
         $('#policy-chart-container').hide();
         return;
       }
@@ -274,39 +313,6 @@
 {% endif %}
     }
 
-
-    //
-    // LOCATION HASH
-    //
-    function unfoldItem(gridData, itemId) {
-      var found = false;
-      for ( i=0; i<gridData.length && !found; i++ ) {
-        if ( gridData[i].key == itemId ) {
-          var parent = gridData[i].parent;
-          while (parent != null) {
-            parent._expanded = true;
-            parent = parent.parent;
-          }
-          found = true;
-        }
-      }
-      return found;
-    }
-
-    function parseLocationHash() {
-      state = $.deparam.fragment();
-
-      // Highlight a particular item
-      if ( state.item ) {
-        unfoldItem(economicGridData, state.item);
-        // TODO!!! Check if we need to call redraw or we can call redrawGrid
-        redraw();
-        window.setTimeout(function(){ $(".toggle.collapse")[0].scrollIntoView() }, 1000);
-      }
-    }
-
-    // Handle the hash the page may have loaded with.
-    parseLocationHash();
 
     // Control Setup
     $('#select-format').change(redraw);

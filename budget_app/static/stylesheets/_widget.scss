@@ -24,6 +24,14 @@ body.widget{
     margin: 2*$grid-gutter-width/3 0;
   }
 
+  .tab-title{
+    text-align: center;
+
+    h3{
+      display: none;
+    }
+  }
+
   .history-back{
     display: none;
     position: absolute;

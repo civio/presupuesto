@@ -11,9 +11,8 @@ function setRedrawOnTabsChange(container, callback) {
     console.log('hashchange', state);
 
     // Change tab
-    if( state.view ){
-      $(container+' .active').removeClass('active');
-      $('a[href="#'+state.view+'"]').blur().parents(container+' li').addClass('active');
+    if (state.view) {
+      setDataType(state.view);
       callback();
     }
     // First call
@@ -30,6 +29,10 @@ function setRedrawOnTabsChange(container, callback) {
 
   // Initially trigger hashchange
   $(window).trigger('hashchange');
+}
+
+function setDataType( type ){
+  $('section.policies').data('type', type);
 }
 
 function setRedrawOnButtonGroupChange(selector, callback) {
