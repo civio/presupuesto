@@ -64,13 +64,9 @@ body.widget{
     padding-bottom: $grid-gutter-width/2;
   }
 
-  .data-controllers-placeholder{
-    width: 150px;
-    margin: -10px auto 0;
-  }
-
   .data-controllers{
-    margin-bottom: $grid-gutter-width/2;
+    width: 150px;
+    margin: -10px auto $grid-gutter-width/2;
 
     .title{
       padding: $grid-gutter-width/6 0;

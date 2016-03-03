@@ -115,7 +115,7 @@ def programmes_show(request, id, title, render_callback=None):
     _set_show_side(c, show_side)
     _set_full_breakdown(c, True)
 
-    _set_policy_type(c, 'functional')
+    _set_policy_type(c, 'economic')
 
     # if parameter widget defined use policies/widget template instead of policies/show
     template = 'policies/show_widget.html' if _isWidget(request) else 'policies/show.html'

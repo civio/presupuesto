@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% from 'shared/breakdown_tab.html' import render_tab as render_tab %}
 {% from 'shared/panel_downloads.html' import panel_downloads as panel_downloads %}
 
 {% block extra_javascript %}
@@ -168,14 +167,6 @@
     {% include 'shared/social_sharing.html' %}
   </div>
 </section>
-
-
-{% if show_treemap %}
-<div id="pop-up">
-  <div id="pop-up-title"></div>
-  <div id="pop-up-content"></div>
-</div>
-{% endif %}
 
 {% include 'shared/modal_embed.html' %}
 

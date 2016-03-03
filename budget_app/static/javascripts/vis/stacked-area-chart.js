@@ -43,8 +43,6 @@ function StackedAreaChart() {
   // Setup SVG Object
   _this.setup = function(selector){
 
-    console.log('setup stacked chart', selector);
-
     _this.selector = selector;
 
     // Remove charts previously created

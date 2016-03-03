@@ -141,8 +141,10 @@
     //Update Tab
     function updateTab() {
       // Update data type based on selected tab
-      var type = $('#tabs li.active > a').attr('href').substring(1);
-      $('section.policies').data('type', type);
+      if ($('#tabs').size() > 0) {
+        var type = $('#tabs li.active > a').attr('href').substring(1);
+        $('section.policies').data('type', type);
+      }
       redraw();
     }
 
