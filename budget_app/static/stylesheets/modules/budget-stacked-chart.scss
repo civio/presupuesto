@@ -77,11 +77,11 @@
       //fill-opacity: 0.7;
     }
   }
-}
 
-// Add cursor pointer only in policies index in functional chart 
-#functionalChartContainer .stacked-area-chart path.area{
-  cursor: pointer;
+  // Add cursor pointer in functional chart 
+  &.clickable path.area{
+    cursor: pointer;
+  }
 }
 
 .stacked-area-chart-legend{

@@ -8,9 +8,16 @@ function setRedrawOnTabsChange(container, callback) {
     // Get hash states    
     var state = $.deparam.fragment();
 
+    console.log('hashchange', state);
+
+    // Change tab
     if( state.view ){
       $(container+' .active').removeClass('active');
       $('a[href="#'+state.view+'"]').blur().parents(container+' li').addClass('active');
+      callback();
+    }
+    // First call
+    else{
       callback();
     }
   });
@@ -65,6 +72,7 @@ function initSlider(selector, years, callback, startValue, labels) {
 function getUIState() {
   var field = $('section.policies').data('field');
   return {
+    type:   $('section.policies').data('type'),
     field:  field == 'income' ? 'income' : 'expense',
     view:   field,
     format: $('#select-format').val(),
@@ -73,5 +81,5 @@ function getUIState() {
 }
 
 function sameUIState(a, b) {
-  return a.view==b.view && a.field==b.field && a.year==b.year && a.format==b.format;
+  return a.type==b.type && a.view==b.view && a.field==b.field && a.year==b.year && a.format==b.format;
 }

@@ -1,134 +1,14 @@
-{% extends 'base.html' %}
-{% from 'shared/entity_select.html' import render_entity_select as render_entity_select %}
-{% block extra_javascript %}
-<script src="{{ STATIC_URL }}javascripts/vis/d3.v3.min.js"></script>
-<script src="{{ STATIC_URL }}javascripts/vis/bigtext.js"></script>
-<script src="{{ STATIC_URL }}javascripts/vis/budget-treemap.js"></script>
-<script src="{{ STATIC_URL }}javascripts/vis/budget-summary.js"></script>
-<script src="{{ STATIC_URL }}javascripts/comparator.js"></script>
-{% endblock %}
-{% block content %}
-{% if entities %}
-<p><a href="{{ url('budget_app.views.counties') if is_county else url('budget_app.views.towns') }}" class="button button-3d grey tupper hide-when-embedded">
-  {% if is_county %}
-  ← {{ _('Volver a la lista de comarcas') }}
-  {% else %}
-  ← {{ _('Volver a la lista de municipios') }}
-  {% endif %}
-</a></p>
-{% endif %}
+<script>
+  $(function () {
+    // Entity select dropdown
+    $('#entity-select').submit(function(e) {
+      e.preventDefault();
+      entity_slug = $('#entity-select select').val();
+      if ( entity_slug != '' ) {
+        window.location.href = {{ 'getCountyCompareLink' if is_county else 'getTownCompareLink' }}('{{ entity.slug }}', entity_slug);
+      }
+    });
 
-
-<!-- Politicas -->
-<section class="policies" role="region" data-field="{% if show_side=='income' %}income{% elif full_breakdown %}fexpense{% else %}expense{% endif %}">
-  
-  <!-- Politicas Header -->
-  <div class="policies-header section-header">
-    
-    <h2 class="page-title">{{ _('Políticas') }}</h2>
-
-    <ul id="tabs" class="nav nav-tabs nav-tabs-centered" role="tablist">
-      <li class="{{ 'active' if show_side=='income' }}">
-        <a href="#income" title="{{ _('Ingresos') }}">
-          <h3>{{ _('Ingresos') }}</h3>
-        </a>
-      </li>
-      <li class="{{ 'active' if not full_breakdown }}">
-        <a href="#expense" title="{{ _('¿Cómo se gasta?') }}">
-          <h3>{{ _('¿Cómo se gasta?') }}</h3>
-        </a>
-      </li>
-      <li class="{{ 'active' if full_breakdown }}">
-        <a href="#fexpense" title="{{ _('¿En qué se gasta?') }}">
-          <h3>{{ _('¿En qué se gasta?') }}</h3>
-        </a>
-      </li>
-    </ul>
-  </div>
-
-  <!-- Policies Content -->
-  <div class="policies-content">
-    <div class="container">
-
-      <!-- Policies Chart -->
-      <div class="policies-chart">
-        <div id="budget-summary"></div>
-        <div id="expenseChartContainer" class="chart-container">
-          <div class="popover top" role="tooltip">
-            <div class="arrow"></div>
-            <p class="popover-subtitle"></p>
-            <h4 class="popover-title"></h4>
-            <div class="popover-content">
-              <span class="popover-content-value"></span>
-            </div>
-          </div>
-        </div>
-        <div id="fexpenseChartContainer" class="chart-container">
-          <div class="popover top" role="tooltip">
-            <div class="arrow"></div>
-            <p class="popover-subtitle"></p>
-            <h4 class="popover-title"></h4>
-            <div class="popover-content">
-              <span class="popover-content-value"></span>
-            </div>
-          </div>
-        </div>
-        <div id="incomeChartContainer" class="chart-container">
-          <div class="popover top" role="tooltip">
-            <div class="arrow"></div>
-            <p class="popover-subtitle"></p>
-            <h4 class="popover-title"></h4>
-            <div class="popover-content">
-              <span class="popover-content-value"></span>
-            </div>
-          </div>
-        </div>
-        <p class="no-data-alert">{{ _('Información no disponible') }}</p>
-      </div>
-
-      {% if entities %}
-      {{ render_entity_select('entity-select', entities, entity) }}
-      {% endif %}
-
-      {% include 'shared/data_controllers.html' %}
-
-      {% include 'entities/totals.html' %}
-
-      <!-- Policies Table -->
-      <table id="myGrid" class="table-grid" width="100%"></table>
-
-      <div class="panel-downloads">
-        <p class="downloads" id="income-downloads">
-          {{ _('Descarga la tabla de <b>Ingresos</b>')|safe }}
-          <a class="icon-file-excel" href="{{ url('budget_app.views.entity_income', entity.level, entity.slug, 'csv') }}"><span class="file-info">CSV</span></a>
-          o
-          <a class="icon-file-excel" href="{{ url('budget_app.views.entity_income', entity.level, entity.slug, 'xls') }}"><span class="file-info">Excel</span></a>
-        </p>
-        <p class="downloads" id="fexpense-downloads">
-          {{ _('Descarga la tabla de <b>Gastos (por programa)</b>')|safe }}
-          <a class="icon-file-excel" href="{{ url('budget_app.views.entity_fexpenses', entity.level, entity.slug, 'csv') }}"><span class="file-info">CSV</span></a>
-          o
-          <a class="icon-file-excel" href="{{ url('budget_app.views.entity_fexpenses', entity.level, entity.slug, 'xls') }}"><span class="file-info">Excel</span></a>
-        </p>
-        <p class="downloads" id="expense-downloads">
-          {{ _('Descarga la tabla de <b>Gastos</b>')|safe }}
-          <a class="icon-file-excel" href="{{ url('budget_app.views.entity_expenses', entity.level, entity.slug, 'csv') }}"><span class="file-info">CSV</span></a>
-          o
-          <a class="icon-file-excel" href="{{ url('budget_app.views.entity_expenses', entity.level, entity.slug, 'xls') }}"><span class="file-info">Excel</span></a>
-        </p>
-      </div>
-
-      {% include 'shared/social_sharing.html' %}
-    </div>
-  </div>
-</section>
-
-{% include 'shared/data_sources.html' %}
-{% include 'shared/policy_paths.html' %}
-
-{% include 'entities/show_script.html' %}
-
-<<<<<<< HEAD
     function getColumnDefinition(uiState) {
       var getBreakdownValue = getBreakdownValueFunction(uiState.field, uiState.year);
       return {
@@ -419,11 +299,6 @@
     // Create Budget Summary
     var budgetSummary = new BudgetSummary('#budget-summary');
 
-    // Setup tabs navigation
-    // This will also show the tab selected in the URL hash (if any). Do it
-    // before creating the treemaps, so the active one has time to render fully.
-    setRedrawOnTabsChange('#tabs', redraw);
-
     // XXX: Because of a really weird bug in Chrome 48 (OS X, not Linux), the
     // browser was crashing when trying to create the treemaps on demand, i.e. 
     // when a tab was shown for the first time. There was some sort of memory
@@ -434,10 +309,10 @@
     incomeTreemap.createTreemap( $.extend(getUIState(), { field: 'income' }) );
     fexpenseTreemap.createTreemap( $.extend(getUIState(), { field: 'expense' }) );
 
+    // Setup tabs navigation
+    setRedrawOnTabsChange('#tabs', redraw);
+
     // Ready to go
     redraw();
   });
 </script>
-=======
->>>>>>> policy-breakdown-consolidate
-{% endblock %}

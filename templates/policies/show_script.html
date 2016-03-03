@@ -82,47 +82,111 @@
       return renders[tab];
     }
 
-    
-    var uiState = null;
-    var currentTab = null;
+
+    //
+    // POLICY DATA
+    //
+    var stats = {{ stats|safe }};
+    var budgetStatuses = {{ budget_statuses|safe }};
+    var budgetStatusLabels = {
+      '1T': '{{ _("hasta el primer trimestre") }}',
+      '2T': '{{ _("hasta el segundo trimestre") }}',
+      '3T': '{{ _("hasta el tercer trimestre") }}',
+      'D': '{{ _("a día de hoy") }}'
+    };
+
+    // The income and expense descriptions for the economic breakdowns do not match,
+    // i.e. the same code, '2', means different things for income and expenses, so
+    // we need to use the right descriptions
+    var economicBreakdown = {{ economic_breakdown.to_json( labels=descriptions[show_side] )|safe }};
+    var functionalBreakdown = {{ functional_breakdown.to_json( labels=descriptions['functional'] )|safe }};
+
+{% if full_breakdown %}
+    var institutionalBreakdown = {{ institutional_breakdown.to_json( labels=descriptions['institutional'] )|safe }};
+    var fundingBreakdown = {{ funding_breakdown.to_json( labels=descriptions['funding'] )|safe }};
+{% endif %}
+
+    // Grid Data onjets
+    var gridData = {
+      'economic':       breakdownToTable(economicBreakdown),
+      'functional':     breakdownToTable(functionalBreakdown),
+{% if full_breakdown %}
+      'institutional':  breakdownToTable(institutionalBreakdown),
+      'funding':        breakdownToTable(fundingBreakdown),
+{% endif %}
+    }
+
+    // Areas Data object
+    var areasData = {
+{% if full_breakdown or article %}
+      'economic':       {{ (expense_areas if show_side=='expense' else income_areas)|safe }},
+{% endif %}
+{% if programme is not defined and show_side != 'income' %}
+      'functional':     {{ functional_areas|safe }},
+{% endif %}
+{% if full_breakdown %}
+      'funding':        {{ funding_areas|safe }},
+{% endif %}
+    };
+
+
+    //
+    // SETTING ELEMENTS
+    //
+    var myGrid,
+        uiState       = null,
+        currentChart  = null,
+        i18n          = { 'budgeted': '{{ _("Presupuestado") }}' };
+
+    //Update Tab
+    function updateTab() {
+      // Update data type based on selected tab
+      var type = $('#tabs li.active > a').attr('href').substring(1);
+      $('section.policies').data('type', type);
+      redraw();
+    }
+
+    // Update Year
+    function updateYear() {
+      uiState = getUIState();
+      redrawGrid()
+    }
 
     // Redraw all
     function redraw(){
 
-      // Avoid unnecessary redrawings (the slider is trigger happy)
-      var newUIState = getUIState();
-      var newCurrentTab = $(".policy-breakdown .tab-pane.active").attr('id');
-      if ( uiState && sameUIState(uiState, newUIState) && currentTab && currentTab==newCurrentTab)  return;
-      uiState = newUIState;
-      currentTab = newCurrentTab;
+      uiState = getUIState();
 
-      // Update grid
+      // Show/hide panel downloads
+      $('.panel-downloads > p').hide();
+      $('#'+uiState.type+'-downloads').show();
+
+      redrawChart();
       redrawGrid();
+    }
 
-       // Update year label
+    // Do all the hard work of drawing the grids
+    function redrawGrid() {
+
+      if( $('#myGrid').size() == 0 ) return;
+
+      // Update year label
       $('#totals-year').text(uiState.year);
 
       var label = uiState.view == 'income' ? '{{ _("Total ingresos") }}' : '{{ _("Total gastos") }}';
       $("#main-total .main-label").html(label+getExecutionTotalLabel(budgetStatuses[uiState.year], budgetStatusLabels))
 
-      onTabSwitch();
-    }
-    
-    // Do all the hard work of drawing the grids
-    function redrawGrid() {
-     
-      if( $('#myGrid').size() == 0 ) return;
-
       // Do work
       var columnDef = getColumnDefinition(uiState);
       var executionColumnDef = getExecutionColumnDefinition(uiState);
 
-      if ( myGrid !== undefined )  myGrid.destroy();
-      myGrid = createBudgetGrid( "#myGrid", gridData[currentTab], [
+      if ( myGrid !== undefined ) myGrid.destroy();
+
+      myGrid = createBudgetGrid( "#myGrid", gridData[uiState.type], [
                           {
                             data: "label",
-                            title: getLabelColumnTitle(currentTab),
-                            render: getLabelColumnRender(currentTab),
+                            title: getLabelColumnTitle(uiState.type),
+                            render: getLabelColumnRender(uiState.type),
                           },
                           columnDef
 {% if show_actual %}
@@ -148,56 +212,25 @@
       }
     }
 
+    function redrawChart() {
 
-    //
-    // POLICY DATA
-    //
-    var stats = {{ stats|safe }};
-    var budgetStatuses = {{ budget_statuses|safe }};
-    var budgetStatusLabels = {
-      '1T': '{{ _("hasta el primer trimestre") }}',
-      '2T': '{{ _("hasta el segundo trimestre") }}',
-      '3T': '{{ _("hasta el tercer trimestre") }}',
-      'D': '{{ _("a día de hoy") }}'
-    };
+      if (uiState === null) return;
 
-    // The income and expense descriptions for the economic breakdowns do not match,
-    // i.e. the same code, '2', means different things for income and expenses, so
-    // we need to use the right descriptions
-    var economicBreakdown = {{ economic_breakdown.to_json( labels=descriptions[show_side] )|safe }};
-    var functionalBreakdown = {{ functional_breakdown.to_json( labels=descriptions['functional'] )|safe }};
+      // We skip chart setup in institutional tab
+      if (uiState.type === 'institutional'){
+        $('#policy-chart-container .stacked-area-chart').remove();
+        $('#policy-chart-container').hide();
+        return;
+      }
+      else{
+        $('#policy-chart-container').show();
+      }
 
-{% if full_breakdown %}
-    var institutionalBreakdown = {{ institutional_breakdown.to_json( labels=descriptions['institutional'] )|safe }};
-    var fundingBreakdown = {{ funding_breakdown.to_json( labels=descriptions['funding'] )|safe }};
-{% endif %}
-
-    var gridData = {
-      'tab-economic': breakdownToTable(economicBreakdown),
-      'tab-functional': breakdownToTable(functionalBreakdown),
-{% if full_breakdown %}
-      'tab-institutional': breakdownToTable(institutionalBreakdown),
-      'tab-funding': breakdownToTable(fundingBreakdown),
-{% endif %}
-    }
-    var myGrid;
-    var i18n = {
-      'budgeted': '{{ _("Presupuestado") }}'
-    };
-
-    // Link to policy handlers
-    function onProgrammeSelected(event, d) {
-      var widget = $('body').hasClass('widget') ? '?widget=1' : '';
-
-{% if article %}
-      window.location=getPolicyLink(d.id, d.label, getUIState())+widget;
-{% else %}
-      window.location=getProgrammeLink(d.id, d.label, getUIState())+widget;
-{% endif %}
-    }
-  
-    // Setup Graph
-    function setupGraph(chartWidth, container, breakdown, areas) {
+      // Setup Graph
+      var breakdown = (uiState.type === 'economic') ? economicBreakdown :  
+                      (uiState.type === 'functional') ? functionalBreakdown :
+                      (uiState.type === 'institutional') ? institutionalBreakdown :
+                      fundingBreakdown;
 
       var colorScale = {{ color_scale|safe }};
 
@@ -205,84 +238,38 @@
       // an iPad, where the height of the chart would explode for no apparent reason
       //$(container).css('width', chartWidth);
       //$(container).css('height', chartWidth/2);
+
+      // Setup treemap chart
       {% if show_treemap %}
-      var treemap = new BudgetTreemap(container, breakdown, stats, areas, 2, colorScale).i18n(i18n).maxLevels(2).budgetStatuses(budgetStatuses);
-      treemap.createTreemap(getUIState());
-      $(container).data('chart', treemap);
+      if (currentChart !== null) $('#policy-chart-container .treemap-chart').remove();
+      currentChart = new BudgetTreemap('#policy-chart-container', breakdown, stats, areasData[uiState.type], 2, colorScale)
+        .i18n(i18n)
+        .maxLevels(2)
+        .budgetStatuses(budgetStatuses);
+      currentChart.createTreemap( uiState );
+      // Setup stacked area chart
       {% else %}
-      var chart = new BudgetStackedChart(container, stats, colorScale, i18n).budgetStatuses(budgetStatuses);
-      $(container).data('chart', chart);
-      chart.loadBreakdown(breakdown, '{{ show_side }}');
+      currentChart = new BudgetStackedChart('#policy-chart-container', stats, colorScale, i18n)
+        .budgetStatuses(budgetStatuses);
+      currentChart.loadBreakdown(breakdown, '{{ show_side }}');
+      currentChart.draw( uiState );
+      // Add area click event if type is functional
+      if (uiState.type == 'functional') {
+        $('#policy-chart-container .stacked-area-chart').addClass('clickable');
+        $('#policy-chart-container').bind('area-selected', onProgrammeSelected);
+      }
       {% endif %}
     };
 
-{% if programme is not defined and show_side != 'income' %}
-    var chartWidth = $('#functionalChartContainer').width();
-    var functionalAreas = {{ functional_areas|safe }};
-    setupGraph( chartWidth, 
-                '#functionalChartContainer', 
-                functionalBreakdown,
-                functionalAreas);
-    $('#functionalChartContainer').bind('area-selected', onProgrammeSelected);
-{% endif %}
+    // Link to policy handlers
+    function onProgrammeSelected(event, d) {
+      var widget = $('body').hasClass('widget') ? '?widget=1' : '';
 
-{% if full_breakdown or article %}
-    if ( chartWidth == undefined )
-    var chartWidth = $('#economicChartContainer').width();
-    var economicAreas = {{ (expense_areas if show_side=='expense' else income_areas)|safe }};
-    setupGraph( chartWidth, 
-                '#economicChartContainer', 
-                economicBreakdown,
-                economicAreas);
-{% endif %}
-
-{% if full_breakdown %}
-    var fundingAreas = {{ funding_areas|safe }};
-    setupGraph( chartWidth, 
-                '#fundingChartContainer', 
-                fundingBreakdown,
-                fundingAreas);
-{% endif %}
-
-
-    //
-    // TABS
-    //
-    
-    // Setup tabs navigation
-    setRedrawOnTabsChange('#tabs', onTabSwitch);
-
-    function onTabSwitch() {
-
-      if( uiState === null ) return;
-
-      // Update or get current tab
-      var currentTab;
-      if( $('#tabs').size() > 0 ) {
-        $('.policy-breakdown .tab-pane').removeClass('active');   // Remove active tabs
-        var tabId = $('#tabs .active a').attr('href').substring(1);
-        currentTab = $('.policy-breakdown #tab-'+tabId).addClass('active');
-      } else{
-        currentTab = $('.policy-breakdown .tab-pane.active');
-      }
-
-      // Charts can't be initialized in a tab that is not visible
-      // TODO: Really? Is this still valid?
-      var currentChart = currentTab.find('.chart-container').data('chart');
-      if ( currentChart != undefined )
-{% if show_treemap %}
-        currentChart.updateTreemap(getUIState());
+{% if article %}
+      window.location = getPolicyLink(d.id, d.label, getUIState())+widget;
 {% else %}
-        currentChart.draw(getUIState());
+      window.location = getProgrammeLink(d.id, d.label, getUIState())+widget;
 {% endif %}
-
-      // Move controller panel to the right tab
-      var control_panel = $(".data-controllers").detach();
-      control_panel.appendTo(currentTab.find(".data-controllers-placeholder"));
-
-      // Same with totals...
-      var totals = $("#totals-panel").detach();
-      totals.appendTo(currentTab.find(".totals-placeholder"));
     }
 
 
@@ -310,10 +297,9 @@
       // Highlight a particular item
       if ( state.item ) {
         unfoldItem(economicGridData, state.item);
+        // TODO!!! Check if we need to call redraw or we can call redrawGrid
         redraw();
         window.setTimeout(function(){ $(".toggle.collapse")[0].scrollIntoView() }, 1000);
-      } else {
-        redraw();
       }
     }
 
@@ -322,7 +308,10 @@
 
     // Control Setup
     $('#select-format').change(redraw);
-    initSlider("#year-selection", {{ years|safe }}, redraw, {{ latest_year }}, {{ years_scale|safe }});
+    initSlider("#year-selection", {{ years|safe }}, updateYear, {{ latest_year }}, {{ years_scale|safe }});
+
+    // Setup tabs navigation
+    setRedrawOnTabsChange('#tabs', updateTab);
 
     // Add click embed btn event
     $('.chart-container .chart-embed-btn').click(function(e){

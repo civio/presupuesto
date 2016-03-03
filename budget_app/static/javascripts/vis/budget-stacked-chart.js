@@ -88,6 +88,8 @@ function BudgetStackedChart(theSelector, theStats, theColorScale, i18n) {
 
   this.loadBreakdown = function(theBreakdown, field) {
 
+    console.log('loadBreakdown', theBreakdown);
+
     breakdown = theBreakdown;
     data = loadBreakdownField(theBreakdown, field);
     // Deep copy the data array in order to be able to change when a new category of data is selected
@@ -96,6 +98,7 @@ function BudgetStackedChart(theSelector, theStats, theColorScale, i18n) {
 
   // Function used to display the selected SAG
   this.draw = function(newUIState) {
+    console.log( 'draw budget chart', uiState, newUIState);
     // Do nothing if only the year changed
     if ( uiState && uiState.format==newUIState.format && uiState.field==newUIState.field ) return;
 

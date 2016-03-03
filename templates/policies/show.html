@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% from 'shared/breakdown_tab.html' import render_tab as render_tab %}
+{% from 'shared/panel_downloads.html' import panel_downloads as panel_downloads %}
 
 {% block extra_javascript %}
 <script src="{{ STATIC_URL }}javascripts/vis/d3.v3.min.js"></script>
@@ -15,7 +16,7 @@
 {% block content %}
 
 <!-- Politicas Detalle -->
-<section class="policies policy-breakdown" role="region" data-field="{{ show_side }}">
+<section class="policies policy-breakdown" role="region" data-field="{{ show_side }}" data-type="{{ type }}">
 
   <!-- Politicas Header -->
   <div class="policies-header section-header">
@@ -95,66 +96,78 @@
   <!-- Policies Content -->
   <div class="policies-content">
     <div class="container tab-content">
+      <div class="policies-chart">
+        <div id="policy-chart-container" class="chart-container {{ 'treemap-chart' if show_treemap else 'stacked-area-chart' }}">
+          <div class="popover top" role="tooltip">
+            <div class="arrow"></div>
+            <h4 class="popover-title"></h4>
+            <div class="popover-content">
+              <p class="popover-content-year"></p>
+              <p class="popover-content-value"></p>
+              <p class="popover-content-variation">
+                <span class="label"></span> <span class="popover-content-variation-label">{{ _('respecto a') }}</span> <span class="popover-content-variation-year"></span>
+              </p>
+            </div>
+          </div>
+          {% if not show_treemap %}
+          <span class="chart-embed-btn" data-toggle="modal" data-target="#modal-embed">
+            <a href="#"  data-toggle="tooltip" data-placement="left" title="" data-original-title="{{ _('Comparte éste gráfico') }}"></a>
+          </span>
+          {% endif %}
+        </div>
+      </div>
 
-  {% if full_breakdown %}
-    {% if programme is not defined and show_side != 'income' %}
-      {{ render_tab(_(tab_titles['functional']), 'functional', true, csv_type, csv_id, 'active') }} 
-      {{ render_tab(_(tab_titles['economic']), 'economic', true, csv_type, csv_id, '') }}
-    {% else %}
-      {{ render_tab(_(tab_titles['economic']), 'economic', true, csv_type, csv_id, 'active') }} 
-    {% endif %}
-    {% if show_funding_tab %}
-      {{ render_tab(_(tab_titles['funding']), 'funding', true, csv_type, csv_id, '') }} 
-    {% endif %}
-    {% if show_institutional_tab %}
-      {{ render_tab(_(tab_titles['institutional']), 'institutional', true, csv_type, csv_id, '') }} 
-    {% endif %}
-  {% else %}
-      {# The download links for small entities are too cumbersome to calculate in the macro #}
-    {% if policy_uid %}
-      {% set download_view_name = 'budget_app.views.entity_article_fexpenses' %}
-      {{ render_tab(_(tab_titles['functional']), 
-                    'functional',
-                    true,
-                    csv_type, 
-                    csv_id, 
-                    'active', 
-                    csv_link=url(download_view_name, level, entity.slug, csv_id, 'csv'),
-                    xls_link=url(download_view_name, level, entity.slug, csv_id, 'xls') ) }} 
-    {% else %}
-      {% set download_view_name = 'budget_app.views.entity_article_expenses' if show_side=='expense' 
-                                  else 'budget_app.views.entity_article_income'%}
-      {{ render_tab(_(tab_titles['economic']), 
-                    'economic',
-                    true,
-                    csv_type, 
-                    csv_id, 
-                    'active', 
-                    csv_link=url(download_view_name, level, entity.slug, csv_id, 'csv'),
-                    xls_link=url(download_view_name, level, entity.slug, csv_id, 'xls') ) }} 
-    {% endif %}
-  {% endif %}
+      <!-- Data Controller -->
+      {% include 'shared/data_controllers.html' %}
 
+      <!-- Totals Panel -->
+      {% include 'entities/totals.html' %}
+
+      <!-- Table Grid -->
       <table id="myGrid" class="table-grid" width="100%"></table>
+
+      <!-- Panel Downloads -->
+      <div class="panel-downloads">
+    {% if full_breakdown %}
+      {% if programme is not defined and show_side != 'income' %}
+        {{ panel_downloads(_(tab_titles['functional']), 'functional', csv_type, csv_id) }} 
+        {{ panel_downloads(_(tab_titles['economic']), 'economic', csv_type, csv_id) }}
+      {% else %}
+        {{ panel_downloads(_(tab_titles['economic']), 'economic', csv_type, csv_id) }} 
+      {% endif %}
+      {% if show_funding_tab %}
+        {{ panel_downloads(_(tab_titles['funding']), 'funding', csv_type, csv_id) }} 
+      {% endif %}
+      {% if show_institutional_tab %}
+        {{ panel_downloads(_(tab_titles['institutional']), 'institutional', csv_type, csv_id) }} 
+      {% endif %}
+    {% else %}
+        {# The download links for small entities are too cumbersome to calculate in the macro #}
+      {% if policy_uid %}
+        {% set download_view_name = 'budget_app.views.entity_article_fexpenses' %}
+        {{ panel_downloads(_(tab_titles['functional']), 
+                      'functional',
+                      csv_type, 
+                      csv_id,  
+                      csv_link=url(download_view_name, level, entity.slug, csv_id, 'csv'),
+                      xls_link=url(download_view_name, level, entity.slug, csv_id, 'xls') ) }} 
+      {% else %}
+        {% set download_view_name = 'budget_app.views.entity_article_expenses' if show_side=='expense' 
+                                    else 'budget_app.views.entity_article_income'%}
+        {{ panel_downloads(_(tab_titles['economic']), 
+                      'economic',
+                      csv_type, 
+                      csv_id,
+                      csv_link=url(download_view_name, level, entity.slug, csv_id, 'csv'),
+                      xls_link=url(download_view_name, level, entity.slug, csv_id, 'xls') ) }} 
+      {% endif %}
+    {% endif %}
+      </div>
     </div>
-  
 
     {% include 'shared/social_sharing.html' %}
   </div>
 </section>
-
-<!-- 
-  We render the control panel here initially, and move it to the active tab at run-time.
-  Having multiple control panels would mean having to sincronize them, messy.
--->
-<div class="hidden">
-{% include 'shared/data_controllers.html' %}
-</div>
-
-<!-- Same story with the totals -->
-<div class="hidden">
-  {% include 'entities/totals.html' %}
-</div>
 
 
 {% if show_treemap %}
@@ -168,6 +181,6 @@
 
 {% include 'shared/data_sources.html' %}
 {% include 'shared/policy_paths.html' %}
-{% include 'policies/policies_javascript.html' %}
+{% include 'policies/show_script.html' %}
 
 {% endblock %}
