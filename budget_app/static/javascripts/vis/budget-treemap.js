@@ -384,13 +384,13 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
   }
 
   // Wrap an area text so it fits nicely within the allowed limits.
-  // This is a hard problem. I initially used [bigText][1], but it handles only one line at a time, 
+  // This is a hard problem. I initially used bigText [1], but it handles only one line at a time,
   // so I had to break the original text into lines in a very rough way, with manual retouches
-  // that didn't scale. I looked at [slabText][2], which auto-splits into lines, but unlike
-  // the original full-blown algorithm, it doesn't control vertical space, so it's quite useless 
-  // for us. I've ended adapting Mike Bostock's code for wrapping labels, adding some basic
+  // that didn't scale. I looked at slabText [2], which auto-splits into lines, but unlike
+  // the original full-blown algorithm [3], it doesn't control vertical space, so it's quite useless
+  // for us. I've ended adapting Mike Bostock's code [4] for wrapping labels, adding some basic
   // calculations to find a good-enough font size that fills most of the space.
-  // Looking into [hyphenation][5] would probably be the next logical move to improve quality.
+  // Looking into hyphenation [5] would probably be the next logical move to improve quality.
   //
   // [1]: https://github.com/zachleat/BigText
   // [2]: http://freqdec.github.io/slabText/
