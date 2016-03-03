@@ -296,13 +296,13 @@
     $('#incomeChartContainer').bind('policy-selected', onIncomeTreemapClick);
     initSlider("#year-selection", {{ years|safe }}, redraw, {{ latest_year }}, {{ years_scale|safe }});
 
+    // Create Budget Summary
+    var budgetSummary = new BudgetSummary('#budget-summary');
+
     // Setup tabs navigation
     // This will also show the tab selected in the URL hash (if any). Do it
     // before creating the treemaps, so the active one has time to render fully.
     setRedrawOnTabsChange('#tabs', redraw);
-
-    // Create Budget Summary
-    var budgetSummary = new BudgetSummary('#budget-summary');
 
     // XXX: Because of a really weird bug in Chrome 48 (OS X, not Linux), the
     // browser was crashing when trying to create the treemaps on demand, i.e. 
