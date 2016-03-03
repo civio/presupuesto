@@ -40,7 +40,7 @@ def search(request):
     except EmptyPage:
         pass
 
-    all_payments = list(Payment.objects.search(c['query'], year))
+    all_payments = list(Payment.objects.search(c['query'], year, c['LANGUAGE_CODE']))
     try:
         c['payments'] = Paginator(all_payments, PAGE_LENGTH, body=6, padding=2).page(c['page'])
     except EmptyPage:

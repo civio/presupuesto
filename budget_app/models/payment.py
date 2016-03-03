@@ -23,7 +23,7 @@ class PaymentManager(models.Manager):
         return self.raw(sql, additional_arguments)
 
     # Do a full-text search in the database
-    def search(self, query, year):
+    def search(self, query, year, language):
         sql = "select " \
             "b.year, " \
             "e.name, e.level, " \
@@ -35,6 +35,7 @@ class PaymentManager(models.Manager):
                 "left join entities e on b.entity_id = e.id " \
                 "left join functional_categories fc on p.functional_category_id = fc.id " \
           "where " \
+            "e.language='"+language+"' and " \
             "to_tsvector('"+settings.SEARCH_CONFIG+"',p.payee||' '||p.description) @@ plainto_tsquery('"+settings.SEARCH_CONFIG+"',%s)"
         if year:
             sql += " and b.year='%s'" % year
