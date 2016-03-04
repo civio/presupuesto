@@ -58,7 +58,7 @@
           data: getBreakdownValue,
           title: '{{ _("Gasto") }}',
           render: calculatePersonalTax,
-          year: breakdown.years['{{ latest_budget.name() }}']
+          year: breakdown.years['{{ latest_budget.name()|safe }}']
         }
       ]);
     }
@@ -77,7 +77,7 @@
 
     var breakdown = {{ breakdown.to_json( labels=descriptions['functional'] )|safe }};
     var gridData = breakdownToTable(breakdown);
-    var getBreakdownValue = getBreakdownValueFunction('expense', '{{ latest_budget.name() }}');
+    var getBreakdownValue = getBreakdownValueFunction('expense', '{{ latest_budget.name()|safe }}');
     var myGrid;
 
     $("select").change(redrawGrid);
