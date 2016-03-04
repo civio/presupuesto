@@ -136,22 +136,21 @@ function StackedAreaChart() {
     var dataValues;
 
     // Fill data & stackData arrays
+
     _data.forEach(function(d, i){
       
       // Check gaps in values array & fill with 0
       fillGapsInValues( d.values );
 
-      dataValues = d.values.map(function(e){
-        return {
-          x: e[0],
-          y: e[1]
-        };
-      });
-
       _this.data.push({
         id: d.id,
         label: d.key,
-        values: dataValues
+        values: d.values.map(function(e){
+          return {
+            x: e[0],
+            y: e[1]
+          };
+        })
       });
 
       _this.stackData.push({
@@ -159,7 +158,12 @@ function StackedAreaChart() {
         id: d.id,
         label: d.key,
         active: true,
-        values: dataValues
+        values: d.values.map(function(e){
+          return {
+            x: e[0],
+            y: e[1]
+          };
+        })
       });
     });
 
