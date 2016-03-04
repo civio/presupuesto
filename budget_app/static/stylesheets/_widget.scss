@@ -5,7 +5,7 @@ body.widget{
     
     h1{
       color: $text-color;
-      font-size: 1.125em;
+      font-size: 1em;
       text-transform: uppercase;
       font-weight: $font-weight-400;
       margin: $grid-gutter-width/2;
@@ -21,16 +21,21 @@ body.widget{
   }
 
   .page-title{
-    margin: 2*$grid-gutter-width/3 0;
+    display: inline-block;
+    font-size: 1.75em;
+    margin: 0;
   }
 
   .tab-title{
+    display: inline-block;
     text-align: center;
+    padding-left: $grid-gutter-width/6;
 
     h3{
       display: none;
-      font-size: 1.5em;
-      color: $text-color;
+      font-size: 1.75em;
+      color: $gray-light;
+      margin: 0;
     }
   }
 
@@ -59,6 +64,11 @@ body.widget{
 
   .policies-chart{
     padding: 0;
+    margin-top: 2*$grid-gutter-width/3;
+  }
+
+  .tab-content{
+    text-align: center;
   }
 
   .tab-content > a:hover{
@@ -76,7 +86,7 @@ body.widget{
 
   .data-controllers{
     width: 150px;
-    margin: -10px auto $grid-gutter-width/2;
+    margin: -$grid-gutter-width/2 auto 2*$grid-gutter-width/3;
 
     .title{
       padding: $grid-gutter-width/6 0;
@@ -102,5 +112,9 @@ body.widget{
 
   .chart-embed-btn{
     display: none;
+  }
+
+  .stacked-area-chart-legend{
+    text-align: left;
   }
 }
