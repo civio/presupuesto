@@ -1,5 +1,5 @@
 # Changelog
-All notable changes to this project will be documented in this file
+All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 ### Added
@@ -13,9 +13,9 @@ All notable changes to this project will be documented in this file
 - Started English translation of the user interface.
 
 ### Changed
-- Major front-end rewrite, now using Bootstrap 3
-- Policy chart now reimplemented using plain D3.js. NVD3 dependency removed
-- Default locale changed from 'es_ES' to just 'es' for clarity and simplicity.
+- Major front-end rewrite, now using Bootstrap 3.
+- Policy chart now reimplemented using plain D3.js. NVD3 dependency removed.
+- Default locale changed from `es_ES` to just `es` for clarity and simplicity.
 - Improve year slider changing jslider plugin by [bootstrap-slider](http://seiyria.com/bootstrap-slider/)
 - Localised URLs don't have a language prefix if only one language is available.
 
@@ -28,31 +28,32 @@ All notable changes to this project will be documented in this file
 
 ## [3.1] - 2016-02-15
 ### Added
-- Version info API on /version.json
+- Version info API on `/version.json`
 - Add a default glossary to be loaded if the theme does not contain one
 - Add the option to extend the default glossary with the theme file
-- Extended options for load_budget: supports lists of years and languages
+- Extended options for `load_budget`: supports lists of years and languages
+- `load_budget` now can read the budget status from the file `.budget_status`
 - Enabled URL localization
 - Payment information can now be downloaded in CSV or XLS formats
 - Add variables for entity and data sources links in theme settings
 
 ### Changed
-- Google Analytics ID is now set via local\_settings
-- Added watchers for .html and .js files
+- Google Analytics ID is now set via `local_settings`
+- Added watchers for `.html` and `.js` files
 
 ### Fixed
 - Fix language filtering when searching any term
-- .less blob syntax is no longer wrong in manage.py
+- `.less` blob syntax is no longer wrong in `manage.py`
 
 ## [3.0] - 2016-02-02
 ### Added
-- Added livereload option to manage.py
-- Added a watcher to the livereload on .less files
+- Added livereload option to `manage.py`
+- Added a watcher to the livereload on `.less` files
 
 ### Changed
-- Removed theme-aragon from the base project
+- Removed `theme-aragon` from the base project
 
-## Forked from [aragonopendata/presupuesto] - 2016-01-28
+### Forked from [aragonopendata/presupuesto](https://github.com/aragonopendata/presupuesto) - 2016-01-28
 
 
 [Unreleased]: https://github.com/civio/presupuesto/compare/3.1...HEAD
