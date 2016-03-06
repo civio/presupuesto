@@ -40,4 +40,8 @@ def budgets(request):
     if hasattr(settings, 'SHOW_OVERVIEW_SUBTOTALS'):
         c['show_overview_subtotals'] = settings.SHOW_OVERVIEW_SUBTOTALS
 
+    c['calculate_budget_indicators'] = True
+    if hasattr(settings, 'CALCULATE_BUDGET_INDICATORS'):
+        c['calculate_budget_indicators'] = settings.CALCULATE_BUDGET_INDICATORS
+
     return render_to_response('budgets/index.html', c)

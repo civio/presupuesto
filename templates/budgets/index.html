@@ -70,7 +70,12 @@
     function redraw() {
       var uiState = getUIState();
       sankey.update(uiState);
-      updateIndicators(chapterBreakdown, economicBreakdown, stats, uiState);
+      updateBudgetTotals(chapterBreakdown, economicBreakdown, stats, uiState);
+{% if calculate_budget_indicators %}
+      calculateIndicators(chapterBreakdown, stats, uiState);
+{% else %}
+      showIndicators(uiState);
+{% endif %}
     }
 
     // Calculate maximum amount to display across all years, so we can set a global scale for the Sankey
