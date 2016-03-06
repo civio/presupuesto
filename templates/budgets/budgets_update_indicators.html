@@ -1,12 +1,17 @@
 <script>
 // Global function getSum
-function getSum(breakdown, ids, field, year) {
-  // TODO: Take into account whether actual spending figures exists (and whether they cover whole year)
-  return _.reduce(ids, function(sum, id) { return sum + (breakdown.sub[id][field][year]||0); }, 0);
+function getSum(breakdown, ids, field, year, budgetStatuses) {
+  // Prefer the execution amount if it exists and the year is complete,
+  // ...otherwise stick with the budget.
+  var use_execution_data = budgetStatuses[year]!== undefined &&
+                            budgetStatuses[year]=='' &&
+                            breakdown.years['actual_'+year];
+  var column_name = use_execution_data ? 'actual_'+year : year;
+  return _.reduce(ids, function(sum, id) { return sum + (breakdown.sub[id][field][column_name]||0); }, 0);
 }
 
 // Update budget totals
-function updateBudgetTotals(chapterBreakdown, economicBreakdown, stats, uiState) {
+function updateBudgetTotals(chapterBreakdown, economicBreakdown, budgetStatuses, stats, uiState) {
   function format(amount) {
     return formatAmount(adjustInflation(amount, stats, uiState.year));
   }
@@ -21,12 +26,12 @@ function updateBudgetTotals(chapterBreakdown, economicBreakdown, stats, uiState)
   var total_expenses_budgeted = economicBreakdown.expense[uiState.year];
   var total_expenses_executed = economicBreakdown.expense['actual_'+uiState.year];
 
-  var chapters_1_5_incomes   = getSum(chapterBreakdown, [1, 2, 3, 4, 5], 'income', uiState.year);
-  var chapters_1_5_expenses  = getSum(chapterBreakdown, [1, 2, 3, 4, 5], 'expense', uiState.year);
-  var chapters_6_7_incomes   = getSum(chapterBreakdown, [6, 7], 'income', uiState.year);
-  var chapters_6_7_expenses  = getSum(chapterBreakdown, [6, 7], 'expense', uiState.year);
-  var chapters_8_9_incomes   = getSum(chapterBreakdown, [8, 9], 'income', uiState.year);
-  var chapters_8_9_expenses  = getSum(chapterBreakdown, [8, 9], 'expense', uiState.year);
+  var chapters_1_5_incomes   = getSum(chapterBreakdown, [1, 2, 3, 4, 5], 'income', uiState.year, budgetStatuses);
+  var chapters_1_5_expenses  = getSum(chapterBreakdown, [1, 2, 3, 4, 5], 'expense', uiState.year, budgetStatuses);
+  var chapters_6_7_incomes   = getSum(chapterBreakdown, [6, 7], 'income', uiState.year, budgetStatuses);
+  var chapters_6_7_expenses  = getSum(chapterBreakdown, [6, 7], 'expense', uiState.year, budgetStatuses);
+  var chapters_8_9_incomes   = getSum(chapterBreakdown, [8, 9], 'income', uiState.year, budgetStatuses);
+  var chapters_8_9_expenses  = getSum(chapterBreakdown, [8, 9], 'expense', uiState.year, budgetStatuses);
 
   // Check if executed data is available
   if (total_incomes_executed){
@@ -53,19 +58,18 @@ function updateBudgetTotals(chapterBreakdown, economicBreakdown, stats, uiState)
 }
 
 // Calculate global budget indicators
-function calculateIndicators(chapterBreakdown, stats, uiState) {
+function calculateIndicators(chapterBreakdown, budgetStatuses, stats, uiState) {
   function format(amount) {
     return formatAmount(adjustInflation(amount, stats, uiState.year));
   }
 
-  var gross_savings = getSum(chapterBreakdown, _.range(1, 6), 'income', uiState.year) -
-                      getSum(chapterBreakdown, _.range(1, 6), 'expense', uiState.year);
-  var net_savings = gross_savings - getSum(chapterBreakdown, '9', 'expense', uiState.year);
+  var gross_savings = getSum(chapterBreakdown, _.range(1, 6), 'income', uiState.year, budgetStatuses) -
+                      getSum(chapterBreakdown, _.range(1, 6), 'expense', uiState.year, budgetStatuses);
+  var net_savings = gross_savings - getSum(chapterBreakdown, '9', 'expense', uiState.year, budgetStatuses);
   var funding_capacity = gross_savings +
-                          getSum(chapterBreakdown, [6, 7], 'income', uiState.year) -
-                          getSum(chapterBreakdown, [6, 7], 'expense', uiState.year);
+                          getSum(chapterBreakdown, [6, 7], 'income', uiState.year, budgetStatuses) -
+                          getSum(chapterBreakdown, [6, 7], 'expense', uiState.year, budgetStatuses);
 
-  $('#indicators-year, #totals-year').text(uiState.year);
   $('#total-gross-savings').text(format(gross_savings));
   $('#total-net-savings').text(format(net_savings));
   $('#total-funding-capacity').text(format(funding_capacity));
@@ -77,5 +81,7 @@ function showIndicators(uiState) {
   // Update budget indicators by year
   $('#totals-panel .panel.indicators .value').hide();
   $('#totals-panel .panel.indicators .value-'+uiState.year).show();
+
+  $('#indicators-year, #totals-year').text(uiState.year);
 }
 </script>

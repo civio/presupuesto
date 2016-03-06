@@ -51,7 +51,7 @@
 
     </div>
 
-    <p class="text-center"><small>{{ _('El cálculo de los indicadores utiliza las cifras del presupuesto aprobado') }}.</small></p>
+    <p class="text-center"><small>{{ _('El cálculo de los indicadores utiliza las cifras de ejecución para los años cuya liquidación está cerrada, o el presupuesto aprobado en caso contrario.') }}</small></p>
 
     <!-- Social Sharing Buttons -->
     {% include 'shared/social_sharing.html' %}
@@ -70,9 +70,9 @@
     function redraw() {
       var uiState = getUIState();
       sankey.update(uiState);
-      updateBudgetTotals(chapterBreakdown, economicBreakdown, stats, uiState);
+      updateBudgetTotals(chapterBreakdown, economicBreakdown, budgetStatuses, stats, uiState);
 {% if calculate_budget_indicators %}
-      calculateIndicators(chapterBreakdown, stats, uiState);
+      calculateIndicators(chapterBreakdown, budgetStatuses, stats, uiState);
 {% else %}
       showIndicators(uiState);
 {% endif %}

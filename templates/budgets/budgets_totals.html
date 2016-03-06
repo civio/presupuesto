@@ -44,9 +44,9 @@
   </div>
 
   <p class="text-center"><small>
-  {{ _('Cantidades actualizadas con la inflación a fecha 1 de enero de') }} {{ last_inflation_year }}.
   {% if show_overview_subtotals %}
-  {{ _('El cálculo de los subtotales utiliza las cifras del presupuesto aprobado') }}.
+  {{ _('El cálculo de los subtotales utiliza las cifras de ejecución para los años cuya liquidación está cerrada, o el presupuesto aprobado en caso contrario.') }}
   {% endif %}
+  {{ _('Cantidades actualizadas con la inflación a fecha 1 de enero de') }} {{ last_inflation_year }}.
   </small></p>
 </div>

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-03-04 12:13+0100\n"
-"PO-Revision-Date: 2016-02-24 18:26+0100\n"
+"PO-Revision-Date: 2016-03-06 21:48+0100\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -151,7 +151,7 @@ msgid "Subtotal Financiero"
 msgstr ""
 
 #: templates/budgets/budgets_totals.html:47
-msgid "El cálculo de los subtotales utiliza las cifras del presupuesto aprobado"
+msgid "El cálculo de los subtotales utiliza las cifras de ejecución para los años cuya liquidación está cerrada, o el presupuesto aprobado en caso contrario."
 msgstr ""
 
 #: templates/budgets/index.html:17
@@ -171,7 +171,7 @@ msgid "Cantidades actualizadas con la inflación a fecha 1 de enero de"
 msgstr ""
 
 #: templates/budgets/index.html:54
-msgid "El cálculo de los indicadores utiliza las cifras del presupuesto aprobado"
+msgid "El cálculo de los indicadores utiliza las cifras de ejecución para los años cuya liquidación está cerrada, o el presupuesto aprobado en caso contrario."
 msgstr ""
 
 #: templates/budgets/index.html:56
@@ -189,8 +189,7 @@ msgid "Gobierno de Aragón"
 msgstr ""
 
 #: templates/budgets/index.html:105 templates/entities/totals.html:6
-#: templates/entities/totals.html.py:13
-#: templates/policies/show_script.html:139
+#: templates/entities/totals.html.py:13 templates/policies/show_script.html:139
 msgid "Presupuestado"
 msgstr "Budgeted"
 
