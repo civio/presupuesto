@@ -42,6 +42,12 @@ function getIncomeArticleLink(article_id, title) {
 }
 
 
+// Return path to overview page
+function getOverviewLink() {
+  return "{{ url('budget_app.views.budgets') }}";
+}
+
+
 // Return path to a county page
 function getCountyLink(slug) {
   var url = "{{ url('budget_app.views.counties') }}/"+slug;

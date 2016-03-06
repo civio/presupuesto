@@ -16,7 +16,7 @@ $(document).ready(function(){
 	} else if ($('body').hasClass('body-policies')) {
 		var cookie = $.cookie('resumen');
 		if( cookie && cookie === '1' ){
-			$('.history-back a').attr('href', '/resumen').html('← Volver');
+			$('.history-back a').attr('href', getOverviewLink()).html('← Volver');
 			$.removeCookie('resumen');
 		}
 
