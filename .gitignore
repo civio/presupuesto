@@ -10,3 +10,4 @@ presupuesto-*
 budget_app/static/stylesheets/config.codekit
 
 .env
+/.sass-cache
