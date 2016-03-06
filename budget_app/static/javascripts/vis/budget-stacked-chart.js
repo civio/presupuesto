@@ -47,7 +47,7 @@ function BudgetStackedChart(theSelector, theStats, theColorScale, i18n) {
 
       // ...unless we know the execution data is not complete (the year is not over),
       // in which case we go with the budget.
-      if ( budgetStatuses[year] && budgetStatuses[year]!='' && column_name.indexOf("actual_")===0 )
+      if ( budgetStatuses[year]!==undefined && budgetStatuses[year]!='' && column_name.indexOf("actual_")===0 )
         continue;
 
       // Normally we do this:      
