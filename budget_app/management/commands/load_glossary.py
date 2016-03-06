@@ -41,7 +41,7 @@ class Command(BaseCommand):
             filename = 'glosario.csv'
             default_filename = 'glosario_default.csv'
 
-        glossary_loader.delete_all(options.get('language', 'es-es'))
+        glossary_loader.delete_all(options.get('language', 'es'))
         if options.get('extend', False):
             glossary_loader.load(
                 os.path.join(PATH_TO_DEFAULT, default_filename),
