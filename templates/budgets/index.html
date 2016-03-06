@@ -51,10 +51,7 @@
 
     </div>
 
-    <p class="text-center"><small>{{ _('Cantidades actualizadas con la inflación a fecha 1 de enero de') }} {{ last_inflation_year }}. {{ _('El cálculo de los indicadores utiliza las cifras del presupuesto aprobado') }}.</small></p>
-    {% if not include_financial_chapters %}
-    <p class="text-center"><small>{{ _('Se incluyen únicamente los gastos e ingresos no financieros, es decir, capítulos I al VII.') }}</small></p>
-    {% endif %}
+    <p class="text-center"><small>{{ _('El cálculo de los indicadores utiliza las cifras del presupuesto aprobado') }}.</small></p>
 
     <!-- Social Sharing Buttons -->
     {% include 'shared/social_sharing.html' %}

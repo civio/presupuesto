@@ -43,7 +43,10 @@
     </div>
   </div>
 
+  <p class="text-center"><small>
+  {{ _('Cantidades actualizadas con la inflación a fecha 1 de enero de') }} {{ last_inflation_year }}.
   {% if show_overview_subtotals %}
-  <p class="text-center"><small>{{ _('El cálculo de los subtotales utiliza las cifras del presupuesto aprobado') }}.</small></p>
+  {{ _('El cálculo de los subtotales utiliza las cifras del presupuesto aprobado') }}.
   {% endif %}
+  </small></p>
 </div>
