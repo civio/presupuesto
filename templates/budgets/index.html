@@ -61,18 +61,17 @@
 <!-- Data Sources Panel -->
 {% include 'shared/data_sources.html' %}
 
-
+<!-- Some extra Javascript, camouflaged as HTML files :/ -->
 {% include 'shared/policy_paths.html' %}
+{% include 'budgets/budgets_update_indicators.html' %}
 
 <script>
   $(function() {
     function redraw() {
       var uiState = getUIState();
       sankey.update(uiState);
-      updateIndicators(uiState);
+      updateIndicators(chapterBreakdown, economicBreakdown, stats, uiState);
     }
-
-    {% include 'budgets/budgets_update_indicators.html' %}
 
     // Calculate maximum amount to display across all years, so we can set a global scale for the Sankey
     function calculateMaximumSankeyAmount(breakdown, stats) {
