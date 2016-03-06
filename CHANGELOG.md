@@ -18,6 +18,7 @@ All notable changes to this project will be documented in this file.
 - Default locale changed from `es_ES` to just `es` for clarity and simplicity.
 - Improve year slider changing jslider plugin by [bootstrap-slider](http://seiyria.com/bootstrap-slider/)
 - Localised URLs don't have a language prefix if only one language is available.
+- Tax receipt is aware of whether financial chapters have to be included or not.
 
 ### Fixed
 - Site cache is now working again, after fixing HTTP headers.
@@ -25,6 +26,7 @@ All notable changes to this project will be documented in this file.
 - Friendly URLs were cut at the first single quote. Not anymore.
 - Added missing translation strings. Catalan default translation completed.
 - Pagination controls fixed to show only a range of pages, not all available.
+- 'Back to Sankey' button in policy page didn't work in multi-language setting.
 
 ## [3.1] - 2016-02-15
 ### Added
