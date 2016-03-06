@@ -11,6 +11,11 @@ function updateBudgetTotals(chapterBreakdown, economicBreakdown, stats, uiState)
     return formatAmount(adjustInflation(amount, stats, uiState.year));
   }
 
+  // The economic breakdown is aware of whether we're including the financial chapters,
+  // i.e. it shows a total matching that of the overview chart. We could remove
+  // one argument to this function (economicBreakdown) and calculate the same totals
+  // from the chapterBreakdown, as long as we had access to the include_financial_chapters
+  // setting. But since it's working already...
   var total_incomes_budgeted = economicBreakdown.income[uiState.year];
   var total_incomes_executed = economicBreakdown.income['actual_'+uiState.year];
   var total_expenses_budgeted = economicBreakdown.expense[uiState.year];
