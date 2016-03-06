@@ -28,6 +28,16 @@ All notable changes to this project will be documented in this file.
 - Pagination controls fixed to show only a range of pages, not all available.
 - 'Back to Sankey' button in policy page didn't work in multi-language setting.
 
+## [3.1.1] - 2016-03-06
+### Changed
+- Tax receipt is aware of whether financial chapters have to be included or not.
+- Default locale changed from es_ES to just es for clarity and simplicity.
+
+### Fixed
+- Friendly URLs were cut at the first single quote. Not anymore.
+- 'Back to Sankey' button in policy page didn't work in multi-language setting.
+- Update language menu to match new i18n configuration.
+
 ## [3.1] - 2016-02-15
 ### Added
 - Version info API on `/version.json`
