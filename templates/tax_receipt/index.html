@@ -31,6 +31,9 @@
       <p class="tax-detail-intro">{{ _('Detalle de tu contribución en') }} {{ latest_budget.year }}</p>
       
       <table id="myGrid" class="table-grid" width="100%"></table>
+{% if not include_financial_chapters %}
+      <p class="footnote tcenter">{{ _('Se incluyen únicamente los gastos e ingresos no financieros, es decir, capítulos I al VII.') }}</p>
+{% endif %}
 
       {% include 'shared/social_sharing.html' %}
 
