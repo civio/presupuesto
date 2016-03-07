@@ -1,4 +1,6 @@
 # -*- coding: UTF-8 -*-
+
+from django.conf import settings
 from coffin.shortcuts import render_to_response
 from budget_app.models import BudgetBreakdown, Payment
 from helpers import *
@@ -11,8 +13,15 @@ def payments(request, render_callback=None):
     main_entity = get_main_entity(c)
 
     # Payments breakdown
-    c['payee_breakdown'] = BudgetBreakdown(['payee', 'area', 'description'])
-    c['area_breakdown'] = BudgetBreakdown(['area', 'payee', 'description'])
+    breakdown_by_payee_criteria = ['payee', 'area', 'description']
+    if hasattr(settings, 'PAYMENTS_BREAKDOWN_BY_PAYEE'):
+        breakdown_by_payee_criteria = settings.PAYMENTS_BREAKDOWN_BY_PAYEE
+    c['payee_breakdown'] = BudgetBreakdown(breakdown_by_payee_criteria)
+
+    breakdown_by_area_criteria = ['area', 'payee', 'description']
+    if hasattr(settings, 'PAYMENTS_BREAKDOWN_BY_AREA'):
+        breakdown_by_area_criteria = settings.PAYMENTS_BREAKDOWN_BY_AREA
+    c['area_breakdown'] = BudgetBreakdown(breakdown_by_area_criteria)
 
     for item in Payment.objects.each_denormalized("b.entity_id = %s", [main_entity.id]):
         # We add the date to the description, if it exists:
