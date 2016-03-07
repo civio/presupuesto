@@ -21,7 +21,7 @@
 
 .glossary-terms{
   padding: 0;
-  margin: $grid-gutter-width $grid-gutter-width/2;
+  margin: 0 0 $grid-gutter-width;
 
   > tbody{
     border-bottom: 1px solid $table-border-color;
@@ -56,6 +56,22 @@
 
 .glossary-content{
 
+  .glossary-search-results{
+    border-top: 1px solid $table-border-color;
+
+    .alert{
+      display: inline-block;
+      font-size: 1.125em;
+      background: $page-header-bg;
+      margin-top: $grid-gutter-width;
+      margin-bottom: $grid-gutter-width;
+
+      b{
+        font-weight: $font-weight-600;
+      }
+    }
+  }
+
   .pagination-container{
     text-align: center;
     margin: $grid-gutter-width 0;
@@ -69,10 +85,5 @@
     .form-control{
       margin: 0 $grid-gutter-width/2;
     }
-  }
-
- .glossary-terms{
-    margin-left: $grid-gutter-width;
-    margin-right: $grid-gutter-width;
   }
 }

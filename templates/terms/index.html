@@ -14,7 +14,7 @@
 
   <div class="glossary-content">
     <div class="container">
-      
+
       <form class="form-search-glossary form-inline" action="{{ url('budget_app.views.terms') }}" method="get">
           <div class="form-group">
             <label for="q">{{ _('Busca dentro del glosario') }}</label>
@@ -22,6 +22,15 @@
           </div>
           <button class="btn btn-default btn-primary icon-search" type="button">{{ _('Buscar') }}</button>
       </form>
+
+      {% if query %}
+      <div class="glossary-search-results">
+        <p class="alert note">
+          {{ _('Hemos encontrado') }} <b>{{ terms|length }} 
+          {{ _('resultados</b> relacionados con')|safe }} <b>{{ query }}</b>.
+        </p>
+      </div>
+      {% endif %}
 
       <table class="glossary-terms table">
         <tbody>
