@@ -46,6 +46,7 @@ class PaymentManager(models.Manager):
 class Payment(models.Model):
     budget = models.ForeignKey('Budget')
     area = models.CharField(max_length=100)
+    programme = models.CharField(max_length=100, default='')
     functional_category = models.ForeignKey('FunctionalCategory', db_column='functional_category_id', null=True)
     economic_category = models.ForeignKey('EconomicCategory', db_column='economic_category_id', null=True)
     economic_concept = models.CharField(max_length=10, null=True)
