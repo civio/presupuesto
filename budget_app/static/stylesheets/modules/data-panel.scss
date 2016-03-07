@@ -96,6 +96,11 @@
   }
 
 
+  p.text-center{
+    max-width: $screen-sm;
+    margin:  0 auto;
+  }
+
   @media (min-width: $screen-sm-min) {
   
     @include clearfix();
