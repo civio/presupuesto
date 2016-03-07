@@ -55,12 +55,16 @@
   position: relative;
   background: $page-header-bg;
   padding: $grid-gutter-width/2;
-  margin: 0;
-  border: 1px solid $brand-primary;
-  border-top: none;
+  margin: $grid-gutter-width 0 $grid-gutter-width/2;
 }
 
 .policies.policy-breakdown{
+
+  .policies-chart{
+    margin: $grid-gutter-width 0;
+    border: 1px solid $brand-primary;
+    //border-top: none;
+  }
 
   // Remove cursor pointer in policy-breakdown treemap
   .policies-chart .treemap-chart rect{

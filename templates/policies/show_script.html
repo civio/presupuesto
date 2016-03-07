@@ -240,11 +240,11 @@
       if (uiState.type === 'institutional'){
         $('#policy-chart-container .stacked-area-chart').remove();
         $('#policy-chart-container .stacked-area-chart-legend').remove();
-        $('#policy-chart-container').hide();
+        $('.policies-chart').hide();
         return;
       }
       else{
-        $('#policy-chart-container').show();
+        $('.policies-chart').show();
       }
 
       // Setup Graph
