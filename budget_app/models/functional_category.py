@@ -30,6 +30,7 @@ class FunctionalCategory(models.Model):
     policy = models.CharField(max_length=3, null=True)
     function = models.CharField(max_length=5, null=True)
     programme = models.CharField(max_length=5, null=True)
+    subprogramme = models.CharField(max_length=5, null=True)
     description = models.CharField(max_length=200)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -52,7 +53,9 @@ class FunctionalCategory(models.Model):
             return self.policy
         elif self.programme == None:
             return self.function
-        return self.programme
+        elif self.subprogramme == None:
+            return self.programme
+        return self.subprogramme
 
     def slug(self):
         return slugify(self.description)

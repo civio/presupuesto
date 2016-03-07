@@ -68,7 +68,9 @@
         'economic': rowNameFormatter,
 {% endif %}
 {% if full_breakdown %}
-{% if policy_uid %}
+{% if programme_id %}
+        'functional': getPolicyLinkFormatter(-1),  // 
+{% elif policy_uid %}
         'functional': getPolicyLinkFormatter(0),  // Programmes at root level
 {% else %}  // Showing an article
         'functional': getPolicyLinkFormatter(1),  // Programmes at root level
@@ -121,7 +123,7 @@
 {% if full_breakdown or article %}
       'economic':       {{ (expense_areas if show_side=='expense' else income_areas)|safe }},
 {% endif %}
-{% if programme is not defined and show_side != 'income' %}
+{% if subprogramme is not defined and show_side != 'income' %}
       'functional':     {{ functional_areas|safe }},
 {% endif %}
 {% if full_breakdown %}
@@ -278,19 +280,21 @@
       // Add area click event if type is functional
       if (uiState.type == 'functional') {
         $('#policy-chart-container .stacked-area-chart').addClass('clickable');
-        $('#policy-chart-container').bind('area-selected', onProgrammeSelected);
+        $('#policy-chart-container').bind('area-selected', onItemSelected);
       }
       {% endif %}
     };
 
     // Link to policy handlers
-    function onProgrammeSelected(event, d) {
+    function onItemSelected(event, d) {
       var widget = $('body').hasClass('widget') ? '?widget=1' : '';
 
 {% if article %}
       window.location = getPolicyLink(d.id, d.label, getUIState())+widget;
-{% else %}
+{% elif policy_uid %}
       window.location = getProgrammeLink(d.id, d.label, getUIState())+widget;
+{% else %}
+      window.location = getSubprogrammeLink(d.id, d.label, getUIState())+widget;
 {% endif %}
     }
 

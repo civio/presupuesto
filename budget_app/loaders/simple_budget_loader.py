@@ -81,6 +81,7 @@ class SimpleBudgetLoader:
                                         policy='XX',
                                         function='XXX',
                                         programme='XXXX',
+                                        subprogramme='XXXX',
                                         description='Ingresos',
                                         budget=budget)
         dummy_fc.save()
@@ -129,7 +130,8 @@ class SimpleBudgetLoader:
                 fc = FunctionalCategory.objects.filter( area=item['fc_code'][0:1],
                                                         policy=item['fc_code'][0:2],
                                                         function=item['fc_code'][0:3],
-                                                        programme=item['fc_code'],
+                                                        programme=item['fc_code'][0:4],
+                                                        subprogramme=item['fc_code'],
                                                         budget=budget)
                 if not fc:
                     print u"ALERTA: No se encuentra la categoría funcional '%s' para '%s': %s€" % (item['fc_code'].decode("utf8"), item['description'].decode("utf8"), item['amount']/100)
@@ -200,6 +202,9 @@ class SimpleBudgetLoader:
     def load_functional_classification(self, path, budget):
         reader = csv.reader(open(os.path.join(path, '..', '..', 'areas_funcionales.csv'), 'rb'))
         for index, line in enumerate(reader):
+            if len(line)==0:
+                continue
+
             if re.match("^#", line[0]):     # Ignore comments
                 continue
 
@@ -207,12 +212,14 @@ class SimpleBudgetLoader:
             policy = line[1]
             group = line[2]
             programme = line[3]
-            description = line[4]
+            subprogramme = line[4]
+            description = line[5]
 
             fc = FunctionalCategory(area=area if area != "" else None,
                                     policy=area+policy if policy != "" else None,
                                     function=area+policy+group if group != "" else None,
                                     programme=area+policy+group+programme if programme != "" else None,
+                                    subprogramme=area+policy+group+programme+subprogramme if subprogramme != "" else None,
                                     description=description,
                                     budget=budget)
             fc.save()

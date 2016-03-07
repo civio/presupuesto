@@ -44,6 +44,11 @@ budget_app_urlpatterns += url_patterns('budget_app.views',
     url(r'^programas/(?P<id>[0-9A-Z]+)$', 'programmes_show', name="policies-programmes-2"),
     url(r'^programas/(?P<id>[0-9A-Z]+)/(?P<title>.+)$', 'programmes_show', name="policies-programmes-3"),
 
+    # Subprogramme pages
+    url(r'^subprogramas$', 'subprogrammes_show', name="policies-subprogrammes"),
+    url(r'^subprogramas/(?P<id>[0-9A-Z]+)$', 'subprogrammes_show', name="policies-subprogrammes-2"),
+    url(r'^subprogramas/(?P<id>[0-9A-Z]+)/(?P<title>.+)$', 'subprogrammes_show', name="policies-subprogrammes-3"),
+
     # Expense pages (economic breakdown)
     url(r'^articulos/g$', 'expense_articles_show', name="policies-articles"),
     url(r'^articulos/g/(?P<id>[0-9]+)$', 'expense_articles_show', name="policies-articles-2"),

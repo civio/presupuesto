@@ -6,7 +6,7 @@ class BudgetItemManager(models.Manager):
     def each_denormalized(self, additional_constraints=None, additional_arguments=None):
         sql = \
             "select " \
-                "fc.policy, fc.function, fc.programme, " \
+                "fc.policy, fc.function, fc.programme, fc.subprogramme, " \
                 "ec.chapter, ec.article, ec.heading, ec.subheading, " \
                 "ic.institution, ic.department, " \
                 "fdc.source, fdc.fund, "\
@@ -43,7 +43,7 @@ class BudgetItemManager(models.Manager):
             "i.id, i.item_number, i.description, i.amount, i.expense, " \
             "ec.article, ec.heading, ec.subheading, " \
             "ic.institution, ic.department, " \
-            "fc.policy, fc.programme " \
+            "fc.policy, fc.programme, fc.subprogramme " \
           "from " \
             "budget_items i, " \
             "budgets b, " \
@@ -112,6 +112,9 @@ class BudgetItem(models.Model):
 
     def programme(self):
         return self.functional_category.programme
+
+    def subprogramme(self):
+        return self.functional_category.subprogramme
 
     # Whether an item is a financial expense (i.e. paying debt, mostly) or income (i.e. new debt).
     # Only works on a denormalized record.

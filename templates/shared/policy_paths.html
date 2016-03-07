@@ -28,6 +28,12 @@ function getProgrammeLink(programme_id, title) {
   return url;
 }
 
+// Return path to a subprogramme
+function getSubprogrammeLink(subprogramme_id, title) {
+  var url = "{{ url('budget_app.views.subprogrammes_show') }}/"+subprogramme_id+'/'+parameterize(title);
+  return url;
+}
+
 
 // Return path to article pages
 function getExpenseArticleLink(article_id, title) {
@@ -96,7 +102,9 @@ function getTownCompareLink(left_slug, right_slug) {
 function getPolicyLinkFormatter(programme_level) {
   return function(value, type, item) {
     programme_level = (typeof programme_level==='undefined') ? 1 : programme_level;
-    if ( item.indent >= programme_level ) {
+    if ( item.indent > programme_level ) {
+      var link = getSubprogrammeLink(item.key, value);
+    } else if ( item.indent == programme_level ) {
       var link = getProgrammeLink(item.key, value);
     } else {
       var link = getPolicyLink(item.key, value);

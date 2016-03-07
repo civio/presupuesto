@@ -83,14 +83,13 @@ def programmes_show(request, id, title, render_callback=None):
             programme_descriptions[item.uid()] = getattr(item, 'description')
 
     # Get the budget breakdown.
-    # The functional breakdown is an empty one, as we're at the deepest level, but since
-    # we're going to be displaying this data in the policy page we send a blank one
-    c['functional_breakdown'] = BudgetBreakdown([])
+    c['functional_breakdown'] = BudgetBreakdown(['subprogramme'])
     c['economic_breakdown'] = BudgetBreakdown(['chapter', 'article', 'heading', 'uid'])
     c['funding_breakdown'] = BudgetBreakdown(['source', 'fund'])
     c['institutional_breakdown'] = BudgetBreakdown([_year_tagged_institution, _year_tagged_department])
     get_budget_breakdown(   "fc.programme = %s and e.id = %s", [ id, main_entity.id ],
-                            [ 
+                            [
+                                c['functional_breakdown'],
                                 c['economic_breakdown'],
                                 c['funding_breakdown'],
                                 c['institutional_breakdown']
@@ -103,6 +102,69 @@ def programmes_show(request, id, title, render_callback=None):
     programme_descriptions.update(c['descriptions']['expense'])
     c['descriptions']['expense'] = programme_descriptions
     c['name'] = c['descriptions']['functional'].get(c['programme_id'])
+    c['title_prefix'] = c['name']
+
+    # Additional data needed by the view
+    show_side = 'expense'
+    populate_stats(c)
+    populate_years(c, 'institutional_breakdown')
+    populate_budget_statuses(c, main_entity.id)
+    populate_area_descriptions(c, ['functional', 'funding', show_side])
+    _populate_csv_settings(c, 'programme', id)
+    _set_show_side(c, show_side)
+    _set_full_breakdown(c, True)
+
+    _set_policy_type(c, 'functional')
+
+    # if parameter widget defined use policies/widget template instead of policies/show
+    template = 'policies/show_widget.html' if _isWidget(request) else 'policies/show.html'
+
+    return render(c, render_callback, template )
+
+
+# FIXME: This is just like the programme function above
+def subprogrammes_show(request, id, title, render_callback=None):
+    # Get request context
+    c = get_context(request, css_class='body-policies', title='')
+
+    # Retrieve the entity to display
+    main_entity = get_main_entity(c)
+
+    # Extra request context info
+    c['subprogramme_id'] = id
+    c['subprogramme'] = FunctionalCategory.objects.filter(  budget__entity=main_entity, 
+                                                            subprogramme=id)[0]
+    c['programme'] = FunctionalCategory.objects.filter(budget__entity=main_entity, 
+                                                    programme=c['subprogramme'].programme, 
+                                                    subprogramme__isnull=True)[0]
+
+    # Ignore if possible the descriptions for execution data, they are truncated and ugly
+    programme_descriptions = {}
+    def _populate_programme_descriptions(column_name, item):
+        if not item.actual or not item.uid() in programme_descriptions:
+            programme_descriptions[item.uid()] = getattr(item, 'description')
+
+    # Get the budget breakdown.
+    # The functional breakdown is an empty one, as we're at the deepest level, but since
+    # we're going to be displaying this data in the policy page we send a blank one
+    c['functional_breakdown'] = BudgetBreakdown([])
+    c['economic_breakdown'] = BudgetBreakdown(['chapter', 'article', 'heading', 'uid'])
+    c['funding_breakdown'] = BudgetBreakdown(['source', 'fund'])
+    c['institutional_breakdown'] = BudgetBreakdown([_year_tagged_institution, _year_tagged_department])
+    get_budget_breakdown(   "fc.subprogramme = %s and e.id = %s", [ id, main_entity.id ],
+                            [ 
+                                c['economic_breakdown'],
+                                c['funding_breakdown'],
+                                c['institutional_breakdown']
+                            ],
+                            _populate_programme_descriptions)
+
+    # Note we don't modify the original descriptions, we're working on a copy (of the hash,
+    # which is made of references to the hashes containing the descriptions themselves).
+    c['descriptions'] = Budget.objects.get_all_descriptions(main_entity).copy()
+    programme_descriptions.update(c['descriptions']['expense'])
+    c['descriptions']['expense'] = programme_descriptions
+    c['name'] = c['descriptions']['functional'].get(c['subprogramme_id'])
     c['title_prefix'] = c['name']
 
     # Additional data needed by the view

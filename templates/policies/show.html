@@ -10,7 +10,14 @@
   <div class="policies-header section-header">
 
     <div class="container">
-      {% if programme %}
+      {% if subprogramme %}
+      <p class="history-back">
+        <a href="{% url 'budget_app.views.programmes_show' subprogramme.programme, programme.slug() %}" id="policy-name-link">
+          &larr; {{ descriptions['functional'].get(subprogramme.programme) }}
+        </a>
+      </p>
+      <h2 class="page-title">{{ name }}</h2>
+      {% elif programme %}
       <p class="history-back">
         <a href="{% url 'budget_app.views.policies_show' programme.policy, policy.slug() %}" id="policy-name-link">
           &larr; {{ descriptions['functional'].get(programme.policy) }}
@@ -31,7 +38,7 @@
 
     <ul id="tabs" class="nav nav-tabs nav-tabs-centered" role="tablist">
     {% if full_breakdown %}
-      {% if programme is not defined and show_side != 'income' %}
+      {% if subprogramme is not defined and show_side != 'income' %}
       <li class="active">
         <a href="#functional" title="{{ _(tab_titles['functional']) }}">
           <h3>{{ _(tab_titles['functional']) }}</h3>
@@ -117,6 +124,8 @@
 
       <!-- Panel Downloads -->
       <div class="panel-downloads">
+{# FIXME: Disabled temporarily for subprogrammes #}
+{% if not subprogramme %}
     {% if full_breakdown %}
       {% if programme is not defined and show_side != 'income' %}
         {{ panel_downloads(_(tab_titles['functional']), 'functional', csv_type, csv_id) }} 
@@ -151,6 +160,7 @@
                       xls_link=url(download_view_name, level, entity.slug, csv_id, 'xls') ) }} 
       {% endif %}
     {% endif %}
+{% endif %}
       </div>
     </div>
 
