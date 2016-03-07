@@ -263,7 +263,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "budget_app.context_processors.cookies_url_processor",
     "budget_app.context_processors.show_options_processor",
     "budget_app.context_processors.main_entity_processor",
-    "budget_app.context_processors.data_sources_processor"
+    "budget_app.context_processors.data_sources_processor",
+    "budget_app.context_processors.search_entities_processor"
 )
 
 SEARCH_CONFIG = ENV.get('SEARCH_CONFIG', 'pg_catalog.english')

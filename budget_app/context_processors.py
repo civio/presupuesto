@@ -28,3 +28,6 @@ def data_sources_processor(request):
       'data_source_population':    hasattr(settings, 'DATA_SOURCE_POPULATION') and settings.DATA_SOURCE_POPULATION,
       'data_source_inflation':     hasattr(settings, 'DATA_SOURCE_INFLATION') and settings.DATA_SOURCE_INFLATION
     }
+
+def search_entities_processor(request):
+    return { 'search_entities': False if not hasattr(settings, 'SEARCH_ENTITIES') else settings.SEARCH_ENTITIES }

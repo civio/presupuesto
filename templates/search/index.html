@@ -223,12 +223,20 @@
                     {# Year and location #}
                     {% if item.level==main_entity_level %}
                     <p class="date icon-calendar">
-                      <a href="{{ url('budget_app.views.policies') }}#view={{show_side}}">{{ item.name }} {{ item.year }}</a>
+                      {% if search_entities %}
+                      <a href="{{ url('budget_app.views.policies') }}#view={{show_side}}">{{ item.name }} {{ item.year }} </a>
+                      {% else %}
+                      <a href="{{ url('budget_app.views.policies') }}#view={{show_side}}">{{ item.year }}</a>
+                      {% endif %}
                     </p>
                     {% else %}
                     {% set view_name = 'budget_app.views.counties_show' if item.level=='comarca' else 'budget_app.views.towns_show' %}
                     <p class="date icon-calendar">
+                      {% if search_entities %}
                       <a href="{{ url(view_name, item.name|slugify) }}#view={{show_side}}">{{ item.name }} {{ item.year }}</a>
+                      {% else %}
+                      <a href="{{ url(view_name, item.name|slugify) }}#view={{show_side}}">{{ item.year }}</a>
+                      {% endif %}
                     </p>
                     {% endif %}
                   </div>
