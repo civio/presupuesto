@@ -81,7 +81,7 @@ class PaymentsLoader:
                 continue
 
             # Fetch economic category
-            if fields['ec_code']!='':
+            if fields['ec_code']!=None and fields['ec_code']!='':
                 ec = EconomicCategory.objects.filter(expense=True,
                                                     chapter=fields['ec_code'][0],
                                                     article=fields['ec_code'][0:2] if len(fields['ec_code']) >= 2 else None,
@@ -97,7 +97,7 @@ class PaymentsLoader:
                 ec = None
 
             # Fetch functional category
-            if fields['fc_code']!='':
+            if fields['fc_code']!=None and fields['fc_code']!='':
                 fc = FunctionalCategory.objects.filter( area=fields['fc_code'][0:1],
                                                         policy=fields['fc_code'][0:2],
                                                         function=fields['fc_code'][0:3],
@@ -111,7 +111,17 @@ class PaymentsLoader:
             else:
                 fc = None
 
+            # XXX: We've recently added a new field to payments: 'programme'
+            # In order not to break existing loaders we're going to use null
+            # as default value in case the attribute is not found, at least for now.
+            # It'd probably make sense to treat all text fields like this, although
+            # there's a certain value in forcing child loaders to explicitely set
+            # fields to None if that's what they want.
+            programme = fields.get('programme', None)
+
+            # Create the payment record
             Payment(area=fields['area'],
+                    programme=programme,
                     functional_category = fc,
                     economic_category = ec,
                     economic_concept = fields['ec_code'],
