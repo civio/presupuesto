@@ -28,7 +28,7 @@ def search(request):
         budget = None
 
     # Get search results
-    c['years'] = map(str, Budget.objects.get_years())
+    c['years'] = map(str, Budget.objects.get_years(get_main_entity(c).id))
     c['terms'] = list(GlossaryTerm.objects.search(c['query'], c['LANGUAGE_CODE']))
     if not hasattr(settings, 'SEARCH_ENTITIES') or settings.SEARCH_ENTITIES:
         c['entities'] = list(Entity.objects.search(c['query']))
