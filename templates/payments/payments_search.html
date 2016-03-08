@@ -1,26 +1,36 @@
-<form id="payments-search">
-  <div class="form-group">
-    <label for="input-description">{{ _('Descripción') }}</label>
-    <input type="text" id="input-description" class="form-control" placeholder="{{ _('Descripción') }}">
+<p><h3 class="page-title">{{ _('Busca pagos a proveedores') }}</h3></p>
+
+<div class="payments-search-panel data-panel">
+  <div class="panel">
+    <div class="panel-content">
+
+      <!-- Payments Search Form -->
+      <form id="payments-search">
+        <div class="form-group">
+          <label for="input-description">{{ _('Descripción') }}</label>
+          <input type="text" id="input-description" class="form-control" placeholder="{{ _('Descripción') }}">
+        </div>
+        <div class="form-group">
+          <label for="input-payee">{{ _('Proveedor') }}</label>
+          <select id="input-payee" class="form-control">
+            <option>{{ _('Filtra por Proveedor') }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="input-area">{{ _('Area') }}</label>
+          <select id="input-area" class="form-control">
+            <option>{{ _('Filtra por Area') }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="input-date">{{ _('Fitra por fecha') }}</label>
+          <input id="input-date" type="text" data-slider-min="2011" data-slider-max="2015" data-slider-value="[2011,2015]" />
+        </div>
+        <button type="submit" class="btn btn-default btn-primary">{{ _('Fitrar') }}</button>
+      </form>
+    </div>
   </div>
-  <div class="form-group">
-    <label for="input-payee">{{ _('Proveedor') }}</label>
-    <select id="input-payee" class="form-control">
-      <option>{{ _('Filtra por Proveedor') }}</option>
-    </select>
-  </div>
-  <div class="form-group">
-    <label for="input-area">{{ _('Area') }}</label>
-    <select id="input-area" class="form-control">
-      <option>{{ _('Filtra por Area') }}</option>
-    </select>
-  </div>
-  <div class="form-group">
-    <label for="input-date">{{ _('Fitra por fecha') }}</label>
-    <input id="input-date" type="text" data-slider-min="2011" data-slider-max="2015" data-slider-value="[2011,2015]" />
-  </div>
-  <button type="submit" class="btn btn-default btn-primary">{{ _('Fitrar') }}</button>
-</form>
+</div>
 
 <script>
   $(function () {

@@ -14,14 +14,6 @@
       <h2 class="page-title">{{ _('Inversiones y pagos') }}</h2>
     </div>
 
-    <ul id="tabs" class="nav nav-tabs nav-tabs-centered" role="tablist">
-      <li class="active">
-        <a href="#area"><h3>{{ _('Por área') }}</h3></a>
-      </li>
-      <li>
-        <a href="#payee"><h3>{{ _('Por beneficiario') }}</h3></a>
-      </li>
-    </ul>
   </div>
 
   <div class="payments-content">
@@ -40,7 +32,17 @@
       </div>
 
       <table id="myGrid" class="table-grid" width="100%"></table>
-
+      
+      <!--
+      <ul id="tabs" class="nav nav-tabs nav-tabs-centered" role="tablist">
+        <li class="active">
+          <a href="#area"><h3>{{ _('Por área') }}</h3></a>
+        </li>
+        <li>
+          <a href="#payee"><h3>{{ _('Por beneficiario') }}</h3></a>
+        </li>
+      </ul>
+      -->
       {{ render_tab(_('Por área'), 'area', 'active', entity) }}
       {{ render_tab(_('Por beneficiario'), 'payee', '', entity) }}
 

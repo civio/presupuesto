@@ -22,3 +22,11 @@
     }
   }
 }
+
+.payments-search-panel.data-panel{
+  margin-top: $grid-gutter-width;
+  
+  .panel-content{
+    background: $brand-secondary;
+  }
+}
