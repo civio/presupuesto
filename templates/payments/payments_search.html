@@ -60,10 +60,28 @@
       ticks: years.map(function(d){ return parseInt(d); }),
       ticks_labels: years
     });
-    //.on('change', callback );
 
     $('#payments-search').submit(function(e){
       e.preventDefault();
+
+      $.ajax({
+        url: "/payments-search",
+        type: 'POST',
+        data: {
+          description: encodeURIComponent($('#input-description').val()),
+          payee: encodeURIComponent($('#input-payee').val()),
+          area: encodeURIComponent($('#input-area').val()),
+          date: encodeURIComponent($('#input-date').val())
+        },
+        contentType: 'application/json; charset=utf-8',
+        success: function (response) {
+          alert(response.status);
+        },
+        error: function () {
+          alert("error");
+        }
+      });
+
     });
   });
 </script>
