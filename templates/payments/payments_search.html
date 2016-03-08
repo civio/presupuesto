@@ -71,8 +71,7 @@
       e.preventDefault();
 
       $.ajax({
-        url: "/payments-search",
-        type: 'POST',
+        url: "pagos/search",
         data: {
           description: encodeURIComponent($('#input-description').val()),
           payee: encodeURIComponent($('#input-payee').val()),
@@ -81,7 +80,7 @@
         },
         contentType: 'application/json; charset=utf-8',
         success: function (response) {
-          alert(response.status);
+          drawPayments( response.areaBreakdown, response.payeeBreakdown );
         },
         error: function () {
           alert("error");
@@ -89,5 +88,10 @@
       });
 
     });
+
+    function drawPayments( _areaBreakdown, _payeeBreakdown ){
+
+    }
+
   });
 </script>
