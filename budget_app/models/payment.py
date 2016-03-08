@@ -2,6 +2,7 @@ from django.db import models
 from django.db.models import Sum
 from django.conf import settings
 
+MAX_RESULTS = 1000
 
 class PaymentManager(models.Manager):
     # Return the list of payees
@@ -42,6 +43,8 @@ class PaymentManager(models.Manager):
 
         if additional_constraints:
             sql += " where " + additional_constraints
+
+        sql += " limit "+str(MAX_RESULTS)
 
         return self.raw(sql, additional_arguments)
 
