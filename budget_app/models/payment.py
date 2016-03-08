@@ -3,6 +3,20 @@ from django.conf import settings
 
 
 class PaymentManager(models.Manager):
+    # Return the list of payees
+    def get_payees(self, entity_id):
+        return self.values_list('payee', flat=True) \
+                    .filter(budget_id__entity=entity_id) \
+                    .distinct() \
+                    .order_by('payee')
+
+    # Return the list of areas
+    def get_areas(self, entity_id):
+        return self.values_list('area', flat=True) \
+                    .filter(budget_id__entity=entity_id) \
+                    .distinct() \
+                    .order_by('area')
+
     def each_denormalized(self, additional_constraints=None, additional_arguments=None):
         # XXX: Note that this left join syntax works well even when the economic_category_id is null,
         # as opposed to the way we query for Budget Items. I should probably adopt this all around,

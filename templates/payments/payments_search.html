@@ -35,9 +35,9 @@
 <script>
   $(function () {
 
-    var years = {{ years|safe }};
-
-    // var payees = {{ payees|safe }};
+    var years = {{ years }},
+        payees = {{ payees|safe }},
+        areas = {{ areas|safe }};
 
     $('#input-date').slider({
       tooltip: 'always',

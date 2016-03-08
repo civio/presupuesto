@@ -1,5 +1,7 @@
 # -*- coding: UTF-8 -*-
 
+import json
+
 from django.conf import settings
 from coffin.shortcuts import render_to_response
 from budget_app.models import BudgetBreakdown, Payment
@@ -12,13 +14,14 @@ def payments(request, render_callback=None):
     # Retrieve the entity to display
     main_entity = get_main_entity(c)
 
-    c['years'] = Budget.objects.get_years()
+    # Retrieve the information needed for the search form: years, areas and payees
+    c['years'] = list(Budget.objects.get_years(main_entity))
     c['first_year'] = c['years'][0]
     c['last_year'] = c['years'][len(c['years'])-1]
 
-    # c['payees'] = Payment.objects.get_payees()
-    # print c['payees']
+    c['payees'] = json.dumps(list(Payment.objects.get_payees(main_entity)))
 
+    c['areas'] = json.dumps(list(Payment.objects.get_areas(main_entity)))
 
     # Payments breakdown
     # breakdown_by_payee_criteria = ['payee', 'area', 'description']

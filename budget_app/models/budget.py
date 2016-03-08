@@ -13,7 +13,16 @@ class BudgetManager(models.Manager):
 
     # Return a list of years for which we have a budget
     def get_years(self):
-        return self.values_list('year', flat=True).distinct().order_by('year')
+        return self.values_list('year', flat=True) \
+                    .distinct() \
+                    .order_by('year')
+
+    # Return a list of years for which we have a budget, for a given entity
+    def get_years(self, entity_id):
+        return self.values_list('year', flat=True) \
+                    .filter(entity_id=entity_id) \
+                    .distinct() \
+                    .order_by('year')
 
     # Return the status for all budgets for a given entity
     def get_statuses(self, entity_id):
