@@ -39,6 +39,9 @@
         payees = {{ payees|safe }},
         areas = {{ areas|safe }};
 
+    var payments_count = {{ payments_count }},
+        total_amount = {{ total_amount }};
+
     $('#input-date').slider({
       tooltip: 'always',
       ticks: years.map(function(d){ return parseInt(d); }),

@@ -23,6 +23,10 @@ def payments(request, render_callback=None):
 
     c['areas'] = json.dumps(list(Payment.objects.get_areas(main_entity)))
 
+    # Get basic stats for the overall dataset
+    c['payments_count'] = Payment.objects.get_count(main_entity)
+    c['total_amount'] = Payment.objects.get_total_amount(main_entity)
+
     # Payments breakdown
     # breakdown_by_payee_criteria = ['payee', 'area', 'description']
     # if hasattr(settings, 'PAYMENTS_BREAKDOWN_BY_PAYEE'):
