@@ -22,9 +22,9 @@
             <option>{{ _('Filtra por Area') }}</option>
           </select>
         </div>
-        <div class="form-group">
+        <div class="form-group data-controllers">
           <label for="input-date">{{ _('Fitra por fecha') }}</label>
-          <input id="input-date" type="text" data-slider-min="2011" data-slider-max="2015" data-slider-value="[2011,2015]" />
+          <input  type="text" id="input-date" class="form-control" data-slider-min="2011" data-slider-max="2015" data-slider-value="[2011,2015]" />
         </div>
         <button type="submit" class="btn btn-default btn-primary">{{ _('Fitrar') }}</button>
       </form>
@@ -34,10 +34,13 @@
 
 <script>
   $(function () {
+
+    var years = [2011, 2012, 2013, 2014, 2015];
+
     $('#input-date').slider({
       tooltip: 'always',
-      //ticks: years.map(function(d){ return parseInt(d); }),
-      //ticks_labels: years
+      ticks: years.map(function(d){ return parseInt(d); }),
+      ticks_labels: years
     });
     //.on('change', callback );
   });

@@ -30,3 +30,11 @@
     background: $brand-secondary;
   }
 }
+
+#payments-search{
+  .data-controllers{
+    margin-left: $grid-gutter-width/2;
+    margin-right: $grid-gutter-width/2;
+    margin-bottom: $grid-gutter-width;
+  }
+}
