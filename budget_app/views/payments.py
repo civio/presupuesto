@@ -20,8 +20,7 @@ def payments(request, render_callback=None):
     c['last_year'] = c['years'][len(c['years'])-1]
 
     c['payees'] = json.dumps(list(Payment.objects.get_payees(main_entity)))
-
-    c['areas'] = json.dumps(list(Payment.objects.get_areas(main_entity)))
+    c['areas']  = json.dumps(list(Payment.objects.get_areas(main_entity)))
 
     # Get basic stats for the overall dataset
     c['payments_count'] = Payment.objects.get_count(main_entity)
