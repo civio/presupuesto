@@ -10,17 +10,23 @@
           <label for="input-description">{{ _('Descripción') }}</label>
           <input type="text" id="input-description" class="form-control" placeholder="{{ _('Descripción') }}">
         </div>
-        <div class="form-group">
-          <label for="input-payee">{{ _('Proveedor') }}</label>
-          <select id="input-payee" class="form-control">
-            <option>{{ _('Filtra por Proveedor') }}</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="input-area">{{ _('Area') }}</label>
-          <select id="input-area" class="form-control">
-            <option>{{ _('Filtra por Area') }}</option>
-          </select>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="input-area">{{ _('Area') }}</label>
+              <select id="input-area" class="form-control" style="width: 100%">
+                <option value="" disabled selected hidden>{{ _('Selecciona Area') }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label for="input-payee">{{ _('Proveedor') }}</label>
+              <select id="input-payee" class="form-control" style="width: 100%">
+                <option value="" disabled selected hidden>{{ _('Selecciona Proveedor') }}</option>
+              </select>
+            </div>
+          </div>
         </div>
         <div class="form-group data-controllers">
           <label for="input-date">{{ _('Filtra por fecha') }}</label>
@@ -35,18 +41,53 @@
 <script>
   $(function () {
 
-    var years = {{ years }},
-        payees = {{ payees|safe }},
-        areas = {{ areas|safe }};
+    var years           = {{ years }},
+        areas           = {{ areas|safe }},
+        payees          = {{ payees|safe }},
+        payments_count  = {{ payments_count }},
+        total_amount    = {{ total_amount }};
 
-    var payments_count = {{ payments_count }},
-        total_amount = {{ total_amount }};
+    // Add select2 ajax suport to area & payees inputs
+    $('#input-area').select2({
+      data: areas
+    });
+
+    $('#input-payee').select2({
+      data: payees.map(function(d){
+        return {
+          id: d.toLowerCase(),
+          text: d
+        }
+      })
+    });
 
     $('#input-date').slider({
-      tooltip: 'always',
+      //tooltip: 'always',
       ticks: years.map(function(d){ return parseInt(d); }),
       ticks_labels: years
     });
-    //.on('change', callback );
+
+    $('#payments-search').submit(function(e){
+      e.preventDefault();
+
+      $.ajax({
+        url: "/payments-search",
+        type: 'POST',
+        data: {
+          description: encodeURIComponent($('#input-description').val()),
+          payee: encodeURIComponent($('#input-payee').val()),
+          area: encodeURIComponent($('#input-area').val()),
+          date: encodeURIComponent($('#input-date').val())
+        },
+        contentType: 'application/json; charset=utf-8',
+        success: function (response) {
+          alert(response.status);
+        },
+        error: function () {
+          alert("error");
+        }
+      });
+
+    });
   });
 </script>

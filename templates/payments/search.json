@@ -1,0 +1,4 @@
+{
+  "payeeBreakdown": {{ payee_breakdown.to_json()|safe }},
+  "areaBreakdown": {{ area_breakdown.to_json()|safe }}
+}
