@@ -13,28 +13,28 @@ def payments(request, render_callback=None):
     main_entity = get_main_entity(c)
 
     # Payments breakdown
-    breakdown_by_payee_criteria = ['payee', 'area', 'description']
-    if hasattr(settings, 'PAYMENTS_BREAKDOWN_BY_PAYEE'):
-        breakdown_by_payee_criteria = settings.PAYMENTS_BREAKDOWN_BY_PAYEE
-    c['payee_breakdown'] = BudgetBreakdown(breakdown_by_payee_criteria)
+    # breakdown_by_payee_criteria = ['payee', 'area', 'description']
+    # if hasattr(settings, 'PAYMENTS_BREAKDOWN_BY_PAYEE'):
+    #     breakdown_by_payee_criteria = settings.PAYMENTS_BREAKDOWN_BY_PAYEE
+    # c['payee_breakdown'] = BudgetBreakdown(breakdown_by_payee_criteria)
 
-    breakdown_by_area_criteria = ['area', 'payee', 'description']
-    if hasattr(settings, 'PAYMENTS_BREAKDOWN_BY_AREA'):
-        breakdown_by_area_criteria = settings.PAYMENTS_BREAKDOWN_BY_AREA
-    c['area_breakdown'] = BudgetBreakdown(breakdown_by_area_criteria)
+    # breakdown_by_area_criteria = ['area', 'payee', 'description']
+    # if hasattr(settings, 'PAYMENTS_BREAKDOWN_BY_AREA'):
+    #     breakdown_by_area_criteria = settings.PAYMENTS_BREAKDOWN_BY_AREA
+    # c['area_breakdown'] = BudgetBreakdown(breakdown_by_area_criteria)
 
-    for item in Payment.objects.each_denormalized("b.entity_id = %s", [main_entity.id]):
-        # We add the date to the description, if it exists:
-        # TODO: I wanted the date to be in a separate column, but it's complicated right
-        # now the way BudgetBreakdown works. Need to think about it
-        if item.date:
-            item.description = item.description + ' (' + str(item.date) + ')'
+    # for item in Payment.objects.each_denormalized("b.entity_id = %s", [main_entity.id]):
+    #     # We add the date to the description, if it exists:
+    #     # TODO: I wanted the date to be in a separate column, but it's complicated right
+    #     # now the way BudgetBreakdown works. Need to think about it
+    #     if item.date:
+    #         item.description = item.description + ' (' + str(item.date) + ')'
 
-        c['payee_breakdown'].add_item(item.year, item)
-        c['area_breakdown'].add_item(item.year, item)
+    #     c['payee_breakdown'].add_item(item.year, item)
+    #     c['area_breakdown'].add_item(item.year, item)
 
-    # Additional data needed by the view
-    populate_stats(c)
-    populate_years(c, 'area_breakdown')
+    # # Additional data needed by the view
+    # populate_stats(c)
+    # populate_years(c, 'area_breakdown')
 
     return render_to_response('payments/index.html', {'entity': main_entity}, c)

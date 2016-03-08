@@ -28,13 +28,8 @@
     <div class="container tab-content">
       
       {% include 'payments/payments_intro.html' %}
-      
-      <div class="data-controllers">
-        <p class="title tcenter">{{ _('Elige año') }}</p>
-        <div class="layout-slider">
-          <input id="year-selection" type="text" />
-        </div>
-      </div>
+
+      {% include 'payments/payments_search.html' %}
 
       <div id="totals_panel" class="totals-placeholder data-panel">
         <div class="panel">
@@ -55,88 +50,5 @@
 </section>
 
 {% include 'shared/data_sources.html' %}
-
-<script>
-  $(function () {
-    //
-    // GRID RENDERING
-    //
-
-    function getColumnDefinition(uiState) {
-      return { 
-        data: getBreakdownValueFunction('expense', uiState.year),
-        title: '{{ _("Pago") }}',
-        render: getFormatter('nominal', stats, Number(uiState.year))
-      }; 
-    }
-
-    //Update Tab
-    function updateTab() {
-      var uiState = getUIState();
-
-      console.log('updateTab', uiState);
-
-      $('#tabs .active').removeClass('active');
-      $('a[href="#'+uiState.type+'"]').blur().parent().addClass('active');
-      
-      redrawGrid();
-    }
-
-    // Do all the hard work of drawing the grids
-    function redrawGrid() {
-      var uiState   = getUIState();
-      var columnDef = getColumnDefinition(uiState);
-      var title     = (uiState.type == 'area') ? '{{ _("Área") }}' : '{{ _("Beneficiario") }}';
-      var data      = (uiState.type == 'area') ? areaGridData : payeeGridData;
-      
-      if ( myGrid !== undefined )  myGrid.destroy();
-      myGrid = createBudgetGrid("#myGrid", data,
-                        [
-                          {
-                            data: "key",
-                            title: title,
-                            render: rowNameFormatter
-                          },
-                          columnDef
-                        ]);
-
-      // Total amounts are the same whichever way you break down the items, so any breakdown will do
-      $("#total").text( columnDef.render(columnDef.data(payeeBreakdown) || 'n/a' ) );
-    }    
-
-
-    //
-    // DATA
-    //
-    var payeeBreakdown = {{ payee_breakdown.to_json()|safe }};
-    var payeeGridData = breakdownToTable(payeeBreakdown);
-
-    var areaBreakdown = {{ area_breakdown.to_json()|safe }};
-    var areaGridData = breakdownToTable(areaBreakdown);
-
-    var years = {{ years|safe }};
-    var stats = {{ stats|safe }};
-
-    var myGrid;
-
-
-    initSlider("#year-selection", years, redrawGrid, {{ latest_year }});
-    if (years.length==1) $(".data-controllers").hide();
-
-    // Handle the hash the page may have loaded with.
-    state = $.deparam.fragment();
-    // Highlight a particular item
-    if (state.description) {
-      unfoldItem(payeeGridData, state.description);
-      redrawGrid();
-      $('a[href="#payee"]').parent().addClass('active');
-      //$("#tab-payee a").click();
-      //window.setTimeout(function(){ $(".toggle.collapse")[0].scrollIntoView() }, 1000);
-    }
-
-    // Setup tabs navigation
-    setRedrawOnTabsChange('#tabs', updateTab);
-  });
-</script>
 
 {% endblock %}
