@@ -12,6 +12,14 @@ def payments(request, render_callback=None):
     # Retrieve the entity to display
     main_entity = get_main_entity(c)
 
+    c['years'] = Budget.objects.get_years()
+    c['first_year'] = c['years'][0]
+    c['last_year'] = c['years'][len(c['years'])-1]
+
+    # c['payees'] = Payment.objects.get_payees()
+    # print c['payees']
+
+
     # Payments breakdown
     # breakdown_by_payee_criteria = ['payee', 'area', 'description']
     # if hasattr(settings, 'PAYMENTS_BREAKDOWN_BY_PAYEE'):

@@ -23,10 +23,10 @@
           </select>
         </div>
         <div class="form-group data-controllers">
-          <label for="input-date">{{ _('Fitra por fecha') }}</label>
-          <input  type="text" id="input-date" class="form-control" data-slider-min="2011" data-slider-max="2015" data-slider-value="[2011,2015]" />
+          <label for="input-date">{{ _('Filtra por fecha') }}</label>
+          <input  type="text" id="input-date" class="form-control" data-slider-min="{{first_year}}" data-slider-max="{{last_year}}" data-slider-value="[{{first_year}}, {{last_year}}]" />
         </div>
-        <button type="submit" class="btn btn-default btn-primary">{{ _('Fitrar') }}</button>
+        <button type="submit" class="btn btn-default btn-primary">{{ _('Filtrar') }}</button>
       </form>
     </div>
   </div>
@@ -35,7 +35,9 @@
 <script>
   $(function () {
 
-    var years = [2011, 2012, 2013, 2014, 2015];
+    var years = {{ years|safe }};
+
+    // var payees = {{ payees|safe }};
 
     $('#input-date').slider({
       tooltip: 'always',
