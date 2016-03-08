@@ -50,29 +50,6 @@
         </div>
       </div>
 
-      {% if terms %}
-      <div class="results-terms panel">
-        <div class="panel-heading">
-          <h3 class="icon-glossary">{{ _('Términos') }}</h3>
-        </div>
-        <div class="panel-body">
-          <table class="table glossary-terms">
-            <tbody>
-            {% for term in terms %}
-            <tr>
-              <td>
-                <h4 class="icon-term">{{ term.title }}</h4>
-                <div class="term-description">{{ term.description|safe }}</div>
-              </td>
-            </tr>
-            {% endfor %}
-            </tbody>
-          </table>
-        </div>
-      </div>
-      {% endif %}
-
-
       {% if entities %}
       <div class="results-terms panel">
         <div class="panel-heading">
@@ -320,6 +297,29 @@
 
       {{ render_pagination_controls(payments, request) }}
       {% endif %}
+
+      {% if terms %}
+      <div class="results-terms panel">
+        <div class="panel-heading">
+          <h3 class="icon-glossary">{{ _('Términos') }}</h3>
+        </div>
+        <div class="panel-body">
+          <table class="table glossary-terms">
+            <tbody>
+            {% for term in terms %}
+            <tr>
+              <td>
+                <h4 class="icon-term">{{ term.title }}</h4>
+                <div class="term-description">{{ term.description|safe }}</div>
+              </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      {% endif %}
+      
     </div>
   </div>
 </section>
