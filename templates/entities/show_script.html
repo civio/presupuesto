@@ -12,7 +12,7 @@
     function getColumnDefinition(uiState) {
       var getBreakdownValue = getBreakdownValueFunction(uiState.field, uiState.year);
       return {
-        title: '{{ _("Previsto") }}',
+        title: '{{ _("Presupuestado") }}',
         data: getBreakdownValue,
         render: getFormatter(uiState.format, stats, Number(uiState.year), getBreakdownValue)
       }; 
@@ -96,10 +96,10 @@
       if ( uiState.view == 'fexpense' ) {
         $(".policies-title").text('{{ _("Gastos (por programa)") }}');
         if ( includeFinancialChapters ) {
-          $("#main-total .main-label").html('{{ _("Total gastos") }}'+executionLabelPostfix);
+          $("#main-total .main-label").html('{{ _("Total gastado") }}'+executionLabelPostfix);
         } else {
           $("#main-total .main-label").html('{{ _("Total gastos no financieros") }}'+executionLabelPostfix);
-          $("#including-financial-total .main-label").html('{{ _("Total gastos") }}'+executionLabelPostfix);
+          $("#including-financial-total .main-label").html('{{ _("Total gastado") }}'+executionLabelPostfix);
         }
         $("#income-downloads").hide();
         $("#fexpense-downloads").show();
@@ -107,14 +107,14 @@
 
       } else if ( uiState.view == 'income' ) {
         $(".policies-title").text('{{ _("Ingresos") }}');
-        $("#main-total .main-label").html('{{ _("Total ingresos") }}'+executionLabelPostfix);
+        $("#main-total .main-label").html('{{ _("Total ingresado") }}'+executionLabelPostfix);
         $("#income-downloads").show();
         $("#fexpense-downloads").hide();
         $("#expense-downloads").hide();
 
       } else {
         $(".policies-title").text('{{ _("Gastos") }}');
-        $("#main-total .main-label").html('{{ _("Total gastos") }}'+executionLabelPostfix);
+        $("#main-total .main-label").html('{{ _("Total gastado") }}'+executionLabelPostfix);
         $("#income-downloads").hide();
         $("#fexpense-downloads").hide();
         $("#expense-downloads").show();
