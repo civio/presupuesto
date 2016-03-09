@@ -58,20 +58,27 @@
     <script src="{{ STATIC_URL }}javascripts/icons-lte-ie7.js"></script>
   <![endif]-->
 
-  <script src="{{ STATIC_URL }}javascripts/css_browser_selector.js"></script>
-
   <!--[if (gte IE 6)&(lte IE 8)]>
     <script src="{{ STATIC_URL }}javascripts/selectivizr-min.js"></script>
   <![endif]-->
 
   {% compress js %}
-  <script src="{{ STATIC_URL }}javascripts/script.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/css_browser_selector.js"></script>
   <script src="{{ STATIC_URL }}javascripts/iframeResizer.contentWindow.min.js"></script>
   <script src="{{ STATIC_URL }}javascripts/bootstrap-slider.js"></script>
-
-  <!-- Select2 -->
   <script src="{{ STATIC_URL }}javascripts/select2.min.js"></script>
   <script src="{{ STATIC_URL }}javascripts/select2_locale_es.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/comparator.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/script.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/vis/d3.v3.min.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/vis/d3.sankey.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/vis/budget-sankey.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/vis/bigtext.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/vis/budget-treemap.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/vis/budget-summary.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/vis/stacked-area-chart.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/vis/budget-stacked-chart.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/tax_calculator.js"></script>
   {% endcompress %}
 
   <!-- Cookies Bar Setup -->
