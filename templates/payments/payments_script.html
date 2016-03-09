@@ -66,8 +66,17 @@
                           },
                           columnDef
                         ]);
+      
+      // TODO!!! Add literals translation
+      var queryStr = '';
+      if( query.area ) queryStr += 'Area: <b>'+query.area+'</b>';
+      if( query.payee ) queryStr += ' / Beneficiario: <b>'+query.payee+'</b>';
+      var dates = query.date.split(',');
+      queryStr += ' / Entre <b>'+dates[0]+'</b> y <b>'+dates[1]+'</b>';
 
-      $("#total").text( columnDef.render(columnDef.data(data) || 'n/a' ) ).show();
+      $('#query-panel .payments-query').html( queryStr );
+
+      $("#payments-total").text( columnDef.render(columnDef.data(data) || 'n/a' ) );
 
       $('.payments-content .tab-content').show();
     }
