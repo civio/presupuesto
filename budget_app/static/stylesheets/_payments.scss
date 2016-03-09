@@ -21,10 +21,15 @@
       background: $page-header-bg;
     }
   }
+
+  .tab-content{
+    display: none;
+  }
 }
 
 .payments-search-panel.data-panel{
   margin-top: $grid-gutter-width;
+  margin-bottom: $grid-gutter-width;
   
   .panel-content{
     background: $brand-secondary;

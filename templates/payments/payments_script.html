@@ -8,12 +8,15 @@
       return { 
         data: getBreakdownValueFunction('expense', uiState.year),
         title: '{{ _("Pago") }}',
-        render: getFormatter('nominal', stats, Number(uiState.year))
+        render: getFormatter('nominal', null, null)
       }; 
     }
 
     //Update Tab
     function updateTab() {
+
+      if( areaBreakdown === undefined ) return;
+
       var uiState = getUIState();
 
       console.log('updateTab', uiState);
@@ -27,12 +30,20 @@
     // Do all the hard work of drawing the grids
     function redrawGrid() {
       var uiState   = getUIState();
+
+      // TODO!!! set type (area or payee) based on search parameters
+      //uiState.type  = 'payee'
+      var data      = (uiState.type == 'area') ? areaBreakdown : payeeBreakdown;
+      // TODO!!! get year from data.years object?
+      uiState.year  = 2014;
       var columnDef = getColumnDefinition(uiState);
       var title     = (uiState.type == 'area') ? '{{ _("Área") }}' : '{{ _("Beneficiario") }}';
-      var data      = (uiState.type == 'area') ? areaGridData : payeeGridData;
-      
+
+      console.log('redrawGrid', uiState, columnDef);
+
       if ( myGrid !== undefined )  myGrid.destroy();
-      myGrid = createBudgetGrid("#myGrid", data,
+
+      myGrid = createBudgetGrid("#myGrid", breakdownToTable(data),
                         [
                           {
                             data: "key",
@@ -42,29 +53,22 @@
                           columnDef
                         ]);
 
-      // Total amounts are the same whichever way you break down the items, so any breakdown will do
-      $("#total").text( columnDef.render(columnDef.data(payeeBreakdown) || 'n/a' ) );
+      $("#total").text( columnDef.render(columnDef.data(data) || 'n/a' ) ).show();
+
+      $('.payments-content .tab-content').show();
     }    
 
-
     //
-    // DATA
+    // SETUP
     //
-    var payeeBreakdown = {{ payee_breakdown.to_json()|safe }};
-    var payeeGridData = breakdownToTable(payeeBreakdown);
+    var myGrid,
+        areaBreakdown,
+        payeeBreakdown,
+        years           = {{ years }},
+        areas           = {{ areas|safe }},
+        payees          = {{ payees|safe }};
 
-    var areaBreakdown = {{ area_breakdown.to_json()|safe }};
-    var areaGridData = breakdownToTable(areaBreakdown);
-
-    var years = {{ years|safe }};
-    var stats = {{ stats|safe }};
-
-    var myGrid;
-
-
-    initSlider("#year-selection", years, redrawGrid, {{ latest_year }});
-    if (years.length==1) $(".data-controllers").hide();
-
+    /*
     // Handle the hash the page may have loaded with.
     state = $.deparam.fragment();
     // Highlight a particular item
@@ -75,6 +79,53 @@
       //$("#tab-payee a").click();
       //window.setTimeout(function(){ $(".toggle.collapse")[0].scrollIntoView() }, 1000);
     }
+    */
+
+    // Setup area & payees selects
+    $('#input-area').select2({
+      data: areas
+    });
+
+    $('#input-payee').select2({
+      data: payees.map(function(d){
+        return {
+          id: d.toLowerCase(),
+          text: d
+        }
+      })
+    });
+
+    // Setup year slider
+    $('#input-date').slider({
+      //tooltip: 'always',
+      ticks: years.map(function(d){ return parseInt(d); }),
+      ticks_labels: years
+    });
+
+    // Setup form submit handler
+    $('#payments-search').submit(function(e){
+      e.preventDefault();
+
+      $.ajax({
+        url: "pagos/search",
+        data: {
+          description: encodeURIComponent($('#input-description').val()),
+          payee: encodeURIComponent($('#input-payee').val()),
+          area: encodeURIComponent($('#input-area').val()),
+          date: encodeURIComponent($('#input-date').val())
+        },
+        contentType: 'application/json; charset=utf-8',
+        success: function (response) {
+          areaBreakdown = response.areaBreakdown;
+          payeeBreakdown = response.payeeBreakdown;
+          $.bbq.pushState( {'view': 'area'} );
+        },
+        error: function () {
+          // TODO!!! Add error message
+          //alert("error");
+        }
+      });
+    });
 
     // Setup tabs navigation
     setRedrawOnTabsChange('#tabs', updateTab);

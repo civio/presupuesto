@@ -17,11 +17,23 @@
   </div>
 
   <div class="payments-content">
-    <div class="container tab-content">
+    <div class="container">
       
       {% include 'payments/payments_intro.html' %}
 
       {% include 'payments/payments_search.html' %}
+    </div>
+
+    <div class="container tab-content">
+      
+      <ul id="tabs" class="nav nav-tabs nav-tabs-centered" role="tablist">
+        <li class="active">
+          <a href="#area"><h3>{{ _('Por área') }}</h3></a>
+        </li>
+        <li>
+          <a href="#payee"><h3>{{ _('Por beneficiario') }}</h3></a>
+        </li>
+      </ul>
 
       <div id="totals_panel" class="totals-placeholder data-panel">
         <div class="panel">
@@ -32,19 +44,7 @@
       </div>
 
       <table id="myGrid" class="table-grid" width="100%"></table>
-      
-      <!--
-      <ul id="tabs" class="nav nav-tabs nav-tabs-centered" role="tablist">
-        <li class="active">
-          <a href="#area"><h3>{{ _('Por área') }}</h3></a>
-        </li>
-        <li>
-          <a href="#payee"><h3>{{ _('Por beneficiario') }}</h3></a>
-        </li>
-      </ul>
-      -->
-      {{ render_tab(_('Por área'), 'area', 'active', entity) }}
-      {{ render_tab(_('Por beneficiario'), 'payee', '', entity) }}
+    </div>
 
       {% include 'shared/social_sharing.html' %}
     </div>
@@ -52,5 +52,7 @@
 </section>
 
 {% include 'shared/data_sources.html' %}
+
+{% include 'payments/payments_script.html' %}
 
 {% endblock %}
