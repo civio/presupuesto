@@ -32,7 +32,10 @@
           <label for="input-date">{{ _('Filtra por fecha') }}</label>
           <input  type="text" id="input-date" class="form-control" data-slider-min="{{first_year}}" data-slider-max="{{last_year}}" data-slider-value="[{{first_year}}, {{last_year}}]" />
         </div>
-        <button type="submit" class="btn btn-default btn-primary">{{ _('Filtrar') }}</button>
+        <button type="submit" class="btn btn-default btn-primary">
+          <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate hide"></span>
+          {{ _('Filtrar') }}
+        </button>
       </form>
     </div>
   </div>

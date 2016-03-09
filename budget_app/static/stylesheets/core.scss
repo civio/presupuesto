@@ -8,6 +8,9 @@
 // Bootstrap
 @import "_bootstrap";
 
+// IcoMoon Icons
+@import "_icons";
+
 // DVMI Common Styles
 @import "_common";
 
@@ -26,7 +29,6 @@
 @import "modules/table-grid";
 
 // DVMI Sections Styles
-@import "_icons";
 @import "_header";
 @import "_footer";
 @import "_home";

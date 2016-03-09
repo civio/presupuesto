@@ -43,4 +43,12 @@
     margin-right: $grid-gutter-width/2;
     margin-bottom: $grid-gutter-width;
   }
+
+  .glyphicon-refresh-animate{
+    margin-right: $grid-gutter-width/6;
+
+    &:before{
+      margin: 0;
+    }
+  }
 }
