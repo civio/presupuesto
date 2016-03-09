@@ -54,6 +54,7 @@ label{
 
   .popover{
     top: auto;
+    pointer-events: none; // Avoid mouse events over popover
 
     .popover-title{
       margin: 0 $grid-gutter-width/2;
