@@ -51,4 +51,11 @@
       margin: 0;
     }
   }
+
+  .alert{
+    display: none;
+    font-size: 0.875em;
+    padding: 6px $grid-gutter-width/3;
+    margin-left: $grid-gutter-width/6;
+  }
 }

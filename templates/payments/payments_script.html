@@ -97,9 +97,8 @@
       var view = ( query.area ) ? 'payee' : 'area';
 
       // Change view hash to trigger updateTab
-      $.bbq.removeState('view');
+      $.bbq.removeState('view');  // We need to clear view hash before update it
       $.bbq.pushState( {'view': view} );
-
 
       $('#payments-search button[type="submit"]').attr('disabled', false).children('.glyphicon').addClass('hide');
     }
@@ -165,13 +164,23 @@
     $('#payments-search').submit(function(e){
       e.preventDefault();
 
+      // Show alert if there's no filter parameter
+      if( $('#input-description').val().trim() === '' && $('#input-payee').val() === null && $('#input-area').val() === null ){
+        $(this).find('.alert').show();
+        $('#input-description, #input-payee, #input-area').one('change', function(){
+          $('#payments-search .alert').hide();
+        });
+        return;
+      }
+
       $(this).find('button[type="submit"]').attr('disabled', true).children('.glyphicon').removeClass('hide');
     
       var state = { 'date': $('#input-date').val() };
-      if( $('#input-description').val().trim() )  state.description = $('#input-description').val();
+      if( $('#input-description').val().trim() )  state.description = $('#input-description').val().trim();
       if( $('#input-payee').val() )               state.payee = $('#input-payee').val();
       if( $('#input-area').val() )                state.area = $('#input-area').val();
 
+      // Setup hashes with search parameters
       $.bbq.pushState( state );
     });
 
