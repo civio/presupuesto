@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-04 12:13+0100\n"
+"POT-Creation-Date: 2016-03-09 16:42+0100\n"
 "PO-Revision-Date: 2016-03-06 21:48+0100\n"
+"Last-Translator: David Cabo <david@civio.es>\n"
+"Language-Team: \n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Last-Translator: David Cabo <david@civio.es>\n"
-"Language-Team: \n"
 "X-Generator: Poedit 1.8.7\n"
 
 #: templates/base-widget.html:4 templates/base-widget.html.py:41
@@ -150,8 +150,12 @@ msgstr ""
 msgid "Subtotal Financiero"
 msgstr ""
 
-#: templates/budgets/budgets_totals.html:47
+#: templates/budgets/budgets_totals.html:48
 msgid "El cálculo de los subtotales utiliza las cifras de ejecución para los años cuya liquidación está cerrada, o el presupuesto aprobado en caso contrario."
+msgstr ""
+
+#: templates/budgets/budgets_totals.html:50
+msgid "Cantidades actualizadas con la inflación a fecha 1 de enero de"
 msgstr ""
 
 #: templates/budgets/index.html:17
@@ -167,58 +171,52 @@ msgid "Datos presupuestarios en"
 msgstr ""
 
 #: templates/budgets/index.html:54
-msgid "Cantidades actualizadas con la inflación a fecha 1 de enero de"
-msgstr ""
-
-#: templates/budgets/index.html:54
 msgid "El cálculo de los indicadores utiliza las cifras de ejecución para los años cuya liquidación está cerrada, o el presupuesto aprobado en caso contrario."
 msgstr ""
 
-#: templates/budgets/index.html:56
-msgid "Se incluyen únicamente los gastos e ingresos no financieros, es decir, capítulos I al VII."
-msgstr ""
-
-#: templates/budgets/index.html:103
+#: templates/budgets/index.html:104
 msgid "Otros"
 msgstr ""
 
-#: templates/budgets/index.html:104 templates/shared/data_sources.html:7
+#: templates/budgets/index.html:105 templates/shared/data_sources.html:7
 #: templates/shared/footer.html:18 templates/shared/header.html:27
 #: templates/shared/header.html.py:55 templates/welcome/index.html:54
 msgid "Gobierno de Aragón"
 msgstr ""
 
-#: templates/budgets/index.html:105 templates/entities/totals.html:6
-#: templates/entities/totals.html.py:13 templates/policies/show_script.html:139
+#: templates/budgets/index.html:106 templates/entities/show_script.html:15
+#: templates/entities/totals.html:6 templates/entities/totals.html.py:13
+#: templates/policies/show_script.html:32
+#: templates/policies/show_script.html:139
 msgid "Presupuestado"
 msgstr ""
 
-#: templates/budgets/index.html:106 templates/entities/totals.html:5
+#: templates/budgets/index.html:107 templates/entities/totals.html:5
 #: templates/entities/totals.html.py:12
 msgid "Ejecutado"
 msgstr ""
 
-#: templates/budgets/index.html:107 templates/entities/show_script.html:262
+#: templates/budgets/index.html:108 templates/entities/show_script.html:262
 #: templates/policies/show_script.html:92
 msgid "hasta el primer trimestre"
 msgstr ""
 
-#: templates/budgets/index.html:108 templates/entities/show_script.html:263
+#: templates/budgets/index.html:109 templates/entities/show_script.html:263
 #: templates/policies/show_script.html:93
 msgid "hasta el segundo trimestre"
 msgstr ""
 
-#: templates/budgets/index.html:109 templates/entities/show_script.html:264
+#: templates/budgets/index.html:110 templates/entities/show_script.html:264
 #: templates/policies/show_script.html:94
 msgid "hasta el tercer trimestre"
 msgstr ""
 
-#: templates/budgets/index.html:110 templates/entities/show_script.html:265
+#: templates/budgets/index.html:111 templates/entities/show_script.html:265
 #: templates/policies/show_script.html:95
 msgid "a día de hoy"
 msgstr ""
 
-#: templates/budgets/index.html:111
+#: templates/budgets/index.html:112
 msgid "(Cantidades actualizadas con la inflación)"
 msgstr ""
 
@@ -255,7 +253,7 @@ msgstr ""
 msgid "Habitantes"
 msgstr ""
 
-#: templates/entities/index.html:30 templates/entities/show_script.html:15
+#: templates/entities/index.html:30
 msgid "Previsto"
 msgstr ""
 
@@ -311,7 +309,7 @@ msgstr ""
 #: templates/entities/show_script.html:102
 #: templates/entities/show_script.html:117
 #: templates/policies/show_script.html:184
-msgid "Total gastos"
+msgid "Total gastado"
 msgstr ""
 
 #: templates/entities/show_script.html:101
@@ -320,7 +318,7 @@ msgstr ""
 
 #: templates/entities/show_script.html:110
 #: templates/policies/show_script.html:184
-msgid "Total ingresos"
+msgid "Total ingresado"
 msgstr ""
 
 #: templates/pages/cookies.html:3 views/pages.py:8
@@ -379,12 +377,8 @@ msgstr ""
 msgid "Comparte éste gráfico"
 msgstr ""
 
-#: templates/policies/show_script.html:32
-msgid "Presupuesto"
-msgstr ""
-
-#: templates/policies/show_script.html:54 templates/search/index.html:156
-#: templates/search/index.html.py:266
+#: templates/policies/show_script.html:54 templates/search/index.html:133
+#: templates/search/index.html.py:251
 msgid "Concepto"
 msgstr ""
 
@@ -400,11 +394,11 @@ msgstr ""
 msgid "Fondo"
 msgstr ""
 
-#: templates/search/index.html:24
+#: templates/search/index.html:24 templates/terms/index.html:29
 msgid "Hemos encontrado"
 msgstr ""
 
-#: templates/search/index.html:25
+#: templates/search/index.html:25 templates/terms/index.html:30
 msgid "resultados</b> relacionados con"
 msgstr ""
 
@@ -416,38 +410,38 @@ msgstr ""
 msgid "cualquier año"
 msgstr ""
 
-#: templates/search/index.html:56
-msgid "Términos"
-msgstr ""
-
-#: templates/search/index.html:79 templates/search/index.html.py:83
+#: templates/search/index.html:56 templates/search/index.html.py:60
 msgid "Comarcas y municipios"
 msgstr ""
 
-#: templates/search/index.html:107
+#: templates/search/index.html:84
 msgid "Políticas y Programas"
 msgstr ""
 
-#: templates/search/index.html:111 templates/search/index.html.py:114
+#: templates/search/index.html:88 templates/search/index.html.py:91
 msgid "Política / Programa"
 msgstr ""
 
-#: templates/search/index.html:149 templates/search/index.html.py:153
+#: templates/search/index.html:126 templates/search/index.html.py:130
 msgid "Conceptos"
 msgstr ""
 
-#: templates/search/index.html:157
+#: templates/search/index.html:134
 msgid "Gastos / Ingresos"
 msgstr ""
 
-#: templates/search/index.html:259 templates/search/index.html.py:263
+#: templates/search/index.html:244 templates/search/index.html.py:248
 #: templates/shared/header.html:68 templates/welcome/index.html:70
 #: templates/welcome/index.html.py:72
 msgid "Pagos e inversiones"
 msgstr ""
 
-#: templates/search/index.html:267
+#: templates/search/index.html:252
 msgid "Cantidad"
+msgstr ""
+
+#: templates/search/index.html:304
+msgid "Términos"
 msgstr ""
 
 #: templates/shared/chromeframe.html:3
@@ -634,6 +628,10 @@ msgstr ""
 
 #: templates/tax_receipt/index.html:31
 msgid "Detalle de tu contribución en"
+msgstr ""
+
+#: templates/tax_receipt/index.html:35
+msgid "Se incluyen únicamente los gastos e ingresos no financieros, es decir, capítulos I al VII."
 msgstr ""
 
 #: templates/tax_receipt/tax_receipt_form.html:1
