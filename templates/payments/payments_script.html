@@ -69,10 +69,15 @@
       
       // TODO!!! Add literals translation
       var queryStr = '';
-      if( query.area ) queryStr += 'Area: <b>'+query.area+'</b>';
-      if( query.payee ) queryStr += ' / Beneficiario: <b>'+query.payee+'</b>';
+      if (query.description) queryStr += 'Descripción: <b>'+query.description+'</b> / ';
+      if (query.area) queryStr += 'Area: <b>'+query.area+'</b> / ';
+      if (query.payee) queryStr += 'Beneficiario: <b>'+query.payee+'</b> / ';
       var dates = query.date.split(',');
-      queryStr += ' / Entre <b>'+dates[0]+'</b> y <b>'+dates[1]+'</b>';
+      if (dates[0] !== dates[1]) {
+        queryStr += 'Entre <b>'+dates[0]+'</b> y <b>'+dates[1]+'</b>';
+      } else{
+        queryStr += 'En <b>'+dates[0]+'</b>';
+      }
 
       $('#query-panel .payments-query').html( queryStr );
 
@@ -123,11 +128,12 @@
 
     function getQueryHash(){
       var hash = $.deparam.fragment();
-      var queryHash = {};
-      if( hash.description )  queryHash.description = hash.description;
+      var queryHash = {
+        description:  hash.description.trim(),
+        date:         hash.date
+      };
       if( hash.payee )        queryHash.payee = hash.payee;
       if( hash.area )         queryHash.area = hash.area;
-      if( hash.date )         queryHash.date = hash.date;
       return queryHash;
     }
 
@@ -184,10 +190,12 @@
 
       $(this).find('button[type="submit"]').attr('disabled', true).children('.glyphicon').removeClass('hide');
     
-      var state = { 'date': $('#input-date').val() };
-      if( $('#input-description').val().trim() )  state.description = $('#input-description').val().trim();
-      if( $('#input-payee').val() )               state.payee = $('#input-payee').val();
-      if( $('#input-area').val() )                state.area = $('#input-area').val();
+      var state = {
+        description:  $('#input-description').val().trim(),
+        date:         $('#input-date').val()
+      }
+      if( $('#input-payee').val() ) state.payee = $('#input-payee').val();
+      if( $('#input-area').val() )  state.area = $('#input-area').val();
 
       // Setup hashes with search parameters
       $.bbq.pushState( state );
