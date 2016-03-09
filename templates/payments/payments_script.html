@@ -1,5 +1,14 @@
 <script>
   $(function () {
+
+    var myGrid,
+        areaBreakdown,
+        payeeBreakdown,
+        query           = {},
+        years           = {{ years }},
+        areas           = {{ areas|safe }},
+        payees          = {{ payees|safe }};
+
     //
     // GRID RENDERING
     //
@@ -15,16 +24,21 @@
     //Update Tab
     function updateTab() {
 
-      if( areaBreakdown === undefined ) return;
+      var queryHash = getQueryHash();
 
-      var uiState = getUIState();
+      console.log('updateTab', queryHash);
 
-      console.log('updateTab', uiState);
-
-      $('#tabs .active').removeClass('active');
-      $('a[href="#'+uiState.type+'"]').blur().parent().addClass('active');
-      
-      redrawGrid();
+      if (!isSameQuery(queryHash)) {
+        query = queryHash;
+        sendSearchQuery();
+      } 
+      else {
+        if( areaBreakdown === undefined ) return;   // Skip first call
+        var uiState = getUIState();
+        $('#tabs .active').removeClass('active');
+        $('a[href="#'+uiState.type+'"]').blur().parent().addClass('active');
+        redrawGrid();
+      }
     }
 
     // Do all the hard work of drawing the grids
@@ -56,17 +70,62 @@
       $("#total").text( columnDef.render(columnDef.data(data) || 'n/a' ) ).show();
 
       $('.payments-content .tab-content').show();
-    }    
+    }
+
+    function sendSearchQuery(){
+      console.log('sendSearchQuery');
+      $.ajax({
+        url: "pagos/search",
+        data: {
+          description:  encodeURIComponent(query.description),
+          payee:        encodeURIComponent(query.payee),
+          area:         encodeURIComponent(query.area),
+          date:         encodeURIComponent(query.date)
+        },
+        contentType: 'application/json; charset=utf-8',
+        success: onSearchSuccess,
+        error: onSearchError,
+      });
+    }
+
+    function onSearchSuccess(response) {
+      console.log('onSearchSuccess');
+      areaBreakdown = response.areaBreakdown;
+      payeeBreakdown = response.payeeBreakdown;
+
+      // Select tab based on query params
+      var view = ( query.area ) ? 'payee' : 'area';
+
+      // Change view hash to trigger updateTab
+      $.bbq.removeState('view');
+      $.bbq.pushState( {'view': view} );
+
+
+      $('#payments-search button[type="submit"]').attr('disabled', false).children('.glyphicon').addClass('hide');
+    }
+
+    function onSearchError(response) {
+      //TODO!!! Add error message
+      $('#payments-search button[type="submit"]').attr('disabled', false).children('.glyphicon').addClass('hide');
+    }
+
+    function isSameQuery(_query) {
+      return query.description === _query.description && query.payee === _query.payee && query.area === _query.area && query.date === _query.date;
+    }
+
+    function getQueryHash(){
+      var hash = $.deparam.fragment();
+      var queryHash = {};
+      if( hash.description )  queryHash.description = hash.description;
+      if( hash.payee )        queryHash.payee = hash.payee;
+      if( hash.area )         queryHash.area = hash.area;
+      if( hash.date )         queryHash.date = hash.date;
+      return queryHash;
+    }
 
     //
     // SETUP
     //
-    var myGrid,
-        areaBreakdown,
-        payeeBreakdown,
-        years           = {{ years }},
-        areas           = {{ areas|safe }},
-        payees          = {{ payees|safe }};
 
     /*
     // Handle the hash the page may have loaded with.
@@ -106,25 +165,14 @@
     $('#payments-search').submit(function(e){
       e.preventDefault();
 
-      $.ajax({
-        url: "pagos/search",
-        data: {
-          description: encodeURIComponent($('#input-description').val()),
-          payee: encodeURIComponent($('#input-payee').val()),
-          area: encodeURIComponent($('#input-area').val()),
-          date: encodeURIComponent($('#input-date').val())
-        },
-        contentType: 'application/json; charset=utf-8',
-        success: function (response) {
-          areaBreakdown = response.areaBreakdown;
-          payeeBreakdown = response.payeeBreakdown;
-          $.bbq.pushState( {'view': 'area'} );
-        },
-        error: function () {
-          // TODO!!! Add error message
-          //alert("error");
-        }
-      });
+      $(this).find('button[type="submit"]').attr('disabled', true).children('.glyphicon').removeClass('hide');
+    
+      var state = { 'date': $('#input-date').val() };
+      if( $('#input-description').val().trim() )  state.description = $('#input-description').val();
+      if( $('#input-payee').val() )               state.payee = $('#input-payee').val();
+      if( $('#input-area').val() )                state.area = $('#input-area').val();
+
+      $.bbq.pushState( state );
     });
 
     // Setup tabs navigation
