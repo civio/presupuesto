@@ -136,3 +136,28 @@
     font-size: 1.375em;
   }
 }
+
+#non-financial-total{
+  display: none;
+  border-top: none;
+  margin-top: -1px;
+
+  .panel-title{
+    color: $text-color;
+    background: none;
+    margin-left: $grid-gutter-width/2;
+    margin-right: $grid-gutter-width/2;
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    border-top: 1px solid $data-panel-color;
+
+    .main-label{
+      font-weight: $font-weight-600;
+    }
+  }
+
+  .panel-content{
+    font-size: 1.25em;
+  }
+}

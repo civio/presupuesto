@@ -181,8 +181,9 @@
       // Update year label
       $('#totals-year').text(uiState.year);
 
-      var label = uiState.view == 'income' ? '{{ _("Total ingresado") }}' : '{{ _("Total gastado") }}';
-      $("#main-total .main-label").html(label +'<b>: {{ name }}</b>'+ getExecutionTotalLabel(budgetStatuses[uiState.year], budgetStatusLabels))
+      var label = uiState.view == 'income' ? '{{ _("Ingresado") }}' : '{{ _("Gastado") }}';
+      $('#totals-panel .total-executed > span').html( label );
+      $("#main-total .main-label").html('{{ _("Total") }} <b>{{ name }}</b>'+ getExecutionTotalLabel(budgetStatuses[uiState.year], budgetStatusLabels))
 
       // Handle the hash the page may have loaded with.
       var state = $.deparam.fragment();
