@@ -24,6 +24,10 @@ def payments(request, render_callback=None):
 
     c['areas'] = json.dumps(list(Payment.objects.get_areas(c['entity'])))
 
+    # Retrieve biggest payees
+    # FIXME: Not really, we're just returning something to unblock front-end dev
+    __populate_breakdowns(c, "b.entity_id = %s and amount > 100000000", [c['entity'].id])
+
     # Get basic stats for the overall dataset
     c['payments_count'] = Payment.objects.get_count(c['entity'])
     c['total_amount'] = Payment.objects.get_total_amount(c['entity'])
@@ -41,6 +45,12 @@ def payment_search(request, render_callback=None):
     c['entity'] = get_main_entity(c)
 
     # Payments breakdown
+    __populate_breakdowns(c, "b.entity_id = %s", [c['entity'].id])
+
+    return render_to_response('payments/search.json', c, content_type="application/json")
+
+
+def __populate_breakdowns(c, query, query_arguments):
     breakdown_by_payee_criteria = ['payee', 'area', 'description']
     if hasattr(settings, 'PAYMENTS_BREAKDOWN_BY_PAYEE'):
         breakdown_by_payee_criteria = settings.PAYMENTS_BREAKDOWN_BY_PAYEE
@@ -51,7 +61,7 @@ def payment_search(request, render_callback=None):
         breakdown_by_area_criteria = settings.PAYMENTS_BREAKDOWN_BY_AREA
     c['area_breakdown'] = BudgetBreakdown(breakdown_by_area_criteria)
 
-    for item in Payment.objects.each_denormalized("b.entity_id = %s", [c['entity'].id]):
+    for item in Payment.objects.each_denormalized(query, query_arguments):
         # We add the date to the description, if it exists:
         # TODO: I wanted the date to be in a separate column, but it's complicated right
         # now the way BudgetBreakdown works. Need to think about it
@@ -60,5 +70,3 @@ def payment_search(request, render_callback=None):
 
         c['payee_breakdown'].add_item(item.year, item)
         c['area_breakdown'].add_item(item.year, item)
-
-    return render_to_response('payments/search.json', c, content_type="application/json")

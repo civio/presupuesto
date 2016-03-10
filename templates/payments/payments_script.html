@@ -2,8 +2,8 @@
   $(function () {
 
     var myGrid,
-        areaBreakdown,
-        payeeBreakdown,
+        areaBreakdown   = {{ area_breakdown.to_json()|safe }},
+        payeeBreakdown  = {{ payee_breakdown.to_json()|safe }},
         query           = {},
         years           = {{ years }},
         areas           = {{ areas|safe }},
