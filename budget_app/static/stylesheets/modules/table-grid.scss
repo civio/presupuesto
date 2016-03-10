@@ -36,7 +36,7 @@ table.table-grid {
       &.sorting_desc,
       &.sorting_asc_disabled, 
       &.sorting_desc_disabled{
-        padding-right: $grid-gutter-width/2;
+        padding-right: $grid-gutter-width + $grid-gutter-width/3;
       }
     }
    
@@ -51,6 +51,7 @@ table.table-grid {
         display: inline-block;
         font-size: 12px;
         margin-left: $grid-gutter-width/3;
+        margin-right: -$grid-gutter-width;
       }
     }
 
