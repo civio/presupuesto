@@ -1,4 +1,7 @@
 {
+  "totalResults": 234,
+  "totalAmount": 12345677889,
+  "moreResultsAvailable": false,
   "payeeBreakdown": {{ payee_breakdown.to_json()|safe }},
   "areaBreakdown": {{ area_breakdown.to_json()|safe }}
 }
