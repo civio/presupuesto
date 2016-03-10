@@ -18,25 +18,7 @@
   {% compress js %}
   <script src="{{ STATIC_URL }}javascripts/jquery-2.2.0.js"></script>
   <script src="{{ STATIC_URL }}javascripts/jquery-migrate-1.2.1.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/jquery.ba-bbq.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/jquery.cookie.min.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/jquery.cookiebar.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/jquery.event.drag-2.0.min.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/underscore-1-5-2.min.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/numeral.min.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/numeral-languages.min.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/datatables.min.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/grid_controls.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/grid_formatters.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/grid_helpers.js"></script>
   <script src="{{ STATIC_URL }}javascripts/modernizr-2.6.3.min.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/respond.min.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/bootstrap/collapse.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/bootstrap/dropdown.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/bootstrap/modal.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/bootstrap/tooltip.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/bootstrap/popover.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/bootstrap/transition.js"></script>
   {% endcompress %}
 
   {% include 'shared/meta.html' %}
@@ -54,24 +36,44 @@
     {% include 'shared/chromeframe.html' %}
   <![endif]-->
 
-  <!--[if lte IE 7]>
-    <script src="{{ STATIC_URL }}javascripts/icons-lte-ie7.js"></script>
-  <![endif]-->
-
-  <script src="{{ STATIC_URL }}javascripts/css_browser_selector.js"></script>
-
-  <!--[if (gte IE 6)&(lte IE 8)]>
-    <script src="{{ STATIC_URL }}javascripts/selectivizr-min.js"></script>
-  <![endif]-->
-
   {% compress js %}
-  <script src="{{ STATIC_URL }}javascripts/script.js"></script>
+  <!-- Jquery plugins -->
+  <script src="{{ STATIC_URL }}javascripts/jquery.ba-bbq.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/jquery.cookie.min.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/jquery.cookiebar.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/jquery.event.drag-2.0.min.js"></script>
+  <!-- Other dependencies -->
+  <script src="{{ STATIC_URL }}javascripts/underscore-1-5-2.min.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/numeral.min.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/numeral-languages.min.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/datatables.min.js"></script>
   <script src="{{ STATIC_URL }}javascripts/iframeResizer.contentWindow.min.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/bootstrap-slider.js"></script>
-
-  <!-- Select2 -->
   <script src="{{ STATIC_URL }}javascripts/select2.min.js"></script>
   <script src="{{ STATIC_URL }}javascripts/select2_locale_es.js"></script>
+  <!-- Bootstrap plugins -->
+  <script src="{{ STATIC_URL }}javascripts/bootstrap/collapse.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/bootstrap/dropdown.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/bootstrap/modal.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/bootstrap/tooltip.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/bootstrap/popover.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/bootstrap/transition.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/bootstrap-slider.js"></script>
+  <!-- Custom modules -->
+  <script src="{{ STATIC_URL }}javascripts/grid_controls.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/grid_formatters.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/grid_helpers.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/tax_calculator.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/comparator.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/script.js"></script>
+  <!-- D3 & Visualization modules -->
+  <script src="{{ STATIC_URL }}javascripts/vis/d3.v3.min.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/vis/d3.sankey.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/vis/budget-sankey.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/vis/bigtext.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/vis/budget-treemap.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/vis/budget-summary.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/vis/stacked-area-chart.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/vis/budget-stacked-chart.js"></script>
   {% endcompress %}
 
   <!-- Cookies Bar Setup -->
