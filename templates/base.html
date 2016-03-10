@@ -1,10 +1,14 @@
+{% load i18n %}
 <!DOCTYPE html>
-<html lang="es">
+<html lang="{{ request.LANGUAGE_CODE }}">
 <head>
-  <title>{{ title_prefix+' - ' if title_prefix }}{{ _('Presupuestos del Gobierno de Aragón') }}</title>
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="{{ _('¿Cómo y en qué gasta el Gobierno de Aragón?') }}">
+  <meta name="author" content="Fundación Ciudadana Civio">
+
+  <title>{{ title_prefix+' - ' if title_prefix }}{{ _('Presupuestos del Gobierno de Aragón') }}</title>
 
   {% include 'shared/fonts.html' %}
 
