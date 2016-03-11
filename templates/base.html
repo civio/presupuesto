@@ -9,15 +9,21 @@
   <meta name="author" content="Fundación Ciudadana Civio">
 
   <title>{{ title_prefix+' - ' if title_prefix }}{{ _('Presupuestos del Gobierno de Aragón') }}</title>
+  
+  <link href="{{ STATIC_URL }}assets/favicon.png" rel="icon" type="image/x-icon" />
 
   {% include 'shared/fonts.html' %}
 
-  <link href="{{ STATIC_URL }}stylesheets/main.css" media="all" rel="stylesheet" type="text/css" />
-
-  <link href="{{ STATIC_URL }}assets/favicon.png" rel="icon" type="image/x-icon" />
-
   {% load compress %}
 
+  {% compress css %}
+  <link href="{{ STATIC_URL }}stylesheets/dist/jquery-cookiebar.css" media="all" rel="stylesheet" type="text/css" />
+  <link href="{{ STATIC_URL }}stylesheets/dist/bootstrap-slider.css" media="all" rel="stylesheet" type="text/css" />
+  <link href="{{ STATIC_URL }}stylesheets/dist/select2.css" media="all" rel="stylesheet" type="text/css" />
+  <link href="{{ STATIC_URL }}stylesheets/dist/datatables.css" media="all" rel="stylesheet" type="text/css" />
+  {% endcompress %}
+  <link href="{{ STATIC_URL }}stylesheets/main.css" media="all" rel="stylesheet" type="text/css" />
+  
   {% compress js %}
   <script src="{{ STATIC_URL }}javascripts/jquery-2.2.0.js"></script>
   <script src="{{ STATIC_URL }}javascripts/jquery-migrate-1.2.1.js"></script>
@@ -93,6 +99,40 @@
         policyURL: '/politica-de-cookies',
         {% endif %}
       });
+
+
+      function countCSSRules() {
+        var results = '',
+            log = '';
+        if (!document.styleSheets) {
+            return;
+        }
+        for (var i = 0; i < document.styleSheets.length; i++) {
+            countSheet(document.styleSheets[i]);
+        }
+        function countSheet(sheet) {
+            var count = 0;
+            if (sheet && sheet.cssRules) {
+                for (var j = 0, l = sheet.cssRules.length; j < l; j++) {
+                    if( !sheet.cssRules[j].selectorText ) {
+                        continue;
+                    }
+                    count += sheet.cssRules[j].selectorText.split(',').length;
+                }
+
+                log += '\nFile: ' + (sheet.href ? sheet.href : 'inline <style> tag');
+                log += '\nRules: ' + sheet.cssRules.length;
+                log += '\nSelectors: ' + count;
+                log += '\n--------------------------';
+                if (count >= 4096) {
+                    results += '\n********************************\nWARNING:\n There are ' + count + ' CSS rules in the stylesheet ' + sheet.href + ' - IE will ignore the last ' + (count - 4096) + ' rules!\n';
+                }
+            }
+        }
+        console.log(log);
+        console.log(results);
+      };
+      countCSSRules();
     });
   </script>
 
