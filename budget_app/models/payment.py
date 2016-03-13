@@ -19,14 +19,6 @@ class PaymentManager(models.Manager):
                     .distinct() \
                     .order_by('area')
 
-    # Return number of payment records for given entity
-    def get_count(self, entity_id):
-        return self.filter(budget_id__entity=entity_id).count()
-
-    # Return total amount of payments for given entity
-    def get_total_amount(self, entity_id):
-        return self.filter(budget_id__entity=entity_id).aggregate(Sum('amount'))['amount__sum']
-
     def each_denormalized(self, additional_constraints=None, additional_arguments=None):
         # XXX: Note that this left join syntax works well even when the economic_category_id is null,
         # as opposed to the way we query for Budget Items. I should probably adopt this all around,

@@ -7,7 +7,9 @@
         query           = {},
         years           = {{ years }},
         areas           = {{ areas|safe }},
-        payees          = {{ payees|safe }};
+        payees          = {{ payees|safe }},
+        paymentsCount,
+        totalAmount;
 
     //
     // GRID RENDERING
@@ -15,7 +17,7 @@
 
     function getColumnDefinition(uiState) {
       return { 
-        data: getBreakdownValueFunction('expense', uiState.year),
+        data: getBreakdownValueFunction('expense', 'pagos'),
         title: '{{ _("Pago") }}',
         render: getFormatter('nominal', null, null)
       }; 
@@ -48,8 +50,6 @@
       // TODO!!! set type (area or payee) based on search parameters
       //uiState.type  = 'payee'
       var data      = (uiState.type == 'area') ? areaBreakdown : payeeBreakdown;
-      // TODO!!! get year from data.years object?
-      uiState.year  = 2014;
       var columnDef = getColumnDefinition(uiState);
       var title     = (uiState.type == 'area') ? '{{ _("Área") }}' : '{{ _("Beneficiario") }}';
 
@@ -82,6 +82,7 @@
       $('#query-panel .payments-query').html( queryStr );
 
       $("#payments-total").text( columnDef.render(columnDef.data(data) || 'n/a' ) );
+      $("#payments-size").text( formatNumber(paymentsCount) );
 
       $('.payments-content .tab-content').show();
     }
@@ -91,10 +92,10 @@
       $.ajax({
         url: "pagos/search",
         data: {
-          description:  encodeURIComponent(query.description),
-          payee:        encodeURIComponent(query.payee),
-          area:         encodeURIComponent(query.area),
-          date:         encodeURIComponent(query.date)
+          description:  query.description,
+          payee:        query.payee,
+          area:         query.area,
+          date:         query.date
         },
         contentType: 'application/json; charset=utf-8',
         success: onSearchSuccess,
@@ -104,6 +105,9 @@
 
     function onSearchSuccess(response) {
       console.log('onSearchSuccess');
+
+      paymentsCount = response.totalResults;
+      totalAmount = response.totalAmount;
       areaBreakdown = response.areaBreakdown;
       payeeBreakdown = response.payeeBreakdown;
 
