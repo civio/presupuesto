@@ -2,6 +2,7 @@
   $(function () {
 
     var initialized = false,
+        uiState,
         myGrid,
         areaBreakdown   = {{ area_breakdown.to_json()|safe }},
         payeeBreakdown  = {{ payee_breakdown.to_json()|safe }},
@@ -13,6 +14,8 @@
     //
     // GRID RENDERING
     //
+
+    console.log(payeeBreakdown);
 
     function getColumnDefinition(uiState) {
       return { 
@@ -29,7 +32,7 @@
 
       console.log('updateTab', initialized, Object.keys(queryHash).length);
 
-      // Update query & send ajax search
+      // Update query & send ajax search (if query is not empty)
       if (!isSameQuery(queryHash)) {
         query = queryHash;
         if (!isEmptyQuery(queryHash)) {
@@ -39,20 +42,24 @@
       // Update tabs
       else {
 
-        //
+        // Show Payees Summary if first time & query is empty
         if (!initialized) {
           initialized = true;
-          return;
+          if (isEmptyQuery(queryHash)) {
+            setupPayeesSummary();
+            return;
+          }
         }
-        //
 
-        var uiState = getUIState();
+        // Setup inputs val if needed
+        setupInputs();
 
-        // Avoid redundancy
-        if ($('a[href="#'+uiState.type+'"]').parent().hasClass('active')){
-          console.log('avoid redundancy', uiState);
-          return;
-        }
+        // Hide summary & show tabs
+        $('.payments-content h4.page-title').hide();
+        $('#tabs, #query-panel').show();
+
+        // Update uiState
+        uiState = getUIState();
 
         // Update tab
         $('#tabs .active').removeClass('active');
@@ -63,7 +70,7 @@
 
     // Do all the hard work of drawing the grids
     function redrawGrid() {
-      var uiState   = getUIState();
+      //var uiState   = getUIState();
 
       // TODO!!! set type (area or payee) based on search parameters
       //uiState.type  = 'payee'
@@ -117,39 +124,26 @@
           area:         query.area,
           date:         query.date
         },
-        contentType: 'application/json; charset=utf-8',
-        success: onSearchSuccess,
-        error: onSearchError,
+        contentType:    'application/json; charset=utf-8',
+        success:        onSearchSuccess,
+        error:          onSearchError,
       });
     }
 
     function onSearchSuccess(response) {
       console.log('onSearchSuccess');
 
-      paymentsCount = response.totalResults;
-      totalAmount = response.totalAmount;
-      areaBreakdown = response.areaBreakdown;
-      payeeBreakdown = response.payeeBreakdown;
+      // Setup values
+      paymentsCount   = response.totalResults;
+      totalAmount     = response.totalAmount;
+      areaBreakdown   = response.areaBreakdown;
+      payeeBreakdown  = response.payeeBreakdown;
 
+      // Hide submit loader
       $('#payments-search button[type="submit"]').attr('disabled', false).children('.glyphicon').addClass('hide');
 
-      /*
-      // TODO!!! Select tab based on query params
-      var view = ( query.area ) ? 'payee' : 'area';
-
-      // Change view hash to trigger updateTab
-      $.bbq.removeState('view');  // We need to clear view hash before update it
-      $.bbq.pushState( {'view': view} );
-      */
-
-      setupInputs();
-
-      var uiState = getUIState();
-
-      // Update tab
-      $('#tabs .active').removeClass('active');
-      $('a[href="#'+uiState.type+'"]').blur().parent().addClass('active');
-      redrawGrid();
+      // Update tab & redraw grid
+      updateTab();
     }
 
     function onSearchError(response) {
@@ -172,6 +166,13 @@
       if (query.date !== $('#input-date').val()){
         $('#input-date').val(query.date);
       }
+    }
+
+    function setupPayeesSummary() {
+      uiState = getUIState();
+      $('a[href="#'+uiState.type+'"]').parent().addClass('active');
+      $('#tabs, #query-panel').hide();
+      redrawGrid();
     }
 
     function isSameQuery(_query) {
@@ -235,6 +236,7 @@
         return;
       }
 
+      // Show submit loader
       $(this).find('button[type="submit"]').attr('disabled', true).children('.glyphicon').removeClass('hide');
     
       var state = {
@@ -246,13 +248,15 @@
 
       console.log('submit', state);
 
+      // If submit the previous query we hide submit loader & do nothing
       if (isSameQuery(state)) {
         console.log('is same query!');
         $(this).find('button[type="submit"]').attr('disabled', false).children('.glyphicon').addClass('hide');
         return;
       }
 
-      console.log('pushState', state);
+      // Select tab based on query params
+      state.view = ( state.area && state.area !== '' ) ? 'payee' : 'area';
 
       // Setup hashes with search parameters
       $.bbq.pushState( state );
