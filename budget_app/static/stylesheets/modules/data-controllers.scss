@@ -1,6 +1,6 @@
 // Data controllers
 .data-controllers {
-  margin-bottom: 2*$grid-gutter-width;
+  margin-bottom: 1.5*$grid-gutter-width;
   text-align: center;
 
   .title{
@@ -20,6 +20,7 @@
       margin-top: -2px;
       border-radius: 0;
       background: $slider-bg;
+      filter: none;
       @include box-shadow( none );
     }
 
@@ -35,6 +36,7 @@
       margin-top: -3px;
       background: $slider-bg;
       opacity: 1;
+      filter: none;
       @include box-shadow( none );
 
       &.in-selection{
@@ -45,12 +47,14 @@
     .slider-selection{
       border-radius: 0;
       background: $slider-color;
+      filter: none;
     }
 
     .slider-handle{
       margin-top: -7px;
       background: $slider-color;
       border: 2px solid white;
+      filter: none;
       @include box-shadow( none );
     }
 

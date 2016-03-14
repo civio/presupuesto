@@ -34,22 +34,22 @@ budget_app_urlpatterns += url_patterns('budget_app.views',
     url(r'^pagos$', 'payments', name="payments"),
     url(r'^pagos/search$', 'payment_search', name="payment_search"),
 
-    # Aragón policies (top)
+    # Policies (top)
     url(r'^politicas$', 'policies', name="policies"),
     url(r'^politicas/(?P<id>[0-9]+)$', 'policies_show', name="policies-show"),
     url(r'^politicas/(?P<id>[0-9]+)/(?P<title>.+)$', 'policies_show', name="policies-show-2"),
 
-    # Aragón programme pages
+    # Programme pages
     url(r'^programas$', 'programmes_show', name="policies-programmes"),
     url(r'^programas/(?P<id>[0-9A-Z]+)$', 'programmes_show', name="policies-programmes-2"),
     url(r'^programas/(?P<id>[0-9A-Z]+)/(?P<title>.+)$', 'programmes_show', name="policies-programmes-3"),
 
-    # Aragón expense pages (economic breakdown)
+    # Expense pages (economic breakdown)
     url(r'^articulos/g$', 'expense_articles_show', name="policies-articles"),
     url(r'^articulos/g/(?P<id>[0-9]+)$', 'expense_articles_show', name="policies-articles-2"),
     url(r'^articulos/g/(?P<id>[0-9]+)/(?P<title>.+)$', 'expense_articles_show', name="policies-articles-3"),
 
-    # Aragón income pages
+    # Income pages
     url(r'^articulos/i$', 'income_articles_show', name="policies-articles"),
     url(r'^articulos/i/(?P<id>[0-9]+)$', 'income_articles_show', name="policies-articles"),
     url(r'^articulos/i/(?P<id>[0-9]+)/(?P<title>.+)$', 'income_articles_show', name="policies-articles"),
@@ -81,18 +81,18 @@ budget_app_urlpatterns += url_patterns('budget_app.views',
     # CSV / XLS downloads
     #
 
-    # Aragón policies
+    # Policies
     url(r'^politicas/(?P<id>[0-9]+)_functional\.(?P<format>.+)$', 'functional_policy_breakdown'),
     url(r'^politicas/(?P<id>[0-9]+)_economic\.(?P<format>.+)$', 'economic_policy_breakdown'),
     url(r'^politicas/(?P<id>[0-9]+)_funding\.(?P<format>.+)$', 'funding_policy_breakdown'),
     url(r'^politicas/(?P<id>[0-9]+)_institutional\.(?P<format>.+)$', 'institutional_policy_breakdown'),
 
-    # Aragón programmes
+    # Programmes
     url(r'^programas/(?P<id>[0-9A-Z]+)_economic\.(?P<format>.+)$', 'economic_programme_breakdown'),
     url(r'^programas/(?P<id>[0-9A-Z]+)_funding\.(?P<format>.+)$', 'funding_programme_breakdown'),
     url(r'^programas/(?P<id>[0-9A-Z]+)_institutional\.(?P<format>.+)$', 'institutional_programme_breakdown'),
 
-    # Aragón articles
+    # Articles
     url(r'^articulos/(?P<id>[0-9]+)_functional\.(?P<format>.+)$', 'functional_article_breakdown'),
     url(r'^articulos/(?P<id>[0-9]+)_economic\.(?P<format>.+)$', 'economic_article_breakdown'),
     url(r'^articulos/(?P<id>[0-9]+)_funding\.(?P<format>.+)$', 'funding_article_breakdown'),

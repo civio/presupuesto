@@ -61,15 +61,14 @@
 // Budgets Sankey Viz
 .budget-viz{
 
-  .sankey-container{
-    margin: 0;
+  .page-title{
+    margin-bottom: $grid-gutter-width/2;
   }
 }
 
 
 // Budgets Data Panel
 .budget-data{
-  margin-top: $grid-gutter-width;
   background: $page-header-bg;
 
   .data-panel{
@@ -170,14 +169,3 @@
     }
   }
 }
-
-@media (min-width: $screen-md-min) {
-
-  .budget-viz{
-
-    .sankey-container{
-      margin: -$grid-gutter-width $grid-gutter-width 0;
-    }
-  }
-}
-

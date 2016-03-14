@@ -15,9 +15,14 @@ table.table-grid {
       font-size: 1.125em;
       font-weight: $font-weight-400;
       line-height: 1em;
+      text-align: right;
 
       &:hover{
         background: mix( $table-color, white, 90% );
+      }
+
+      &:first-child{
+        text-align: left;
       }
 
       &:last-child{
@@ -25,6 +30,16 @@ table.table-grid {
       }
     }
 
+    > tr > th{
+      &.sorting, 
+      &.sorting_asc,
+      &.sorting_desc,
+      &.sorting_asc_disabled, 
+      &.sorting_desc_disabled{
+        padding-right: $grid-gutter-width + $grid-gutter-width/3;
+      }
+    }
+   
     .sorting, 
     .sorting_asc,
     .sorting_desc,
@@ -32,10 +47,11 @@ table.table-grid {
     .sorting_desc_disabled{
 
       &:after{
-        bottom: auto;
-        top: 16px;
+        position: static;
+        display: inline-block;
         font-size: 12px;
-        
+        margin-left: $grid-gutter-width/3;
+        margin-right: -$grid-gutter-width;
       }
     }
 

@@ -12,13 +12,7 @@ function setRedrawOnTabsChange(container, callback) {
 
     // Change tab
     if (state.view) {
-      // Clear item hash if exists
-      if (state.item) $.bbq.removeState('item');
       setDataTab(state.view);
-      callback();
-    }
-    // First call
-    else{
       callback();
     }
   });
@@ -26,11 +20,21 @@ function setRedrawOnTabsChange(container, callback) {
   // Handle click on tabs with pushState
   $(container+' a').click(function(e) {
     e.preventDefault();
+    var state = $.deparam.fragment();
+    // Clear item hash if exists
+    if (state.item) $.bbq.removeState('item');
+    // Set new state
     $.bbq.pushState( {'view': $(this).attr('href').substring(1)} );
   });
 
-  // Initially trigger hashchange
-  $(window).trigger('hashchange');
+  // Initially trigger hashchange   
+  var state = $.deparam.fragment();
+  if(state.view){
+    $(window).trigger('hashchange');
+  } else{
+    state.view = $('section').data('tab');
+    $.bbq.pushState( state );
+  }
 }
 
 function setDataTab( type ){

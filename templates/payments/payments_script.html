@@ -1,7 +1,8 @@
 <script>
   $(function () {
 
-    var myGrid,
+    var initialized = false,
+        myGrid,
         areaBreakdown   = {{ area_breakdown.to_json()|safe }},
         payeeBreakdown  = {{ payee_breakdown.to_json()|safe }},
         query           = {},
@@ -28,14 +29,20 @@
 
       var queryHash = getQueryHash();
 
-      console.log('updateTab', queryHash);
+      console.log('updateTab', initialized, queryHash);
+
+      if (!initialized) {
+        initialized = true;
+        if (jQuery.isEmptyObject(queryHash)) return;
+        initializeInputs(queryHash);
+      }
 
       if (!isSameQuery(queryHash)) {
         query = queryHash;
         sendSearchQuery();
       } 
       else {
-        if( areaBreakdown === undefined ) return;   // Skip first call
+        //if( areaBreakdown === undefined ) return;   // Skip first call
         var uiState = getUIState();
         $('#tabs .active').removeClass('active');
         $('a[href="#'+uiState.type+'"]').blur().parent().addClass('active');
@@ -126,16 +133,22 @@
       $('#payments-search button[type="submit"]').attr('disabled', false).children('.glyphicon').addClass('hide');
     }
 
+    function initializeInputs(_query) {
+      console.log('initializeInputs', _query);
+      if (_query.area){
+
+      }
+    }
+
     function isSameQuery(_query) {
       return query.description === _query.description && query.payee === _query.payee && query.area === _query.area && query.date === _query.date;
     }
 
     function getQueryHash(){
       var hash = $.deparam.fragment();
-      var queryHash = {
-        description:  hash.description.trim(),
-        date:         hash.date
-      };
+      var queryHash = {};
+      if( hash.date )         queryHash.date = hash.date;
+      if( hash.description )  queryHash.description = hash.description.trim();
       if( hash.payee )        queryHash.payee = hash.payee;
       if( hash.area )         queryHash.area = hash.area;
       return queryHash;
@@ -159,13 +172,17 @@
     */
 
     // Setup area & payees selects
-    $('#input-area').select2({
+    $('#input-area').chosen();
+    /*
       data: areas
     });
+    */
 
-    $('#input-payee').select2({
+    $('#input-payee').chosen();
+    /*
       data: payees
     });
+    */
 
     // Setup year slider
     $('#input-date').slider({
@@ -177,6 +194,8 @@
     // Setup form submit handler
     $('#payments-search').submit(function(e){
       e.preventDefault();
+
+      console.log('submit');
 
       // Show alert if there's no filter parameter
       if( $('#input-description').val().trim() === '' && $('#input-payee').val() === null && $('#input-area').val() === null ){

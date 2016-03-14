@@ -12,7 +12,7 @@
     function getColumnDefinition(uiState) {
       var getBreakdownValue = getBreakdownValueFunction(uiState.field, uiState.year);
       return {
-        title: '{{ _("Previsto") }}',
+        title: '{{ _("Presupuestado") }}',
         data: getBreakdownValue,
         render: getFormatter(uiState.format, stats, Number(uiState.year), getBreakdownValue)
       }; 
@@ -91,43 +91,30 @@
 {% endif %}
       ]);
 
+
+      var label = uiState.view == 'income' ? '{{ _("Ingresado") }}' : '{{ _("Gastado") }}';
+      $('#totals-panel .total-executed > span').html( label );
+
       // Update labels and show/hide totals plus download links based on view
       var executionLabelPostfix = getExecutionTotalLabel(budgetStatuses[uiState.year], budgetStatusLabels);
+      $("#main-total .main-label").html('{{ _("Total") }}'+executionLabelPostfix);
+
       if ( uiState.view == 'fexpense' ) {
         $(".policies-title").text('{{ _("Gastos (por programa)") }}');
-        if ( includeFinancialChapters ) {
-          $("#main-total .main-label").html('{{ _("Total gastos") }}'+executionLabelPostfix);
-        } else {
-          $("#main-total .main-label").html('{{ _("Total gastos no financieros") }}'+executionLabelPostfix);
-          $("#including-financial-total .main-label").html('{{ _("Total gastos") }}'+executionLabelPostfix);
-        }
         $("#income-downloads").hide();
         $("#fexpense-downloads").show();
         $("#expense-downloads").hide();
-
       } else if ( uiState.view == 'income' ) {
         $(".policies-title").text('{{ _("Ingresos") }}');
-        $("#main-total .main-label").html('{{ _("Total ingresos") }}'+executionLabelPostfix);
         $("#income-downloads").show();
         $("#fexpense-downloads").hide();
         $("#expense-downloads").hide();
 
       } else {
         $(".policies-title").text('{{ _("Gastos") }}');
-        $("#main-total .main-label").html('{{ _("Total gastos") }}'+executionLabelPostfix);
         $("#income-downloads").hide();
         $("#fexpense-downloads").hide();
         $("#expense-downloads").show();
-      }
-
-      // We show financial/non-financial split only in the functional breakdown view.
-      // (This is basically for historical reasons, Aragon wanted it so. It could be argued that
-      // it may be more consistent to show the split in all views; that'd require changes in the
-      // controller when calculating the breakdowns.)
-      if ( !includeFinancialChapters && uiState.view == 'fexpense' ) {
-        $('#including-financial-total').show();
-      } else {
-        $('#including-financial-total').hide();
       }
 
       // Show actual/budgeted split only when there's data available
@@ -151,32 +138,40 @@
 
       if ( hasActualData ) {
         $("#main-total .total-executed-amount").text(formatActual(getActualTotal(breakdown)));
-        $("#main-total .total-budgeted-amount").text(format(getTotal(breakdown)));
-      } else {
-        $("#main-total .total-budgeted-amount").text(format(getTotal(breakdown)));
       }
+      $("#main-total .total-budgeted-amount").text(format(getTotal(breakdown)));
 
-      if ( uiState.view == 'fexpense' ) {
-        // We have two totals for the functional expense view (non-financial/financial), so
-        // we have some extra work in this case.
+      // We have two totals for the functional expense view (non-financial/financial), so
+      // we have some extra work in this case.
+      if ( uiState.view === 'fexpense' ) {
         var totalBudgeted = getTotal(breakdown);
-        if ( !includeFinancialChapters )
+
+        if ( !includeFinancialChapters ){
           totalBudgeted += getTotal(financialExpenseBreakdown);
+          // We show financial/non-financial split only in the functional breakdown view.
+          // (This is basically for historical reasons, Aragon wanted it so. It could be argued that
+          // it may be more consistent to show the split in all views; that'd require changes in the
+          // controller when calculating the breakdowns.)
+          $('#non-financial-total').show();
+        }
 
         if ( hasActualData ) {
           var totalActual = getActualTotal(breakdown);
           if ( !includeFinancialChapters )
             totalActual += getActualTotal(financialExpenseBreakdown);
-          $("#including-financial-total .total-executed").show();
-          $("#including-financial-total .total-executed-amount").text(formatActual(totalActual));
-          $("#including-financial-total .total-budgeted-amount").text(format(totalBudgeted));
+
+          $("#non-financial-total .total-executed").show();
+          $("#non-financial-total .total-executed-amount").text(formatActual(getActualTotal(breakdown)));
+
+          $("#main-total .total-executed-amount").text(formatActual(totalActual));
 
         } else {
-          $("#including-financial-total .total-executed").hide();
-          $("#including-financial-total .total-budgeted-amount").text(format(totalBudgeted));
+          $("#non-financial-total .total-executed").hide();
         }
-      }
 
+        $("#non-financial-total .total-budgeted-amount").text(format(getTotal(breakdown)));
+        $("#main-total .total-budgeted-amount").text(format(totalBudgeted));
+      }
 
       // Setup & Update Budget Summary
 

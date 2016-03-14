@@ -14,16 +14,18 @@
           <div class="col-sm-6">
             <div class="form-group">
               <label for="input-area">{{ _('Area') }}</label>
-              <select id="input-area" class="form-control" style="width: 100%">
-                <option value="" disabled selected hidden>{{ _('Selecciona Area') }}</option>
+              <select id="input-area" class="form-control" style="width: 100%" data-placeholder="{{ _('Selecciona Area') }}">
+                <option value=""></option>
+                <option value="">{{ _('Todas las áreas') }}</option>
               </select>
             </div>
           </div>
           <div class="col-sm-6">
             <div class="form-group">
               <label for="input-payee">{{ _('Proveedor') }}</label>
-              <select id="input-payee" class="form-control" style="width: 100%">
-                <option value="" disabled selected hidden>{{ _('Selecciona Proveedor') }}</option>
+              <select id="input-payee" class="form-control" style="width: 100%" data-placeholder="{{ _('Selecciona Proveedor') }}">
+                <option value=""></option>
+                <option value="">{{ _('Todos los proveedores') }}</option>
               </select>
             </div>
           </div>

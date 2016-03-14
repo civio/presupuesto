@@ -29,7 +29,7 @@
       var getBreakdownValue = getBreakdownValueFunction(uiState.field, uiState.year);
       return {
 {% if show_actual %}
-        title: "{{ _('Presupuesto') }}",
+        title: "{{ _('Presupuestado') }}",
 {% else %}
         title: uiState.field=='expense' ? "{{ _('Gastos') }}" : "{{ _('Ingresos') }}",
 {% endif %}
@@ -181,8 +181,9 @@
       // Update year label
       $('#totals-year').text(uiState.year);
 
-      var label = uiState.view == 'income' ? '{{ _("Total ingresos") }}' : '{{ _("Total gastos") }}';
-      $("#main-total .main-label").html(label+getExecutionTotalLabel(budgetStatuses[uiState.year], budgetStatusLabels))
+      var label = uiState.view == 'income' ? '{{ _("Ingresado") }}' : '{{ _("Gastado") }}';
+      $('#totals-panel .total-executed > span').html( label );
+      $("#main-total .main-label").html('{{ _("Total") }} <b>{{ name }}</b>'+ getExecutionTotalLabel(budgetStatuses[uiState.year], budgetStatusLabels))
 
       // Handle the hash the page may have loaded with.
       var state = $.deparam.fragment();

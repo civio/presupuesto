@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-04 12:13+0100\n"
+"POT-Creation-Date: 2016-03-11 17:09+0100\n"
 "PO-Revision-Date: 2016-03-06 21:48+0100\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
@@ -18,16 +18,17 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.8.7\n"
 
-#: templates/base-widget.html:4 templates/base-widget.html.py:41
-#: templates/base.html:4 templates/shared/social_sharing.html:5
+#: templates/base-widget.html:7 templates/base-widget.html.py:26
+#: templates/base.html:7 templates/shared/meta.html:9
+#: templates/shared/social_sharing.html:5
 msgid "Presupuestos del Gobierno de Aragón"
 msgstr "Pressupostos del Gobierno de Aragón"
 
-#: templates/base.html:81
+#: templates/base.html:89
 msgid "Esta web utiliza cookies propias y de terceros para ofrecerte la mejor experiencia de usuario. Si continúas navegando, entendemos que autorizas el uso de estas cookies."
 msgstr "Aquesta web utilitza cookies pròpies i de tercers per oferir-te la millor experiència d'usuari. Si continues navegant, entenem que autoritzes l'ús d'aquestes cookies."
 
-#: templates/base.html:84
+#: templates/base.html:92
 msgid "Más información"
 msgstr "Més informació"
 
@@ -93,8 +94,8 @@ msgstr "L'Ajuntament utilitza el pressupost municipal per mantenir els serveis p
 #: templates/budgets/budgets_totals.html:24
 #: templates/budgets/budgets_totals.html:29
 #: templates/budgets/budgets_totals.html:34
-#: templates/budgets/budgets_totals.html:39 templates/entities/show.html:32
-#: templates/entities/show.html.py:33 templates/entities/show_script.html:109
+#: templates/budgets/budgets_totals.html:39 templates/entities/show.html:26
+#: templates/entities/show.html.py:27 templates/entities/show_script.html:108
 #: templates/policies/show_script.html:34
 msgid "Ingresos"
 msgstr "Ingressos"
@@ -106,7 +107,7 @@ msgstr "Ingressos"
 #: templates/budgets/budgets_totals.html:30
 #: templates/budgets/budgets_totals.html:35
 #: templates/budgets/budgets_totals.html:40
-#: templates/entities/show_script.html:116
+#: templates/entities/show_script.html:114
 #: templates/policies/show_script.html:34
 msgid "Gastos"
 msgstr "Despeses"
@@ -151,83 +152,81 @@ msgstr "Capítols VIII-IX"
 msgid "Subtotal Financiero"
 msgstr "Subtotal Financer"
 
-#: templates/budgets/budgets_totals.html:47
+#: templates/budgets/budgets_totals.html:48
 msgid "El cálculo de los subtotales utiliza las cifras de ejecución para los años cuya liquidación está cerrada, o el presupuesto aprobado en caso contrario."
 msgstr "El càlcul dels subtotals utilitza les xifres d'execució per als anys en què la liquidació està tancada, o el pressupost aprovat en cas contrari."
 
-#: templates/budgets/index.html:17
-msgid "Ingresos y gastos en el Gobierno de Aragón"
-msgstr "Ingressos i despeses al Gobierno de Aragón"
-
-#: templates/budgets/index.html:29 templates/payments/index.html:33
-msgid "Elige año"
-msgstr "Tria l'any"
-
-#: templates/budgets/index.html:42
-msgid "Datos presupuestarios en"
-msgstr "Dades pressupostàries al"
-
-#: templates/budgets/index.html:54
+#: templates/budgets/budgets_totals.html:50
 msgid "Cantidades actualizadas con la inflación a fecha 1 de enero de"
 msgstr "Quantitats actualitzades amb la inflació a data 1 de gener de"
 
-#: templates/budgets/index.html:54
+#: templates/budgets/index.html:11
+msgid "Ingresos y gastos en el Gobierno de Aragón"
+msgstr "Ingressos i despeses al Gobierno de Aragón"
+
+#: templates/budgets/index.html:23 templates/payments/index.html:33
+msgid "Elige año"
+msgstr "Tria l'any"
+
+#: templates/budgets/index.html:36
+msgid "Datos presupuestarios en"
+msgstr "Dades pressupostàries al"
+
+#: templates/budgets/index.html:48
 msgid "El cálculo de los indicadores utiliza las cifras de ejecución para los años cuya liquidación está cerrada, o el presupuesto aprobado en caso contrario."
 msgstr "El càlcul dels indicadors utilitza les xifres d'execució per als anys en què la liquidació està tancada, o el pressupost aprovat en cas contrari."
 
-#: templates/budgets/index.html:56
-msgid "Se incluyen únicamente los gastos e ingresos no financieros, es decir, capítulos I al VII."
-msgstr "S'inclouen únicament els ingressos i despeses no financers, és a dir, capítols I al VII."
-
-#: templates/budgets/index.html:103
+#: templates/budgets/index.html:98
 msgid "Otros"
 msgstr "Altres"
 
-#: templates/budgets/index.html:104 templates/shared/data_sources.html:7
+#: templates/budgets/index.html:99 templates/shared/data_sources.html:7
 #: templates/shared/footer.html:18 templates/shared/header.html:27
-#: templates/shared/header.html.py:55 templates/welcome/index.html:54
+#: templates/shared/header.html.py:55 templates/shared/meta.html:4
+#: templates/shared/meta.html.py:5 templates/welcome/index.html:54
 msgid "Gobierno de Aragón"
 msgstr ""
 
-#: templates/budgets/index.html:105 templates/entities/totals.html:6
-#: templates/entities/totals.html.py:13 templates/policies/show_script.html:139
+#: templates/budgets/index.html:100 templates/entities/show_script.html:15
+#: templates/entities/totals.html:6 templates/entities/totals.html.py:13
+#: templates/policies/show_script.html:32
+#: templates/policies/show_script.html:139
 msgid "Presupuestado"
 msgstr "Pressupostat"
 
-#: templates/budgets/index.html:106 templates/entities/totals.html:5
-#: templates/entities/totals.html.py:12
+#: templates/budgets/index.html:101
 msgid "Ejecutado"
 msgstr "Executat"
 
-#: templates/budgets/index.html:107 templates/entities/show_script.html:262
+#: templates/budgets/index.html:102 templates/entities/show_script.html:257
 #: templates/policies/show_script.html:92
 msgid "hasta el primer trimestre"
 msgstr "fins al primer trimestre"
 
-#: templates/budgets/index.html:108 templates/entities/show_script.html:263
+#: templates/budgets/index.html:103 templates/entities/show_script.html:258
 #: templates/policies/show_script.html:93
 msgid "hasta el segundo trimestre"
 msgstr "fins al segon trimestre"
 
-#: templates/budgets/index.html:109 templates/entities/show_script.html:264
+#: templates/budgets/index.html:104 templates/entities/show_script.html:259
 #: templates/policies/show_script.html:94
 msgid "hasta el tercer trimestre"
 msgstr "fins al tercer trimestre"
 
-#: templates/budgets/index.html:110 templates/entities/show_script.html:265
+#: templates/budgets/index.html:105 templates/entities/show_script.html:260
 #: templates/policies/show_script.html:95
 msgid "a día de hoy"
 msgstr "a dia d'avui"
 
-#: templates/budgets/index.html:111
+#: templates/budgets/index.html:106
 msgid "(Cantidades actualizadas con la inflación)"
 msgstr "(Quantitats actualitzades amb la inflació)"
 
-#: templates/entities/compare.html:14 templates/entities/show.html:14
+#: templates/entities/compare.html:14 templates/entities/show.html:8
 msgid "Volver a la lista de comarcas"
 msgstr "Tornar a la llista de comarques"
 
-#: templates/entities/compare.html:16 templates/entities/show.html:16
+#: templates/entities/compare.html:16 templates/entities/show.html:10
 msgid "Volver a la lista de municipios"
 msgstr "Tornar a la llista de municipis"
 
@@ -236,61 +235,65 @@ msgid "Comparativa"
 msgstr "Comparativa"
 
 #: templates/entities/compare.html:30 templates/entities/compare.html.py:45
-#: templates/entities/show.html:28 templates/entities/show_widget.html:19
+#: templates/entities/show.html:22 templates/entities/show_widget.html:19
 #: templates/shared/header.html:53 templates/shared/header.html.py:62
 #: templates/welcome/index.html:61
 msgid "Políticas"
 msgstr "Polítiques"
 
-#: templates/entities/index.html:11 templates/shared/header.html:56
+#: templates/entities/index.html:10 templates/shared/header.html:56
 #: templates/welcome/index.html:55
 msgid "Comarcas"
 msgstr "Comarques"
 
-#: templates/entities/index.html:13 templates/shared/header.html:57
+#: templates/entities/index.html:12 templates/shared/header.html:57
 #: templates/welcome/index.html:56
 msgid "Municipios"
 msgstr "Municipis"
 
-#: templates/entities/index.html:26
+#: templates/entities/index.html:25
 msgid "Habitantes"
 msgstr "Habitants"
 
-#: templates/entities/index.html:30 templates/entities/show_script.html:15
+#: templates/entities/index.html:29
 msgid "Previsto"
 msgstr "Previst"
 
-#: templates/entities/index.html:31 templates/entities/show_script.html:23
-#: templates/policies/show_script.html:43
+#: templates/entities/index.html:30 templates/entities/show_script.html:23
+#: templates/entities/show_script.html:95 templates/entities/totals.html:5
+#: templates/entities/totals.html.py:12 templates/policies/show_script.html:43
+#: templates/policies/show_script.html:184
 msgid "Gastado"
 msgstr "Gastat"
 
-#: templates/entities/index.html:42 templates/entities/show.html:102
+#: templates/entities/index.html:41 templates/entities/show.html:96
 msgid "Descarga la tabla de <b>Ingresos</b>"
 msgstr "Descarrega la taula de <b>Ingressos</b>"
 
-#: templates/entities/index.html:48 templates/entities/show.html:114
+#: templates/entities/index.html:47 templates/entities/show.html:108
 msgid "Descarga la tabla de <b>Gastos</b>"
 msgstr "Descarrega la taula de <b>Despeses</b>"
 
-#: templates/entities/show.html:37 templates/entities/show.html.py:38
+#: templates/entities/show.html:31 templates/entities/show.html.py:32
 msgid "¿Cómo se gasta?"
 msgstr "Com es gasta?"
 
-#: templates/entities/show.html:42 templates/entities/show.html.py:43
+#: templates/entities/show.html:36 templates/entities/show.html.py:37
 msgid "¿En qué se gasta?"
 msgstr "En què es gasta?"
 
-#: templates/entities/show.html:86 templates/entities/show_widget.html:54
+#: templates/entities/show.html:80 templates/entities/show_widget.html:54
 msgid "Información no disponible"
 msgstr "Informació no disponible"
 
-#: templates/entities/show.html:108
+#: templates/entities/show.html:102
 msgid "Descarga la tabla de <b>Gastos (por programa)</b>"
 msgstr "Descarrega la taula de <b>Despeses (per programa)</b>"
 
 #: templates/entities/show_script.html:23
+#: templates/entities/show_script.html:95
 #: templates/policies/show_script.html:43
+#: templates/policies/show_script.html:184
 msgid "Ingresado"
 msgstr "Ingressat"
 
@@ -304,25 +307,18 @@ msgstr "Polítiques"
 msgid "Artículo"
 msgstr "Article"
 
-#: templates/entities/show_script.html:97
+#: templates/entities/show_script.html:100
+#: templates/policies/show_script.html:186
+msgid "Total"
+msgstr "Total"
+
+#: templates/entities/show_script.html:103
 msgid "Gastos (por programa)"
 msgstr "Despeses (per programa)"
 
-#: templates/entities/show_script.html:99
-#: templates/entities/show_script.html:102
-#: templates/entities/show_script.html:117
-#: templates/policies/show_script.html:184
-msgid "Total gastos"
-msgstr "Total despeses"
-
-#: templates/entities/show_script.html:101
-msgid "Total gastos no financieros"
-msgstr "Total despeses no financeres"
-
-#: templates/entities/show_script.html:110
-#: templates/policies/show_script.html:184
-msgid "Total ingresos"
-msgstr "Total ingressos"
+#: templates/entities/totals.html:10
+msgid "Total no financiero"
+msgstr "Total no financer"
 
 #: templates/pages/cookies.html:3 views/pages.py:8
 msgid "Política de Cookies"
@@ -360,32 +356,28 @@ msgstr "Beneficiari"
 msgid "Gastos del año vigente"
 msgstr "Despeses de l'any en curs"
 
-#: templates/policies/show.html:33
+#: templates/policies/show.html:22
 msgid "Volver a Políticas"
 msgstr "Tornar a Polítiques"
 
-#: templates/policies/show.html:39
+#: templates/policies/show.html:28
 msgid "Programas, entidades y conceptos"
 msgstr "Programes, entitats i conceptes"
 
-#: templates/policies/show.html:40
+#: templates/policies/show.html:29
 msgid "Menú de programas, entidades y conceptos"
 msgstr "Menú de programes, entitats i conceptes"
 
-#: templates/policies/show.html:107 templates/policies/show_widget.html:71
+#: templates/policies/show.html:96 templates/policies/show_widget.html:71
 msgid "respecto a"
 msgstr "respecte a"
 
-#: templates/policies/show.html:113 templates/policies/show_widget.html:77
+#: templates/policies/show.html:102 templates/policies/show_widget.html:77
 msgid "Comparte éste gráfico"
 msgstr "Comparteix aquest gràfic"
 
-#: templates/policies/show_script.html:32
-msgid "Presupuesto"
-msgstr "Pressupost"
-
-#: templates/policies/show_script.html:54 templates/search/index.html:156
-#: templates/search/index.html.py:266
+#: templates/policies/show_script.html:54 templates/search/index.html:133
+#: templates/search/index.html.py:251
 msgid "Concepto"
 msgstr "Concepte"
 
@@ -399,13 +391,13 @@ msgstr "Entitat"
 
 #: templates/policies/show_script.html:58
 msgid "Fondo"
-msgstr ""
+msgstr "Fons"
 
-#: templates/search/index.html:24
+#: templates/search/index.html:24 templates/terms/index.html:29
 msgid "Hemos encontrado"
 msgstr "Hem trobat"
 
-#: templates/search/index.html:25
+#: templates/search/index.html:25 templates/terms/index.html:30
 msgid "resultados</b> relacionados con"
 msgstr "resultats</b> relacionats amb"
 
@@ -417,39 +409,39 @@ msgstr "Mostrar resultats de"
 msgid "cualquier año"
 msgstr "qualsevol any"
 
-#: templates/search/index.html:56
-msgid "Términos"
-msgstr "Termes"
-
-#: templates/search/index.html:79 templates/search/index.html.py:83
+#: templates/search/index.html:56 templates/search/index.html.py:60
 msgid "Comarcas y municipios"
 msgstr "Comarques i municipis"
 
-#: templates/search/index.html:107
+#: templates/search/index.html:84
 msgid "Políticas y Programas"
 msgstr "Polítiques i Programes"
 
-#: templates/search/index.html:111 templates/search/index.html.py:114
+#: templates/search/index.html:88 templates/search/index.html.py:91
 msgid "Política / Programa"
 msgstr "Política / Programa"
 
-#: templates/search/index.html:149 templates/search/index.html.py:153
+#: templates/search/index.html:126 templates/search/index.html.py:130
 msgid "Conceptos"
 msgstr "Conceptes"
 
-#: templates/search/index.html:157
+#: templates/search/index.html:134
 msgid "Gastos / Ingresos"
 msgstr "Despeses / Ingressos"
 
-#: templates/search/index.html:259 templates/search/index.html.py:263
+#: templates/search/index.html:244 templates/search/index.html.py:248
 #: templates/shared/header.html:68 templates/welcome/index.html:70
 #: templates/welcome/index.html.py:72
 msgid "Pagos e inversiones"
 msgstr "Despeses i pagaments"
 
-#: templates/search/index.html:267
+#: templates/search/index.html:252
 msgid "Cantidad"
 msgstr "Quantitat"
+
+#: templates/search/index.html:304
+msgid "Términos"
+msgstr "Termes"
 
 #: templates/shared/chromeframe.html:3
 msgid "¡Atención!"
@@ -458,18 +450,6 @@ msgstr "Atenció!"
 #: templates/shared/chromeframe.html:4
 msgid "Este sitio web no va a funcionar correctamente en tu navegador. La visualización de datos de esta página requieren un navegador con funciones adicionales, como"
 msgstr "Aquesta plana web no funcionarà correctament al teu navegador. La visualització de dades d'aquesta plana requereix un navegador amb funcions addicionals, com"
-
-#: templates/shared/chromeframe.html:4
-msgid "Si quieres continuar usando Internet Explorer"
-msgstr "Si vols continuar emprant Internet Explorer"
-
-#: templates/shared/chromeframe.html:4
-msgid "puedes instalar el plugin de Google Chrome Frame"
-msgstr "pots instal·lar el plugin de Google Chrome Frame"
-
-#: templates/shared/chromeframe.html:4
-msgid "en unos minutos"
-msgstr "en uns minuts"
 
 #: templates/shared/data_controllers.html:5
 msgid "Cantidades"
@@ -576,7 +556,7 @@ msgstr "Menú principal"
 msgid "Visión global"
 msgstr "Visió global"
 
-#: templates/shared/header.html:74 templates/tax_receipt/index.html:14
+#: templates/shared/header.html:74 templates/tax_receipt/index.html:11
 #: templates/welcome/index.html:84
 msgid "Lo que tú aportas"
 msgstr "El que tu aportes"
@@ -584,6 +564,14 @@ msgstr "El que tu aportes"
 #: templates/shared/header.html:79
 msgid "¿Qué significa...?"
 msgstr "Què significa...?"
+
+#: templates/shared/meta.html:3 templates/shared/meta.html.py:10
+msgid "Información presupuestaria del Gobierno de Aragón"
+msgstr "Informació pressupostària del Gobierno de Aragón"
+
+#: templates/shared/meta.html:4
+msgid "presupuestos, gastos, ingresos"
+msgstr "pressupostos, despeses, ingressos"
 
 #: templates/shared/modal_embed.html:6
 msgid "Inserta éste gráfico en tu web"
@@ -621,21 +609,25 @@ msgstr "Comparteix aquesta pàgina a Facebook"
 msgid "Comparte esta página en Google Plus"
 msgstr "Comparteix aquesta pàgina a Google Plus"
 
-#: templates/tax_receipt/index.html:15
+#: templates/tax_receipt/index.html:12
 msgid "Te mostramos de forma aproximada"
 msgstr "Et mostrem de forma aproximada"
 
-#: templates/tax_receipt/index.html:15
+#: templates/tax_receipt/index.html:12
 msgid "Nota sobre el cálculo realizado"
 msgstr "Nota sobre el càlcul realitzat"
 
-#: templates/tax_receipt/index.html:15
+#: templates/tax_receipt/index.html:12
 msgid "cómo se distribuye el dinero que aportas con tus impuestos"
 msgstr "com es distribueixen els diners que aportes amb els teus impostos"
 
-#: templates/tax_receipt/index.html:31
+#: templates/tax_receipt/index.html:28
 msgid "Detalle de tu contribución en"
 msgstr "Detall de la teva contribució en"
+
+#: templates/tax_receipt/index.html:32
+msgid "Se incluyen únicamente los gastos e ingresos no financieros, es decir, capítulos I al VII."
+msgstr "S'inclouen únicament els ingressos i despeses no financers, és a dir, capítols I al VII."
 
 #: templates/tax_receipt/tax_receipt_form.html:1
 msgid "Puedes escoger el tipo de situación que mejor refleja tu realidad (<a href=\"#\" id=\"scenario-1\">piso pequeño en el casco antiguo</a>, <a href=\"#\" id=\"scenario-2\">piso de nueva construcción</a>, casa unifamiliar <a href=\"#\" id=\"scenario-3\">en el centro</a>, o <a href=\"#\" id=\"scenario-4\">en una urbanización</a>) o modificar cada uno de los elementos de forma independiente."
@@ -800,6 +792,24 @@ msgstr "T'expliquem en què s'inverteix els diners que recaptem dels teus impost
 #: views/terms.py:10 views/welcome.py:10
 msgid "Inicio"
 msgstr "Inici"
+
+msgid "Total gastado"
+msgstr "Total gastat"
+
+msgid "Total ingresado"
+msgstr "Total ingressat"
+
+msgid "Si quieres continuar usando Internet Explorer"
+msgstr "Si vols continuar emprant Internet Explorer"
+
+msgid "puedes instalar el plugin de Google Chrome Frame"
+msgstr "pots instal·lar el plugin de Google Chrome Frame"
+
+msgid "en unos minutos"
+msgstr "en uns minuts"
+
+msgid "Presupuesto"
+msgstr "Pressupost"
 
 msgid "Presupuestados"
 msgstr "Pressupostats"

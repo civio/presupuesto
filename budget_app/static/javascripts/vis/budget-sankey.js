@@ -1,11 +1,13 @@
 function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, theBudgetStatuses, i18n) {
 
+  var _this = this;
   var functionalBreakdown = theFunctionalBreakdown;
   var economicBreakdown = theEconomicBreakdown;
   var stats = theStats;
   var budgetStatuses = theBudgetStatuses;
   var maxAmountEver = 0;
   var relaxFactor = 0.79;
+  var margin = {top: 1, right: 1, bottom: 25, left: 1};
 
   var incomeNodes = [];
   var expenseNodes = [];
@@ -45,13 +47,13 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
     if (!arguments.length) return incomeNodes;
     incomeNodes = _;
     return this;
-  }
+  };
 
   this.expenseNodes = function(_) {
     if (!arguments.length) return expenseNodes;
     expenseNodes = _;
     return this;
-  }
+  };
 
   this.getSankeyData = function(year) {
 
@@ -84,7 +86,7 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
       // Normally we'd start adding from cero, but the Sankey layout seems to get very
       // confused when some elements are zero. What we'll do is have always a tiny
       // minimum amount, and show/hide the element later on based on its value.
-      var amounts = { amount: 0.01, actualAmount: 0.01 }
+      var amounts = { amount: 0.01, actualAmount: 0.01 };
       $.each(items, function(i, item) {
         amounts.amount += real(item[field][year]||0);
         amounts.actualAmount += real(item[field]["actual_"+year]||0);
@@ -119,7 +121,7 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
       var accumulatedActualTotal = 0;
       $.each(ids, function(i, id) {
         var item = getNodeInfo(breakdown, id, field);
-        if ( item != null ) {
+        if ( item !== null ) {
           accumulatedTotal += item.amount;
           accumulatedActualTotal += item.actualAmount;
           nodes.push( { "name": item.label,
@@ -133,7 +135,7 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
       // Add an extra node for the remaining amount
       var budgetedRemainder = real(breakdown[field][year]) - accumulatedTotal;
       var actualRemainder = real(breakdown[field]["actual_"+year]) - accumulatedActualTotal;
-      if ( budgetedRemainder != 0 )
+      if ( budgetedRemainder !== 0 )
         nodes.push( { "name": i18n['other'],
                       "value": budgetedRemainder,
                       "budgeted": budgetedRemainder,
@@ -204,9 +206,8 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
     selector = theSelector;
     uiState = newUIState;
 
-    var margin = {top: 1, right: 1, bottom: 25, left: 1},
-        width = $(selector).width() - margin.left - margin.right,
-        height = ($(selector).width()/2+20) - margin.top - margin.bottom;
+    width = $(selector).width() - margin.left - margin.right;
+    height = (16*Math.sqrt($(selector).width())) - margin.top - margin.bottom;
 
     // Set height to selector for IE11
     $(selector).height( height + margin.top + margin.bottom );
@@ -215,7 +216,7 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
 
     svg = d3.select(selector).append("svg")
         // Use viewBox instead width/height to avoid problems in IE11 (https://stackoverflow.com/questions/22250642/d3js-responsive-force-layout-not-working-in-ie-11)
-        .attr("viewBox", "0 0 " + (width + margin.left + margin.right) + " " + (height + margin.top + margin.bottom) )
+        .attr("viewBox", "0 0 " + (width+margin.left+margin.right) + " " + (height+margin.top+margin.bottom) )
       .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -224,7 +225,7 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
         .nodePadding(10)
         .relaxFactor(relaxFactor)
         .size([width, height]);
-    if ( maxAmountEver != 0 )
+    if ( maxAmountEver !== 0 )
       sankey.maxAmountEver(maxAmountEver);
 
     var path = sankey.link();
@@ -272,6 +273,18 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
     addLegendItem(note, 0, i18n['amounts.are.real'], 'legend-note');
 
     updateExecution();
+
+    d3.select(window).on('resize', _this.resize);
+  };
+
+  this.resize = function(){
+  
+    // Avoid redraw when container width keeps the same    
+    if( width == $(selector).width() - margin.left - margin.right ) return;
+
+    // Remove svg & redraw
+    d3.select(selector).select("svg").remove();
+    _this.draw(selector, uiState);
   };
 
   this.update = function(newUIState) {

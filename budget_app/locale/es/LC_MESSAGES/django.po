@@ -7,26 +7,27 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-04 12:13+0100\n"
+"POT-Creation-Date: 2016-03-11 17:08+0100\n"
 "PO-Revision-Date: 2016-03-06 21:48+0100\n"
+"Last-Translator: David Cabo <david@civio.es>\n"
+"Language-Team: \n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Last-Translator: David Cabo <david@civio.es>\n"
-"Language-Team: \n"
 "X-Generator: Poedit 1.8.7\n"
 
-#: templates/base-widget.html:4 templates/base-widget.html.py:41
-#: templates/base.html:4 templates/shared/social_sharing.html:5
+#: templates/base-widget.html:7 templates/base-widget.html.py:26
+#: templates/base.html:7 templates/shared/meta.html:9
+#: templates/shared/social_sharing.html:5
 msgid "Presupuestos del Gobierno de Aragón"
 msgstr ""
 
-#: templates/base.html:81
+#: templates/base.html:89
 msgid "Esta web utiliza cookies propias y de terceros para ofrecerte la mejor experiencia de usuario. Si continúas navegando, entendemos que autorizas el uso de estas cookies."
 msgstr ""
 
-#: templates/base.html:84
+#: templates/base.html:92
 msgid "Más información"
 msgstr ""
 
@@ -92,8 +93,8 @@ msgstr ""
 #: templates/budgets/budgets_totals.html:24
 #: templates/budgets/budgets_totals.html:29
 #: templates/budgets/budgets_totals.html:34
-#: templates/budgets/budgets_totals.html:39 templates/entities/show.html:32
-#: templates/entities/show.html.py:33 templates/entities/show_script.html:109
+#: templates/budgets/budgets_totals.html:39 templates/entities/show.html:26
+#: templates/entities/show.html.py:27 templates/entities/show_script.html:108
 #: templates/policies/show_script.html:34
 msgid "Ingresos"
 msgstr ""
@@ -105,7 +106,7 @@ msgstr ""
 #: templates/budgets/budgets_totals.html:30
 #: templates/budgets/budgets_totals.html:35
 #: templates/budgets/budgets_totals.html:40
-#: templates/entities/show_script.html:116
+#: templates/entities/show_script.html:114
 #: templates/policies/show_script.html:34
 msgid "Gastos"
 msgstr ""
@@ -150,83 +151,81 @@ msgstr ""
 msgid "Subtotal Financiero"
 msgstr ""
 
-#: templates/budgets/budgets_totals.html:47
+#: templates/budgets/budgets_totals.html:48
 msgid "El cálculo de los subtotales utiliza las cifras de ejecución para los años cuya liquidación está cerrada, o el presupuesto aprobado en caso contrario."
 msgstr ""
 
-#: templates/budgets/index.html:17
-msgid "Ingresos y gastos en el Gobierno de Aragón"
-msgstr ""
-
-#: templates/budgets/index.html:29 templates/payments/index.html:33
-msgid "Elige año"
-msgstr ""
-
-#: templates/budgets/index.html:42
-msgid "Datos presupuestarios en"
-msgstr ""
-
-#: templates/budgets/index.html:54
+#: templates/budgets/budgets_totals.html:50
 msgid "Cantidades actualizadas con la inflación a fecha 1 de enero de"
 msgstr ""
 
-#: templates/budgets/index.html:54
+#: templates/budgets/index.html:11
+msgid "Ingresos y gastos en el Gobierno de Aragón"
+msgstr ""
+
+#: templates/budgets/index.html:23 templates/payments/index.html:33
+msgid "Elige año"
+msgstr ""
+
+#: templates/budgets/index.html:36
+msgid "Datos presupuestarios en"
+msgstr ""
+
+#: templates/budgets/index.html:48
 msgid "El cálculo de los indicadores utiliza las cifras de ejecución para los años cuya liquidación está cerrada, o el presupuesto aprobado en caso contrario."
 msgstr ""
 
-#: templates/budgets/index.html:56
-msgid "Se incluyen únicamente los gastos e ingresos no financieros, es decir, capítulos I al VII."
-msgstr ""
-
-#: templates/budgets/index.html:103
+#: templates/budgets/index.html:98
 msgid "Otros"
 msgstr ""
 
-#: templates/budgets/index.html:104 templates/shared/data_sources.html:7
+#: templates/budgets/index.html:99 templates/shared/data_sources.html:7
 #: templates/shared/footer.html:18 templates/shared/header.html:27
-#: templates/shared/header.html.py:55 templates/welcome/index.html:54
+#: templates/shared/header.html.py:55 templates/shared/meta.html:4
+#: templates/shared/meta.html.py:5 templates/welcome/index.html:54
 msgid "Gobierno de Aragón"
 msgstr ""
 
-#: templates/budgets/index.html:105 templates/entities/totals.html:6
-#: templates/entities/totals.html.py:13 templates/policies/show_script.html:139
+#: templates/budgets/index.html:100 templates/entities/show_script.html:15
+#: templates/entities/totals.html:6 templates/entities/totals.html.py:13
+#: templates/policies/show_script.html:32
+#: templates/policies/show_script.html:139
 msgid "Presupuestado"
 msgstr ""
 
-#: templates/budgets/index.html:106 templates/entities/totals.html:5
-#: templates/entities/totals.html.py:12
+#: templates/budgets/index.html:101
 msgid "Ejecutado"
 msgstr ""
 
-#: templates/budgets/index.html:107 templates/entities/show_script.html:262
+#: templates/budgets/index.html:102 templates/entities/show_script.html:257
 #: templates/policies/show_script.html:92
 msgid "hasta el primer trimestre"
 msgstr ""
 
-#: templates/budgets/index.html:108 templates/entities/show_script.html:263
+#: templates/budgets/index.html:103 templates/entities/show_script.html:258
 #: templates/policies/show_script.html:93
 msgid "hasta el segundo trimestre"
 msgstr ""
 
-#: templates/budgets/index.html:109 templates/entities/show_script.html:264
+#: templates/budgets/index.html:104 templates/entities/show_script.html:259
 #: templates/policies/show_script.html:94
 msgid "hasta el tercer trimestre"
 msgstr ""
 
-#: templates/budgets/index.html:110 templates/entities/show_script.html:265
+#: templates/budgets/index.html:105 templates/entities/show_script.html:260
 #: templates/policies/show_script.html:95
 msgid "a día de hoy"
 msgstr ""
 
-#: templates/budgets/index.html:111
+#: templates/budgets/index.html:106
 msgid "(Cantidades actualizadas con la inflación)"
 msgstr ""
 
-#: templates/entities/compare.html:14 templates/entities/show.html:14
+#: templates/entities/compare.html:14 templates/entities/show.html:8
 msgid "Volver a la lista de comarcas"
 msgstr ""
 
-#: templates/entities/compare.html:16 templates/entities/show.html:16
+#: templates/entities/compare.html:16 templates/entities/show.html:10
 msgid "Volver a la lista de municipios"
 msgstr ""
 
@@ -235,61 +234,65 @@ msgid "Comparativa"
 msgstr ""
 
 #: templates/entities/compare.html:30 templates/entities/compare.html.py:45
-#: templates/entities/show.html:28 templates/entities/show_widget.html:19
+#: templates/entities/show.html:22 templates/entities/show_widget.html:19
 #: templates/shared/header.html:53 templates/shared/header.html.py:62
 #: templates/welcome/index.html:61
 msgid "Políticas"
 msgstr ""
 
-#: templates/entities/index.html:11 templates/shared/header.html:56
+#: templates/entities/index.html:10 templates/shared/header.html:56
 #: templates/welcome/index.html:55
 msgid "Comarcas"
 msgstr ""
 
-#: templates/entities/index.html:13 templates/shared/header.html:57
+#: templates/entities/index.html:12 templates/shared/header.html:57
 #: templates/welcome/index.html:56
 msgid "Municipios"
 msgstr ""
 
-#: templates/entities/index.html:26
+#: templates/entities/index.html:25
 msgid "Habitantes"
 msgstr ""
 
-#: templates/entities/index.html:30 templates/entities/show_script.html:15
+#: templates/entities/index.html:29
 msgid "Previsto"
 msgstr ""
 
-#: templates/entities/index.html:31 templates/entities/show_script.html:23
-#: templates/policies/show_script.html:43
+#: templates/entities/index.html:30 templates/entities/show_script.html:23
+#: templates/entities/show_script.html:95 templates/entities/totals.html:5
+#: templates/entities/totals.html.py:12 templates/policies/show_script.html:43
+#: templates/policies/show_script.html:184
 msgid "Gastado"
 msgstr ""
 
-#: templates/entities/index.html:42 templates/entities/show.html:102
+#: templates/entities/index.html:41 templates/entities/show.html:96
 msgid "Descarga la tabla de <b>Ingresos</b>"
 msgstr ""
 
-#: templates/entities/index.html:48 templates/entities/show.html:114
+#: templates/entities/index.html:47 templates/entities/show.html:108
 msgid "Descarga la tabla de <b>Gastos</b>"
 msgstr ""
 
-#: templates/entities/show.html:37 templates/entities/show.html.py:38
+#: templates/entities/show.html:31 templates/entities/show.html.py:32
 msgid "¿Cómo se gasta?"
 msgstr ""
 
-#: templates/entities/show.html:42 templates/entities/show.html.py:43
+#: templates/entities/show.html:36 templates/entities/show.html.py:37
 msgid "¿En qué se gasta?"
 msgstr ""
 
-#: templates/entities/show.html:86 templates/entities/show_widget.html:54
+#: templates/entities/show.html:80 templates/entities/show_widget.html:54
 msgid "Información no disponible"
 msgstr ""
 
-#: templates/entities/show.html:108
+#: templates/entities/show.html:102
 msgid "Descarga la tabla de <b>Gastos (por programa)</b>"
 msgstr ""
 
 #: templates/entities/show_script.html:23
+#: templates/entities/show_script.html:95
 #: templates/policies/show_script.html:43
+#: templates/policies/show_script.html:184
 msgid "Ingresado"
 msgstr ""
 
@@ -303,24 +306,17 @@ msgstr ""
 msgid "Artículo"
 msgstr ""
 
-#: templates/entities/show_script.html:97
+#: templates/entities/show_script.html:100
+#: templates/policies/show_script.html:186
+msgid "Total"
+msgstr ""
+
+#: templates/entities/show_script.html:103
 msgid "Gastos (por programa)"
 msgstr ""
 
-#: templates/entities/show_script.html:99
-#: templates/entities/show_script.html:102
-#: templates/entities/show_script.html:117
-#: templates/policies/show_script.html:184
-msgid "Total gastos"
-msgstr ""
-
-#: templates/entities/show_script.html:101
-msgid "Total gastos no financieros"
-msgstr ""
-
-#: templates/entities/show_script.html:110
-#: templates/policies/show_script.html:184
-msgid "Total ingresos"
+#: templates/entities/totals.html:10
+msgid "Total no financiero"
 msgstr ""
 
 #: templates/pages/cookies.html:3 views/pages.py:8
@@ -359,32 +355,28 @@ msgstr ""
 msgid "Gastos del año vigente"
 msgstr ""
 
-#: templates/policies/show.html:33
+#: templates/policies/show.html:22
 msgid "Volver a Políticas"
 msgstr ""
 
-#: templates/policies/show.html:39
+#: templates/policies/show.html:28
 msgid "Programas, entidades y conceptos"
 msgstr ""
 
-#: templates/policies/show.html:40
+#: templates/policies/show.html:29
 msgid "Menú de programas, entidades y conceptos"
 msgstr ""
 
-#: templates/policies/show.html:107 templates/policies/show_widget.html:71
+#: templates/policies/show.html:96 templates/policies/show_widget.html:71
 msgid "respecto a"
 msgstr ""
 
-#: templates/policies/show.html:113 templates/policies/show_widget.html:77
+#: templates/policies/show.html:102 templates/policies/show_widget.html:77
 msgid "Comparte éste gráfico"
 msgstr ""
 
-#: templates/policies/show_script.html:32
-msgid "Presupuesto"
-msgstr ""
-
-#: templates/policies/show_script.html:54 templates/search/index.html:156
-#: templates/search/index.html.py:266
+#: templates/policies/show_script.html:54 templates/search/index.html:133
+#: templates/search/index.html.py:251
 msgid "Concepto"
 msgstr ""
 
@@ -400,11 +392,11 @@ msgstr ""
 msgid "Fondo"
 msgstr ""
 
-#: templates/search/index.html:24
+#: templates/search/index.html:24 templates/terms/index.html:29
 msgid "Hemos encontrado"
 msgstr ""
 
-#: templates/search/index.html:25
+#: templates/search/index.html:25 templates/terms/index.html:30
 msgid "resultados</b> relacionados con"
 msgstr ""
 
@@ -416,38 +408,38 @@ msgstr ""
 msgid "cualquier año"
 msgstr ""
 
-#: templates/search/index.html:56
-msgid "Términos"
-msgstr ""
-
-#: templates/search/index.html:79 templates/search/index.html.py:83
+#: templates/search/index.html:56 templates/search/index.html.py:60
 msgid "Comarcas y municipios"
 msgstr ""
 
-#: templates/search/index.html:107
+#: templates/search/index.html:84
 msgid "Políticas y Programas"
 msgstr ""
 
-#: templates/search/index.html:111 templates/search/index.html.py:114
+#: templates/search/index.html:88 templates/search/index.html.py:91
 msgid "Política / Programa"
 msgstr ""
 
-#: templates/search/index.html:149 templates/search/index.html.py:153
+#: templates/search/index.html:126 templates/search/index.html.py:130
 msgid "Conceptos"
 msgstr ""
 
-#: templates/search/index.html:157
+#: templates/search/index.html:134
 msgid "Gastos / Ingresos"
 msgstr ""
 
-#: templates/search/index.html:259 templates/search/index.html.py:263
+#: templates/search/index.html:244 templates/search/index.html.py:248
 #: templates/shared/header.html:68 templates/welcome/index.html:70
 #: templates/welcome/index.html.py:72
 msgid "Pagos e inversiones"
 msgstr ""
 
-#: templates/search/index.html:267
+#: templates/search/index.html:252
 msgid "Cantidad"
+msgstr ""
+
+#: templates/search/index.html:304
+msgid "Términos"
 msgstr ""
 
 #: templates/shared/chromeframe.html:3
@@ -456,18 +448,6 @@ msgstr ""
 
 #: templates/shared/chromeframe.html:4
 msgid "Este sitio web no va a funcionar correctamente en tu navegador. La visualización de datos de esta página requieren un navegador con funciones adicionales, como"
-msgstr ""
-
-#: templates/shared/chromeframe.html:4
-msgid "Si quieres continuar usando Internet Explorer"
-msgstr ""
-
-#: templates/shared/chromeframe.html:4
-msgid "puedes instalar el plugin de Google Chrome Frame"
-msgstr ""
-
-#: templates/shared/chromeframe.html:4
-msgid "en unos minutos"
 msgstr ""
 
 #: templates/shared/data_controllers.html:5
@@ -575,13 +555,21 @@ msgstr ""
 msgid "Visión global"
 msgstr ""
 
-#: templates/shared/header.html:74 templates/tax_receipt/index.html:14
+#: templates/shared/header.html:74 templates/tax_receipt/index.html:11
 #: templates/welcome/index.html:84
 msgid "Lo que tú aportas"
 msgstr ""
 
 #: templates/shared/header.html:79
 msgid "¿Qué significa...?"
+msgstr ""
+
+#: templates/shared/meta.html:3 templates/shared/meta.html.py:10
+msgid "Información presupuestaria del Gobierno de Aragón"
+msgstr ""
+
+#: templates/shared/meta.html:4
+msgid "presupuestos, gastos, ingresos"
 msgstr ""
 
 #: templates/shared/modal_embed.html:6
@@ -620,20 +608,24 @@ msgstr ""
 msgid "Comparte esta página en Google Plus"
 msgstr ""
 
-#: templates/tax_receipt/index.html:15
+#: templates/tax_receipt/index.html:12
 msgid "Te mostramos de forma aproximada"
 msgstr ""
 
-#: templates/tax_receipt/index.html:15
+#: templates/tax_receipt/index.html:12
 msgid "Nota sobre el cálculo realizado"
 msgstr ""
 
-#: templates/tax_receipt/index.html:15
+#: templates/tax_receipt/index.html:12
 msgid "cómo se distribuye el dinero que aportas con tus impuestos"
 msgstr ""
 
-#: templates/tax_receipt/index.html:31
+#: templates/tax_receipt/index.html:28
 msgid "Detalle de tu contribución en"
+msgstr ""
+
+#: templates/tax_receipt/index.html:32
+msgid "Se incluyen únicamente los gastos e ingresos no financieros, es decir, capítulos I al VII."
 msgstr ""
 
 #: templates/tax_receipt/tax_receipt_form.html:1

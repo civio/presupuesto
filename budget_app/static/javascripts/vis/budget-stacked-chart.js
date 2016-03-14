@@ -2,8 +2,7 @@ function BudgetStackedChart(theSelector, theStats, theColorScale, i18n) {
   var selector        = theSelector;
   var stats           = theStats;
   var budgetStatuses  = {};
-  var _               = i18n;
-
+  
   var breakdown;
   var years;
   var data            = [];
@@ -116,13 +115,15 @@ function BudgetStackedChart(theSelector, theStats, theColorScale, i18n) {
     chart.color = d3.scale.ordinal().range(colorScale);
 
     // Setup budgeted literal
-    chart.budgeted = _.budgeted;
+    chart.budgeted = i18n.budgeted;
 
     // Setup data format
     chart.dataFormat = uiState.format;
 
+    console.log(_);
+
     // Chart set data & draw
-    chart.setData( this.getNewData(), years.map(function(d){ return parseInt(d); }), budgetStatuses ).draw();
+    chart.setData( getSortedData(this.getNewData()), years.map(function(d){ return parseInt(d); }), budgetStatuses ).draw();
   };
 
 
@@ -168,7 +169,9 @@ function BudgetStackedChart(theSelector, theStats, theColorScale, i18n) {
   };
 
   // Data order function
-  function sortData(a,b){
-    return b.values[0][1] - a.values[0][1];
+  function getSortedData(_data){
+    return _.sortBy(_data, function(d){
+      return d.values[0][1];
+    }).reverse();
   }
 }
