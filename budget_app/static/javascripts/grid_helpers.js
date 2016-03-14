@@ -32,12 +32,12 @@ function getBreakdownValueFunction(field, column) {
       return null;
 
     return item[field][column] || 0;
-  }
+  };
 }
 
 // Convert a BudgetBreakdown object to an Array understood by SlickGrid
 function breakdownToTable(breakdown, indent) {
-  if (breakdown == null || breakdown.sub == null) return [];
+  if (breakdown === null || breakdown.sub === null) return [];
 
   var gridData = [];
   indent = indent || 0;
@@ -55,9 +55,10 @@ function breakdownToTable(breakdown, indent) {
     item.id = (id+=1);
     item.key = key;
     item.indent = indent;
-    item.parent = (indent === 0 ? null : breakdown);
+    item._expanded = false;
+    item._parent = (indent === 0) ? null : breakdown;
     // Having a link to the root item allows us to calculate % of total
-    item.root = (indent === 0 ? breakdown : breakdown.root);
+    item.root = (indent === 0) ? breakdown : breakdown.root;
     gridData.push(item);
 
     // Add the children information
@@ -88,20 +89,22 @@ function createBudgetGrid(containerName, data, userColumns) {
   // based on whether its ancestors are expanded.
   $.fn.dataTable.ext.search = [
     function(settings, row, dataIndex) {
-      item = settings.oInit.data[dataIndex];
+      
+      var item = settings.oInit.data[dataIndex];
 
       // Check the parents' status
-      var parent = item.parent;
-      while (parent != null) {
-        if (!parent._expanded)  return false;
-        parent = parent.parent;
+      var parent = item._parent;
+      while (parent) {
+        if (parent._expanded !== true) return false;
+        parent = parent._parent;
       }
 
       // Check whether there's any data in this row
       for (var i in columns) {
         // The 'i>0' means ignore the description column.
-        if ( i>0 && row[i] != undefined && row[i] != null && row[i] != 0 ) return true;
+        if ( i>0 && row[i] !== undefined && row[i] !== null && row[i] !== 0 ) return true;
       }
+
       return false;
     }
   ];
@@ -125,22 +128,22 @@ function createBudgetGrid(containerName, data, userColumns) {
     // A comparison function that can sort a table while keeping the parent-child hierarchy
     function multiLevelComparer(a, b, ascending) {
       // Handle trivial cases first...
-      if ( a.parent == b ) {                // Parent-child: don't sort
+      if ( a._parent == b ) {                // Parent-child: don't sort
         return 1;
-      } else if ( a == b.parent ) {         // Parent-child: don't sort
+      } else if ( a == b._parent ) {         // Parent-child: don't sort
         return -1;
-      } else if ( a.parent == b.parent ) {  // Siblings
+      } else if ( a._parent == b._parent ) {  // Siblings
         return ascending ? simpleComparer(a, b) : simpleComparer(b, a);
       }
 
       // Travel up from the deeper item until the indent is the same, and
       // we'll eventually end up in one of the trivial cases above
       if ( a.indent > b.indent ) {
-        return multiLevelComparer(a.parent, b, ascending);
+        return multiLevelComparer(a._parent, b, ascending);
       } else if ( a.indent < b.indent ) {
-        return multiLevelComparer(a, b.parent, ascending);
+        return multiLevelComparer(a, b._parent, ascending);
       } else {
-        return multiLevelComparer(a.parent, b.parent, ascending);
+        return multiLevelComparer(a._parent, b._parent, ascending);
       }
     }
 
@@ -187,7 +190,7 @@ function createBudgetGrid(containerName, data, userColumns) {
 
 // Helper methods to return text labels
 function isPartiallyExecuted(s) {
-  return s && s!='';
+  return s && s !== '';
 }
 
 function getExecutionColumnName(budgetStatus, label, budgetStatusLabels) {
