@@ -81,7 +81,7 @@
 
       $('#query-panel .payments-query').html( queryStr );
 
-      $("#payments-total").text( columnDef.render(columnDef.data(data) || 'n/a' ) );
+      $("#payments-total").text( formatAmount(totalAmount) );
       $("#payments-size").text( formatNumber(paymentsCount) );
 
       $('.payments-content .tab-content').show();
