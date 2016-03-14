@@ -15,8 +15,10 @@
             <div class="form-group">
               <label for="input-area">{{ _('Area') }}</label>
               <select id="input-area" class="form-control" style="width: 100%" data-placeholder="{{ _('Selecciona Area') }}">
-                <option value=""></option>
                 <option value="">{{ _('Todas las áreas') }}</option>
+                {% for area in areas %}
+                <option value="{{ area }}">{{ area }}</option>
+                {% endfor %}
               </select>
             </div>
           </div>
@@ -24,8 +26,10 @@
             <div class="form-group">
               <label for="input-payee">{{ _('Proveedor') }}</label>
               <select id="input-payee" class="form-control" style="width: 100%" data-placeholder="{{ _('Selecciona Proveedor') }}">
-                <option value=""></option>
                 <option value="">{{ _('Todos los proveedores') }}</option>
+                {% for payee in payees %}
+                <option value="{{ payee }}">{{ payee }}</option>
+                {% endfor %}
               </select>
             </div>
           </div>

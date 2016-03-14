@@ -20,9 +20,9 @@ def payments(request, render_callback=None):
     c['first_year'] = c['years'][0]
     c['last_year'] = c['years'][len(c['years'])-1]
 
-    c['payees'] = json.dumps(list(Payment.objects.get_payees(c['entity'])))
+    c['payees'] = Payment.objects.get_payees(c['entity'])
 
-    c['areas'] = json.dumps(list(Payment.objects.get_areas(c['entity'])))
+    c['areas'] = Payment.objects.get_areas(c['entity'])
 
     # Retrieve biggest payees
     # FIXME: Not really, we're just returning something to unblock front-end dev

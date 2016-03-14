@@ -5,10 +5,8 @@
         myGrid,
         areaBreakdown   = {{ area_breakdown.to_json()|safe }},
         payeeBreakdown  = {{ payee_breakdown.to_json()|safe }},
-        query           = {},
+        query           = { description: '' },
         years           = {{ years }},
-        areas           = {{ areas|safe }},
-        payees          = {{ payees|safe }},
         paymentsCount,
         totalAmount;
 
@@ -29,21 +27,34 @@
 
       var queryHash = getQueryHash();
 
-      console.log('updateTab', initialized, queryHash);
+      console.log('updateTab', initialized, Object.keys(queryHash).length);
 
-      if (!initialized) {
-        initialized = true;
-        if (jQuery.isEmptyObject(queryHash)) return;
-        initializeInputs(queryHash);
-      }
-
+      // Update query & send ajax search
       if (!isSameQuery(queryHash)) {
         query = queryHash;
-        sendSearchQuery();
-      } 
+        if (!isEmptyQuery(queryHash)) {
+          sendSearchQuery();
+        }
+      }
+      // Update tabs
       else {
-        //if( areaBreakdown === undefined ) return;   // Skip first call
+
+        //
+        if (!initialized) {
+          initialized = true;
+          return;
+        }
+        //
+
         var uiState = getUIState();
+
+        // Avoid redundancy
+        if ($('a[href="#'+uiState.type+'"]').parent().hasClass('active')){
+          console.log('avoid redundancy', uiState);
+          return;
+        }
+
+        // Update tab
         $('#tabs .active').removeClass('active');
         $('a[href="#'+uiState.type+'"]').blur().parent().addClass('active');
         redrawGrid();
@@ -76,14 +87,16 @@
       
       // TODO!!! Add literals translation
       var queryStr = '';
-      if (query.description) queryStr += 'Descripción: <b>'+query.description+'</b> / ';
+      if (query.description && query.description !== '') queryStr += 'Descripción: <b>'+query.description+'</b> / ';
       if (query.area) queryStr += 'Area: <b>'+query.area+'</b> / ';
       if (query.payee) queryStr += 'Beneficiario: <b>'+query.payee+'</b> / ';
+      if (query.date) {
       var dates = query.date.split(',');
-      if (dates[0] !== dates[1]) {
-        queryStr += 'Entre <b>'+dates[0]+'</b> y <b>'+dates[1]+'</b>';
-      } else{
-        queryStr += 'En <b>'+dates[0]+'</b>';
+        if (dates[0] !== dates[1]) {
+          queryStr += 'Entre <b>'+dates[0]+'</b> y <b>'+dates[1]+'</b>';
+        } else{
+          queryStr += 'En <b>'+dates[0]+'</b>';
+        }
       }
 
       $('#query-panel .payments-query').html( queryStr );
@@ -118,14 +131,25 @@
       areaBreakdown = response.areaBreakdown;
       payeeBreakdown = response.payeeBreakdown;
 
-      // Select tab based on query params
+      $('#payments-search button[type="submit"]').attr('disabled', false).children('.glyphicon').addClass('hide');
+
+      /*
+      // TODO!!! Select tab based on query params
       var view = ( query.area ) ? 'payee' : 'area';
 
       // Change view hash to trigger updateTab
       $.bbq.removeState('view');  // We need to clear view hash before update it
       $.bbq.pushState( {'view': view} );
+      */
 
-      $('#payments-search button[type="submit"]').attr('disabled', false).children('.glyphicon').addClass('hide');
+      setupInputs();
+
+      var uiState = getUIState();
+
+      // Update tab
+      $('#tabs .active').removeClass('active');
+      $('a[href="#'+uiState.type+'"]').blur().parent().addClass('active');
+      redrawGrid();
     }
 
     function onSearchError(response) {
@@ -133,22 +157,38 @@
       $('#payments-search button[type="submit"]').attr('disabled', false).children('.glyphicon').addClass('hide');
     }
 
-    function initializeInputs(_query) {
-      console.log('initializeInputs', _query);
-      if (_query.area){
+    function setupInputs() {
+      console.log('setupInputs');
 
+      if (query.description !== $('#input-description').val().trim()){
+        $('#input-description').val(query.description);
+      }
+      if (query.area !== $('#input-area').val()){
+        $('#input-area').val(query.area).trigger("chosen:updated");
+      }
+      if (query.payee !== $('#input-payee').val()){
+        $('#input-payee').val(query.area).trigger("chosen:updated");
+      }
+      if (query.date !== $('#input-date').val()){
+        $('#input-date').val(query.date);
       }
     }
 
     function isSameQuery(_query) {
+      console.log('isSameQuery', query, _query);
       return query.description === _query.description && query.payee === _query.payee && query.area === _query.area && query.date === _query.date;
+    }
+
+    function isEmptyQuery(_query) {
+      return Object.keys(_query).length === 1 && _query.description === ''
     }
 
     function getQueryHash(){
       var hash = $.deparam.fragment();
-      var queryHash = {};
+      var queryHash = {
+        description: ( hash.description ) ? hash.description : ''
+      };
       if( hash.date )         queryHash.date = hash.date;
-      if( hash.description )  queryHash.description = hash.description.trim();
       if( hash.payee )        queryHash.payee = hash.payee;
       if( hash.area )         queryHash.area = hash.area;
       return queryHash;
@@ -173,16 +213,7 @@
 
     // Setup area & payees selects
     $('#input-area').chosen();
-    /*
-      data: areas
-    });
-    */
-
     $('#input-payee').chosen();
-    /*
-      data: payees
-    });
-    */
 
     // Setup year slider
     $('#input-date').slider({
@@ -195,10 +226,8 @@
     $('#payments-search').submit(function(e){
       e.preventDefault();
 
-      console.log('submit');
-
       // Show alert if there's no filter parameter
-      if( $('#input-description').val().trim() === '' && $('#input-payee').val() === null && $('#input-area').val() === null ){
+      if ($('#input-description').val().trim() === '' && ($('#input-payee').val() === null || $('#input-payee').val() === '') && ($('#input-area').val() === null || $('#input-area').val() === '')) {
         $(this).find('.alert').show();
         $('#input-description, #input-payee, #input-area').one('change', function(){
           $('#payments-search .alert').hide();
@@ -212,8 +241,18 @@
         description:  $('#input-description').val().trim(),
         date:         $('#input-date').val()
       }
-      if( $('#input-payee').val() ) state.payee = $('#input-payee').val();
-      if( $('#input-area').val() )  state.area = $('#input-area').val();
+      state.payee = $('#input-payee').val();
+      state.area = $('#input-area').val();
+
+      console.log('submit', state);
+
+      if (isSameQuery(state)) {
+        console.log('is same query!');
+        $(this).find('button[type="submit"]').attr('disabled', false).children('.glyphicon').addClass('hide');
+        return;
+      }
+
+      console.log('pushState', state);
 
       // Setup hashes with search parameters
       $.bbq.pushState( state );
