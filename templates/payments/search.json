@@ -1,0 +1,7 @@
+{
+  "totalResults": {{ payments_count }},
+  "totalAmount": {{ total_amount }},
+  "moreResultsAvailable": false,
+  "payeeBreakdown": {{ payee_breakdown.to_json()|safe }},
+  "areaBreakdown": {{ area_breakdown.to_json()|safe }}
+}

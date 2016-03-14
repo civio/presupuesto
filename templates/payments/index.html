@@ -5,7 +5,7 @@
   
 </div>
 
-<section class="payments-breakdown" role="region" data-tab="area">
+<section class="payments-breakdown" role="region" data-tab="payee">
 
   <!-- Payments Header -->
   <div class="payments-header section-header">
@@ -14,28 +14,35 @@
       <h2 class="page-title">{{ _('Inversiones y pagos') }}</h2>
     </div>
 
-    <ul id="tabs" class="nav nav-tabs nav-tabs-centered" role="tablist">
-      <li class="active">
-        <a href="#area"><h3>{{ _('Por área') }}</h3></a>
-      </li>
-      <li>
-        <a href="#payee"><h3>{{ _('Por beneficiario') }}</h3></a>
-      </li>
-    </ul>
   </div>
 
   <div class="payments-content">
-    <div class="container tab-content">
+    <div class="container">
       
       {% include 'payments/payments_intro.html' %}
+
+      {% include 'payments/payments_search.html' %}
+    </div>
+
+    <div class="container tab-content">
       
-      <div class="data-controllers">
-        <p class="title tcenter">{{ _('Elige año') }}</p>
-        <div class="layout-slider">
-          <input id="year-selection" type="text" />
+      <div id="query-panel" class="data-panel">
+        <div class="panel">
+          <div class="panel-content">
+            <p>{{ _('Hay <b id="payments-size"></b> pagos que suman un total de <b id="payments-total"></b> para la búsqueda')|safe }}:</p>
+            <p class="payments-query"></p>
+          </div>
         </div>
       </div>
 
+      <h4 class="page-title">{{ _('Principales proovedores del Gobierno de Aragón') }}</h4>
+
+      <ul id="tabs" class="nav nav-tabs nav-tabs-centered" role="tablist">
+        <li><a href="#area"><h3>{{ _('Por área') }}</h3></a></li>
+        <li><a href="#payee"><h3>{{ _('Por beneficiario') }}</h3></a></li>
+      </ul>
+
+      <!--
       <div id="totals_panel" class="totals-placeholder data-panel">
         <div class="panel">
           <div class="panel-content">
@@ -43,11 +50,10 @@
           </div>
         </div>
       </div>
+      -->
 
       <table id="myGrid" class="table-grid" width="100%"></table>
-
-      {{ render_tab(_('Por área'), 'area', 'active', entity) }}
-      {{ render_tab(_('Por beneficiario'), 'payee', '', entity) }}
+    </div>
 
       {% include 'shared/social_sharing.html' %}
     </div>
@@ -56,87 +62,6 @@
 
 {% include 'shared/data_sources.html' %}
 
-<script>
-  $(function () {
-    //
-    // GRID RENDERING
-    //
-
-    function getColumnDefinition(uiState) {
-      return { 
-        data: getBreakdownValueFunction('expense', uiState.year),
-        title: '{{ _("Pago") }}',
-        render: getFormatter('nominal', stats, Number(uiState.year))
-      }; 
-    }
-
-    //Update Tab
-    function updateTab() {
-      var uiState = getUIState();
-
-      console.log('updateTab', uiState);
-
-      $('#tabs .active').removeClass('active');
-      $('a[href="#'+uiState.type+'"]').blur().parent().addClass('active');
-      
-      redrawGrid();
-    }
-
-    // Do all the hard work of drawing the grids
-    function redrawGrid() {
-      var uiState   = getUIState();
-      var columnDef = getColumnDefinition(uiState);
-      var title     = (uiState.type == 'area') ? '{{ _("Área") }}' : '{{ _("Beneficiario") }}';
-      var data      = (uiState.type == 'area') ? areaGridData : payeeGridData;
-      
-      if ( myGrid !== undefined )  myGrid.destroy();
-      myGrid = createBudgetGrid("#myGrid", data,
-                        [
-                          {
-                            data: "key",
-                            title: title,
-                            render: rowNameFormatter
-                          },
-                          columnDef
-                        ]);
-
-      // Total amounts are the same whichever way you break down the items, so any breakdown will do
-      $("#total").text( columnDef.render(columnDef.data(payeeBreakdown) || 'n/a' ) );
-    }    
-
-
-    //
-    // DATA
-    //
-    var payeeBreakdown = {{ payee_breakdown.to_json()|safe }};
-    var payeeGridData = breakdownToTable(payeeBreakdown);
-
-    var areaBreakdown = {{ area_breakdown.to_json()|safe }};
-    var areaGridData = breakdownToTable(areaBreakdown);
-
-    var years = {{ years|safe }};
-    var stats = {{ stats|safe }};
-
-    var myGrid;
-
-
-    initSlider("#year-selection", years, redrawGrid, {{ latest_year }});
-    if (years.length==1) $(".data-controllers").hide();
-
-    // Handle the hash the page may have loaded with.
-    state = $.deparam.fragment();
-    // Highlight a particular item
-    if (state.description) {
-      unfoldItem(payeeGridData, state.description);
-      redrawGrid();
-      $('a[href="#payee"]').parent().addClass('active');
-      //$("#tab-payee a").click();
-      //window.setTimeout(function(){ $(".toggle.collapse")[0].scrollIntoView() }, 1000);
-    }
-
-    // Setup tabs navigation
-    setRedrawOnTabsChange('#tabs', updateTab);
-  });
-</script>
+{% include 'payments/payments_script.html' %}
 
 {% endblock %}

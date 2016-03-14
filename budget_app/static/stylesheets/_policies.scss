@@ -43,6 +43,14 @@
 // Policies Content
 .policies-content{
   padding-bottom: 1px;
+
+  .tab-content{
+    margin-top: $grid-gutter-width;
+
+    .data-controllers{
+      margin-bottom: $grid-gutter-width;
+    }
+  }
 }
 
 // Policies Chart
@@ -50,11 +58,17 @@
   @extend .panel;
   position: relative;
   background: $page-header-bg;
-  padding: $grid-gutter-width $grid-gutter-width/2 $grid-gutter-width/2;
+  padding: $grid-gutter-width/2;
   margin: $grid-gutter-width 0 $grid-gutter-width/2;
 }
 
 .policies.policy-breakdown{
+
+  .policies-chart{
+    margin: $grid-gutter-width 0;
+    border: 1px solid $brand-primary;
+    //border-top: none;
+  }
 
   // Remove cursor pointer in policy-breakdown treemap
   .policies-chart .treemap-chart rect{

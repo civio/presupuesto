@@ -85,8 +85,10 @@
 }
 
 .stacked-area-chart-legend{
-  margin-left: 80px;
-  margin-right: 50px;
+  margin-left: 75px;
+  margin-right: 20px;
+  margin-top: $grid-gutter-width/2;
+  margin-bottom: $grid-gutter-width/3;
 
   .label{
     position: relative;
@@ -132,8 +134,8 @@
 .chart-embed-btn a{
   display: block;
   position: absolute;
-  top: -5px;
-  right: 20px;
+  bottom: 10px;
+  left: 15px;
   width: $grid-gutter-width;
   height: $grid-gutter-width;
   background: url(../assets/icon-share.png) no-repeat center center $brand-primary;

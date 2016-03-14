@@ -21,4 +21,68 @@
       background: $page-header-bg;
     }
   }
+
+  .tab-content{
+    display: none;
+  }
+
+  #tabs{
+    margin-bottom: $grid-gutter-width;
+  }
+
+  h4.page-title{
+    font-size: 2em;
+  }
+}
+
+.payments-search-panel.data-panel{
+  margin-top: $grid-gutter-width;
+  margin-bottom: $grid-gutter-width;
+  
+  .panel-content{
+    background: $brand-secondary;
+    text-transform: none;
+  }
+}
+
+#payments-search{
+  .data-controllers{
+    margin-left: $grid-gutter-width/2;
+    margin-right: $grid-gutter-width/2;
+    margin-bottom: $grid-gutter-width;
+  }
+
+  .glyphicon-refresh-animate{
+    margin-right: $grid-gutter-width/6;
+
+    &:before{
+      margin: 0;
+    }
+  }
+
+  .alert{
+    display: none;
+    font-size: 0.875em;
+    padding: 6px $grid-gutter-width/3;
+    margin-left: $grid-gutter-width/6;
+  }
+}
+
+#query-panel{
+
+  .panel{
+    border: none;
+    background: $brand-terciary;
+    margin-bottom: $grid-gutter-width;
+  }
+
+  .panel-content{
+    text-transform: none;
+
+    b{
+      display: inline;
+      float: none;
+      font-weight: $font-weight-600;
+    }
+  }
 }

@@ -1,0 +1,255 @@
+<script>
+  $(function () {
+
+    var initialized = false,
+        uiState,
+        myGrid,
+        areaBreakdown   = {{ area_breakdown.to_json()|safe }},
+        payeeBreakdown  = {{ payee_breakdown.to_json()|safe }},
+        query           = { description: '' },
+        years           = {{ years }},
+        paymentsCount,
+        totalAmount;
+
+    // Grid rendering
+    function getColumnDefinition(uiState) {
+      return { 
+        data: getBreakdownValueFunction('expense', 'pagos'),
+        title: '{{ _("Pago") }}',
+        render: getFormatter('nominal', null, null)
+      }; 
+    }
+
+    //Update Tab
+    function updateTab() {
+
+      var queryHash = getQueryHash();
+
+      //console.log('updateTab', initialized, Object.keys(queryHash).length);
+
+      // Update query & send ajax search (if query is not empty)
+      if (!isSameQuery(queryHash)) {
+        query = queryHash;
+        if (!isEmptyQuery(queryHash)) {
+          sendSearchQuery();
+        }
+      }
+      // Update tabs
+      else {
+
+        // Show Payees Summary if first time & query is empty
+        if (!initialized) {
+          initialized = true;
+          if (isEmptyQuery(queryHash)) {
+            setupPayeesSummary();
+            return;
+          }
+        }
+
+        // Setup inputs val if needed
+        setupInputs();
+
+        // Hide summary & show tabs
+        $('.payments-content h4.page-title').hide();
+        $('#tabs, #query-panel').show();
+
+        // Update uiState
+        uiState = getUIState();
+
+        // Update tab
+        $('#tabs .active').removeClass('active');
+        $('a[href="#'+uiState.type+'"]').blur().parent().addClass('active');
+        redrawGrid();
+      }
+    }
+
+    // Do all the hard work of drawing the grids
+    function redrawGrid() {
+      //var uiState   = getUIState();
+
+      // TODO!!! set type (area or payee) based on search parameters
+      //uiState.type  = 'payee'
+      var data      = (uiState.type == 'area') ? areaBreakdown : payeeBreakdown;
+      var columnDef = getColumnDefinition(uiState);
+      var title     = (uiState.type == 'area') ? '{{ _("Área") }}' : '{{ _("Beneficiario") }}';
+
+      //console.log('redrawGrid', uiState);
+
+      if ( myGrid !== undefined )  myGrid.destroy();
+
+      myGrid = createBudgetGrid("#myGrid", breakdownToTable(data),
+                        [
+                          {
+                            data: "key",
+                            title: title,
+                            render: rowNameFormatter
+                          },
+                          columnDef
+                        ]);
+      
+      // TODO!!! Add literals translation
+      var queryStr = '';
+      if (query.description && query.description !== '') queryStr += 'Descripción: <b>'+query.description+'</b> / ';
+      if (query.area) queryStr += 'Area: <b>'+query.area+'</b> / ';
+      if (query.payee) queryStr += 'Beneficiario: <b>'+query.payee+'</b> / ';
+      if (query.date) {
+      var dates = query.date.split(',');
+        if (dates[0] !== dates[1]) {
+          queryStr += 'Entre <b>'+dates[0]+'</b> y <b>'+dates[1]+'</b>';
+        } else{
+          queryStr += 'En <b>'+dates[0]+'</b>';
+        }
+      }
+
+      $('#query-panel .payments-query').html( queryStr );
+
+      $("#payments-total").text( formatAmount(totalAmount) );
+      $("#payments-size").text( formatNumber(paymentsCount) );
+
+      $('.payments-content .tab-content').show();
+    }
+
+    function sendSearchQuery(){
+      $.ajax({
+        url: "pagos/search",
+        data: {
+          description:  query.description,
+          payee:        query.payee,
+          area:         query.area,
+          date:         query.date
+        },
+        contentType:    'application/json; charset=utf-8',
+        success:        onSearchSuccess,
+        error:          onSearchError,
+      });
+    }
+
+    function onSearchSuccess(response) {
+
+      // Setup values
+      paymentsCount   = response.totalResults;
+      totalAmount     = response.totalAmount;
+      areaBreakdown   = response.areaBreakdown;
+      payeeBreakdown  = response.payeeBreakdown;
+
+      // Hide submit loader
+      $('#payments-search button[type="submit"]').attr('disabled', false).children('.glyphicon').addClass('hide');
+
+      // Update tab & redraw grid
+      updateTab();
+    }
+
+    function onSearchError(response) {
+      //TODO!!! Add error message
+      $('#payments-search button[type="submit"]').attr('disabled', false).children('.glyphicon').addClass('hide');
+    }
+
+    function setupInputs() {
+      if (query.description !== $('#input-description').val().trim()){
+        $('#input-description').val(query.description);
+      }
+      if (query.area !== $('#input-area').val()){
+        $('#input-area').val(query.area).trigger("chosen:updated");
+      }
+      if (query.payee !== $('#input-payee').val()){
+        $('#input-payee').val(query.area).trigger("chosen:updated");
+      }
+      if (query.date !== $('#input-date').val()){
+        $('#input-date').val(query.date);
+      }
+    }
+
+    function setupPayeesSummary() {
+      uiState = getUIState();
+      $('a[href="#'+uiState.type+'"]').parent().addClass('active');
+      $('#tabs, #query-panel').hide();
+      redrawGrid();
+    }
+
+    function isSameQuery(_query) {
+      return query.description === _query.description && query.payee === _query.payee && query.area === _query.area && query.date === _query.date;
+    }
+
+    function isEmptyQuery(_query) {
+      return Object.keys(_query).length === 1 && _query.description === ''
+    }
+
+    function getQueryHash(){
+      var hash = $.deparam.fragment();
+      var queryHash = {
+        description: ( hash.description ) ? hash.description : ''
+      };
+      if( hash.date )         queryHash.date = hash.date;
+      if( hash.payee )        queryHash.payee = hash.payee;
+      if( hash.area )         queryHash.area = hash.area;
+      return queryHash;
+    }
+
+    //
+    // SETUP
+    //
+
+    /*
+    // Handle the hash the page may have loaded with.
+    state = $.deparam.fragment();
+    // Highlight a particular item
+    if (state.description) {
+      unfoldItem(payeeGridData, state.description);
+      redrawGrid();
+      $('a[href="#payee"]').parent().addClass('active');
+      //$("#tab-payee a").click();
+      //window.setTimeout(function(){ $(".toggle.collapse")[0].scrollIntoView() }, 1000);
+    }
+    */
+
+    // Setup area & payees selects
+    $('#input-area').chosen();
+    $('#input-payee').chosen();
+
+    // Setup year slider
+    $('#input-date').slider({
+      //tooltip: 'always',
+      ticks: years.map(function(d){ return parseInt(d); }),
+      ticks_labels: years
+    });
+
+    // Setup form submit handler
+    $('#payments-search').submit(function(e){
+      e.preventDefault();
+
+      // Show alert if there's no filter parameter
+      if ($('#input-description').val().trim() === '' && ($('#input-payee').val() === null || $('#input-payee').val() === '') && ($('#input-area').val() === null || $('#input-area').val() === '')) {
+        $(this).find('.alert').show();
+        $('#input-description, #input-payee, #input-area').one('change', function(){
+          $('#payments-search .alert').hide();
+        });
+        return;
+      }
+
+      // Show submit loader
+      $(this).find('button[type="submit"]').attr('disabled', true).children('.glyphicon').removeClass('hide');
+    
+      var state = {
+        description:  $('#input-description').val().trim(),
+        date:         $('#input-date').val()
+      }
+      state.payee = $('#input-payee').val();
+      state.area = $('#input-area').val();
+
+      // If submit the previous query we hide submit loader & do nothing
+      if (isSameQuery(state)) {
+        $(this).find('button[type="submit"]').attr('disabled', false).children('.glyphicon').addClass('hide');
+        return;
+      }
+
+      // Select tab based on query params
+      state.view = ( state.area && state.area !== '' ) ? 'payee' : 'area';
+
+      // Setup hashes with search parameters
+      $.bbq.pushState( state );
+    });
+
+    // Setup tabs navigation
+    setRedrawOnTabsChange('#tabs', updateTab);
+  });
+</script>

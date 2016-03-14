@@ -30,7 +30,9 @@ budget_app_urlpatterns += url_patterns('budget_app.views',
 
     url(r'^recibo$', 'tax_receipt', name="tax-receipt"),
 
+    # Payments
     url(r'^pagos$', 'payments', name="payments"),
+    url(r'^pagos/search$', 'payment_search', name="payment_search"),
 
     # Policies (top)
     url(r'^politicas$', 'policies', name="policies"),

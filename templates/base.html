@@ -15,7 +15,7 @@
   {% compress css %}
   <link href="{{ STATIC_URL }}stylesheets/dist/jquery-cookiebar.css" media="all" rel="stylesheet" type="text/css" />
   <link href="{{ STATIC_URL }}stylesheets/dist/bootstrap-slider.css" media="all" rel="stylesheet" type="text/css" />
-  <link href="{{ STATIC_URL }}stylesheets/dist/select2.css" media="all" rel="stylesheet" type="text/css" />
+  <link href="{{ STATIC_URL }}stylesheets/dist/chosen.css" media="all" rel="stylesheet" type="text/css" />
   <link href="{{ STATIC_URL }}stylesheets/dist/datatables.css" media="all" rel="stylesheet" type="text/css" />
   {% endcompress %}
   <link href="{{ STATIC_URL }}stylesheets/main.css" media="all" rel="stylesheet" type="text/css" />
@@ -50,8 +50,7 @@
   <script src="{{ STATIC_URL }}javascripts/numeral-languages.min.js"></script>
   <script src="{{ STATIC_URL }}javascripts/datatables.min.js"></script>
   <script src="{{ STATIC_URL }}javascripts/iframeResizer.contentWindow.min.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/select2.min.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/select2_locale_es.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/chosen.jquery.js"></script>
   <!-- Bootstrap plugins -->
   <script src="{{ STATIC_URL }}javascripts/bootstrap/collapse.js"></script>
   <script src="{{ STATIC_URL }}javascripts/bootstrap/dropdown.js"></script>
@@ -65,7 +64,6 @@
   <script src="{{ STATIC_URL }}javascripts/grid_formatters.js"></script>
   <script src="{{ STATIC_URL }}javascripts/grid_helpers.js"></script>
   <script src="{{ STATIC_URL }}javascripts/tax_calculator.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/comparator.js"></script>
   <script src="{{ STATIC_URL }}javascripts/script.js"></script>
   <!-- D3 & Visualization modules -->
   <script src="{{ STATIC_URL }}javascripts/vis/d3.v3.min.js"></script>
