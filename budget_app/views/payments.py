@@ -64,6 +64,10 @@ def payment_search(request, render_callback=None):
         query += " AND b.year >= %s AND b.year <= %s"
         query_arguments.extend([from_year, to_year])
 
+    if ( description != '' ):
+        query += " AND to_tsvector('"+settings.SEARCH_CONFIG+"',p.description) @@ plainto_tsquery('"+settings.SEARCH_CONFIG+"',%s)"
+        query_arguments.append(description)
+
     # Payments breakdown
     __populate_breakdowns(c, query, query_arguments)
 
