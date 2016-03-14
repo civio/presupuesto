@@ -1,0 +1,29 @@
+.chosen-container-single .chosen-single{
+  border-radius: $border-radius-base;
+  box-shadow: none;
+  height: $input-height-base;
+  padding: $padding-base-vertical $padding-base-horizontal;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+  border-color: $input-border;
+
+  
+}
+
+.chosen-container-single,
+.chosen-container-active.chosen-with-drop{
+
+  .chosen-single{
+    background: white;
+
+    div b{
+      background-position-y: 6px; 
+    }
+  }
+}
+
+.chosen-container .chosen-results li{
+  &.highlighted{
+    background: $gray-light;
+  }
+}

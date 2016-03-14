@@ -11,12 +11,7 @@
         paymentsCount,
         totalAmount;
 
-    //
-    // GRID RENDERING
-    //
-
-    console.log(payeeBreakdown);
-
+    // Grid rendering
     function getColumnDefinition(uiState) {
       return { 
         data: getBreakdownValueFunction('expense', 'pagos'),
@@ -30,7 +25,7 @@
 
       var queryHash = getQueryHash();
 
-      console.log('updateTab', initialized, Object.keys(queryHash).length);
+      //console.log('updateTab', initialized, Object.keys(queryHash).length);
 
       // Update query & send ajax search (if query is not empty)
       if (!isSameQuery(queryHash)) {
@@ -78,7 +73,7 @@
       var columnDef = getColumnDefinition(uiState);
       var title     = (uiState.type == 'area') ? '{{ _("Área") }}' : '{{ _("Beneficiario") }}';
 
-      console.log('redrawGrid', uiState, columnDef);
+      //console.log('redrawGrid', uiState);
 
       if ( myGrid !== undefined )  myGrid.destroy();
 
@@ -115,7 +110,6 @@
     }
 
     function sendSearchQuery(){
-      console.log('sendSearchQuery');
       $.ajax({
         url: "pagos/search",
         data: {
@@ -131,7 +125,6 @@
     }
 
     function onSearchSuccess(response) {
-      console.log('onSearchSuccess');
 
       // Setup values
       paymentsCount   = response.totalResults;
@@ -152,8 +145,6 @@
     }
 
     function setupInputs() {
-      console.log('setupInputs');
-
       if (query.description !== $('#input-description').val().trim()){
         $('#input-description').val(query.description);
       }
@@ -176,7 +167,6 @@
     }
 
     function isSameQuery(_query) {
-      console.log('isSameQuery', query, _query);
       return query.description === _query.description && query.payee === _query.payee && query.area === _query.area && query.date === _query.date;
     }
 
@@ -246,11 +236,8 @@
       state.payee = $('#input-payee').val();
       state.area = $('#input-area').val();
 
-      console.log('submit', state);
-
       // If submit the previous query we hide submit loader & do nothing
       if (isSameQuery(state)) {
-        console.log('is same query!');
         $(this).find('button[type="submit"]').attr('disabled', false).children('.glyphicon').addClass('hide');
         return;
       }
