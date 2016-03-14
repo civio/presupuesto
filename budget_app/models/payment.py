@@ -2,7 +2,7 @@ from django.db import models
 from django.db.models import Sum
 from django.conf import settings
 
-MAX_RESULTS = 1000
+MAX_RESULTS = 10000
 
 class PaymentManager(models.Manager):
     # Return the list of payees
