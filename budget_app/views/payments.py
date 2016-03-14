@@ -59,6 +59,8 @@ def payment_search(request, render_callback=None):
 
     if ( years != '' ):
         from_year, to_year = years.split(',')
+        if from_year > to_year:     # Sometimes the slider turns around. Cope with it
+            to_year, from_year = from_year, to_year
         query += " AND b.year >= %s AND b.year <= %s"
         query_arguments.extend([from_year, to_year])
 
