@@ -40,7 +40,7 @@ class BudgetItemManager(models.Manager):
         sql = "select " \
             "b.year, " \
             "e.name, e.level, " \
-            "i.id, i.description, i.amount, i.expense, " \
+            "i.id, i.item_number, i.description, i.amount, i.expense, " \
             "ec.article, ec.heading, ec.subheading, " \
             "ic.institution, ic.department, " \
             "fc.policy, fc.programme " \
