@@ -12,6 +12,8 @@ class BudgetManager(models.Manager):
         return self.filter(entity_id=entity_id).order_by('-year')[0]
 
     # Return a list of years for which we have a budget
+    # TODO: I don't think we should we using this, without filtering for entity.
+    # (Although, in practice, most of the times we have only one entity.)
     def get_years(self):
         return self.values_list('year', flat=True) \
                     .distinct() \

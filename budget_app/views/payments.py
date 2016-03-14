@@ -16,7 +16,7 @@ def payments(request, render_callback=None):
     c['entity'] = get_main_entity(c)
 
     # Retrieve the information needed for the search form: years, areas and payees
-    c['years'] = list(Budget.objects.get_years(c['entity']))
+    c['years'] = list(Payment.objects.get_years(c['entity']))
     c['first_year'] = c['years'][0]
     c['last_year'] = c['years'][len(c['years'])-1]
 
@@ -34,6 +34,7 @@ def payments(request, render_callback=None):
 def payment_search(request, render_callback=None):
     # Get search parameters
     area = request.GET.get('area', '')
+    payee = request.GET.get('payee', '')
     years = request.GET.get('date', '')
     description = request.GET.get('description', '')
 
@@ -51,6 +52,15 @@ def payment_search(request, render_callback=None):
     if ( area != '' ):
         query += " AND p.area = %s"
         query_arguments.append(area)
+
+    if ( payee != '' ):
+        query += " AND p.payee = %s"
+        query_arguments.append(payee)
+
+    if ( years != '' ):
+        from_year, to_year = years.split(',')
+        query += " AND b.year >= %s AND b.year <= %s"
+        query_arguments.extend([from_year, to_year])
 
     # Payments breakdown
     __populate_breakdowns(c, query, query_arguments)
@@ -83,4 +93,4 @@ def __populate_breakdowns(c, query, query_arguments):
 
     # Get basic stats for the overall dataset
     c['payments_count'] = payments_count
-    c['total_amount'] = c['payee_breakdown'].total_expense['pagos']
+    c['total_amount'] = c['payee_breakdown'].total_expense['pagos'] if payments_count > 0 else 0

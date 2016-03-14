@@ -19,6 +19,13 @@ class PaymentManager(models.Manager):
                     .distinct() \
                     .order_by('area')
 
+    # Return a list of years for which we have payments
+    def get_years(self, entity_id):
+        return self.values_list('budget_id__year', flat=True) \
+                    .filter(budget_id__entity=entity_id) \
+                    .distinct() \
+                    .order_by('budget__year')
+
     def each_denormalized(self, additional_constraints=None, additional_arguments=None):
         # XXX: Note that this left join syntax works well even when the economic_category_id is null,
         # as opposed to the way we query for Budget Items. I should probably adopt this all around,
