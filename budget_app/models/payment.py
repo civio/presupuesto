@@ -32,7 +32,7 @@ class PaymentManager(models.Manager):
         # and potentially even stop using dummy categories on loaders.
         sql = \
             "select " \
-                "p.id, p.area, p.date, p.payee, p.expense, p.amount, p.description, " \
+                "p.id, p.area, p.programme, p.date, p.payee, p.expense, p.amount, p.description, " \
                 "coalesce(ec.description, 'Otros') as ec_description, " \
                 "b.year " \
             "from " \
