@@ -164,12 +164,7 @@
     });
 
     $('#input-payee').select2({
-      data: payees.map(function(d){
-        return {
-          id: d.toLowerCase(),
-          text: d
-        }
-      })
+      data: payees
     });
 
     // Setup year slider
