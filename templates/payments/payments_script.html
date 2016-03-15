@@ -20,12 +20,15 @@
       }; 
     }
 
+    // Render payee name with a link to search for that payee
+    function mainPayeeFormatter(value, type, item) {
+      return "<a href='#view=area&payee="+value+"'>"+value+"</a>";
+    }
+
     //Update Tab
     function updateTab() {
 
       var queryHash = getQueryHash();
-
-      //console.log('updateTab', initialized, Object.keys(queryHash).length);
 
       // Update query & send ajax search (if query is not empty)
       if (!isSameQuery(queryHash)) {
@@ -79,7 +82,9 @@
                           {
                             data: "key",
                             title: title,
-                            render: rowNameFormatter
+                            // Decide whether we're displaying the main payee list or a search
+                            // result by checking for a variable only populated by the search
+                            render: areaBreakdown ? rowNameFormatter : mainPayeeFormatter
                           },
                           columnDef
                         ]);
