@@ -102,7 +102,9 @@ function createBudgetGrid(containerName, data, userColumns) {
       // Check whether there's any data in this row
       for (var i in columns) {
         // The 'i>0' means ignore the description column.
-        if ( i>0 && row[i] !== undefined && row[i] !== null && row[i] !== 0 ) return true;
+        // TODO: Why did I have to add the string comparisons on the subprogrammes branch?
+        // How is it related?
+        if ( i>0 && row[i] !== undefined && row[i] !== null && row[i] !== 0 && row[i] !== '0' && row[i] !== '' ) return true;
       }
 
       return false;
