@@ -85,12 +85,6 @@
   <div class="policies-content">
     <div class="container tab-content">
 
-      <!-- Data Controller -->
-      {% include 'shared/data_controllers.html' %}
-
-      <!-- Totals Panel -->
-      {% include 'entities/totals.html' %}
-
       <div class="policies-chart">
         <div id="policy-chart-container" class="chart-container {{ 'treemap-chart' if show_treemap else 'stacked-area-chart' }}">
           <div class="popover top" role="tooltip">
@@ -111,6 +105,12 @@
           {% endif %}
         </div>
       </div>
+
+       <!-- Data Controller -->
+      {% include 'shared/data_controllers.html' %}
+
+      <!-- Totals Panel -->
+      {% include 'entities/totals.html' %}
 
       <!-- Table Grid -->
       <table id="myGrid" class="table-grid" width="100%"></table>
