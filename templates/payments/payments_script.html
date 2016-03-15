@@ -50,7 +50,7 @@
         setupInputs();
 
         // Hide summary & show tabs
-        $('.payments-content h4.page-title').hide();
+        $('.payments-content .summary-title').hide();
         $('#tabs, #query-panel').show();
 
         // Update uiState
@@ -89,15 +89,15 @@
       
       // TODO!!! Add literals translation
       var queryStr = '';
-      if (query.description && query.description !== '') queryStr += 'Descripción: <b>'+query.description+'</b> / ';
-      if (query.area) queryStr += 'Area: <b>'+query.area+'</b> / ';
-      if (query.payee) queryStr += 'Beneficiario: <b>'+query.payee+'</b> / ';
+      if (query.description && query.description !== '') queryStr += 'Descripción <b>'+query.description+'</b> + ';
+      if (query.area) queryStr += 'Area <b>'+query.area+'</b> + ';
+      if (query.payee) queryStr += 'Proveedor <b>'+query.payee+'</b> + ';
       if (query.date) {
       var dates = query.date.split(',');
         if (dates[0] !== dates[1]) {
-          queryStr += 'Entre <b>'+dates[0]+'</b> y <b>'+dates[1]+'</b>';
+          queryStr += '<b>'+dates[0]+'</b> - <b>'+dates[1]+'</b>';
         } else{
-          queryStr += 'En <b>'+dates[0]+'</b>';
+          queryStr += '<b>'+dates[0]+'</b>';
         }
       }
 
@@ -203,8 +203,8 @@
     */
 
     // Setup area & payees selects
-    $('#input-area').chosen();
-    $('#input-payee').chosen();
+    $('#input-area').chosen({width: '100%'});
+    $('#input-payee').chosen({width: '100%'});
 
     // Setup year slider
     $('#input-date').slider({

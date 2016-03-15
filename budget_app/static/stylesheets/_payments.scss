@@ -30,7 +30,19 @@
     margin-bottom: $grid-gutter-width;
   }
 
-  h4.page-title{
+  .payments-search-panel{
+
+    .panel{
+      border: none;
+    }
+
+    .page-title{
+      font-size: 1.5em;
+      margin: $grid-gutter-width/2 0;
+    }
+  }
+
+  .summary-title{
     font-size: 2em;
   }
 }
@@ -63,8 +75,12 @@
   .alert{
     display: none;
     font-size: 0.875em;
-    padding: 6px $grid-gutter-width/3;
+    padding: 8px $grid-gutter-width/3;
     margin-left: $grid-gutter-width/6;
+  }
+
+  .btn-primary{
+    font-size: 0.913em;
   }
 }
 
@@ -77,12 +93,18 @@
   }
 
   .panel-content{
+    font-size: 1.375em;
+    font-weight: $font-weight-300;
     text-transform: none;
 
     b{
       display: inline;
       float: none;
-      font-weight: $font-weight-600;
+      font-weight: $font-weight-400;
     }
+  }
+
+  .payments-query{
+    margin-top: $grid-gutter-width/3;
   }
 }
