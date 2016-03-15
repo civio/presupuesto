@@ -106,6 +106,15 @@ def write_functional_breakdown(c, writer):
 def functional_policy_breakdown(request, id, format):
     return policies_show(request, id, '', _generator("%s.funcional" % id, format, write_functional_breakdown))
 
+def write_functional_programme_breakdown(c, writer):
+    writer.writerow(['#Año', 'Id Programa', 'Nombre Programa', 'Id Subprograma', 'Nombre Subprograma', 'Presupuesto Gastos', 'Gastos Reales'])
+    for year in set(c['functional_breakdown'].years.values()):
+        for subprogramme_id, subprogramme in c['functional_breakdown'].subtotals.iteritems():
+            write_breakdown_item(writer, year, subprogramme, 'expense', [c['programme_id'], subprogramme_id], c['descriptions']['functional'])
+
+def functional_programme_breakdown(request, id, format):
+    return programmes_show(request, id, '', _generator("%s.funcional" % id, format, write_functional_programme_breakdown))
+
 def functional_article_breakdown(request, id, format):
     return expense_articles_show(request, id, format, _generator("%s.economica" % id, format, write_entity_functional_breakdown))
 

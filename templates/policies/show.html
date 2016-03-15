@@ -127,7 +127,7 @@
 {# FIXME: Disabled temporarily for subprogrammes #}
 {% if not subprogramme %}
     {% if full_breakdown %}
-      {% if programme is not defined and show_side != 'income' %}
+      {% if subprogramme is not defined and show_side != 'income' %}
         {{ panel_downloads(_(tab_titles['functional']), 'functional', csv_type, csv_id) }} 
         {{ panel_downloads(_(tab_titles['economic']), 'economic', csv_type, csv_id) }}
       {% else %}

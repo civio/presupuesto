@@ -93,6 +93,7 @@ budget_app_urlpatterns += url_patterns('budget_app.views',
     url(r'^politicas/(?P<id>[0-9]+)_institutional\.(?P<format>.+)$', 'institutional_policy_breakdown'),
 
     # Programmes
+    url(r'^programas/(?P<id>[0-9A-Z]+)_functional\.(?P<format>.+)$', 'functional_programme_breakdown'),
     url(r'^programas/(?P<id>[0-9A-Z]+)_economic\.(?P<format>.+)$', 'economic_programme_breakdown'),
     url(r'^programas/(?P<id>[0-9A-Z]+)_funding\.(?P<format>.+)$', 'funding_programme_breakdown'),
     url(r'^programas/(?P<id>[0-9A-Z]+)_institutional\.(?P<format>.+)$', 'institutional_programme_breakdown'),

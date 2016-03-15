@@ -11,7 +11,7 @@ from search import search
 from payments import payments, payment_search
 from csv_xls import entity_expenses, entity_fexpenses, entity_income, entity_article_expenses, entity_article_fexpenses, entity_article_income, entity_payments
 from csv_xls import functional_policy_breakdown, economic_policy_breakdown, funding_policy_breakdown, institutional_policy_breakdown
-from csv_xls import economic_programme_breakdown, funding_programme_breakdown, institutional_programme_breakdown
+from csv_xls import functional_programme_breakdown, economic_programme_breakdown, funding_programme_breakdown, institutional_programme_breakdown
 from csv_xls import economic_article_breakdown, funding_article_breakdown, institutional_article_breakdown, functional_article_breakdown
 from csv_xls import entities_expenses, entities_income
 from version import version_api
