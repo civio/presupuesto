@@ -51,6 +51,10 @@ function StackedAreaChart() {
       $(selector+' .stacked-area-chart-legend').remove();
     }
 
+    // Add legend
+    _this.legend = d3.select(selector).append('div')
+      .attr('class', 'stacked-area-chart-legend');
+
     // Setup Popover
     _this.$popover = $(selector).find('.popover');
 
@@ -59,10 +63,6 @@ function StackedAreaChart() {
         .attr('class', 'stacked-area-chart')
       .append('g')
         .attr('transform', 'translate(' + _this.margin.left + ',' + _this.margin.top + ')');
-
-    // Add legend
-    _this.legend = d3.select(selector).append('div')
-      .attr('class', 'stacked-area-chart-legend');
 
     // Set dimensions & add resize event
     setDimensions();

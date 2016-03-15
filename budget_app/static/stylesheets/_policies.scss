@@ -43,14 +43,6 @@
 // Policies Content
 .policies-content{
   padding-bottom: 1px;
-
-  .tab-content{
-    margin-top: $grid-gutter-width;
-
-    .data-controllers{
-      margin-bottom: $grid-gutter-width;
-    }
-  }
 }
 
 // Policies Chart
@@ -64,10 +56,12 @@
 
 .policies.policy-breakdown{
 
+  .policies-content .tab-content{
+    margin-top: $grid-gutter-width/2;
+  }
+
   .policies-chart{
-    margin: $grid-gutter-width 0;
-    border: 1px solid $brand-primary;
-    //border-top: none;
+    margin: $grid-gutter-width/2 0;
   }
 
   // Remove cursor pointer in policy-breakdown treemap
