@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 - Added subtotals list in Overview totals panel.
 - Clicking on a functional stacked area chart takes you to the programme page.
 - Started English translation of the user interface.
+- Search layout for payments
 
 ### Changed
 - Major front-end rewrite, now using Bootstrap 3.
@@ -19,6 +20,8 @@ All notable changes to this project will be documented in this file.
 - Improve year slider changing jslider plugin by [bootstrap-slider](http://seiyria.com/bootstrap-slider/)
 - Localised URLs don't have a language prefix if only one language is available.
 - Tax receipt is aware of whether financial chapters have to be included or not.
+- Update & translate metatags & improve base markup
+- Unify js files in 2 main files & move the big one to the footer
 
 ### Fixed
 - Site cache is now working again, after fixing HTTP headers.
@@ -27,6 +30,7 @@ All notable changes to this project will be documented in this file.
 - Added missing translation strings. Catalan default translation completed.
 - Pagination controls fixed to show only a range of pages, not all available.
 - 'Back to Sankey' button in policy page didn't work in multi-language setting.
+- IE9 & above support
 
 ## [3.1.1] - 2016-03-06
 ### Changed
