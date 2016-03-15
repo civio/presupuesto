@@ -39,6 +39,9 @@ def payments(request, render_callback=None):
         payment.expense = True
         c['payee_breakdown'].add_item('pagos', payment)
 
+    # Needed for the footnote on inflation
+    populate_stats(c)
+
     return render_to_response('payments/index.html', c)
 
 
