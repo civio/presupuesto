@@ -8,6 +8,11 @@ from coffin.shortcuts import render_to_response
 from budget_app.models import BudgetBreakdown, Payment
 from helpers import *
 
+# Auxiliary class needed to access arbitrary attributes as objects.
+# See http://stackoverflow.com/a/2827664
+class MockPayment(object):
+    pass
+
 def payments(request, render_callback=None):
     # Get request context
     c = get_context(request, css_class='body-payments', title='Inversiones y pagos')
@@ -24,9 +29,15 @@ def payments(request, render_callback=None):
 
     c['areas'] = Payment.objects.get_areas(c['entity'])
 
-    # Retrieve biggest payees
-    # FIXME: Not really, we're just returning something to unblock front-end dev
-    __populate_breakdowns(c, "b.entity_id = %s and amount > 100000000", [c['entity'].id])
+    # Get the list of biggest payees
+    c['payee_breakdown'] = BudgetBreakdown(['payee'])
+    for payee in Payment.objects.get_twenty_biggest_payees(c['entity']):
+        # Wrap the database result in an object, so it can be handled by BudgetBreakdown
+        payment = MockPayment()
+        payment.payee = payee[0]
+        payment.amount = int(payee[1])
+        payment.expense = True
+        c['payee_breakdown'].add_item('pagos', payment)
 
     return render_to_response('payments/index.html', c)
 

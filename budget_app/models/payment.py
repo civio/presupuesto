@@ -1,5 +1,5 @@
-from django.db import models
-from django.db.models import Sum
+from django.db import models, connection
+
 from django.conf import settings
 
 MAX_RESULTS = 10000
@@ -25,6 +25,21 @@ class PaymentManager(models.Manager):
                     .filter(budget_id__entity=entity_id) \
                     .distinct() \
                     .order_by('budget__year')
+
+    # Return the list of payees.
+    # Unfortunately we couldn't find a way to bend the Django aggregate functions to do this,
+    # and raw() needs the primary key to be in the result list, so we end up having to
+    # access the DB connection directly. :/
+    def get_twenty_biggest_payees(self, entity_id):
+        sql = \
+            "select payee, sum(amount) " \
+            "from payments " \
+            "group by payee " \
+            "order by sum(amount) desc " \
+            "limit 20"
+        cursor = connection.cursor()
+        cursor.execute(sql)
+        return list(cursor.fetchall())
 
     def each_denormalized(self, additional_constraints=None, additional_arguments=None):
         # XXX: Note that this left join syntax works well even when the economic_category_id is null,

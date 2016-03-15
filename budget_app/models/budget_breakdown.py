@@ -15,7 +15,7 @@ class BudgetBreakdown:
         # Check whether the column exist, and add if needed
         if not column in self.names:
             self.names.append(column)
-            self.years[column] = item.year
+            self.years[column] = item.year if hasattr(item, 'year') else ''
 
         # Basic aggregation
         if item.expense:

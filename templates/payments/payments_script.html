@@ -4,7 +4,7 @@
     var initialized = false,
         uiState,
         myGrid,
-        areaBreakdown   = {{ area_breakdown.to_json()|safe }},
+        areaBreakdown,
         payeeBreakdown  = {{ payee_breakdown.to_json()|safe }},
         query           = { description: '' },
         years           = {{ years }},
