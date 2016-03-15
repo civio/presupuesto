@@ -65,10 +65,7 @@
 
     // Do all the hard work of drawing the grids
     function redrawGrid() {
-      //var uiState   = getUIState();
 
-      // TODO!!! set type (area or payee) based on search parameters
-      //uiState.type  = 'payee'
       var data      = (uiState.type == 'area') ? areaBreakdown : payeeBreakdown;
       var columnDef = getColumnDefinition(uiState);
       var title     = (uiState.type == 'area') ? '{{ _("Área") }}' : '{{ _("Beneficiario") }}';
@@ -89,9 +86,9 @@
       
       // TODO!!! Add literals translation
       var queryStr = '';
-      if (query.description && query.description !== '') queryStr += 'Descripción <b>'+query.description+'</b> + ';
-      if (query.area) queryStr += 'Area <b>'+query.area+'</b> + ';
-      if (query.payee) queryStr += 'Proveedor <b>'+query.payee+'</b> + ';
+      if (query.description && query.description !== '') queryStr += '{{ _("Descripción") }} <b>'+query.description+'</b> + ';
+      if (query.area) queryStr += '{{ _("Área") }} <b>'+query.area+'</b> + ';
+      if (query.payee) queryStr += '{{ _("Proveedor") }} <b>'+query.payee+'</b> + ';
       if (query.date) {
       var dates = query.date.split(',');
         if (dates[0] !== dates[1]) {

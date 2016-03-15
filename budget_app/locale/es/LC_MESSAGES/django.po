@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-11 17:08+0100\n"
+"POT-Creation-Date: 2016-03-15 11:36+0100\n"
 "PO-Revision-Date: 2016-03-06 21:48+0100\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
@@ -23,11 +23,11 @@ msgstr ""
 msgid "Presupuestos del Gobierno de Aragón"
 msgstr ""
 
-#: templates/base.html:89
+#: templates/base.html:87
 msgid "Esta web utiliza cookies propias y de terceros para ofrecerte la mejor experiencia de usuario. Si continúas navegando, entendemos que autorizas el uso de estas cookies."
 msgstr ""
 
-#: templates/base.html:92
+#: templates/base.html:90
 msgid "Más información"
 msgstr ""
 
@@ -163,7 +163,7 @@ msgstr ""
 msgid "Ingresos y gastos en el Gobierno de Aragón"
 msgstr ""
 
-#: templates/budgets/index.html:23 templates/payments/index.html:33
+#: templates/budgets/index.html:23
 msgid "Elige año"
 msgstr ""
 
@@ -327,32 +327,75 @@ msgstr ""
 msgid "Inversiones y pagos"
 msgstr ""
 
-#: templates/payments/index.html:19
+#: templates/payments/index.html:32
+msgid "Hay <b id=\"payments-size\"></b> pagos que suman un total de <b id=\"payments-total\"></b> para la búsqueda"
+msgstr ""
+
+#: templates/payments/index.html:38
+msgid "Principales proveedores del Gobierno de Aragón"
+msgstr ""
+
+#: templates/payments/index.html:41
 msgid "Por área"
 msgstr ""
 
-#: templates/payments/index.html:22
-msgid "Por beneficiario"
-msgstr ""
-
 #: templates/payments/index.html:42
-msgid "Total de inversiones y pagos"
-msgstr ""
-
-#: templates/payments/index.html:68
-msgid "Pago"
-msgstr ""
-
-#: templates/payments/index.html:89
-msgid "Área"
-msgstr ""
-
-#: templates/payments/index.html:89
-msgid "Beneficiario"
+msgid "Por beneficiario"
 msgstr ""
 
 #: templates/payments/payments_intro.html:1
 msgid "Gastos del año vigente"
+msgstr ""
+
+#: templates/payments/payments_script.html:18
+msgid "Pago"
+msgstr ""
+
+#: templates/payments/payments_script.html:71
+#: templates/payments/payments_script.html:90
+#: templates/payments/payments_search.html:20
+msgid "Área"
+msgstr ""
+
+#: templates/payments/payments_script.html:71
+msgid "Beneficiario"
+msgstr ""
+
+#: templates/payments/payments_script.html:89
+#: templates/payments/payments_search.html:14
+#: templates/payments/payments_search.html:15
+msgid "Descripción"
+msgstr ""
+
+#: templates/payments/payments_script.html:91
+#: templates/payments/payments_search.html:31
+msgid "Proveedor"
+msgstr ""
+
+#: templates/payments/payments_search.html:2
+#: templates/payments/payments_search.html:9
+msgid "Busca pagos a proveedores"
+msgstr ""
+
+#: templates/payments/payments_search.html:22
+msgid "Todas las áreas"
+msgstr ""
+
+#: templates/payments/payments_search.html:33
+msgid "Todos los proveedores"
+msgstr ""
+
+#: templates/payments/payments_search.html:42
+msgid "Fecha"
+msgstr ""
+
+#: templates/payments/payments_search.html:47
+#: templates/shared/form-search.html:8 templates/terms/index.html:23
+msgid "Buscar"
+msgstr ""
+
+#: templates/payments/payments_search.html:50
+msgid "Debes seleccionar al menos un criterio de búsqueda"
 msgstr ""
 
 #: templates/policies/show.html:22
@@ -367,11 +410,11 @@ msgstr ""
 msgid "Menú de programas, entidades y conceptos"
 msgstr ""
 
-#: templates/policies/show.html:96 templates/policies/show_widget.html:71
+#: templates/policies/show.html:103 templates/policies/show_widget.html:71
 msgid "respecto a"
 msgstr ""
 
-#: templates/policies/show.html:102 templates/policies/show_widget.html:77
+#: templates/policies/show.html:109 templates/policies/show_widget.html:77
 msgid "Comparte éste gráfico"
 msgstr ""
 
@@ -532,10 +575,6 @@ msgstr ""
 
 #: templates/shared/form-search.html:6 templates/terms/index.html:21
 msgid "Escribe aquí tu término de búsqueda"
-msgstr ""
-
-#: templates/shared/form-search.html:8 templates/terms/index.html:23
-msgid "Buscar"
 msgstr ""
 
 #: templates/shared/header.html:32

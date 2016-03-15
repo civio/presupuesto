@@ -17,8 +17,8 @@
         <div class="row">
           <div class="col-sm-6">
             <div class="form-group">
-              <label for="input-area">{{ _('Area') }}</label>
-              <select id="input-area" class="form-control" data-placeholder="{{ _('Selecciona Area') }}">
+              <label for="input-area">{{ _('Área') }}</label>
+              <select id="input-area" class="form-control">
                 <option value="">{{ _('Todas las áreas') }}</option>
                 {% for area in areas %}
                 <option value="{{ area }}">{{ area }}</option>
@@ -29,7 +29,7 @@
           <div class="col-sm-6">
             <div class="form-group">
               <label for="input-payee">{{ _('Proveedor') }}</label>
-              <select id="input-payee" class="form-control" data-placeholder="{{ _('Selecciona Proveedor') }}">
+              <select id="input-payee" class="form-control">
                 <option value="">{{ _('Todos los proveedores') }}</option>
                 {% for payee in payees %}
                 <option value="{{ payee }}">{{ payee }}</option>
@@ -47,7 +47,7 @@
           {{ _('Buscar') }}
         </button>
         <span class="alert alert-danger" role="alert">
-          {{ _('Debes seleccionar al menos un criterio de filtrado') }}
+          {{ _('Debes seleccionar al menos un criterio de búsqueda') }}
         </span>
       </form>
     </div>

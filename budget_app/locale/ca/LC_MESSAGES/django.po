@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-11 17:09+0100\n"
+"POT-Creation-Date: 2016-03-15 11:36+0100\n"
 "PO-Revision-Date: 2016-03-06 21:48+0100\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
@@ -24,11 +24,11 @@ msgstr ""
 msgid "Presupuestos del Gobierno de Aragón"
 msgstr "Pressupostos del Gobierno de Aragón"
 
-#: templates/base.html:89
+#: templates/base.html:87
 msgid "Esta web utiliza cookies propias y de terceros para ofrecerte la mejor experiencia de usuario. Si continúas navegando, entendemos que autorizas el uso de estas cookies."
 msgstr "Aquesta web utilitza cookies pròpies i de tercers per oferir-te la millor experiència d'usuari. Si continues navegant, entenem que autoritzes l'ús d'aquestes cookies."
 
-#: templates/base.html:92
+#: templates/base.html:90
 msgid "Más información"
 msgstr "Més informació"
 
@@ -164,7 +164,7 @@ msgstr "Quantitats actualitzades amb la inflació a data 1 de gener de"
 msgid "Ingresos y gastos en el Gobierno de Aragón"
 msgstr "Ingressos i despeses al Gobierno de Aragón"
 
-#: templates/budgets/index.html:23 templates/payments/index.html:33
+#: templates/budgets/index.html:23
 msgid "Elige año"
 msgstr "Tria l'any"
 
@@ -328,33 +328,76 @@ msgstr "Política de Cookies"
 msgid "Inversiones y pagos"
 msgstr "Despeses i pagaments"
 
-#: templates/payments/index.html:19
+#: templates/payments/index.html:32
+msgid "Hay <b id=\"payments-size\"></b> pagos que suman un total de <b id=\"payments-total\"></b> para la búsqueda"
+msgstr "Hi ha <b id=\"payments-size\"></b> pagaments que sumen un total de <b id=\"payments-total\"></b> per a la cerca"
+
+#: templates/payments/index.html:38
+msgid "Principales proveedores del Gobierno de Aragón"
+msgstr "Principals proveïdors del Gobierno de Aragón"
+
+#: templates/payments/index.html:41
 msgid "Por área"
 msgstr "Per àrea"
 
-#: templates/payments/index.html:22
+#: templates/payments/index.html:42
 msgid "Por beneficiario"
 msgstr "Per beneficiari"
-
-#: templates/payments/index.html:42
-msgid "Total de inversiones y pagos"
-msgstr "Total de despeses i pagaments"
-
-#: templates/payments/index.html:68
-msgid "Pago"
-msgstr "Pagament"
-
-#: templates/payments/index.html:89
-msgid "Área"
-msgstr "Àrea"
-
-#: templates/payments/index.html:89
-msgid "Beneficiario"
-msgstr "Beneficiari"
 
 #: templates/payments/payments_intro.html:1
 msgid "Gastos del año vigente"
 msgstr "Despeses de l'any en curs"
+
+#: templates/payments/payments_script.html:18
+msgid "Pago"
+msgstr "Pagament"
+
+#: templates/payments/payments_script.html:71
+#: templates/payments/payments_script.html:90
+#: templates/payments/payments_search.html:20
+msgid "Área"
+msgstr "Àrea"
+
+#: templates/payments/payments_script.html:71
+msgid "Beneficiario"
+msgstr "Beneficiari"
+
+#: templates/payments/payments_script.html:89
+#: templates/payments/payments_search.html:14
+#: templates/payments/payments_search.html:15
+msgid "Descripción"
+msgstr "Descripció"
+
+#: templates/payments/payments_script.html:91
+#: templates/payments/payments_search.html:31
+msgid "Proveedor"
+msgstr "Proveïdor"
+
+#: templates/payments/payments_search.html:2
+#: templates/payments/payments_search.html:9
+msgid "Busca pagos a proveedores"
+msgstr "Busca pagaments a proveïdors"
+
+#: templates/payments/payments_search.html:22
+msgid "Todas las áreas"
+msgstr "Totes les àrees"
+
+#: templates/payments/payments_search.html:33
+msgid "Todos los proveedores"
+msgstr "Tots els proveïdors"
+
+#: templates/payments/payments_search.html:42
+msgid "Fecha"
+msgstr "Data"
+
+#: templates/payments/payments_search.html:47
+#: templates/shared/form-search.html:8 templates/terms/index.html:23
+msgid "Buscar"
+msgstr "Cercar"
+
+#: templates/payments/payments_search.html:50
+msgid "Debes seleccionar al menos un criterio de búsqueda"
+msgstr "Has de seleccionar almenys un criteri de cerca"
 
 #: templates/policies/show.html:22
 msgid "Volver a Políticas"
@@ -368,11 +411,11 @@ msgstr "Programes, entitats i conceptes"
 msgid "Menú de programas, entidades y conceptos"
 msgstr "Menú de programes, entitats i conceptes"
 
-#: templates/policies/show.html:96 templates/policies/show_widget.html:71
+#: templates/policies/show.html:103 templates/policies/show_widget.html:71
 msgid "respecto a"
 msgstr "respecte a"
 
-#: templates/policies/show.html:102 templates/policies/show_widget.html:77
+#: templates/policies/show.html:109 templates/policies/show_widget.html:77
 msgid "Comparte éste gráfico"
 msgstr "Comparteix aquest gràfic"
 
@@ -534,10 +577,6 @@ msgstr "Cerques alguna cosa en concret?"
 #: templates/shared/form-search.html:6 templates/terms/index.html:21
 msgid "Escribe aquí tu término de búsqueda"
 msgstr "Escriu aquí el teu terme de cerca"
-
-#: templates/shared/form-search.html:8 templates/terms/index.html:23
-msgid "Buscar"
-msgstr "Cercar"
 
 #: templates/shared/header.html:32
 msgid "Ir a la home de Presupuestos"
@@ -792,6 +831,9 @@ msgstr "T'expliquem en què s'inverteix els diners que recaptem dels teus impost
 #: views/terms.py:10 views/welcome.py:10
 msgid "Inicio"
 msgstr "Inici"
+
+msgid "Total de inversiones y pagos"
+msgstr "Total de despeses i pagaments"
 
 msgid "Total gastado"
 msgstr "Total gastat"
