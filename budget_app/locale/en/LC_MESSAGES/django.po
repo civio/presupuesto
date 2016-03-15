@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-03-15 11:36+0100\n"
-"PO-Revision-Date: 2016-03-15 15:14+0100\n"
+"PO-Revision-Date: 2016-03-15 15:23+0100\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -325,7 +325,7 @@ msgstr "Cookie policy"
 
 #: templates/payments/index.html:14
 msgid "Inversiones y pagos"
-msgstr "Third-party payments"
+msgstr "Payments to third-parties"
 
 #: templates/payments/index.html:32
 msgid "Hay <b id=\"payments-size\"></b> pagos que suman un total de <b id=\"payments-total\"></b> para la búsqueda"
@@ -365,37 +365,37 @@ msgstr "Payee"
 #: templates/payments/payments_search.html:14
 #: templates/payments/payments_search.html:15
 msgid "Descripción"
-msgstr ""
+msgstr "Description"
 
 #: templates/payments/payments_script.html:91
 #: templates/payments/payments_search.html:31
 msgid "Proveedor"
-msgstr ""
+msgstr "Payee"
 
 #: templates/payments/payments_search.html:2
 #: templates/payments/payments_search.html:9
 msgid "Busca pagos a proveedores"
-msgstr ""
+msgstr "Search for payments to third-parties"
 
 #: templates/payments/payments_search.html:21
 msgid "Selecciona Area"
-msgstr ""
+msgstr "Pick an area"
 
 #: templates/payments/payments_search.html:22
 msgid "Todas las áreas"
-msgstr ""
+msgstr "All the areas"
 
 #: templates/payments/payments_search.html:32
 msgid "Selecciona Proveedor"
-msgstr ""
+msgstr "Pick a third-party"
 
 #: templates/payments/payments_search.html:33
 msgid "Todos los proveedores"
-msgstr ""
+msgstr "All the third-parties"
 
 #: templates/payments/payments_search.html:42
 msgid "Fecha"
-msgstr ""
+msgstr "Year"
 
 #: templates/payments/payments_search.html:47
 #: templates/shared/form-search.html:8 templates/terms/index.html:23
@@ -613,19 +613,19 @@ msgstr "What does it mean...?"
 
 #: templates/shared/meta.html:3 templates/shared/meta.html.py:10
 msgid "Información presupuestaria del Gobierno de Aragón"
-msgstr "Barcelona City Council budgetary information"
+msgstr "Government of Aragon budgetary information"
 
 #: templates/shared/meta.html:4
 msgid "presupuestos, gastos, ingresos"
-msgstr ""
+msgstr "budgets, expenditures, revenues"
 
 #: templates/shared/modal_embed.html:6
 msgid "Inserta éste gráfico en tu web"
-msgstr ""
+msgstr "Insert this chart in your website"
 
 #: templates/shared/modal_embed.html:9
 msgid "Copia el siguiente código y pégalo en tu web para insertar éste gráfico"
-msgstr ""
+msgstr "Copy the following code and paste it on your website to embed this chart"
 
 #: templates/shared/pagination.html:8
 msgid "Anterior"
@@ -641,7 +641,7 @@ msgstr "Download the table: "
 
 #: templates/shared/social_sharing.html:2
 msgid "Compártelo"
-msgstr "Share it"
+msgstr "Share this"
 
 #: templates/shared/social_sharing.html:5
 msgid "Comparte esta página en Twitter"
@@ -825,7 +825,7 @@ msgstr "Education, social services, culture... What are your interests?"
 
 #: templates/welcome/index.html:71
 msgid "Te mostramos en detalle todos las facturas y pagos efectuados por el Ayuntamiento"
-msgstr ""
+msgstr "We show you in detail all invoices and payments made by the City Council"
 
 #: templates/welcome/index.html:82 templates/welcome/index.html.py:84
 msgid "¿Y qué aporto yo?"
@@ -837,13 +837,13 @@ msgstr ""
 
 #: views/terms.py:10 views/welcome.py:10
 msgid "Inicio"
-msgstr "Start"
+msgstr "Home"
 
 msgid "Total de inversiones y pagos"
-msgstr "Total third-party payments"
+msgstr "Total payments to third-parties"
 
 msgid "Total gastado"
-msgstr "Total expending"
+msgstr "Total expenditures"
 
 msgid "Total ingresado"
 msgstr "Total revenues"
@@ -858,7 +858,7 @@ msgid "¿Quién lo gasta?"
 msgstr "Who spent it?"
 
 msgid "¿Cómo se ingresa?"
-msgstr "Com s'ingressa?"
+msgstr "How is it collected?"
 
 msgid "¿Quién recauda?"
 msgstr "Who collects it?"
