@@ -61,7 +61,7 @@
   .data-controllers{
     margin-left: $grid-gutter-width/2;
     margin-right: $grid-gutter-width/2;
-    margin-bottom: $grid-gutter-width;
+    margin-bottom: $grid-gutter-width/2;
   }
 
   .glyphicon-refresh-animate{
@@ -81,6 +81,7 @@
 
   .btn-primary{
     font-size: 0.913em;
+    margin-top: $grid-gutter-width/2;
   }
 }
 

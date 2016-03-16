@@ -214,6 +214,10 @@
       ticks: years.map(function(d){ return parseInt(d); }),
       ticks_labels: years
     });
+    // Hide year slider if there's only one year
+    if (years.length <= 1) {
+      $('#payments-search .data-controllers').hide();
+    }
 
     // Setup form submit handler
     $('#payments-search').submit(function(e){

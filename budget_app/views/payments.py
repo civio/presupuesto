@@ -31,7 +31,7 @@ def payments(request, render_callback=None):
 
     # Get the list of biggest payees
     c['payee_breakdown'] = BudgetBreakdown(['payee'])
-    for payee in Payment.objects.get_twenty_biggest_payees(c['entity']):
+    for payee in Payment.objects.get_biggest_payees(c['entity'], 50):
         # Wrap the database result in an object, so it can be handled by BudgetBreakdown
         payment = MockPayment()
         payment.payee = payee[0]
