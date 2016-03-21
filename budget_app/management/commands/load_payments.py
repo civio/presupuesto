@@ -1,14 +1,18 @@
 # -*- coding: UTF-8 -*-
+
+import os.path
+import sys
+import logging
+
 from django.core.management.base import BaseCommand
 from django.conf import settings
 from budget_app.loaders import *
 from budget_app.models import Entity
 from optparse import make_option
-import os.path
-import sys
-
 
 class Command(BaseCommand):
+    logging.disable(logging.CRITICAL)   # Avoid SQL logging on console
+
     option_list = BaseCommand.option_list + (
       make_option('--language',
         action='store',
