@@ -1,13 +1,14 @@
 # -*- coding: UTF-8 -*-
 
+import csv
+
 from django.http import HttpResponse
 from budget_app.models import Entity, Payment
 from budget_app.views import policies, policies_show, programmes_show, income_articles_show, expense_articles_show
 from budget_app.views import entities_index, entities_show, entities_show_article, entities_show_policy
 from budget_app.views import payment_search
 from helpers import get_context
-import csv
-import xlwt
+from openpyxl import Workbook
 
 
 # Note that in these exports we include not only the items at the lowest level of detail 
@@ -288,19 +289,19 @@ class CSVGenerator:
         self.content_generator(c, writer)
         return response
 
-class xlwtWorksheetWrapper:
+class worksheetWrapper:
     def __init__(self, worksheet):
         self.worksheet = worksheet
-        self.current_row = 0
+        self.current_row = 1
 
     def writerow(self, values):
-        column = 0
+        column = 1
         for value in values:
-            self.worksheet.write(self.current_row, column, value)
+            self.worksheet.cell(column=column, row=self.current_row, value=value)
             column += 1
         self.current_row += 1
 
-class XLSGenerator:
+class XLSXGenerator:
     def __init__(self, filename, content_generator):
         self.filename = filename
         self.content_generator = content_generator
@@ -309,20 +310,21 @@ class XLSGenerator:
         response = HttpResponse(mimetype='application/ms-excel; charset=utf-8')
         response['Content-Disposition'] = 'attachment; filename="%s"' % self.filename
 
-        workbook = xlwt.Workbook(encoding='utf-8')
-        worksheet = workbook.add_sheet('Datos')
-        self.content_generator(c, xlwtWorksheetWrapper(worksheet))
+        workbook = Workbook()
+        worksheet = workbook.worksheets[0]
+        self.content_generator(c, worksheetWrapper(worksheet))
         workbook.save(response)
+
         return response
 
 def _generator(filename, format, content_generator):
     try:
         return GENERATORS[format]('%s.%s' % (filename, format), content_generator)
     except KeyError as e:
-        raise ValueError("Provided format is not valid: {}. valid values are [csv, xls]".format(format))
+        raise ValueError("Provided format is not valid: {}. valid values are [csv, xlsx]".format(format))
 
 
 GENERATORS = {
     'csv': CSVGenerator,
-    'xls': XLSGenerator
+    'xlsx': XLSXGenerator
 }

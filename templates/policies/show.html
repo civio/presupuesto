@@ -139,7 +139,7 @@
                       csv_type, 
                       csv_id,  
                       csv_link=url(download_view_name, level, entity.slug, csv_id, 'csv'),
-                      xls_link=url(download_view_name, level, entity.slug, csv_id, 'xls') ) }} 
+                      xls_link=url(download_view_name, level, entity.slug, csv_id, 'xlsx') ) }} 
       {% else %}
         {% set download_view_name = 'budget_app.views.entity_article_expenses' if show_side=='expense' 
                                     else 'budget_app.views.entity_article_income'%}
@@ -148,7 +148,7 @@
                       csv_type, 
                       csv_id,
                       csv_link=url(download_view_name, level, entity.slug, csv_id, 'csv'),
-                      xls_link=url(download_view_name, level, entity.slug, csv_id, 'xls') ) }} 
+                      xls_link=url(download_view_name, level, entity.slug, csv_id, 'xlsx') ) }} 
       {% endif %}
     {% endif %}
       </div>
