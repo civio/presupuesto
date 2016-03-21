@@ -86,7 +86,7 @@ def write_entity_payment_breakdown(c, writer):
             payment.programme.encode("utf-8") if payment.programme else '',
             payment.payee.encode("utf-8"),
             payment.description.encode('utf-8'),
-            payment.amount
+            payment.amount / 100.0
         ])
 
 
