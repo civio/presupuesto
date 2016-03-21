@@ -39,6 +39,16 @@ def payments(request, render_callback=None):
         payment.expense = True
         c['payee_breakdown'].add_item('pagos', payment)
 
+    # Get the area breakdown
+    c['area_breakdown'] = BudgetBreakdown(['area'])
+    for area in Payment.objects.get_area_breakdown(c['entity']):
+        # Wrap the database result in an object, so it can be handled by BudgetBreakdown
+        payment = MockPayment()
+        payment.area = area[0]
+        payment.amount = int(area[1])
+        payment.expense = True
+        c['area_breakdown'].add_item('pagos', payment)
+
     # Needed for the footnote on inflation
     populate_stats(c)
 

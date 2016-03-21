@@ -5,7 +5,7 @@
   
 </div>
 
-<section class="payments-breakdown" role="region" data-tab="payee">
+<section class="payments-breakdown" role="region" data-tab="area">
 
   <!-- Payments Header -->
   <div class="payments-header section-header">
@@ -35,11 +35,9 @@
         </div>
       </div>
 
-      <h3 class="page-title summary-title">{{ _('Principales proveedores del Gobierno de Aragón') }}</h3>
-
       <ul id="tabs" class="nav nav-tabs nav-tabs-centered" role="tablist">
-        <li><a href="#area"><h3>{{ _('Por área') }}</h3></a></li>
-        <li><a href="#payee"><h3>{{ _('Por beneficiario') }}</h3></a></li>
+        <li><a id="area-tab" href="#area"><h3>{{ _('Desglose por área') }}</h3></a></li>
+        <li><a id="payee-tab" href="#payee"><h3>{{ _('Principales proveedores') }}</h3></a></li>
       </ul>
 
       <table id="myGrid" class="table-grid" width="100%"></table>

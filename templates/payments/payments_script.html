@@ -1,10 +1,9 @@
 <script>
   $(function () {
 
-    var initialized = false,
-        uiState,
+    var uiState,
         myGrid,
-        areaBreakdown,
+        areaBreakdown   = {{ area_breakdown.to_json()|safe }},
         payeeBreakdown  = {{ payee_breakdown.to_json()|safe }},
         query           = { description: '' },
         years           = {{ years }},
@@ -20,9 +19,21 @@
       }; 
     }
 
+    // Are we still showing the initial summary? Decide whether we're displaying
+    // the main payee list or a search result by checking for a variable only
+    // populated by the search
+    function showingInitialSummary() {
+      return paymentsCount === undefined;
+    }
+
     // Render payee name with a link to search for that payee
     function mainPayeeFormatter(value, type, item) {
       return "<a href='#view=area&payee="+value+"'>"+value+"</a>";
+    }
+
+    // Render area name with a link to search for that area
+    function areaFormatter(value, type, item) {
+      return "<a href='#view=payee&area="+value+"'>"+value+"</a>";
     }
 
     //Update Tab
@@ -40,21 +51,19 @@
       // Update tabs
       else {
 
-        // Show Payees Summary if first time & query is empty
-        if (!initialized) {
-          initialized = true;
-          if (isEmptyQuery(queryHash)) {
-            setupPayeesSummary();
-            return;
-          }
+        // Show Payees Summary if query is empty
+        if (isEmptyQuery(queryHash)) {
+          setupPayeesSummary();
+          return;
         }
 
         // Setup inputs val if needed
         setupInputs();
 
         // Hide summary & show tabs
-        $('.payments-content .summary-title').hide();
-        $('#tabs, #query-panel').show();
+        $('#query-panel').show();
+        $('#area-tab').text("{{ _('Por área') }}");
+        $('#payee-tab').text("{{ _('Por beneficiario') }}");
 
         // Update uiState
         uiState = getUIState();
@@ -68,28 +77,24 @@
 
     // Do all the hard work of drawing the grids
     function redrawGrid() {
-
       var data      = (uiState.type == 'area') ? areaBreakdown : payeeBreakdown;
+      var formatter = showingInitialSummary() ?
+                        ((uiState.type == 'area') ? areaFormatter : mainPayeeFormatter) :
+                        rowNameFormatter;
       var columnDef = getColumnDefinition(uiState);
       var title     = (uiState.type == 'area') ? '{{ _("Área") }}' : '{{ _("Beneficiario") }}';
 
-      //console.log('redrawGrid', uiState);
-
       if ( myGrid !== undefined )  myGrid.destroy();
-
       myGrid = createBudgetGrid("#myGrid", breakdownToTable(data),
                         [
                           {
                             data: "key",
                             title: title,
-                            // Decide whether we're displaying the main payee list or a search
-                            // result by checking for a variable only populated by the search
-                            render: areaBreakdown ? rowNameFormatter : mainPayeeFormatter
+                            render: formatter
                           },
                           columnDef
                         ]);
-      
-      // TODO!!! Add literals translation
+
       var queryStr = '';
       if (query.description && query.description !== '') queryStr += '{{ _("Descripción") }} <b>'+query.description+'</b> + ';
       if (query.area) queryStr += '{{ _("Área") }} <b>'+query.area+'</b> + ';
@@ -163,8 +168,9 @@
 
     function setupPayeesSummary() {
       uiState = getUIState();
-      $('a[href="#'+uiState.type+'"]').parent().addClass('active');
-      $('#tabs, #query-panel').hide();
+      $('#tabs .active').removeClass('active');
+      $('a[href="#'+uiState.type+'"]').blur().parent().addClass('active');
+      $('#query-panel').hide();
       redrawGrid();
     }
 
@@ -190,19 +196,6 @@
     //
     // SETUP
     //
-
-    /*
-    // Handle the hash the page may have loaded with.
-    state = $.deparam.fragment();
-    // Highlight a particular item
-    if (state.description) {
-      unfoldItem(payeeGridData, state.description);
-      redrawGrid();
-      $('a[href="#payee"]').parent().addClass('active');
-      //$("#tab-payee a").click();
-      //window.setTimeout(function(){ $(".toggle.collapse")[0].scrollIntoView() }, 1000);
-    }
-    */
 
     // Setup area & payees selects
     $('#input-area').chosen({width: '100%'});
