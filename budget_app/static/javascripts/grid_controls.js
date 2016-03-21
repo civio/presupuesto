@@ -8,8 +8,6 @@ function setRedrawOnTabsChange(container, callback) {
     // Get hash states    
     var state = $.deparam.fragment();
 
-    console.log('hashchange', state);
-
     // Change tab
     if (state.view) {
       setDataTab(state.view);
