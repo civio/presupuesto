@@ -68,6 +68,12 @@
         // Update uiState
         uiState = getUIState();
 
+        // Update download links
+        var queryString = window.location.hash.replace("#", "");
+        $('.icon-file-excel').each(function() {
+          $(this).attr('href', $(this).attr('data-base-url')+'?'+queryString)
+        });
+
         // Update tab
         $('#tabs .active').removeClass('active');
         $('a[href="#'+uiState.type+'"]').blur().parent().addClass('active');
