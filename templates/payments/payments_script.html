@@ -95,20 +95,20 @@
                           columnDef
                         ]);
 
-      var queryStr = '';
-      if (query.description && query.description !== '') queryStr += '{{ _("Descripción") }} <b>'+query.description+'</b> + ';
-      if (query.area) queryStr += '{{ _("Área") }} <b>'+query.area+'</b> + ';
-      if (query.payee) queryStr += '{{ _("Proveedor") }} <b>'+query.payee+'</b> + ';
+      var queryStr = [];
+      if (query.description && query.description !== '')
+        queryStr.push('{{ _("Descripción") }} <b>'+query.description+'</b>');
+      if (query.area)
+        queryStr.push('{{ _("Área") }} <b>'+query.area+'</b>');
+      if (query.payee)
+        queryStr.push('{{ _("Proveedor") }} <b>'+query.payee+'</b>');
       if (query.date) {
-      var dates = query.date.split(',');
-        if (dates[0] !== dates[1]) {
-          queryStr += '<b>'+dates[0]+'</b> - <b>'+dates[1]+'</b>';
-        } else{
-          queryStr += '<b>'+dates[0]+'</b>';
-        }
+        var dates = query.date.split(',');
+        queryStr.push(dates[0] !== dates[1] ?
+                        '<b>'+dates[0]+'</b> - <b>'+dates[1]+'</b>' :
+                        '<b>'+dates[0]+'</b>');
       }
-
-      $('#query-panel .payments-query').html( queryStr );
+      $('#query-panel .payments-query').html( queryStr.join(' + ') );
 
       $("#payments-total").text( formatAmount(totalAmount) );
       $("#payments-size").text( formatNumber(paymentsCount) );

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-03-15 11:36+0100\n"
-"PO-Revision-Date: 2016-03-21 19:06+0100\n"
+"PO-Revision-Date: 2016-03-21 19:29+0100\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -329,7 +329,7 @@ msgstr "Payments to third-parties"
 
 #: templates/payments/index.html:32
 msgid "Hay <b id=\"payments-size\"></b> pagos que suman un total de <b id=\"payments-total\"></b> para la búsqueda"
-msgstr "Found <b=\"payments-size\"></b> payments totaling <b id=\"payments-total\"></b>"
+msgstr "Found <b id=\"payments-size\"></b> payments totaling <b id=\"payments-total\"></b>"
 
 #: templates/payments/index.html:38
 msgid "Principales proveedores"
