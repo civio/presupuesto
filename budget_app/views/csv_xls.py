@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from budget_app.models import Entity, Payment
 from budget_app.views import policies, policies_show, programmes_show, income_articles_show, expense_articles_show
 from budget_app.views import entities_index, entities_show, entities_show_article, entities_show_policy
+from budget_app.views import payment_search
 from helpers import get_context
 import csv
 import xlwt
@@ -76,13 +77,13 @@ def entity_income(request, level, slug, format):
 
 
 def write_entity_payment_breakdown(c, writer):
-    writer.writerow(['#Año', 'Area', 'Beneficiario', 'Tipo de contrato', 'Concepto', 'Cantidad'])
+    writer.writerow(['#Año', 'Área/Política', 'Programa', 'Beneficiario', 'Concepto', 'Cantidad'])
     for payment in c['payments']:
         writer.writerow([
-            payment.budget.year,
+            payment.year,
             payment.area.encode("utf-8"),
+            payment.programme.encode("utf-8") if payment.programme else '',
             payment.payee.encode("utf-8"),
-            payment.contract_type.encode("utf-8"),
             payment.description.encode('utf-8'),
             payment.amount
         ])
@@ -91,8 +92,7 @@ def write_entity_payment_breakdown(c, writer):
 def entity_payments(request, slug, format):
     c = get_context(request)
     c['payments'] = Payment.objects.all().prefetch_related('budget').order_by("-budget__year")
-    generator = _generator('pagos-%s' % (slug), format, write_entity_payment_breakdown)
-    return generator.generate_response(c)
+    return payment_search(request, _generator('pagos-%s' % (slug), format, write_entity_payment_breakdown))
 
 #
 # FUNCTIONAL BREAKDOWN
