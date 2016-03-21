@@ -113,6 +113,12 @@
       $("#payments-total").text( formatAmount(totalAmount) );
       $("#payments-size").text( formatNumber(paymentsCount) );
 
+      // Update download links
+      var queryString = window.location.hash.replace("#", "");
+      $('.icon-file-excel').each(function() {
+        $(this).attr('href', $(this).attr('data-base-url')+'?'+queryString)
+      });
+
       $('.payments-content .tab-content').show();
     }
 

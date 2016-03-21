@@ -32,6 +32,10 @@ All notable changes to this project will be documented in this file.
 - 'Back to Sankey' button in policy page didn't work in multi-language setting.
 - IE9 & above support
 
+## [3.1.2] - 2016-03-06
+### Fixed
+- Root url now works again in production when no locale is specified.
+
 ## [3.1.1] - 2016-03-06
 ### Changed
 - Tax receipt is aware of whether financial chapters have to be included or not.

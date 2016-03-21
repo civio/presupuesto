@@ -92,13 +92,16 @@ def payment_search(request, render_callback=None):
         query += " AND to_tsvector('"+settings.SEARCH_CONFIG+"',p.description) @@ plainto_tsquery('"+settings.SEARCH_CONFIG+"',%s)"
         query_arguments.append(description)
 
-    # Payments breakdown
-    __populate_breakdowns(c, query, query_arguments)
+    c['payments'] = Payment.objects.each_denormalized(query, query_arguments)
 
-    return render_to_response('payments/search.json', c, content_type="application/json")
+    if render_callback:
+        return render(c, render_callback, '')
+    else:
+        __populate_breakdowns(c)
+        return render_to_response('payments/search.json', c, content_type="application/json")
 
 
-def __populate_breakdowns(c, query, query_arguments):
+def __populate_breakdowns(c):
     breakdown_by_payee_criteria = ['payee', 'area', 'description']
     if hasattr(settings, 'PAYMENTS_BREAKDOWN_BY_PAYEE'):
         breakdown_by_payee_criteria = settings.PAYMENTS_BREAKDOWN_BY_PAYEE
@@ -110,7 +113,7 @@ def __populate_breakdowns(c, query, query_arguments):
     c['area_breakdown'] = BudgetBreakdown(breakdown_by_area_criteria)
 
     payments_count = 0
-    for item in Payment.objects.each_denormalized(query, query_arguments):
+    for item in c['payments']:
         # We add the date to the description, if it exists:
         # TODO: I wanted the date to be in a separate column, but it's complicated right
         # now the way BudgetBreakdown works. Need to think about it
