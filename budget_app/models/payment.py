@@ -30,10 +30,15 @@ class PaymentManager(models.Manager):
     # Unfortunately we couldn't find a way to bend the Django aggregate functions to do this,
     # and raw() needs the primary key to be in the result list, so we end up having to
     # access the DB connection directly. :/
-    def get_biggest_payees(self, entity_id, limit):
+    def get_biggest_payees(self, entity, limit):
         sql = \
-            "select payee, sum(amount) " \
-            "from payments " \
+            "select " \
+                "p.payee, sum(p.amount) " \
+            "from " \
+                "payments p " \
+                "left join budgets b on p.budget_id = b.id " \
+            "where " \
+                "b.entity_id = "+str(entity.id)+" " \
             "group by payee " \
             "order by sum(amount) desc " \
             "limit " + str(limit)
