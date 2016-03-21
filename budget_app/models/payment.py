@@ -2,8 +2,6 @@ from django.db import models, connection
 
 from django.conf import settings
 
-MAX_RESULTS = 10000
-
 class PaymentManager(models.Manager):
     # Return the list of payees
     def get_payees(self, entity_id):
@@ -46,6 +44,24 @@ class PaymentManager(models.Manager):
         cursor.execute(sql)
         return list(cursor.fetchall())
 
+    # Return the area breakdown. Same issues as above.
+    # Note that we could retrieve all the payments and aggregate them ourselves, but
+    # it's more efficient like this, since we don't need the individual payments.
+    def get_area_breakdown(self, entity):
+        sql = \
+            "select " \
+                "p.area, sum(p.amount) " \
+            "from " \
+                "payments p " \
+                "left join budgets b on p.budget_id = b.id " \
+            "where " \
+                "b.entity_id = "+str(entity.id)+" " \
+            "group by area " \
+            "order by sum(amount) desc"
+        cursor = connection.cursor()
+        cursor.execute(sql)
+        return list(cursor.fetchall())
+
     def each_denormalized(self, additional_constraints=None, additional_arguments=None):
         # XXX: Note that this left join syntax works well even when the economic_category_id is null,
         # as opposed to the way we query for Budget Items. I should probably adopt this all around,
@@ -62,8 +78,6 @@ class PaymentManager(models.Manager):
 
         if additional_constraints:
             sql += " where " + additional_constraints
-
-        sql += " limit "+str(MAX_RESULTS)
 
         return self.raw(sql, additional_arguments)
 
