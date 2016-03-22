@@ -39,10 +39,12 @@
         <p class="downloads" id="income-downloads">
           {{ _('Descarga la tabla de <b>Pagos</b>')|safe }}
           <a class="icon-file-excel" data-base-url="{{ url('budget_app.views.entity_payments', entity.slug, 'csv') }}"><span class="file-info">CSV</span></a>
-          o
+          {{ _('o') }}
           <a class="icon-file-excel" data-base-url="{{ url('budget_app.views.entity_payments', entity.slug, 'xlsx') }}"><span class="file-info">Excel</span></a>
         </p>
       </div>
+
+      {% include 'payments/payments_footer.html' %}
     </div>
 
     {% include 'shared/social_sharing.html' %}
