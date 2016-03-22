@@ -29,4 +29,4 @@ function countCSSRules() {
   console.log(log);
   console.log(results);
 }
-countCSSRules();
+// countCSSRules();
