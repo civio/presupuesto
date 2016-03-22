@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-03-15 11:36+0100\n"
-"PO-Revision-Date: 2016-03-21 19:06+0100\n"
+"PO-Revision-Date: 2016-03-22 13:59+0100\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -273,6 +273,10 @@ msgstr "Descarrega la taula de <b>Ingressos</b>"
 #: templates/entities/index.html:47 templates/entities/show.html:108
 msgid "Descarga la tabla de <b>Gastos</b>"
 msgstr "Descarrega la taula de <b>Despeses</b>"
+
+#
+msgid "Descarga la tabla de <b>Pagos</b>"
+msgstr "Descarrega la taula de <b>Pagaments</b>"
 
 #: templates/entities/show.html:31 templates/entities/show.html.py:32
 msgid "¿Cómo se gasta?"
