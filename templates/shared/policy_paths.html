@@ -116,7 +116,7 @@ function getPolicyLinkFormatter(programme_level) {
 
 // Convert an article name into a link
 function articleLinkFormatter(value, type, item, linkGetter) {
-  if ( item.indent > 0 ) {
+  if ( item.indent > 0 && item.parent !== undefined ) {
     var link = linkGetter(item.parent.key, item.parent.label);
   } else {
     var link = linkGetter(item.key, value);
