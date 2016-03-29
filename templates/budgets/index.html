@@ -64,16 +64,29 @@
     function redraw() {
       var uiState = getUIState();
       sankey.update(uiState);
-      updateBudgetTotals(chapterBreakdown, economicBreakdown, budgetStatuses, stats, uiState);
+      updateBudgetTotals(chapterBreakdown, economicBreakdown, budgetStatuses, adjustInflationFn, uiState);
 {% if calculate_budget_indicators %}
-      calculateIndicators(chapterBreakdown, budgetStatuses, stats, uiState);
+      calculateIndicators(chapterBreakdown, budgetStatuses, adjustInflationFn, uiState);
 {% else %}
       showIndicators(uiState);
 {% endif %}
     }
 
+    // Return a function to convert nominal amounts to inflation-adjusted ones.
+    // If needed, that is, because this behaviour can be configured at a theme-level:
+    // we can configure it to show nominal amounts.
+    function getInflationAdjustmentFunction(stats) {
+      return function(value, year) {
+{% if adjust_inflation_in_overview %}
+        return adjustInflation(value, stats, year);
+{% else %}
+        return value;
+{% endif %}
+      }
+    }
+
     // Calculate maximum amount to display across all years, so we can set a global scale for the Sankey
-    function calculateMaximumSankeyAmount(breakdown, stats) {
+    function calculateMaximumSankeyAmount(breakdown) {
       var highest_amount = 0;
       for (var column in breakdown.years) {
         var year = breakdown.years[column].toString();
@@ -83,13 +96,14 @@
                                   (breakdown.expense[year]||0), 
                                   (breakdown.expense['actual_'+year]||0) );
         var highest_amount = Math.max(highest_amount, 
-                                      adjustInflation(highest_this_year, stats, breakdown.years[column]));
+                                      adjustInflationFn(highest_this_year, breakdown.years[column]));
       }
       return highest_amount;
     }
 
     var stats = {{ stats|safe }};
     var budgetStatuses = {{ budget_statuses|safe }};
+    var adjustInflationFn = getInflationAdjustmentFunction(stats);
 
     var functionalBreakdown = {{ functional_breakdown.to_json( labels=descriptions['functional'] )|safe }};
     var economicBreakdown = {{ economic_breakdown.to_json( labels=descriptions['income'] )|safe }};
@@ -103,16 +117,18 @@
       '2T': '{{ _("hasta el segundo trimestre") }}',
       '3T': '{{ _("hasta el tercer trimestre") }}',
       'D': '{{ _("a día de hoy") }}',
+{% if adjust_inflation_in_overview %}
       'amounts.are.real': '{{ _("(Cantidades actualizadas con la inflación)") }}',
+{% endif %}
       'n/d': 'No hay datos'
     };
 
-    var sankey = new BudgetSankey(functionalBreakdown, economicBreakdown, stats, budgetStatuses, i18n);
+    var sankey = new BudgetSankey(functionalBreakdown, economicBreakdown, adjustInflationFn, budgetStatuses, i18n);
     sankey.incomeNodes({{ income_nodes|safe }});
     sankey.expenseNodes({{ expense_nodes|safe }});
     // Set a constant scale for the Sankey diagram across the years (otherwise each year would look
     // equally big). Note: 4% margin to avoid clipping, as there is some spacing between the items.
-    sankey.maxAmountEver( calculateMaximumSankeyAmount(functionalBreakdown, stats) * 1.04 );
+    sankey.maxAmountEver( calculateMaximumSankeyAmount(functionalBreakdown) * 1.04 );
 
     {# If we have multiple languages, let the Sankey chart know which one to use #}
     {% if LANGUAGES|length > 1 %}

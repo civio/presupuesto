@@ -1,9 +1,8 @@
-function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, theBudgetStatuses, i18n) {
+function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, adjustInflationFn, theBudgetStatuses, i18n) {
 
   var _this = this;
   var functionalBreakdown = theFunctionalBreakdown;
   var economicBreakdown = theEconomicBreakdown;
-  var stats = theStats;
   var budgetStatuses = theBudgetStatuses;
   var maxAmountEver = 0;
   var relaxFactor = 0.79;
@@ -61,7 +60,7 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
     hasExecution = ( functionalBreakdown.years['actual_'+year] ) ? true : false;
 
     function real(value) {
-      return adjustInflation(value, stats, year);
+      return adjustInflationFn(value, year);
     }
 
     // Given an array of item ids, return an array of breakdown items. An item id
@@ -111,7 +110,8 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
       } else {                              // We got ourselves a hash
         var items = getBreakdownItems(breakdown, item_id.nodes);
         var amount_info = getBreakdownItemsAmounts(items, field);
-        return $.extend(amount_info, {label: item_id[labelName], link_id: item_id.nodes});
+        var link_id = item_id['link_id']===undefined ? item_id.nodes : item_id['link_id'];
+        return $.extend(amount_info, {label: item_id[labelName], link_id: link_id});
       }
     }
 
@@ -270,7 +270,8 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
     addLegendItem(legend, 0, i18n['budgeted'], 'legend-budget');
     addLegendItem(legend, 1, i18n['executed'], 'legend-execution');
     var note = svg.append('g').attr("transform", "translate(-10,"+(height+20)+")");
-    addLegendItem(note, 0, i18n['amounts.are.real'], 'legend-note');
+    if ( i18n['amounts.are.real'] !== undefined )
+      addLegendItem(note, 0, i18n['amounts.are.real'], 'legend-note');
 
     updateExecution();
 
@@ -398,8 +399,10 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
       $popup.find(".popover-content").html('');
     } else {  // Flow
       // TODO: Display actual income/expense on nodes, not just flows
-      $popup.find(".popover-content").html((d.budgeted ? '<span class="budgeted">'+i18n['budgeted']+'</span><br/><span class="popover-content-value">'+formatAmount(d.budgeted)+'</span><br/>' : '') +
-                                (d.actual ? '<span class="executed">'+i18n['executed']+'</span><br/><span class="popover-content-value">'+formatAmount(d.actual)+'</span>' : '') );
+      var html = d.budgeted ? '<span class="budgeted">'+i18n['budgeted']+'</span><br/><span class="popover-content-value">'+formatAmount(d.budgeted)+'</span><br/>' : '';
+      if ( hasExecution )
+        html += d.actual ? '<span class="executed">'+i18n['executed']+'</span><br/><span class="popover-content-value">'+formatAmount(d.actual)+'</span>' : '';
+      $popup.find(".popover-content").html(html);
     }
 
     $popup.show();
