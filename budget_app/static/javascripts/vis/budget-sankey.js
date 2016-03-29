@@ -399,8 +399,10 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
       $popup.find(".popover-content").html('');
     } else {  // Flow
       // TODO: Display actual income/expense on nodes, not just flows
-      $popup.find(".popover-content").html((d.budgeted ? '<span class="budgeted">'+i18n['budgeted']+'</span><br/><span class="popover-content-value">'+formatAmount(d.budgeted)+'</span><br/>' : '') +
-                                (d.actual ? '<span class="executed">'+i18n['executed']+'</span><br/><span class="popover-content-value">'+formatAmount(d.actual)+'</span>' : '') );
+      var html = d.budgeted ? '<span class="budgeted">'+i18n['budgeted']+'</span><br/><span class="popover-content-value">'+formatAmount(d.budgeted)+'</span><br/>' : '';
+      if ( hasExecution )
+        html += d.actual ? '<span class="executed">'+i18n['executed']+'</span><br/><span class="popover-content-value">'+formatAmount(d.actual)+'</span>' : '';
+      $popup.find(".popover-content").html(html);
     }
 
     $popup.show();
