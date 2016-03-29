@@ -36,6 +36,10 @@ def budgets(request):
     if hasattr(settings, 'OVERVIEW_RELAX_FACTOR'):
         c['relax_factor'] = settings.OVERVIEW_RELAX_FACTOR
 
+    c['adjust_inflation_in_overview'] = True
+    if hasattr(settings, 'ADJUST_INFLATION_IN_OVERVIEW'):
+        c['adjust_inflation_in_overview'] = settings.ADJUST_INFLATION_IN_OVERVIEW
+
     c['show_overview_subtotals'] = False
     if hasattr(settings, 'SHOW_OVERVIEW_SUBTOTALS'):
         c['show_overview_subtotals'] = settings.SHOW_OVERVIEW_SUBTOTALS

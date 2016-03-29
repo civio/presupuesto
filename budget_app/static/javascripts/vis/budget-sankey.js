@@ -1,9 +1,8 @@
-function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, theBudgetStatuses, i18n) {
+function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, adjustInflationFn, theBudgetStatuses, i18n) {
 
   var _this = this;
   var functionalBreakdown = theFunctionalBreakdown;
   var economicBreakdown = theEconomicBreakdown;
-  var stats = theStats;
   var budgetStatuses = theBudgetStatuses;
   var maxAmountEver = 0;
   var relaxFactor = 0.79;
@@ -61,7 +60,7 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
     hasExecution = ( functionalBreakdown.years['actual_'+year] ) ? true : false;
 
     function real(value) {
-      return adjustInflation(value, stats, year);
+      return adjustInflationFn(value, year);
     }
 
     // Given an array of item ids, return an array of breakdown items. An item id
@@ -271,7 +270,8 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, theStats, th
     addLegendItem(legend, 0, i18n['budgeted'], 'legend-budget');
     addLegendItem(legend, 1, i18n['executed'], 'legend-execution');
     var note = svg.append('g').attr("transform", "translate(-10,"+(height+20)+")");
-    addLegendItem(note, 0, i18n['amounts.are.real'], 'legend-note');
+    if ( i18n['amounts.are.real'] !== undefined )
+      addLegendItem(note, 0, i18n['amounts.are.real'], 'legend-note');
 
     updateExecution();
 
