@@ -17,7 +17,7 @@ function parameterize(s) {
 // a custom Sankey chart: we default to the parent policies page.
 function getPolicyLink(policy_id, title) {
   var url = "{{ url('budget_app.views.policies') }}";
-  if ( policy_id && typeof article_id!="object" )
+  if ( policy_id && typeof policy_id!="object" )
     url = url + '/'+policy_id+'/'+parameterize(title);
   return url;
 }
