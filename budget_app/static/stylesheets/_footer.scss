@@ -4,23 +4,38 @@
   background: $footer-bg;
   text-align: center;
 
-  .logo-aragon{
+  .credit-aragon{
     font-weight: $font-weight-300;
     margin-bottom: $grid-gutter-width;
 
     > a{
-      padding-right: $grid-gutter-width/3;
-      padding-left: $grid-gutter-width/3;
+      display: inline-block;
+      vertical-align: middle;
+      margin: 0 $grid-gutter-width/6;
+      text-indent: -9999px;
+      overflow: hidden;
+      background-position: 0 0;
+      background-repeat: no-repeat;
+      background-color: transparent;
       @include transition( opacity 0.3s ease-out );
 
       &:hover{
         opacity: 0.7;
         text-decoration: none;
       }
-    }
 
-    .img-aragon{
-      margin-top: -4px;
+       &.link-civio{
+        width: 107px;
+        height: 30px;
+        background-image: url(../assets/logo-civio.png);
+      }
+
+      &.link-aragon{
+        width: 163px;
+        height: 28px;
+        margin-top: -5px;
+        background-image: url(../assets/logoAragonOpenData.png);
+      }
     }
   }
 
