@@ -873,7 +873,7 @@ msgid "Se realiza a través de <b>impuestos directos</b> - como el IRPF y el imp
 msgstr "Es realitza a través <b>d'impostos directes</b> - com l'IRPF i l'impost de societats - i <b>d'impostos indirectes</b> - l'IVA i impostos sobre el tabac, l'alcohol o la benzina."
 
 msgid "¿Cómo se reparte?"
-msgstr "Còm es reparteix?"
+msgstr "Com es reparteix?"
 
 msgid "Una parte del dinero recaudado se queda en la <b>Administración General del Estado</b>, mientras que otra parte se transfiere al <b>Gobierno de Aragón</b>"
 msgstr "Una part dels diners recaptats es queda en <b>l'Administració General de l'Estat</b>, mentre que una altra part es transfereix al <b>Gobierno de Aragón</b>"
