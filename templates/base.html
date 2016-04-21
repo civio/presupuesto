@@ -27,16 +27,15 @@
   {% endcompress %}
 </head>
 <body class="{{ page_css_class }}">
+  <!--[if lt IE 9]>
+    {% include 'shared/chromeframe.html' %}
+  <![endif]-->
   {% include 'shared/header.html' %}
   {% include 'shared/form-search.html' %}
   <div class="content" role="main">
     {% block content %}{% endblock %} 
   </div>
   {% include 'shared/footer.html' %}
-
-  <!--[if lt IE 9]>
-    {% include 'shared/chromeframe.html' %}
-  <![endif]-->
 
   {% compress js %}
   <!-- Jquery plugins -->
