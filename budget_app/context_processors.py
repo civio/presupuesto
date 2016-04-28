@@ -1,9 +1,8 @@
 import project.settings as settings
-from local_settings import ENV
 from django.conf import settings
 
 def analytics_processor(request):
-    return { 'analytics_code': ENV.get('GA_CODE', '') }
+    return { 'analytics_code': '' if not hasattr(settings, 'ANALYTICS_CODE') else settings.ANALYTICS_CODE }
 
 def cookies_url_processor(request):
     return { 'cookies_url': False if not hasattr(settings, 'COOKIES_URL') else settings.COOKIES_URL }
