@@ -206,7 +206,7 @@
         $('#incomeChartContainer').hide();
         fexpenseTreemap.updateTreemap(uiState);
       }
-    
+
       // Show an alert if no data is available
       if ( myGrid.page.info().recordsDisplay != 0 ) {
         $('.no-data-alert').hide();
@@ -323,6 +323,6 @@
     incomeTreemap.createTreemap( $.extend(getUIState(), { field: 'income' }) );
     fexpenseTreemap.createTreemap( $.extend(getUIState(), { field: 'expense' }) );
 
-    
+
   });
 </script>

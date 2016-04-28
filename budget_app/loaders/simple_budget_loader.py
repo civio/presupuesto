@@ -134,6 +134,7 @@ class SimpleBudgetLoader:
                                                         subprogramme=item['fc_code'],
                                                         budget=budget)
                 if not fc:
+                    #print u"ALERTA: No se encuentra la categoría funcional '%s'" % (item['fc_code'].decode("utf8"))
                     print u"ALERTA: No se encuentra la categoría funcional '%s' para '%s': %s€" % (item['fc_code'].decode("utf8"), item['description'].decode("utf8"), item['amount']/100)
                     continue
                 else:
