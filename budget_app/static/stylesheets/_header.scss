@@ -165,7 +165,7 @@ header > .container{
         &:hover,
         &:focus{
           color: white;
-          background: mix( $navbar-default-bg, white, 75% );
+          background: $navbar-default-bg-hover;
         }
       }
 
@@ -184,7 +184,7 @@ header > .container{
       &.open > a:hover,
       &.open > a:focus{
         color: $dvmi-navbar-color;
-        background: mix( $navbar-default-bg, white, 75% );
+        background: $navbar-default-bg-hover;
       }
 
       > .dropdown-menu{
@@ -201,7 +201,7 @@ header > .container{
           border-bottom: 1px solid $navbar-default-bg;
 
           &:hover{
-            background: mix( $navbar-default-bg, white, 75% );
+            background: $navbar-default-bg-hover;
           }
         }
       }
