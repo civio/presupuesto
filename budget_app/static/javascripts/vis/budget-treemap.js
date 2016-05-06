@@ -439,8 +439,6 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
   function onMouseOver(d) {
     if (!mouseOver) return;
 
-    d3.select(this.parentNode).select('text').style('opacity', 0.5);
-
     var selected = this;
     treemapItems.attr("class", function() {
       return (this == selected) ? "cell in" : "cell out";
@@ -461,7 +459,6 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
   
   function onMouseOut(d) {
     if (!mouseOver) return;
-    d3.select(this.parentNode).select('text').style('opacity', 1);
     treemapItems.attr("class", function(d){ return "cell cell-"+d.id.charAt(0); });
     $popup.hide();
   }
