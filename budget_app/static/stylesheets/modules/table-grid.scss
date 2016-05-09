@@ -99,21 +99,23 @@ table.table-grid {
         width: 22px;
         margin-top: 1px;
         margin-right: $grid-gutter-width/3;
-        background-color: mix( $table-color, white, 80% );
+        color: white;
+        background-color: $gray;
         background-position: center center;
         background-repeat: no-repeat;
         cursor: pointer;
+        text-align: center;
+        font-size: 26px;
+        line-height: 22px;
+        font-weight: 300;
 
          &:hover{
           background-color: $table-color;
         }
       }
 
-      &.expand {
-        background-image: url(../assets/slick/expand.png);
-      }
-      &.collapse {
-        background-image: url(../assets/slick/collapse.png);
+      &.collapse{
+        line-height: 18px;  // Adjust vertical align for '-' sign
       }
     }
   }

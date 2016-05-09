@@ -70,7 +70,8 @@ $navbar-border-radius: 0;
 $dvmi-menu-length: 5;  // Number of items in main menu
 
 // Navbar background color
-$navbar-default-bg: $brand-primary;
+$navbar-default-bg:       $brand-primary;
+$navbar-default-bg-hover: mix( $navbar-default-bg, white, 75% );
 
 // Navbar options text color
 $dvmi-navbar-color: mix( $brand-primary, white, 10% );

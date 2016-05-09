@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-15 11:36+0100\n"
+"POT-Creation-Date: 2016-05-06 13:44+0200\n"
 "PO-Revision-Date: 2016-03-22 13:59+0100\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
@@ -93,8 +93,9 @@ msgstr ""
 #: templates/budgets/budgets_totals.html:24
 #: templates/budgets/budgets_totals.html:29
 #: templates/budgets/budgets_totals.html:34
-#: templates/budgets/budgets_totals.html:39 templates/entities/show.html:26
-#: templates/entities/show.html.py:27 templates/entities/show_script.html:108
+#: templates/budgets/budgets_totals.html:39 templates/budgets/index.html:15
+#: templates/entities/show.html:26 templates/entities/show.html.py:27
+#: templates/entities/show_script.html:108
 #: templates/policies/show_script.html:34
 msgid "Ingresos"
 msgstr ""
@@ -105,7 +106,7 @@ msgstr ""
 #: templates/budgets/budgets_totals.html:25
 #: templates/budgets/budgets_totals.html:30
 #: templates/budgets/budgets_totals.html:35
-#: templates/budgets/budgets_totals.html:40
+#: templates/budgets/budgets_totals.html:40 templates/budgets/index.html:16
 #: templates/entities/show_script.html:114
 #: templates/policies/show_script.html:34
 msgid "Gastos"
@@ -155,7 +156,7 @@ msgstr ""
 msgid "El cálculo de los subtotales utiliza las cifras de ejecución para los años cuya liquidación está cerrada, o el presupuesto aprobado en caso contrario."
 msgstr ""
 
-#: templates/budgets/budgets_totals.html:50
+#: templates/budgets/budgets_totals.html:51
 msgid "Cantidades actualizadas con la inflación a fecha 1 de enero de"
 msgstr ""
 
@@ -163,61 +164,66 @@ msgstr ""
 msgid "Ingresos y gastos en el Gobierno de Aragón"
 msgstr ""
 
-#: templates/budgets/index.html:23
+#: templates/budgets/index.html:27
 msgid "Elige año"
 msgstr ""
 
-#: templates/budgets/index.html:36
+#: templates/budgets/index.html:29 templates/shared/data_controllers.html:10
+#: templates/shared/data_controllers.html:12
+msgid "Año"
+msgstr ""
+
+#: templates/budgets/index.html:41
 msgid "Datos presupuestarios en"
 msgstr ""
 
-#: templates/budgets/index.html:48
+#: templates/budgets/index.html:53
 msgid "El cálculo de los indicadores utiliza las cifras de ejecución para los años cuya liquidación está cerrada, o el presupuesto aprobado en caso contrario."
 msgstr ""
 
-#: templates/budgets/index.html:98
+#: templates/budgets/index.html:117
 msgid "Otros"
 msgstr ""
 
-#: templates/budgets/index.html:99 templates/shared/data_sources.html:7
-#: templates/shared/footer.html:18 templates/shared/header.html:27
+#: templates/budgets/index.html:118 templates/shared/data_sources.html:7
+#: templates/shared/footer.html:14 templates/shared/header.html:27
 #: templates/shared/header.html.py:55 templates/shared/meta.html:4
 #: templates/shared/meta.html.py:5 templates/welcome/index.html:54
 msgid "Gobierno de Aragón"
 msgstr ""
 
-#: templates/budgets/index.html:100 templates/entities/show_script.html:15
+#: templates/budgets/index.html:119 templates/entities/show_script.html:15
 #: templates/entities/totals.html:6 templates/entities/totals.html.py:13
 #: templates/policies/show_script.html:32
 #: templates/policies/show_script.html:139
 msgid "Presupuestado"
 msgstr ""
 
-#: templates/budgets/index.html:101
+#: templates/budgets/index.html:120
 msgid "Ejecutado"
 msgstr ""
 
-#: templates/budgets/index.html:102 templates/entities/show_script.html:257
+#: templates/budgets/index.html:121 templates/entities/show_script.html:257
 #: templates/policies/show_script.html:92
 msgid "hasta el primer trimestre"
 msgstr ""
 
-#: templates/budgets/index.html:103 templates/entities/show_script.html:258
+#: templates/budgets/index.html:122 templates/entities/show_script.html:258
 #: templates/policies/show_script.html:93
 msgid "hasta el segundo trimestre"
 msgstr ""
 
-#: templates/budgets/index.html:104 templates/entities/show_script.html:259
+#: templates/budgets/index.html:123 templates/entities/show_script.html:259
 #: templates/policies/show_script.html:94
 msgid "hasta el tercer trimestre"
 msgstr ""
 
-#: templates/budgets/index.html:105 templates/entities/show_script.html:260
+#: templates/budgets/index.html:124 templates/entities/show_script.html:260
 #: templates/policies/show_script.html:95
 msgid "a día de hoy"
 msgstr ""
 
-#: templates/budgets/index.html:106
+#: templates/budgets/index.html:126
 msgid "(Cantidades actualizadas con la inflación)"
 msgstr ""
 
@@ -267,6 +273,21 @@ msgstr ""
 
 #: templates/entities/index.html:41 templates/entities/show.html:96
 msgid "Descarga la tabla de <b>Ingresos</b>"
+msgstr ""
+
+#: templates/entities/index.html:42 templates/entities/index.html.py:48
+#: templates/entities/show.html:97 templates/entities/show.html.py:103
+#: templates/entities/show.html:109 templates/payments/index.html:41
+#: templates/shared/panel_downloads.html:4 templates/shared/payment_tab.html:6
+msgid "Descarga la tabla en CSV"
+msgstr ""
+
+#: templates/entities/index.html:44 templates/entities/index.html.py:50
+#: templates/entities/show.html:99 templates/entities/show.html.py:105
+#: templates/entities/show.html:111 templates/payments/index.html:43
+#: templates/shared/panel_downloads.html:8
+#: templates/shared/payment_tab.html:10
+msgid "Descarga la tabla en Excel"
 msgstr ""
 
 #: templates/entities/index.html:47 templates/entities/show.html:108
@@ -323,51 +344,63 @@ msgstr ""
 msgid "Política de Cookies"
 msgstr ""
 
-#: templates/payments/index.html:14
+#: templates/payments/index.html:10
 msgid "Inversiones y pagos"
 msgstr ""
 
-#: templates/payments/index.html:32
+#: templates/payments/index.html:25
 msgid "Hay <b id=\"payments-size\"></b> pagos que suman un total de <b id=\"payments-total\"></b> para la búsqueda"
 msgstr ""
 
-#: templates/payments/index.html:38
-msgid "Principales proveedores del Gobierno de Aragón"
+#: templates/payments/index.html:32
+msgid "Desglose por área"
 msgstr ""
 
-#: templates/payments/index.html:41
-msgid "Por área"
+#: templates/payments/index.html:33
+msgid "Principales proveedores"
+msgstr ""
+
+#: templates/payments/index.html:40
+msgid "Descarga la tabla de <b>Pagos</b>"
 msgstr ""
 
 #: templates/payments/index.html:42
-msgid "Por beneficiario"
+msgid "o"
 msgstr ""
 
 #: templates/payments/payments_intro.html:1
 msgid "Gastos del año vigente"
 msgstr ""
 
-#: templates/payments/payments_script.html:18
+#: templates/payments/payments_script.html:17
 msgid "Pago"
 msgstr ""
 
-#: templates/payments/payments_script.html:71
-#: templates/payments/payments_script.html:90
+#: templates/payments/payments_script.html:65
+msgid "Por área"
+msgstr ""
+
+#: templates/payments/payments_script.html:66
+msgid "Por beneficiario"
+msgstr ""
+
+#: templates/payments/payments_script.html:85
+#: templates/payments/payments_script.html:102
 #: templates/payments/payments_search.html:20
 msgid "Área"
 msgstr ""
 
-#: templates/payments/payments_script.html:71
+#: templates/payments/payments_script.html:85
 msgid "Beneficiario"
 msgstr ""
 
-#: templates/payments/payments_script.html:89
+#: templates/payments/payments_script.html:100
 #: templates/payments/payments_search.html:14
 #: templates/payments/payments_search.html:15
 msgid "Descripción"
 msgstr ""
 
-#: templates/payments/payments_script.html:91
+#: templates/payments/payments_script.html:104
 #: templates/payments/payments_search.html:31
 msgid "Proveedor"
 msgstr ""
@@ -410,11 +443,11 @@ msgstr ""
 msgid "Menú de programas, entidades y conceptos"
 msgstr ""
 
-#: templates/policies/show.html:103 templates/policies/show_widget.html:71
+#: templates/policies/show.html:97 templates/policies/show_widget.html:71
 msgid "respecto a"
 msgstr ""
 
-#: templates/policies/show.html:109 templates/policies/show_widget.html:77
+#: templates/policies/show.html:103 templates/policies/show_widget.html:77
 msgid "Comparte éste gráfico"
 msgstr ""
 
@@ -497,10 +530,6 @@ msgstr ""
 msgid "Cantidades"
 msgstr ""
 
-#: templates/shared/data_controllers.html:10
-msgid "Año"
-msgstr ""
-
 #: templates/shared/data_controllers_select.html:2
 msgid "Nominales"
 msgstr ""
@@ -557,15 +586,15 @@ msgstr ""
 msgid "Un proyecto de"
 msgstr ""
 
-#: templates/shared/footer.html:8
+#: templates/shared/footer.html:6
 msgid "basado en el código de"
 msgstr ""
 
-#: templates/shared/footer.html:23
+#: templates/shared/footer.html:19
 msgid "Aviso Legal"
 msgstr ""
 
-#: templates/shared/footer.html:29
+#: templates/shared/footer.html:25
 msgid "Política de Privacidad"
 msgstr ""
 
@@ -627,7 +656,7 @@ msgstr ""
 msgid "Siguiente"
 msgstr ""
 
-#: templates/shared/panel_downloads.html:3 templates/shared/payment_tab.html:6
+#: templates/shared/panel_downloads.html:3 templates/shared/payment_tab.html:5
 msgid "Descarga la tabla de"
 msgstr ""
 
@@ -649,10 +678,6 @@ msgstr ""
 
 #: templates/tax_receipt/index.html:12
 msgid "Te mostramos de forma aproximada"
-msgstr ""
-
-#: templates/tax_receipt/index.html:12
-msgid "Nota sobre el cálculo realizado"
 msgstr ""
 
 #: templates/tax_receipt/index.html:12
