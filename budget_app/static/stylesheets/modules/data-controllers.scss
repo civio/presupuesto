@@ -9,6 +9,10 @@
 
   .layout-slider{
     margin: 0 $grid-gutter-width/3;
+
+    label{
+      display: none;
+    }
   }
 
   .slider.slider-horizontal{
