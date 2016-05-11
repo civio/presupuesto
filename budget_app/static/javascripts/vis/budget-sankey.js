@@ -5,6 +5,7 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, adjustInflat
   var economicBreakdown = theEconomicBreakdown;
   var budgetStatuses = theBudgetStatuses;
   var maxAmountEver = 0;
+  var nodePadding = 10;
   var relaxFactor = 0.79;
   var margin = {top: 20, right: 1, bottom: 25, left: 1};
 
@@ -33,6 +34,12 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, adjustInflat
   this.maxAmountEver = function(_) {
     if (!arguments.length) return maxAmountEver;
     maxAmountEver = _;
+    return this;
+  };
+
+  this.nodePadding = function(_) {
+    if (!arguments.length) return nodePadding;
+    nodePadding = _;
     return this;
   };
 
@@ -222,7 +229,7 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, adjustInflat
 
     sankey = d3.sankey(width, height)
         .nodeWidth(2)
-        .nodePadding(10)
+        .nodePadding(nodePadding)
         .relaxFactor(relaxFactor)
         .size([width, height]);
     if ( maxAmountEver !== 0 )

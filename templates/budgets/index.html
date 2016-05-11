@@ -140,6 +140,12 @@
     sankey.language('{{ LANGUAGE_CODE }}');
     {% endif %}
 
+    {# The padding of the Sankey layout algorithm can be customized for best results. #}
+    {% if node_padding %}
+    var nodePadding = {{ node_padding }};
+    sankey.nodePadding(nodePadding);
+    {% endif %}
+
     {# The aggressiveness of the Sankey layout algorithm can be customized for best results. #}
     {% if relax_factor %}
     var relaxFactor = {{ relax_factor }};
