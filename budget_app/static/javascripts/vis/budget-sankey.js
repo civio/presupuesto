@@ -378,12 +378,15 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, adjustInflat
     // We draw the central node differently. To distinguish it we rely on the fact
     // that it's name is ''.
     rect
-      .attr("height", function(d) { return d.dy; })
+      .attr("class", function(d) { return d.name ? "node-central" : ""; })
+      .attr("height", function(d) { return d.name ? d.dy : d.dy+20; })
       .attr("width", function(d) { return d.name ? sankey.nodeWidth() : 10*sankey.nodeWidth(); })
+      .attr("x", function(d) { return d.name ? 0 : -5*sankey.nodeWidth(); })
+      .attr("y", function(d) { return d.name ? 0 : -10; })
       // Hide elements who are practically zero: our workaround for Sankey layout and null elements
       .attr("opacity", function(d) { return ((d.budgeted||0)+(d.actual||0)) > 1 ? 1 : 0; })
-      .style("fill", function(d) { return d.color = d.name ? "#333" : "#FFF"; })
-      .style("stroke", function(d) { return d3.rgb(d.color); })
+      .style("fill", function(d) { return d.color == d.name ? "#333" : "#FFF"; })
+      .style("stroke", function(d) { return d.name ? d3.rgb(d.color) : "none"; })
       .style("cursor", function(d) { return d.name ? 'pointer' : 'auto'; });
   }
 
