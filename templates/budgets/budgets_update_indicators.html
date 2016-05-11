@@ -73,6 +73,8 @@ function calculateIndicators(chapterBreakdown, budgetStatuses, adjustInflationFn
   $('#total-gross-savings').text(format(gross_savings));
   $('#total-net-savings').text(format(net_savings));
   $('#total-funding-capacity').text(format(funding_capacity));
+
+  $('#indicators-year, #totals-year').text(uiState.year);
 }
 
 // Show the budget indicators for the current year.

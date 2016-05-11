@@ -43,11 +43,18 @@
     cursor:pointer;
   }
 
-  .legend-item text,
   .node text {
+    fill: $gray-darker;
     pointer-events: none;
-    font-weight: $font-weight-600;
+    font-weight: $font-weight-400;
     font-size: 1em;
+  }
+
+  .legend-item text{
+    fill: $gray-light;
+    font-size: 0.929em;
+    font-weight: $font-weight-600;
+    text-transform: uppercase;
   }
 
   .legend-note {

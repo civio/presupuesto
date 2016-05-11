@@ -14,9 +14,12 @@ var id = 0;
 function rowNameFormatter(value, type, item) {
   var valuewrap = "<span class='toggle'>" + value + "</span>";
   var toggleStatus = '';
-  if (item.sub && !$.isEmptyObject(item.sub))
+  if (item.sub && !$.isEmptyObject(item.sub)) {
     toggleStatus = item._expanded ? 'collapse' : 'expand';
-  return "<span class='toggle "+toggleStatus+"'></span>" + valuewrap;
+    toggleValue = item._expanded ? '–' : '+';
+    return "<span class='toggle "+toggleStatus+"'>"+toggleValue+"</span>" + valuewrap;
+  }
+  return valuewrap;
 }
 
 // Return the value for a grid element, aware of the BudgetBreakdown structure.

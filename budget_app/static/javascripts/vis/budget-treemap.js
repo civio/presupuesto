@@ -3,6 +3,7 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
   var height = width / (aspectRatio===undefined ? 2 : aspectRatio);
   var treemapData;
   var treemap = null;
+  var treemapItems = null;
   var yearTotals = {};
   var maxTreemapValueEver = 0;
   var uiState = null;
@@ -236,22 +237,22 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
       })
       .attr('style', 'fill-opacity: 0');
 
+
     treemap = d3.layout.treemap()
                 .size([width,height])
                 .sort(function(a, b) { return a.value - b.value; })
-                .value(function(d) { return d[uiState.year]; })
+                .value(function(d) { return (d[uiState.year] > 1) ? d[uiState.year] : 1; })
                 .padding(0)
                 .sticky(true);
 
     // Create the initial layout
     var g = svg.data([treemapData]).selectAll("g")
         .data(treemap.nodes)
-        .enter()
-        .append("g")
-        .attr("class", "cell");
+      .enter().append("g")
+        .attr("class", "cell")
+        .style("opacity", 1);
 
-    g.style("opacity", 1)
-      .append("rect")
+    treemapItems = g.append("rect")
       .attr("class", function(d){ return "cell cell-"+d.id.charAt(0); })
       .style("fill", function(d) { return colors(parseInt(d.id[0], 10)); })
       .on("mouseover",  onMouseOver)
@@ -281,7 +282,7 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
       return;
     } else
       svg.style("opacity", 1);
-    
+
     // We prefer the 'sticky' layout in the treemap, but it needs to have a consistent data structure
     // across the years. (One item more or less is bearable, but a whole level appearing breaks
     // the layout: the new items get displayed along only one dimension.) So we disable the
@@ -309,48 +310,19 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
 
     // and the size and position of each of its rectangles.
     // Do it through a transition so there's a smooth animation on year change.
-    var g = svg.data([treemapData]).selectAll("g.cell").data(treemap.nodes);
-    var count = svg.selectAll("rect.cell").length;
-    g.selectAll("rect.cell")
+    svg.selectAll("g.cell").data(treemap.nodes); // Update treemap data
+
+    treemapItems
       .transition()
       .duration(transitionDuration)
       .call(cell)
       .each("end",function(d,i) {
-        count--;
         // Ended the animation - create the new texts
-        if ( count === 0 ) {
-          svg.selectAll("rect.cell").each(function(d) {
-            d3.select(this).attr("leaf", d.leaf);
-
-            var text = d3.select(this.parentNode)
-              .append("text")
-              .attr("class", "treemap-text");
-
-            // Render text only for leaf nodes
-            if ( !d.leaf )  return;
-
-            // Skip too small rectangles
-            if ( d.dx < minSizeWithLabel || d.dy < minSizeWithLabel ) return;
-
-            // This is our initial best guess about font size
-            var width = Math.max(d.dx - 8, 0) * .9;     // .9 is a safety margin
-            var height = Math.max(d.dy - 8, 0);
-            var length = textWidth(d.name);
-            var area = width * height;
-            var size = 10*Math.sqrt(area/(length*10));  // We're using a 10px*10px font size for calculation
-
-            text.attr("width", width)
-              .attr("height", height)
-              .style("font-size", Math.min(size,80)+"px" )
-              .attr("x", d.x + d.dx/2 )
-              .attr("y", d.y )
-              .attr("dy", 1.2)
-              .text(d.name)
-              .call(wrap);
-          })
+        if ( i === 1 ) {
+          setLabels();
         }
       });
-  }
+  };
 
 
   // Treemap functions
@@ -361,7 +333,35 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
         // XXX: This way of padding doesn't fully respect the cells proportions, keep the padding minimal until improved
         .attr("width", function(d) { return (d.dx >= internalPadding ? d.dx - internalPadding : 0) + "px"; })
         .attr("height", function(d) { return (d.dy >= internalPadding ? d.dy - internalPadding : 0) + "px"; })
-        .style('opacity', function(d) { return d.leaf == true ? '1' : '0'; });
+        .style('opacity', function(d) { return d.leaf == true ? '1' : '0'; })
+        .attr("leaf", function(d) { return d.leaf; });
+  }
+
+  function setLabels() {
+
+    treemapItems.each(function(d) {
+
+      if ( d.leaf && d.dx > minSizeWithLabel && d.dy > minSizeWithLabel ) {
+
+        var width = Math.max(d.dx - 8, 0) * 0.9;    // .9 is a safety margin
+        var height = Math.max(d.dy - 8, 0);
+        var length = textWidth(d.name);
+        var area = width * height;
+        var size = 10*Math.sqrt(area/(length*10));  // We're using a 10px*10px font size for calculation
+
+        var text = d3.select(this.parentNode)
+          .append("text")
+          .attr("class", "treemap-text")
+          .attr("width", width)
+          .attr("height", height)
+          .style("font-size", Math.min(size,80)+"px" )
+          .attr("x", d.x + d.dx/2 )
+          .attr("y", d.y )
+          .attr("dy", 1.2)
+          .text(d.name)
+          .call(wrap);
+      }
+    });
   }
 
   // Based on https://gist.github.com/gka/7469245
@@ -439,11 +439,8 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
   function onMouseOver(d) {
     if (!mouseOver) return;
 
-    d3.select(this.parentNode).select('text').style('opacity', 0.5);
-
     var selected = this;
-    var policies = svg.selectAll("rect.cell");
-    policies.attr("class", function() {
+    treemapItems.attr("class", function() {
       return (this == selected) ? "cell in" : "cell out";
     });
     var areaPrefix = areas[d.id[0]] ? areas[d.id[0]] : '';
@@ -462,9 +459,7 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
   
   function onMouseOut(d) {
     if (!mouseOver) return;
-    d3.select(this.parentNode).select('text').style('opacity', 1);
-    var policies = svg.selectAll("rect.cell");
-    policies.attr("class", function(d){ return "cell cell-"+d.id.charAt(0); });
+    treemapItems.attr("class", function(d){ return "cell cell-"+d.id.charAt(0); });
     $popup.hide();
   }
   
