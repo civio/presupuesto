@@ -383,7 +383,8 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, adjustInflat
       // Hide elements who are practically zero: our workaround for Sankey layout and null elements
       .attr("opacity", function(d) { return ((d.budgeted||0)+(d.actual||0)) > 1 ? 1 : 0; })
       .style("fill", function(d) { return d.color = d.name ? "#333" : "#FFF"; })
-      .style("stroke", function(d) { return d3.rgb(d.color); });
+      .style("stroke", function(d) { return d3.rgb(d.color); })
+      .style("cursor", function(d) { return d.name ? 'pointer' : 'auto'; });
   }
 
   function setupNodeText(text) {
