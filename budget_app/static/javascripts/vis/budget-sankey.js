@@ -6,7 +6,7 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, adjustInflat
   var budgetStatuses = theBudgetStatuses;
   var maxAmountEver = 0;
   var relaxFactor = 0.79;
-  var margin = {top: 1, right: 1, bottom: 25, left: 1};
+  var margin = {top: 20, right: 1, bottom: 25, left: 1};
 
   var incomeNodes = [];
   var expenseNodes = [];
@@ -368,13 +368,15 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, adjustInflat
   }
 
   function setupNodeRect(rect) {
+    // We draw the central node differently. To distinguish it we rely on the fact
+    // that it's name is ''.
     rect
       .attr("height", function(d) { return d.dy; })
-      .attr("width", sankey.nodeWidth())
+      .attr("width", function(d) { return d.name ? sankey.nodeWidth() : 10*sankey.nodeWidth(); })
       // Hide elements who are practically zero: our workaround for Sankey layout and null elements
       .attr("opacity", function(d) { return ((d.budgeted||0)+(d.actual||0)) > 1 ? 1 : 0; })
-      .style("fill", function(d) { return d.color = "#666"; })
-      .style("stroke", function(d) { return d3.rgb(d.color).darker(2); });
+      .style("fill", function(d) { return d.color = d.name ? "#333" : "#FFF"; })
+      .style("stroke", function(d) { return d3.rgb(d.color); });
   }
 
   function setupNodeText(text) {
