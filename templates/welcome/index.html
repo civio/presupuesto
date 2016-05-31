@@ -92,9 +92,9 @@
 
 <script>
 $(function () {
-  // Show three featured programmes, at random.
+  // Show featured programmes, at random.
   // We used to do the selection on the server, but then the page would be cached, hence not random anymore.
-  for (var i=1; i<=3; i++) {
+  for (var i=1; i<={{ number_of_featured_programmes }}; i++) {
     var hiddenProgrammes = $("div.expense-examples li.hidden"),
         chosenProgramme = Math.floor(Math.random()*hiddenProgrammes.length);
     $(hiddenProgrammes[chosenProgramme]).removeClass("hidden");
