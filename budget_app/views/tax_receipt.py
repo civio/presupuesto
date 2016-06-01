@@ -1,10 +1,13 @@
+# -*- coding: UTF-8 -*-
+
+from django.utils.translation import ugettext as _
 from coffin.shortcuts import render_to_response
 from budget_app.models import Budget, BudgetBreakdown, BudgetItem, Entity
 from helpers import *
 
 
 def tax_receipt(request):
-    c = get_context(request, css_class='body-tax-receipt', title='')
+    c = get_context(request, css_class='body-tax-receipt', title=_(u'Lo que tú aportas'))
 
     # Get latest budget data
     populate_latest_budget(c)
