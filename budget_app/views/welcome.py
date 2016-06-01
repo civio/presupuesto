@@ -10,6 +10,11 @@ def welcome(request):
     c = get_context(request, css_class='body-welcome', title=_('Inicio'))
     c['formatter'] = add_thousands_separator
 
+    # Retrieve setting for number of examples to display in homepage
+    c['number_of_featured_programmes'] = 3
+    if hasattr(settings, 'NUMBER_OF_FEATURED_PROGRAMMES'):
+        c['number_of_featured_programmes'] = settings.NUMBER_OF_FEATURED_PROGRAMMES
+
     # Retrieve front page examples
     populate_latest_budget(c)
     # TODO: Can we get rid of this?

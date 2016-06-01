@@ -4,6 +4,7 @@ import json
 
 from django.conf import settings
 from django.http import HttpResponse
+from django.utils.translation import ugettext as _
 from coffin.shortcuts import render_to_response
 from budget_app.models import BudgetBreakdown, Payment
 from helpers import *
@@ -15,7 +16,7 @@ class MockPayment(object):
 
 def payments(request, render_callback=None):
     # Get request context
-    c = get_context(request, css_class='body-payments', title='Inversiones y pagos')
+    c = get_context(request, css_class='body-payments', title=_('Inversiones y pagos'))
 
     # Retrieve the entity to display
     c['entity'] = get_main_entity(c)
