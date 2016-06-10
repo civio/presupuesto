@@ -91,7 +91,7 @@ class SimpleBudgetLoader:
         budgeted_income = 0
         budgeted_expense = 0
         for item in budget_items:
-            if item['amount'] == 0:
+            if item == None or item['amount'] == 0:
                 continue
 
             # Check whether budget income and expense match
