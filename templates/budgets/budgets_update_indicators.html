@@ -7,7 +7,10 @@ function getSum(breakdown, ids, field, year, budgetStatuses) {
                             budgetStatuses[year]=='' &&
                             breakdown.years['actual_'+year];
   var column_name = use_execution_data ? 'actual_'+year : year;
-  return _.reduce(ids, function(sum, id) { return sum + (breakdown.sub[id][field][column_name]||0); }, 0);
+  return _.reduce(ids, function(sum, id) {
+      // It's rare, but it may happen that a chapter is missing, so double check
+      return sum + ((breakdown.sub[id]&&breakdown.sub[id][field][column_name]) || 0);
+    }, 0);
 }
 
 // Update budget totals
