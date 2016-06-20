@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file
 
+## [3.1.4] - 2016-06-20
+### Fixed
+- Hide treemap when there's no information to show.
+
 ## [3.1.3] - 2016-04-05
 ### Fixed
 - Swap locale order so the theme can override the core.
