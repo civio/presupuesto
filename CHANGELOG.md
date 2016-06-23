@@ -1,6 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file
 
+## [3.1.5] - 2016-06-23
+### Changed
+- Increased BudgetItem.item_number size to seven characters.
+
 ## [3.1.4] - 2016-06-20
 ### Fixed
 - Hide treemap when there's no information to show.
