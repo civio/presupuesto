@@ -72,7 +72,7 @@ class BudgetItem(models.Model):
     budget = models.ForeignKey('Budget')
     actual = models.BooleanField()
     expense = models.BooleanField()
-    item_number = models.CharField(max_length=3)
+    item_number = models.CharField(max_length=7)
     description = models.CharField(max_length=512)
     amount = models.BigIntegerField()
     economic_category = models.ForeignKey('EconomicCategory', db_column='economic_category_id')
