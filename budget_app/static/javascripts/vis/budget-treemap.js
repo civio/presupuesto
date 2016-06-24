@@ -169,6 +169,15 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
         columns[year] = column_name;
     }
 
+    // In some rather unusual cases we actually have no data: we may have one year of execution
+    // data for a year that is not complete, for example. It happens. In those cases, we
+    // hide the visualization. It's not ideal for a visualization to hide its parent container,
+    // but there's not a simple clean solution: the way the code is structured now,
+    // the calling code doesn't know whether there's data, since it involves looking into
+    // budget statuses and so on (i.e. the code we just above)
+    if ( Object.keys(columns).length==0 )
+      $(selector).hide();
+
     calculateYearTotals(breakdown, field, columns);
     treemapData = loadBreakdownField(breakdown, field, columns);
   }
