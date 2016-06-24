@@ -36,6 +36,7 @@ class PaymentManager(models.Manager):
                 "payments p " \
                 "left join budgets b on p.budget_id = b.id " \
             "where " \
+                "p.anonymized = FALSE and " \
                 "b.entity_id = "+str(entity.id)+" " \
             "group by payee " \
             "order by sum(amount) desc " \
@@ -112,8 +113,9 @@ class Payment(models.Model):
     date = models.DateField(null=True)
     contract_type = models.CharField(max_length=50, null=True)
     payee = models.CharField(max_length=200)
-    description = models.CharField(max_length=300)
+    anonymized = models.BooleanField(default=False)
     expense = models.BooleanField()
+    description = models.CharField(max_length=300)
     amount = models.BigIntegerField()
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
