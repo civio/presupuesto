@@ -112,7 +112,10 @@ STATIC_ROOT = os.path.join(ROOT_PATH, 'static')
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
-STATIC_URL = '/static/'
+if ENV.get('STATIC_URL'):
+    STATIC_URL = ENV.get('STATIC_URL')
+else:
+    STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
