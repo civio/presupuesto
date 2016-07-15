@@ -1,5 +1,9 @@
+# -*- coding: UTF-8 -*-
+
 from django.db import models
 from django.core.cache import get_cache
+from django.utils.translation import ugettext as _
+
 from economic_category import EconomicCategory
 from functional_category import FunctionalCategory
 from funding_category import FundingCategory
@@ -57,7 +61,8 @@ class BudgetManager(models.Manager):
         result = {}
         for item in items:
             if item.chapter == '4' or item.chapter == '7':
-                result[item.uid()] = item.description + ' (cap. ' + item.chapter + ')'
+                suffix = _(' (cap. %(chapter)s)') % {'chapter': item.chapter}
+                result[item.uid()] = item.description + suffix
             else:
                 result[item.uid()] = item.description
         return result
