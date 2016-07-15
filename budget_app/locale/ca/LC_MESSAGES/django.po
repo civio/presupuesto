@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-06 13:44+0200\n"
-"PO-Revision-Date: 2016-03-22 13:59+0100\n"
+"PO-Revision-Date: 2016-07-15 14:00+0200\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.7\n"
+"X-Generator: Poedit 1.8.8\n"
 
 #: templates/base-widget.html:7 templates/base-widget.html.py:26
 #: templates/base.html:7 templates/shared/meta.html:9
@@ -86,7 +86,7 @@ msgstr "En què s'empra?"
 
 #: templates/budgets/budgets_intro.html:22
 msgid "El ayuntamiento utiliza el dinero recaudado, junto con otras fuentes de financiación como la deuda, para mantener los servicios públicos y la infraestructura de la ciudad."
-msgstr "L'Ajuntament utilitza el pressupost municipal per mantenir els serveis públics i les infraestructures de la ciutat"
+msgstr "L'Ajuntament utilitza el pressupost municipal per mantenir els serveis públics i les infraestructures de la ciutat."
 
 #: templates/budgets/budgets_totals.html:7
 #: templates/budgets/budgets_totals.html:13
@@ -127,7 +127,7 @@ msgstr "Capítols I-VII"
 
 #: templates/budgets/budgets_totals.html:23
 msgid "Subtotal No Financiero"
-msgstr "Subtotal No Financer"
+msgstr "Subtotal no financer"
 
 #: templates/budgets/budgets_totals.html:28
 msgid "Capítulos I-V"
@@ -135,7 +135,7 @@ msgstr "Capítols I-V"
 
 #: templates/budgets/budgets_totals.html:28
 msgid "Subtotal Corriente"
-msgstr "Subtotal Corrent"
+msgstr "Subtotal corrent"
 
 #: templates/budgets/budgets_totals.html:33
 msgid "Capítulos VI-VII"
@@ -143,7 +143,7 @@ msgstr "Capítols VI-VII"
 
 #: templates/budgets/budgets_totals.html:33
 msgid "Subtotal de Capital"
-msgstr "Subtotal de Capital"
+msgstr "Subtotal de capital"
 
 #: templates/budgets/budgets_totals.html:38
 msgid "Capítulos VIII-IX"
@@ -151,7 +151,7 @@ msgstr "Capítols VIII-IX"
 
 #: templates/budgets/budgets_totals.html:38
 msgid "Subtotal Financiero"
-msgstr "Subtotal Financer"
+msgstr "Subtotal financer"
 
 #: templates/budgets/budgets_totals.html:48
 msgid "El cálculo de los subtotales utiliza las cifras de ejecución para los años cuya liquidación está cerrada, o el presupuesto aprobado en caso contrario."
@@ -286,8 +286,7 @@ msgstr "Descarrega la taula en CSV"
 #: templates/entities/index.html:44 templates/entities/index.html.py:50
 #: templates/entities/show.html:99 templates/entities/show.html.py:105
 #: templates/entities/show.html:111 templates/payments/index.html:43
-#: templates/shared/panel_downloads.html:8
-#: templates/shared/payment_tab.html:10
+#: templates/shared/panel_downloads.html:8 templates/shared/payment_tab.html:10
 msgid "Descarga la tabla en Excel"
 msgstr "Descarrega la taula en Execl"
 
