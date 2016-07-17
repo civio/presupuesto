@@ -19,9 +19,9 @@
           <ul>
             {% for programme in featured_programmes %}
             {# Items are initially hidden and shown randomly via Javascript, see below #}
-            <li class="hidden">
+            <li class="hidden" data='{{ breakdown.subtotals[programme.uid()].total_expense[latest_budget.year] }}'>
               <a href="{% url 'budget_app.views.programmes_show' programme.uid(), programme.slug() %}">{{ programme.description }}</a>
-              <b>{{ formatter( breakdown.subtotals[programme.uid()].total_expense[latest_budget.year] / 100 ) }} €</b>
+              <b></b>
             </li>
             {% endfor %}
           </ul>
@@ -97,7 +97,9 @@ $(function () {
   for (var i=1; i<={{ number_of_featured_programmes }}; i++) {
     var hiddenProgrammes = $("div.expense-examples li.hidden"),
         chosenProgramme = Math.floor(Math.random()*hiddenProgrammes.length);
-    $(hiddenProgrammes[chosenProgramme]).removeClass("hidden");
+    var programme = $(hiddenProgrammes[chosenProgramme]);
+    $(programme).find('b').text( formatAmount($(programme).attr('data')) );
+    programme.removeClass("hidden");
   }
 
   // Make hero boxes react to clicks

@@ -498,7 +498,7 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
       case "percentage":
         return formatPercentage(transformedValue);
       case "per_capita":
-        return formatAmount(transformedValue);
+        return formatDecimalAmount(transformedValue, 2);
     }
   }
 }
