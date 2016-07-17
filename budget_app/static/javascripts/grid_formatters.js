@@ -1,8 +1,7 @@
 // VALUE FORMATTERS
 
 // Setup numeral format language
-numeral.language('es');
-
+numeral.language($('html').attr('lang'));
 
 // Pretty print a number by inserting ',' thousand separator
 function formatNumber(value, postfix) {
