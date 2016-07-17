@@ -115,7 +115,7 @@ def functional_programme_breakdown(request, id, format):
     return programmes_show(request, id, '', _generator("%s.funcional" % id, format, write_functional_programme_breakdown))
 
 def functional_article_expenditures_breakdown(request, id, format):
-    return expense_articles_show(request, id, format, _generator("%s.economica" % id, format, write_entity_functional_breakdown))
+    return expense_articles_show(request, id, format, _generator("%s.funcional" % id, format, write_entity_functional_breakdown))
 
 def entity_article_fexpenses(request, level, slug, id, format):
     c = get_context(request)
