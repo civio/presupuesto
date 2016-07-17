@@ -42,7 +42,6 @@ function StackedAreaChart() {
 
   // Setup SVG Object
   _this.setup = function(selector){
-
     _this.selector = selector;
 
     // Remove charts previously created
@@ -94,7 +93,6 @@ function StackedAreaChart() {
 
   // Resize Event Handler
   _this.resize = function(){
-    
     if( parseInt(_this.svg.attr('width')) === $(_this.selector).width() ) return;
 
     setDimensions();
@@ -129,7 +127,6 @@ function StackedAreaChart() {
 
   // Setup Data
   _this.setData = function( _data, _years, _budgetStatuses ){
-
     _this.data = [];
     _this.stackData = [];
 
@@ -200,7 +197,6 @@ function StackedAreaChart() {
 
   // Draw Data
   _this.draw = function(){
-
     _this.svg.append('rect')
       .attr('class', 'bkg-rect')
       .attr('width', _this.width)
@@ -313,7 +309,6 @@ function StackedAreaChart() {
 
   // Upate Elements 
   _this.update = function( transitionDuration ){
-
     // Set default transition duration value to 500ms
     transitionDuration = typeof transitionDuration !== 'undefined' ? transitionDuration : 500;
 
@@ -339,7 +334,6 @@ function StackedAreaChart() {
 
   // Area Mouse Events
   var onAreaMouseOver = function(d){
-
     d3.select(this).classed('hover', true);
 
     if( !_this.currentYear )  _this.currentYear = getCurrentYear( d3.mouse(this) );
@@ -353,7 +347,6 @@ function StackedAreaChart() {
   };
 
   var onAreaMouseMove = function(){
-
     var newYear = getCurrentYear( d3.mouse(this) );
 
     if( _this.currentYear != newYear ){
@@ -377,7 +370,6 @@ function StackedAreaChart() {
   };
 
   var onLegendLabelClick = function(d){
-
     var labelsInactives = _this.legend.selectAll('.label.inactive').size();
 
     // Desactivate all labels except clicked if there's no labels inactives
@@ -404,7 +396,6 @@ function StackedAreaChart() {
 
   // Points select & unselect
   var pointsOver = function(){
-
     // Unselect all points
     pointsOut();
 
@@ -420,7 +411,6 @@ function StackedAreaChart() {
   };
 
   var pointsOut = function(){
-
     // Unselect all points
     _this.svg.selectAll('.point')
       .attr('r', 4)
@@ -443,9 +433,7 @@ function StackedAreaChart() {
 
   // Setup Popover Content
   var setupPopover = function( _data, _mouse ){
-
     if( _this.$popover.data('id') !== _data.id ){  // Avoid redundancy
-
       _this.popoverData = _data;
       _this.$popover.data('id', _data.id);
       _this.$popover.find('.popover-title').html( _data.label );
@@ -464,8 +452,7 @@ function StackedAreaChart() {
   };
 
   var setupPopoverContent = function(){
-
-    if( _this.popoverData === null) return; // Avoid unexpected errors
+    if( _this.popoverData === null || _this.popoverData === undefined ) return; // Avoid unexpected errors
 
     var popoverId = _this.$popover.data('id');
 
@@ -482,9 +469,9 @@ function StackedAreaChart() {
 
     // Setup value
     if( _this.dataFormat === "percentage" ){
-      _this.$popover.find('.popover-content-value').html(formatDecimal(popoverValues.y*100,2)+' %');
+      _this.$popover.find('.popover-content-value').html(formatPercentage(popoverValues.y));
     } else if( _this.dataFormat === "per_capita" ){
-      _this.$popover.find('.popover-content-value').html(formatDecimal(popoverValues.y*0.01,2)+' €');
+      _this.$popover.find('.popover-content-value').html(formatDecimalAmount(popoverValues.y, 2));
     } else{
       _this.$popover.find('.popover-content-value').html(formatAmount(popoverValues.y));
     }
@@ -511,7 +498,6 @@ function StackedAreaChart() {
 
   // Update Active State
   var updateDataActive = function( _id, _value){
-
     // Get area to update
     var areaData = _this.stackData.filter(function(d){ return d.id == _id; })[0];
     areaData.active = _value;
@@ -525,7 +511,6 @@ function StackedAreaChart() {
   };
 
   var updateAllDataActive = function(){
-
     var active;
 
     _this.stackData.forEach(function(d){

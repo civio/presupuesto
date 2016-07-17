@@ -95,7 +95,6 @@ function BudgetStackedChart(theSelector, theStats, theColorScale, i18n) {
 
   // Function used to display the selected SAG
   this.draw = function( newUIState ) {
-
     // Do nothing if only the year changed
     if ( uiState && uiState.format==newUIState.format && uiState.field==newUIState.field ) return;
 
@@ -119,8 +118,6 @@ function BudgetStackedChart(theSelector, theStats, theColorScale, i18n) {
 
     // Setup data format
     chart.dataFormat = uiState.format;
-
-    console.log(_);
 
     // Chart set data & draw
     chart.setData( getSortedData(this.getNewData()), years.map(function(d){ return parseInt(d); }), budgetStatuses ).draw();

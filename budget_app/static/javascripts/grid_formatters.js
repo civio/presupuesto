@@ -1,25 +1,35 @@
 // VALUE FORMATTERS
 
 // Setup numeral format language
-numeral.language('es');
+numeral.language($('html').attr('lang'));
 
+// Global variables defined here to allow themes to override them.
+// See http://stackoverflow.com/a/4862268 for a discussion of global variables.
+window.percentage_sign_suffix = ' %';
 
 // Pretty print a number by inserting ',' thousand separator
-function formatNumber(value, postfix) {
+function formatNumber(value) {
   if (value == null) return '';
+  return numeral( value ).format( '0,0', Math.floor );
+}
 
-  if (postfix) {
-    return numeral( value ).format( '0,0', Math.floor ) + postfix;
-  } else {
-    return numeral( value ).format( '0,0', Math.floor );
-  }
+// Add currency symbol to a given string, already formatted
+function addCurrencySymbol(formattedValue) {
+  return numeral.language()=='en' ? '€'+formattedValue : formattedValue+'\xA0€';
 }
 
 // Format currency amount
 function formatAmount(value) {
   if (value == null) return '';
   value = Number(value/100); // Also note value is in cents originally
-  return formatNumber(value, '\xA0€');
+  return addCurrencySymbol(formatNumber(value));
+}
+
+// Format decimal amount
+function formatDecimalAmount(value, precision) {
+  if (value == null) return '';
+  value = Number(value/100); // Also note value is in cents originally
+  return addCurrencySymbol(formatDecimal(value), precision);
 }
 
 // Format currency amount
@@ -29,12 +39,12 @@ function formatSimplifiedAmount(value) {
 
   if (value >= 1000000) {
     var precision = (value >= 10000000 ? 0 : 1);  // Best-guess number of decimals to show
-    return formatDecimal(value/1000000, precision)+'\xA0mill.\xA0€';
+    return addCurrencySymbol(formatDecimal(value/1000000, precision)+'\xA0mill.');
   } else if (value >= 1000) {
     var precision = (value >= 10000 ? 0 : 1);
-    return formatDecimal(value/1000, precision)+'\xA0mil\xA0€';
+    return addCurrencySymbol(formatDecimal(value/1000, precision)+'\xA0mil');
   } else
-    return formatNumber(value, '\xA0€');
+    return addCurrencySymbol(formatNumber(value));
 }
 
 // Format decimal number
@@ -57,15 +67,22 @@ function formatDecimal(value, precision) {
   return numeral( value ).format( rule, Math.round );
 }
 
+// Format percentage
+function formatPercentage(value) {
+  return formatDecimal(value*100)+window.percentage_sign_suffix;
+}
+
+
+// Data table formatters
 function getFormatter(formatter, stats, year, getter) {
   // Pretty print a number by inserting ',' thousand separator
-  function formatCellNumber(value, type, item) {
+  function nominalFormatter(value, type, item) {
     if (type === 'filter') return value;  // We filter based on the raw data
     return formatAmount(value);
   }
 
   // Display amount adjusted for inflation (real, versus nominal)
-  function formatReal(value, type, item) {
+  function realFormatter(value, type, item) {
     if (value == null) return '';
     if (type === 'filter') return value;  // We filter based on the raw data
     var realValue = adjustInflation(value, stats, year);
@@ -73,15 +90,17 @@ function getFormatter(formatter, stats, year, getter) {
   }
 
   // Display amount as percentage of total
-  function formatPercentage(value, type, item) {
+  function percentageFormatter(value, type, item) {
     if (value == null) return '';
     if (type === 'filter') return value;  // We filter based on the raw data
-    if (item.root == null) return "100,00 %"; // No root => independent object
-    return formatDecimal(value / columnValueExtractor(item.root, getter) * 100) + " %";
+    if (item.root == null)  // No root => independent object
+      return formatPercentage(1);
+    else
+      return formatPercentage(value / columnValueExtractor(item.root, getter));
   }
 
   // Display amount as expense per capita
-  function formatPerCapita(value, type, item) {
+  function perCapitaFormatter(value, type, item) {
     if (value == null) return '';
     if (type === 'filter') return value;  // We filter based on the raw data
     // Note value is in cents originally
@@ -94,14 +113,14 @@ function getFormatter(formatter, stats, year, getter) {
     // would like to recheck it.
     var population = getPopulationFigure(stats, year, item.key);
 
-    return formatDecimal(realValue / population) + " €";
+    return addCurrencySymbol(formatDecimal(realValue / population));
   }
 
   switch (formatter) {
-    case "nominal":     return formatCellNumber;
-    case "real":        return formatReal;
-    case "percentage":  return formatPercentage;
-    case "per_capita":  return formatPerCapita;
+    case "nominal":     return nominalFormatter;
+    case "real":        return realFormatter;
+    case "percentage":  return percentageFormatter;
+    case "per_capita":  return perCapitaFormatter;
   }
 }
 
