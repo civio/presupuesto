@@ -240,7 +240,10 @@ def articles_show(request, id, title, show_side, render_callback=None):
     populate_years(c, 'institutional_breakdown')
     populate_budget_statuses(c, main_entity.id)
     populate_area_descriptions(c, ['functional', 'funding', show_side])
-    _populate_csv_settings(c, 'article', id)
+    if show_side=='income':
+        _populate_csv_settings(c, 'article_revenues', id)
+    else:
+        _populate_csv_settings(c, 'article_expenditures', id)
     _set_show_side(c, show_side)
     _set_full_breakdown(c, True)
 

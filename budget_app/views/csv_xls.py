@@ -32,8 +32,6 @@ from openpyxl import Workbook
 #
 # ENTITY BREAKDOWNS
 #
-
-
 def write_entity_functional_breakdown(c, writer):
     writer.writerow(['#Año', 'Id Política', 'Nombre Política', 'Id Programa', 'Nombre Programa', 'Presupuesto Gasto', 'Gasto Real'])
     for year in set(c['functional_breakdown'].years.values()):
@@ -72,11 +70,10 @@ def entity_income(request, level, slug, format):
     entity = Entity.objects.get(level=level, slug=slug, language=c['LANGUAGE_CODE'])
     return entities_show(request, c, entity, _generator('ingresos-%s-%s' % (level, slug), format, write_entity_income_breakdown))
 
-#
-# PAYMENTS
-#
 
-
+#
+# PAYMENTS BREAKDOWN
+#
 def write_entity_payment_breakdown(c, writer):
     writer.writerow(['#Año', 'Área/Política', 'Programa', 'Beneficiario', 'Concepto', 'Cantidad'])
     for payment in c['payments']:
@@ -94,6 +91,7 @@ def entity_payments(request, slug, format):
     c = get_context(request)
     c['payments'] = Payment.objects.all().prefetch_related('budget').order_by("-budget__year")
     return payment_search(request, _generator('pagos-%s' % (slug), format, write_entity_payment_breakdown))
+
 
 #
 # FUNCTIONAL BREAKDOWN
@@ -116,7 +114,7 @@ def write_functional_programme_breakdown(c, writer):
 def functional_programme_breakdown(request, id, format):
     return programmes_show(request, id, '', _generator("%s.funcional" % id, format, write_functional_programme_breakdown))
 
-def functional_article_breakdown(request, id, format):
+def functional_article_expenditures_breakdown(request, id, format):
     return expense_articles_show(request, id, format, _generator("%s.economica" % id, format, write_entity_functional_breakdown))
 
 def entity_article_fexpenses(request, level, slug, id, format):
@@ -175,8 +173,11 @@ def write_economic_article_expense_breakdown(c, writer):
 def write_economic_article_income_breakdown(c, writer):
     return write_economic_article_breakdown(c, 'income', writer);
 
-def economic_article_breakdown(request, id, format):
-    return income_articles_show(request, id, format, _generator("%s.economica" % id, format, write_economic_article_income_breakdown))
+def economic_article_revenues_breakdown(request, id, format):
+    return income_articles_show(request, id, format, _generator("%s.ingresos.economica" % id, format, write_economic_article_income_breakdown))
+
+def economic_article_expenditures_breakdown(request, id, format):
+    return expense_articles_show(request, id, format, _generator("%s.gastos.economica" % id, format, write_economic_article_expense_breakdown))
 
 def entity_article_expenses(request, level, slug, id, format):
     c = get_context(request)
@@ -207,8 +208,11 @@ def funding_policy_breakdown(request, id, format):
 def funding_programme_breakdown(request, id, format):
     return programmes_show(request, id, '', _generator("%s.financiacion" % id, format, write_funding_breakdown))
 
-def funding_article_breakdown(request, id, format):
-    return income_articles_show(request, id, '', _generator("%s.financiacion" % id, format, write_funding_breakdown))
+def funding_article_revenues_breakdown(request, id, format):
+    return income_articles_show(request, id, '', _generator("%s.ingresos.financiacion" % id, format, write_funding_breakdown))
+
+def funding_article_expenditures_breakdown(request, id, format):
+    return expense_articles_show(request, id, '', _generator("%s.gastos.financiacion" % id, format, write_funding_breakdown))
 
 
 #
@@ -216,7 +220,7 @@ def funding_article_breakdown(request, id, format):
 #
 def write_institutional_breakdown(c, writer):
     field_username = 'Gastos' if c['show_side'] == 'expense' else 'Ingresos'
-    writer.writerow(['#Año', 'Nombre Organismo', 'Nombre Departamento', 'Presupuesto '+field_username, field_username+' Reales'])
+    writer.writerow(['#Año', 'Id Organismo', 'Nombre Organismo', 'Id Departamento', 'Nombre Departamento', 'Presupuesto '+field_username, field_username+' Reales'])
     for year in set(c['institutional_breakdown'].years.values()):
         for institution_id, institution in c['institutional_breakdown'].subtotals.iteritems():
             write_breakdown_item(writer, year, institution, c['show_side'], [institution_id, None], c['descriptions']['institutional'])
@@ -229,8 +233,11 @@ def institutional_policy_breakdown(request, id, format):
 def institutional_programme_breakdown(request, id, format):
     return programmes_show(request, id, '', _generator("%s.organica" % id, format, write_institutional_breakdown))
 
-def institutional_article_breakdown(request, id, format):
-    return income_articles_show(request, id, '', _generator("%s.organica" % id, format, write_institutional_breakdown))
+def institutional_article_revenues_breakdown(request, id, format):
+    return income_articles_show(request, id, '', _generator("%s.ingresos.organica" % id, format, write_institutional_breakdown))
+
+def institutional_article_expenditures_breakdown(request, id, format):
+    return expense_articles_show(request, id, '', _generator("%s.gastos.organica" % id, format, write_institutional_breakdown))
 
 
 #

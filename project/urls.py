@@ -99,10 +99,13 @@ budget_app_urlpatterns += url_patterns('budget_app.views',
     url(r'^programas/(?P<id>[0-9A-Z]+)_institutional\.(?P<format>.+)$', 'institutional_programme_breakdown'),
 
     # Articles
-    url(r'^articulos/(?P<id>[0-9]+)_functional\.(?P<format>.+)$', 'functional_article_breakdown'),
-    url(r'^articulos/(?P<id>[0-9]+)_economic\.(?P<format>.+)$', 'economic_article_breakdown'),
-    url(r'^articulos/(?P<id>[0-9]+)_funding\.(?P<format>.+)$', 'funding_article_breakdown'),
-    url(r'^articulos/(?P<id>[0-9]+)_institutional\.(?P<format>.+)$', 'institutional_article_breakdown'),
+    url(r'^articulos/(?P<id>[0-9]+)_functional\.(?P<format>.+)$', 'functional_article_expenditures_breakdown'),
+    url(r'^articulos/(?P<id>[0-9]+)_economic_revenues\.(?P<format>.+)$', 'economic_article_revenues_breakdown'),
+    url(r'^articulos/(?P<id>[0-9]+)_economic_expenditures\.(?P<format>.+)$', 'economic_article_expenditures_breakdown'),
+    url(r'^articulos/(?P<id>[0-9]+)_funding_revenues\.(?P<format>.+)$', 'funding_article_revenues_breakdown'),
+    url(r'^articulos/(?P<id>[0-9]+)_funding_expenditures\.(?P<format>.+)$', 'funding_article_expenditures_breakdown'),
+    url(r'^articulos/(?P<id>[0-9]+)_institutional_revenues\.(?P<format>.+)$', 'institutional_article_revenues_breakdown'),
+    url(r'^articulos/(?P<id>[0-9]+)_institutional_expenditures\.(?P<format>.+)$', 'institutional_article_expenditures_breakdown'),
 
     # Entities lists
     url(r'^gastos_entidades_(?P<level>.+)\.(?P<format>.+)$', 'entities_expenses'),
