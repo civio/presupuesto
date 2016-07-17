@@ -469,9 +469,9 @@ function StackedAreaChart() {
 
     // Setup value
     if( _this.dataFormat === "percentage" ){
-      _this.$popover.find('.popover-content-value').html(formatDecimal(popoverValues.y*100,2)+' %');
+      _this.$popover.find('.popover-content-value').html(formatPercentage(popoverValues.y));
     } else if( _this.dataFormat === "per_capita" ){
-      _this.$popover.find('.popover-content-value').html(formatDecimal(popoverValues.y*0.01,2)+' €');
+      _this.$popover.find('.popover-content-value').html(formatDecimalAmount(popoverValues.y, 2));
     } else{
       _this.$popover.find('.popover-content-value').html(formatAmount(popoverValues.y));
     }

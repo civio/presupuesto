@@ -25,6 +25,13 @@ function formatAmount(value) {
   return addCurrencySymbol(formatNumber(value));
 }
 
+// Format decimal amount
+function formatDecimalAmount(value, precision) {
+  if (value == null) return '';
+  value = Number(value/100); // Also note value is in cents originally
+  return addCurrencySymbol(formatDecimal(value), precision);
+}
+
 // Format currency amount
 function formatSimplifiedAmount(value) {
   if (value == null) return '';
@@ -60,15 +67,22 @@ function formatDecimal(value, precision) {
   return numeral( value ).format( rule, Math.round );
 }
 
+// Format percentage
+function formatPercentage(value) {
+  return formatDecimal(value*100)+window.percentage_sign_suffix;
+}
+
+
+// Data table formatters
 function getFormatter(formatter, stats, year, getter) {
   // Pretty print a number by inserting ',' thousand separator
-  function formatCellNumber(value, type, item) {
+  function nominalFormatter(value, type, item) {
     if (type === 'filter') return value;  // We filter based on the raw data
     return formatAmount(value);
   }
 
   // Display amount adjusted for inflation (real, versus nominal)
-  function formatReal(value, type, item) {
+  function realFormatter(value, type, item) {
     if (value == null) return '';
     if (type === 'filter') return value;  // We filter based on the raw data
     var realValue = adjustInflation(value, stats, year);
@@ -76,17 +90,17 @@ function getFormatter(formatter, stats, year, getter) {
   }
 
   // Display amount as percentage of total
-  function formatPercentage(value, type, item) {
+  function percentageFormatter(value, type, item) {
     if (value == null) return '';
     if (type === 'filter') return value;  // We filter based on the raw data
     if (item.root == null)  // No root => independent object
-      return formatDecimal(100)+window.percentage_sign_suffix;
+      return formatPercentage(1);
     else
-      return formatDecimal(value / columnValueExtractor(item.root, getter) * 100) + window.percentage_sign_suffix;
+      return formatPercentage(value / columnValueExtractor(item.root, getter));
   }
 
   // Display amount as expense per capita
-  function formatPerCapita(value, type, item) {
+  function perCapitaFormatter(value, type, item) {
     if (value == null) return '';
     if (type === 'filter') return value;  // We filter based on the raw data
     // Note value is in cents originally
@@ -103,10 +117,10 @@ function getFormatter(formatter, stats, year, getter) {
   }
 
   switch (formatter) {
-    case "nominal":     return formatCellNumber;
-    case "real":        return formatReal;
-    case "percentage":  return formatPercentage;
-    case "per_capita":  return formatPerCapita;
+    case "nominal":     return nominalFormatter;
+    case "real":        return realFormatter;
+    case "percentage":  return percentageFormatter;
+    case "per_capita":  return perCapitaFormatter;
   }
 }
 
