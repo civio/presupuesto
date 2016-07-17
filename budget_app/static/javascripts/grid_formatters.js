@@ -3,22 +3,26 @@
 // Setup numeral format language
 numeral.language($('html').attr('lang'));
 
-// Pretty print a number by inserting ',' thousand separator
-function formatNumber(value, postfix) {
-  if (value == null) return '';
+// Global variables defined here to allow themes to override them.
+// See http://stackoverflow.com/a/4862268 for a discussion of global variables.
+window.percentage_sign_suffix = ' %';
 
-  if (postfix) {
-    return numeral( value ).format( '0,0', Math.floor ) + postfix;
-  } else {
-    return numeral( value ).format( '0,0', Math.floor );
-  }
+// Pretty print a number by inserting ',' thousand separator
+function formatNumber(value) {
+  if (value == null) return '';
+  return numeral( value ).format( '0,0', Math.floor );
+}
+
+// Add currency symbol to a given string, already formatted
+function addCurrencySymbol(formattedValue) {
+  return numeral.language()=='en' ? '€'+formattedValue : formattedValue+'\xA0€';
 }
 
 // Format currency amount
 function formatAmount(value) {
   if (value == null) return '';
   value = Number(value/100); // Also note value is in cents originally
-  return formatNumber(value, '\xA0€');
+  return addCurrencySymbol(formatNumber(value));
 }
 
 // Format currency amount
@@ -28,12 +32,12 @@ function formatSimplifiedAmount(value) {
 
   if (value >= 1000000) {
     var precision = (value >= 10000000 ? 0 : 1);  // Best-guess number of decimals to show
-    return formatDecimal(value/1000000, precision)+'\xA0mill.\xA0€';
+    return addCurrencySymbol(formatDecimal(value/1000000, precision)+'\xA0mill.');
   } else if (value >= 1000) {
     var precision = (value >= 10000 ? 0 : 1);
-    return formatDecimal(value/1000, precision)+'\xA0mil\xA0€';
+    return addCurrencySymbol(formatDecimal(value/1000, precision)+'\xA0mil');
   } else
-    return formatNumber(value, '\xA0€');
+    return addCurrencySymbol(formatNumber(value));
 }
 
 // Format decimal number
@@ -75,8 +79,10 @@ function getFormatter(formatter, stats, year, getter) {
   function formatPercentage(value, type, item) {
     if (value == null) return '';
     if (type === 'filter') return value;  // We filter based on the raw data
-    if (item.root == null) return "100,00 %"; // No root => independent object
-    return formatDecimal(value / columnValueExtractor(item.root, getter) * 100) + " %";
+    if (item.root == null)  // No root => independent object
+      return formatDecimal(100)+window.percentage_sign_suffix;
+    else
+      return formatDecimal(value / columnValueExtractor(item.root, getter) * 100) + window.percentage_sign_suffix;
   }
 
   // Display amount as expense per capita
@@ -93,7 +99,7 @@ function getFormatter(formatter, stats, year, getter) {
     // would like to recheck it.
     var population = getPopulationFigure(stats, year, item.key);
 
-    return formatDecimal(realValue / population) + " €";
+    return addCurrencySymbol(formatDecimal(realValue / population));
   }
 
   switch (formatter) {
