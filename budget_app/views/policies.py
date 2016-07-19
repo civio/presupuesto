@@ -156,7 +156,8 @@ def articles_show(request, id, title, show_side, render_callback=None):
     c['economic_breakdown'] = BudgetBreakdown(['heading', 'uid'])
     c['funding_breakdown'] = BudgetBreakdown(['source', 'fund'])
     c['institutional_breakdown'] = BudgetBreakdown([_year_tagged_institution, _year_tagged_department])
-    get_budget_breakdown(   "ec.article = %s and e.id = %s", [ id, main_entity.id ],
+    get_budget_breakdown(   "ec.article = %s and e.id = %s and i.expense = %s",
+                            [ id, main_entity.id, show_side=='expense' ],
                             [ 
                                 c['functional_breakdown'],
                                 c['economic_breakdown'],
