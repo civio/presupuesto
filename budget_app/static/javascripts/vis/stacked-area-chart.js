@@ -232,7 +232,7 @@ function StackedAreaChart() {
       .on('mouseout',   onAreaMouseOut)
       .on('mousemove',  onAreaMouseMove)
       // event to be listened in the template
-      .on('click',      function(d){ $(_this.selector).trigger('area-selected', d); });
+      .on('click',      onAreaClick);
 
     _this.svg.on('mouseout', function(e){
       pointsOut();
@@ -265,10 +265,12 @@ function StackedAreaChart() {
         .attr('d', function(d){ return _this.line(d.values); })
         .style('stroke', function(d) { return _this.color(d.id); });
 
-    _this.lines.on('mouseover', function(d){
+    _this.lines
+      .on('mouseover', function(d){
         d3.select(this).classed('hover', true);
         setupPopover(d, d3.mouse(this));
-      });
+      })
+      .on('click', onAreaClick);
 
     // Setup Area Points
     _this.circles = _this.svg.selectAll('.points')
@@ -286,9 +288,11 @@ function StackedAreaChart() {
       .style('stroke', function(d) { return _this.color(d.id); })
       .style('fill', function(d) { return _this.color(d.id); });
 
-    _this.circles.on('mouseover', function(d){
+    _this.circles
+      .on('mouseover', function(d){
         setupPopover(d, d3.mouse(this));
-      });
+      })
+      .on('click', onAreaClick);
 
     // Setup Legend labels
     _this.legend.selectAll('div')
@@ -356,6 +360,10 @@ function StackedAreaChart() {
     }
 
     _this.$popover.css( popoverPosition(d3.mouse(this)) );
+  };
+
+  var onAreaClick = function(d){ 
+    $(_this.selector).trigger('area-selected', d); 
   };
 
   // Legend Label Mouse Events
