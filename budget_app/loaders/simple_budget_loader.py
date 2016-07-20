@@ -90,6 +90,7 @@ class SimpleBudgetLoader:
         budgeted_income = 0
         budgeted_expense = 0
         for item in budget_items:
+            # Ignore null entries or entries with no amount
             if item == None or item['amount'] == 0:
                 continue
 
