@@ -77,8 +77,8 @@ class PaymentsLoader:
         for item in items:
             fields = self.parse_item(budget, item)
 
-            # Ignore entries with no amount
-            if fields['amount'] == 0:
+            # Ignore null entries or entries with no amount
+            if fields == None or fields['amount'] == 0:
                 continue
 
             # Fetch economic category
