@@ -319,22 +319,40 @@ function StackedAreaChart() {
     // Update Areas Paths
     _this.areas.data( _this.stack(_this.stackData) );
     _this.areas.selectAll('.area')
-      .transition().ease('cubic-out').duration(transitionDuration)
-      .attr('d', function(d) { return _this.area(d.values); });
+      .transition()
+        .ease('cubic-out')
+        .duration(transitionDuration)
+        .attr('d', function(d) { return _this.area(d.values); });
 
     // Update Areas Lines
     _this.lines.data( _this.stackData )
-      .transition().ease('cubic-out').duration(transitionDuration)
-      .style('opacity', function(d){ return (d.active) ? 1 : 0; })
-      .attr('d', function(d){ return _this.line(d.values); });
+      .style('display', 'block')
+      .transition()
+        .ease('cubic-out')
+        .duration(transitionDuration)
+        .each('end', function(d) {
+          if( !d.active ){
+            d3.select(this).style('display', 'none');
+          }
+        })
+        .style('opacity', function(d){ return (d.active) ? 1 : 0; })
+        .attr('d', function(d){ return _this.line(d.values); });
 
     // Update Area Points
     _this.circles.data( _this.stackData );
     _this.circles.selectAll('.point')
-      .transition().ease('cubic-out').duration(transitionDuration)
-      .style('opacity', function(d){ return (d.y !== 0) ? 1 : 0; })
-      .attr('transform', function(d){ return 'translate('+_this.x(d.x)+','+_this.y(d.y0+d.y)+')'; });
-  };
+      .style('display', 'block')
+      .transition()
+        .ease('cubic-out')
+        .duration(transitionDuration)
+        .each('end', function(d) {
+          if( d.y === 0 ){
+            d3.select(this).style('display', 'none');
+          }
+        })
+        .style('opacity', function(d){ return (d.y !== 0) ? 1 : 0; })
+        .attr('transform', function(d){ return 'translate('+_this.x(d.x)+','+_this.y(d.y0+d.y)+')'; });
+    };
 
   // Area Mouse Events
   var onAreaMouseOver = function(d){
@@ -441,6 +459,16 @@ function StackedAreaChart() {
 
   // Setup Popover Content
   var setupPopover = function( _data, _mouse ){
+    
+    console.log('setupPopover', _data);
+
+    if( !_data.active ){
+      console.log('hide');
+       _this.$popover.hide();
+      return;
+    }
+
+    
     if( _this.$popover.data('id') !== _data.id ){  // Avoid redundancy
       _this.popoverData = _data;
       _this.$popover.data('id', _data.id);
