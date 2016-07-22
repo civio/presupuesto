@@ -459,8 +459,6 @@ function StackedAreaChart() {
 
   // Setup Popover Content
   var setupPopover = function( _data, _mouse ){
-    
-    console.log('setupPopover', _data);
 
     if( !_data.active ){
       console.log('hide');
