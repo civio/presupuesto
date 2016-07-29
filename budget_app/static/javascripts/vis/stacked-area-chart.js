@@ -607,15 +607,14 @@ function StackedAreaChart() {
   };
 
   var getBudgetExecutionLastYear = function( _budgetStatuses ){
-    var status = null, i = 0;
+    var status = null, i = _this.years.length-1;
 
-    while( i < _this.years.length || status === null ){
-      if( _budgetStatuses[i] !== '' ){
+    while( i > 0 ){
+      if( _budgetStatuses[_this.years[i]] !== '' ){
         status = i;
       }
-      i++;
+      i--;
     }
-
     return status;
   };
 
