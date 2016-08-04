@@ -142,7 +142,7 @@
     {% else %}
         {# The download links for small entities are too cumbersome to calculate in the macro #}
       {% if policy_uid %}
-        {% set download_view_name = 'budget_app.views.entity_article_fexpenses' %}
+        {% set download_view_name = 'budget_app.views.entity_article_functional' %}
         {{ panel_downloads(_(tab_titles['functional']), 
                       'functional',
                       csv_type, 

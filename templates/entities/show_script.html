@@ -30,9 +30,9 @@
     // Convert an article name into a link
     function entityLinkFormatter(value, type, item) {
       var getIncomeLink = {{ 'getCountyIncomeLink' if is_county else 'getTownIncomeLink' }};
-      var getFExpenseLink = {{ 'getCountyFExpenseLink' if is_county else 'getTownFExpenseLink' }};
+      var getFunctionalLink = {{ 'getCountyFunctionalLink' if is_county else 'getTownFunctionalLink' }};
       var getExpenseLink = {{ 'getCountyExpenseLink' if is_county else 'getTownExpenseLink' }};
-      var getLink = (uiState.view == 'expense') ? getExpenseLink : (uiState.view == 'income' ? getIncomeLink : getFExpenseLink);
+      var getLink = (uiState.view == 'expense') ? getExpenseLink : (uiState.view == 'income' ? getIncomeLink : getFunctionalLink);
       var link = getLink('{{ entity.slug }}', item.key);
       var linkedValue = "<a href='"+link+"'>"+value+"</a>";
       return rowNameFormatter(value, type, item);
@@ -40,7 +40,7 @@
 {% else %}
     // The top level and small entities have different URLs at this point
     function entityLinkFormatter(value, type, item) {
-      if ( uiState.view == 'fexpense' )
+      if ( uiState.view == 'functional' )
         var formatter = getPolicyLinkFormatter();
       else if ( uiState.view == 'expense' )
         var formatter = expenseArticleLinkFormatter;
@@ -82,7 +82,7 @@
       myGrid = createBudgetGrid("#myGrid", gridData[uiState.view], [
         {
           data: "label",
-          title: ( uiState.view == 'fexpense' ? '{{ _("Política") }}' : '{{ _("Artículo") }}' ),
+          title: ( uiState.view == 'functional' ? '{{ _("Política") }}' : '{{ _("Artículo") }}' ),
           render: entityLinkFormatter
         },
         columnDef
@@ -99,21 +99,21 @@
       var executionLabelPostfix = getExecutionTotalLabel(budgetStatuses[uiState.year], budgetStatusLabels);
       $("#main-total .main-label").html('{{ _("Total") }}'+executionLabelPostfix);
 
-      if ( uiState.view == 'fexpense' ) {
+      if ( uiState.view == 'functional' ) {
         $(".policies-title").text('{{ _("Gastos (por programa)") }}');
         $("#income-downloads").hide();
-        $("#fexpense-downloads").show();
+        $("#functional-downloads").show();
         $("#expense-downloads").hide();
       } else if ( uiState.view == 'income' ) {
         $(".policies-title").text('{{ _("Ingresos") }}');
         $("#income-downloads").show();
-        $("#fexpense-downloads").hide();
+        $("#functional-downloads").hide();
         $("#expense-downloads").hide();
 
       } else {
         $(".policies-title").text('{{ _("Gastos") }}');
         $("#income-downloads").hide();
-        $("#fexpense-downloads").hide();
+        $("#functional-downloads").hide();
         $("#expense-downloads").show();
       }
 
@@ -143,7 +143,7 @@
 
       // We have two totals for the functional expense view (non-financial/financial), so
       // we have some extra work in this case.
-      if ( uiState.view === 'fexpense' ) {
+      if ( uiState.view === 'functional' ) {
         var totalBudgeted = getTotal(breakdown);
 
         if ( !includeFinancialChapters ){
@@ -184,39 +184,39 @@
         areas       = incomeAreas;
         colorScale  = incomeTreemap.colorScale();
       } else{
-        areas       = fexpenseAreas;
-        colorScale  = fexpenseTreemap.colorScale();
+        areas       = functionalAreas;
+        colorScale  = functionalTreemap.colorScale();
       }
 
       budgetSummary.update( breakdowns[uiState.view], areas, colorScale, uiState.field, uiState.view, uiState.year );
 
       if ( uiState.view == 'expense' ) {
         $('#incomeChartContainer').hide();
-        $('#fexpenseChartContainer').hide();
+        $('#functionalChartContainer').hide();
         $('#expenseChartContainer').show();
         expenseTreemap.updateTreemap(uiState);
       } else if ( uiState.view == 'income' ) {
         $('#expenseChartContainer').hide();
-        $('#fexpenseChartContainer').hide();
+        $('#functionalChartContainer').hide();
         $('#incomeChartContainer').show();
         incomeTreemap.updateTreemap(uiState);
       } else {
         $('#expenseChartContainer').hide();
-        $('#fexpenseChartContainer').show();
+        $('#functionalChartContainer').show();
         $('#incomeChartContainer').hide();
-        fexpenseTreemap.updateTreemap(uiState);
+        functionalTreemap.updateTreemap(uiState);
       }
 
       // Show an alert if no data is available
       if ( myGrid.page.info().recordsDisplay != 0 ) {
         $('.no-data-alert').hide();
         $('#expenseChartContainer').css('visibility', 'visible');
-        $('#fexpenseChartContainer').css('visibility', 'visible');
+        $('#functionalChartContainer').css('visibility', 'visible');
         $('#incomeChartContainer').css('visibility', 'visible');
       } else {
         $('.no-data-alert').show();
         $('#expenseChartContainer').css('visibility', 'hidden');
-        $('#fexpenseChartContainer').css('visibility', 'hidden');
+        $('#functionalChartContainer').css('visibility', 'hidden');
         $('#incomeChartContainer').css('visibility', 'hidden');
       }
     }
@@ -233,7 +233,7 @@
 
     function onFunctionalExpenseTreemapClick(event, d) {
 {% if entities %}
-      var getExpenseLink = {{ 'getCountyFExpenseLink' if is_county else 'getTownFExpenseLink' }};
+      var getExpenseLink = {{ 'getCountyFunctionalLink' if is_county else 'getTownFunctionalLink' }};
       var entitySlug = '{{ entity.slug }}';
       window.location=getExpenseLink(entitySlug, d.id);
 {% else %}
@@ -269,12 +269,12 @@
 
     var breakdowns = {
       'income': {{ economic_breakdown.to_json( labels=descriptions['income'] )|safe }},
-      'fexpense': {{ functional_breakdown.to_json( labels=descriptions['functional'] )|safe }},
+      'functional': {{ functional_breakdown.to_json( labels=descriptions['functional'] )|safe }},
       'expense': {{ economic_breakdown.to_json( labels=descriptions['expense'] )|safe }}
     };
     var gridData = {
       'income': breakdownToTable(breakdowns['income']),
-      'fexpense': breakdownToTable(breakdowns['fexpense']),
+      'functional': breakdownToTable(breakdowns['functional']),
       'expense': breakdownToTable(breakdowns['expense'])
     };
     var myGrid;
@@ -284,24 +284,24 @@
     };
 
     var incomeAreas = {{ income_areas|safe }};
-    var fexpenseAreas = {{ functional_areas|safe }};
+    var functionalAreas = {{ functional_areas|safe }};
     var expenseAreas = {{ expense_areas|safe }};
 
     var colorScale = {{ color_scale|safe }};
     var incomeTreemap = new BudgetTreemap("#incomeChartContainer", breakdowns['income'], stats, incomeAreas, 2, colorScale).i18n(i18n).budgetStatuses(budgetStatuses);
-    var fexpenseTreemap = new BudgetTreemap("#fexpenseChartContainer", breakdowns['fexpense'], stats, fexpenseAreas, 2, colorScale).i18n(i18n).budgetStatuses(budgetStatuses);
+    var functionalTreemap = new BudgetTreemap("#functionalChartContainer", breakdowns['functional'], stats, functionalAreas, 2, colorScale).i18n(i18n).budgetStatuses(budgetStatuses);
     var expenseTreemap = new BudgetTreemap("#expenseChartContainer", breakdowns['expense'], stats, expenseAreas, 2, colorScale).i18n(i18n).budgetStatuses(budgetStatuses);
 {% if not entities %}
     // Limit treemap depth for top-level entities
     incomeTreemap.maxLevels(1);
-    fexpenseTreemap.maxLevels(1);
+    functionalTreemap.maxLevels(1);
     expenseTreemap.maxLevels(1);
 {% endif %}
 
     // Set up controls
     $('#select-format').change(redraw);
     $('#expenseChartContainer').bind('policy-selected', onEconomicExpenseTreemapClick);
-    $('#fexpenseChartContainer').bind('policy-selected', onFunctionalExpenseTreemapClick);
+    $('#functionalChartContainer').bind('policy-selected', onFunctionalExpenseTreemapClick);
     $('#incomeChartContainer').bind('policy-selected', onIncomeTreemapClick);
     initSlider("#year-selection", {{ years|safe }}, redraw, {{ latest_year }}, {{ years_scale|safe }});
 
@@ -321,7 +321,7 @@
     // See issue civio/presupuesto-management#52
     expenseTreemap.createTreemap( $.extend(getUIState(), { field: 'expense' }) );
     incomeTreemap.createTreemap( $.extend(getUIState(), { field: 'income' }) );
-    fexpenseTreemap.createTreemap( $.extend(getUIState(), { field: 'expense' }) );
+    functionalTreemap.createTreemap( $.extend(getUIState(), { field: 'expense' }) );
 
 
   });

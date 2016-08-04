@@ -66,7 +66,7 @@ function getCountyLink(slug) {
 function getCountyIncomeLink(slug, article_id) {
   return "{{ url('budget_app.views.counties') }}/"+slug+'/ingresos/'+article_id;
 }
-function getCountyFExpenseLink(slug, article_id) {
+function getCountyFunctionalLink(slug, article_id) {
   return "{{ url('budget_app.views.counties') }}/"+slug+'/gastosf/'+article_id;
 }
 function getCountyExpenseLink(slug, article_id) {
@@ -86,7 +86,7 @@ function getTownLink(slug) {
 function getTownIncomeLink(slug, article_id) {
   return "{{ url('budget_app.views.towns') }}/"+slug+'/ingresos/'+article_id;
 }
-function getTownFExpenseLink(slug, article_id) {
+function getTownFunctionalLink(slug, article_id) {
   return "{{ url('budget_app.views.towns') }}/"+slug+'/gastosf/'+article_id;
 }
 function getTownExpenseLink(slug, article_id) {
