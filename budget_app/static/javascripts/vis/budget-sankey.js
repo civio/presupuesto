@@ -134,7 +134,7 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, adjustInflat
           nodes.push( { "name": item.label,
                         // We need to layout the money flows using whatever is bigger:
                         // the budget or the actual figures. Otherwise flows would overlap.
-                        "value": Math.max(item.amount, item.actualAmount),
+                        "value": Math.max(item.amount||0, item.actualAmount||0),
                         "budgeted": item.amount,
                         "actual": item.actualAmount,
                         "link": linkGenerator(item.link_id, item.label) } );
@@ -146,7 +146,7 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, adjustInflat
       var actualRemainder = real(breakdown[field]["actual_"+year]) - accumulatedActualTotal;
       if ( budgetedRemainder !== 0 )
         nodes.push( { "name": i18n['other'],
-                      "value": Math.max(budgetedRemainder, actualRemainder),
+                      "value": Math.max(budgetedRemainder||0, actualRemainder||0),
                       "budgeted": budgetedRemainder,
                       "actual": actualRemainder,
                       "link": linkGenerator(null, null) });
