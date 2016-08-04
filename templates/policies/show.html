@@ -19,7 +19,8 @@
       <h2 class="page-title">{{ name }}</h2>
       {% else %}
       <p class="history-back">
-        <a href="{{ url(show_entity_url, entity.slug) if entity else url('budget_app.views.policies') }}">&larr; {{ _('Volver a Políticas') }}</a>
+        {% set targetView = 'functional' if type=='functional' else show_side %}
+        <a href="{{ url(show_entity_url, entity.slug) if entity else url('budget_app.views.policies') }}#view={{targetView}}">&larr; {{ _('Volver a Políticas') }}</a>
       </p>
       <h2 class="page-title">{{ entity.name+': ' if entity }}{{ name }}</h2>
       {% endif %}
