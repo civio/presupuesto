@@ -169,7 +169,6 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, adjustInflat
                           "value": node.value,
                           "budgeted": node.budgeted,
                           "actual": node.actual,
-                          "missingData": node.missingData,
                           "link": node.link} );
     }
 
@@ -361,7 +360,7 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, adjustInflat
   function setupLink(link) {
     link
       .attr("d", sankey.link())
-      .attr("class", function(d) { return d.missingData ? "link no-data" : "link with-data"; })
+      .attr("class", "link with-data")
       // Hide elements who are practically zero: our workaround for Sankey layout and null elements
       .attr("opacity", function(d) { return ((d.budgeted||0)+(d.actual||0)) > 1 ? 1 : 0; })
       .style("stroke-width", function(d) { return (d.budgeted || 0) / d.value * d.dy; });
@@ -370,7 +369,7 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, adjustInflat
   function setupExecutionLink(link) {
     link
       .attr("d", sankey.link())
-      .attr("class", function(d) { return d.missingData ? "link-execution no-data" : "link-execution with-data"; })
+      .attr("class", "link-execution with-data")
       .style("display", function(d) { return (d.actual || 0) ? '': 'none'; })
       .style("stroke-width", function(d) { return (d.actual || 0) / d.value * d.dy; });
   }
@@ -409,16 +408,10 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, adjustInflat
     d.name ? $popup.find(".popover-title").html(d.name)
            : (d.source.name ? $popup.find(".popover-title").html(d.source.name) : $popup.find(".popover-title").html(d.target.name));
 
-    if ( d.missingData ) {
-      $popup.find(".popover-content").html('');
-    } else {  // Flow
-      // TODO: Display actual income/expense on nodes, not just flows
-      var html = d.budgeted ? '<span class="budgeted">'+i18n['budgeted']+'</span><br/><span class="popover-content-value">'+formatAmount(d.budgeted)+'</span><br/>' : '';
-      if ( hasExecution )
-        html += d.actual ? '<span class="executed">'+i18n['executed']+'</span><br/><span class="popover-content-value">'+formatAmount(d.actual)+'</span>' : '';
-      $popup.find(".popover-content").html(html);
-    }
-
+    var html = d.budgeted ? '<span class="budgeted">'+i18n['budgeted']+'</span><br/><span class="popover-content-value">'+formatAmount(d.budgeted)+'</span><br/>' : '';
+    if ( hasExecution )
+      html += d.actual ? '<span class="executed">'+i18n['executed']+'</span><br/><span class="popover-content-value">'+formatAmount(d.actual)+'</span>' : '';
+    $popup.find(".popover-content").html(html);
     $popup.show();
   }
   
