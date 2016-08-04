@@ -10,7 +10,7 @@
 {% block content %}
 
 <!-- Politicas -->
-<section class="policies" role="region" data-field="{% if show_side=='income' %}income{% elif full_breakdown %}fexpense{% else %}expense{% endif %}">
+<section class="policies" role="region" data-field="{% if show_side=='income' %}income{% elif full_breakdown %}functional{% else %}expense{% endif %}">
 
   <!-- Policies Content -->
   <div class="policies-content">
@@ -31,7 +31,7 @@
             </div>
           </div>
         </div>
-        <div id="fexpenseChartContainer" class="chart-container">
+        <div id="functionalChartContainer" class="chart-container">
           <div class="popover top" role="tooltip">
             <div class="arrow"></div>
             <p class="popover-subtitle"></p>

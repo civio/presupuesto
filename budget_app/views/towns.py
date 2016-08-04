@@ -27,7 +27,7 @@ def towns_show_expense(request, town_slug, id, render_callback=None):
     return entities_show_article(request, c, town, id, '', 'expense', render_callback)
 
 
-def towns_show_fexpense(request, town_slug, id, render_callback=None):
+def towns_show_functional(request, town_slug, id, render_callback=None):
     town = _get_town(town_slug)
     c = _get_town_context(request, town)
     return entities_show_policy(request, c, town, id, '', render_callback)

@@ -60,7 +60,7 @@ def entity_expenses(request, level, slug, format):
     entity = Entity.objects.get(level=level, slug=slug, language=c['LANGUAGE_CODE'])
     return entities_show(request, c, entity, _generator('gastos-%s-%s' % (level, slug), format, write_entity_economic_expense_breakdown))
 
-def entity_fexpenses(request, level, slug, format):
+def entity_functional(request, level, slug, format):
     c = get_context(request)
     entity = Entity.objects.get(level=level, slug=slug, language=c['LANGUAGE_CODE'])
     return entities_show(request, c, entity, _generator('gastosf-%s-%s' % (level, slug), format, write_entity_functional_breakdown))
@@ -108,7 +108,7 @@ def functional_policy_breakdown(request, id, format):
 def functional_article_expenditures_breakdown(request, id, format):
     return expense_articles_show(request, id, format, _generator("%s.funcional" % id, format, write_entity_functional_breakdown))
 
-def entity_article_fexpenses(request, level, slug, id, format):
+def entity_article_functional(request, level, slug, id, format):
     c = get_context(request)
     entity = Entity.objects.get(level=level, slug=slug, language=c['LANGUAGE_CODE'])
     return entities_show_policy(request, c, entity, id, '', _generator('gastosf-%s-%s-%s' % (level, slug, id), format, write_entity_functional_breakdown))

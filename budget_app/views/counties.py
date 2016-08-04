@@ -27,7 +27,7 @@ def counties_show_expense(request, county_slug, id, render_callback=None):
     return entities_show_article(request, c, county, id, '', 'expense', render_callback)
 
 
-def counties_show_fexpense(request, county_slug, id, render_callback=None):
+def counties_show_functional(request, county_slug, id, render_callback=None):
     county = _get_county(county_slug)
     c = _get_county_context(request, county)
     return entities_show_policy(request, c, county, id, '', render_callback)

@@ -139,7 +139,7 @@
             {% for item in items %}
               {# Convenience variable to simplify URL-generation logic below. #}
               {% if item.policy %}
-                {% set show_side = 'fexpense' %}
+                {% set show_side = 'functional' %}
               {% else %}
                 {% set show_side = 'expense' if item.expense else 'income' %}
               {% endif %}
@@ -160,7 +160,7 @@
                     {% else %}
                       {% set view_name_prefix = 'budget_app.views.counties_show_' if item.level=='comarca' else 'budget_app.views.towns_show_' %}
                       {% set view_name = view_name_prefix+show_side %}
-                      {% if show_side == 'fexpense' %}
+                      {% if show_side == 'functional' %}
                         {% set item_id = item.policy %}
                         {# TODO: Anchoring into functional breakdown pages not supported, only economic ones. Only relevant #}
                         {% set item_anchor = '' %}

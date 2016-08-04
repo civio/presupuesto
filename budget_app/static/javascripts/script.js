@@ -1,16 +1,20 @@
 $(document).ready(function(){
 
-	// Use cookies to check is user arrives to 'articulo' from 'politicas' or 'resumen'
+	// Use cookies to check is user arrives to 'articulo' from 'politicas' or 'resumen'.
+	// We set the cookie when passing by the overview page...
 	if ($('body').hasClass('body-summary')) {
 		$.cookie('resumen', 1);
 
+	// ...and check it when displaying a policy/article page.
 	} else if ($('body').hasClass('body-policies')) {
 		var cookie = $.cookie('resumen');
-		if( cookie && cookie === '1' ){
+		// If the cookie is set, modify the Back link to point to the overview page.
+		if( cookie && cookie === '1' ) {
 			$('.history-back a').attr('href', getOverviewLink()).html('← Volver');
 			$.removeCookie('resumen');
 		}
 
+	// Visiting any other page removes the cookie.
 	} else {
 		$.removeCookie('resumen');
 	}
