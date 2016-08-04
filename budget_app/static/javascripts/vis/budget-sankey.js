@@ -405,8 +405,11 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, adjustInflat
   }
 
   function onMouseOver(d) {
-    d.name ? $popup.find(".popover-title").html(d.name)
-           : (d.source.name ? $popup.find(".popover-title").html(d.source.name) : $popup.find(".popover-title").html(d.target.name));
+    if ( d.name=='' )   // Central node, nothing to do
+      return;
+
+    var name = d.name ? d.name : (d.source.name ? d.source.name : d.target.name);
+    $popup.find(".popover-title").html(name);
 
     var html = d.budgeted ? '<span class="budgeted">'+i18n['budgeted']+'</span><br/><span class="popover-content-value">'+formatAmount(d.budgeted)+'</span><br/>' : '';
     if ( hasExecution )
