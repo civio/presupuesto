@@ -132,7 +132,9 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, adjustInflat
           accumulatedTotal += item.amount;
           accumulatedActualTotal += item.actualAmount;
           nodes.push( { "name": item.label,
-                        "value": item.amount,
+                        // We need to layout the money flows using whatever is bigger:
+                        // the budget or the actual figures. Otherwise flows would overlap.
+                        "value": Math.max(item.amount, item.actualAmount),
                         "budgeted": item.amount,
                         "actual": item.actualAmount,
                         "link": linkGenerator(item.link_id, item.label) } );
@@ -144,7 +146,7 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, adjustInflat
       var actualRemainder = real(breakdown[field]["actual_"+year]) - accumulatedActualTotal;
       if ( budgetedRemainder !== 0 )
         nodes.push( { "name": i18n['other'],
-                      "value": budgetedRemainder,
+                      "value": Math.max(budgetedRemainder, actualRemainder),
                       "budgeted": budgetedRemainder,
                       "actual": actualRemainder,
                       "link": linkGenerator(null, null) });
@@ -344,7 +346,6 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, adjustInflat
   }
 
   function addLegendItem(legend, i, text, cssClass) {
-
     var g = legend.append('g')
       .attr("class", 'legend-item '+cssClass)
       .attr("transform", "translate("+i*150+",0)");
@@ -363,7 +364,7 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, adjustInflat
       .attr("class", function(d) { return d.missingData ? "link no-data" : "link with-data"; })
       // Hide elements who are practically zero: our workaround for Sankey layout and null elements
       .attr("opacity", function(d) { return ((d.budgeted||0)+(d.actual||0)) > 1 ? 1 : 0; })
-      .style("stroke-width", function(d) { return Math.max(1, d.dy); });
+      .style("stroke-width", function(d) { return (d.budgeted || 0) / d.value * d.dy; });
   }
 
   function setupExecutionLink(link) {
@@ -379,10 +380,10 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, adjustInflat
     // that it's name is ''.
     rect
       .attr("class", function(d) { return d.name ? "node-central" : ""; })
-      .attr("height", function(d) { return d.name ? d.dy : d.dy+20; })
+      .attr("height", function(d) { return d.name ? ((d.budgeted||0) / d.value * d.dy) : d.dy+20; })
       .attr("width", function(d) { return d.name ? sankey.nodeWidth() : 10*sankey.nodeWidth(); })
       .attr("x", function(d) { return d.name ? 0 : -5*sankey.nodeWidth(); })
-      .attr("y", function(d) { return d.name ? 0 : -10; })
+      .attr("y", function(d) { return d.name ? (1 - (d.budgeted||0) / d.value) * d.dy / 2 : -10; })
       // Hide elements who are practically zero: our workaround for Sankey layout and null elements
       .attr("opacity", function(d) { return ((d.budgeted||0)+(d.actual||0)) > 1 ? 1 : 0; })
       .style("fill", function(d) { return d.color == d.name ? "#333" : "#FFF"; })
