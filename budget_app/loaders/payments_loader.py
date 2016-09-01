@@ -138,6 +138,13 @@ class PaymentsLoader:
                     budget=budget).save()
 
 
+    # Read number in Spanish format (123.456,78), and return as number of cents
+    def _read_spanish_number(self, s):
+        if (s.strip()==""):
+            return 0
+
+        return int(Decimal(s.replace('.', '').replace(',', '.'))*100)
+
     # Read number in English format (123,456.78), and return as number of cents
     def _read_english_number(self, s):
         if (s.strip()==""):
