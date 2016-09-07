@@ -11,6 +11,7 @@ def tax_receipt(request):
 
     # Get latest budget data
     populate_latest_budget(c)
+    populate_stats(c)
     populate_descriptions(c)
     c['default_income'] = 30000
 
