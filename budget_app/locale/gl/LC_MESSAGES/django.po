@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-06 13:44+0200\n"
-"PO-Revision-Date: 2016-09-09 16:14+0200\n"
+"PO-Revision-Date: 2016-09-12 03:54+0200\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: gl\n"
@@ -447,8 +447,8 @@ msgid "respecto a"
 msgstr "respecto a"
 
 #: templates/policies/show.html:103 templates/policies/show_widget.html:77
-msgid "Comparte éste gráfico"
-msgstr "Comparte éste gráfico"
+msgid "Comparte este gráfico"
+msgstr "Comparte este gráfico"
 
 #: templates/policies/show_script.html:54 templates/search/index.html:133
 #: templates/search/index.html.py:251
@@ -640,11 +640,11 @@ msgid "presupuestos, gastos, ingresos"
 msgstr "orzamentos, gastos, ingresos"
 
 #: templates/shared/modal_embed.html:6
-msgid "Inserta éste gráfico en tu web"
+msgid "Inserta este gráfico en tu web"
 msgstr "Insere este gráfico na túa web"
 
 #: templates/shared/modal_embed.html:9
-msgid "Copia el siguiente código y pégalo en tu web para insertar éste gráfico"
+msgid "Copia el siguiente código y pégalo en tu web para insertar este gráfico"
 msgstr "Copia o seguinte código e pégao na túa web para inserir este gráfico"
 
 #: templates/shared/pagination.html:8
