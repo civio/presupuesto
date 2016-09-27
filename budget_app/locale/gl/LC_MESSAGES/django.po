@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-06 13:44+0200\n"
-"PO-Revision-Date: 2016-09-12 03:54+0200\n"
+"PO-Revision-Date: 2016-09-27 11:03+0200\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: gl\n"
@@ -118,7 +118,7 @@ msgstr "Total Executado"
 
 #: templates/budgets/budgets_totals.html:17
 msgid "Total Presupuestado"
-msgstr "Total Orzado"
+msgstr "Total Orzamentado"
 
 #: templates/budgets/budgets_totals.html:23
 msgid "Capítulos I-VII"
@@ -197,7 +197,7 @@ msgstr ""
 #: templates/policies/show_script.html:32
 #: templates/policies/show_script.html:139
 msgid "Presupuestado"
-msgstr "Orzado"
+msgstr "Orzamentado"
 
 #: templates/budgets/index.html:120
 msgid "Ejecutado"
@@ -629,7 +629,7 @@ msgstr "O que ti achegas"
 
 #: templates/shared/header.html:79
 msgid "¿Qué significa...?"
-msgstr "Qué significa...?"
+msgstr "Que significa...?"
 
 #: templates/shared/meta.html:3 templates/shared/meta.html.py:10
 msgid "Información presupuestaria del Gobierno de Aragón"
@@ -854,3 +854,12 @@ msgstr "Contámosche en que se inviste o diñeiro que recadamos dos teus imposto
 #: views/terms.py:10 views/welcome.py:10
 msgid "Inicio"
 msgstr "Inicio"
+
+msgid "¿Quién lo gasta?"
+msgstr "Quen o gasta?"
+
+msgid "¿Cómo se ingresa?"
+msgstr "Como se ingresa?"
+
+msgid "¿Quién recauda?"
+msgstr "Quen recauda?"
