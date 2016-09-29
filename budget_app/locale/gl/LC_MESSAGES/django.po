@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-06 13:44+0200\n"
-"PO-Revision-Date: 2016-09-27 11:03+0200\n"
+"PO-Revision-Date: 2016-09-29 16:36+0200\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: gl\n"
@@ -118,7 +118,7 @@ msgstr "Total Executado"
 
 #: templates/budgets/budgets_totals.html:17
 msgid "Total Presupuestado"
-msgstr "Total Orzamentado"
+msgstr "Total Orzado"
 
 #: templates/budgets/budgets_totals.html:23
 msgid "Capítulos I-VII"
@@ -158,7 +158,7 @@ msgstr "O cálculo dos subtotales utiliza as cifras de execución para os anos c
 
 #: templates/budgets/budgets_totals.html:51
 msgid "Cantidades actualizadas con la inflación a fecha 1 de enero de"
-msgstr "Cantidades actualizadas coa inflación a data 1 de xaneiro de"
+msgstr "Cantidades actualizadas coa inflación o 1 de xaneiro de"
 
 #: templates/budgets/index.html:11
 msgid "Ingresos y gastos en el Gobierno de Aragón"
@@ -197,7 +197,7 @@ msgstr ""
 #: templates/policies/show_script.html:32
 #: templates/policies/show_script.html:139
 msgid "Presupuestado"
-msgstr "Orzamentado"
+msgstr "Orzado"
 
 #: templates/budgets/index.html:120
 msgid "Ejecutado"
@@ -523,7 +523,7 @@ msgstr "Atención!"
 
 #: templates/shared/chromeframe.html:4
 msgid "Este sitio web no va a funcionar correctamente en tu navegador. La visualización de datos de esta página requieren un navegador con funciones adicionales, como"
-msgstr "Este sitio web non vai a funcionar correctamente no teu navegador. A visualización de datos desta páxina require un navegador con funcións adicionais, como"
+msgstr "Este sitio web non vai funcionar correctamente no teu navegador. A visualización de datos desta páxina require un navegador con funcións adicionais, como"
 
 #: templates/shared/data_controllers.html:5
 msgid "Cantidades"
@@ -575,7 +575,7 @@ msgstr ""
 
 #: templates/shared/data_sources.html:15
 msgid "El ajuste de la inflación se realiza a <b>1 de enero de"
-msgstr "O axute da inflación realízase a <b>1 de xaneiro de"
+msgstr "O axuste da inflación realízase o <b>1 de xaneiro de"
 
 #: templates/shared/data_sources.html:15
 msgid "La tasa de inflación anual es la media de la tasa interanual de los doce meses del año."
@@ -587,7 +587,7 @@ msgstr "Un proxecto de"
 
 #: templates/shared/footer.html:6
 msgid "basado en el código de"
-msgstr "basado no código de"
+msgstr "baseado no código de"
 
 #: templates/shared/footer.html:19
 msgid "Aviso Legal"
@@ -781,7 +781,7 @@ msgstr "Taxa do lixo"
 
 #: templates/tax_receipt/tax_receipt_form.html:63
 msgid "¿Tienes un vado?"
-msgstr "Tes un vado?"
+msgstr "Tes un vao?"
 
 #: templates/tax_receipt/tax_receipt_form.html:65
 msgid "No"
