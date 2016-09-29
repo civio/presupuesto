@@ -854,3 +854,15 @@ msgstr ""
 #: views/terms.py:10 views/welcome.py:10
 msgid "Inicio"
 msgstr ""
+
+msgid "¿Quién lo gasta?"
+msgstr ""
+
+msgid "¿Cómo se ingresa?"
+msgstr ""
+
+msgid "¿Quién recauda?"
+msgstr ""
+
+msgid "o"
+msgstr ""

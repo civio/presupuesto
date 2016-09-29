@@ -903,3 +903,6 @@ msgstr "Com s'ingressa?"
 
 msgid "¿Quién recauda?"
 msgstr "Qui recapta?"
+
+msgid "o"
+msgstr ""
