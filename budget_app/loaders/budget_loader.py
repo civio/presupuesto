@@ -211,10 +211,6 @@ class BudgetLoader:
                     # la primera columna, pero informamos de ello por pantalla
                     print u"INFO: Usando el año %s para la línea [%s]" % (budget.year, line)
 
-            # Add a null column for income data, so all the indexes below remain constant
-            if not is_expense:
-                line.insert(2, None)
-
             self.add_data_item(items, line, is_expense, is_actual)
 
         # Splitting this part allows for easier customization through child classes
