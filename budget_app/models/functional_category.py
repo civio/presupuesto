@@ -30,7 +30,7 @@ class FunctionalCategory(models.Model):
     policy = models.CharField(max_length=3, null=True)
     function = models.CharField(max_length=5, null=True)
     programme = models.CharField(max_length=5, null=True)
-    subprogramme = models.CharField(max_length=5, null=True)
+    subprogramme = models.CharField(max_length=7, null=True)
     description = models.CharField(max_length=200)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
