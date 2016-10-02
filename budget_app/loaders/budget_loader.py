@@ -144,6 +144,7 @@ class BudgetLoader:
                             'policy': 'XX',
                             'function': 'XXX',
                             'programme': 'XXXX',
+                            'subprogramme': 'XXXXX',
                             'description': 'Ingresos'})
         return categories
 
@@ -155,6 +156,7 @@ class BudgetLoader:
                 'policy': (line[2] if line[2] != "" else None),
                 'function': (line[3] if line[3] != "" else None),
                 'programme': (line[4] if line[4] != "" else None),
+                'subprogramme': (line[5] if line[5] != "" else None),
                 'description': description
             })
 
@@ -234,7 +236,8 @@ class BudgetLoader:
             fc_area = line[2][0:1]
             fc_policy = line[2][0:2]
             fc_function = line[2][0:3]
-            fc_programme = line[2]
+            fc_programme = line[2][0:4]
+            fc_subprogramme = line[2]
         else:
             # Income data is often not classified functionally, so we use the fake category we 
             # created before.
@@ -242,6 +245,7 @@ class BudgetLoader:
             fc_policy = 'XX'
             fc_function = 'XXX'
             fc_programme = 'XXXX'
+            fc_subprogramme = 'XXXXX'
 
         # Gather all the relevant bits and store them to be processed
         items.append({
@@ -250,6 +254,7 @@ class BudgetLoader:
                 'fc_policy': fc_policy,
                 'fc_function': fc_function,
                 'fc_programme': fc_programme,
+                'fc_subprogramme': fc_subprogramme,
                 'ec_chapter': line[3][0],
                 'ec_article': (line[3][0:2] if len(line[3])>=2 else None),
                 'ec_heading': (line[3][0:3] if len(line[3])>=3 else None),
@@ -278,9 +283,10 @@ class BudgetLoader:
                                                 area=item['fc_area'],
                                                 policy=item['fc_policy'],
                                                 function=item['fc_function'],
-                                                programme=item['fc_programme'])
+                                                programme=item['fc_programme'],
+                                                subprogramme=item['fc_subprogramme'])
             if not fc:
-                print u"ALERTA: No se encuentra la categoría funcional '%s' para '%s': %s€" % (item['fc_programme'], item['description'], item['amount'])
+                print u"ALERTA: No se encuentra la categoría funcional '%s' para '%s': %s€" % (item['fc_subprogramme'], item['description'], item['amount'])
                 continue
             else:
                 fc = fc[0]
