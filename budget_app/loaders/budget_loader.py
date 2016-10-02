@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 
 from budget_app.models import *
+from decimal import *
 import csv
 import os.path
 
@@ -35,7 +36,7 @@ class BudgetLoader:
         return []
 
     def add_institutional_category(self, items, line):
-        description = line[2] if line[3] == "" else line[3]
+        description = line[2] if len(line)<=3 or line[3] == "" else line[3]
         description = self._escape_unicode(description)
 
         items.append({
@@ -49,7 +50,7 @@ class BudgetLoader:
         institutional_categories = self.get_default_institutional_categories()
         institutions_filename = os.path.join(path, 'estructura_organica.csv')
         print "Cargando lista de secciones de %s..." % institutions_filename
-        reader = csv.reader(open(institutions_filename, 'rb'), delimiter=';')
+        reader = csv.reader(open(institutions_filename, 'rb'), delimiter=self._get_delimiter())
         for line in reader:
             if not line or line[0] == "" or line[0] == 'EJERCICIO':  # Ignore header or empty lines
                 continue
@@ -83,7 +84,7 @@ class BudgetLoader:
         economic_categories = self.get_default_economic_categories()
         filename = os.path.join(path, 'estructura_economica.csv')
         print "Cargando jerarquía económica de %s..." % filename
-        reader = csv.reader(open(filename, 'rb'), delimiter=';')
+        reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
         for line in reader:
             if not line or line[0] == "" or line[0] == 'EJERCICIO':  # Ignore header or empty lines
                 continue
@@ -120,7 +121,7 @@ class BudgetLoader:
         filename = os.path.join(path, 'estructura_financiacion.csv')
         if os.path.isfile(filename):
             print "Cargando jerarquía de financiación de %s..." % filename
-            reader = csv.reader(open(filename, 'rb'), delimiter=';')
+            reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
             for line in reader:
                 if not line or line[0] == "" or line[0] == 'EJERCICIO':  # Ignore header or empty lines
                     continue
@@ -161,7 +162,7 @@ class BudgetLoader:
         functional_categories = self.get_default_functional_categories()
         filename = os.path.join(path, 'estructura_funcional.csv')
         print "Cargando jerarquía funcional de %s..." % filename
-        reader = csv.reader(open(filename, 'rb'), delimiter=';')
+        reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
         for line in reader:
             if not line or line[0] == "" or line[0] == 'EJERCICIO':  # Ignore header or empty lines
                 continue
@@ -196,7 +197,7 @@ class BudgetLoader:
     # We first load all data lines, and then we process them. This became necessary at 
     # some point when had to deal with subtotals in incoming files, for example.
     def load_data_file(self, budget, filename, is_expense, is_actual):
-        reader = csv.reader(open(filename, 'rb'), delimiter=';')
+        reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
         items = []
         for line in reader:
             if not line or line[0] == "" or line[0].upper() == 'EJERCICIO':  # Ignore header or empty lines
@@ -312,7 +313,7 @@ class BudgetLoader:
                 fdc = fdc[0]
 
             # When there is no description for the budget_item take the one from the parent economic category
-            if item['description'] == "":
+            if item['description'] == None or item['description'] == "":
                 item['description'] = ec.description
 
             # Create the budget item
@@ -327,6 +328,10 @@ class BudgetLoader:
                           amount=item['amount'],
                           description=item['description'],
                           budget=budget).save()
+
+    # Make input file delimiter configurable by children
+    def _get_delimiter(self):
+        return ';'
 
     # Read number in Spanish format (123.456,78), and return as number of cents
     # Note: I used to convert to float and multiply by 100, but that would result in a few cents off
@@ -349,6 +354,13 @@ class BudgetLoader:
                 return int(s.replace('.', '').replace(',', '')) * 10
             else:   # No comma, or trailing comma (yes, it happens)
                 return int(s.replace('.', '')) * 100
+
+    # Read number in English format (123,456.78), and return as number of cents
+    def _read_english_number(self, s):
+        if (s.strip()==""):
+            return 0
+
+        return int(Decimal(s.replace(',', ''))*100)
 
     # Do nothing here, but useful to be overriden in some loaders with input files not in UTF8
     def _escape_unicode(self, s):
