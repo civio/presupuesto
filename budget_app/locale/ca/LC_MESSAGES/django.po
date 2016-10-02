@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-06 13:44+0200\n"
-"PO-Revision-Date: 2016-07-15 14:00+0200\n"
+"PO-Revision-Date: 2016-09-12 03:54+0200\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 1.8.8\n"
+"X-Generator: Poedit 1.8.9\n"
 
 #: templates/base-widget.html:7 templates/base-widget.html.py:26
 #: templates/base.html:7 templates/shared/meta.html:9
@@ -445,7 +445,7 @@ msgid "respecto a"
 msgstr "respecte a"
 
 #: templates/policies/show.html:103 templates/policies/show_widget.html:77
-msgid "Comparte éste gráfico"
+msgid "Comparte este gráfico"
 msgstr "Comparteix aquest gràfic"
 
 #: templates/policies/show_script.html:54 templates/search/index.html:133
@@ -638,11 +638,11 @@ msgid "presupuestos, gastos, ingresos"
 msgstr "pressupostos, despeses, ingressos"
 
 #: templates/shared/modal_embed.html:6
-msgid "Inserta éste gráfico en tu web"
+msgid "Inserta este gráfico en tu web"
 msgstr "Insereix aquest gràfic al teu web"
 
 #: templates/shared/modal_embed.html:9
-msgid "Copia el siguiente código y pégalo en tu web para insertar éste gráfico"
+msgid "Copia el siguiente código y pégalo en tu web para insertar este gráfico"
 msgstr "Copia el següent codi i pega-ho al teu web per inserir aquest gràfic"
 
 #: templates/shared/pagination.html:8
@@ -903,3 +903,6 @@ msgstr "Com s'ingressa?"
 
 msgid "¿Quién recauda?"
 msgstr "Qui recapta?"
+
+msgid "o"
+msgstr ""
