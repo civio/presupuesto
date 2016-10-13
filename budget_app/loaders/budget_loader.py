@@ -265,9 +265,9 @@ class BudgetLoader:
         for item in items:
             # Match budget item data to existing categories
             ic = InstitutionalCategory.objects.filter(budget=budget,
-                                            institution=item['ic_code'][0:2],
-                                            section=item['ic_code'][0:4],
-                                            department=item['ic_code'])
+                                            institution=item['ic_institution'],
+                                            section=item['ic_section'],
+                                            department=item['ic_department'])
             if not ic:
                 print u"ALERTA: No se encuentra la institución '%s' para '%s': %s€" % (item['ic_code'], item['description'], item['amount'])
                 continue
