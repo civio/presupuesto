@@ -380,8 +380,8 @@ function StackedAreaChart() {
     _this.$popover.css( popoverPosition(d3.mouse(this)) );
   };
 
-  var onAreaClick = function(d){ 
-    $(_this.selector).trigger('area-selected', d); 
+  var onAreaClick = function(d){
+    $(_this.selector).trigger('area-selected', d);
   };
 
   // Legend Label Mouse Events

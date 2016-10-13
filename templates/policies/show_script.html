@@ -269,6 +269,13 @@
         .maxLevels(2)
         .budgetStatuses(budgetStatuses);
       currentChart.createTreemap( uiState );
+      // Add area click event
+      if (uiState.type == 'functional') {
+        $('#policy-chart-container').bind('policy-selected', onProgrammeSelected);
+      }
+      else{
+        $('#policy-chart-container .treemap-chart rect').css('cursor', 'auto');
+      }
       // Setup stacked area chart
       {% else %}
       currentChart = new BudgetStackedChart('#policy-chart-container', stats, colorScale, i18n)
@@ -285,12 +292,16 @@
 
     // Link to policy handlers
     function onProgrammeSelected(event, d) {
+      // Avoid link in other tabs different from functional
+      if (uiState.type != 'functional') return;
+
       var widget = $('body').hasClass('widget') ? '?widget=1' : '';
+      var label = (event.type == 'policy-selected') ? d.name : d.label;
 
 {% if article %}
-      window.location = getPolicyLink(d.id, d.label, getUIState())+widget;
+      window.location = getPolicyLink(d.id, label, getUIState())+widget;
 {% else %}
-      window.location = getProgrammeLink(d.id, d.label, getUIState())+widget;
+      window.location = getProgrammeLink(d.id, label, getUIState())+widget;
 {% endif %}
     }
 

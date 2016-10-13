@@ -63,11 +63,6 @@
   .policies-chart{
     margin: $grid-gutter-width/2 0;
   }
-
-  // Remove cursor pointer in policy-breakdown treemap
-  .policies-chart .treemap-chart rect{
-    cursor: auto; 
-  }
   
   .chart-container.stacked-area-chart .popover .popover-content {
     text-align: left;
