@@ -270,11 +270,11 @@ class BudgetLoader:
         for item in items:
             # Match budget item data to existing categories
             ic = InstitutionalCategory.objects.filter(budget=budget,
-                                            institution=item['ic_code'][0:2],
-                                            section=item['ic_code'][0:4],
-                                            department=item['ic_code'])
+                                            institution=item['ic_institution'],
+                                            section=item['ic_section'],
+                                            department=item['ic_department'])
             if not ic:
-                print u"ALERTA: No se encuentra la institución '%s' para '%s': %s€" % (item['ic_code'], item['description'], item['amount'])
+                print u"ALERTA: No se encuentra la institución '%s' para '%s': %s€" % (item['ic_code'], item['description'].decode("utf8"), item['amount'])
                 continue
             else:
                 ic = ic[0]
@@ -286,7 +286,7 @@ class BudgetLoader:
                                                 programme=item['fc_programme'],
                                                 subprogramme=item['fc_subprogramme'])
             if not fc:
-                print u"ALERTA: No se encuentra la categoría funcional '%s' para '%s': %s€" % (item['fc_subprogramme'], item['description'], item['amount'])
+                print u"ALERTA: No se encuentra la categoría funcional '%s' para '%s': %s€" % (item['fc_subprogramme'], item['description'].decode("utf8"), item['amount'])
                 continue
             else:
                 fc = fc[0]
@@ -298,7 +298,7 @@ class BudgetLoader:
                                                 heading=item['ec_heading'],
                                                 subheading=item['ec_subheading'])
             if not ec:
-                print u"ALERTA: No se encuentra la categoría económica '%s' para '%s': %s€" % (item['ec_code'], item['description'], item['amount'])
+                print u"ALERTA: No se encuentra la categoría económica '%s' para '%s': %s€" % (item['ec_code'], item['description'].decode("utf8"), item['amount'])
                 continue
             else:
                 ec = ec[0]
@@ -309,7 +309,7 @@ class BudgetLoader:
                                                 fund_class=item['fdc_code'][0:2],
                                                 fund=item['fdc_code'])
             if not fdc:
-                print u"ALERTA: No se encuentra la categoría de financiación '%s' para '%s': %s€" % (item['fdc_code'], item['description'], item['amount'])
+                print u"ALERTA: No se encuentra la categoría de financiación '%s' para '%s': %s€" % (item['fdc_code'], item['description'].decode("utf8"), item['amount'])
                 continue
             else:
                 fdc = fdc[0]

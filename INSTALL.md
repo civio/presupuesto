@@ -31,15 +31,12 @@ Para instalar la aplicación en local es necesario seguir los siguientes pasos:
 * Crear el esquema de la base de datos y cargar los datos básicos:
 
         $ python manage.py syncdb
+        $ python manage.py migrate
 
         $ python manage.py load_glossary
         $ python manage.py load_entities
         $ python manage.py load_stats
         $ python manage.py load_budget 2014
-
-* Cargar los datos de al menos un par de comarcas:
-
-        $ python manage.py load_budget_data comarca 2014Q1
 
 * Arrancar el servidor
 
