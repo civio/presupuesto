@@ -293,7 +293,11 @@
     };
 
     // Link to policy handlers
+<<<<<<< HEAD
     function onItemSelected(event, d) {
+=======
+    function onProgrammeSelected(event, d) {
+>>>>>>> master
       // Avoid link in other tabs different from functional
       if (uiState.type != 'functional') return;
 
@@ -302,10 +306,15 @@
 
 {% if article %}
       window.location = getPolicyLink(d.id, label, getUIState())+widget;
+<<<<<<< HEAD
 {% elif policy_uid %}
       window.location = getProgrammeLink(d.id, label, getUIState())+widget;
 {% else %}
       window.location = getSubprogrammeLink(d.id, label, getUIState())+widget;
+=======
+{% else %}
+      window.location = getProgrammeLink(d.id, label, getUIState())+widget;
+>>>>>>> master
 {% endif %}
     }
 
