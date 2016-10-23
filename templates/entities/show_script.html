@@ -77,11 +77,14 @@
       // Do work
       var columnDef = getColumnDefinition(uiState);
       var executionColumnDef = getExecutionColumnDefinition(uiState);
+      var addEconomicCategoriesPrefix = {{ 'true' if add_economic_categories_prefix else 'false' }};
 
       if ( myGrid !== undefined )  myGrid.destroy();
       myGrid = createBudgetGrid("#myGrid", gridData[uiState.view], [
         {
-          data: "label",
+          data: addEconomicCategoriesPrefix && uiState.type!='functional' ?
+                  addEconomicCategoryPrefix :
+                  'label',
           title: ( uiState.view == 'functional' ? '{{ _("Política") }}' : '{{ _("Artículo") }}' ),
           render: entityLinkFormatter
         },

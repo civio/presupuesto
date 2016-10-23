@@ -34,6 +34,7 @@ def get_context(request, css_class='', title=''):
     c['show_institutional_tab'] = not hasattr(settings, 'SHOW_INSTITUTIONAL_TAB') or settings.SHOW_INSTITUTIONAL_TAB
     c['show_funding_tab'] = hasattr(settings, 'SHOW_FUNDING_TAB') and settings.SHOW_FUNDING_TAB
     c['show_actual'] = not hasattr(settings, 'SHOW_ACTUAL') or settings.SHOW_ACTUAL
+    c['add_economic_categories_prefix'] = hasattr(settings, 'ADD_ECONOMIC_CATEGORIES_PREFIX') and settings.ADD_ECONOMIC_CATEGORIES_PREFIX
 
     c['color_scale'] = getattr(settings, 'COLOR_SCALE', [])
 
