@@ -10,6 +10,10 @@ var lastSort = null;
 // Poor-man's auto key generator
 var id = 0;
 
+// Used by addEconomicCategoryPrefix to get the economic bit out an item's uid
+// TODO: Is there a better way? Feels like a waste of effort, plus dirty.
+var itemUidRegexp = /(\d+)\/?$/;
+
 // Display column name depending on multi-level status
 function rowNameFormatter(value, type, item) {
   var valuewrap = "<span class='toggle'>" + value + "</span>";
@@ -208,4 +212,10 @@ function getExecutionTotalLabel(budgetStatus, budgetStatusLabels) {
   return isPartiallyExecuted(budgetStatus) ?
             " <small>("+budgetStatusLabels[budgetStatus]+")</small>" :
             "";
+}
+
+function addEconomicCategoryPrefix(item) {
+  var match = itemUidRegexp.exec(item.key);
+  var code = match ? match[1] : item.key;
+  return code + ' ' + item.label;
 }

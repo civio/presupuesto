@@ -200,12 +200,15 @@
       // Do work
       var columnDef = getColumnDefinition(uiState);
       var executionColumnDef = getExecutionColumnDefinition(uiState);
+      var addEconomicCategoriesPrefix = {{ 'true' if add_economic_categories_prefix else 'false' }};
 
       if ( myGrid !== undefined ) myGrid.destroy();
 
       myGrid = createBudgetGrid( "#myGrid", gridData[uiState.type], [
                           {
-                            data: "label",
+                            data: addEconomicCategoriesPrefix && uiState.type=='economic' ?
+                                    addEconomicCategoryPrefix :
+                                    'label',
                             title: getLabelColumnTitle(uiState.type),
                             render: getLabelColumnRender(uiState.type),
                           },
