@@ -111,7 +111,7 @@ function articleLinkFormatter(value, type, item, linkGetter) {
   if ( item.indent > 0 ) {
     var link = linkGetter(item._parent.key, item._parent.label);
   } else {
-    var link = linkGetter(item.key, value);
+    var link = linkGetter(item.key, item.label);
   }
   var linkedValue = "<a href='"+link+"'>"+value+"</a>";
   return rowNameFormatter(linkedValue, type, item);
