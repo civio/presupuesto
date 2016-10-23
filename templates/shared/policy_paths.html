@@ -34,7 +34,7 @@ function getExpenseArticleLink(article_id, title) {
   if ( article_id )
     return "{{ url('budget_app.views.expense_articles_show') }}/"+article_id+'/'+parameterize(title);
   else
-    return "{{ url('budget_app.views.policies') }}#field=expense";
+    return "{{ url('budget_app.views.policies') }}#view=expense";
 }
 function getIncomeArticleLink(article_id, title) {
   // Note: we ignore policy ids that are a complex object, which happens when we have
