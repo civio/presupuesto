@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-06 13:44+0200\n"
-"PO-Revision-Date: 2016-10-18 13:34+0200\n"
+"PO-Revision-Date: 2016-10-26 14:29+0200\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.10\n"
+"X-Generator: Poedit 1.8.11\n"
 
 #: templates/base-widget.html:7 templates/base-widget.html.py:26
 #: templates/base.html:7 templates/shared/meta.html:9
@@ -197,6 +197,9 @@ msgstr ""
 #: templates/policies/show_script.html:32
 #: templates/policies/show_script.html:139
 msgid "Presupuestado"
+msgstr "Budgeted"
+
+msgid "Presupuestado.StackedArea"
 msgstr "Budgeted"
 
 #: templates/budgets/index.html:120
