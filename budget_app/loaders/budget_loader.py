@@ -52,7 +52,8 @@ class BudgetLoader:
         print "Cargando lista de secciones de %s..." % institutions_filename
         reader = csv.reader(open(institutions_filename, 'rb'), delimiter=self._get_delimiter())
         for line in reader:
-            if not line or line[0] == "" or line[0] == 'EJERCICIO':  # Ignore header or empty lines
+            # Ignore header, empty lines and comments
+            if not line or line[0]=="" or line[0][0]=="#" or line[0] == 'EJERCICIO':
                 continue
 
             if budget.year != line[0]:
@@ -86,7 +87,8 @@ class BudgetLoader:
         print "Cargando jerarquía económica de %s..." % filename
         reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
         for line in reader:
-            if not line or line[0] == "" or line[0] == 'EJERCICIO':  # Ignore header or empty lines
+            # Ignore header, empty lines and comments
+            if not line or line[0]=="" or line[0][0]=="#" or line[0] == 'EJERCICIO':
                 continue
 
             if budget.year != line[0]:
@@ -123,7 +125,8 @@ class BudgetLoader:
             print "Cargando jerarquía de financiación de %s..." % filename
             reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
             for line in reader:
-                if not line or line[0] == "" or line[0] == 'EJERCICIO':  # Ignore header or empty lines
+                # Ignore header, empty lines and comments
+                if not line or line[0]=="" or line[0][0]=="#" or line[0] == 'EJERCICIO':
                     continue
 
                 if budget.year != line[0]:
@@ -166,7 +169,8 @@ class BudgetLoader:
         print "Cargando jerarquía funcional de %s..." % filename
         reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
         for line in reader:
-            if not line or line[0] == "" or line[0] == 'EJERCICIO':  # Ignore header or empty lines
+            # Ignore header, empty lines and comments
+            if not line or line[0]=="" or line[0][0]=="#" or line[0] == 'EJERCICIO':
                 continue
 
             if budget.year != line[0]:
