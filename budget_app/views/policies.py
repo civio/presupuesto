@@ -86,7 +86,7 @@ def programmes_show(request, id, title, render_callback=None):
     # The functional breakdown is an empty one, as we're at the deepest level, but since
     # we're going to be displaying this data in the policy page we send a blank one
     c['functional_breakdown'] = BudgetBreakdown([])
-    c['economic_breakdown'] = BudgetBreakdown(['chapter', 'article', 'heading', 'uid'])
+    c['economic_breakdown'] = BudgetBreakdown(['chapter', 'article', 'heading', _get_final_element_grouping(c)])
     c['funding_breakdown'] = BudgetBreakdown(['source', 'fund'])
     c['institutional_breakdown'] = BudgetBreakdown([_year_tagged_institution, _year_tagged_department])
     get_budget_breakdown(   "fc.programme = %s and e.id = %s", [ id, main_entity.id ],
@@ -153,7 +153,7 @@ def articles_show(request, id, title, show_side, render_callback=None):
     # Get the budget breakdown.
     # The functional one is used only when showing expenses.
     c['functional_breakdown'] = BudgetBreakdown(['policy', 'programme'])
-    c['economic_breakdown'] = BudgetBreakdown(['heading', 'uid'])
+    c['economic_breakdown'] = BudgetBreakdown(['heading', _get_final_element_grouping(c)])
     c['funding_breakdown'] = BudgetBreakdown(['source', 'fund'])
     c['institutional_breakdown'] = BudgetBreakdown([_year_tagged_institution, _year_tagged_department])
     get_budget_breakdown(   "ec.article = %s and e.id = %s and i.expense = %s",
@@ -218,6 +218,17 @@ def _get_tab_titles(show_side):
             'funding': u"¿Cómo se financia?",
             'institutional': u"¿Quién lo gasta?"
         }
+
+# Should we group elements at the economic subheading level, or list all of them?
+# By default, and traditionally, we showed all of them, but in big administrations
+# this results in lists of items with identical names, because they belong to different
+# departments (see #135). In those cases we can group at the subheading level, but beware,
+# make sure subheadings are consistent across departments (not the case for PGE, f.ex.).
+def _get_final_element_grouping(c):
+    if hasattr(settings, 'BREAKDOWN_BY_UID') and settings.BREAKDOWN_BY_UID==False:
+        return 'subheading'
+    else:
+        return 'uid'
 
 def _populate_csv_settings(c, type, id):
     c['csv_id'] = id
