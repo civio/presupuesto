@@ -63,7 +63,7 @@ def policies_show(request, id, title, render_callback=None):
 
 def programmes_show(request, id, title, render_callback=None):
     # Get request context
-    c = get_context(request, css_class='body-policies', title='')
+    c = get_context(request, css_class='body-policies body-programmes', title='')
 
     # Retrieve the entity to display
     main_entity = get_main_entity(c)
@@ -195,7 +195,7 @@ def expense_articles_show(request, id, title, render_callback=None):
 
 def articles_show(request, id, title, show_side, render_callback=None):
     # Get request context
-    c = get_context(request, css_class='body-policies', title='')
+    c = get_context(request, css_class='body-policies body-articles', title='')
 
     # Retrieve the entity to display
     main_entity = get_main_entity(c)
