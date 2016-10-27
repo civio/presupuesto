@@ -124,9 +124,9 @@
       <table id="myGrid" class="table-grid" width="100%"></table>
 
       <!-- Panel Downloads -->
-      <div class="panel-downloads">
 {# FIXME: Disabled temporarily for subprogrammes #}
 {% if not subprogramme %}
+      <div class="panel-downloads">
     {% if full_breakdown %}
       {% if subprogramme is not defined and show_side != 'income' %}
         {{ panel_downloads(_(tab_titles['functional']), 'functional', csv_type, csv_id) }} 
@@ -161,8 +161,8 @@
                       xls_link=url(download_view_name, level, entity.slug, csv_id, 'xlsx') ) }} 
       {% endif %}
     {% endif %}
-{% endif %}
       </div>
+{% endif %}
     </div>
 
     {% include 'shared/social_sharing.html' %}
