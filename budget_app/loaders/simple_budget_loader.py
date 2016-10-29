@@ -131,11 +131,10 @@ class SimpleBudgetLoader:
                 fc = FunctionalCategory.objects.filter( area=item['fc_code'][0:1],
                                                         policy=item['fc_code'][0:2],
                                                         function=item['fc_code'][0:3],
-                                                        programme=item['fc_code'][0:4],
-                                                        subprogramme=item['fc_code'],
+                                                        programme=item['fc_code'][0:4] if self._use_subprogrammes() else item['fc_code'],
+                                                        subprogramme=item['fc_code'] if self._use_subprogrammes() else None,
                                                         budget=budget)
                 if not fc:
-                    #print u"ALERTA: No se encuentra la categoría funcional '%s'" % (item['fc_code'].decode("utf8"))
                     print u"ALERTA: No se encuentra la categoría funcional '%s' para '%s': %s€" % (item['fc_code'].decode("utf8"), item['description'].decode("utf8"), item['amount']/100)
                     continue
                 else:
@@ -210,6 +209,11 @@ class SimpleBudgetLoader:
             if re.match("^#", line[0]):     # Ignore comments
                 continue
 
+            # If we're not using subprogrammes, insert an empty column where they would go.
+            # This feels better than forcing everybody to add an empty column.
+            if not self._use_subprogrammes():
+                line.insert(4, "")
+
             area = line[0]
             policy = line[1]
             group = line[2]
@@ -247,3 +251,7 @@ class SimpleBudgetLoader:
           return s[0].upper() + s[1:].lower()
         else:
           return s
+
+    # Are we using subprogrammes? (Default: false)
+    def _use_subprogrammes(self):
+        return hasattr(settings, 'USE_SUBPROGRAMMES') and settings.USE_SUBPROGRAMMES
