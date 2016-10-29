@@ -259,11 +259,6 @@
 
       var colorScale = {{ color_scale|safe }};
 
-      // We explicitely set the dimensions of the container, otherwise we got an strange behaviour in 
-      // an iPad, where the height of the chart would explode for no apparent reason
-      //$(container).css('width', chartWidth);
-      //$(container).css('height', chartWidth/2);
-
       // Setup treemap chart
       {% if show_treemap %}
       if (currentChart !== null) $('#policy-chart-container .treemap-chart').remove();
