@@ -109,7 +109,8 @@
     }
 
     // Grid Data onjets
-    var gridData = _.map(breakdowns, function(b) { breakdownToTable(b); });
+    var gridData = {};
+    _.each(breakdowns, function(b, name) { gridData[name] = breakdownToTable(b); });
 
     // Areas Data object
     var areasData = {
