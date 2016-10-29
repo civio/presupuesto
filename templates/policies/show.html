@@ -4,7 +4,7 @@
 {% block content %}
 
 <!-- Politicas Detalle -->
-<section class="policies policy-breakdown" role="region" data-field="{{ show_side }}" data-tab="{{ type }}">
+<section class="policies policy-breakdown" role="region" data-field="{{ show_side }}" data-tab="{{ starting_tab }}">
 
   <!-- Politicas Header -->
   <div class="policies-header section-header">
@@ -26,7 +26,7 @@
       <h2 class="page-title">{{ name }}</h2>
       {% else %}
       <p class="history-back">
-        {% set targetView = 'functional' if type=='functional' else show_side %}
+        {% set targetView = 'functional' if starting_tab=='functional' else show_side %}
         <a href="{{ url(show_entity_url, entity.slug) if entity else url('budget_app.views.policies') }}#view={{targetView}}">&larr; {{ _('Volver a Políticas') }}</a>
       </p>
       <h2 class="page-title">{{ entity.name+': ' if entity }}{{ name }}</h2>

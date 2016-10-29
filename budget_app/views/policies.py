@@ -49,7 +49,7 @@ def policies_show(request, id, title, render_callback=None):
     _set_show_side(c, show_side)
     _set_full_breakdown(c, True)
 
-    _set_policy_type(c, 'functional')
+    _set_starting_tab(c, 'functional')
 
     c['name'] = c['descriptions']['functional'].get(c['policy_uid'])
     c['title_prefix'] = c['name']
@@ -114,7 +114,7 @@ def programmes_show(request, id, title, render_callback=None):
     _set_show_side(c, show_side)
     _set_full_breakdown(c, True)
 
-    _set_policy_type(c, 'functional')
+    _set_starting_tab(c, 'functional' if c['use_subprogrammes'] else 'economic')
 
     # if parameter widget defined use policies/widget template instead of policies/show
     template = 'policies/show_widget.html' if _isWidget(request) else 'policies/show.html'
@@ -177,7 +177,7 @@ def subprogrammes_show(request, id, title, render_callback=None):
     _set_show_side(c, show_side)
     _set_full_breakdown(c, True)
 
-    _set_policy_type(c, 'economic')
+    _set_starting_tab(c, 'economic')
 
     # if parameter widget defined use policies/widget template instead of policies/show
     template = 'policies/show_widget.html' if _isWidget(request) else 'policies/show.html'
@@ -248,7 +248,7 @@ def articles_show(request, id, title, show_side, render_callback=None):
     _set_show_side(c, show_side)
     _set_full_breakdown(c, True)
 
-    _set_policy_type(c, 'economic')
+    _set_starting_tab(c, 'economic')
 
     # if parameter widget defined use policies/widget template instead of policies/show
     template = 'policies/show_widget.html' if _isWidget(request) else 'policies/show.html'
@@ -304,8 +304,8 @@ def _set_show_side(c, side):
 def _set_full_breakdown(c, full_breakdown):
     c['full_breakdown'] = full_breakdown
 
-def _set_policy_type(c, type):
-    c['type'] = type;
+def _set_starting_tab(c, tab):
+    c['starting_tab'] = tab;
 
 # Get widget parameter
 def _isWidget(request):
