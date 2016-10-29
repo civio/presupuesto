@@ -149,9 +149,8 @@
       if (!$('body').hasClass('widget')) {
         $('#tabs .active').removeClass('active');
         $('a[href="#'+uiState.type+'"]').blur().parent().addClass('active');
-      }
       // Setup widget tab title
-      else{
+      } else {
         $('.tab-title h3.'+uiState.type).show();
       }
       redraw();
