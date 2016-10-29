@@ -68,13 +68,13 @@
         'economic': rowNameFormatter,
 {% endif %}
 {% if full_breakdown %}
-{% if programme_id %}
-        'functional': getPolicyLinkFormatter(-1),  // 
-{% elif policy_uid %}
+  {% if programme_id %}
+        'functional': getPolicyLinkFormatter(-1), // Subprogrammes at root level
+  {% elif policy_uid %}
         'functional': getPolicyLinkFormatter(0),  // Programmes at root level
-{% else %}  // Showing an article
-        'functional': getPolicyLinkFormatter(1),  // Programmes at root level
-{% endif %}
+  {% else %}  // Showing an article
+        'functional': getPolicyLinkFormatter(1),  // Policies at root level
+  {% endif %}
 {% else %}
         'functional': rowNameFormatter
 {% endif %}
@@ -165,7 +165,6 @@
 
     // Redraw all
     function redraw(){
-
       uiState = getUIState();
     
       // Show/hide panel downloads
@@ -178,7 +177,6 @@
 
     // Do all the hard work of drawing the grids
     function redrawGrid() {
-
       if( $('#myGrid').size() == 0 ) return;
 
       // Update year label
