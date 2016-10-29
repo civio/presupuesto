@@ -1,10 +1,8 @@
 // Helper methods for handling controls related to data displays
 
 function setRedrawOnTabsChange(container, callback) {
-
   // Listen changes on url hash
-  $(window).bind('hashchange', function(e){
-
+  $(window).bind('hashchange', function(e) {
     // Get hash states    
     var state = $.deparam.fragment();
 
@@ -27,15 +25,15 @@ function setRedrawOnTabsChange(container, callback) {
 
   // Initially trigger hashchange   
   var state = $.deparam.fragment();
-  if(state.view){
+  if (state.view) {
     $(window).trigger('hashchange');
-  } else{
+  } else {
     state.view = $('section').data('tab');
-    $.bbq.pushState( state );
+    $.bbq.pushState(state);
   }
 }
 
-function setDataTab( type ){
+function setDataTab(type) {
   $('section').data('tab', type);
 }
 
@@ -65,7 +63,6 @@ function unfoldItem(gridData, itemId) {
 
 // Activar slider de años (Documentation: http://seiyria.com/bootstrap-slider/)
 function initSlider(selector, years, callback, startValue, labels) {
-
   // Skip if container not exists
   if ($(selector).size()===0) return;
 
