@@ -48,7 +48,6 @@ def policies_show(request, id, title, render_callback=None):
     _populate_csv_settings(c, 'policy', id)
     _set_show_side(c, show_side)
     _set_full_breakdown(c, True)
-
     _set_starting_tab(c, 'functional')
 
     c['name'] = c['descriptions']['functional'].get(c['policy_uid'])
@@ -71,7 +70,8 @@ def programmes_show(request, id, title, render_callback=None):
     # Extra request context info
     c['programme_id'] = id
     c['programme'] = FunctionalCategory.objects.filter( budget__entity=main_entity, 
-                                                        programme=id)[0]
+                                                        programme=id,
+                                                        subprogramme__isnull=True)[0]
     c['policy'] = FunctionalCategory.objects.filter(budget__entity=main_entity, 
                                                     policy=c['programme'].policy, 
                                                     function__isnull=True)[0]
@@ -82,8 +82,11 @@ def programmes_show(request, id, title, render_callback=None):
         if not item.actual or not item.uid() in programme_descriptions:
             programme_descriptions[item.uid()] = getattr(item, 'description')
 
-    # Get the budget breakdown.
-    c['functional_breakdown'] = BudgetBreakdown(['subprogramme'])
+    # Get the budget breakdown
+    # The functional breakdown may or may not exist, depending on whether we are at deepest level,
+    # i.e. depending on whether there are subprogrammes. The policy page will check whether
+    # the breakdown exists and adapt accordingly.
+    c['functional_breakdown'] = BudgetBreakdown(['subprogramme']) if c['use_subprogrammes'] else None
     c['economic_breakdown'] = BudgetBreakdown(['chapter', 'article', 'heading', _get_final_element_grouping(c)])
     c['funding_breakdown'] = BudgetBreakdown(['source', 'fund'])
     c['institutional_breakdown'] = BudgetBreakdown([_year_tagged_institution, _year_tagged_department])
@@ -113,7 +116,6 @@ def programmes_show(request, id, title, render_callback=None):
     _populate_csv_settings(c, 'programme', id)
     _set_show_side(c, show_side)
     _set_full_breakdown(c, True)
-
     _set_starting_tab(c, 'functional' if c['use_subprogrammes'] else 'economic')
 
     # if parameter widget defined use policies/widget template instead of policies/show
@@ -122,7 +124,7 @@ def programmes_show(request, id, title, render_callback=None):
     return render(c, render_callback, template )
 
 
-# FIXME: This is just like the programme function above
+# FIXME: This is just like the programme function above. Should refactor common parts
 def subprogrammes_show(request, id, title, render_callback=None):
     # Get request context
     c = get_context(request, css_class='body-policies body-subprogrammes', title='')
@@ -144,10 +146,7 @@ def subprogrammes_show(request, id, title, render_callback=None):
         if not item.actual or not item.uid() in programme_descriptions:
             programme_descriptions[item.uid()] = getattr(item, 'description')
 
-    # Get the budget breakdown.
-    # The functional breakdown is an empty one, as we're at the deepest level, but since
-    # we're going to be displaying this data in the policy page we send a blank one
-    c['functional_breakdown'] = BudgetBreakdown([])
+    # Get the budget breakdown
     c['economic_breakdown'] = BudgetBreakdown(['chapter', 'article', 'heading', _get_final_element_grouping(c)])
     c['funding_breakdown'] = BudgetBreakdown(['source', 'fund'])
     c['institutional_breakdown'] = BudgetBreakdown([_year_tagged_institution, _year_tagged_department])
@@ -176,7 +175,6 @@ def subprogrammes_show(request, id, title, render_callback=None):
     _populate_csv_settings(c, 'programme', id)
     _set_show_side(c, show_side)
     _set_full_breakdown(c, True)
-
     _set_starting_tab(c, 'economic')
 
     # if parameter widget defined use policies/widget template instead of policies/show
