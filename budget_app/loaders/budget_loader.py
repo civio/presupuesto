@@ -147,12 +147,17 @@ class BudgetLoader:
                             'policy': 'XX',
                             'function': 'XXX',
                             'programme': 'XXXX',
-                            'subprogramme': 'XXXXX',
+                            'subprogramme': 'XXXXX' if self._use_subprogrammes() else None,
                             'description': 'Ingresos'})
         return categories
 
     def add_functional_category(self, items, line):
         description = self._escape_unicode(line[6])
+
+        # If we're not using subprogrammes, insert an empty column where they would go.
+        # This feels better than forcing everybody to add an empty column.
+        if not self._use_subprogrammes():
+            line.insert(5, "")
 
         items.append({
                 'area': line[1],
@@ -240,8 +245,8 @@ class BudgetLoader:
             fc_area = line[2][0:1]
             fc_policy = line[2][0:2]
             fc_function = line[2][0:3]
-            fc_programme = line[2][0:4]
-            fc_subprogramme = line[2]
+            fc_programme = line[2][0:4] if self._use_subprogrammes() else line[2]
+            fc_subprogramme = line[2] if self._use_subprogrammes() else None
         else:
             # Income data is often not classified functionally, so we use the fake category we 
             # created before.
@@ -249,11 +254,13 @@ class BudgetLoader:
             fc_policy = 'XX'
             fc_function = 'XXX'
             fc_programme = 'XXXX'
-            fc_subprogramme = 'XXXXX'
+            fc_subprogramme = 'XXXXX' if self._use_subprogrammes() else None
 
         # Gather all the relevant bits and store them to be processed
         items.append({
-                'ic_code': line[1],
+                'ic_institution': line[1][0:2],
+                'ic_section': line[1][0:4],
+                'ic_department': line[1],
                 'fc_area': fc_area,
                 'fc_policy': fc_policy,
                 'fc_function': fc_function,
@@ -288,9 +295,10 @@ class BudgetLoader:
                                                 policy=item['fc_policy'],
                                                 function=item['fc_function'],
                                                 programme=item['fc_programme'],
-                                                subprogramme=item['fc_subprogramme'])
+                                                subprogramme=item['fc_subprogramme'] if self._use_subprogrammes() else None)
             if not fc:
-                print u"ALERTA: No se encuentra la categoría funcional '%s' para '%s': %s€" % (item['fc_subprogramme'], item['description'].decode("utf8"), item['amount'])
+                code = item['fc_subprogramme'] if self._use_subprogrammes() else item['fc_programme']
+                print u"ALERTA: No se encuentra la categoría funcional '%s' para '%s': %s€" % (code, item['description'].decode("utf8"), item['amount'])
                 continue
             else:
                 fc = fc[0]
@@ -371,3 +379,7 @@ class BudgetLoader:
     # Do nothing here, but useful to be overriden in some loaders with input files not in UTF8
     def _escape_unicode(self, s):
         return s
+
+    # Are we using subprogrammes? (Default: false)
+    def _use_subprogrammes(self):
+        return hasattr(settings, 'USE_SUBPROGRAMMES') and settings.USE_SUBPROGRAMMES
