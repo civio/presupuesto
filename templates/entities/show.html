@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% from 'shared/entity_select.html' import render_entity_select as render_entity_select %}
+{% from 'entities/chart_container.html' import chart_container as chart_container %}
 
 {% block content %}
 {% if entities %}
@@ -47,36 +48,9 @@
       <!-- Policies Chart -->
       <div class="policies-chart">
         <div id="budget-summary"></div>
-        <div id="expenseChartContainer" class="chart-container">
-          <div class="popover top" role="tooltip">
-            <div class="arrow"></div>
-            <p class="popover-subtitle"></p>
-            <h4 class="popover-title"></h4>
-            <div class="popover-content">
-              <span class="popover-content-value"></span>
-            </div>
-          </div>
-        </div>
-        <div id="functionalChartContainer" class="chart-container">
-          <div class="popover top" role="tooltip">
-            <div class="arrow"></div>
-            <p class="popover-subtitle"></p>
-            <h4 class="popover-title"></h4>
-            <div class="popover-content">
-              <span class="popover-content-value"></span>
-            </div>
-          </div>
-        </div>
-        <div id="incomeChartContainer" class="chart-container">
-          <div class="popover top" role="tooltip">
-            <div class="arrow"></div>
-            <p class="popover-subtitle"></p>
-            <h4 class="popover-title"></h4>
-            <div class="popover-content">
-              <span class="popover-content-value"></span>
-            </div>
-          </div>
-        </div>
+        {{ chart_container('expenseChartContainer') }}
+        {{ chart_container('functionalChartContainer') }}
+        {{ chart_container('incomeChartContainer') }}
         <p class="no-data-alert">{{ _('Información no disponible') }}</p>
       </div>
 
