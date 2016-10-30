@@ -9,6 +9,35 @@
       }
     });
 
+    // Helper functions to set the totals panel
+    function setEconomicTotals(breakdown, columnDef, classSelector) {
+      var format = function(amount) { return columnDef.render(amount, 'display', breakdown); },
+          totalNonFinancial = totalFinancial = 0;
+
+      _.each(breakdown.sub, function(value, id) {
+        var amount = columnDef.data(breakdown.sub[id]);
+        if ( id[0]==='8' || id[0]==='9' )
+          totalFinancial += amount
+        else
+          totalNonFinancial += amount
+      });
+
+      if ( !includeFinancialChapters )
+        $("#non-financial-total "+classSelector+"-amount").text(format(totalNonFinancial));
+      $("#main-total "+classSelector+"-amount").text(format(totalNonFinancial+totalFinancial));
+    }
+
+    function setFunctionalTotals(breakdown, columnDef, classSelector) {
+      var getTotal = function(breakdown) { return columnDef.data(breakdown)||0; },
+          format = function(amount) { return columnDef.render(amount, 'display', breakdown); },
+          total = getTotal(breakdown);
+      if ( !includeFinancialChapters ) {
+        total += getTotal(financialExpenseBreakdown);
+        $("#non-financial-total "+classSelector+"-amount").text(format(getTotal(breakdown)));
+      }
+      $("#main-total "+classSelector+"-amount").text(format(total));
+    }
+
     function getColumnDefinition(uiState) {
       var getBreakdownValue = getBreakdownValueFunction(uiState.field, uiState.year);
       return {
@@ -95,13 +124,7 @@
       ]);
 
 
-      var label = uiState.view == 'income' ? '{{ _("Ingresado") }}' : '{{ _("Gastado") }}';
-      $('#totals-panel .total-executed > span').html( label );
-
-      // Update labels and show/hide totals plus download links based on view
-      var executionLabelPostfix = getExecutionTotalLabel(budgetStatuses[uiState.year], budgetStatusLabels);
-      $("#main-total .main-label").html('{{ _("Total") }}'+executionLabelPostfix);
-
+      // Show/hide download links based on view
       if ( uiState.view == 'functional' ) {
         $(".policies-title").text('{{ _("Gastos (por programa)") }}');
         $("#income-downloads").hide();
@@ -112,7 +135,6 @@
         $("#income-downloads").show();
         $("#functional-downloads").hide();
         $("#expense-downloads").hide();
-
       } else {
         $(".policies-title").text('{{ _("Gastos") }}');
         $("#income-downloads").hide();
@@ -120,66 +142,37 @@
         $("#expense-downloads").show();
       }
 
+      // Update totals texts
+      $('#totals-year').text(uiState.year);
+      var label = uiState.view == 'income' ? '{{ _("Ingresado") }}' : '{{ _("Gastado") }}';
+      $('#totals-panel .total-executed > span').html( label );
+      var executionLabelPostfix = getExecutionTotalLabel(budgetStatuses[uiState.year], budgetStatusLabels);
+      $("#main-total .main-label").html('{{ _("Total") }}'+executionLabelPostfix);
+
       // Show actual/budgeted split only when there's data available
       // (and the field format is not '% of total', gets confusing otherwise)
       var breakdown = breakdowns[uiState.view],
           hasActualData = breakdown[uiState.field]['actual_'+uiState.year];
       if ( hasActualData && uiState.format!='percentage' ) {
-        $("#main-total .total-executed").show();
+        $("#totals-panel .total-executed").show();
       } else {
-        $("#main-total .total-executed").hide();
+        $("#totals-panel .total-executed").hide();
       }
 
-      // Update year label
-      $('#totals-year').text(uiState.year);
+      // We have two totals: non-financial/financial. Show non-financial panel only when needed
+      if ( !includeFinancialChapters ) {
+        $('#non-financial-total').show();
+      }
 
       // Fill in the amounts in the totals
-      var getTotal = function(breakdown) { return columnDef.data(breakdown)||0; },
-          getActualTotal = function(breakdown) { return executionColumnDef.data(breakdown)||0; },
-          format = function(amount) { return columnDef.render(amount, 'display', breakdown); },
-          formatActual = function(amount) { return executionColumnDef.render(amount, 'display', breakdown); };
+      var setTotals = ( uiState.view === 'functional' ) ? setFunctionalTotals : setEconomicTotals;
+      setTotals(breakdown, columnDef, '.total-budgeted');
+      if ( hasActualData )
+        setTotals(breakdown, executionColumnDef, '.total-executed');
 
-      if ( hasActualData ) {
-        $("#main-total .total-executed-amount").text(formatActual(getActualTotal(breakdown)));
-      }
-      $("#main-total .total-budgeted-amount").text(format(getTotal(breakdown)));
-
-      // We have two totals for the functional expense view (non-financial/financial), so
-      // we have some extra work in this case.
-      if ( uiState.view === 'functional' ) {
-        var totalBudgeted = getTotal(breakdown);
-
-        if ( !includeFinancialChapters ){
-          totalBudgeted += getTotal(financialExpenseBreakdown);
-          // We show financial/non-financial split only in the functional breakdown view.
-          // (This is basically for historical reasons, Aragon wanted it so. It could be argued that
-          // it may be more consistent to show the split in all views; that'd require changes in the
-          // controller when calculating the breakdowns.)
-          $('#non-financial-total').show();
-        }
-
-        if ( hasActualData ) {
-          var totalActual = getActualTotal(breakdown);
-          if ( !includeFinancialChapters )
-            totalActual += getActualTotal(financialExpenseBreakdown);
-
-          $("#non-financial-total .total-executed").show();
-          $("#non-financial-total .total-executed-amount").text(formatActual(getActualTotal(breakdown)));
-
-          $("#main-total .total-executed-amount").text(formatActual(totalActual));
-
-        } else {
-          $("#non-financial-total .total-executed").hide();
-        }
-
-        $("#non-financial-total .total-budgeted-amount").text(format(getTotal(breakdown)));
-        $("#main-total .total-budgeted-amount").text(format(totalBudgeted));
-      }
 
       // Setup & Update Budget Summary
-
       var areas, colorScale;
-
       if (uiState.view === 'expense') {
         areas       = expenseAreas;
         colorScale  = expenseTreemap.colorScale();
@@ -326,7 +319,5 @@
     expenseTreemap.createTreemap( $.extend(getUIState(), { field: 'expense' }) );
     incomeTreemap.createTreemap( $.extend(getUIState(), { field: 'income' }) );
     functionalTreemap.createTreemap( $.extend(getUIState(), { field: 'expense' }) );
-
-
   });
 </script>
