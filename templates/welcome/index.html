@@ -99,6 +99,7 @@ $(function () {
         chosenProgramme = Math.floor(Math.random()*hiddenProgrammes.length);
     var programme = $(hiddenProgrammes[chosenProgramme]);
     $(programme).find('b').text( formatAmount($(programme).attr('data')) );
+    $(programme).insertAfter($('.expense-examples ul'));
     programme.removeClass("hidden");
   }
 
