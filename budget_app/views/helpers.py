@@ -5,7 +5,7 @@ import os
 import re
 from contextlib import contextmanager
 from coffin.shortcuts import render_to_response
-from budget_app.models import Budget, BudgetItem, InflationStat, PopulationStat, Entity
+from budget_app.models import Budget, BudgetBreakdown, BudgetItem, InflationStat, PopulationStat, Entity
 from django.template import RequestContext
 from django.conf import settings
 from django.core import urlresolvers
@@ -32,6 +32,7 @@ def get_context(request, css_class='', title=''):
 
     # Global settings
     c['show_institutional_tab'] = not hasattr(settings, 'SHOW_INSTITUTIONAL_TAB') or settings.SHOW_INSTITUTIONAL_TAB
+    c['show_global_institutional_treemap'] = hasattr(settings, 'SHOW_GLOBAL_INSTITUTIONAL_TREEMAP') and settings.SHOW_GLOBAL_INSTITUTIONAL_TREEMAP
     c['show_funding_tab'] = hasattr(settings, 'SHOW_FUNDING_TAB') and settings.SHOW_FUNDING_TAB
     c['show_actual'] = not hasattr(settings, 'SHOW_ACTUAL') or settings.SHOW_ACTUAL
     c['use_subprogrammes'] = hasattr(settings, 'USE_SUBPROGRAMMES') and settings.USE_SUBPROGRAMMES
@@ -186,13 +187,31 @@ def get_budget_breakdown(condition, condition_arguments, breakdowns, callback=No
             callback(column_name, item)
 
 # Auxiliary callback to distinguish financial and non-financial spending
-def get_financial_breakdown_callback(c):
+def get_financial_breakdown_callback(c, breakdowns):
     def callback(column_name, item):
         if not c['include_financial_chapters'] and item.is_financial() and item.expense:
             c['financial_expense_breakdown'].add_item(column_name, item)
         else:
-            c['functional_breakdown'].add_item(column_name, item)
+            for breakdown in breakdowns:
+                if breakdown != None:
+                    breakdown.add_item(column_name, item)
     return callback
+
+# Return an institutional breakdown, taking into account whether or not codes are consistent
+# along the years: if they are not, i.e. if they change over the years, we need to tag them
+# with the year so they're unique along time, not only inside a given budget.
+def _get_year_tagged_institution(item):
+    return str(getattr(item, 'year')) + '/' + getattr(item, 'institution')
+
+def _get_year_tagged_department(item):
+    return str(getattr(item, 'year')) + '/' + getattr(item, 'department')
+
+def get_institutional_breakdown(c):
+    consistent_institutional_codes = hasattr(settings, 'CONSISTENT_INSTITUTIONAL_CODES') and settings.CONSISTENT_INSTITUTIONAL_CODES
+    if consistent_institutional_codes:
+        return BudgetBreakdown(['institution', 'department'])
+    else:
+        return BudgetBreakdown([_get_year_tagged_institution, _get_year_tagged_department])
 
 
 #

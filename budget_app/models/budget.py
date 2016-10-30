@@ -3,6 +3,7 @@
 from django.db import models
 from django.core.cache import get_cache
 from django.utils.translation import ugettext as _
+from django.conf import settings
 
 from economic_category import EconomicCategory
 from functional_category import FunctionalCategory
@@ -48,10 +49,14 @@ class BudgetManager(models.Manager):
     # use id's that are unique along time, not only inside a given budget.
     # (Not too keen on having the object uid polluted with year information all the
     # time, so I keep this here, and in the policies controller, the user of this.)
-    def _to_year_tagged_hash(self, items):
+    def _get_institutional_descriptions(self, items):
+        # Because of historial codes, the default is that we don't assume the codes
+        # are consistent. Hence, by default we tag them with year information.
+        consistent_institutional_codes = hasattr(settings, 'CONSISTENT_INSTITUTIONAL_CODES') and settings.CONSISTENT_INSTITUTIONAL_CODES
         result = {}
         for item in items:
-            result[str(item.budget.year) + '/' + item.uid()] = item.description
+            key = str(item.budget.year)+'/'+item.uid() if not consistent_institutional_codes else item.uid()
+            result[key] = item.description
         return result
 
     # We need to differentiate between items with the same name in chapters 4 and 7,
@@ -77,7 +82,7 @@ class BudgetManager(models.Manager):
                 'income': self._get_economic_descriptions(EconomicCategory.objects.income().filter(budget_id__entity=entity)),
                 'expense': self._get_economic_descriptions(EconomicCategory.objects.expenses().filter(budget_id__entity=entity)),
                 'funding': self._to_hash(FundingCategory.objects.filter(budget_id__entity=entity)),
-                'institutional': self._to_year_tagged_hash(InstitutionalCategory.objects.filter(budget_id__entity=entity))
+                'institutional': self._get_institutional_descriptions(InstitutionalCategory.objects.filter(budget_id__entity=entity))
             }
             cache.set(key, descriptions)
             return descriptions

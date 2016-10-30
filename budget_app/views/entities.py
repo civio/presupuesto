@@ -33,6 +33,7 @@ def entities_show(request, c, entity, render_callback=None):
     # Prepare the budget breakdowns
     c['financial_expense_breakdown'] = BudgetBreakdown()
     c['functional_breakdown'] = BudgetBreakdown(['policy', 'programme'])
+    c['institutional_breakdown'] = get_institutional_breakdown(c) if c['show_global_institutional_treemap'] else None
     c['include_financial_chapters'] = hasattr(settings, 'INCLUDE_FINANCIAL_CHAPTERS_IN_BREAKDOWNS') and settings.INCLUDE_FINANCIAL_CHAPTERS_IN_BREAKDOWNS
     if entity.level == settings.MAIN_ENTITY_LEVEL:
         c['economic_breakdown'] = BudgetBreakdown(['article', 'heading'])
@@ -44,7 +45,7 @@ def entities_show(request, c, entity, render_callback=None):
         # as we do two expensive denormalize-the-whole-db queries!
         get_budget_breakdown(   "e.id = %s", [ entity.id ],
                                 [c['economic_breakdown']],
-                                get_financial_breakdown_callback(c) )
+                                get_financial_breakdown_callback(c, [c['functional_breakdown'], c['institutional_breakdown']]) )
     else:
         # Small entities have a varying level of detail: often we don't have any breakdown below
         # chapter, so we have to start there. Also, to be honest, the heading level doesn't add
@@ -56,7 +57,7 @@ def entities_show(request, c, entity, render_callback=None):
         # the amounts.
         get_budget_breakdown(   "e.id = %s and fc.area <> 'X'", [ entity.id ],
                                 [],
-                                get_financial_breakdown_callback(c) )
+                                get_financial_breakdown_callback(c, [c['functional_breakdown'], c['institutional_breakdown']]) )
         get_budget_breakdown(   "e.id = %s and ec.chapter <> 'X'", [ entity.id ],
                                 [ c['economic_breakdown'] ] )
 
@@ -67,7 +68,7 @@ def entities_show(request, c, entity, render_callback=None):
     populate_entity_descriptions(c, entity)
     populate_years(c, 'economic_breakdown')
     populate_budget_statuses(c, entity.id)
-    populate_area_descriptions(c, ['functional', 'income', 'expense'])
+    populate_area_descriptions(c, ['functional', 'income', 'expense', 'institutional'])
     _set_full_breakdown(c, entity.level == settings.MAIN_ENTITY_LEVEL)
     c['entity'] = entity
 

@@ -29,7 +29,7 @@ def policies_show(request, id, title, render_callback=None):
     c['functional_breakdown'] = BudgetBreakdown(['programme'])
     c['economic_breakdown'] = BudgetBreakdown(['chapter', 'article', 'heading'])
     c['funding_breakdown'] = BudgetBreakdown(['source', 'fund'])
-    c['institutional_breakdown'] = BudgetBreakdown([_year_tagged_institution, _year_tagged_department])
+    c['institutional_breakdown'] = get_institutional_breakdown(c)
     get_budget_breakdown(   "fc.policy = %s and e.id = %s", [ id, main_entity.id ],
                             [ 
                                 c['functional_breakdown'], 
@@ -89,7 +89,7 @@ def programmes_show(request, id, title, render_callback=None):
     c['functional_breakdown'] = BudgetBreakdown(['subprogramme']) if c['use_subprogrammes'] else None
     c['economic_breakdown'] = BudgetBreakdown(['chapter', 'article', 'heading', _get_final_element_grouping(c)])
     c['funding_breakdown'] = BudgetBreakdown(['source', 'fund'])
-    c['institutional_breakdown'] = BudgetBreakdown([_year_tagged_institution, _year_tagged_department])
+    c['institutional_breakdown'] = get_institutional_breakdown(c)
     get_budget_breakdown(   "fc.programme = %s and e.id = %s", [ id, main_entity.id ],
                             [
                                 c['functional_breakdown'],
@@ -149,7 +149,7 @@ def subprogrammes_show(request, id, title, render_callback=None):
     # Get the budget breakdown
     c['economic_breakdown'] = BudgetBreakdown(['chapter', 'article', 'heading', _get_final_element_grouping(c)])
     c['funding_breakdown'] = BudgetBreakdown(['source', 'fund'])
-    c['institutional_breakdown'] = BudgetBreakdown([_year_tagged_institution, _year_tagged_department])
+    c['institutional_breakdown'] = get_institutional_breakdown(c)
     get_budget_breakdown(   "fc.subprogramme = %s and e.id = %s", [ id, main_entity.id ],
                             [ 
                                 c['economic_breakdown'],
@@ -215,7 +215,7 @@ def articles_show(request, id, title, show_side, render_callback=None):
     c['functional_breakdown'] = BudgetBreakdown(['policy', 'programme'])
     c['economic_breakdown'] = BudgetBreakdown(['heading', _get_final_element_grouping(c)])
     c['funding_breakdown'] = BudgetBreakdown(['source', 'fund'])
-    c['institutional_breakdown'] = BudgetBreakdown([_year_tagged_institution, _year_tagged_department])
+    c['institutional_breakdown'] = get_institutional_breakdown(c)
     get_budget_breakdown(   "ec.article = %s and e.id = %s and i.expense = %s",
                             [ id, main_entity.id, show_side=='expense' ],
                             [ 
@@ -252,16 +252,6 @@ def articles_show(request, id, title, show_side, render_callback=None):
     template = 'policies/show_widget.html' if _isWidget(request) else 'policies/show.html'
 
     return render(c, render_callback, template )
-
-
-# Unfortunately institutions id change sometimes over the years, so we need to
-# use id's that are unique along time, not only inside a given budget.
-def _year_tagged_institution(item):
-    return str(getattr(item, 'year')) + '/' + getattr(item, 'institution')
-
-
-def _year_tagged_department(item):
-    return str(getattr(item, 'year')) + '/' + getattr(item, 'department')
 
 
 def _get_tab_titles(show_side):

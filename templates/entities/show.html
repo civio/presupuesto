@@ -33,6 +33,13 @@
           <h3>{{ _('¿Cómo se gasta?') }}</h3>
         </a>
       </li>
+      {% if institutional_breakdown %}
+      <li>
+        <a href="#institutional" title="{{ _('¿Quién lo gasta?') }}">
+          <h3>{{ _('¿Quién lo gasta?') }}</h3>
+        </a>
+      </li>
+      {% endif %}
       <li>
         <a href="#functional" title="{{ _('¿En qué se gasta?') }}">
           <h3>{{ _('¿En qué se gasta?') }}</h3>
@@ -50,6 +57,7 @@
         <div id="budget-summary"></div>
         {{ chart_container('expenseChartContainer') }}
         {{ chart_container('functionalChartContainer') }}
+        {{ chart_container('institutionalChartContainer') }}
         {{ chart_container('incomeChartContainer') }}
         <p class="no-data-alert">{{ _('Información no disponible') }}</p>
       </div>
