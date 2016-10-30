@@ -217,5 +217,5 @@ function getExecutionTotalLabel(budgetStatus, budgetStatusLabels) {
 function addEconomicCategoryPrefix(item) {
   var match = itemUidRegexp.exec(item.key);
   var code = match ? match[1] : item.key;
-  return code + ' ' + item.label;
+  return code + '. ' + item.label;
 }
