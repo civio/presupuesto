@@ -24,10 +24,10 @@ function updateBudgetTotals(chapterBreakdown, economicBreakdown, budgetStatuses,
   // one argument to this function (economicBreakdown) and calculate the same totals
   // from the chapterBreakdown, as long as we had access to the include_financial_chapters
   // setting. But since it's working already...
-  var total_incomes_budgeted = economicBreakdown.income[uiState.year];
-  var total_incomes_executed = economicBreakdown.income['actual_'+uiState.year];
-  var total_expenses_budgeted = economicBreakdown.expense[uiState.year];
-  var total_expenses_executed = economicBreakdown.expense['actual_'+uiState.year];
+  var total_chart_incomes_budgeted = economicBreakdown.income[uiState.year];
+  var total_chart_incomes_executed = economicBreakdown.income['actual_'+uiState.year];
+  var total_chart_expenses_budgeted = economicBreakdown.expense[uiState.year];
+  var total_chart_expenses_executed = economicBreakdown.expense['actual_'+uiState.year];
 
   var chapters_1_5_incomes   = getSum(chapterBreakdown, [1, 2, 3, 4, 5], 'income', uiState.year, budgetStatuses);
   var chapters_1_5_expenses  = getSum(chapterBreakdown, [1, 2, 3, 4, 5], 'expense', uiState.year, budgetStatuses);
@@ -36,19 +36,26 @@ function updateBudgetTotals(chapterBreakdown, economicBreakdown, budgetStatuses,
   var chapters_8_9_incomes   = getSum(chapterBreakdown, [8, 9], 'income', uiState.year, budgetStatuses);
   var chapters_8_9_expenses  = getSum(chapterBreakdown, [8, 9], 'expense', uiState.year, budgetStatuses);
 
+  // The total budget amounts, including financial chapters, whatever the settings
+  var total_incomes_budgeted = chapterBreakdown.income[uiState.year];
+  var total_incomes_executed = chapterBreakdown.income['actual_'+uiState.year];
+  var total_expenses_budgeted = chapterBreakdown.expense[uiState.year];
+  var total_expenses_executed = chapterBreakdown.expense['actual_'+uiState.year];
+
   // Check if executed data is available
-  if (total_incomes_executed){
+  if (total_chart_incomes_executed) {
     $('#budgets-totals .total-executed').show();
-    $('#total-incomes-budgeted').text(format(total_incomes_budgeted));
+    $('#total-chart-incomes-executed').text(format(total_chart_incomes_executed));
+    $('#total-chart-expenses-executed').text(format(total_chart_expenses_executed));
     $('#total-incomes-executed').text(format(total_incomes_executed));
-    $('#total-expenses-budgeted').text(format(total_expenses_budgeted));
     $('#total-expenses-executed').text(format(total_expenses_executed));
-  }
-  else{
-    $('#total-incomes-budgeted').text(format(total_incomes_budgeted));
-    $('#total-expenses-budgeted').text(format(total_expenses_budgeted));
+  } else {
     $('#budgets-totals .total-executed').hide();
   }
+  $('#total-chart-incomes-budgeted').text(format(total_chart_incomes_budgeted));
+  $('#total-chart-expenses-budgeted').text(format(total_chart_expenses_budgeted));
+  $('#total-incomes-budgeted').text(format(total_incomes_budgeted));
+  $('#total-expenses-budgeted').text(format(total_expenses_budgeted));
 
   $('#chapters-1-5-incomes').text(format(chapters_1_5_incomes));
   $('#chapters-1-5-expenses').text(format(chapters_1_5_expenses));

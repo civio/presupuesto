@@ -8,6 +8,7 @@
       <div class="col-sm-4 text-right">{{ _('Gastos') }}</div>
     </div>
     <div class="panel-content">
+    {% if show_overview_subtotals %}
       <div class="total-executed row">
         <div class="col-sm-4">{{ _('Total Ejecutado') }}</div>
         <div class="col-sm-4 text-right"><span class="data-label">{{ _('Ingresos') }}</span><span id="total-incomes-executed"></span></div>
@@ -18,7 +19,6 @@
         <div class="col-sm-4 text-right"><span class="data-label">{{ _('Ingresos') }}</span><span id="total-incomes-budgeted"></span></div>
         <div class="col-sm-4 text-right"><span class="data-label">{{ _('Gastos') }}</span><span id="total-expenses-budgeted"></span></div>
       </div>
-    {% if show_overview_subtotals %}
       <div class="chapters chapters-first row">
         <div class="col-sm-4"><a class="icon-question" data-toggle="tooltip" data-placement="right" title="{{ _('Capítulos I-VII') }}"></a> {{ _('Subtotal No Financiero') }}</div>
         <div class="col-sm-4 text-right"><span class="data-label">{{ _('Ingresos') }}</span><span id="chapters-1-7-incomes"></span></div>
@@ -38,6 +38,17 @@
         <div class="col-sm-4"><a class="icon-question" data-toggle="tooltip" data-placement="right" title="{{ _('Capítulos VIII-IX') }}"></a> {{ _('Subtotal Financiero') }}</div>
         <div class="col-sm-4 text-right"><span class="data-label">{{ _('Ingresos') }}</span><span id="chapters-8-9-incomes"></span></div>
         <div class="col-sm-4 text-right"><span class="data-label">{{ _('Gastos') }}</span><span id="chapters-8-9-expenses"></span></div>
+      </div>
+    {% else %}
+      <div class="total-executed row">
+        <div class="col-sm-4">{{ _('Total Ejecutado') }}</div>
+        <div class="col-sm-4 text-right"><span class="data-label">{{ _('Ingresos') }}</span><span id="total-chart-incomes-executed"></span></div>
+        <div class="col-sm-4 text-right"><span class="data-label">{{ _('Gastos') }}</span><span id="total-chart-expenses-executed"></span></div>
+      </div>
+      <div class="total-budgeted row">
+        <div class="col-sm-4">{{ _('Total Presupuestado') }}</div>
+        <div class="col-sm-4 text-right"><span class="data-label">{{ _('Ingresos') }}</span><span id="total-chart-incomes-budgeted"></span></div>
+        <div class="col-sm-4 text-right"><span class="data-label">{{ _('Gastos') }}</span><span id="total-chart-expenses-budgeted"></span></div>
       </div>
     {% endif %}
     </div>
