@@ -3,8 +3,6 @@ from django.conf import settings
 from django.utils.translation import ugettext as _
 from budget_app.models import Budget, Entity, FunctionalCategory, BudgetBreakdown, BudgetItem
 from helpers import *
-from random import sample
-
 
 def welcome(request):
     c = get_context(request, css_class='body-welcome', title=_('Inicio'))
@@ -17,7 +15,6 @@ def welcome(request):
 
     # Retrieve front page examples
     populate_latest_budget(c)
-    # TODO: Can we get rid of this?
     c['featured_programmes'] = list(FunctionalCategory.objects
                                 .filter(budget=c['latest_budget'])
                                 .filter(programme__in=settings.FEATURED_PROGRAMMES)
