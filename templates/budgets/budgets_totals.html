@@ -55,7 +55,7 @@
   </div>
 
   <p class="text-center"><small>
-  {% if show_overview_subtotals %}
+  {% if show_actual and show_overview_subtotals %}
   {{ _('El cálculo de los subtotales utiliza las cifras de ejecución para los años cuya liquidación está cerrada, o el presupuesto aprobado en caso contrario.') }}
   {% endif %}
   {% if adjust_inflation_in_overview %}
