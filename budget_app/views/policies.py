@@ -212,7 +212,7 @@ def articles_show(request, id, title, show_side, render_callback=None):
 
     # Get the budget breakdown.
     # The functional one is used only when showing expenses.
-    c['functional_breakdown'] = BudgetBreakdown(['policy', 'programme'])
+    c['functional_breakdown'] = BudgetBreakdown(['policy', 'programme']) if show_side=='expense' else None
     c['economic_breakdown'] = BudgetBreakdown(['heading', _get_final_element_grouping(c)])
     c['funding_breakdown'] = BudgetBreakdown(['source', 'fund'])
     c['institutional_breakdown'] = get_institutional_breakdown(c)
