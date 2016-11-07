@@ -153,6 +153,10 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
   }
 
   function loadBreakdown(breakdown, field) {
+    // Do nothing if there's no data
+    if ( breakdown === null )
+      return;
+
     // Pick the right column for each year: execution preferred over 'just' budget...
     // TODO: This bit is duplicated in BudgetStackedChart
     var columns = {};
