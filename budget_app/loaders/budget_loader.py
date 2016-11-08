@@ -22,6 +22,9 @@ class BudgetLoader:
         self.load_funding_hierarchy(budget, path)
         self.load_data_files(budget, path)
 
+        print "Cargando ejecución presupuestaria de %s..." % path
+        self.load_execution_data_files(budget, path)
+
     def load_execution(self, entity, year, path):
         budget = Budget.objects.filter(entity=entity, year=year)[0]
 
