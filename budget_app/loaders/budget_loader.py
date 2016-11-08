@@ -284,6 +284,10 @@ class BudgetLoader:
 
     def process_data_items(self, budget, items, is_expense, is_actual):
         for item in items:
+            # Ignore null entries or entries with no amount
+            if item == None or item['amount'] == 0:
+                continue
+
             # Match budget item data to existing categories
             ic = InstitutionalCategory.objects.filter(budget=budget,
                                             institution=item['ic_institution'],
