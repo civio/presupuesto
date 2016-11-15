@@ -141,9 +141,11 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, adjustInflat
         }
       });
 
-      // Add an extra node for the remaining amount
-      var budgetedRemainder = real(breakdown[field][year]) - accumulatedTotal;
-      var actualRemainder = real(breakdown[field]["actual_"+year]) - accumulatedActualTotal;
+      // Add an extra node for the remaining amount.
+      // We round the amounts because accumulated rounding errors can, in some cases,
+      // produce a node with an infinitesimal negative amount, which makes the viz crazy.
+      var budgetedRemainder = Math.round( real(breakdown[field][year]) - accumulatedTotal );
+      var actualRemainder = Math.round( real(breakdown[field]["actual_"+year]) - accumulatedActualTotal );
       if ( budgetedRemainder !== 0 )
         nodes.push( { "name": i18n['other'],
                       "value": Math.max(budgetedRemainder||0, actualRemainder||0),
