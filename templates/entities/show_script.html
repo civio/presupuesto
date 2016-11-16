@@ -10,6 +10,7 @@
     });
 
     // Helper functions to set the totals panel
+    // TODO: This is duplicated in policies/show_script.html. Must combine! Ongoing part of #364
     function setEconomicTotals(breakdown, columnDef, classSelector) {
       var format = function(amount) { return columnDef.render(amount, 'display', breakdown); },
           totalNonFinancial = totalFinancial = 0;

@@ -1,5 +1,25 @@
 <script>
   $(function () {
+    // Helper functions to set the totals panel
+    // TODO: This is duplicated in entities/show_script.html. Must combine! Ongoing part of #364
+    function setEconomicTotals(breakdown, columnDef, classSelector) {
+      var format = function(amount) { return columnDef.render(amount, 'display', breakdown); },
+          totalNonFinancial = totalFinancial = 0;
+
+      _.each(breakdown.sub, function(value, id) {
+        var amount = columnDef.data(breakdown.sub[id]);
+        if ( id[0]==='8' || id[0]==='9' )
+          totalFinancial += amount
+        else
+          totalNonFinancial += amount
+      });
+
+      if ( !includeFinancialChapters )
+        $("#non-financial-total "+classSelector+"-amount").text(format(totalNonFinancial));
+      $("#main-total "+classSelector+"-amount").text(format(totalNonFinancial+totalFinancial));
+    }
+
+
     //
     // GRID RENDERING
     //
@@ -98,6 +118,12 @@
       'PR': '{{ _("proyecto") }}'
     };
 
+{% if include_financial_chapters %}
+    var includeFinancialChapters = true;
+{% else %}
+    var includeFinancialChapters = false;
+{% endif %}
+
     // The income and expense descriptions for the economic breakdowns do not match,
     // i.e. the same code, '2', means different things for income and expenses, so
     // we need to use the right descriptions
@@ -195,7 +221,8 @@
 
       // Show actual/budgeted split only when there's data available
       // (and the field format is not '% of total', gets confusing otherwise).
-      // Note: Total amounts are the same whichever way you break down the items, so any breakdown will do
+      // Note: total amounts were the same whichever way you break down the items, so any breakdown
+      // would do... but this may change as part of ongoing #364
       var breakdown = breakdowns['economic'],
           hasActualData = breakdown[uiState.field]['actual_'+uiState.year];
       if ( hasActualData && uiState.format!='percentage' ) {
@@ -203,6 +230,16 @@
       } else {
         $("#totals-panel .total-executed").hide();
       }
+
+      // We have two totals: non-financial/financial. Show non-financial panel only when needed
+      if ( !includeFinancialChapters ) {
+        $('#non-financial-total').show();
+      }
+
+      // Fill in the amounts in the totals. Part of ongoing #364
+      setEconomicTotals(breakdown, columnDef, '.total-budgeted');
+      if ( hasActualData )
+        setEconomicTotals(breakdown, executionColumnDef, '.total-executed');
 
       // Set total values
       var getTotal = function(breakdown) { return columnDef.data(breakdown)||0; },
