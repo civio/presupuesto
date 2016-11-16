@@ -159,7 +159,7 @@
       var label = uiState.view == 'income' ? '{{ _("Ingresado") }}' : '{{ _("Gastado") }}';
       $('#totals-panel .total-executed > span').html( label );
       var executionLabelPostfix = getExecutionTotalLabel(budgetStatuses[uiState.year], budgetStatusLabels);
-      $("#main-total .main-label").html('{{ _("Total") }}'+executionLabelPostfix);
+      $("#main-total .main-label").html('{{ _("Total") }}' + executionLabelPostfix);
 
       // Show actual/budgeted split only when there's data available
       // (and the field format is not '% of total', gets confusing otherwise)

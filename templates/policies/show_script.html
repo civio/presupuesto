@@ -165,25 +165,6 @@
     function redrawGrid() {
       if( $('#myGrid').size() == 0 ) return;
 
-      // Update year label
-      $('#totals-year').text(uiState.year);
-
-      var label = uiState.view == 'income' ? '{{ _("Ingresado") }}' : '{{ _("Gastado") }}';
-      $('#totals-panel .total-executed > span').html( label );
-      $("#main-total .main-label").html('{{ _("Total") }} <b>{{ name }}</b>'+ getExecutionTotalLabel(budgetStatuses[uiState.year], budgetStatusLabels))
-
-      // Handle the hash the page may have loaded with.
-      var state = $.deparam.fragment();
-      // Highlight a particular item
-      if ( state.item ) {
-        unfoldItem( gridData[uiState.type], state.item );
-        window.setTimeout(function(){ 
-          $('html, body').animate({
-            scrollTop: $('#myGrid').offset().top
-          }, 500);
-        }, 1000);
-      }
-
       // Do work
       var columnDef = getColumnDefinition(uiState);
       var executionColumnDef = getExecutionColumnDefinition(uiState);
@@ -204,22 +185,45 @@
                           ,executionColumnDef
 {% endif %}
                         ]);
-      
-      // Total amounts are the same whichever way you break down the items, so any breakdown will do
+
+      // Update totals texts
+      $('#totals-year').text(uiState.year);
+      var label = uiState.view == 'income' ? '{{ _("Ingresado") }}' : '{{ _("Gastado") }}';
+      $('#totals-panel .total-executed > span').html( label );
+      var executionLabelPostfix = getExecutionTotalLabel(budgetStatuses[uiState.year], budgetStatusLabels);
+      $("#main-total .main-label").html('{{ _("Total") }} <b>{{ name }}</b>'+ executionLabelPostfix);
+
+      // Show actual/budgeted split only when there's data available
+      // (and the field format is not '% of total', gets confusing otherwise).
+      // Note: Total amounts are the same whichever way you break down the items, so any breakdown will do
       var breakdown = breakdowns['economic'],
-          hasActualData = executionColumnDef.data(breakdown),
-          getTotal = function(breakdown) { return columnDef.data(breakdown)||0; },
+          hasActualData = breakdown[uiState.field]['actual_'+uiState.year];
+      if ( hasActualData && uiState.format!='percentage' ) {
+        $("#totals-panel .total-executed").show();
+      } else {
+        $("#totals-panel .total-executed").hide();
+      }
+
+      // Set total values
+      var getTotal = function(breakdown) { return columnDef.data(breakdown)||0; },
           getActualTotal = function(breakdown) { return executionColumnDef.data(breakdown)||0; },
           format = function(amount) { return columnDef.render(amount, 'display', breakdown); },
           formatActual = function(amount) { return executionColumnDef.render(amount, 'display', breakdown); };
 
       if ( hasActualData ) {
-        $("#main-total .total-executed").show();
         $("#main-total .total-executed-amount").text(formatActual(getActualTotal(breakdown)));
         $("#main-total .total-budgeted-amount").text(format(getTotal(breakdown)));
       } else {
-        $("#main-total .total-executed").hide();
         $("#main-total .total-budgeted-amount").text(format(getTotal(breakdown)));
+      }
+
+      // Handle the hash the page may have loaded with.
+      var state = $.deparam.fragment();
+      if ( state.item ) { // Highlight a particular item
+        unfoldItem( gridData[uiState.type], state.item );
+        window.setTimeout(function() {
+          $('html, body').animate({ scrollTop: $('#myGrid').offset().top }, 500);
+        }, 1000);
       }
     }
 
