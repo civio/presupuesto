@@ -34,7 +34,7 @@ from openpyxl import Workbook
 #
 def write_entity_functional_breakdown(c, writer):
     writer.writerow(['#Año', 'Id Política', 'Nombre Política', 'Id Programa', 'Nombre Programa', 'Presupuesto Gasto', 'Gasto Real'])
-    for year in set(c['functional_breakdown'].years.values()):
+    for year in sorted(_unique(c['functional_breakdown'].years.values())):
         for policy_id, policy in c['functional_breakdown'].subtotals.iteritems():
             write_breakdown_item(writer, year, policy, 'expense', [policy_id, None], c['descriptions']['functional'])
             for programme_id, programme in policy.subtotals.iteritems():
@@ -43,7 +43,7 @@ def write_entity_functional_breakdown(c, writer):
 def write_entity_economic_breakdown(c, field, writer):
     field_username = 'Gastos' if field == 'expense' else 'Ingresos'
     writer.writerow(['#Año', 'Id Artículo', 'Nombre Artículo', 'Id Concepto', 'Nombre Concepto', 'Presupuesto '+field_username, field_username+' Reales'])
-    for year in set(c['economic_breakdown'].years.values()):
+    for year in sorted(_unique(c['economic_breakdown'].years.values())):
         for article_id, article in c['economic_breakdown'].subtotals.iteritems():
             write_breakdown_item(writer, year, article, field, [article_id, None], c['descriptions'][field])
             for heading_id, heading in article.subtotals.iteritems():
@@ -98,7 +98,7 @@ def entity_payments(request, slug, format):
 #
 def write_functional_breakdown(c, writer):
     writer.writerow(['#Año', 'Id Política', 'Nombre Política', 'Id Programa', 'Nombre Programa', 'Presupuesto Gastos', 'Gastos Reales'])
-    for year in set(c['functional_breakdown'].years.values()):
+    for year in sorted(_unique(c['functional_breakdown'].years.values())):
         for programme_id, programme in c['functional_breakdown'].subtotals.iteritems():
             write_breakdown_item(writer, year, programme, 'expense', [c['policy_uid'], programme_id], c['descriptions']['functional'])
 
@@ -107,7 +107,7 @@ def functional_policy_breakdown(request, id, format):
 
 def write_functional_programme_breakdown(c, writer):
     writer.writerow(['#Año', 'Id Programa', 'Nombre Programa', 'Id Subprograma', 'Nombre Subprograma', 'Presupuesto Gastos', 'Gastos Reales'])
-    for year in set(c['functional_breakdown'].years.values()):
+    for year in sorted(_unique(c['functional_breakdown'].years.values())):
         for subprogramme_id, subprogramme in c['functional_breakdown'].subtotals.iteritems():
             write_breakdown_item(writer, year, subprogramme, 'expense', [c['programme_id'], subprogramme_id], c['descriptions']['functional'])
 
@@ -128,7 +128,7 @@ def entity_article_functional(request, level, slug, id, format):
 #
 def write_economic_breakdown(c, writer):
     writer.writerow(['#Año', 'Id Capítulo', 'Nombre Capítulo', 'Id Artículo', 'Nombre Artículo', 'Id Concepto', 'Nombre Concepto', 'Presupuesto Gastos', 'Gastos Reales'])
-    for year in set(c['economic_breakdown'].years.values()):
+    for year in sorted(_unique(c['economic_breakdown'].years.values())):
         for chapter_id, chapter in c['economic_breakdown'].subtotals.iteritems():
             write_breakdown_item(writer, year, chapter, 'expense', [chapter_id, None, None], c['descriptions']['expense'])
             for article_id, article in chapter.subtotals.iteritems():
@@ -141,7 +141,7 @@ def economic_policy_breakdown(request, id, format):
 
 def write_detailed_economic_breakdown(c, writer):
     writer.writerow(['#Año', 'Id Capítulo', 'Nombre Capítulo', 'Id Artículo', 'Nombre Artículo', 'Id Subconcepto', 'Nombre Subconcepto', 'Presupuesto Gastos', 'Gastos Reales'])
-    for year in set(c['economic_breakdown'].years.values()):
+    for year in sorted(_unique(c['economic_breakdown'].years.values())):
         for chapter_id, chapter in c['economic_breakdown'].subtotals.iteritems():
             write_breakdown_item(writer, year, chapter, 'expense', [chapter_id, None, None], c['descriptions']['expense'])
             for article_id, article in chapter.subtotals.iteritems():
@@ -160,7 +160,7 @@ def economic_programme_breakdown(request, id, format):
 def write_economic_article_breakdown(c, field, writer):
     field_username = 'Gastos' if field == 'expense' else 'Ingresos'
     writer.writerow(['#Año', 'Id Artículo', 'Nombre Artículo', 'Id Concepto', 'Nombre Concepto', 'Id Subconcepto', 'Nombre Subconcepto', 'Presupuesto '+field_username, field_username+' Reales'])
-    for year in set(c['economic_breakdown'].years.values()):
+    for year in sorted(_unique(c['economic_breakdown'].years.values())):
         write_breakdown_item(writer, year, c['economic_breakdown'], field, [c['article_id'], None, None], c['descriptions'][field])
         for heading_id, heading in c['economic_breakdown'].subtotals.iteritems():
             write_breakdown_item(writer, year, heading, field, [c['article_id'], heading_id, None], c['descriptions'][field])
@@ -196,7 +196,7 @@ def entity_article_income(request, level, slug, id, format):
 def write_funding_breakdown(c, writer):
     field_username = 'Gastos' if c['show_side'] == 'expense' else 'Ingresos'
     writer.writerow(['#Año', 'Id Fuente', 'Nombre Fuente', 'Id Fondo', 'Nombre Fondo', 'Presupuesto '+field_username, field_username+' Reales'])
-    for year in set(c['funding_breakdown'].years.values()):
+    for year in sorted(_unique(c['funding_breakdown'].years.values())):
         for source_id, source in c['funding_breakdown'].subtotals.iteritems():
             write_breakdown_item(writer, year, source, c['show_side'], [source_id, None], c['descriptions']['funding'])
             for fund_id, fund in source.subtotals.iteritems():
@@ -221,7 +221,7 @@ def funding_article_expenditures_breakdown(request, id, format):
 def write_institutional_breakdown(c, writer):
     field_username = 'Gastos' if c['show_side'] == 'expense' else 'Ingresos'
     writer.writerow(['#Año', 'Id Organismo', 'Nombre Organismo', 'Id Departamento', 'Nombre Departamento', 'Presupuesto '+field_username, field_username+' Reales'])
-    for year in set(c['institutional_breakdown'].years.values()):
+    for year in sorted(_unique(c['institutional_breakdown'].years.values())):
         for institution_id, institution in c['institutional_breakdown'].subtotals.iteritems():
             write_breakdown_item(writer, year, institution, c['show_side'], [institution_id, None], c['descriptions']['institutional'])
             for department_id, department in institution.subtotals.iteritems():
@@ -246,7 +246,7 @@ def institutional_article_expenditures_breakdown(request, id, format):
 def write_entities_breakdown(c, field, writer):
     field_username = 'Gastos' if field == 'expense' else 'Ingresos'
     writer.writerow(['#Año', 'Entidad', 'Presupuesto '+field_username, field_username+' Reales'])
-    for year in set(c['economic_breakdown'].years.values()):
+    for year in sorted(_unique(c['economic_breakdown'].years.values())):
         for entity_id, entity in c['economic_breakdown'].subtotals.iteritems():
             write_breakdown_item(writer, year, entity, field, [entity_id])
 
@@ -338,6 +338,11 @@ def _generator(filename, format, content_generator):
         return GENERATORS[format]('%s.%s' % (filename, format), content_generator)
     except KeyError as e:
         raise ValueError("Provided format is not valid: {}. valid values are [csv, xlsx]".format(format))
+
+# Remove duplicates from list, maintaining order
+# See http://stackoverflow.com/a/37163210
+def _unique(list):
+    return reduce(lambda l, x: l.append(x) or l if x not in l else l, list, [])
 
 
 GENERATORS = {
