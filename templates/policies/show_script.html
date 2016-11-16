@@ -279,11 +279,12 @@
 
       // Setup Graph
       var colorScale = {{ color_scale|safe }};
+      var labelsMinSize = {{ treemap_labels_min_size|safe }};
 
       // Setup treemap chart
       {% if show_treemap %}
       if (currentChart !== null) $('#policy-chart-container .treemap-chart').remove();
-      currentChart = new BudgetTreemap('#policy-chart-container', breakdowns[uiState.type], stats, areasData[uiState.type], 2, colorScale)
+      currentChart = new BudgetTreemap('#policy-chart-container', breakdowns[uiState.type], stats, areasData[uiState.type], 2, colorScale, labelsMinSize)
         .i18n(i18n)
         .maxLevels(2)
         .budgetStatuses(budgetStatuses);

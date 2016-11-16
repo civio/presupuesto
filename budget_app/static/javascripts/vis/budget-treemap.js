@@ -1,4 +1,4 @@
-function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScale) {
+function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScale, labelsMinSize) {
   var width = $(selector).width();
   var height = width / (aspectRatio===undefined ? 2 : aspectRatio);
   var treemapData;
@@ -12,7 +12,7 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
   var i18n = [];
   var budgetStatuses = {};
   var transitionDuration = 650;
-  var minSizeWithLabel = 70;
+  var minSizeWithLabel = (labelsMinSize) ? labelsMinSize : 70;
   var mouseOver = true;
   var paddedYears = {};
   var maxLevels = -1; // By default, don't limit treemap depth

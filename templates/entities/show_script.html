@@ -300,10 +300,12 @@
     };
 
     var colorScale = {{ color_scale|safe }};
-    var incomeTreemap = new BudgetTreemap("#incomeChartContainer", breakdowns['income'], stats, areas['income'], 2, colorScale).i18n(i18n).budgetStatuses(budgetStatuses);
-    var functionalTreemap = new BudgetTreemap("#functionalChartContainer", breakdowns['functional'], stats, areas['functional'], 2, colorScale).i18n(i18n).budgetStatuses(budgetStatuses);
-    var institutionalTreemap = new BudgetTreemap("#institutionalChartContainer", breakdowns['institutional'], stats, areas['institutional'], 2, colorScale).i18n(i18n).budgetStatuses(budgetStatuses);
-    var expenseTreemap = new BudgetTreemap("#expenseChartContainer", breakdowns['expense'], stats, areas['expense'], 2, colorScale).i18n(i18n).budgetStatuses(budgetStatuses);
+    var labelsMinSize = {{ treemap_labels_min_size|safe }};
+    
+    var incomeTreemap = new BudgetTreemap("#incomeChartContainer", breakdowns['income'], stats, areas['income'], 2, colorScale, labelsMinSize).i18n(i18n).budgetStatuses(budgetStatuses);
+    var functionalTreemap = new BudgetTreemap("#functionalChartContainer", breakdowns['functional'], stats, areas['functional'], 2, colorScale, labelsMinSize).i18n(i18n).budgetStatuses(budgetStatuses);
+    var institutionalTreemap = new BudgetTreemap("#institutionalChartContainer", breakdowns['institutional'], stats, areas['institutional'], 2, colorScale, labelsMinSize).i18n(i18n).budgetStatuses(budgetStatuses);
+    var expenseTreemap = new BudgetTreemap("#expenseChartContainer", breakdowns['expense'], stats, areas['expense'], 2, colorScale, labelsMinSize).i18n(i18n).budgetStatuses(budgetStatuses);
 {% if not entities %}
     // Limit treemap depth for top-level entities
     incomeTreemap.maxLevels(1);
