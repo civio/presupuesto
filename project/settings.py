@@ -286,6 +286,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "budget_app.context_processors.main_entity_processor",
     "budget_app.context_processors.data_sources_processor",
     "budget_app.context_processors.search_entities_processor",
+    "budget_app.context_processors.facebook_id_processor",
     "budget_app.context_processors.debug"
 )
 
