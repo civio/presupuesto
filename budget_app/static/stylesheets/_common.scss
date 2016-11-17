@@ -78,6 +78,7 @@ label{
     pointer-events: none; // Avoid mouse events over popover
 
     .popover-title{
+      color: $brand-primary;
       margin: 0 $grid-gutter-width/2;
       padding: 8px 0;
       background: white;
