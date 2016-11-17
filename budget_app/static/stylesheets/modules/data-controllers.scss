@@ -65,6 +65,9 @@
     .slider-tick-label{
       color: $gray;
       font-size: 0.875em;
+      line-height: 1em;
+      margin-top: $grid-gutter-width/6;
+      vertical-align: top;
       cursor: pointer;
     }
 
