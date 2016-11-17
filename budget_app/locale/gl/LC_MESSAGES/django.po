@@ -202,6 +202,9 @@ msgstr "Orzado"
 msgid "Presupuestado.StackedArea"
 msgstr "Orzado"
 
+msgid "Proyecto.StackedArea"
+msgstr "Proxecto"
+
 #: templates/budgets/index.html:120
 msgid "Ejecutado"
 msgstr "Executado"

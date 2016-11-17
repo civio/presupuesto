@@ -5,7 +5,7 @@
     cursor: auto;
   }
 
-  .nonexecuted-overlay{
+  .overlay{
     rect{
       fill: white;
       opacity: 0.5;
@@ -17,6 +17,10 @@
       fill: $gray-light;
       text-anchor: middle;
       font-style: italic;
+    }
+
+    &.project-overlay rect{
+      opacity: 0.72;
     }
   }
 
@@ -175,7 +179,7 @@
 
 @media (min-width: $screen-sm-min) {
   .stacked-area-chart{
-    .nonexecuted-overlay text{
+    .overlay text{
       display: block;
     }
   }

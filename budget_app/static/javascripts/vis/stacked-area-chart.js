@@ -70,6 +70,7 @@ function StackedAreaChart() {
     return _this;
   };
 
+
   // Set Dimensions
   var setDimensions = function(){
     // Setup width & height based on container
@@ -111,24 +112,23 @@ function StackedAreaChart() {
       .attr('width', _this.width)
       .attr('height', _this.height);
 
-    // Update nonexecuted overlay if exists
-    if( _this.budgetExecutionLastYear !== null ){
-      var budgetExecutionLastYearWidth = _this.years[_this.years.length-1] - (_this.years[_this.budgetExecutionLastYear]-1);
-      _this.nonexecutedOverlay.select('rect')
-        .attr('height', _this.height)
-        .attr('width', _this.x(_this.years[budgetExecutionLastYearWidth]) )
-        .attr('x', _this.x(_this.years[_this.budgetExecutionLastYear]-1) );
+    // Update nonexecuted overlays
+    _this.overlays.select('rect')
+      .attr('height', _this.height)
+      .attr('width', function(d){ return _this.x(_this.x.domain()[0]+1); })
+      .attr('x', function(d){ return _this.x(d.key-1); });
 
-      _this.nonexecutedOverlay.select('text')
-        .attr('x',  _this.x(_this.years[_this.budgetExecutionLastYear]-0.5))
-        .attr('y', _this.height+18);
-    }
+    _this.overlays.select('text')
+      .attr('x', function(d){ return _this.x(d.key-0.5); })
+      .attr('y', _this.height+10);
   };
+
 
   // Setup Data
   _this.setData = function( _data, _years, _budgetStatuses ){
     _this.data = [];
     _this.stackData = [];
+    _this.budgetStatuses = _budgetStatuses;
 
     var dataValues;
 
@@ -189,11 +189,9 @@ function StackedAreaChart() {
     });
     _this.y.domain([0, d3.max(vals)]);
 
-    // Get Last Year with Execution
-    _this.budgetExecutionLastYear = getBudgetExecutionLastYear(_budgetStatuses);
-
     return _this;
   };
+
 
   // Draw Data
   _this.draw = function(){
@@ -240,22 +238,8 @@ function StackedAreaChart() {
       _this.currentYear = null;
     });
 
-    // Check Execution is Completed & Draw Opacity Mask if not
-    if( _this.budgetExecutionLastYear !== null ){
-      var budgetExecutionLastYearWidth = _this.years[_this.years.length-1] - (_this.years[_this.budgetExecutionLastYear]-1);
-      _this.nonexecutedOverlay = _this.svg.append('g')
-        .attr('class', 'nonexecuted-overlay');
-
-      _this.nonexecutedOverlay.append('rect')
-        .attr('height', _this.height)
-        .attr('width', _this.x(_this.years[budgetExecutionLastYearWidth]) )
-        .attr('x', _this.x(_this.years[_this.budgetExecutionLastYear]-1) );
-
-      _this.nonexecutedOverlay.append('text')
-        .attr('x',  _this.x(_this.years[_this.budgetExecutionLastYear]-0.5))
-        .attr('y', _this.height+18)
-        .text( _this.budgeted );
-    }
+    // Check if Budget is in Execution or a Project & Draw Opacity Mask
+    _this.drawStatusesOverlays();
 
     // Setup Areas Lines
     _this.lines = _this.svg.selectAll('.lines')
@@ -310,6 +294,35 @@ function StackedAreaChart() {
 
     return _this;
   };
+
+
+  // Draw Satatuses Overlays
+  _this.drawStatusesOverlays = function(){
+
+    var nonexecutedYears = d3.entries(_this.budgetStatuses).filter(function(d){ return d.value!==''; });
+    
+    if (nonexecutedYears.length > 0) {
+      // Setup overlays
+      _this.overlays = _this.svg.selectAll('.overlay')
+        .data( nonexecutedYears )
+        .enter().append('g')
+          .attr('class', function(d){ return (d.value === 'PR') ? 'overlay project-overlay' : 'overlay nonexecuted-overlay'; });
+    
+      _this.overlays.append('rect')
+        .attr('height', _this.height)
+        .attr('width', function(d){ return _this.x(_this.x.domain()[0]+1); })
+        .attr('x', function(d){ return _this.x(d.key-1); });
+
+      _this.overlays.append('text')
+        .attr('x', function(d){ return _this.x(d.key-0.5); })
+        .attr('y', _this.height+10)
+        .attr('dy', '0.71em')
+        .text( function(d){ return (d.value === 'PR') ? _this.proposed : _this.budgeted; });
+    }
+
+    return _this;
+  };
+
 
   // Upate Elements 
   _this.update = function( transitionDuration ){
@@ -461,7 +474,6 @@ function StackedAreaChart() {
   var setupPopover = function( _data, _mouse ){
 
     if( !_data.active ){
-      console.log('hide');
        _this.$popover.hide();
       return;
     }

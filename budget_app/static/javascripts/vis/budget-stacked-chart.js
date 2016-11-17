@@ -115,6 +115,7 @@ function BudgetStackedChart(theSelector, theStats, theColorScale, i18n) {
 
     // Setup budgeted literal
     chart.budgeted = i18n.budgeted;
+    chart.proposed = i18n.proposed;
 
     // Setup data format
     chart.dataFormat = uiState.format;
