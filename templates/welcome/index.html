@@ -21,7 +21,7 @@
             {# Items are initially hidden and shown randomly via Javascript, see below #}
             <li class="hidden" data='{{ breakdown.subtotals[programme.uid()].total_expense[latest_budget.year] }}'>
               <a href="{% url 'budget_app.views.programmes_show' programme.uid(), programme.slug() %}">{{ programme.description }}</a>
-              <b></b>
+              <strong></strong>
             </li>
             {% endfor %}
           </ul>
@@ -98,7 +98,7 @@ $(function () {
     var hiddenProgrammes = $("div.expense-examples li.hidden"),
         chosenProgramme = Math.floor(Math.random()*hiddenProgrammes.length);
     var programme = $(hiddenProgrammes[chosenProgramme]);
-    $(programme).find('b').text( formatAmount($(programme).attr('data')) );
+    $(programme).find('strong').text( formatAmount($(programme).attr('data')) );
     $(programme).insertAfter($('.expense-examples ul'));
     programme.removeClass("hidden");
   }

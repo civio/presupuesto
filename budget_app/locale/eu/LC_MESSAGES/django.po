@@ -272,8 +272,8 @@ msgid "Gastado"
 msgstr "Gastatua"
 
 #: templates/entities/index.html:41 templates/entities/show.html:96
-msgid "Descarga la tabla de <b>Ingresos</b>"
-msgstr "Deskargatu <b>diru-sarreren</b> taula"
+msgid "Descarga la tabla de <strong>Ingresos</strong>"
+msgstr "Deskargatu <strong>diru-sarreren</strong> taula"
 
 #: templates/entities/index.html:42 templates/entities/index.html.py:48
 #: templates/entities/show.html:97 templates/entities/show.html.py:103
@@ -290,8 +290,8 @@ msgid "Descarga la tabla en Excel"
 msgstr "Deskargatu taula Excel formatuan"
 
 #: templates/entities/index.html:47 templates/entities/show.html:108
-msgid "Descarga la tabla de <b>Gastos</b>"
-msgstr "Deskargatu <b>gastuen</b> taula"
+msgid "Descarga la tabla de <strong>Gastos</strong>"
+msgstr "Deskargatu <strong>gastuen</strong> taula"
 
 #: templates/entities/show.html:31 templates/entities/show.html.py:32
 msgid "¿Cómo se gasta?"
@@ -306,8 +306,8 @@ msgid "Información no disponible"
 msgstr "Informazio hau ez dago erabilgarri"
 
 #: templates/entities/show.html:102
-msgid "Descarga la tabla de <b>Gastos (por programa)</b>"
-msgstr "Deskargatu <b>gastuen</b> taula (programaren arabera)"
+msgid "Descarga la tabla de <strong>Gastos (por programa)</strong>"
+msgstr "Deskargatu <strong>gastuen</strong> taula (programaren arabera)"
 
 #: templates/entities/show_script.html:23
 #: templates/entities/show_script.html:95
@@ -348,8 +348,8 @@ msgid "Inversiones y pagos"
 msgstr "Inbertsioak eta ordainketa"
 
 #: templates/payments/index.html:25
-msgid "Hay <b id=\"payments-size\"></b> pagos que suman un total de <b id=\"payments-total\"></b> para la búsqueda"
-msgstr "<b id=\"payments-size\"></b> ordainketa daude bilaketa honetan, eta guztira <b id=\"payments-total\"></b> dira"
+msgid "Hay <strong id=\"payments-size\"></strong> pagos que suman un total de <strong id=\"payments-total\"></strong> para la búsqueda"
+msgstr "<strong id=\"payments-size\"></strong> ordainketa daude bilaketa honetan, eta guztira <strong id=\"payments-total\"></strong> dira"
 
 #: templates/payments/index.html:32
 msgid "Desglose por área"
@@ -360,8 +360,8 @@ msgid "Principales proveedores"
 msgstr "Hornitzaile nagusiak"
 
 #: templates/payments/index.html:40
-msgid "Descarga la tabla de <b>Pagos</b>"
-msgstr "Deskargatu <b>ordainketen</b> taula"
+msgid "Descarga la tabla de <strong>Pagos</strong>"
+msgstr "Deskargatu <strong>ordainketen</strong> taula"
 
 #: templates/payments/index.html:42
 msgid "o"
@@ -472,8 +472,8 @@ msgid "Hemos encontrado"
 msgstr "XXXXX emaitza aurkitu ditugu"
 
 #: templates/search/index.html:25 templates/terms/index.html:30
-msgid "resultados</b> relacionados con"
-msgstr "XXXXXX(e)kin</b> erlazionatuak"
+msgid "resultados</strong> relacionados con"
+msgstr "XXXXXX(e)kin</strong> erlazionatuak"
 
 #: templates/search/index.html:32
 msgid "Mostrar resultados de"
@@ -574,8 +574,8 @@ msgid "Los ingresos y gastos mostrados incluyen únicamente al Gobierno de Arag�
 msgstr "Erakusten diren diru-sarrerak eta gastuak Nafarroako Gobernuari dagozkionak baino ez dira"
 
 #: templates/shared/data_sources.html:15
-msgid "El ajuste de la inflación se realiza a <b>1 de enero de"
-msgstr "Inflazioaren araberako doikuntza <b>(e)ko urtarrilaren 1eko datarekin egiten da"
+msgid "El ajuste de la inflación se realiza a <strong>1 de enero de"
+msgstr "Inflazioaren araberako doikuntza <strong>(e)ko urtarrilaren 1eko datarekin egiten da"
 
 #: templates/shared/data_sources.html:15
 msgid "La tasa de inflación anual es la media de la tasa interanual de los doce meses del año."
@@ -800,8 +800,8 @@ msgid "Tasa"
 msgstr "Tasa"
 
 #: templates/tax_receipt/tax_receipt_form.html:75
-msgid "Contribuyes con un total de <b id=\"tax-amount-paid\"></b> a los presupuestos del Gobierno de Aragón"
-msgstr "Guztira, <b id=\"tax-amount-paid\"></b>(e)ko ekarpena egiten diezu Nafarroako aurrekontuei."
+msgid "Contribuyes con un total de <strong id=\"tax-amount-paid\"></strong> a los presupuestos del Gobierno de Aragón"
+msgstr "Guztira, <strong id=\"tax-amount-paid\"></strong>(e)ko ekarpena egiten diezu Nafarroako aurrekontuei."
 
 #: templates/tax_receipt/tax_receipt_script.html:59
 msgid "Gasto"

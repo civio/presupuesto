@@ -278,8 +278,8 @@ msgid "Gastado"
 msgstr "Actual"
 
 #: templates/entities/index.html:41 templates/entities/show.html:96
-msgid "Descarga la tabla de <b>Ingresos</b>"
-msgstr "Download the <b>Revenue</b> table"
+msgid "Descarga la tabla de <strong>Ingresos</strong>"
+msgstr "Download the <strong>Revenue</strong> table"
 
 #: templates/entities/index.html:42 templates/entities/index.html.py:48
 #: templates/entities/show.html:97 templates/entities/show.html.py:103
@@ -296,8 +296,8 @@ msgid "Descarga la tabla en Excel"
 msgstr "Download the table in Excel"
 
 #: templates/entities/index.html:47 templates/entities/show.html:108
-msgid "Descarga la tabla de <b>Gastos</b>"
-msgstr "Download the <b>Expenditure</b> table"
+msgid "Descarga la tabla de <strong>Gastos</strong>"
+msgstr "Download the <strong>Expenditure</strong> table"
 
 #: templates/entities/show.html:31 templates/entities/show.html.py:32
 msgid "¿Cómo se gasta?"
@@ -312,8 +312,8 @@ msgid "Información no disponible"
 msgstr "Data not available"
 
 #: templates/entities/show.html:102
-msgid "Descarga la tabla de <b>Gastos (por programa)</b>"
-msgstr "Download the <b>Expenditures (by program)</b> table"
+msgid "Descarga la tabla de <strong>Gastos (por programa)</strong>"
+msgstr "Download the <strong>Expenditures (by program)</strong> table"
 
 #: templates/entities/show_script.html:23
 #: templates/entities/show_script.html:95
@@ -354,8 +354,8 @@ msgid "Inversiones y pagos"
 msgstr "Payments to suppliers"
 
 #: templates/payments/index.html:25
-msgid "Hay <b id=\"payments-size\"></b> pagos que suman un total de <b id=\"payments-total\"></b> para la búsqueda"
-msgstr "Found <b id=\"payments-size\"></b> payments totaling <b id=\"payments-total\"></b>"
+msgid "Hay <strong id=\"payments-size\"></strong> pagos que suman un total de <strong id=\"payments-total\"></strong> para la búsqueda"
+msgstr "Found <strong id=\"payments-size\"></strong> payments totaling <strong id=\"payments-total\"></strong>"
 
 #: templates/payments/index.html:32
 msgid "Desglose por área"
@@ -367,8 +367,8 @@ msgstr "Main providers"
 
 #
 #: templates/payments/index.html:40
-msgid "Descarga la tabla de <b>Pagos</b>"
-msgstr "Download the <b>Payments</b> table"
+msgid "Descarga la tabla de <strong>Pagos</strong>"
+msgstr "Download the <strong>Payments</strong> table"
 
 #: templates/payments/index.html:42
 msgid "o"
@@ -479,8 +479,8 @@ msgid "Hemos encontrado"
 msgstr "We've found"
 
 #: templates/search/index.html:25 templates/terms/index.html:30
-msgid "resultados</b> relacionados con"
-msgstr "results</b> related to"
+msgid "resultados</strong> relacionados con"
+msgstr "results</strong> related to"
 
 #: templates/search/index.html:32
 msgid "Mostrar resultados de"
@@ -581,8 +581,8 @@ msgid "Los ingresos y gastos mostrados incluyen únicamente al Gobierno de Arag�
 msgstr "Income and expenditure shown include only the Government of Aragon"
 
 #: templates/shared/data_sources.html:15
-msgid "El ajuste de la inflación se realiza a <b>1 de enero de"
-msgstr "Inflation is adjusted to <b>1st of January, "
+msgid "El ajuste de la inflación se realiza a <strong>1 de enero de"
+msgstr "Inflation is adjusted to <strong>1st of January, "
 
 #: templates/shared/data_sources.html:15
 msgid "La tasa de inflación anual es la media de la tasa interanual de los doce meses del año."
@@ -807,7 +807,7 @@ msgid "Tasa"
 msgstr "Fee"
 
 #: templates/tax_receipt/tax_receipt_form.html:75
-msgid "Contribuyes con un total de <b id=\"tax-amount-paid\"></b> a los presupuestos del Gobierno de Aragón"
+msgid "Contribuyes con un total de <strong id=\"tax-amount-paid\"></strong> a los presupuestos del Gobierno de Aragón"
 msgstr ""
 
 #: templates/tax_receipt/tax_receipt_script.html:59
