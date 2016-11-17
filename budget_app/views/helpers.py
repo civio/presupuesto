@@ -41,6 +41,10 @@ def get_context(request, css_class='', title=''):
 
     c['color_scale'] = getattr(settings, 'COLOR_SCALE', [])
 
+    c['treemap_labels_min_size'] = 'null'
+    if hasattr(settings, 'TREEMAP_LABELS_MIN_SIZE'):
+        c['treemap_labels_min_size'] = settings.TREEMAP_LABELS_MIN_SIZE
+
     try:
         c['active_tab'] = filter(
             lambda k: current_url_equals(c, TABS[k]),

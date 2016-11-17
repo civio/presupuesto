@@ -31,5 +31,8 @@ def data_sources_processor(request):
 def search_entities_processor(request):
     return { 'search_entities': False if not hasattr(settings, 'SEARCH_ENTITIES') else settings.SEARCH_ENTITIES }
 
+def facebook_id_processor(request):
+    return { 'facebook_id': '' if not hasattr(settings, 'FACEBOOK_ID') else settings.FACEBOOK_ID }
+
 def debug(context):
     return { 'debug': settings.DEBUG }
