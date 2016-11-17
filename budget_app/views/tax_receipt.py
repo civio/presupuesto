@@ -17,7 +17,6 @@ def tax_receipt(request):
 
     # Get the budget breakdown
     c['breakdown'] = BudgetBreakdown(['policy', 'programme'])
-    c['include_financial_chapters'] = hasattr(settings, 'INCLUDE_FINANCIAL_CHAPTERS_IN_BREAKDOWNS') and settings.INCLUDE_FINANCIAL_CHAPTERS_IN_BREAKDOWNS
     for item in BudgetItem.objects.each_denormalized("b.id = %s", [c['latest_budget'].id]):
         if c['include_financial_chapters'] or not item.is_financial():
             c['breakdown'].add_item(c['latest_budget'].name(), item)
