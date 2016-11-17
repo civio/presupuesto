@@ -91,21 +91,25 @@ class BudgetItem(models.Model):
     # Return a budget id unique across all years, so we can match them later
     # with the descriptions. Important note: this won't work in a normal budget
     # item, it expects a denormalized record.
-    # CAREFUL: An 'item number' plus an economic category doesn't make a line
-    # unique: you need the institution too! (I.e. you basically need the whole
+    # CAREFUL: An 'item number' plus an economic category doesn't necessarily make
+    # a line unique: you need the institution too! (I.e. you basically need the whole
     # line. In this case we can skip the functional category, since we filter
     # along that dimension)
-    def uid(self):
+    # But sometimes we want to group across different entities, so we also has the option
+    # of using only the economic category and the item number.
+    def economic_uid(self):
         # XXX: The subheading call originally assumed the values do exist; not true anymore 
         # with smaller entities. I'm working around it for now, partially, but I haven't 
         # thought fully about the implications of all this.
-        department = getattr(self, 'department') if getattr(self, 'department') else ''
         subheading = getattr(self, 'subheading') if getattr(self, 'subheading') else (getattr(self, 'heading') if getattr(self, 'heading') else (getattr(self, 'article') if getattr(self, 'article') else getattr(self, 'chapter')))
         item_number = getattr(self, 'item_number') if getattr(self, 'item_number') else ''
+        return subheading + '/' + item_number
+
+    def uid(self):
+        department = getattr(self, 'department') if getattr(self, 'department') else ''
         return str(getattr(self, 'year')) + '/' + \
                 department + '/' + \
-                subheading + '/' + \
-                item_number
+                self.economic_uid()
 
     def year(self):
         return self.budget.year

@@ -79,8 +79,9 @@ def programmes_show(request, id, title, render_callback=None):
     # Ignore if possible the descriptions for execution data, they are truncated and ugly
     programme_descriptions = {}
     def _populate_programme_descriptions(column_name, item):
-        if not item.actual or not item.uid() in programme_descriptions:
-            programme_descriptions[item.uid()] = getattr(item, 'description')
+        item_uid = getattr(item, _get_final_element_grouping(c))()
+        if not item.actual or not item_uid in programme_descriptions:
+            programme_descriptions[item_uid] = getattr(item, 'description')
 
     # Get the budget breakdown
     # The functional breakdown may or may not exist, depending on whether we are at deepest level,
@@ -143,8 +144,9 @@ def subprogrammes_show(request, id, title, render_callback=None):
     # Ignore if possible the descriptions for execution data, they are truncated and ugly
     programme_descriptions = {}
     def _populate_programme_descriptions(column_name, item):
-        if not item.actual or not item.uid() in programme_descriptions:
-            programme_descriptions[item.uid()] = getattr(item, 'description')
+        item_uid = getattr(item, _get_final_element_grouping(c))()
+        if not item.actual or not item_uid in programme_descriptions:
+            programme_descriptions[item_uid] = getattr(item, 'description')
 
     # Get the budget breakdown
     c['economic_breakdown'] = BudgetBreakdown(['chapter', 'article', 'heading', _get_final_element_grouping(c)])
@@ -207,8 +209,9 @@ def articles_show(request, id, title, show_side, render_callback=None):
     # Ignore if possible the descriptions for execution data, they are truncated and ugly
     article_descriptions = {}
     def _populate_article_descriptions(column_name, item):
-        if not item.actual or not item.uid() in article_descriptions:
-            article_descriptions[item.uid()] = getattr(item, 'description')
+        item_uid = getattr(item, _get_final_element_grouping(c))()
+        if not item.actual or not item_uid in article_descriptions:
+            article_descriptions[item_uid] = getattr(item, 'description')
 
     # Get the budget breakdown.
     # The functional one is used only when showing expenses.
@@ -276,7 +279,7 @@ def _get_tab_titles(show_side):
 # make sure subheadings are consistent across departments (not the case for PGE, f.ex.).
 def _get_final_element_grouping(c):
     if hasattr(settings, 'BREAKDOWN_BY_UID') and settings.BREAKDOWN_BY_UID==False:
-        return 'subheading'
+        return 'economic_uid'
     else:
         return 'uid'
 
