@@ -42,7 +42,7 @@
       color: darken( $data-sources-color, 50% );
     }
 
-    b{
+    strong{
       font-weight: $font-weight-600;
     }
   }
@@ -67,7 +67,7 @@
       margin-bottom: $grid-gutter-width/6;
     }
 
-    b{
+    strong{
       font-weight: $font-weight-600;
     }
   }

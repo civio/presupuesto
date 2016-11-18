@@ -37,7 +37,7 @@
     .main-label{
       font-weight: $font-weight-400;
 
-      b{
+      strong{
         font-weight: $font-weight-300;
       }
     }
@@ -54,7 +54,7 @@
       @include clearfix();
     }
 
-    b{
+    strong{
       display: block;
       font-weight: $font-weight-600;
       float: right; 
@@ -66,10 +66,8 @@
       font-weight: $font-weight-600;
       margin-bottom: $grid-gutter-width/3;
     }
-    .total-budgeted{
-      b{
-        font-weight: $font-weight-400;
-      }
+    .total-budgeted strong{
+      font-weight: $font-weight-400;
     }
   }
 
@@ -96,6 +94,8 @@
     height: 22px;
     margin-top: 1px;
     margin-right: 8px;
+    overflow: hidden;
+    text-indent: -9999px;
     border-radius: 11px;
     background: url(../assets/bugget-stream-question.png) no-repeat 6px 3px $gray-light;
     @include transition( background-color 0.3s ease-out );

@@ -31,50 +31,46 @@
       </p>
       <h2 class="page-title">{{ entity.name+': ' if entity }}{{ name }}</h2>
       {% endif %}
-
-      <!-- TODO!!! Check if we need this lines -->
-      <h2 class="hidden">{{ _('Programas, entidades y conceptos') }}</h2>
-      <h2 class="hidden">{{ _('Menú de programas, entidades y conceptos') }}</h2>
     </div>
 
     <ul id="tabs" class="nav nav-tabs nav-tabs-centered" role="tablist">
     {% if full_breakdown %}
       {% if functional_breakdown %}
-      <li class="active">
-        <a href="#functional" title="{{ _(tab_titles['functional']) }}">
+      <li class="active" role="presentation">
+        <a href="#functional" title="{{ _(tab_titles['functional']) }}" role="tab">
           <h3>{{ _(tab_titles['functional']) }}</h3>
         </a>
       </li>
       {% endif %}
-      <li>
-        <a href="#economic" title="{{ _(tab_titles['economic']) }}">
+      <li role="presentation">
+        <a href="#economic" title="{{ _(tab_titles['economic']) }}" role="tab">
           <h3>{{ _(tab_titles['economic']) }}</h3>
         </a>
       </li>
       {% if show_funding_tab %}
-      <li>
-        <a href="#funding" title="{{ _(tab_titles['funding']) }}">
+      <li role="presentation">
+        <a href="#funding" title="{{ _(tab_titles['funding']) }}" role="tab">
           <h3>{{ _(tab_titles['funding']) }}</h3>
         </a>
       </li>
       {% endif %}
       {% if show_institutional_tab %}
-      <li>
-        <a href="#institutional" title="{{ _(tab_titles['institutional']) }}">
+      <li role="presentation">
+        <a href="#institutional" title="{{ _(tab_titles['institutional']) }}" role="tab">
           <h3>{{ _(tab_titles['institutional']) }}</h3>
         </a>
       </li>
       {% endif %}
     {% else %}
       {% if policy_uid %}
-      <li class="active">
-        <a href="#functional" title="{{ _(tab_titles['functional']) }}">
+      <li class="active" role="presentation">
+        <a href="#functional" title="{{ _(tab_titles['functional']) }}" role="tab">
           <h3>{{ _(tab_titles['functional']) }}</h3>
         </a>
       </li>
       {% else %}
-      <li class="active">
-        <a href="#economic" title="{{ _(tab_titles['economic']) }}">
+      <li class="active" role="presentation">
+        <a href="#economic" title="{{ _(tab_titles['economic']) }}" role="tab">
           <h3>{{ _(tab_titles['economic']) }}</h3>
         </a>
       </li>
@@ -91,7 +87,7 @@
         <div id="policy-chart-container" class="chart-container {{ 'treemap-chart' if show_treemap else 'stacked-area-chart' }}">
           <div class="popover top" role="tooltip">
             <div class="arrow"></div>
-            <h4 class="popover-title"></h4>
+            <div class="popover-title"></div>
             <div class="popover-content">
               <p class="popover-content-year"></p>
               <p class="popover-content-value"></p>

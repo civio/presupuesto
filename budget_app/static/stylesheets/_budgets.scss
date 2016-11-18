@@ -23,7 +23,7 @@
         background-repeat: no-repeat;
       }
 
-      b {
+      strong {
         display: block;
         color: $gray;
         font-size: .875em;
@@ -50,7 +50,7 @@
       padding: $grid-gutter-width/2;
       font-weight: $font-weight-300;
 
-      b{
+      strong{
         font-weight: $font-weight-600;
       }
     }

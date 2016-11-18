@@ -279,8 +279,8 @@ msgid "Gastado"
 msgstr "Gastat"
 
 #: templates/entities/index.html:41 templates/entities/show.html:96
-msgid "Descarga la tabla de <b>Ingresos</b>"
-msgstr "Descarrega la taula de <b>Ingressos</b>"
+msgid "Descarga la tabla de <strong>Ingresos</strong>"
+msgstr "Descarrega la taula de <strong>Ingressos</strong>"
 
 #: templates/entities/index.html:42 templates/entities/index.html.py:48
 #: templates/entities/show.html:97 templates/entities/show.html.py:103
@@ -297,8 +297,8 @@ msgid "Descarga la tabla en Excel"
 msgstr "Descarrega la taula en Execl"
 
 #: templates/entities/index.html:47 templates/entities/show.html:108
-msgid "Descarga la tabla de <b>Gastos</b>"
-msgstr "Descarrega la taula de <b>Despeses</b>"
+msgid "Descarga la tabla de <strong>Gastos</strong>"
+msgstr "Descarrega la taula de <strong>Despeses</strong>"
 
 #: templates/entities/show.html:31 templates/entities/show.html.py:32
 msgid "¿Cómo se gasta?"
@@ -313,8 +313,8 @@ msgid "Información no disponible"
 msgstr "Informació no disponible"
 
 #: templates/entities/show.html:102
-msgid "Descarga la tabla de <b>Gastos (por programa)</b>"
-msgstr "Descarrega la taula de <b>Despeses (per programa)</b>"
+msgid "Descarga la tabla de <strong>Gastos (por programa)</strong>"
+msgstr "Descarrega la taula de <strong>Despeses (per programa)</strong>"
 
 #: templates/entities/show_script.html:23
 #: templates/entities/show_script.html:95
@@ -355,8 +355,8 @@ msgid "Inversiones y pagos"
 msgstr "Despeses i pagaments"
 
 #: templates/payments/index.html:25
-msgid "Hay <b id=\"payments-size\"></b> pagos que suman un total de <b id=\"payments-total\"></b> para la búsqueda"
-msgstr "Hi ha <b id=\"payments-size\"></b> pagaments que sumen un total de <b id=\"payments-total\"></b> per a la cerca"
+msgid "Hay <strong id=\"payments-size\"></strong> pagos que suman un total de <strong id=\"payments-total\"></strong> para la búsqueda"
+msgstr "Hi ha <strong id=\"payments-size\"></strong> pagaments que sumen un total de <strong id=\"payments-total\"></strong> per a la cerca"
 
 #: templates/payments/index.html:32
 msgid "Desglose por área"
@@ -368,8 +368,8 @@ msgstr "Principals proveïdors"
 
 #
 #: templates/payments/index.html:40
-msgid "Descarga la tabla de <b>Pagos</b>"
-msgstr "Descarrega la taula de <b>Pagaments</b>"
+msgid "Descarga la tabla de <strong>Pagos</strong>"
+msgstr "Descarrega la taula de <strong>Pagaments</strong>"
 
 #: templates/payments/payments_intro.html:1
 msgid "Gastos del año vigente"
@@ -476,8 +476,8 @@ msgid "Hemos encontrado"
 msgstr "Hem trobat"
 
 #: templates/search/index.html:25 templates/terms/index.html:30
-msgid "resultados</b> relacionados con"
-msgstr "resultats</b> relacionats amb"
+msgid "resultados</strong> relacionados con"
+msgstr "resultats</strong> relacionats amb"
 
 #: templates/search/index.html:32
 msgid "Mostrar resultados de"
@@ -578,8 +578,8 @@ msgid "Los ingresos y gastos mostrados incluyen únicamente al Gobierno de Arag�
 msgstr "Els ingressos i despeses mostrades inclouen únicament al Gobierno de Aragón"
 
 #: templates/shared/data_sources.html:15
-msgid "El ajuste de la inflación se realiza a <b>1 de enero de"
-msgstr "L'ajust de la inflació es fa l'<b>1 de gener de"
+msgid "El ajuste de la inflación se realiza a <strong>1 de enero de"
+msgstr "L'ajust de la inflació es fa l'<strong>1 de gener de"
 
 #: templates/shared/data_sources.html:15
 msgid "La tasa de inflación anual es la media de la tasa interanual de los doce meses del año."
@@ -804,8 +804,8 @@ msgid "Tasa"
 msgstr "Taxa"
 
 #: templates/tax_receipt/tax_receipt_form.html:75
-msgid "Contribuyes con un total de <b id=\"tax-amount-paid\"></b> a los presupuestos del Gobierno de Aragón"
-msgstr "Contribueixes amb un total de <b id=\"tax-amount-paid\"></b> als pressupostos del Gobierno de Aragón"
+msgid "Contribuyes con un total de <strong id=\"tax-amount-paid\"></strong> a los presupuestos del Gobierno de Aragón"
+msgstr "Contribueixes amb un total de <strong id=\"tax-amount-paid\"></strong> als pressupostos del Gobierno de Aragón"
 
 #: templates/tax_receipt/tax_receipt_script.html:59
 msgid "Gasto"
@@ -892,14 +892,14 @@ msgstr "Ingressos totals"
 msgid "Gastos totales"
 msgstr "Despeses totals"
 
-msgid "Se realiza a través de <b>impuestos directos</b> - como el IRPF y el impuesto de sociedades - y de <b>impuestos indirectos</b> - el IVA e impuestos sobre el tabaco, el alcohol o la gasolina -."
-msgstr "Es realitza a través <b>d'impostos directes</b> - com l'IRPF i l'impost de societats - i <b>d'impostos indirectes</b> - l'IVA i impostos sobre el tabac, l'alcohol o la benzina."
+msgid "Se realiza a través de <strong>impuestos directos</strong> - como el IRPF y el impuesto de sociedades - y de <strong>impuestos indirectos</strong> - el IVA e impuestos sobre el tabaco, el alcohol o la gasolina -."
+msgstr "Es realitza a través <strong>d'impostos directes</strong> - com l'IRPF i l'impost de societats - i <strong>d'impostos indirectes</strong> - l'IVA i impostos sobre el tabac, l'alcohol o la benzina."
 
 msgid "¿Cómo se reparte?"
 msgstr "Com es reparteix?"
 
-msgid "Una parte del dinero recaudado se queda en la <b>Administración General del Estado</b>, mientras que otra parte se transfiere al <b>Gobierno de Aragón</b>"
-msgstr "Una part dels diners recaptats es queda en <b>l'Administració General de l'Estat</b>, mentre que una altra part es transfereix al <b>Gobierno de Aragón</b>"
+msgid "Una parte del dinero recaudado se queda en la <strong>Administración General del Estado</strong>, mientras que otra parte se transfiere al <strong>Gobierno de Aragón</strong>"
+msgstr "Una part dels diners recaptats es queda en <strong>l'Administració General de l'Estat</strong>, mentre que una altra part es transfereix al <strong>Gobierno de Aragón</strong>"
 
 msgid "¿Quién lo gasta?"
 msgstr "Qui ho gasta?"

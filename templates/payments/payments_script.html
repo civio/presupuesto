@@ -97,16 +97,16 @@
 
       var queryStr = [];
       if (query.description && query.description !== '')
-        queryStr.push('{{ _("Descripción") }} <b>'+query.description+'</b>');
+        queryStr.push('{{ _("Descripción") }} <strong>'+query.description+'</strong>');
       if (query.area)
-        queryStr.push('{{ _("Área") }} <b>'+query.area+'</b>');
+        queryStr.push('{{ _("Área") }} <strong>'+query.area+'</strong>');
       if (query.payee)
-        queryStr.push('{{ _("Proveedor") }} <b>'+query.payee+'</b>');
+        queryStr.push('{{ _("Proveedor") }} <strong>'+query.payee+'</strong>');
       if (query.date) {
         var dates = query.date.split(',');
         queryStr.push(dates[0] !== dates[1] ?
-                        '<b>'+dates[0]+'</b> - <b>'+dates[1]+'</b>' :
-                        '<b>'+dates[0]+'</b>');
+                        '<strong>'+dates[0]+'</strong> - <strong>'+dates[1]+'</strong>' :
+                        '<strong>'+dates[0]+'</strong>');
       }
       $('#query-panel .payments-query').html( queryStr.join(' + ') );
 

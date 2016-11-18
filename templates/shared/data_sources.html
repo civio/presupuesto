@@ -4,15 +4,15 @@
     <div class="panel">
       <div class="panel-body">
         <ul class="source-list">
-          <li><a href="{{ data_source_budget }}" target="_blank">{{ _('Datos presupuestarios') }} · <b>{{ _('Gobierno de Aragón') }}</b></a></li>
-          <li><a href="{{ data_source_population }}" target="_blank">{{ _('Datos de población') }} · <b>{{ _('Instituto Nacional de Estadística (INE)') }}</b></a></li>
-          <li><a href="{{ data_source_inflation }}" target="_blank">{{ _('Datos de inflación (Medias anuales de IPC para Aragón)') }} · <b>{{ _('Instituto Nacional de Estadística (INE)') }}</b></a></li>
+          <li><a href="{{ data_source_budget }}" target="_blank">{{ _('Datos presupuestarios') }} · <strong>{{ _('Gobierno de Aragón') }}</strong></a></li>
+          <li><a href="{{ data_source_population }}" target="_blank">{{ _('Datos de población') }} · <strong>{{ _('Instituto Nacional de Estadística (INE)') }}</strong></a></li>
+          <li><a href="{{ data_source_inflation }}" target="_blank">{{ _('Datos de inflación (Medias anuales de IPC para Aragón)') }} · <strong>{{ _('Instituto Nacional de Estadística (INE)') }}</strong></a></li>
         </ul>
         <div class="alert">
           <p class="title">{{ _('Nota') }}</p>
           <ul>
             <li>{{ _('Los ingresos y gastos mostrados incluyen únicamente al Gobierno de Aragón') }}.</li>
-            <li>{{ _('El ajuste de la inflación se realiza a <b>1 de enero de')|safe }} {{ last_inflation_year }}</b>. {{ _('La tasa de inflación anual es la media de la tasa interanual de los doce meses del año.') }}</li>
+            <li>{{ _('El ajuste de la inflación se realiza a <strong>1 de enero de')|safe }} {{ last_inflation_year }}</strong>. {{ _('La tasa de inflación anual es la media de la tasa interanual de los doce meses del año.') }}</li>
             {% include 'shared/data_sources_extra.html' %}
           </ul>
         </div>

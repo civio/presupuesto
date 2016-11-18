@@ -278,7 +278,7 @@ msgid "Gastado"
 msgstr ""
 
 #: templates/entities/index.html:41 templates/entities/show.html:96
-msgid "Descarga la tabla de <b>Ingresos</b>"
+msgid "Descarga la tabla de <strong>Ingresos</strong>"
 msgstr ""
 
 #: templates/entities/index.html:42 templates/entities/index.html.py:48
@@ -296,7 +296,7 @@ msgid "Descarga la tabla en Excel"
 msgstr ""
 
 #: templates/entities/index.html:47 templates/entities/show.html:108
-msgid "Descarga la tabla de <b>Gastos</b>"
+msgid "Descarga la tabla de <strong>Gastos</strong>"
 msgstr ""
 
 #: templates/entities/show.html:31 templates/entities/show.html.py:32
@@ -312,7 +312,7 @@ msgid "Información no disponible"
 msgstr ""
 
 #: templates/entities/show.html:102
-msgid "Descarga la tabla de <b>Gastos (por programa)</b>"
+msgid "Descarga la tabla de <strong>Gastos (por programa)</strong>"
 msgstr ""
 
 #: templates/entities/show_script.html:23
@@ -354,7 +354,7 @@ msgid "Inversiones y pagos"
 msgstr ""
 
 #: templates/payments/index.html:25
-msgid "Hay <b id=\"payments-size\"></b> pagos que suman un total de <b id=\"payments-total\"></b> para la búsqueda"
+msgid "Hay <strong id=\"payments-size\"></strong> pagos que suman un total de <strong id=\"payments-total\"></strong> para la búsqueda"
 msgstr ""
 
 #: templates/payments/index.html:32
@@ -366,7 +366,7 @@ msgid "Principales proveedores"
 msgstr ""
 
 #: templates/payments/index.html:40
-msgid "Descarga la tabla de <b>Pagos</b>"
+msgid "Descarga la tabla de <strong>Pagos</strong>"
 msgstr ""
 
 #: templates/payments/index.html:42
@@ -478,7 +478,7 @@ msgid "Hemos encontrado"
 msgstr ""
 
 #: templates/search/index.html:25 templates/terms/index.html:30
-msgid "resultados</b> relacionados con"
+msgid "resultados</strong> relacionados con"
 msgstr ""
 
 #: templates/search/index.html:32
@@ -580,7 +580,7 @@ msgid "Los ingresos y gastos mostrados incluyen únicamente al Gobierno de Arag�
 msgstr ""
 
 #: templates/shared/data_sources.html:15
-msgid "El ajuste de la inflación se realiza a <b>1 de enero de"
+msgid "El ajuste de la inflación se realiza a <strong>1 de enero de"
 msgstr ""
 
 #: templates/shared/data_sources.html:15
@@ -806,7 +806,7 @@ msgid "Tasa"
 msgstr ""
 
 #: templates/tax_receipt/tax_receipt_form.html:75
-msgid "Contribuyes con un total de <b id=\"tax-amount-paid\"></b> a los presupuestos del Gobierno de Aragón"
+msgid "Contribuyes con un total de <strong id=\"tax-amount-paid\"></strong> a los presupuestos del Gobierno de Aragón"
 msgstr ""
 
 #: templates/tax_receipt/tax_receipt_script.html:59
