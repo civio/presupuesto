@@ -29,8 +29,16 @@
       </div>
 
       <ul id="tabs" class="nav nav-tabs nav-tabs-centered" role="tablist">
-        <li><a id="area-tab" href="#area"><h3>{{ _('Desglose por área') }}</h3></a></li>
-        <li><a id="payee-tab" href="#payee"><h3>{{ _('Principales proveedores') }}</h3></a></li>
+        <li role="presentation">
+          <a id="area-tab" href="#area" title="{{ _('Desglose por área') }}" role="tab">
+            <h3>{{ _('Desglose por área') }}</h3>
+          </a>
+        </li>
+        <li role="presentation">
+          <a id="payee-tab" href="#payee" title="{{ _('Principales proveedores') }}" role="tab">
+            <h3>{{ _('Principales proveedores') }}</h3>
+          </a>
+        </li>
       </ul>
 
       <table id="myGrid" class="table-grid" width="100%"></table>
