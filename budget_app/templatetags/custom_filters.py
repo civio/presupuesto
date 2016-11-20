@@ -15,7 +15,9 @@ def redirect_url(value, lang):
 @register.filter
 def paginate(url, page):
     url_parts = list(urlparse.urlparse(url))
-    query = dict(urlparse.parse_qsl(url_parts[4]))
+    # Why the ASCII encoding? See http://stackoverflow.com/a/16614758
+    # via http://www.lexev.org/en/2013/parse-url-which-chontains-unicode-query-using-urlp/
+    query = dict(urlparse.parse_qsl(url_parts[4].encode('ascii')))
     query.update({'page': page})
     url_parts[4] = urlencode(query)
     return urlparse.urlunparse(url_parts)
