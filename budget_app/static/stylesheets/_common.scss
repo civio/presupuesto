@@ -79,11 +79,12 @@ label{
 
     .popover-title{
       color: $brand-primary;
-      margin: 0 $grid-gutter-width/2;
+      margin: 0 $grid-gutter-width/3;
       padding: 8px 0;
       background: white;
       border-color: mix( $gray-light, $gray-lighter, 25% );
       font-size: 1.5em;
+      line-height: 1.125em;
       font-weight: $font-weight-300;
       text-align: center;
     }

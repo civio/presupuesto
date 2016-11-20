@@ -87,6 +87,11 @@
   &.clickable path.area{
     cursor: pointer;
   }
+
+  .popover .popover-title{
+    padding-bottom: 0;
+    text-align: left;
+  }
 }
 
 .stacked-area-chart-legend{
@@ -134,7 +139,7 @@
   }
 }
 
-.chart-embed-btn a{
+.chart-embed-btn span{
   display: block;
   position: absolute;
   top: -5px;
@@ -142,6 +147,7 @@
   width: $grid-gutter-width;
   height: $grid-gutter-width;
   background: url(../assets/icon-share.png) no-repeat center center $brand-primary;
+  cursor: pointer;
 
   &:hover{
     background-color: lighten( $brand-primary, 5% );
