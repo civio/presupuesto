@@ -1,11 +1,15 @@
 # -*- coding: UTF-8 -*-
+
+import os.path
+import logging
+
 from django.core.management.base import BaseCommand
 from django.conf import settings
 from budget_app.loaders import EntityLoader
-import os.path
-
 
 class Command(BaseCommand):
+    logging.disable(logging.ERROR)   # Avoid SQL logging on console
+
     help = u"Carga la lista de entidades públicas, _reemplazando el actual_"
 
     def handle(self, *args, **options):

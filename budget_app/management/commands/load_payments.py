@@ -11,7 +11,7 @@ from budget_app.models import Entity
 from optparse import make_option
 
 class Command(BaseCommand):
-    logging.disable(logging.CRITICAL)   # Avoid SQL logging on console
+    logging.disable(logging.ERROR)   # Avoid SQL logging on console
 
     option_list = BaseCommand.option_list + (
       make_option('--language',

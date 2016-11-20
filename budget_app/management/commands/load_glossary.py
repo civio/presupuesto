@@ -1,5 +1,7 @@
 # -*- coding: UTF-8 -*-
 import os.path
+import logging
+
 from django.core.management.base import BaseCommand
 from django.conf import settings
 from budget_app.loaders import GlossaryLoader
@@ -9,6 +11,8 @@ import project.settings
 PATH_TO_DEFAULT = os.path.join(settings.ROOT_PATH, 'budget_app', 'static')
 
 class Command(BaseCommand):
+    logging.disable(logging.ERROR)   # Avoid SQL logging on console
+
     option_list = BaseCommand.option_list + (
         make_option(
             '--language',

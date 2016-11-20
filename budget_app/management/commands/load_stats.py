@@ -8,7 +8,7 @@ from django.conf import settings
 from budget_app.loaders import StatLoader
 
 class Command(BaseCommand):
-    logging.disable(logging.CRITICAL)   # Avoid SQL logging on console
+    logging.disable(logging.ERROR)   # Avoid SQL logging on console
 
     help = u"Carga las estadísticas oficiales desde fichero, _reemplazando las actuales_"
 
