@@ -341,7 +341,7 @@
     $('.chart-container .chart-embed-btn').click(function(e){
       e.preventDefault();
       var url   = window.location.protocol+'//'+window.location.host+window.location.pathname+'?widget=1'+window.location.hash;
-      var code  = '<iframe src="'+url+'" width="100%" scrolling="no" marginheight="0" frameborder="0"></iframe><\script type="text/javascript" src="'+window.location.origin+'/static/javascripts/iframeResizer.min.js"\>\<\/script\>\<script type="text/javascript"\>iFrameResize();\<\/script\>';
+      var code  = '<iframe src="'+url+'" width="100%" scrolling="no" marginheight="0" frameborder="0"></iframe><\script type="text/javascript" src="{{ STATIC_URL }}javascripts/iframeResizer.min.js"\>\<\/script\>\<script type="text/javascript"\>iFrameResize();\<\/script\>';
       $('#modal-embed .modal-body textarea').val( code );
     });
   })
