@@ -280,13 +280,12 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.tz",
     "django.core.context_processors.request",
     "django.contrib.messages.context_processors.messages",
-    "budget_app.context_processors.analytics_processor",
+    "budget_app.context_processors.accounts_id_processor",
     "budget_app.context_processors.cookies_url_processor",
     "budget_app.context_processors.show_options_processor",
     "budget_app.context_processors.main_entity_processor",
     "budget_app.context_processors.data_sources_processor",
     "budget_app.context_processors.search_entities_processor",
-    "budget_app.context_processors.facebook_id_processor",
     "budget_app.context_processors.debug"
 )
 

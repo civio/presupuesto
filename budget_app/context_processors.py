@@ -1,8 +1,11 @@
 import project.settings as settings
 from django.conf import settings
 
-def analytics_processor(request):
-    return { 'analytics_code': '' if not hasattr(settings, 'ANALYTICS_CODE') else settings.ANALYTICS_CODE }
+def accounts_id_processor(request):
+    return {
+      'analytics_id': '' if not hasattr(settings, 'ANALYTICS_ID') else settings.ANALYTICS_ID,
+      'facebook_id': '' if not hasattr(settings, 'FACEBOOK_ID') else settings.FACEBOOK_ID
+    }
 
 def cookies_url_processor(request):
     return { 'cookies_url': False if not hasattr(settings, 'COOKIES_URL') else settings.COOKIES_URL }
@@ -30,9 +33,6 @@ def data_sources_processor(request):
 
 def search_entities_processor(request):
     return { 'search_entities': False if not hasattr(settings, 'SEARCH_ENTITIES') else settings.SEARCH_ENTITIES }
-
-def facebook_id_processor(request):
-    return { 'facebook_id': '' if not hasattr(settings, 'FACEBOOK_ID') else settings.FACEBOOK_ID }
 
 def debug(context):
     return { 'debug': settings.DEBUG }
