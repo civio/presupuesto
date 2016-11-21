@@ -94,13 +94,18 @@
 $(function () {
   // Show featured programmes, at random.
   // We used to do the selection on the server, but then the page would be cached, hence not random anymore.
-  for (var i=1; i<={{ number_of_featured_programmes }}; i++) {
-    var hiddenProgrammes = $('div.expense-examples li.hidden'),
-        chosenProgramme = Math.floor(Math.random()*hiddenProgrammes.length);
-    var programme = $(hiddenProgrammes[chosenProgramme]);
-    $(programme).find('strong').text( formatAmount($(programme).data('budget')) );
-    $(programme).insertAfter($('.expense-examples ul'));
-    programme.removeClass('hidden');
+  var i, chosenProgramme, $programme;
+  var hiddenProgrammes = $('div.expense-examples li.hidden');
+  var counter = {{ number_of_featured_programmes }};
+  while (counter > 0) {
+    chosenProgramme = Math.floor(Math.random()*hiddenProgrammes.length);
+    $programme = $(hiddenProgrammes[chosenProgramme]);
+    // Skip if chosen programme has been chose previously
+    if ($programme.hasClass('hidden')) {
+      $programme.find('strong').text( formatAmount($programme.data('budget')) );
+      $programme.removeClass('hidden');
+      counter--;
+    }
   }
 
   // Make hero boxes react to clicks
