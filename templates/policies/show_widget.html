@@ -25,11 +25,11 @@
         <p class="history-back">
           <a href="{% url 'budget_app.views.policies_show' programme.policy, policy.slug() %}" id="policy-name-link" title="{{ descriptions['functional'].get(programme.policy) }}">&larr;</a>
         </p>
-        <a href="{{ request.path|urlencode }}" target="_parent" title="{{ name }}">
+        <a href="{{ request.path|urlencode }}" target="_parent">
           <h2 class="page-title">{{ name }}:</h2>
         </a>
       {% else %}
-        <a href="{{ request.path|urlencode }}" target="_parent" title="{{ entity.name+': ' if entity }}{{ name }}">
+        <a href="{{ request.path|urlencode }}" target="_parent">
           <h2 class="page-title">{{ entity.name+': ' if entity }}{{ name }}:</h2>
         </a>
       {% endif %}
@@ -59,7 +59,7 @@
           </div>
           {% if not show_treemap %}
           <span class="chart-embed-btn" data-toggle="modal" data-target="#modal-embed">
-            <a href="#"  data-toggle="tooltip" data-placement="left" title="" data-original-title="{{ _('Comparte este gráfico') }}"></a>
+            <span data-toggle="tooltip" data-placement="left" data-original-title="{{ _('Comparte este gráfico') }}"></span>
           </span>
           {% endif %}
         </div>

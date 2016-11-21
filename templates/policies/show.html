@@ -37,26 +37,26 @@
     {% if full_breakdown %}
       {% if functional_breakdown %}
       <li class="active" role="presentation">
-        <a href="#functional" title="{{ _(tab_titles['functional']) }}" role="tab">
+        <a href="#functional" role="tab">
           <h3>{{ _(tab_titles['functional']) }}</h3>
         </a>
       </li>
       {% endif %}
       <li role="presentation">
-        <a href="#economic" title="{{ _(tab_titles['economic']) }}" role="tab">
+        <a href="#economic" role="tab">
           <h3>{{ _(tab_titles['economic']) }}</h3>
         </a>
       </li>
       {% if show_funding_tab %}
       <li role="presentation">
-        <a href="#funding" title="{{ _(tab_titles['funding']) }}" role="tab">
+        <a href="#funding" role="tab">
           <h3>{{ _(tab_titles['funding']) }}</h3>
         </a>
       </li>
       {% endif %}
       {% if show_institutional_tab %}
       <li role="presentation">
-        <a href="#institutional" title="{{ _(tab_titles['institutional']) }}" role="tab">
+        <a href="#institutional" role="tab">
           <h3>{{ _(tab_titles['institutional']) }}</h3>
         </a>
       </li>
@@ -64,13 +64,13 @@
     {% else %}
       {% if policy_uid %}
       <li class="active" role="presentation">
-        <a href="#functional" title="{{ _(tab_titles['functional']) }}" role="tab">
+        <a href="#functional" role="tab">
           <h3>{{ _(tab_titles['functional']) }}</h3>
         </a>
       </li>
       {% else %}
       <li class="active" role="presentation">
-        <a href="#economic" title="{{ _(tab_titles['economic']) }}" role="tab">
+        <a href="#economic" role="tab">
           <h3>{{ _(tab_titles['economic']) }}</h3>
         </a>
       </li>
@@ -98,7 +98,7 @@
           </div>
           {% if not show_treemap %}
           <span class="chart-embed-btn" data-toggle="modal" data-target="#modal-embed">
-            <span data-toggle="tooltip" data-placement="left" title="" data-original-title="{{ _('Comparte este gráfico') }}"></span>
+            <span data-toggle="tooltip" data-placement="left" data-original-title="{{ _('Comparte este gráfico') }}"></span>
           </span>
           {% endif %}
         </div>

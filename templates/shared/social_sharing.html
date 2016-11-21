@@ -2,15 +2,15 @@
   <p class="title">{{ _('Compártelo') }}</p>
   <ul class="social-sharing-toolbox">
       <li>
-        <a class="twitter" onClick='window.open("https://twitter.com/intent/tweet?text={{ title_prefix+' - ' if title_prefix }}{{ _('Presupuestos del Gobierno de Aragón') }}&url={{ request.build_absolute_uri() }}","sharer","toolbar=0,status=0,width=548,height=500");return false;' href="https://twitter.com/intent/tweet?text={{ title_prefix+' - ' if title_prefix }}{{ _('Presupuestos del Gobierno de Aragón') }}&url={{ request.build_absolute_uri() }}" title="{{ _('Comparte esta página en Twitter') }}">{{ _('Comparte esta página en Twitter') }}</a>
+        <a class="twitter" onClick='window.open("https://twitter.com/intent/tweet?text={{ title_prefix+' - ' if title_prefix }}{{ _('Presupuestos del Gobierno de Aragón') }}&url={{ request.build_absolute_uri() }}","sharer","toolbar=0,status=0,width=548,height=500");return false;' href="https://twitter.com/intent/tweet?text={{ title_prefix+' - ' if title_prefix }}{{ _('Presupuestos del Gobierno de Aragón') }}&url={{ request.build_absolute_uri() }}">{{ _('Comparte esta página en Twitter') }}</a>
       </li>
 
       <li>
-        <a class="facebook" onClick="window.open('https://www.facebook.com/dialog/share?app_id={{ facebook_id }}&display=popup&href={{ request.build_absolute_uri() }}&redirect_uri={{ request.build_absolute_uri() }}','sharer','toolbar=0,status=0,width=548,height=325');return false;" href="https://www.facebook.com/dialog/share?app_id={{ facebook_id }}&display=popup&href={{ request.build_absolute_uri() }}&redirect_uri={{ request.build_absolute_uri() }}" title="{{ _('Comparte esta página en Facebook') }}">{{ _('Comparte esta página en Facebook') }}</a>
+        <a class="facebook" onClick="window.open('https://www.facebook.com/dialog/share?app_id={{ facebook_id }}&display=popup&href={{ request.build_absolute_uri() }}&redirect_uri={{ request.build_absolute_uri() }}','sharer','toolbar=0,status=0,width=548,height=325');return false;" href="https://www.facebook.com/dialog/share?app_id={{ facebook_id }}&display=popup&href={{ request.build_absolute_uri() }}&redirect_uri={{ request.build_absolute_uri() }}">{{ _('Comparte esta página en Facebook') }}</a>
       </li>
       
       <li>
-        <a class="gplus" onClick="window.open('https://plus.google.com/share?url={{ request.build_absolute_uri() }}','sharer','menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width=548,height=500');return false;" href="https://plus.google.com/share?url={{ request.build_absolute_uri() }}" title="{{ _('Comparte esta página en Google Plus') }}">{{ _('Comparte esta página en Google Plus') }}</a>
+        <a class="gplus" onClick="window.open('https://plus.google.com/share?url={{ request.build_absolute_uri() }}','sharer','menubar=no,toolbar=no,resizable=yes,scrollbars=yes,width=548,height=500');return false;" href="https://plus.google.com/share?url={{ request.build_absolute_uri() }}">{{ _('Comparte esta página en Google Plus') }}</a>
       </li>
   </ul>
 </div>

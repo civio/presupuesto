@@ -2,27 +2,27 @@
   <div class="container">
     <p class="credit-aragon">
       <span>{{ _('Un proyecto de') }}</span>
-      <a href="http://www.civio.es/es" class="link-civio" target="_blank" title="Civio">Civio</a>
+      <a href="http://www.civio.es/es" class="link-civio" target="_blank">Civio</a>
       <span>&nbsp;{{ _('basado en el código de') }} </span>
-      <a href="http://opendata.aragon.es" class="link-aragon" target="_blank" title="Open Data Aragón">Open Data Aragón </a>
+      <a href="http://opendata.aragon.es" class="link-aragon" target="_blank">Open Data Aragón </a>
     </p>
   </div>
   <div class="container">
     <ul class="footer-menu">
       <!-- Link a la Web del Ayuntamiento -->
       <li>
-        <a href="{{ main_entity_web_url }}" title="{{ _('Gobierno de Aragón') }}" target="_blank">{{ _('Gobierno de Aragón') }}</a>
+        <a href="{{ main_entity_web_url }}" target="_blank">{{ _('Gobierno de Aragón') }}</a>
       </li>
       <!-- Link al Aviso Legal del Ayuntamiento -->
       {% if main_entity_legal_url %}
       <li>
-        <a href="{{ main_entity_legal_url }}" title="{{ _('Aviso Legal') }}" target="_blank">{{ _('Aviso Legal') }}</a>
+        <a href="{{ main_entity_legal_url }}" target="_blank">{{ _('Aviso Legal') }}</a>
       </li>
       {% endif %}
       <!-- Link a la Política de Privacidad del Ayuntamiento -->
       {% if main_entity_privacy_url %}
       <li>
-        <a href="{{ main_entity_privacy_url }}" title="{{ _('Política de Privacidad') }}" target="_blank">{{ _('Política de Privacidad') }}</a>
+        <a href="{{ main_entity_privacy_url }}" target="_blank">{{ _('Política de Privacidad') }}</a>
       </li>
       {% endif %}
     </ul>
