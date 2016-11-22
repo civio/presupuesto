@@ -122,10 +122,11 @@ budget_app_urlpatterns += url_patterns('budget_app.views',
 
     # Payments
     url(r'^(?P<slug>.+)_pagos\.(?P<format>.+)$', 'entity_payments'),
+)
 
-    # Runtime info
-    url(r'^version.json$', 'version_api'),
-
+# Add extra application paths, not i18n
+budget_app_urlpatterns += patterns('budget_app.views',
+    url(r'^version.json$', 'version_api'),      # Runtime info
 )
 
 # Include Jasmine urls fot JS Unit Tests only in development
