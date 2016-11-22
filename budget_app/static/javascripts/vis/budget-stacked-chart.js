@@ -168,8 +168,8 @@ function BudgetStackedChart(theSelector, theStats, theColorScale, i18n) {
 
   // Data order function
   function getSortedData(_data){
-    return _.sortBy(_data, function(d){
-      return d.values[0][1];
-    }).reverse();
+    return _data.sort( function(a,b) {
+      return b.values[0][1] - a.values[0][1];
+    });
   }
 }
