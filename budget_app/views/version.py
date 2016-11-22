@@ -10,6 +10,7 @@ from django.http import HttpResponse
 from helpers import fix_cwd
 from local_settings import ENV
 from budget_app.models import InflationStat, Budget
+from helpers import *
 
 def fix_version(version):
     return '.'.join(
@@ -20,13 +21,15 @@ def fix_version(version):
     )
 
 def version_api(request):
+    c = get_context(request)
+
     with fix_cwd():
         git_commit = subprocess.check_output(['git', 'rev-parse','HEAD']).strip()
         git_tag = subprocess.check_output(['git', 'describe', '--tags']).strip()
     python_version = fix_version(sys.version_info)
     django_version = fix_version(django.VERSION)
     last_inflation = InflationStat.objects.get_last_year()
-    years = list(Budget.objects.get_years())
+    years = list(Budget.objects.get_years(get_main_entity(c)))
 
     response = json.dumps(
         {
