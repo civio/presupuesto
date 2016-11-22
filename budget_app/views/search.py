@@ -64,24 +64,23 @@ def search(request):
             c['programmes_per_policy'][programme.policy] = set()
         c['programmes_per_policy'][programme.policy].add(programme.programme)
 
+    # XXX: Note we only have top-level descriptions. Beware on the view not to use
+    # the wrong descriptions. We should fetch the descriptions from the DB together with
+    # the results if needed.
+    populate_descriptions(c)
+
+    # Count the results
     c['results_size'] = len(c['terms']) + \
                         len(c['policies_ids']) + \
                         len(c['articles']) + \
                         len(c['headings']) + \
                         len(all_items) + \
                         len(all_payments)
-    c['formatter'] = add_thousands_separator
-    c['main_entity_level'] = settings.MAIN_ENTITY_LEVEL
-
-    # XXX: Note we only have top-level descriptions. Beware on the view not to use
-    # the wrong descriptions. We should fetch the descriptions from the DB together with
-    # the results if needed.
-    populate_descriptions(c)
-
-    # Count the size of the programme sets
     for programmes in c['programmes_per_policy'].values():
         c['results_size'] += len(programmes)
 
-    c['data'] = all_items
+    # Extra info
+    c['formatter'] = add_thousands_separator
+    c['main_entity_level'] = settings.MAIN_ENTITY_LEVEL
 
     return render_to_response('search/index.html', c)
