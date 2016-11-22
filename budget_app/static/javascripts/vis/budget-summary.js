@@ -87,22 +87,21 @@ function BudgetSummary(selector) {
 
   // Update Items
   this.updateItems = function() {
-    var i,
-        area,
-        percentage,
-        label,
-        amountLabel;
-
+    var i;
     for (i = 0; i < existingAreas.length; i++) {
-      area = existingAreas[i];
-      percentage = 100 * areaAmounts[area] / totalAmount;
-      // Hide  Labels if area is small (< 6% width)
-      label = (percentage >= 6 ) ? areaNames[area] : '';
-      amountLabel = ( percentage >= 6 ) ? formatDecimal(percentage, 1)+'<small>%</small>' : '';
+      var area = existingAreas[i],
+          percentage = 100 * areaAmounts[area] / totalAmount,
+          label = (percentage >= 6 ) ? areaNames[area] : '', // Hide labels if area is small (< 6% width)
+          amountLabel = ( percentage >= 6 ) ? formatDecimal(percentage, 1)+'<small>%</small>' : '',
+          barItem = $($barItems.get(i));
 
-      $($barItems.get(i)).css('width', percentage+'%');
-      $($barItems.get(i)).find('.budget-summary-bar').html(amountLabel).css('background-color', colorScale[Number(area)]);
-      $($barItems.get(i)).find('.budget-summary-label').html(label);
+      barItem.css('width', percentage+'%');
+      barItem.find('.budget-summary-bar')
+        .data('id', area)
+        .html(amountLabel)
+        .css('background-color', colorScale[Number(area)]);
+      barItem.find('.budget-summary-label')
+        .html(label);
     }
   };
 
