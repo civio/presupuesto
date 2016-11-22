@@ -6,7 +6,7 @@
       var format = function(amount) { return columnDef.render(amount, 'display', breakdown); },
           totalNonFinancial = totalFinancial = 0;
 
-      _.each(breakdown.sub, function(value, id) {
+      $.each(breakdown.sub, function(value, id) {
         var amount = columnDef.data(breakdown.sub[id]);
         if ( id[0]==='8' || id[0]==='9' )
           totalFinancial += amount
@@ -136,7 +136,7 @@
 
     // Grid Data onjets
     var gridData = {};
-    _.each(breakdowns, function(b, name) { gridData[name] = breakdownToTable(b); });
+    $.each(breakdowns, function(b, name) { gridData[name] = breakdownToTable(b); });
 
     // Areas Data object
     var areasData = {
