@@ -1,0 +1,24 @@
+<script>
+$(function () {
+  // Show featured programmes, at random.
+  // We used to do the selection on the server, but then the page would be cached, hence not random anymore.
+  var i, chosenProgramme, $programme;
+  var hiddenProgrammes = $('div.expense-examples li.hidden');
+  var counter = {{ number_of_featured_programmes }};
+  while (counter > 0) {
+    chosenProgramme = Math.floor(Math.random()*hiddenProgrammes.length);
+    $programme = $(hiddenProgrammes[chosenProgramme]);
+    // Skip if chosen programme has been chose previously
+    if ($programme.hasClass('hidden')) {
+      $programme.find('strong').text( formatAmount($programme.data('budget')) );
+      $programme.removeClass('hidden');
+      counter--;
+    }
+  }
+
+  // Make hero boxes react to clicks
+  $('.option-global').click(function(){window.location = '{{ url('budget_app.views.budgets') }}';});
+  $('.option-policies').click(function(){window.location = '{{ url('budget_app.views.policies') }}';});
+  $('.option-tax').click(function(){window.location = '{{ url('budget_app.views.tax_receipt') }}';});
+});
+</script>

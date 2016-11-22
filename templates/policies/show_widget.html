@@ -1,16 +1,5 @@
 {% extends 'base-widget.html' %}
 
-{% block extra_javascript %}
-<script src="{{ STATIC_URL }}javascripts/vis/d3.v3.min.js"></script>
-{% if show_treemap %}
-<script src="{{ STATIC_URL }}javascripts/vis/bigtext.js"></script>
-<script src="{{ STATIC_URL }}javascripts/vis/budget-treemap.js"></script>
-{% else %}
-<script src="{{ STATIC_URL }}javascripts/vis/stacked-area-chart.js"></script>
-<script src="{{ STATIC_URL }}javascripts/vis/budget-stacked-chart.js"></script>
-{% endif %}
-{% endblock %}
-
 {% block content %}
 
 <!-- Politicas Detalle -->
