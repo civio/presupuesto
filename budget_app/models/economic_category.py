@@ -1,5 +1,6 @@
 from django.template.defaultfilters import slugify
 from django.db import models
+from django.conf import settings
 
 
 class EconomicCategoriesManager(models.Manager):
@@ -8,6 +9,20 @@ class EconomicCategoriesManager(models.Manager):
 
     def income(self):
         return self.filter(expense=False)
+
+    def _search(self, query, budget, conditions):
+        sql = "select * from economic_categories " \
+                "where " + conditions + " and " \
+                "to_tsvector('"+settings.SEARCH_CONFIG+"',description) @@ plainto_tsquery('"+settings.SEARCH_CONFIG+"',%s)"
+
+        if budget:
+            sql += " and budget_id='%s'" % budget.id
+
+        sql += "order by description asc"
+        return self.raw(sql, (query, ))
+
+    def search_articles(self, query, budget=None):
+        return self._search(query, budget, "article is not null and heading is null")
 
 
 class EconomicCategory(models.Model):

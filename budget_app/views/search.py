@@ -1,7 +1,7 @@
 from coffin.shortcuts import render_to_response
 from django.core.paginator import EmptyPage
 from django.conf import settings
-from budget_app.models import Budget, Payment, GlossaryTerm, FunctionalCategory, BudgetItem, Entity
+from budget_app.models import Budget, Payment, GlossaryTerm, EconomicCategory, FunctionalCategory, BudgetItem, Entity
 from helpers import *
 from paginator import DiggPaginator as Paginator
 
@@ -30,6 +30,7 @@ def search(request):
     # Get search results
     c['years'] = map(str, Budget.objects.get_years(get_main_entity(c).id))
     c['terms'] = list(GlossaryTerm.objects.search(c['query'], c['LANGUAGE_CODE']))
+    c['economic_categories'] = list(EconomicCategory.objects.search_articles(c['query'], budget))
     if not hasattr(settings, 'SEARCH_ENTITIES') or settings.SEARCH_ENTITIES:
         c['entities'] = list(Entity.objects.search(c['query']))
         c['show_entity_names'] = True
@@ -58,7 +59,11 @@ def search(request):
             c['programmes_per_policy'][programme.policy] = set()
         c['programmes_per_policy'][programme.policy].add(programme.programme)
 
-    c['results_size'] = len(c['terms']) + len(c['policies_ids']) + len(all_items) + len(all_payments)
+    c['results_size'] = len(c['terms']) + \
+                        len(c['policies_ids']) + \
+                        len(c['economic_categories']) + \
+                        len(all_items) + \
+                        len(all_payments)
     c['formatter'] = add_thousands_separator
     c['main_entity_level'] = settings.MAIN_ENTITY_LEVEL
 

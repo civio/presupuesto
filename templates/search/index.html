@@ -120,6 +120,38 @@
       </div>
       {% endif %}
 
+
+      {% if economic_categories %}
+      <div class="results-policies panel">
+        <div class="panel-heading">
+          <h3 class="icon-policy">{{ _('Artículos') }}</h3>
+        </div>
+        <div class="panel-body">
+          <table class="table" summary="Resultados encontrados en Artículos para el término buscado">
+            <caption class="hidden">{{ _('Política / Programa') }}</caption>
+            <thead>
+              <tr>
+                <th id="policy-program">{{ _('Artículo') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for economic_category in economic_categories %}
+              <tr>
+                <th data-th="Programa" headers="policy-program" id="programme1" scope="row">
+                  {% if economic_category.expense %}
+                  <a href="{% url 'budget_app.views.expense_articles_show' economic_category.article, descriptions['expense'].get(economic_category.article|slugify) %}">{{ descriptions['expense'].get(economic_category.article) }}</a>
+                  {% else %}
+                  <a href="{% url 'budget_app.views.income_articles_show' economic_category.article, descriptions['income'].get(economic_category.article|slugify) %}">{{ descriptions['income'].get(economic_category.article) }}</a>
+                  {% endif %}
+                </th>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      {% endif %}
+
       {% if items %}
       <div class="results-concepts panel">
         <div class="panel-heading">
