@@ -24,6 +24,9 @@ class EconomicCategoriesManager(models.Manager):
     def search_articles(self, query, budget=None):
         return self._search(query, budget, "article is not null and heading is null")
 
+    def search_headings(self, query, budget=None):
+        return self._search(query, budget, "heading is not null and subheading is null")
+
 
 class EconomicCategory(models.Model):
     budget = models.ForeignKey('Budget')

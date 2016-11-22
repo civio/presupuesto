@@ -30,7 +30,6 @@ def search(request):
     # Get search results
     c['years'] = map(str, Budget.objects.get_years(get_main_entity(c).id))
     c['terms'] = list(GlossaryTerm.objects.search(c['query'], c['LANGUAGE_CODE']))
-    c['economic_categories'] = list(EconomicCategory.objects.search_articles(c['query'], budget))
     if not hasattr(settings, 'SEARCH_ENTITIES') or settings.SEARCH_ENTITIES:
         c['entities'] = list(Entity.objects.search(c['query']))
         c['show_entity_names'] = True
@@ -47,6 +46,12 @@ def search(request):
     except EmptyPage:
         pass
 
+    # Retrieve articles and headings.
+    # XXX: Do we need to do the same restructuring as with policies/programmes below?
+    # I can't remember why it was needed for policies at the time, so let's try the simple way.
+    c['articles'] = list(EconomicCategory.objects.search_articles(c['query'], budget))
+    c['headings'] = list(EconomicCategory.objects.search_headings(c['query'], budget))
+
     # Consolidate policies and programmes search results, to avoid duplicates
     # XXX: We're searching only in top-level entity, the other ones are spotty,
     # not sure it's worth the effort; plus the search results UX is complicated.
@@ -61,7 +66,8 @@ def search(request):
 
     c['results_size'] = len(c['terms']) + \
                         len(c['policies_ids']) + \
-                        len(c['economic_categories']) + \
+                        len(c['articles']) + \
+                        len(c['headings']) + \
                         len(all_items) + \
                         len(all_payments)
     c['formatter'] = add_thousands_separator

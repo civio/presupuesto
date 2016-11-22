@@ -121,27 +121,47 @@
       {% endif %}
 
 
-      {% if economic_categories %}
+      {% if articles or headings %}
       <div class="results-policies panel">
         <div class="panel-heading">
-          <h3 class="icon-policy">{{ _('Artículos') }}</h3>
+          <h3 class="icon-policy">{{ _('Artículos y conceptos') }}</h3>
         </div>
         <div class="panel-body">
           <table class="table" summary="Resultados encontrados en Artículos para el término buscado">
-            <caption class="hidden">{{ _('Política / Programa') }}</caption>
+            <caption class="hidden">{{ _('Artículo / Concepto') }}</caption>
             <thead>
               <tr>
-                <th id="policy-program">{{ _('Artículo') }}</th>
+                <th id="policy-program">{{ _('Artículo / Concepto') }}</th>
               </tr>
             </thead>
             <tbody>
-              {% for economic_category in economic_categories %}
+              {% for article in articles %}
               <tr>
                 <th data-th="Programa" headers="policy-program" id="programme1" scope="row">
-                  {% if economic_category.expense %}
-                  <a href="{% url 'budget_app.views.expense_articles_show' economic_category.article, descriptions['expense'].get(economic_category.article|slugify) %}">{{ descriptions['expense'].get(economic_category.article) }}</a>
+                  <p class="policy">
+                    {% if article.expense %}
+                    <a href="{% url 'budget_app.views.expense_articles_show' article.article, descriptions['expense'].get(article.article|slugify) %}">{{ descriptions['expense'].get(article.article) }}</a>
+                    {% else %}
+                    <a href="{% url 'budget_app.views.income_articles_show' article.article, descriptions['income'].get(article.article|slugify) %}">{{ descriptions['income'].get(article.article) }}</a>
+                    {% endif %}
+                  </p>
+                </th>
+              </tr>
+              {% endfor %}
+
+              {% for heading in headings %}
+              <tr>
+                <th data-th="Programa" headers="policy-program" id="programme1" scope="row">
+                  {% if heading.expense %}
+                  <a href="{% url 'budget_app.views.expense_articles_show' heading.article, descriptions['expense'].get(heading.article|slugify) %}">{{ descriptions['expense'].get(heading.heading) }}</a>
+                  <p class="policy">
+                    <a href="{% url 'budget_app.views.expense_articles_show' heading.article, descriptions['expense'].get(heading.article|slugify) %}">{{ descriptions['expense'].get(heading.article) }}</a>
+                  </p>
                   {% else %}
-                  <a href="{% url 'budget_app.views.income_articles_show' economic_category.article, descriptions['income'].get(economic_category.article|slugify) %}">{{ descriptions['income'].get(economic_category.article) }}</a>
+                  <a href="{% url 'budget_app.views.income_articles_show' heading.article, descriptions['income'].get(heading.article|slugify) %}">{{ descriptions['income'].get(heading.heading) }}</a>
+                  <p class="policy">
+                    <a href="{% url 'budget_app.views.income_articles_show' heading.article, descriptions['income'].get(heading.article|slugify) %}">{{ descriptions['income'].get(heading.article) }}</a>
+                  </p>
                   {% endif %}
                 </th>
               </tr>
