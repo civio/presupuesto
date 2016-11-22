@@ -71,8 +71,6 @@ def search(request):
     for programmes in c['programmes_per_policy'].values():
         c['results_size'] += len(programmes)
 
-    # Calculate the page numbers to be shown
-
     c['data'] = all_items
 
     return render_to_response('search/index.html', c)
