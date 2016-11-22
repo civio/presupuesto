@@ -108,11 +108,6 @@ def populate_years(c, breakdown_name):
     c['latest_year'] = years[-1]
     c['show_treemap'] = ( len(years) == 1 )
 
-    # Tweak the slider labels when a budget is not final, just proposed
-    if _is_proposed_budget():
-        years[len(years)-1] = str(years[len(years)-1]) + ' (proyecto)'
-    c['years_scale'] = json.dumps([str(year) for year in years])
-
 def populate_comparison_years(c, breakdown_name_left, breakdown_name_right):
     years = sorted(list(set(c[breakdown_name_left].years.values() + c[breakdown_name_right].years.values())))
     c['years'] = json.dumps([str(year) for year in years])
@@ -133,10 +128,6 @@ def populate_level(c, level):
 def populate_entities(c, level):
     c['entities'] = Entity.objects.entities(level)
     c['entities_json'] = json.dumps(Entity.objects.get_entities_table(level))
-
-def _is_proposed_budget():
-    # XXX: Temporary workaround, should come from data model somehow
-    return False;
 
 
 #

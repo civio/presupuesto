@@ -319,7 +319,7 @@
     $('#expenseChartContainer').bind('policy-selected', onEconomicExpenseTreemapClick);
     $('#functionalChartContainer').bind('policy-selected', onFunctionalExpenseTreemapClick);
     $('#incomeChartContainer').bind('policy-selected', onIncomeTreemapClick);
-    initSlider("#year-selection", {{ years|safe }}, redraw, {{ latest_year }}, {{ years_scale|safe }});
+    initSlider("#year-selection", {{ years|safe }}, redraw, {{ latest_year }});
 
     // Create Budget Summary
     var budgetSummary = new BudgetSummary('#budget-summary');
