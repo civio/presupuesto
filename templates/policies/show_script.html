@@ -164,10 +164,10 @@
       // Update current tab (if is not widget)
       if (!$('body').hasClass('widget')) {
         $('#tabs .active').removeClass('active');
-        $('a[href="#'+uiState.type+'"]').blur().parent().addClass('active');
+        $('a[href="#'+uiState.view+'"]').blur().parent().addClass('active');
       // Setup widget tab title
       } else {
-        $('.tab-title h3.'+uiState.type).show();
+        $('.tab-title h3.'+uiState.view).show();
       }
       redraw();
     }
@@ -184,7 +184,7 @@
     
       // Show/hide panel downloads
       $('.panel-downloads > p').hide();
-      $('#'+uiState.type+'-downloads').show();
+      $('#'+uiState.view+'-downloads').show();
 
       redrawChart();
       redrawGrid();
@@ -201,13 +201,13 @@
 
       if ( myGrid !== undefined ) myGrid.destroy();
 
-      myGrid = createBudgetGrid( "#myGrid", gridData[uiState.type], [
+      myGrid = createBudgetGrid( "#myGrid", gridData[uiState.view], [
                           {
-                            data: addEconomicCategoriesPrefix && uiState.type=='economic' ?
+                            data: addEconomicCategoriesPrefix && uiState.view=='economic' ?
                                     addEconomicCategoryPrefix :
                                     'label',
-                            title: getLabelColumnTitle(uiState.type),
-                            render: getLabelColumnRender(uiState.type),
+                            title: getLabelColumnTitle(uiState.view),
+                            render: getLabelColumnRender(uiState.view),
                           },
                           columnDef
 {% if show_actual %}
@@ -260,7 +260,7 @@
       // Handle the hash the page may have loaded with.
       var state = $.deparam.fragment();
       if ( state.item ) { // Highlight a particular item
-        unfoldItem( gridData[uiState.type], state.item );
+        unfoldItem( gridData[uiState.view], state.item );
         window.setTimeout(function() {
           $('html, body').animate({ scrollTop: $('#myGrid').offset().top }, 500);
         }, 1000);
@@ -271,7 +271,7 @@
       if (uiState === null) return;
 
       // We skip chart setup in institutional tab
-      if (uiState.type === 'institutional'){
+      if (uiState.view === 'institutional'){
         $('#policy-chart-container .stacked-area-chart').remove();
         $('#policy-chart-container .stacked-area-chart-legend').remove();
         $('.policies-chart').hide();
@@ -287,13 +287,13 @@
       // Setup treemap chart
       {% if show_treemap %}
       if (currentChart !== null) $('#policy-chart-container .treemap-chart').remove();
-      currentChart = new BudgetTreemap('#policy-chart-container', breakdowns[uiState.type], stats, areasData[uiState.type], 2, colorScale, labelsMinSize)
+      currentChart = new BudgetTreemap('#policy-chart-container', breakdowns[uiState.view], stats, areasData[uiState.view], 2, colorScale, labelsMinSize)
         .i18n(i18n)
         .maxLevels(2)
         .budgetStatuses(budgetStatuses);
       currentChart.createTreemap( uiState );
       // Add area click event
-      if (uiState.type == 'functional') {
+      if (uiState.view == 'functional') {
         $('#policy-chart-container').bind('policy-selected', onItemSelected);
       } else {
         $('#policy-chart-container .treemap-chart rect').css('cursor', 'auto');
@@ -303,10 +303,10 @@
       {% else %}
       currentChart = new BudgetStackedChart('#policy-chart-container', stats, colorScale, i18n)
         .budgetStatuses(budgetStatuses);
-      currentChart.loadBreakdown(breakdowns[uiState.type], '{{ show_side }}');
+      currentChart.loadBreakdown(breakdowns[uiState.view], '{{ show_side }}');
       currentChart.draw( uiState );
       // Add area click event if type is functional
-      if (uiState.type == 'functional') {
+      if (uiState.view == 'functional') {
         $('#policy-chart-container .stacked-area-chart').addClass('clickable');
         $('#policy-chart-container').bind('area-selected', onItemSelected);
       }
@@ -316,10 +316,10 @@
     // Link to policy handlers
     function onItemSelected(event, d) {
       // Avoid link in other tabs different from functional
-      if (uiState.type != 'functional') return;
+      if (uiState.view != 'functional') return;
 
       var widget = $('body').hasClass('widget') ? '?widget=1' : '';
-      var label = (event.type == 'policy-selected') ? d.name : d.label;
+      var label = (event.view == 'policy-selected') ? d.name : d.label;
 
 {% if article %}
       window.location = getPolicyLink(d.id, label, getUIState())+widget;
