@@ -231,36 +231,32 @@
       }
     }
 
-
-    function onEconomicExpenseTreemapClick(event, d) {
+    // Listen click on Treemap & link to selected programme
+    function onBudgetTreemapClick(e, d) {
 {% if entities %}
-      var getExpenseLink = {{ 'getCountyExpenseLink' if is_county else 'getTownExpenseLink' }};
-      var entitySlug = '{{ entity.slug }}';
-      window.location=getExpenseLink(entitySlug, d.id);
+      var getExpenseLink    = {{ 'getCountyExpenseLink' if is_county else 'getTownExpenseLink' }},
+          getFunctionalLink = {{ 'getCountyFunctionalLink' if is_county else 'getTownFunctionalLink' }},
+          getIncomeLink     = {{ 'getCountyIncomeLink' if is_county else 'getTownIncomeLink' }},
+          entitySlug        = '{{ entity.slug }}';
+
+      if (uiState.view === 'expense') {
+        window.location = getExpenseLink(entitySlug, d.id);
+      } else if (uiState.view === 'functional') {
+        window.location = getFunctionalLink(entitySlug, d.id);
+      } else if (uiState.view === 'income') {
+        window.location = getIncomeLink(entitySlug, d.id);
+      }
 {% else %}
-      window.location=getExpenseArticleLink(d.id, d.name);
+      if (uiState.view === 'expense') {
+        window.location = getExpenseArticleLink(d.id, d.name);
+      } else if (uiState.view === 'functional') {
+        window.location = getPolicyLink(d.id, d.name);
+      } else if (uiState.view === 'income') {
+        window.location = getIncomeArticleLink(d.id, d.name);
+      }
 {% endif %}
     }
 
-    function onFunctionalExpenseTreemapClick(event, d) {
-{% if entities %}
-      var getExpenseLink = {{ 'getCountyFunctionalLink' if is_county else 'getTownFunctionalLink' }};
-      var entitySlug = '{{ entity.slug }}';
-      window.location=getExpenseLink(entitySlug, d.id);
-{% else %}
-      window.location=getPolicyLink(d.id, d.name);
-{% endif %}
-    }
-
-    function onIncomeTreemapClick(event, d) {
-{% if entities %}
-      var getIncomeLink = {{ 'getCountyIncomeLink' if is_county else 'getTownIncomeLink' }};
-      var entitySlug = '{{ entity.slug }}';
-      window.location=getIncomeLink(entitySlug, d.id);
-{% else %}
-      window.location=getIncomeArticleLink(d.id, d.name);
-{% endif %}
-    }
 
     var stats = {{ stats|safe }};
     var budgetStatuses = {{ budget_statuses|safe }};
@@ -318,14 +314,11 @@
     // Limit treemap depth for top-level entities
     budgetTreemap.maxLevels(1);
     {% endif %}
+    // Listen 'policy-selected' event on BudgetTreemap
+    $('#budget-treemap').bind('policy-selected', onBudgetTreemapClick);
 
-    // Set up controls
+    // Set up controls (format selector & year slider)
     $('#select-format').change(redraw);
-    /*
-    $('#expenseChartContainer').bind('policy-selected', onEconomicExpenseTreemapClick);
-    $('#functionalChartContainer').bind('policy-selected', onFunctionalExpenseTreemapClick);
-    $('#incomeChartContainer').bind('policy-selected', onIncomeTreemapClick);
-    */
     initSlider("#year-selection", {{ years|safe }}, redraw, {{ latest_year }});
 
     // Setup tabs navigation
