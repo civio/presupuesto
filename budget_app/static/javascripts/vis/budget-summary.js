@@ -86,27 +86,28 @@ function BudgetSummary(selector) {
 
 
   // Update Items
-  this.updateItems = function(){
-
-    var i,
-        area,
-        percentage,
-        amountLabel;
-
+  this.updateItems = function() {
+    var i;
     for (i = 0; i < existingAreas.length; i++) {
-      area = existingAreas[i];
-      percentage = 100 * areaAmounts[area] / totalAmount;
-      // Hide  Labels if area is small (< 6% width)
-      amountLabel = ( percentage >= 6 ) ? formatDecimal(percentage, 1)+'<small>%</small>' : '';
+      var area = existingAreas[i],
+          percentage = 100 * areaAmounts[area] / totalAmount,
+          label = (percentage >= 6 ) ? areaNames[area] : '', // Hide labels if area is small (< 6% width)
+          amountLabel = ( percentage >= 6 ) ? formatDecimal(percentage, 1)+'<small>%</small>' : '',
+          barItem = $($barItems.get(i));
 
-      $($barItems.get(i)).css('width', percentage+'%').find('.budget-summary-bar').html(amountLabel);
+      barItem.css('width', percentage+'%');
+      barItem.find('.budget-summary-bar')
+        .data('id', area)
+        .html(amountLabel)
+        .css('background-color', colorScale[Number(area)]);
+      barItem.find('.budget-summary-label')
+        .html(label);
     }
   };
 
 
   // Update
-  this.update = function( _breakdown, _areaNames, _colorScale, _field, _view, _year ){
-
+  this.update = function( _breakdown, _areaNames, _colorScale, _field, _view, _year ) {
     if (view == _view && year == _year) return;
 
     // Setup

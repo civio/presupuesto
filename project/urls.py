@@ -77,10 +77,6 @@ budget_app_urlpatterns += url_patterns('budget_app.views',
     url(r'^comarcas/(?P<county_left_slug>.+)/(?P<county_right_slug>.+)$', 'counties_compare'),
     url(r'^municipios/(?P<town_left_slug>.+)/(?P<town_right_slug>.+)$', 'towns_compare'),
 
-    # Robots
-    # See http://fredericiana.com/2010/06/09/three-ways-to-add-a-robots-txt-to-your-django-project/
-    url(r'^robots\.txt$', direct_to_template, {'template': 'robots.txt', 'mimetype': 'text/plain'}),
-
 
     #
     # CSV / XLS downloads
@@ -122,10 +118,16 @@ budget_app_urlpatterns += url_patterns('budget_app.views',
 
     # Payments
     url(r'^(?P<slug>.+)_pagos\.(?P<format>.+)$', 'entity_payments'),
+)
 
+# Add extra application paths, not i18n
+budget_app_urlpatterns += patterns('budget_app.views',
     # Runtime info
     url(r'^version.json$', 'version_api'),
 
+    # Robots
+    # See http://fredericiana.com/2010/06/09/three-ways-to-add-a-robots-txt-to-your-django-project/
+    url(r'^robots\.txt$', direct_to_template, {'template': 'robots.txt', 'mimetype': 'text/plain'}),
 )
 
 # Include Jasmine urls fot JS Unit Tests only in development
