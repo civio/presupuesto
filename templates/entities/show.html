@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% from 'shared/entity_select.html' import render_entity_select as render_entity_select %}
-{% from 'entities/chart_container.html' import chart_container as chart_container %}
 
 {% block content %}
 {% if entities %}
@@ -53,16 +52,7 @@
     <div class="container">
 
       <!-- Policies Chart -->
-      <div class="policies-chart">
-        <div id="budget-summary"></div>
-        {{ chart_container('budget-treemap') }}
-        <!--
-        {{ chart_container('functionalChartContainer') }}
-        {{ chart_container('institutionalChartContainer') }}
-        {{ chart_container('incomeChartContainer') }}
-        -->
-        <p class="no-data-alert">{{ _('Información no disponible') }}</p>
-      </div>
+      {% include 'entities/policies-chart.html' %}
 
       {% if entities %}
       {{ render_entity_select('entity-select', entities, entity) }}
