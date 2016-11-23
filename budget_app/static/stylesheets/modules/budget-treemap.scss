@@ -48,3 +48,28 @@
 		}
 	}
 }
+
+#budget-treemap{
+
+	.nodes-container{
+		position: relative;
+	}
+
+	.node {
+	  box-sizing: border-box;
+	  position: absolute;
+	  overflow: hidden;
+	}
+
+	.node-label {
+		display: block;
+	  font-size: 1em;
+		padding: 4px;
+		line-height: 1.1em;
+		color: #fff;
+		pointer-events: none;
+		text-align: center;
+		font-weight: $font-weight-300;
+		@include transition( opacity 0.3s ease-out );
+	}
+}

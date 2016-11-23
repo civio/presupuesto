@@ -3,10 +3,12 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colorScale, _labelsMinS
 
   var selector            = _selector,
       stats               = _stats,
+      aspectRatio         = (_aspectRatio) ? _aspectRatio : 2;
       labelsMinSize       = (_labelsMinSize) ? _labelsMinSize : 70,
       i18n                = (_i18n) ? _i18n : [],
-      budgetStatuses      = (_budgetStatuses) ? _budgetStatuses : {},
-      areas               = null,
+      budgetStatuses      = (_budgetStatuses) ? _budgetStatuses : {};
+
+  var areas               = null,
       breakdown           = null,
       formatPercent       = d3.format(".2%"),
       maxLevels           = -1, // By default, don't limit treemap depth
@@ -19,11 +21,12 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colorScale, _labelsMinS
       transitionDuration  = 650,
       uiState             = {},
       yearTotals          = {};
-  
-  var $popup      = $(selector+" .popover");
-  var width       = $(selector).width();
-  var height      = width / ((_aspectRatio === undefined) ? 2 : _aspectRatio);
-  var newWidth, newHeight;
+      
+  var width,
+      height,
+      treemapWidth,
+      treemapHeight,
+      $popup;
 
   // D3 category10 scale as starting point
   var category10  = (_colorScale && _colorScale.length > 0) ?
@@ -56,7 +59,7 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colorScale, _labelsMinS
   this.colorScale = function(_) {
     if (!arguments.length) return category10;
     category10 = _;
-    colors = d3.scale.ordinal().range(category10).domain([0,1,2,3,4,5,6,7,8,9]);
+    colors = d3.scaleOrdinal().range(category10).domain([0,1,2,3,4,5,6,7,8,9]);
     return this;
   };
 
@@ -90,15 +93,20 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colorScale, _labelsMinS
   // Initialization at object creation time
   setup();
 
-
   // Setup SVG items on 
   function setup() {
+    // Set popoup element
+    $popup = $(selector+" .popover");
+
+    // Set width & height dimensions
+    setDimensions();
 
     // Setup color scale
-    colors = d3.scale.ordinal()
+    colors = d3.scaleOrdinal()
       .range(category10)
       .domain([0,1,2,3,4,5,6,7,8,9]);
 
+    /*
     // Create SVG
     svg = d3.select(selector)
       .append("svg:svg")
@@ -126,6 +134,22 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colorScale, _labelsMinS
           if (mouseOver)
             svg.selectAll("rect.cell").attr("class", "cell");
         });
+    */
+  }
+
+  // Set main element dimensions
+  function setDimensions() {
+    width       = $(selector).width();
+    height      = width / aspectRatio;
+    $(selector).height( height );
+  }
+
+  // Adjust the overall treemap size based on the size of this year's budget compared to the biggest ever
+  function setTreemapDimensions() {
+    var maxValue  = maxTreemapValueEver || calculateMaxTreemapValueEver();
+    var ratio     = Math.sqrt( getValue(yearTotals[uiState.year][uiState.field], uiState.format, uiState.field, uiState.year) / maxValue );
+    treemapWidth  = (width * ratio);
+    treemapHeight = (height * ratio);
   }
 
   // Calculate year totals, needed for percentage calculations later on
@@ -144,8 +168,9 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colorScale, _labelsMinS
     function getDummyChild(item) {
       var dummy = {
           id: item.id,
+          parentId: 't',
           name: item.name,
-          leaf: true
+          //leaf: true
       };
       for (var year in columns) {
         dummy[year] = 0;
@@ -159,8 +184,9 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colorScale, _labelsMinS
         if ($.isEmptyObject(items[id][field])) continue;
         var child = {
           id: id,
-          name: items[id].label,
-          leaf: true
+          parentId: 't',
+          name: items[id].label
+          //leaf: true
         };
         // Get children, recursively
         if ( maxLevels==-1 || level<maxLevels ) {
@@ -196,10 +222,14 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colorScale, _labelsMinS
       return children;
     }
 
+    /*
     return {
       name: field,
       children: getChildrenTree(breakdown.sub, 1)
     };
+    */
+
+    return getChildrenTree(breakdown.sub, 1);
   }
 
   function loadBreakdown(breakdown, field) {
@@ -229,33 +259,28 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colorScale, _labelsMinS
     // but there's not a simple clean solution: the way the code is structured now,
     // the calling code doesn't know whether there's data, since it involves looking into
     // budget statuses and so on (i.e. the code we just above)
-    if ( Object.keys(columns).length==0 )
+    if ( Object.keys(columns).length === 0 )
       $(selector).hide();
 
     calculateYearTotals(breakdown, field, columns);
+    // Get treemap data 
     treemapData = loadBreakdownField(breakdown, field, columns);
+    // Add root item to treemap data
+    treemapData.unshift({id: 't'});
   }
 
   // Calculate the maximum value of the treemap along the years.
   // Note that we use already calculated 'year totals', which will use _either_ budget or actual
   // spending, not both. This matches the data we use for display. Using both budget and actual
   // would be wrong, although in normal scenarios the difference wouldn't be huge.
-  this.calculateMaxTreemapValueEver = function() {
+  function calculateMaxTreemapValueEver() {
     var maxValue = 0;
     for (var year in yearTotals) {
       maxValue = Math.max(maxValue, getValue(yearTotals[year].income || 0, uiState.format, 'income', year) );
       maxValue = Math.max(maxValue, getValue(yearTotals[year].expense || 0, uiState.format, 'expense', year) );
     }
     return maxValue;
-  };
-
-  // Adjust the overall treemap size based on the size of this year's budget compared to the biggest ever
-  this.setSize = function() {
-    var maxValue = maxTreemapValueEver || this.calculateMaxTreemapValueEver();
-    var ratio = Math.sqrt( getValue(yearTotals[uiState.year][uiState.field], uiState.format, uiState.field, uiState.year) / maxValue );
-    newWidth = width*ratio - 2; // A couple of pixels of padding to avoid clipping
-    newHeight = height*ratio - 2;
-  };
+  }
 
 
   // Update treemap
@@ -290,23 +315,50 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colorScale, _labelsMinS
 
     uiState = _uiState;
 
-    // Adjust size (duplicate adjustTreemapSize except treemap size setup & transitions )
-    this.setSize();
-    // Update svg & background dimensions
-    svg
-      .interrupt()
-      .attr("transform", "translate(" + (width - newWidth)/2 + "," + (height - newHeight)/2 + ")");
-    svg.select('g.bg').select('rect')
-      .attr('width', newWidth+'px')
-      .attr('height', newHeight+'px');
-
+    setTreemapDimensions();
+    
     // Setup treemap
-    treemap = d3.layout.treemap()
-      .size([newWidth,newHeight])
-      .sort(function(a, b) { return a.value - b.value; })
-      .value(function(d) { return (d[uiState.year] > 1) ? d[uiState.year] : 1; })
-      .padding(0)
-      .sticky(true);
+    treemap = d3.treemap()
+      .size([treemapWidth,treemapHeight])
+      //.sort(function(a, b) { return a.value - b.value; })
+      //.value(function(d) { return (d[uiState.year] > 1) ? d[uiState.year] : 1; })
+      .paddingOuter(0)
+      .paddingInner(1.5)
+      //.sticky(true);
+      .round(true);
+
+    var stratify = d3.stratify();
+
+    console.log( treemapData );
+
+    var root = stratify(treemapData)
+      .sum(function(d) { return d[uiState.year]; })
+      .sort(function(a, b) { return a[uiState.year] - b[uiState.year]; });
+
+    treemap(root);
+
+    d3.select(selector)
+      .append("div")
+        .attr("class", "nodes-container")
+        .style("width", treemapWidth+"px")
+        .style("height", treemapHeight+"px")
+        .style("top", (height-treemapHeight)/2+"px")
+        .style("left", (width-treemapWidth)/2+"px")
+      .selectAll(".node")
+      .data(root.leaves())
+      .enter().append("div")
+        .attr("class", "node")
+        //.attr("title", function(d) { return d.id + "\n" + format(d.value); })
+        .style("left", function(d) { return d.x0 + "px"; })
+        .style("top", function(d) { return d.y0 + "px"; })
+        .style("width", function(d) { return d.x1 - d.x0 + "px"; })
+        .style("height", function(d) { return d.y1 - d.y0 + "px"; })
+        .style("background", function(d) { console.log(d.id, Math.floor(d.id*0.1)); while (d.depth > 1) d = d.parent; return colors(Math.floor(d.id*0.1)); })
+      .append("div")
+        .attr("class", "node-label")
+        .text(function(d) { return d.data.name; });
+
+    /*
 
     // Clear treemap 
     if (treemapItems) {
@@ -332,6 +384,7 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colorScale, _labelsMinS
       .call(cell);
 
     setLabels();
+    */
   };
 
   // Update the year or format of a treemap.
@@ -362,18 +415,19 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colorScale, _labelsMinS
     // Render the treemap
     uiState = _uiState;
 
-    this.setSize();
+    setTreemapDimensions();
+
     // Update tremap size
-    treemap.size([newWidth,newHeight]);
+    treemap.size([treemapWidth,treemapHeight]);
     // Update svg & background dimensions
     svg
       .transition()
       .duration(transitionDuration)
-      .attr("transform", "translate(" + (width - newWidth)/2 + "," + (height - newHeight)/2 + ")");
+      .attr("transform", "translate(" + (width - treemapWidth)/2 + "," + (height - treemapHeight)/2 + ")");
 
     svg.select('g.bg').select('rect')
-      .attr('width', newWidth+'px')
-      .attr('height', newHeight+'px');
+      .attr('width', treemapWidth+'px')
+      .attr('height', treemapHeight+'px');
 
     // Remove text inside the treemap and create once the animation has ended
     svg.selectAll(".treemap-text").remove();
