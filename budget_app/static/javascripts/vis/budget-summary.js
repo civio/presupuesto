@@ -87,14 +87,19 @@ function BudgetSummary(selector) {
 
   // Update Items
   this.updateItems = function() {
-    var i;
+    var i,
+        area,
+        percentage,
+        label,
+        amountLabel,
+        barItem;
     for (i = 0; i < existingAreas.length; i++) {
-      var area = existingAreas[i],
-          percentage = 100 * areaAmounts[area] / totalAmount,
-          label = (percentage >= 6 ) ? areaNames[area] : '', // Hide labels if area is small (< 6% width)
-          amountLabel = ( percentage >= 6 ) ? formatDecimal(percentage, 1)+'<small>%</small>' : '',
-          barItem = $($barItems.get(i));
+      area = existingAreas[i],
+      percentage = 100 * areaAmounts[area] / totalAmount;
+      label = (percentage >= 6 ) ? areaNames[area] : ''; // Hide labels if area is small (< 6% width)
+      amountLabel = ( percentage >= 6 ) ? formatDecimal(percentage, 1)+'<small>%</small>' : '';
 
+      barItem = $($barItems.get(i));
       barItem.css('width', percentage+'%');
       barItem.find('.budget-summary-bar')
         .data('id', area)
