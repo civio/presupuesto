@@ -1,28 +1,38 @@
-function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScale, labelsMinSize) {
-  var width = $(selector).width();
-  var height = width / (aspectRatio===undefined ? 2 : aspectRatio);
-  var treemapData;
-  var treemap = null;
-  var treemapItems = null;
-  var yearTotals = {};
-  var maxTreemapValueEver = 0;
-  var uiState = null;
-  var formatPercent = d3.format(".2%");
-  var textLabelMap = [];
-  var i18n = [];
-  var budgetStatuses = {};
-  var transitionDuration = 650;
-  var minSizeWithLabel = (labelsMinSize) ? labelsMinSize : 70;
-  var mouseOver = true;
-  var paddedYears = {};
-  var maxLevels = -1; // By default, don't limit treemap depth
-  var $popup = $(selector+" .popover");
+//function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScale, labelsMinSize) {
+function BudgetTreemap(_selector, _stats, _aspectRatio, _colorScale, _labelsMinSize, _i18n, _budgetStatuses) {
+
+  var selector            = _selector,
+      stats               = _stats,
+      labelsMinSize       = (_labelsMinSize) ? _labelsMinSize : 70,
+      i18n                = (_i18n) ? _i18n : [],
+      budgetStatuses      = (_budgetStatuses) ? _budgetStatuses : {},
+      areas               = null,
+      breakdown           = null,
+      formatPercent       = d3.format(".2%"),
+      maxLevels           = -1, // By default, don't limit treemap depth
+      maxTreemapValueEver = 0,
+      mouseOver           = true,
+      paddedYears         = {},
+      textLabelMap        = [],
+      treemapData         = null,
+      treemapItems        = null,
+      transitionDuration  = 650,
+      uiState             = {},
+      yearTotals          = {};
+  
+  var $popup      = $(selector+" .popover");
+  var width       = $(selector).width();
+  var height      = width / ((_aspectRatio === undefined) ? 2 : _aspectRatio);
+  var newWidth, newHeight;
 
   // D3 category10 scale as starting point
-  var category10 = (colorScale && colorScale.length > 0) ?
-                    colorScale :
-                    [ "#A9A69F", "#D3C488", "#2BA9A0", "#E8A063", "#9EBF7B", "#dbb0c0", "#7d8f69", "#a29ac8", "#6c6592", "#9e9674", "#e377c2", "#e7969c", "#bcbd22", "#17becf" ];
-  var colors = d3.scale.ordinal().range(category10).domain([0,1,2,3,4,5,6,7,8,9]);
+  var category10  = (_colorScale && _colorScale.length > 0) ?
+                    _colorScale :
+                    [ "#A9A69F", "#D3C488", "#2BA9A0", "#E8A063", "#9EBF7B", "#dbb0c0", "#7d8f69", "#a29ac8", "#6c6592", "#9e9674", "#e377c2", "#e7969c", "#bcbd22", "#17becf"];
+  
+  var svg,
+      colors,
+      treemap;
 
 
   // Getters/setters
@@ -30,6 +40,7 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
     return treemap !== null;
   };
 
+  // TODO!!! Check if we need this setters
   this.i18n = function(_) {
     if (!arguments.length) return _;
     i18n = _;
@@ -67,16 +78,55 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
     return this;
   };
 
+  this.areaOver = function(d) {
+    $(selector+' .cell:not(.cell-'+d.id+')').addClass('out');
+  };
 
-  // Initialization
-  var svg = d3.select(selector)
-          .append("svg:svg")
-          .attr("class", "treemap-chart")
-          .style("position", "relative")
-          .style("width", width + "px")
-          .style("height", height + "px")
-          .append("svg:g")
+  this.areaOut = function() {
+    $(selector+' .cell.out').removeClass('out');
+  };
+  
+
+  // Initialization at object creation time
+  setup();
+
+
+  // Setup SVG items on 
+  function setup() {
+
+    // Setup color scale
+    colors = d3.scale.ordinal()
+      .range(category10)
+      .domain([0,1,2,3,4,5,6,7,8,9]);
+
+    // Create SVG
+    svg = d3.select(selector)
+      .append("svg:svg")
+        .attr("class", "treemap-chart")
+        .style("position", "relative")
+        .style("width", width + "px")
+        .style("height", height + "px")
+        .append("svg:g")
           .attr("transform", "translate(-.5,-.5)");
+
+    // Create a transparent background just to avoid blinking when moving along the gaps of the squares
+    svg.append("g")
+      .attr('class','bg')
+      .append("rect")
+        .attr('x', '0px')
+        .attr('y', '0px')
+        .attr('width', width+'px')
+        .attr('height', height+'px')
+        .attr('style', 'fill-opacity: 0')
+        .on("mouseover", function(d, i) {
+          if (mouseOver)
+            svg.selectAll("rect.cell").attr("class", "cell out");
+        })
+        .on("mouseout", function(d, i) {
+          if (mouseOver)
+            svg.selectAll("rect.cell").attr("class", "cell");
+        });
+  }
 
   // Calculate year totals, needed for percentage calculations later on
   function calculateYearTotals(breakdown, field, columns) {
@@ -99,7 +149,7 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
       };
       for (var year in columns) {
         dummy[year] = 0;
-      };
+      }
       return dummy;
     }
 
@@ -190,7 +240,7 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
   // Note that we use already calculated 'year totals', which will use _either_ budget or actual
   // spending, not both. This matches the data we use for display. Using both budget and actual
   // would be wrong, although in normal scenarios the difference wouldn't be huge.
-  this.calculateMaxTreemapValueEver = function(uiState) {
+  this.calculateMaxTreemapValueEver = function() {
     var maxValue = 0;
     for (var year in yearTotals) {
       maxValue = Math.max(maxValue, getValue(yearTotals[year].income || 0, uiState.format, 'income', year) );
@@ -200,71 +250,76 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
   };
 
   // Adjust the overall treemap size based on the size of this year's budget compared to the biggest ever
-  this.adjustTreemapSize = function(uiState) {
-    var maxValue = maxTreemapValueEver || this.calculateMaxTreemapValueEver(uiState);
+  this.setSize = function() {
+    var maxValue = maxTreemapValueEver || this.calculateMaxTreemapValueEver();
     var ratio = Math.sqrt( getValue(yearTotals[uiState.year][uiState.field], uiState.format, uiState.field, uiState.year) / maxValue );
-    var newWidth = width*ratio - 2; // A couple of pixels of padding to avoid clipping
-    var newHeight = height*ratio - 2;
-    treemap.size([newWidth,newHeight]);
-    svg
-      .transition()
-      .duration(transitionDuration)
-      .attr("transform", "translate(" + (width - newWidth)/2 + "," + (height - newHeight)/2 + ")");
-
-    svg.select('g.bg').select('rect')
-      .attr('width', newWidth+'px')
-      .attr('height', newHeight+'px');
+    newWidth = width*ratio - 2; // A couple of pixels of padding to avoid clipping
+    newHeight = height*ratio - 2;
   };
 
-  // Initialize and display the treemap, using a fade-in animation.
-  this.createTreemap = function(newUIState) {
-    // Do nothing if called multiple times
-    if ( treemap !== null )
+
+  // Update treemap
+  this.update = function(_breakdown, _areas, _uiState) {
+    // Avoid redundancy
+    if (uiState.view === _uiState.view && uiState.year === _uiState.year && uiState.format === _uiState.format)
       return;
+
+    // Setup
+    if (uiState.view !== _uiState.view) {
+      breakdown = _breakdown;
+      areas     = _areas;
+      this.setupTreemap(_uiState);
+    }
+    // Update
+    else {
+      this.updateTreemap(_uiState);
+    }
+  };
+
+
+  // Initialize and display the treemap, using a fade-in animation.
+  this.setupTreemap = function(_uiState) {
 
     // Load the data. We do it here, and not at object creation time, so we have time
     // to change default settings (treemap depth, f.ex.) if needed
-    loadBreakdown(breakdown, newUIState.field);
+    loadBreakdown(breakdown, _uiState.field);
 
     // Do nothing if there's no data
-    if ( !yearTotals[newUIState.year] || !yearTotals[newUIState.year][newUIState.field] )
+    if ( !yearTotals[_uiState.year] || !yearTotals[_uiState.year][_uiState.field] )
       return;
 
-    uiState = newUIState;
+    uiState = _uiState;
 
-    // Create a transparent background just to avoid blinking when moving along the gaps of the squares
-    svg.append("g")
-      .attr('class','bg cell')
-      .append("rect")
-      .attr('x', '0px')
-      .attr('y', '0px')
-      .attr('width', width+'px')
-      .attr('height', height+'px')
-      .on("mouseover", function(d, i) {
-        if (mouseOver)
-          svg.selectAll("rect.cell").attr("class", "cell out");
-      })
-      .on("mouseout", function(d, i) {
-        if (mouseOver)
-          svg.selectAll("rect.cell").attr("class", "cell");
-      })
-      .attr('style', 'fill-opacity: 0');
+    // Adjust size (duplicate adjustTreemapSize except treemap size setup & transitions )
+    this.setSize();
+    // Update svg & background dimensions
+    svg
+      .interrupt()
+      .attr("transform", "translate(" + (width - newWidth)/2 + "," + (height - newHeight)/2 + ")");
+    svg.select('g.bg').select('rect')
+      .attr('width', newWidth+'px')
+      .attr('height', newHeight+'px');
 
-
+    // Setup treemap
     treemap = d3.layout.treemap()
-                .size([width,height])
-                .sort(function(a, b) { return a.value - b.value; })
-                .value(function(d) { return (d[uiState.year] > 1) ? d[uiState.year] : 1; })
-                .padding(0)
-                .sticky(true);
+      .size([newWidth,newHeight])
+      .sort(function(a, b) { return a.value - b.value; })
+      .value(function(d) { return (d[uiState.year] > 1) ? d[uiState.year] : 1; })
+      .padding(0)
+      .sticky(true);
+
+    // Clear treemap 
+    if (treemapItems) {
+      svg.selectAll("g.cell").interrupt().remove();
+    }
 
     // Create the initial layout
-    var g = svg.data([treemapData]).selectAll("g")
+    var g = svg.datum(treemapData).selectAll("g")
         .data(treemap.nodes)
       .enter().append("g")
         .attr("class", "cell")
         .style("opacity", 1);
-
+    
     treemapItems = g.append("rect")
       .attr("class", function(d){ return "cell cell-"+d.id.charAt(0); })
       .style("fill", function(d) { return colors(parseInt(d.id[0], 10)); })
@@ -273,24 +328,20 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
       .on("mouseout",   onMouseOut)
       .on("click", function(d, i) {
         $(selector).trigger('policy-selected', d);
-      });
+      })
+      .call(cell);
 
-    // Render the treemap
-    this.drawTreemap(uiState);
+    setLabels();
   };
 
   // Update the year or format of a treemap.
   // Note: you can't change the field being displayed, i.e. expense vs. income.
-  this.updateTreemap = function(newUIState) {
+  this.updateTreemap = function(_uiState) {
     // Do nothing before initialization
-    if ( treemap === null )
-      return;
-
-    // Do nothing if there's no change
-    if ( uiState && sameUIState(uiState, newUIState) ) return;
+    if ( treemap === null ) return;
 
     // Do nothing if there's no data
-    if ( !yearTotals[newUIState.year] || !yearTotals[newUIState.year][newUIState.field] ) {
+    if ( !yearTotals[_uiState.year] || !yearTotals[_uiState.year][_uiState.field] ) {
       svg.style("opacity", 0);
       return;
     } else
@@ -300,26 +351,32 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
     // across the years. (One item more or less is bearable, but a whole level appearing breaks
     // the layout: the new items get displayed along only one dimension.) So we disable the
     // 'stickyness' when we move between years with different levels of detail.
-    if ( uiState.year != newUIState.year ) {
-      var shouldBeSticky = (paddedYears[uiState.year] == paddedYears[newUIState.year]);
+    if ( uiState.year != _uiState.year ) {
+      var shouldBeSticky = (paddedYears[uiState.year] == paddedYears[_uiState.year]);
       // Resetting sticky to true resets the treemap internal cache; we don't want that, so check.
       // See https://github.com/mbostock/d3/wiki/Treemap-Layout#wiki-sticky
       if ( treemap.sticky() != shouldBeSticky )
         treemap.sticky(shouldBeSticky);
     }
 
+    // Render the treemap
+    uiState = _uiState;
+
+    this.setSize();
+    // Update tremap size
+    treemap.size([newWidth,newHeight]);
+    // Update svg & background dimensions
+    svg
+      .transition()
+      .duration(transitionDuration)
+      .attr("transform", "translate(" + (width - newWidth)/2 + "," + (height - newHeight)/2 + ")");
+
+    svg.select('g.bg').select('rect')
+      .attr('width', newWidth+'px')
+      .attr('height', newHeight+'px');
+
     // Remove text inside the treemap and create once the animation has ended
     svg.selectAll(".treemap-text").remove();
-
-    // Render the treemap
-    uiState = newUIState;
-    this.drawTreemap(uiState);
-  };
-
-  // Render the treemap
-  this.drawTreemap = function(uiState) {
-    // Update the overall size of the treemap,...
-    this.adjustTreemapSize(uiState);
 
     // and the size and position of each of its rectangles.
     // Do it through a transition so there's a smooth animation on year change.
@@ -339,22 +396,22 @@ function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScal
 
 
   // Treemap functions
-  function cell() {
+  function cell(selection) {
     var internalPadding = 1.5;
-    this.attr("x", function(d) { return d.x + "px"; })
-        .attr("y", function(d) { return d.y + "px"; })
-        // XXX: This way of padding doesn't fully respect the cells proportions, keep the padding minimal until improved
-        .attr("width", function(d) { return (d.dx >= internalPadding ? d.dx - internalPadding : 0) + "px"; })
-        .attr("height", function(d) { return (d.dy >= internalPadding ? d.dy - internalPadding : 0) + "px"; })
-        .style('opacity', function(d) { return d.leaf == true ? '1' : '0'; })
-        .attr("leaf", function(d) { return d.leaf; });
+    selection.attr("x", function(d) { return d.x + "px"; })
+      .attr("y", function(d) { return d.y + "px"; })
+      // XXX: This way of padding doesn't fully respect the cells proportions, keep the padding minimal until improved
+      .attr("width", function(d) { return (d.dx >= internalPadding ? d.dx - internalPadding : 0) + "px"; })
+      .attr("height", function(d) { return (d.dy >= internalPadding ? d.dy - internalPadding : 0) + "px"; })
+      .style('opacity', function(d) { return d.leaf === true ? '1' : '0'; })
+      .attr("leaf", function(d) { return d.leaf; });
   }
 
   function setLabels() {
 
     treemapItems.each(function(d) {
 
-      if ( d.leaf && d.dx > minSizeWithLabel && d.dy > minSizeWithLabel ) {
+      if ( d.leaf && d.dx > labelsMinSize && d.dy > labelsMinSize ) {
 
         var width = Math.max(d.dx - 8, 0) * 0.9;    // .9 is a safety margin
         var height = Math.max(d.dy - 8, 0);

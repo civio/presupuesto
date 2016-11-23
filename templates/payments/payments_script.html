@@ -70,19 +70,19 @@
 
         // Update tab
         $('#tabs .active').removeClass('active');
-        $('a[href="#'+uiState.type+'"]').blur().parent().addClass('active');
+        $('a[href="#'+uiState.view+'"]').blur().parent().addClass('active');
         redrawGrid();
       }
     }
 
     // Do all the hard work of drawing the grids
     function redrawGrid() {
-      var data      = (uiState.type == 'area') ? areaBreakdown : payeeBreakdown;
+      var data      = (uiState.view == 'area') ? areaBreakdown : payeeBreakdown;
       var formatter = showingInitialSummary() ?
-                        ((uiState.type == 'area') ? areaFormatter : mainPayeeFormatter) :
+                        ((uiState.view == 'area') ? areaFormatter : mainPayeeFormatter) :
                         rowNameFormatter;
       var columnDef = getColumnDefinition(uiState);
-      var title     = (uiState.type == 'area') ? '{{ _("Área") }}' : '{{ _("Beneficiario") }}';
+      var title     = (uiState.view == 'area') ? '{{ _("Área") }}' : '{{ _("Beneficiario") }}';
 
       if ( myGrid !== undefined )  myGrid.destroy();
       myGrid = createBudgetGrid("#myGrid", breakdownToTable(data),
@@ -175,7 +175,7 @@
     function setupPayeesSummary() {
       uiState = getUIState();
       $('#tabs .active').removeClass('active');
-      $('a[href="#'+uiState.type+'"]').blur().parent().addClass('active');
+      $('a[href="#'+uiState.view+'"]').blur().parent().addClass('active');
       $('#query-panel').hide();
       redrawGrid();
     }

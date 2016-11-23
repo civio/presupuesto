@@ -33,8 +33,8 @@ function setRedrawOnTabsChange(container, callback) {
   }
 }
 
-function setDataTab(type) {
-  $('section').data('tab', type);
+function setDataTab(view) {
+  $('section').data('tab', view);
 }
 
 function setRedrawOnButtonGroupChange(selector, callback) {
@@ -51,7 +51,7 @@ function unfoldItem(gridData, itemId) {
   for ( i=0; i<gridData.length && !found; i++ ) {
     if ( gridData[i].key == itemId ) {
       var parent = gridData[i].parent;
-      while (parent != null) {
+      while (parent !== null) {
         parent._expanded = true;
         parent = parent.parent;
       }
@@ -89,16 +89,15 @@ function initSlider(selector, years, callback, startValue) {
 }
 
 function getUIState() {
-  var field = $('section').data('field');
+  var view = $('section').data('tab');
   return {
-    type:   $('section').data('tab'),
-    field:  field == 'income' ? 'income' : 'expense',
-    view:   field,
+    field:  view == 'income' ? 'income' : 'expense',
+    view:   view,
     format: $('#select-format').val(),
     year:   $("#year-selection").val()
   };
 }
 
 function sameUIState(a, b) {
-  return a.type==b.type && a.view==b.view && a.field==b.field && a.year==b.year && a.format==b.format;
+  return /*a.type==b.type &&*/ a.view==b.view && a.field==b.field && a.year==b.year && a.format==b.format;
 }

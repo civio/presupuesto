@@ -1,6 +1,7 @@
-function BudgetSummary(selector) {
+function BudgetSummary(selector, _colorScale) {
 
-  var year          = null,
+  var colorScale    = _colorScale,
+      year          = null,
       view          = null,
       areaNames     = null,
       areaAmounts   = {},
@@ -13,12 +14,10 @@ function BudgetSummary(selector) {
   // Insert bar in the DOM
   $(selector).empty().append( $bar );
 
-
   // Setup Data
-  this.setupData = function( _breakdown, _areaNames, _colorScale, _field, _year ){
+  this.setupData = function( _breakdown, _areaNames, _field, _year ){
 
     areaNames   = _areaNames;
-    colorScale  = _colorScale;
 
     // Reset variables holding the data.
     // Note that a BudgetSummary object can be setup a number of times, so this is needed.
@@ -75,12 +74,11 @@ function BudgetSummary(selector) {
       .mouseover(function(e){
         $barItems.addClass('inactive');
         $(this).parent().removeClass('inactive').addClass('active');
-        // Hover Treemap Chart related items
-        $('#'+view+'ChartContainer .cell:not(.cell-'+$(this).data('id')+')').addClass('out');
+        $(selector).trigger('budget-summary-over', {id: $(this).data('id')});
       })
       .mouseout(function(e){
         $barItems.removeClass('inactive active');
-        $('#'+view+'ChartContainer .cell.out').removeClass('out');
+        $(selector).trigger('budget-summary-out');
       });
   };
 
@@ -112,17 +110,17 @@ function BudgetSummary(selector) {
 
 
   // Update
-  this.update = function( _breakdown, _areaNames, _colorScale, _field, _view, _year ) {
+  this.update = function( _breakdown, _areaNames, _field, _view, _year ) {
     if (view == _view && year == _year) return;
 
     // Setup
     if (view != _view) {
-      this.setupData( _breakdown, _areaNames, _colorScale, _field, _year );
+      this.setupData( _breakdown, _areaNames, _field, _year );
       this.setupItems();
     }
     // Update
     else {
-      this.setupData( _breakdown, _areaNames, _colorScale, _field, _year );
+      this.setupData( _breakdown, _areaNames, _field, _year );
       this.updateItems();
     }
 

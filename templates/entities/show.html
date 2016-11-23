@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% from 'shared/entity_select.html' import render_entity_select as render_entity_select %}
-{% from 'entities/chart_container.html' import chart_container as chart_container %}
 
 {% block content %}
 {% if entities %}
@@ -53,14 +52,7 @@
     <div class="container">
 
       <!-- Policies Chart -->
-      <div class="policies-chart">
-        <div id="budget-summary"></div>
-        {{ chart_container('expenseChartContainer') }}
-        {{ chart_container('functionalChartContainer') }}
-        {{ chart_container('institutionalChartContainer') }}
-        {{ chart_container('incomeChartContainer') }}
-        <p class="no-data-alert">{{ _('Información no disponible') }}</p>
-      </div>
+      {% include 'entities/policies-chart.html' %}
 
       {% if entities %}
       {{ render_entity_select('entity-select', entities, entity) }}
@@ -74,19 +66,19 @@
       <table id="myGrid" class="table-grid" width="100%"></table>
 
       <div class="panel-downloads">
-        <p class="downloads" id="income-downloads">
+        <p class="downloads hidden" id="income-downloads">
           {{ _('Descarga la tabla de <strong>Ingresos</strong>')|safe }}
           <a class="icon-file-excel" href="{{ url('budget_app.views.entity_income', entity.level, entity.slug, 'csv') }}" title="{{ _('Descarga la tabla en CSV') }}"><span class="file-info">CSV</span></a>
           o
           <a class="icon-file-excel" href="{{ url('budget_app.views.entity_income', entity.level, entity.slug, 'xlsx') }}" title="{{ _('Descarga la tabla en Excel') }}"><span class="file-info">Excel</span></a>
         </p>
-        <p class="downloads" id="functional-downloads">
+        <p class="downloads hidden" id="functional-downloads">
           {{ _('Descarga la tabla de <strong>Gastos (por programa)</strong>')|safe }}
           <a class="icon-file-excel" href="{{ url('budget_app.views.entity_functional', entity.level, entity.slug, 'csv') }}" title="{{ _('Descarga la tabla en CSV') }}"><span class="file-info">CSV</span></a>
           o
           <a class="icon-file-excel" href="{{ url('budget_app.views.entity_functional', entity.level, entity.slug, 'xlsx') }}" title="{{ _('Descarga la tabla en Excel') }}"><span class="file-info">Excel</span></a>
         </p>
-        <p class="downloads" id="expense-downloads">
+        <p class="downloads hidden" id="expense-downloads">
           {{ _('Descarga la tabla de <strong>Gastos</strong>')|safe }}
           <a class="icon-file-excel" href="{{ url('budget_app.views.entity_expenses', entity.level, entity.slug, 'csv') }}" title="{{ _('Descarga la tabla en CSV') }}"><span class="file-info">CSV</span></a>
           o
