@@ -205,7 +205,7 @@
         setTotals(breakdown, executionColumnDef, '.total-executed');
 
       // Setup & Update Budget Summary
-      budgetSummary.update( breakdowns[uiState.view], areas[uiState.view], colorScale, uiState.field, uiState.view, uiState.year );
+      budgetSummary.update( breakdowns[uiState.view], areas[uiState.view], uiState.field, uiState.view, uiState.year );
 
       // Setup & Update Budget Treemap
       budgetTreemap.update( breakdowns[uiState.view], areas[uiState.view], uiState );
@@ -250,7 +250,7 @@
     _.each(breakdowns, function(b, name) { gridData[name] = breakdownToTable(b); });
 
     // Create Budget Summary
-    var budgetSummary = new BudgetSummary('#budget-summary');
+    var budgetSummary = new BudgetSummary('#budget-summary', colorScale);
 
     // Create Budget Treemap
     var budgetTreemap = new BudgetTreemap('#budget-treemap', stats, 2, colorScale, labelsMinSize, i18n, budgetStatuses);
