@@ -3,11 +3,6 @@
 
     // Variable Definitions
     var uiState = null;
-    var policiesTitles = {
-      'functional': '{{ _("Gastos (por programa)") }}',
-      'expense':    '{{ _("Gastos") }}',
-      'income':     '{{ _("Ingresos") }}',
-    };
     var stats = {{ stats|safe }};
     var budgetStatuses = {{ budget_statuses|safe }};
     var budgetStatusLabels = {
@@ -130,9 +125,6 @@
       else{
         $('.tab-title h3.'+uiState.view).show();
       }
-
-      // Update Policies Title -> We really need this??? I can't find any .policies-title element (maybe for widget?)
-      $('.policies-title').text( policiesTitles[uiState.view] );
 
       // Show/hide download links based on view
       $('.panel-downloads .downloads').addClass('hidden');
