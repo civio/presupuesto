@@ -236,6 +236,16 @@
 {% endif %}
     }
 
+    // Listen mouse over Summary item
+    function onBudgetSummaryOver(e, d) {
+      budgetTreemap.areaOver(d);
+    }
+
+    // Listen mouse out Summary item
+    function onBudgetSummaryOut(e) {
+      budgetTreemap.areaOut();
+    }
+
 
     // Initialization
 
@@ -250,8 +260,11 @@
     // Limit treemap depth for top-level entities
     budgetTreemap.maxLevels(1);
 {% endif %}
-    // Listen 'policy-selected' event on BudgetTreemap
-    $('#budget-treemap').bind('policy-selected', onBudgetTreemapClick);
+
+    // Listen BudgetTreemap & BudgetSummary events
+    $('#budget-treemap').bind('policy-selected',     onBudgetTreemapClick);
+    $('#budget-summary').bind('budget-summary-over', onBudgetSummaryOver);
+    $('#budget-summary').bind('budget-summary-out',  onBudgetSummaryOut);
 
     // Set up controls (format selector & year slider)
     $('#select-format').change(redraw);

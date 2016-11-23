@@ -74,12 +74,11 @@ function BudgetSummary(selector, _colorScale) {
       .mouseover(function(e){
         $barItems.addClass('inactive');
         $(this).parent().removeClass('inactive').addClass('active');
-        // Hover Treemap Chart related items
-        $('#'+view+'ChartContainer .cell:not(.cell-'+$(this).data('id')+')').addClass('out');
+        $(selector).trigger('budget-summary-over', {id: $(this).data('id')});
       })
       .mouseout(function(e){
         $barItems.removeClass('inactive active');
-        $('#'+view+'ChartContainer .cell.out').removeClass('out');
+        $(selector).trigger('budget-summary-out');
       });
   };
 

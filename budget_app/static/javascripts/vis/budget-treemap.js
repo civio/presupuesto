@@ -78,6 +78,14 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colorScale, _labelsMinS
     return this;
   };
 
+  this.areaOver = function(d) {
+    $(selector+' .cell:not(.cell-'+d.id+')').addClass('out');
+  };
+
+  this.areaOut = function() {
+    $(selector+' .cell.out').removeClass('out');
+  };
+  
 
   // Initialization at object creation time
   setup();
