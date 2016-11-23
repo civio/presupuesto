@@ -1,13 +1,46 @@
 <script>
   $(function () {
-    // Entity select dropdown
-    $('#entity-select').submit(function(e) {
-      e.preventDefault();
-      entity_slug = $('#entity-select select').val();
-      if ( entity_slug != '' ) {
-        window.location.href = {{ 'getCountyCompareLink' if is_county else 'getTownCompareLink' }}('{{ entity.slug }}', entity_slug);
-      }
-    });
+
+    // Variable Definitions
+    var uiState = null;
+    var policiesTitles = {
+      'functional': '{{ _("Gastos (por programa)") }}',
+      'expense':    '{{ _("Gastos") }}',
+      'income':     '{{ _("Ingresos") }}',
+    };
+    var stats = {{ stats|safe }};
+    var budgetStatuses = {{ budget_statuses|safe }};
+    var budgetStatusLabels = {
+      '1T': '{{ _("hasta el primer trimestre") }}',
+      '2T': '{{ _("hasta el segundo trimestre") }}',
+      '3T': '{{ _("hasta el tercer trimestre") }}',
+      'D':  '{{ _("a día de hoy") }}',
+      'PR': '{{ _("proyecto") }}'
+    };
+{% if include_financial_chapters %}
+    var includeFinancialChapters = true;
+{% else %}
+    var financialExpenseBreakdown = {{ financial_expense_breakdown.to_json()|safe }},
+        includeFinancialChapters = false;
+{% endif %}
+    var breakdowns = {
+      'income':        {{ economic_breakdown.to_json( labels=descriptions['income'] )|safe }},
+      'functional':    {{ functional_breakdown.to_json( labels=descriptions['functional'] )|safe }},
+      'expense':       {{ economic_breakdown.to_json( labels=descriptions['expense'] )|safe }},
+      'institutional': {{ institutional_breakdown.to_json( labels=descriptions['institutional'] )|safe if institutional_breakdown else 'null'  }},
+    };
+    var gridData = {};
+    var myGrid;
+    var areas = {
+      'income':        {{ income_areas|safe }},
+      'functional':    {{ functional_areas|safe }},
+      'expense':       {{ expense_areas|safe }},
+      'institutional': {{ institutional_areas|safe }},
+    }
+    var i18n          = { 'Presupuestado': 'Presupuestado' };
+    var colorScale    = {{ color_scale|safe }};
+    var labelsMinSize = {{ treemap_labels_min_size|safe }};
+
 
     // Helper functions to set the totals panel
     // TODO: This is duplicated in policies/show_script.html. Must combine! Ongoing part of #364
@@ -17,14 +50,16 @@
 
       _.each(breakdown.sub, function(value, id) {
         var amount = columnDef.data(breakdown.sub[id]);
-        if ( id[0]==='8' || id[0]==='9' )
+        if ( id[0]==='8' || id[0]==='9' ) {
           totalFinancial += amount
-        else
+        } else {
           totalNonFinancial += amount
+        }
       });
 
-      if ( !includeFinancialChapters )
+      if ( !includeFinancialChapters ) {
         $("#non-financial-total "+classSelector+"-amount").text(format(totalNonFinancial));
+      }
       $("#main-total "+classSelector+"-amount").text(format(totalNonFinancial+totalFinancial));
     }
 
@@ -82,8 +117,6 @@
     }
 {% endif %}
 
-    var uiState = null;
-
     //Update Tab
     function updateTab() {
       uiState = getUIState();
@@ -97,32 +130,36 @@
       else{
         $('.tab-title h3.'+uiState.view).show();
       }
-      redraw( true );
+
+      // Update Policies Title -> We really need this??? I can't find any .policies-title element (maybe for widget?)
+      $('.policies-title').text( policiesTitles[uiState.view] );
+
+      // Show/hide download links based on view
+      $('.panel-downloads .downloads').addClass('hidden');
+      $('#'+uiState.view +'-downloads').removeClass('hidden');
+      
+      // Redraw
+      redraw();
     }
 
-    function redraw( changeTab ) {
-
-      // Update data-field before getUIState based on active tab anchor link -> That's necessary!!!???
-      // if ($('#tabs .active a').length) {
-      //   $('section').data('field', $('#tabs .active a').attr('href').substring(1) );
-      // }
-
+    function redraw() {
+      // Update uiState
       uiState = getUIState();
 
-      console.log('changeTab', changeTab);
-
       // Do work
-      var columnDef = getColumnDefinition(uiState);
-      var executionColumnDef = getExecutionColumnDefinition(uiState);
-      var addEconomicCategoriesPrefix = {{ 'true' if add_economic_categories_prefix else 'false' }};
-      var columnNames = {
-        'functional': '{{ _("Política") }}',
-        'expense': '{{ _("Artículo") }}',
-        'income': '{{ _("Artículo") }}',
-        'institutional': '{{ _("Organismo") }}',
-      };
+      var columnDef                   = getColumnDefinition(uiState),
+          executionColumnDef          = getExecutionColumnDefinition(uiState),
+          addEconomicCategoriesPrefix = {{ 'true' if add_economic_categories_prefix else 'false' }},
+          columnNames                 = {
+            'functional': '{{ _("Política") }}',
+            'expense': '{{ _("Artículo") }}',
+            'income': '{{ _("Artículo") }}',
+            'institutional': '{{ _("Organismo") }}',
+          };
 
-      if ( myGrid !== undefined )  myGrid.destroy();
+      if (myGrid !== undefined) {
+        myGrid.destroy();
+      }
       myGrid = createBudgetGrid("#myGrid", gridData[uiState.view], [
         {
           data: addEconomicCategoriesPrefix && uiState.view!='functional' && uiState.view!='institutional' ?
@@ -136,21 +173,6 @@
         ,executionColumnDef
 {% endif %}
       ]);
-
-      // Show/hide download links based on view
-      if (changeTab === true) {
-        $(".panel-downloads .downloads").addClass('hidden');
-        if ( uiState.view == 'functional' ) {
-          $(".policies-title").text('{{ _("Gastos (por programa)") }}');
-          $("#functional-downloads").removeClass('hidden');
-        } else if ( uiState.view == 'income' ) {
-          $(".policies-title").text('{{ _("Ingresos") }}');
-          $("#income-downloads").removeClass('hidden');
-        } else if ( uiState.view == 'expense' ) {
-          $(".policies-title").text('{{ _("Gastos") }}');
-          $("#expense-downloads").removeClass('hidden');
-        }
-      }
 
       // Update totals texts
       $('#totals-year').text(uiState.year);
@@ -182,46 +204,11 @@
       if ( hasActualData )
         setTotals(breakdown, executionColumnDef, '.total-executed');
 
-      console.dir( breakdowns[uiState.view] );
-
       // Setup & Update Budget Summary
       budgetSummary.update( breakdowns[uiState.view], areas[uiState.view], colorScale, uiState.field, uiState.view, uiState.year );
 
-      // Setup Budget Treemap
-      if (changeTab === true) {
-        budgetTreemap.createTreemap( uiState, breakdowns[uiState.view], areas[uiState.view] );
-      } else {
-        budgetTreemap.updateTreemap( uiState, breakdowns[uiState.view], areas[uiState.view] );
-      } 
-
-      // TODO: We should avoid this type of copy-pasted code, there are ways
-      /*
-      if ( uiState.view == 'expense' ) {
-        $('#incomeChartContainer').hide();
-        $('#functionalChartContainer').hide();
-        $('#institutionalChartContainer').hide();
-        $('#expenseChartContainer').show();
-        expenseTreemap.updateTreemap(uiState);
-      } else if ( uiState.view == 'income' ) {
-        $('#expenseChartContainer').hide();
-        $('#functionalChartContainer').hide();
-        $('#institutionalChartContainer').hide();
-        $('#incomeChartContainer').show();
-        incomeTreemap.updateTreemap(uiState);
-      } else if ( uiState.view == 'functional' ) {
-        $('#expenseChartContainer').hide();
-        $('#functionalChartContainer').show();
-        $('#institutionalChartContainer').hide();
-        $('#incomeChartContainer').hide();
-        functionalTreemap.updateTreemap(uiState);
-      } else {
-        $('#expenseChartContainer').hide();
-        $('#functionalChartContainer').hide();
-        $('#institutionalChartContainer').show();
-        $('#incomeChartContainer').hide();
-        institutionalTreemap.updateTreemap(uiState);
-      }
-      */
+      // Setup & Update Budget Treemap
+      budgetTreemap.update( breakdowns[uiState.view], areas[uiState.view], uiState );
 
       // Show an alert if no data is available
       if ( myGrid.page.info().recordsDisplay != 0 ) {
@@ -258,62 +245,19 @@
     }
 
 
-    var stats = {{ stats|safe }};
-    var budgetStatuses = {{ budget_statuses|safe }};
-    var budgetStatusLabels = {
-      '1T': '{{ _("hasta el primer trimestre") }}',
-      '2T': '{{ _("hasta el segundo trimestre") }}',
-      '3T': '{{ _("hasta el tercer trimestre") }}',
-      'D': '{{ _("a día de hoy") }}',
-      'PR': '{{ _("proyecto") }}'
-    };
+    // Initialization
 
-{% if include_financial_chapters %}
-    var includeFinancialChapters = true;
-{% else %}
-    var financialExpenseBreakdown = {{ financial_expense_breakdown.to_json()|safe }},
-        includeFinancialChapters = false;
-{% endif %}
-
-    var breakdowns = {
-      'income': {{ economic_breakdown.to_json( labels=descriptions['income'] )|safe }},
-      'functional': {{ functional_breakdown.to_json( labels=descriptions['functional'] )|safe }},
-      'expense': {{ economic_breakdown.to_json( labels=descriptions['expense'] )|safe }},
-      'institutional': {{ institutional_breakdown.to_json( labels=descriptions['institutional'] )|safe if institutional_breakdown else 'null'  }},
-    };
-    var gridData = {};
     _.each(breakdowns, function(b, name) { gridData[name] = breakdownToTable(b); });
-    var myGrid;
-    var areas = {
-      'income': {{ income_areas|safe }},
-      'functional': {{ functional_areas|safe }},
-      'expense': {{ expense_areas|safe }},
-      'institutional': {{ institutional_areas|safe }},
-    }
-
-    var i18n = {
-      'Presupuestado': 'Presupuestado'
-    };
-
-    var colorScale = {{ color_scale|safe }};
-    var labelsMinSize = {{ treemap_labels_min_size|safe }};
-    
-    /*
-    var incomeTreemap = new BudgetTreemap("#incomeChartContainer", breakdowns['income'], stats, areas['income'], 2, colorScale, labelsMinSize).i18n(i18n).budgetStatuses(budgetStatuses);
-    var functionalTreemap = new BudgetTreemap("#functionalChartContainer", breakdowns['functional'], stats, areas['functional'], 2, colorScale, labelsMinSize).i18n(i18n).budgetStatuses(budgetStatuses);
-    var institutionalTreemap = new BudgetTreemap("#institutionalChartContainer", breakdowns['institutional'], stats, areas['institutional'], 2, colorScale, labelsMinSize).i18n(i18n).budgetStatuses(budgetStatuses);
-    var expenseTreemap = new BudgetTreemap("#expenseChartContainer", breakdowns['expense'], stats, areas['expense'], 2, colorScale, labelsMinSize).i18n(i18n).budgetStatuses(budgetStatuses);
-    */
 
     // Create Budget Summary
     var budgetSummary = new BudgetSummary('#budget-summary');
 
     // Create Budget Treemap
     var budgetTreemap = new BudgetTreemap('#budget-treemap', stats, 2, colorScale, labelsMinSize, i18n, budgetStatuses);
-    {% if not entities %}
+{% if not entities %}
     // Limit treemap depth for top-level entities
     budgetTreemap.maxLevels(1);
-    {% endif %}
+{% endif %}
     // Listen 'policy-selected' event on BudgetTreemap
     $('#budget-treemap').bind('policy-selected', onBudgetTreemapClick);
 
@@ -321,22 +265,18 @@
     $('#select-format').change(redraw);
     initSlider("#year-selection", {{ years|safe }}, redraw, {{ latest_year }});
 
+    // Entity select dropdown
+    $('#entity-select').submit(function(e) {
+      e.preventDefault();
+      entity_slug = $('#entity-select select').val();
+      if ( entity_slug != '' ) {
+        window.location.href = {{ 'getCountyCompareLink' if is_county else 'getTownCompareLink' }}('{{ entity.slug }}', entity_slug);
+      }
+    });
+
     // Setup tabs navigation
     // This will also show the tab selected in the URL hash (if any). Do it
     // before creating the treemaps, so the active one has time to render fully.
     setRedrawOnTabsChange('#tabs', updateTab);
-
-    /*
-    // XXX: Because of a really weird bug in Chrome 48 (OS X, not Linux), the
-    // browser was crashing when trying to create the treemaps on demand, i.e. 
-    // when a tab was shown for the first time. There was some sort of memory
-    // leak or corruption that we couldn't sort out. So we now create the
-    // treemaps at the beginning, and update them as usual.
-    // See issue civio/presupuesto-management#52
-    expenseTreemap.createTreemap( $.extend(getUIState(), { field: 'expense' }) );
-    incomeTreemap.createTreemap( $.extend(getUIState(), { field: 'income' }) );
-    functionalTreemap.createTreemap( $.extend(getUIState(), { field: 'expense' }) );
-    institutionalTreemap.createTreemap( $.extend(getUIState(), { field: 'expense' }) );
-    */
   });
 </script>

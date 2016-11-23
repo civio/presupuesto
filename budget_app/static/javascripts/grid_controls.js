@@ -34,7 +34,6 @@ function setRedrawOnTabsChange(container, callback) {
 }
 
 function setDataTab(view) {
-  console.log('setDataTab', view);
   $('section').data('tab', view);
 }
 

@@ -21,9 +21,12 @@
       <!-- Policies Chart -->
       <div class="policies-chart">
         <div id="budget-summary"></div>
+        {{ chart_container('budget-treemap') }}
+        <!--
         {{ chart_container('expenseChartContainer') }}
         {{ chart_container('functionalChartContainer') }}
         {{ chart_container('incomeChartContainer') }}
+        -->
         <p class="no-data-alert">{{ _('Información no disponible') }}</p>
       </div>
 
