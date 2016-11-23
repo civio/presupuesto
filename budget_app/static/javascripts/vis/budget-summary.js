@@ -94,7 +94,7 @@ function BudgetSummary(selector) {
         amountLabel,
         barItem;
     for (i = 0; i < existingAreas.length; i++) {
-      area = existingAreas[i],
+      area = existingAreas[i];
       percentage = 100 * areaAmounts[area] / totalAmount;
       label = (percentage >= 6 ) ? areaNames[area] : ''; // Hide labels if area is small (< 6% width)
       amountLabel = ( percentage >= 6 ) ? formatDecimal(percentage, 1)+'<small>%</small>' : '';
