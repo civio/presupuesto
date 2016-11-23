@@ -89,10 +89,8 @@ function initSlider(selector, years, callback, startValue) {
 }
 
 function getUIState() {
-  //var field = $('section').data('field');
   var view = $('section').data('tab');
   return {
-    //type:   $('section').data('tab'),
     field:  view == 'income' ? 'income' : 'expense',
     view:   view,
     format: $('#select-format').val(),
