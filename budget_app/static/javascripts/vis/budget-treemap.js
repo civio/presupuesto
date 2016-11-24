@@ -82,11 +82,12 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colorScale, _labelsMinS
   };
 
   this.areaOver = function(d) {
-    $(selector+' .cell:not(.cell-'+d.id+')').addClass('out');
+    var id = d.id;
+    nodes.classed('out', function(d) { return getParentId(d) !== id; });
   };
 
   this.areaOut = function() {
-    $(selector+' .cell.out').removeClass('out');
+    nodes.classed('out', false);
   };
   
 
@@ -96,7 +97,7 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colorScale, _labelsMinS
   // Setup SVG items on 
   function setup() {
     // Set popoup element
-    $popup = $(selector+" .popover");
+    $popup = $(selector+' .popover');
 
     // Set width & height dimensions
     setDimensions();
@@ -347,12 +348,12 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colorScale, _labelsMinS
     nodes = nodesContainer.selectAll('.node')
       .data(root.leaves())
       .enter().append('div')
-        .attr('class',       function(d) { return 'node node-'+d.id.charAt(0); })
+        .attr('class', 'node')
         .style('left',       function(d) { return d.x0 + 'px'; })
         .style('top',        function(d) { return d.y0 + 'px'; })
         .style('width',      function(d) { return d.x1 - d.x0 + 'px'; })
         .style('height',     function(d) { return d.y1 - d.y0 + 'px'; })
-        .style('background', function(d) { while (d.depth > 1) d = d.parent; return colors(Math.floor(d.id*0.1)); })
+        .style('background', function(d) { while (d.depth > 1) d = d.parent; return colors(getParentId(d)); })
         .on('mouseover',     onNodeOver)
         .on('mousemove',     onNodeMove)
         .on('mouseout',      onNodeOut)
@@ -572,10 +573,13 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colorScale, _labelsMinS
   
   function onNodeOver(d) {
     if (!mouseOver) return;
-    var selected = this;
+    var selected   = this;
+    var id         = getParentId(d);
+    var areaPrefix = areas[id] ? areas[id] : '';
     nodes.classed('out', function() { return this !== selected; });
-    var areaPrefix = areas[d.id[0]] ? areas[d.id[0]] : '';
-    $popup.find('.popover-subtitle').css('color', colors(Number(d.id[0]))).html(areaPrefix);
+    $popup.find('.popover-subtitle')
+      .css('color', colors(id))
+      .html(areaPrefix);
     $popup.find('.popover-title').html(d.data.name);
     $popup.find('.popover-content-value').html(valueFormat(d.value, uiState));
     $popup.show();
@@ -627,5 +631,9 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colorScale, _labelsMinS
       case "per_capita":
         return formatDecimalAmount(transformedValue, 2);
     }
+  }
+
+  function getParentId(d) {
+    return Math.floor(d.id*0.1);
   }
 }
