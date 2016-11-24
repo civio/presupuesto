@@ -1,19 +1,22 @@
-//function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colorScale, labelsMinSize) {
-function BudgetTreemap(_selector, _stats, _aspectRatio, _colorScale, _labelsMinSize, _i18n, _budgetStatuses) {
+//function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colors, labelsMinSize) {
+function BudgetTreemap(_selector, _stats, _aspectRatio, _colors, _labelsMinSize, _i18n, _budgetStatuses) {
 
   var selector            = _selector,
       stats               = _stats,
-      aspectRatio         = (_aspectRatio) ? _aspectRatio : 2;
-      labelsMinSize       = (_labelsMinSize) ? _labelsMinSize : 70,
+      aspectRatio         = (_aspectRatio) ? _aspectRatio : 1;        // Treemap aspect ratio
+      labelsMinSize       = (_labelsMinSize) ? _labelsMinSize : 70,   // Minimum node size in px (width or height) to add a label
       i18n                = (_i18n) ? _i18n : [],
       budgetStatuses      = (_budgetStatuses) ? _budgetStatuses : {};
 
   var areas               = null,
       breakdown           = null,
-      formatPercent       = d3.format(".2%"),
-      maxLevels           = -1, // By default, don't limit treemap depth
+      formatPercent       = d3.format('.2%'),
+      maxLevels           = -1,   // By default, don't limit treemap depth
       maxTreemapValueEver = 0,
       mouseOver           = true,
+      labelsFontSizeMin   = 11,   // Nodes label minimum size in px
+      labelsFontSizeMax   = 65,   // Nodes label maximum size in px
+      nodesPadding        = 5,    // Define padding of nodes label container
       paddedYears         = {},
       textLabelMap        = [],
       treemapData         = null,
@@ -26,16 +29,17 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colorScale, _labelsMinS
       height,
       treemapWidth,
       treemapHeight,
-      $popup,
-      colors,
-      treemap,
+      colorScale,
+      fontSizeScale,
       nodesContainer,
-      nodes;
+      nodes,
+      treemap,
+      $popup;
 
-  // D3 category10 scale as starting point
-  var category10  = (_colorScale && _colorScale.length > 0) ?
-                    _colorScale :
-                    [ "#A9A69F", "#D3C488", "#2BA9A0", "#E8A063", "#9EBF7B", "#dbb0c0", "#7d8f69", "#a29ac8", "#6c6592", "#9e9674", "#e377c2", "#e7969c", "#bcbd22", "#17becf"];
+  // colors array: use D3 category10 colors as starting point
+  var colors  = (_colors && _colors.length > 0) ?
+                _colors :
+                [ "#A9A69F", "#D3C488", "#2BA9A0", "#E8A063", "#9EBF7B", "#dbb0c0", "#7d8f69", "#a29ac8", "#6c6592", "#9e9674", "#e377c2", "#e7969c", "#bcbd22", "#17becf"];
 
 
   // Getters/setters
@@ -56,10 +60,10 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colorScale, _labelsMinS
     return this;
   };
 
-  this.colorScale = function(_) {
-    if (!arguments.length) return category10;
-    category10 = _;
-    colors = d3.scaleOrdinal().range(category10).domain([0,1,2,3,4,5,6,7,8,9]);
+  this.colors = function(_) {
+    if (!arguments.length) return colors;
+    colors = _;
+    setColorScale();
     return this;
   };
 
@@ -90,6 +94,7 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colorScale, _labelsMinS
     nodes.classed('out', false);
   };
   
+  
 
   // Initialization at object creation time
   setup();
@@ -99,50 +104,39 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colorScale, _labelsMinS
     // Set popoup element
     $popup = $(selector+' .popover');
 
+    // Setup color scale
+    setColorScale();
+
+    // Setup font-size scale (power of two scale)
+    fontSizeScale = d3.scalePow()
+      .exponent(2)
+      .range([labelsFontSizeMin, labelsFontSizeMax])
+      .clamp(true);
+
     // Set width & height dimensions
     setDimensions();
 
-    // Setup color scale
-    colors = d3.scaleOrdinal()
-      .range(category10)
+    // Setup nodes container
+    nodesContainer = d3.select(selector)
+      .append('div')
+        .attr('class', 'nodes-container');
+  }
+
+  // Set colors scale based on colors array
+  function setColorScale() {
+    colorScale = d3.scaleOrdinal()
+      .range(colors)
       .domain([0,1,2,3,4,5,6,7,8,9]);
-
-    /*
-    // Create SVG
-    svg = d3.select(selector)
-      .append("svg:svg")
-        .attr("class", "treemap-chart")
-        .style("position", "relative")
-        .style("width", width + "px")
-        .style("height", height + "px")
-        .append("svg:g")
-          .attr("transform", "translate(-.5,-.5)");
-
-    // Create a transparent background just to avoid blinking when moving along the gaps of the squares
-    svg.append("g")
-      .attr('class','bg')
-      .append("rect")
-        .attr('x', '0px')
-        .attr('y', '0px')
-        .attr('width', width+'px')
-        .attr('height', height+'px')
-        .attr('style', 'fill-opacity: 0')
-        .on("mouseover", function(d, i) {
-          if (mouseOver)
-            svg.selectAll("rect.cell").attr("class", "cell out");
-        })
-        .on("mouseout", function(d, i) {
-          if (mouseOver)
-            svg.selectAll("rect.cell").attr("class", "cell");
-        });
-    */
   }
 
   // Set main element dimensions
   function setDimensions() {
     width       = $(selector).width();
     height      = width / aspectRatio;
+    // Set main element height
     $(selector).height( height );
+    // Update font-size scale domain
+    fontSizeScale.domain([1, Math.sqrt(width*height)*0.5])
   }
 
   // Adjust the overall treemap size based on the size of this year's budget compared to the biggest ever
@@ -151,6 +145,13 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colorScale, _labelsMinS
     var ratio     = Math.sqrt( getValue(yearTotals[uiState.year][uiState.field], uiState.format, uiState.field, uiState.year) / maxValue );
     treemapWidth  = (width * ratio);
     treemapHeight = (height * ratio);
+
+    // Setup nodes container dimensions
+    nodesContainer
+      .style('width',  treemapWidth+'px')
+      .style('height', treemapHeight+'px')
+      .style('top',    (height-treemapHeight)/2+'px')
+      .style('left',   (width-treemapWidth)/2+'px');
   }
 
   // Calculate year totals, needed for percentage calculations later on
@@ -317,79 +318,48 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colorScale, _labelsMinS
     uiState = _uiState;
 
     setTreemapDimensions();
-    
+
     // Setup treemap
     treemap = d3.treemap()
       .size([treemapWidth,treemapHeight])
-      //.sort(function(a, b) { return a.value - b.value; })
-      //.value(function(d) { return (d[uiState.year] > 1) ? d[uiState.year] : 1; })
       .padding(0)
-      //.sticky(true);
+      //.tile(d3.treemapBinary)
+      //.tile(d3.treemapSquarify.ratio(1))
+      //.tile(d3.treemapResquarify.ratio(1))
       .round(true);
-
     var stratify = d3.stratify();
-
-    console.log( treemapData );
-
     var root = stratify(treemapData)
       .sum(function(d) { return d[uiState.year]; })
-      .sort(function(a, b) { return a[uiState.year] - b[uiState.year]; });
-
+      .sort(function(a, b) { return b.value - a.value; });
     treemap(root);
 
-    nodesContainer = d3.select(selector)
-      .append('div')
-        .attr('class', 'nodes-container')
-        .style('width', treemapWidth+'px')
-        .style('height', treemapHeight+'px')
-        .style('top', (height-treemapHeight)/2+'px')
-        .style('left', (width-treemapWidth)/2+'px');
+    // Clear previous nodes
+    d3.select(selector).selectAll('.node').remove();
 
+    // Add nodes
     nodes = nodesContainer.selectAll('.node')
       .data(root.leaves())
       .enter().append('div')
         .attr('class', 'node')
         .style('left',       function(d) { return d.x0 + 'px'; })
         .style('top',        function(d) { return d.y0 + 'px'; })
-        .style('width',      function(d) { return d.x1 - d.x0 + 'px'; })
-        .style('height',     function(d) { return d.y1 - d.y0 + 'px'; })
-        .style('background', function(d) { while (d.depth > 1) d = d.parent; return colors(getParentId(d)); })
+        .style('width',      function(d) { return d.x1-d.x0 + 'px'; })
+        .style('height',     function(d) { return d.y1-d.y0 + 'px'; })
+        .style('background', function(d) { while (d.depth > 1) d = d.parent; return colorScale(getParentId(d)); })
+        .style('visibility', function(d) { return (d.x1-d.x0 === 0) || (d.y1-d.y0 === 0) ? 'hidden' : 'visible'; })
         .on('mouseover',     onNodeOver)
         .on('mousemove',     onNodeMove)
         .on('mouseout',      onNodeOut)
         .on('click',         onNodeClick);
     
-    nodes.append('div')
-      .attr('class', 'node-label')
-      .text(function(d) { return d.data.name; });
-
-    /*
-
-    // Clear treemap 
-    if (treemapItems) {
-      svg.selectAll("g.cell").interrupt().remove();
-    }
-
-    // Create the initial layout
-    var g = svg.datum(treemapData).selectAll("g")
-        .data(treemap.nodes)
-      .enter().append("g")
-        .attr("class", "cell")
-        .style("opacity", 1);
-    
-    treemapItems = g.append("rect")
-      .attr("class", function(d){ return "cell cell-"+d.id.charAt(0); })
-      .style("fill", function(d) { return colors(parseInt(d.id[0], 10)); })
-      .on("mouseover",  onMouseOver)
-      .on("mousemove",  onMouseMove)
-      .on("mouseout",   onMouseOut)
-      .on("click", function(d, i) {
-        $(selector).trigger('policy-selected', d);
-      })
-      .call(cell);
-
-    setLabels();
-    */
+    // Add label only in nodes with size greater then labelsMinSize
+    nodes.filter(function(d) { return d.x1-d.x0 > labelsMinSize && d.y1-d.y0 > labelsMinSize; })
+      .style('padding', nodesPadding+'px')
+      .append('div')
+        .attr('class', 'node-label')
+        .append('p')
+          .text(function(d) { return d.data.name; })
+          .call(setLabelSize);
   };
 
   // Update the year or format of a treemap.
@@ -459,110 +429,43 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colorScale, _labelsMinS
       });
   };
 
+  // Set nodes label size
+  function setLabelSize(selection) {
+    var nodeWidth,
+        nodeHeight,
+        nodeArea,
+        textWidth,
+        item,
+        size;
+    selection.each( function(d){
+      item       = d3.select(this);
+      nodeWidth  = d.x1-d.x0-(2*nodesPadding);
+      nodeHeight = d.y1-d.y0-(2*nodesPadding);
+      nodeArea   = Math.sqrt(nodeWidth * nodeHeight);
+      // Set font size based on node area
+      size       = Math.round(fontSizeScale(nodeArea));
 
-  // Treemap functions
-  function cell(selection) {
-    var internalPadding = 1.5;
-    selection.attr("x", function(d) { return d.x + "px"; })
-      .attr("y", function(d) { return d.y + "px"; })
-      // XXX: This way of padding doesn't fully respect the cells proportions, keep the padding minimal until improved
-      .attr("width", function(d) { return (d.dx >= internalPadding ? d.dx - internalPadding : 0) + "px"; })
-      .attr("height", function(d) { return (d.dy >= internalPadding ? d.dy - internalPadding : 0) + "px"; })
-      .style('opacity', function(d) { return d.leaf === true ? '1' : '0'; })
-      .attr("leaf", function(d) { return d.leaf; });
-  }
+      // Set size based on node area
+      item.style('font-size', size+'px');
 
-  function setLabels() {
-
-    treemapItems.each(function(d) {
-
-      if ( d.leaf && d.dx > labelsMinSize && d.dy > labelsMinSize ) {
-
-        var width = Math.max(d.dx - 8, 0) * 0.9;    // .9 is a safety margin
-        var height = Math.max(d.dy - 8, 0);
-        var length = textWidth(d.name);
-        var area = width * height;
-        var size = 10*Math.sqrt(area/(length*10));  // We're using a 10px*10px font size for calculation
-
-        var text = d3.select(this.parentNode)
-          .append("text")
-          .attr("class", "treemap-text")
-          .attr("width", width)
-          .attr("height", height)
-          .style("font-size", Math.min(size,80)+"px" )
-          .attr("x", d.x + d.dx/2 )
-          .attr("y", d.y )
-          .attr("dy", 1.2)
-          .text(d.name)
-          .call(wrap);
+      function resizeItem(){
+        size--;
+        //console.log(d.data.name, size, item.node().scrollWidth, nodeWidth );
+        item.style('font-size', size+'px');
       }
-    });
-  }
 
-  // Based on https://gist.github.com/gka/7469245
-  // Kind of assumes text width is 10px
-  function textWidth(str) {
-    function charW(c) {
-      if (c == 'W' || c == 'M') return 15;
-      else if (c == 'w' || c == 'm') return 12;
-      else if (c == 'I' || c == 'i' || c == 'l' || c == 't' || c == 'f') return 4;
-      else if (c == 'r') return 8;
-      else if (c == c.toUpperCase()) return 12;
-      else return 10;
-    }
- 
-    var length = 0;
-    for (var i = 0, len = str && str.length; i < len; i++) {
-      length += charW(str[i]);
-    };
-    return length;
-  }
-
-  // Wrap an area text so it fits nicely within the allowed limits.
-  // This is a hard problem. I initially used bigText [1], but it handles only one line at a time,
-  // so I had to break the original text into lines in a very rough way, with manual retouches
-  // that didn't scale. I looked at slabText [2], which auto-splits into lines, but unlike
-  // the original full-blown algorithm [3], it doesn't control vertical space, so it's quite useless
-  // for us. I've ended adapting Mike Bostock's code [4] for wrapping labels, adding some basic
-  // calculations to find a good-enough font size that fills most of the space.
-  // Looking into hyphenation [5] would probably be the next logical move to improve quality.
-  //
-  // [1]: https://github.com/zachleat/BigText
-  // [2]: http://freqdec.github.io/slabText/
-  // [3]: http://erikloyer.com/index.php/blog/the_slabtype_algorithm_part_4_final_layout_and_source_code/
-  // [4]: http://bl.ocks.org/mbostock/7555321
-  // [5]: https://code.google.com/p/hyphenator/
-  function wrap(text) {
-    text.each(function() {
-      var text = d3.select(this),
-          words = text.text().split(/\s+/).reverse(),
-          width = text.attr("width"),
-          maxTextWidth = 0,
-          word,
-          line = [],
-          lineNumber = 0,
-          lineHeight = 1.1, // ems
-          x = text.attr("x"),
-          y = text.attr("y"),
-          dy = parseFloat(text.attr("dy")),
-          tspan = text.text(null).append("tspan").attr("x", x).attr("y", y).attr("dy", dy + "em");
-
-      while (word = words.pop()) {
-        line.push(word);
-        tspan.text(line.join(" "));
-        if (tspan.node().getComputedTextLength() > width && line.length > 1) {
-          line.pop();
-          tspan.text(line.join(" "));
-          maxTextWidth = Math.max(maxTextWidth, tspan.node().getComputedTextLength()); // Keep track of max length line
-          line = [word];
-          tspan = text.append("tspan").attr("x", x).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
-        }
+      // Decrease font-size until text fits node width
+      while (item.node().scrollWidth > nodeWidth && size > labelsFontSizeMin) {
+        resizeItem();
       }
-      maxTextWidth = Math.max(maxTextWidth, tspan.node().getComputedTextLength()); // Check last line
-
-      if ( maxTextWidth > width ) {
-        var currentSize = parseFloat(text.style("font-size"));
-        text.style("font-size", (currentSize*width/maxTextWidth)+"px");
+      // Decrease font-size until text fits node height
+      while (item.node().scrollHeight > nodeHeight && size > labelsFontSizeMin) {
+        resizeItem();
+      }
+      
+      // Hide text if doesn't fit node width or height
+      if (item.node().scrollWidth > nodeWidth || item.node().scrollHeight > nodeHeight) {
+        item.style('visibility', 'hidden');
       }
     });
   }
@@ -578,7 +481,7 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colorScale, _labelsMinS
     var areaPrefix = areas[id] ? areas[id] : '';
     nodes.classed('out', function() { return this !== selected; });
     $popup.find('.popover-subtitle')
-      .css('color', colors(id))
+      .css('color', colorScale(id))
       .html(areaPrefix);
     $popup.find('.popover-title').html(d.data.name);
     $popup.find('.popover-content-value').html(valueFormat(d.value, uiState));

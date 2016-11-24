@@ -60,6 +60,7 @@
 	  position: absolute;
 	  overflow: hidden;
 	  outline: 1.5px solid white;
+		@include transition( background 0.3s ease-out );
 
 	  &.out{
 			background: rgb(134,134,134) !important;
@@ -67,14 +68,20 @@
 	}
 
 	.node-label {
-		display: block;
-	  font-size: 1em;
-		padding: 4px;
-		line-height: 1.1em;
-		color: #fff;
-		pointer-events: none;
-		text-align: center;
-		font-weight: $font-weight-300;
-		@include transition( opacity 0.3s ease-out );
+		display: table;
+		width: 100%;
+		height: 96%;
+
+		p{
+			display: table-cell;
+			margin: 0;
+			font-size: 1em;
+			line-height: 1.1em;
+			color: #fff;
+			text-align: center;
+			vertical-align: middle;
+			font-weight: $font-weight-300;
+			@include transition( opacity 0.3s ease-out );
+		}
 	}
 }
