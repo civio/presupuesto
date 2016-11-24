@@ -59,6 +59,11 @@
 	  box-sizing: border-box;
 	  position: absolute;
 	  overflow: hidden;
+	  outline: 1.5px solid white;
+
+	  &.out{
+			background: rgb(134,134,134) !important;
+		}
 	}
 
 	.node-label {

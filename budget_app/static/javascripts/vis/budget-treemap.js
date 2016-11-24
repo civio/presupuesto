@@ -26,16 +26,16 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colorScale, _labelsMinS
       height,
       treemapWidth,
       treemapHeight,
-      $popup;
+      $popup,
+      colors,
+      treemap,
+      nodesContainer,
+      nodes;
 
   // D3 category10 scale as starting point
   var category10  = (_colorScale && _colorScale.length > 0) ?
                     _colorScale :
                     [ "#A9A69F", "#D3C488", "#2BA9A0", "#E8A063", "#9EBF7B", "#dbb0c0", "#7d8f69", "#a29ac8", "#6c6592", "#9e9674", "#e377c2", "#e7969c", "#bcbd22", "#17becf"];
-  
-  var svg,
-      colors,
-      treemap;
 
 
   // Getters/setters
@@ -245,7 +245,7 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colorScale, _labelsMinS
 
       // ...unless we know the execution data is not complete (the year is not over),
       // in which case we go with the budget.
-      if ( budgetStatuses[year] && budgetStatuses[year]!='' && column_name.indexOf("actual_")===0 )
+      if ( budgetStatuses[year] && budgetStatuses[year]!=='' && column_name.indexOf("actual_")===0 )
         continue;
 
       // Normally we do this:
@@ -322,8 +322,7 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colorScale, _labelsMinS
       .size([treemapWidth,treemapHeight])
       //.sort(function(a, b) { return a.value - b.value; })
       //.value(function(d) { return (d[uiState.year] > 1) ? d[uiState.year] : 1; })
-      .paddingOuter(0)
-      .paddingInner(1.5)
+      .padding(0)
       //.sticky(true);
       .round(true);
 
@@ -337,26 +336,31 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colorScale, _labelsMinS
 
     treemap(root);
 
-    d3.select(selector)
-      .append("div")
-        .attr("class", "nodes-container")
-        .style("width", treemapWidth+"px")
-        .style("height", treemapHeight+"px")
-        .style("top", (height-treemapHeight)/2+"px")
-        .style("left", (width-treemapWidth)/2+"px")
-      .selectAll(".node")
+    nodesContainer = d3.select(selector)
+      .append('div')
+        .attr('class', 'nodes-container')
+        .style('width', treemapWidth+'px')
+        .style('height', treemapHeight+'px')
+        .style('top', (height-treemapHeight)/2+'px')
+        .style('left', (width-treemapWidth)/2+'px');
+
+    nodes = nodesContainer.selectAll('.node')
       .data(root.leaves())
-      .enter().append("div")
-        .attr("class", "node")
-        //.attr("title", function(d) { return d.id + "\n" + format(d.value); })
-        .style("left", function(d) { return d.x0 + "px"; })
-        .style("top", function(d) { return d.y0 + "px"; })
-        .style("width", function(d) { return d.x1 - d.x0 + "px"; })
-        .style("height", function(d) { return d.y1 - d.y0 + "px"; })
-        .style("background", function(d) { console.log(d.id, Math.floor(d.id*0.1)); while (d.depth > 1) d = d.parent; return colors(Math.floor(d.id*0.1)); })
-      .append("div")
-        .attr("class", "node-label")
-        .text(function(d) { return d.data.name; });
+      .enter().append('div')
+        .attr('class',       function(d) { return 'node node-'+d.id.charAt(0); })
+        .style('left',       function(d) { return d.x0 + 'px'; })
+        .style('top',        function(d) { return d.y0 + 'px'; })
+        .style('width',      function(d) { return d.x1 - d.x0 + 'px'; })
+        .style('height',     function(d) { return d.y1 - d.y0 + 'px'; })
+        .style('background', function(d) { while (d.depth > 1) d = d.parent; return colors(Math.floor(d.id*0.1)); })
+        .on('mouseover',     onNodeOver)
+        .on('mousemove',     onNodeMove)
+        .on('mouseout',      onNodeOut)
+        .on('click',         onNodeClick);
+    
+    nodes.append('div')
+      .attr('class', 'node-label')
+      .text(function(d) { return d.data.name; });
 
     /*
 
@@ -393,12 +397,15 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colorScale, _labelsMinS
     // Do nothing before initialization
     if ( treemap === null ) return;
 
+    /*
     // Do nothing if there's no data
     if ( !yearTotals[_uiState.year] || !yearTotals[_uiState.year][_uiState.field] ) {
       svg.style("opacity", 0);
       return;
-    } else
+    } else {
       svg.style("opacity", 1);
+    }
+    */
 
     // We prefer the 'sticky' layout in the treemap, but it needs to have a consistent data structure
     // across the years. (One item more or less is bearable, but a whole level appearing breaks
@@ -419,6 +426,8 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colorScale, _labelsMinS
 
     // Update tremap size
     treemap.size([treemapWidth,treemapHeight]);
+
+    /*
     // Update svg & background dimensions
     svg
       .transition()
@@ -435,6 +444,7 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colorScale, _labelsMinS
     // and the size and position of each of its rectangles.
     // Do it through a transition so there's a smooth animation on year change.
     svg.selectAll("g.cell").data(treemap.nodes); // Update treemap data
+    */
 
     treemapItems
       .transition()
@@ -560,31 +570,33 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colorScale, _labelsMinS
     return i18n[s] || s;
   }
   
-  function onMouseOver(d) {
+  function onNodeOver(d) {
     if (!mouseOver) return;
-
     var selected = this;
-    treemapItems.attr("class", function() {
-      return (this == selected) ? "cell in" : "cell out";
-    });
+    nodes.classed('out', function() { return this !== selected; });
     var areaPrefix = areas[d.id[0]] ? areas[d.id[0]] : '';
-    $popup.find(".popover-subtitle").css('color', colors(Number(d.id[0]))).html(areaPrefix);
-    $popup.find(".popover-title").html(d.name);
-    $popup.find(".popover-content-value").html(valueFormat(d.value, uiState));
+    $popup.find('.popover-subtitle').css('color', colors(Number(d.id[0]))).html(areaPrefix);
+    $popup.find('.popover-title').html(d.data.name);
+    $popup.find('.popover-content-value').html(valueFormat(d.value, uiState));
     $popup.show();
   }
 
-  function onMouseMove(d) {
+  function onNodeMove(d) {
+    if (!mouseOver) return;
     var popParentOffset = $(selector).offset();
     var popLeft         = d3.event.pageX - popParentOffset.left - $popup.width()/2;
     var popBottom       = $(selector).height() - d3.event.pageY + popParentOffset.top + 15;
-    $popup.css({"left":popLeft, "bottom":popBottom});
+    $popup.css({'left':popLeft, 'bottom':popBottom});
   }
   
-  function onMouseOut(d) {
+  function onNodeOut(d) {
     if (!mouseOver) return;
-    treemapItems.attr("class", function(d){ return "cell cell-"+d.id.charAt(0); });
+    nodes.classed('out', false);
     $popup.hide();
+  }
+
+  function onNodeClick(d) {
+    $(selector).trigger('policy-selected', d.data);
   }
   
   function getValue(value, format, field, year) {
