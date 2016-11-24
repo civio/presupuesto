@@ -242,7 +242,7 @@
     setRedrawOnButtonGroupChange('.btn-group', redraw);
     $('#select-format').change(redraw);
     var years = {{ years|safe }};
-    initSlider("#year-selection", years, redraw, {{ latest_year }});
+    initSlider("#year-selection", years, redraw, {{ starting_year }});
 
     // Select income/expense based on location hash
     var state = $.deparam.fragment();

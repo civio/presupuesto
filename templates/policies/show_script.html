@@ -332,7 +332,7 @@
 
     // Control Setup
     $('#select-format').change(redraw);
-    initSlider("#year-selection", {{ years|safe }}, updateYear, {{ latest_year }});
+    initSlider("#year-selection", {{ years|safe }}, updateYear, {{ starting_year }});
 
     // Setup tabs navigation
     setRedrawOnTabsChange('#tabs', updateTab);

@@ -12,9 +12,11 @@ from institutional_category import InstitutionalCategory
 
 
 class BudgetManager(models.Manager):
-    # Return the latest budget for the given entity
+    # Return the latest (not pending approval) budget for the given entity
     def latest(self, entity_id):
-        return self.filter(entity_id=entity_id).order_by('-year')[0]
+        return self.filter(entity_id=entity_id) \
+                    .exclude(status='PR') \
+                    .order_by('-year')[0]
 
     # Return a list of years for which we have a budget
     # TODO: I don't think we should we using this, without filtering for entity.

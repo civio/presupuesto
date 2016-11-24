@@ -268,7 +268,7 @@
 
     // Set up controls (format selector & year slider)
     $('#select-format').change(redraw);
-    initSlider("#year-selection", {{ years|safe }}, redraw, {{ latest_year }});
+    initSlider("#year-selection", {{ years|safe }}, redraw, {{ starting_year }});
 
     // Entity select dropdown
     $('#entity-select').submit(function(e) {
