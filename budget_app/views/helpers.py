@@ -105,13 +105,19 @@ def populate_entity_descriptions(c, entity):
 def populate_years(c, breakdown_name):
     years = sorted(list(set(c[breakdown_name].years.values())))
     c['years'] = json.dumps([str(year) for year in years])
-    c['latest_year'] = years[-1]
-    c['show_treemap'] = ( len(years) == 1 )
+    c['show_treemap'] = ( len(years) == 1 )     # TODO: Should be done by Javascript
+
+    # Set the starting year for the year slider.
+    # We try to set it to the year of the latest non-draft budget, but we need to be
+    # careful, as there's no guarantee there'll be data for that year. In those
+    # cases revert to the safe fall-back: pick the latest year in the data.
+    latest_budget = populate_latest_budget(c)
+    c['starting_year'] = latest_budget.year if latest_budget.year in years else years[-1]
 
 def populate_comparison_years(c, breakdown_name_left, breakdown_name_right):
     years = sorted(list(set(c[breakdown_name_left].years.values() + c[breakdown_name_right].years.values())))
     c['years'] = json.dumps([str(year) for year in years])
-    c['latest_year'] = years[-1]
+    c['starting_year'] = years[-1]
 
 def populate_budget_statuses(c, entity_id):
     c['budget_statuses'] = json.dumps(Budget.objects.get_statuses(entity_id))

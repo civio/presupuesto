@@ -89,9 +89,15 @@ function initSlider(selector, years, callback, startValue) {
 }
 
 function getUIState() {
-  var view = $('section').data('tab');
+  var field = $('section').data('field'),
+      view = $('section').data('tab');
+
   return {
-    field:  view == 'income' ? 'income' : 'expense',
+    // The templates used to display one particular programme or article have a defined
+    // 'field' value, either income or expense. The main entity page, on the other hand,
+    // doesn't define a 'field', and shows both revenues and expenditures, depending
+    // on the current tab.
+    field:  (field !== undefined) ? field : (view == 'income' ? 'income' : 'expense'),
     view:   view,
     format: $('#select-format').val(),
     year:   $("#year-selection").val()

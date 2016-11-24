@@ -303,7 +303,7 @@
       {% else %}
       currentChart = new BudgetStackedChart('#policy-chart-container', stats, colorScale, i18n)
         .budgetStatuses(budgetStatuses);
-      currentChart.loadBreakdown(breakdowns[uiState.view], '{{ show_side }}');
+      currentChart.loadBreakdown(breakdowns[uiState.view], uiState.field);
       currentChart.draw( uiState );
       // Add area click event if type is functional
       if (uiState.view == 'functional') {
@@ -332,7 +332,7 @@
 
     // Control Setup
     $('#select-format').change(redraw);
-    initSlider("#year-selection", {{ years|safe }}, updateYear, {{ latest_year }});
+    initSlider("#year-selection", {{ years|safe }}, updateYear, {{ starting_year }});
 
     // Setup tabs navigation
     setRedrawOnTabsChange('#tabs', updateTab);

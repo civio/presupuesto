@@ -151,7 +151,7 @@
     sankey.relaxFactor(relaxFactor);
     {% endif %}
 
-    initSlider("#year-selection", {{ years|safe }}, redraw, {{ latest_year }});
+    initSlider("#year-selection", {{ years|safe }}, redraw, {{ starting_year }});
     sankey.draw("#chart", getUIState());
     redraw();
   })
