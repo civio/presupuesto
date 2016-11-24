@@ -107,8 +107,20 @@ def entities_compare(request, c, entity_left, entity_right):
 
     return render_to_response('entities/compare.html', c)
 
+# Do we have an exhaustive budget, classified along four dimensions? I.e. display all tabs?
+def _set_full_breakdown(c, full_breakdown):
+    c['full_breakdown'] = full_breakdown
 
-# TODO: from here below it's a big copy-paste, should clean-up
+# Get widget parameter
+def _isWidget(request):
+    return request.GET.get('widget',False)
+
+
+
+# FIXME: from here below it's a big copy-paste, should clean-up.
+# Note that these methods below use the policies templates, so they really shouldn't be
+# in this view, it's confusing. We should be calling methods in the Policies view,
+# passing the entity object as argument. But not a priority now, see #105.
 def entities_show_policy(request, c, entity, id, title, render_callback=None):
     # Get request context
     c = get_context(request, css_class='body-policies', title='')
@@ -249,11 +261,3 @@ def _populate_csv_settings(c, type, id):
 def _set_show_side(c, side):
     c['show_side'] = side
     c['tab_titles'] = _get_tab_titles(side)
-
-# Do we have an exhaustive budget, classified along four dimensions? I.e. display all tabs?
-def _set_full_breakdown(c, full_breakdown):
-    c['full_breakdown'] = full_breakdown
-    
-# Get widget parameter
-def _isWidget(request):
-    return request.GET.get('widget',False)
