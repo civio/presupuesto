@@ -433,43 +433,38 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colors, _labelsMinSize,
 
   // Set nodes label size
   function setNodeLabel(selection) {
-    var node,
+    var label,
         nodeWidth,
         nodeHeight,
         nodeArea,
         textWidth,
         size;
 
-    // Resize item function
-    function resizeItem(){
-      size--;
-      //console.log(d.data.name, size, item.node().scrollWidth, nodeWidth );
-      node.style('font-size', size+'px');
-    }
-
     // loop throught each item
     selection.each( function(d){
-      node       = d3.select(this);
-      nodeWidth  = d.x1-d.x0;
-      nodeHeight = d.y1-d.y0;
+      label      = d3.select(this).select('.node-label');
+      nodeWidth  = d.x1-d.x0 - (2*nodesPadding);
+      nodeHeight = d.y1-d.y0 - (2*nodesPadding);
       nodeArea   = Math.sqrt(nodeWidth * nodeHeight);
       size       = Math.round(fontSizeScale(nodeArea));  // Set font size based on node area
 
       // Set node font-size based on its are
-      node.style('font-size', size+'px');
+      label.style('font-size', size+'px');
 
       // Decrease font-size until text fits node width
-      while (node.node().scrollWidth > nodeWidth && size > labelsFontSizeMin) {
-        resizeItem();
+      while (label.node().scrollWidth > nodeWidth && size > labelsFontSizeMin) {
+        size--;
+        label.style('font-size', size+'px');
       }
       // Decrease font-size until text fits node height
-      while (node.node().scrollHeight > nodeHeight && size > labelsFontSizeMin) {
-        resizeItem();
+      while (label.node().scrollHeight > nodeHeight && size > labelsFontSizeMin) {
+        size--;
+        label.style('font-size', size+'px');
       }
       
       // Hide node label if doesn't fit node width or height
-      node.select('.node-label')
-        .style('visibility', (node.node().scrollWidth <= nodeWidth && node.node().scrollHeight <= nodeHeight) ? 'visible' : 'hidden');
+      label
+        .style('visibility', (label.node().scrollWidth <= nodeWidth && label.node().scrollHeight <= nodeHeight) ? 'visible' : 'hidden');
     });
   }
   
