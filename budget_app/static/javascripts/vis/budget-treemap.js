@@ -34,12 +34,14 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colors, _labelsMinSize,
       nodesContainer,
       nodes,
       treemap,
+      treemapRoot,
       $popup;
 
   // colors array: use D3 category10 colors as starting point
   var colors  = (_colors && _colors.length > 0) ?
                 _colors :
                 [ "#A9A69F", "#D3C488", "#2BA9A0", "#E8A063", "#9EBF7B", "#dbb0c0", "#7d8f69", "#a29ac8", "#6c6592", "#9e9674", "#e377c2", "#e7969c", "#bcbd22", "#17becf"];
+
 
 
   // Getters/setters
@@ -95,12 +97,13 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colors, _labelsMinSize,
   };
   
   
-
   // Initialization at object creation time
   setup();
 
   // Setup SVG items on 
   function setup() {
+    console.log('seetup');
+
     // Set popoup element
     $popup = $(selector+' .popover');
 
@@ -136,7 +139,7 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colors, _labelsMinSize,
     // Set main element height
     $(selector).height( height );
     // Update font-size scale domain
-    fontSizeScale.domain([1, Math.sqrt(width*height)*0.5])
+    fontSizeScale.domain([1, Math.sqrt(width*height)*0.5]);
   }
 
   // Adjust the overall treemap size based on the size of this year's budget compared to the biggest ever
@@ -150,8 +153,10 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colors, _labelsMinSize,
     nodesContainer
       .style('width',  treemapWidth+'px')
       .style('height', treemapHeight+'px')
-      .style('top',    (height-treemapHeight)/2+'px')
-      .style('left',   (width-treemapWidth)/2+'px');
+      .transition()
+        .duration(transitionDuration)
+        .style('top',    (height-treemapHeight)/2+'px')
+        .style('left',   (width-treemapWidth)/2+'px');
   }
 
   // Calculate year totals, needed for percentage calculations later on
@@ -207,7 +212,7 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colors, _labelsMinSize,
           child[year] = items[id][field][column_name] || 0;
 
           // 'Pad' the current item if its children don't add up to its value.
-          if ( child[year] && child.children ) { 
+          if ( child[year] && child.children ) {
             var children_sum = child.children.reduce(function(a,b) { return a+b[year]; }, 0);
             if ( child[year] != children_sum ) {
               paddingNeeded = true;
@@ -325,41 +330,42 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colors, _labelsMinSize,
       .padding(0)
       //.tile(d3.treemapBinary)
       //.tile(d3.treemapSquarify.ratio(1))
-      //.tile(d3.treemapResquarify.ratio(1))
+      //.tile(d3.treemapResquarify) //.ratio(1))
       .round(true);
-    var stratify = d3.stratify();
-    var root = stratify(treemapData)
+    treemapRoot = d3.stratify()(treemapData);
+    treemapRoot
       .sum(function(d) { return d[uiState.year]; })
       .sort(function(a, b) { return b.value - a.value; });
-    treemap(root);
+    treemap(treemapRoot);
 
     // Clear previous nodes
-    d3.select(selector).selectAll('.node').remove();
+    if (nodes) {
+      nodes.remove();
+    }
 
     // Add nodes
     nodes = nodesContainer.selectAll('.node')
-      .data(root.leaves())
+      .data(treemapRoot.leaves())
       .enter().append('div')
         .attr('class', 'node')
-        .style('left',       function(d) { return d.x0 + 'px'; })
-        .style('top',        function(d) { return d.y0 + 'px'; })
-        .style('width',      function(d) { return d.x1-d.x0 + 'px'; })
-        .style('height',     function(d) { return d.y1-d.y0 + 'px'; })
-        .style('background', function(d) { while (d.depth > 1) d = d.parent; return colorScale(getParentId(d)); })
-        .style('visibility', function(d) { return (d.x1-d.x0 === 0) || (d.y1-d.y0 === 0) ? 'hidden' : 'visible'; })
-        .on('mouseover',     onNodeOver)
-        .on('mousemove',     onNodeMove)
-        .on('mouseout',      onNodeOut)
-        .on('click',         onNodeClick);
+        .on('mouseover', onNodeOver)
+        .on('mousemove', onNodeMove)
+        .on('mouseout',  onNodeOut)
+        .on('click',     onNodeClick)
+        .call(setNode)
+        .call(setNodeTransition);
     
     // Add label only in nodes with size greater then labelsMinSize
-    nodes.filter(function(d) { return d.x1-d.x0 > labelsMinSize && d.y1-d.y0 > labelsMinSize; })
-      .style('padding', nodesPadding+'px')
+    nodes
       .append('div')
         .attr('class', 'node-label')
+        .style('visibility', 'hidden')  // Hide labels by default (setNodeLabel will show if node is bigger enought)
         .append('p')
-          .text(function(d) { return d.data.name; })
-          .call(setLabelSize);
+          .text(function(d) { return d.data.name; });
+
+    // Filter nodes with labels visibles (based on labelsMinSize) & set its label
+    nodes.filter(isNodeLabelVisible)
+      .call(setNodeLabel);
   };
 
   // Update the year or format of a treemap.
@@ -378,6 +384,7 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colors, _labelsMinSize,
     }
     */
 
+    /*
     // We prefer the 'sticky' layout in the treemap, but it needs to have a consistent data structure
     // across the years. (One item more or less is bearable, but a whole level appearing breaks
     // the layout: the new items get displayed along only one dimension.) So we disable the
@@ -389,6 +396,7 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colors, _labelsMinSize,
       if ( treemap.sticky() != shouldBeSticky )
         treemap.sticky(shouldBeSticky);
     }
+    */
 
     // Render the treemap
     uiState = _uiState;
@@ -397,76 +405,96 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colors, _labelsMinSize,
 
     // Update tremap size
     treemap.size([treemapWidth,treemapHeight]);
+    treemapRoot = d3.stratify()(treemapData);
+    treemapRoot
+      .sum(function(d) { return d[uiState.year]; })
+      .sort(function(a, b) { return b.value - a.value; });
+    treemap(treemapRoot);
 
-    /*
-    // Update svg & background dimensions
-    svg
+    console.log('update treemap!');
+
+    // Update nodes data & labels text
+    nodes.data(treemapRoot.leaves())
+      .select('.node-label')
+      .style('visibility', 'hidden')  // Hide labels before transition
+        .select('p')
+          .text(function(d) { return d.data.name; });
+
+
+    // Update nodes attributes
+    nodes
+      .call(setNode)
       .transition()
       .duration(transitionDuration)
-      .attr("transform", "translate(" + (width - treemapWidth)/2 + "," + (height - treemapHeight)/2 + ")");
-
-    svg.select('g.bg').select('rect')
-      .attr('width', treemapWidth+'px')
-      .attr('height', treemapHeight+'px');
-
-    // Remove text inside the treemap and create once the animation has ended
-    svg.selectAll(".treemap-text").remove();
-
-    // and the size and position of each of its rectangles.
-    // Do it through a transition so there's a smooth animation on year change.
-    svg.selectAll("g.cell").data(treemap.nodes); // Update treemap data
-    */
-
-    treemapItems
-      .transition()
-      .duration(transitionDuration)
-      .call(cell)
-      .each("end",function(d,i) {
-        // Ended the animation - create the new texts
-        if ( i === 1 ) {
-          setLabels();
+      // !!! TODO!!! -> Take care of padding & visibility of initially very small nodes
+      .on('end', function(d,i) {
+        if (i == nodes.size()-1) {
+          console.log('transition end', i, nodes.size()-1);
+          // Filter nodes with labels visibles (based on labelsMinSize) & set its label
+          nodes.filter(isNodeLabelVisible)
+            .call(setNodeLabel);
         }
-      });
+      })
+      .call(setNodeTransition);
   };
 
+  // We use two different functions to set nodes attributes:
+  // setNode for static attributes (padding, background, visibility)
+  function setNode(selection){
+    selection
+      .style('padding',    function(d) { return (d.x1-d.x0 > 2*nodesPadding && d.y1-d.y0 > 2*nodesPadding ) ? nodesPadding+'px' : 0; })
+      .style('background', function(d) { while (d.depth > 1) d = d.parent; return colorScale(getParentId(d)); })
+      .style('visibility', function(d) { return (d.x1-d.x0 === 0) || (d.y1-d.y0 === 0) ? 'hidden' : 'visible'; });
+  }
+
+  // setNodeTransition for attributes with transition animation (position & dimensions)
+  function setNodeTransition(selection){
+    selection
+      .style('left',       function(d) { return d.x0 + 'px'; })
+      .style('top',        function(d) { return d.y0 + 'px'; })
+      .style('width',      function(d) { return d.x1-d.x0 + 'px'; })
+      .style('height',     function(d) { return d.y1-d.y0 + 'px'; });
+  }
+
   // Set nodes label size
-  function setLabelSize(selection) {
-    var nodeWidth,
+  function setNodeLabel(selection) {
+    var node,
+        nodeWidth,
         nodeHeight,
         nodeArea,
         textWidth,
-        item,
         size;
+
+    // Resize item function
+    function resizeItem(){
+      size--;
+      //console.log(d.data.name, size, item.node().scrollWidth, nodeWidth );
+      node.style('font-size', size+'px');
+    }
+
+    // loop throught each item
     selection.each( function(d){
-      item       = d3.select(this);
-      nodeWidth  = d.x1-d.x0-(2*nodesPadding);
-      nodeHeight = d.y1-d.y0-(2*nodesPadding);
+      node       = d3.select(this);
+      nodeWidth  = d.x1-d.x0;
+      nodeHeight = d.y1-d.y0;
       nodeArea   = Math.sqrt(nodeWidth * nodeHeight);
-      // Set font size based on node area
-      size       = Math.round(fontSizeScale(nodeArea));
+      size       = Math.round(fontSizeScale(nodeArea));  // Set font size based on node area
 
-      // Set size based on node area
-      item.style('font-size', size+'px');
-
-      function resizeItem(){
-        size--;
-        //console.log(d.data.name, size, item.node().scrollWidth, nodeWidth );
-        item.style('font-size', size+'px');
-      }
+      // Set node font-size based on its are
+      node.style('font-size', size+'px');
 
       // Decrease font-size until text fits node width
-      while (item.node().scrollWidth > nodeWidth && size > labelsFontSizeMin) {
+      while (node.node().scrollWidth > nodeWidth && size > labelsFontSizeMin) {
         resizeItem();
       }
       // Decrease font-size until text fits node height
-      while (item.node().scrollHeight > nodeHeight && size > labelsFontSizeMin) {
+      while (node.node().scrollHeight > nodeHeight && size > labelsFontSizeMin) {
         resizeItem();
       }
       
-      // Hide text if doesn't fit node width or height
-      if (item.node().scrollWidth > nodeWidth || item.node().scrollHeight > nodeHeight) {
-        item.style('visibility', 'hidden');
-      }
+      // Hide node label if doesn't fit node width or height
+      node.select('.node-label')
+        .style('visibility', (node.node().scrollWidth <= nodeWidth && node.node().scrollHeight <= nodeHeight) ? 'visible' : 'hidden');
     });
   }
 
@@ -538,5 +566,9 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colors, _labelsMinSize,
 
   function getParentId(d) {
     return Math.floor(d.id*0.1);
+  }
+
+  function isNodeLabelVisible(d){
+    return d.x1-d.x0 > labelsMinSize && d.y1-d.y0 > labelsMinSize;
   }
 }
