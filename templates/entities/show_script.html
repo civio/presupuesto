@@ -258,7 +258,7 @@
     var budgetSummary = new BudgetSummary('#budget-summary', colorScale);
 
     // Create Budget Treemap
-    var budgetTreemap = new BudgetTreemap('#budget-treemap', stats, 2, colorScale, labelsMinSize, i18n, budgetStatuses);
+    var budgetTreemap = new BudgetTreemap('#budget-treemap', stats, 2, colorScale, labelsMinSize, budgetStatuses);
 {% if not entities %}
     // Limit treemap depth for top-level entities
     budgetTreemap.maxLevels(1);

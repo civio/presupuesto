@@ -1,11 +1,10 @@
 //function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colors, labelsMinSize) {
-function BudgetTreemap(_selector, _stats, _aspectRatio, _colors, _labelsMinSize, _i18n, _budgetStatuses) {
+function BudgetTreemap(_selector, _stats, _aspectRatio, _colors, _labelsMinSize, _budgetStatuses) {
 
   var selector            = _selector,
       stats               = _stats,
       aspectRatio         = (_aspectRatio) ? _aspectRatio : 1;        // Treemap aspect ratio
       labelsMinSize       = (_labelsMinSize) ? _labelsMinSize : 70,   // Minimum node size in px (width or height) to add a label
-      i18n                = (_i18n) ? _i18n : [],
       budgetStatuses      = (_budgetStatuses) ? _budgetStatuses : {};
 
   var areas               = null,
@@ -50,12 +49,6 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colors, _labelsMinSize,
   };
 
   // TODO!!! Check if we need this setters
-  this.i18n = function(_) {
-    if (!arguments.length) return _;
-    i18n = _;
-    return this;
-  };
-
   this.budgetStatuses = function(_) {
     if (!arguments.length) return _;
     budgetStatuses = _;
@@ -102,8 +95,6 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colors, _labelsMinSize,
 
   // Setup SVG items on 
   function setup() {
-    console.log('seetup');
-
     // Set popoup element
     $popup = $(selector+' .popover');
 
@@ -371,8 +362,6 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colors, _labelsMinSize,
   // Update the year or format of a treemap.
   // Note: you can't change the field being displayed, i.e. expense vs. income.
   this.updateTreemap = function(_uiState) {
-    // Do nothing before initialization
-    if ( treemap === null ) return;
 
     /*
     // Do nothing if there's no data
@@ -411,8 +400,6 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colors, _labelsMinSize,
       .sort(function(a, b) { return b.value - a.value; });
     treemap(treemapRoot);
 
-    console.log('update treemap!');
-
     // Update nodes data & labels text
     nodes.data(treemapRoot.leaves())
       .select('.node-label')
@@ -420,16 +407,13 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colors, _labelsMinSize,
         .select('p')
           .text(function(d) { return d.data.name; });
 
-
     // Update nodes attributes
     nodes
       .call(setNode)
       .transition()
       .duration(transitionDuration)
-      // !!! TODO!!! -> Take care of padding & visibility of initially very small nodes
       .on('end', function(d,i) {
         if (i == nodes.size()-1) {
-          console.log('transition end', i, nodes.size()-1);
           // Filter nodes with labels visibles (based on labelsMinSize) & set its label
           nodes.filter(isNodeLabelVisible)
             .call(setNodeLabel);
@@ -497,11 +481,8 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colors, _labelsMinSize,
         .style('visibility', (node.node().scrollWidth <= nodeWidth && node.node().scrollHeight <= nodeHeight) ? 'visible' : 'hidden');
     });
   }
-
-  function _(s) {
-    return i18n[s] || s;
-  }
   
+  // Mouse Events handlers
   function onNodeOver(d) {
     if (!mouseOver) return;
     var selected   = this;
@@ -523,7 +504,7 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colors, _labelsMinSize,
     var popBottom       = $(selector).height() - d3.event.pageY + popParentOffset.top + 15;
     $popup.css({'left':popLeft, 'bottom':popBottom});
   }
-  
+
   function onNodeOut(d) {
     if (!mouseOver) return;
     nodes.classed('out', false);
@@ -534,6 +515,7 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colors, _labelsMinSize,
     $(selector).trigger('policy-selected', d.data);
   }
   
+  // Helper methods
   function getValue(value, format, field, year) {
     switch (format) {
       case "nominal":
