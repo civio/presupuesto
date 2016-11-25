@@ -43,14 +43,14 @@
       var format = function(amount) { return columnDef.render(amount, 'display', breakdown); },
           totalNonFinancial = totalFinancial = 0;
 
-      _.each(breakdown.sub, function(value, id) {
-        var amount = columnDef.data(breakdown.sub[id]);
-        if ( id[0]==='8' || id[0]==='9' ) {
+      for (var item in breakdown.sub) {
+        var amount = columnDef.data(breakdown.sub[item]);
+        if ( item[0]==='8' || item[0]==='9' ) {
           totalFinancial += amount
         } else {
           totalNonFinancial += amount
         }
-      });
+      }
 
       if ( !includeFinancialChapters ) {
         $("#non-financial-total "+classSelector+"-amount").text(format(totalNonFinancial));
@@ -249,7 +249,10 @@
 
     // Initialization
 
-    _.each(breakdowns, function(b, name) { gridData[name] = breakdownToTable(b); });
+    // Set gridData
+    for (var item in breakdowns) {
+      gridData[item] = breakdownToTable( breakdowns[item] );
+    }
 
     // Create Budget Summary
     var budgetSummary = new BudgetSummary('#budget-summary', colorScale);
