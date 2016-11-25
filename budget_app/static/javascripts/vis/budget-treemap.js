@@ -116,40 +116,7 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colors, _labelsMinSize,
         .attr('class', 'nodes-container');
   }
 
-  // Set colors scale based on colors array
-  function setColorScale() {
-    colorScale = d3.scaleOrdinal()
-      .range(colors)
-      .domain([0,1,2,3,4,5,6,7,8,9]);
-  }
-
-  // Set main element dimensions
-  function setDimensions() {
-    width       = $(selector).width();
-    height      = width / aspectRatio;
-    // Set main element height
-    $(selector).height( height );
-    // Update font-size scale domain
-    fontSizeScale.domain([1, Math.sqrt(width*height)*0.5]);
-  }
-
-  // Adjust the overall treemap size based on the size of this year's budget compared to the biggest ever
-  function setTreemapDimensions() {
-    var maxValue  = maxTreemapValueEver || calculateMaxTreemapValueEver();
-    var ratio     = Math.sqrt( getValue(yearTotals[uiState.year][uiState.field], uiState.format, uiState.field, uiState.year) / maxValue );
-    treemapWidth  = (width * ratio);
-    treemapHeight = (height * ratio);
-
-    // Setup nodes container dimensions
-    nodesContainer
-      .style('width',  treemapWidth+'px')
-      .style('height', treemapHeight+'px')
-      .transition()
-        .duration(transitionDuration)
-        .style('top',    (height-treemapHeight)/2+'px')
-        .style('left',   (width-treemapWidth)/2+'px');
-  }
-
+ 
   // Calculate year totals, needed for percentage calculations later on
   function calculateYearTotals(breakdown, field, columns) {
     for (var year in columns) {
@@ -281,27 +248,52 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colors, _labelsMinSize,
   }
 
 
-  // Update treemap
+  // Update treemap data
   this.update = function(_breakdown, _areas, _uiState) {
     // Avoid redundancy
     if (uiState.view === _uiState.view && uiState.year === _uiState.year && uiState.format === _uiState.format)
       return;
 
-    // Setup
+    // Setup if view changes
     if (uiState.view !== _uiState.view) {
       breakdown = _breakdown;
       areas     = _areas;
-      this.setupTreemap(_uiState);
+      setupTreemap(_uiState);
     }
-    // Update
+    // Update with animation
     else {
-      this.updateTreemap(_uiState);
+      updateTreemap(_uiState);
     }
   };
 
+  // Resize treemap
+  this.resize = function(){
+    // Skip if container width don't change
+    if ($(selector).width() === width) return;
 
-  // Initialize and display the treemap, using a fade-in animation.
-  this.setupTreemap = function(_uiState) {
+    // Set width & height dimensions
+    setDimensions();
+
+    // Set treemap dimensions
+    setTreemapDimensions();
+
+    // Update tremap size
+    treemap.size([treemapWidth,treemapHeight]);
+    treemap(treemapRoot);
+
+    // Update nodes data
+    nodes.data(treemapRoot.leaves());
+
+    // Update nodes attributes & its labels
+    nodes
+      .call(setNode)
+      .call(setNodeTransition)
+      .filter(isNodeLabelVisible)
+        .call(setNodeLabel);
+  };
+
+  // Setup the treemap
+  function setupTreemap(_uiState) {
 
     // Load the data. We do it here, and not at object creation time, so we have time
     // to change default settings (treemap depth, f.ex.) if needed
@@ -357,11 +349,10 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colors, _labelsMinSize,
     // Filter nodes with labels visibles (based on labelsMinSize) & set its label
     nodes.filter(isNodeLabelVisible)
       .call(setNodeLabel);
-  };
+  }
 
-  // Update the year or format of a treemap.
-  // Note: you can't change the field being displayed, i.e. expense vs. income.
-  this.updateTreemap = function(_uiState) {
+  // Update the treemap with transition animation
+  function updateTreemap(_uiState) {
 
     /*
     // Do nothing if there's no data
@@ -420,7 +411,7 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colors, _labelsMinSize,
         }
       })
       .call(setNodeTransition);
-  };
+  }
 
   // We use two different functions to set nodes attributes:
   // setNode for static attributes (padding, background, visibility)
@@ -514,6 +505,39 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colors, _labelsMinSize,
   function onNodeClick(d) {
     $(selector).trigger('policy-selected', d.data);
   }
+
+  // Set main element dimensions
+  function setDimensions() {
+    width       = $(selector).width();
+    height      = width / aspectRatio;
+    // Set main element height
+    $(selector).height( height );
+    // Update font-size scale domain
+    fontSizeScale.domain([1, Math.sqrt(width*height)*0.5]);
+  }
+
+  // Adjust the overall treemap size based on the size of this year's budget compared to the biggest ever
+  function setTreemapDimensions() {
+    var maxValue  = maxTreemapValueEver || calculateMaxTreemapValueEver();
+    var ratio     = Math.sqrt( getValue(yearTotals[uiState.year][uiState.field], uiState.format, uiState.field, uiState.year) / maxValue );
+    treemapWidth  = (width * ratio);
+    treemapHeight = (height * ratio);
+
+    // Set nodes container position
+    nodesContainer
+      .transition()
+        .duration(transitionDuration)
+        .style('top',  (height-treemapHeight)/2+'px')
+        .style('left', (width-treemapWidth)/2+'px');
+  }
+
+  // Set colors scale based on colors array
+  function setColorScale() {
+    colorScale = d3.scaleOrdinal()
+      .range(colors)
+      .domain([0,1,2,3,4,5,6,7,8,9]);
+  }
+
   
   // Helper methods
   function getValue(value, format, field, year) {

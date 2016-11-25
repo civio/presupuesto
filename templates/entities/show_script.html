@@ -264,6 +264,9 @@
     budgetTreemap.maxLevels(1);
 {% endif %}
 
+    // Resize treemap
+    $(window).resize( budgetTreemap.resize );
+
     // Listen BudgetTreemap & BudgetSummary events
     $('#budget-treemap').bind('policy-selected',     onBudgetTreemapClick);
     $('#budget-summary').bind('budget-summary-over', onBudgetSummaryOver);
