@@ -1,8 +1,9 @@
 from budgets import budgets
 from policies import policies, policies_show, programmes_show, subprogrammes_show, income_articles_show, expense_articles_show
-from counties import counties, counties_show, counties_compare, counties_show_income, counties_show_expense, counties_show_functional
-from towns import towns, towns_show, towns_compare, towns_show_income, towns_show_expense, towns_show_functional
-from entities import entities_index, entities_show, entities_show_article, entities_show_policy
+from towns_and_counties import towns, towns_show, towns_compare, towns_show_income, towns_show_expense, towns_show_functional
+from towns_and_counties import counties, counties_show, counties_compare, counties_show_income, counties_show_expense, counties_show_functional
+from towns_and_counties import entities_show_article, entities_show_policy
+from entities import entities_index, entities_show
 from tax_receipt import tax_receipt
 from terms import terms
 from welcome import welcome
