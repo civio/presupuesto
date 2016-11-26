@@ -4,7 +4,7 @@ import json
 
 from coffin.shortcuts import render_to_response
 from budget_app.models import BudgetBreakdown, Entity
-from entities import entities_index, entities_show
+from entities import entities_show
 from helpers import *
 
 
@@ -92,6 +92,33 @@ def _get_town_context(request, town):
     populate_entities(c, town.level)
     return c
 
+
+
+
+def entities_index(request, c, level, render_callback=None):
+    # Get the budget breakdown
+    c['economic_breakdown'] = BudgetBreakdown(['name'])
+    # The top level entity has a nicely broken down budget, where each item is classified across
+    # 4 dimensions. For smaller entities, however, we have two separate breakdowns as input,
+    # that are loaded separately, with dummy values ('X') assigned to the three unknown dimensions. 
+    # To avoid double counting, we must calculate breakdowns along a dimension including only
+    # those items for which we know the category (i.e. not 'X')
+    get_budget_breakdown(   "e.level = %s and ec.chapter <> 'X'", [ level ], 
+                            [ 
+                                c['economic_breakdown'] 
+                            ])
+
+    # Additional data needed by the view
+    populate_level(c, level)
+    populate_level_stats(c, level)
+    populate_years(c, c['economic_breakdown'])
+    populate_entities(c, level)
+
+    # XXX: The percentage format in pages listing entities is tricky and confusing, partly because
+    # we have many gaps in the data which vary each year, so I'm hiding the drop-down option for now.
+    c['hide_percentage_format'] = True
+    
+    return render(c, render_callback, 'entities/index.html')
 
 
 def entities_compare(request, c, entity_left, entity_right):
