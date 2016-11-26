@@ -11,12 +11,10 @@
 
     <div class="container">
       <p class="history-back">
-        {% if subprogramme %}
-          <a href="{% url 'budget_app.views.programmes_show' subprogramme.programme, programme.slug() %}" id="policy-name-link">&larr; {{ descriptions['functional'].get(subprogramme.programme) }}</a>
-        {% elif programme %}
-          <a href="{% url 'budget_app.views.policies_show' programme.policy, policy.slug() %}" id="policy-name-link">
-          &larr; {{ descriptions['functional'].get(programme.policy) }}</a>
+        {% if back_button %}
+          <a href="{{ back_button['url'] }}">&larr; {{ back_button['description'] }}</a>
         {% else %}
+          {# Default behaviour: back to main page. Try to go back to the tab we came from #}
           {% set targetView = 'functional' if starting_tab=='functional' else show_side %}
           <a href="{{ url(show_entity_url, entity.slug) if entity else url('budget_app.views.policies') }}#view={{targetView}}">&larr; {{ _('Volver a Políticas') }}</a>
         {% endif %}

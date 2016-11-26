@@ -1,4 +1,6 @@
 # -*- coding: UTF-8 -*-
+
+from django.core.urlresolvers import reverse
 from coffin.shortcuts import render_to_response
 from budget_app.models import Budget, BudgetBreakdown, FunctionalCategory, EconomicCategory
 from entities import entities_show
@@ -123,6 +125,12 @@ def programmes_show(request, id, title, render_callback=None):
     set_full_breakdown(c, True)
     set_starting_tab(c, 'functional' if c['use_subprogrammes'] else 'economic')
 
+    # Back button: go back to parent policy
+    c['back_button'] = {
+        'url': reverse('budget_app.views.policies_show', args=[c['programme'].policy, c['policy'].slug()]),
+        'description': c['descriptions']['functional'].get(c['programme'].policy)
+    }
+
     # if parameter widget defined use policies/widget template instead of policies/show
     template = 'policies/show_widget.html' if isWidget(request) else 'policies/show.html'
 
@@ -184,6 +192,12 @@ def subprogrammes_show(request, id, title, render_callback=None):
     set_show_side(c, show_side)
     set_full_breakdown(c, True)
     set_starting_tab(c, 'economic')
+
+    # Back button: go back to parent programme
+    c['back_button'] = {
+        'url': reverse('budget_app.views.programmes_show', args=[c['subprogramme'].programme, c['programme'].slug()]),
+        'description': c['descriptions']['functional'].get(c['subprogramme'].programme)
+    }
 
     # if parameter widget defined use policies/widget template instead of policies/show
     template = 'policies/show_widget.html' if isWidget(request) else 'policies/show.html'
