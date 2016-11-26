@@ -28,8 +28,8 @@ def policies_show(request, id, title, render_callback=None):
     # Get the budget breakdown
     c['functional_breakdown'] = BudgetBreakdown(['programme'])
     c['economic_breakdown'] = BudgetBreakdown(['chapter', 'article', 'heading'])
-    c['funding_breakdown'] = BudgetBreakdown(['source', 'fund'])
-    c['institutional_breakdown'] = get_institutional_breakdown(c)
+    c['funding_breakdown'] = BudgetBreakdown(['source', 'fund']) if c['show_funding_tab'] else None
+    c['institutional_breakdown'] = get_institutional_breakdown(c) if c['show_institutional_tab'] else None
     get_budget_breakdown(   "fc.policy = %s and e.id = %s", [ id, main_entity.id ],
                             [ 
                                 c['functional_breakdown'], 
@@ -89,8 +89,8 @@ def programmes_show(request, id, title, render_callback=None):
     # the breakdown exists and adapt accordingly.
     c['functional_breakdown'] = BudgetBreakdown(['subprogramme']) if c['use_subprogrammes'] else None
     c['economic_breakdown'] = BudgetBreakdown(['chapter', 'article', 'heading', _get_final_element_grouping(c)])
-    c['funding_breakdown'] = BudgetBreakdown(['source', 'fund'])
-    c['institutional_breakdown'] = get_institutional_breakdown(c)
+    c['funding_breakdown'] = BudgetBreakdown(['source', 'fund']) if c['show_funding_tab'] else None
+    c['institutional_breakdown'] = get_institutional_breakdown(c) if c['show_institutional_tab'] else None
     get_budget_breakdown(   "fc.programme = %s and e.id = %s", [ id, main_entity.id ],
                             [
                                 c['functional_breakdown'],
@@ -150,8 +150,8 @@ def subprogrammes_show(request, id, title, render_callback=None):
 
     # Get the budget breakdown
     c['economic_breakdown'] = BudgetBreakdown(['chapter', 'article', 'heading', _get_final_element_grouping(c)])
-    c['funding_breakdown'] = BudgetBreakdown(['source', 'fund'])
-    c['institutional_breakdown'] = get_institutional_breakdown(c)
+    c['funding_breakdown'] = BudgetBreakdown(['source', 'fund']) if c['show_funding_tab'] else None
+    c['institutional_breakdown'] = get_institutional_breakdown(c) if c['show_institutional_tab'] else None
     get_budget_breakdown(   "fc.subprogramme = %s and e.id = %s", [ id, main_entity.id ],
                             [ 
                                 c['economic_breakdown'],
@@ -217,8 +217,8 @@ def articles_show(request, id, title, show_side, render_callback=None):
     # The functional one is used only when showing expenses.
     c['functional_breakdown'] = BudgetBreakdown(['policy', 'programme']) if show_side=='expense' else None
     c['economic_breakdown'] = BudgetBreakdown(['heading', _get_final_element_grouping(c)])
-    c['funding_breakdown'] = BudgetBreakdown(['source', 'fund'])
-    c['institutional_breakdown'] = get_institutional_breakdown(c)
+    c['funding_breakdown'] = BudgetBreakdown(['source', 'fund']) if c['show_funding_tab'] else None
+    c['institutional_breakdown'] = get_institutional_breakdown(c) if c['show_institutional_tab'] else None
     get_budget_breakdown(   "ec.article = %s and e.id = %s and i.expense = %s",
                             [ id, main_entity.id, show_side=='expense' ],
                             [ 

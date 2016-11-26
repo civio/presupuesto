@@ -129,8 +129,8 @@ def entities_show_policy(request, c, entity, id, title, render_callback=None):
     # Get the budget breakdown
     c['functional_breakdown'] = BudgetBreakdown(['function', 'programme'])
     c['economic_breakdown'] = BudgetBreakdown(['chapter', 'article', 'heading'])
-    c['funding_breakdown'] = BudgetBreakdown(['source', 'fund'])
-    c['institutional_breakdown'] = BudgetBreakdown([_year_tagged_institution, _year_tagged_department])
+    c['funding_breakdown'] = BudgetBreakdown(['source', 'fund']) if c['show_funding_tab'] else None
+    c['institutional_breakdown'] = get_institutional_breakdown(c) if c['show_institutional_tab'] else None
     get_budget_breakdown(   "fc.policy = %s and e.id = %s", [ id, entity.id ],
                             [ 
                                 c['functional_breakdown'], 
@@ -194,8 +194,8 @@ def entities_show_article(request, c, entity, id, title, show_side, render_callb
     else:
         c['economic_breakdown'] = BudgetBreakdown(['heading', 'uid'])
         query = "ec.article = %s and e.id = %s"
-    c['funding_breakdown'] = BudgetBreakdown(['source', 'fund'])
-    c['institutional_breakdown'] = BudgetBreakdown([_year_tagged_institution, _year_tagged_department])
+    c['funding_breakdown'] = BudgetBreakdown(['source', 'fund']) if c['show_funding_tab'] else None
+    c['institutional_breakdown'] = get_institutional_breakdown(c) if c['show_institutional_tab'] else None
     get_budget_breakdown(   query, [ id, entity.id ],
                             [ 
                                 c['economic_breakdown'],
