@@ -10,27 +10,18 @@
   <div class="policies-header section-header">
 
     <div class="container">
-      {% if subprogramme %}
       <p class="history-back">
-        <a href="{% url 'budget_app.views.programmes_show' subprogramme.programme, programme.slug() %}" id="policy-name-link">
-          &larr; {{ descriptions['functional'].get(subprogramme.programme) }}
-        </a>
-      </p>
-      <h2 class="page-title">{{ name }}</h2>
-      {% elif programme %}
-      <p class="history-back">
-        <a href="{% url 'budget_app.views.policies_show' programme.policy, policy.slug() %}" id="policy-name-link">
-          &larr; {{ descriptions['functional'].get(programme.policy) }}
-        </a>
-      </p>
-      <h2 class="page-title">{{ name }}</h2>
-      {% else %}
-      <p class="history-back">
-        {% set targetView = 'functional' if starting_tab=='functional' else show_side %}
-        <a href="{{ url(show_entity_url, entity.slug) if entity else url('budget_app.views.policies') }}#view={{targetView}}">&larr; {{ _('Volver a Políticas') }}</a>
+        {% if subprogramme %}
+          <a href="{% url 'budget_app.views.programmes_show' subprogramme.programme, programme.slug() %}" id="policy-name-link">&larr; {{ descriptions['functional'].get(subprogramme.programme) }}</a>
+        {% elif programme %}
+          <a href="{% url 'budget_app.views.policies_show' programme.policy, policy.slug() %}" id="policy-name-link">
+          &larr; {{ descriptions['functional'].get(programme.policy) }}</a>
+        {% else %}
+          {% set targetView = 'functional' if starting_tab=='functional' else show_side %}
+          <a href="{{ url(show_entity_url, entity.slug) if entity else url('budget_app.views.policies') }}#view={{targetView}}">&larr; {{ _('Volver a Políticas') }}</a>
+        {% endif %}
       </p>
       <h2 class="page-title">{{ entity.name+': ' if entity }}{{ name }}</h2>
-      {% endif %}
     </div>
 
     <ul id="tabs" class="nav nav-tabs nav-tabs-centered" role="tablist">
