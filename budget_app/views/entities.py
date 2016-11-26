@@ -68,11 +68,11 @@ def entities_show(request, c, entity, render_callback=None):
     populate_years(c, 'economic_breakdown')
     populate_budget_statuses(c, entity.id)
     populate_area_descriptions(c, ['functional', 'income', 'expense', 'institutional'])
-    _set_full_breakdown(c, entity.level == settings.MAIN_ENTITY_LEVEL)
+    set_full_breakdown(c, entity.level == settings.MAIN_ENTITY_LEVEL)
     c['entity'] = entity
 
     # if parameter widget defined use policies/widget template instead of policies/show
-    template = 'entities/show_widget.html' if _isWidget(request) else 'entities/show.html'
+    template = 'entities/show_widget.html' if isWidget(request) else 'entities/show.html'
 
     return render(c, render_callback, template)
 
@@ -107,14 +107,6 @@ def entities_compare(request, c, entity_left, entity_right):
 
     return render_to_response('entities/compare.html', c)
 
-# Do we have an exhaustive budget, classified along four dimensions? I.e. display all tabs?
-def _set_full_breakdown(c, full_breakdown):
-    c['full_breakdown'] = full_breakdown
-
-# Get widget parameter
-def _isWidget(request):
-    return request.GET.get('widget',False)
-
 
 
 # FIXME: from here below it's a big copy-paste, should clean-up.
@@ -145,9 +137,9 @@ def entities_show_policy(request, c, entity, id, title, render_callback=None):
     populate_years(c, 'functional_breakdown')
     populate_budget_statuses(c, entity.id)
     populate_area_descriptions(c, ['functional', show_side])
-    _populate_csv_settings(c, 'policy', id)
-    _set_show_side(c, show_side)
-    _set_full_breakdown(c, False)
+    populate_csv_settings(c, 'policy', id)
+    set_show_side(c, show_side)
+    set_full_breakdown(c, False)
     c['entity'] = entity
 
     c['name'] = c['descriptions']['functional'].get(c['policy_uid'])
@@ -219,45 +211,10 @@ def entities_show_article(request, c, entity, id, title, show_side, render_callb
     populate_years(c, 'institutional_breakdown')
     populate_budget_statuses(c, entity.id)
     populate_area_descriptions(c, ['functional', 'funding', show_side])
-    _populate_csv_settings(c, 'article', id)
-    _set_show_side(c, show_side)
-    _set_full_breakdown(c, False)
+    populate_csv_settings(c, 'article', id)
+    set_show_side(c, show_side)
+    set_full_breakdown(c, False)
     c['entity'] = entity
 
     return render(c, render_callback, 'policies/show.html')
 
-
-# Unfortunately institutions id change sometimes over the years, so we need to
-# use id's that are unique along time, not only inside a given budget.
-def _year_tagged_institution(item):
-    institution = getattr(item, 'institution') if getattr(item, 'institution') else ''
-    return str(getattr(item, 'year')) + '/' + institution
-
-
-def _year_tagged_department(item):
-    department = getattr(item, 'department') if getattr(item, 'department') else ''
-    return str(getattr(item, 'year')) + '/' + department
-
-
-def _get_tab_titles(show_side):
-    if show_side == 'income':
-        return {
-            'economic': u"¿Cómo se ingresa?",
-            'funding': u"Tipo de ingresos",
-            'institutional': u"¿Quién recauda?"
-        }
-    else:
-        return {
-            'functional': u"¿En qué se gasta?",
-            'economic': u"¿Cómo se gasta?",
-            'funding': u"¿Cómo se financia?",
-            'institutional': u"¿Quién lo gasta?"
-        }
-
-def _populate_csv_settings(c, type, id):
-    c['csv_id'] = id
-    c['csv_type'] = type
-
-def _set_show_side(c, side):
-    c['show_side'] = side
-    c['tab_titles'] = _get_tab_titles(side)

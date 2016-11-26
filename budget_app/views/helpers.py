@@ -137,6 +137,57 @@ def populate_entities(c, level):
 
 
 #
+# POLICIES TEMPLATE - variables and flags driving the template
+#
+
+
+# Should we group elements at the economic subheading level, or list all of them?
+# By default, and traditionally, we showed all of them, but in big administrations
+# this results in lists of items with identical names, because they belong to different
+# departments (see #135). In those cases we can group at the subheading level, but beware,
+# make sure subheadings are consistent across departments (not the case for PGE, f.ex.).
+def get_final_element_grouping(c):
+    if hasattr(settings, 'BREAKDOWN_BY_UID') and settings.BREAKDOWN_BY_UID==False:
+        return 'economic_uid'
+    else:
+        return 'uid'
+
+def populate_csv_settings(c, type, id):
+    c['csv_type'] = type
+    c['csv_id'] = id
+
+def _get_tab_titles(show_side):
+    if show_side == 'income':
+        return {
+            'economic': u"¿Cómo se ingresa?",
+            'funding': u"Tipo de ingresos",
+            'institutional': u"¿Quién recauda?"
+        }
+    else:
+        return {
+            'functional': u"¿En qué se gasta?",
+            'economic': u"¿Cómo se gasta?",
+            'funding': u"¿Cómo se financia?",
+            'institutional': u"¿Quién lo gasta?"
+        }
+
+def set_show_side(c, side):
+    c['show_side'] = side
+    c['tab_titles'] = _get_tab_titles(side)
+
+# Do we have an exhaustive budget, classified along four dimensions? I.e. display all tabs?
+def set_full_breakdown(c, full_breakdown):
+    c['full_breakdown'] = full_breakdown
+
+def set_starting_tab(c, tab):
+    c['starting_tab'] = tab;
+
+# Get widget parameter
+def isWidget(request):
+    return request.GET.get('widget',False)
+
+
+#
 # FORMATTING
 #
 # TODO: Is there a core Django/Python replacement for this?

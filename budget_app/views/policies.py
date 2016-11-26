@@ -45,17 +45,17 @@ def policies_show(request, id, title, render_callback=None):
     populate_years(c, 'functional_breakdown')
     populate_budget_statuses(c, main_entity.id)
     populate_area_descriptions(c, ['functional', 'funding', show_side])
-    _populate_csv_settings(c, 'policy', id)
-    _set_show_side(c, show_side)
-    _set_full_breakdown(c, True)
-    _set_starting_tab(c, 'functional')
+    populate_csv_settings(c, 'policy', id)
+    set_show_side(c, show_side)
+    set_full_breakdown(c, True)
+    set_starting_tab(c, 'functional')
 
     c['name'] = c['descriptions']['functional'].get(c['policy_uid'])
     c['title_prefix'] = c['name']
 
 
     # if parameter widget defined use policies/widget template instead of policies/show
-    template = 'policies/show_widget.html' if _isWidget(request) else 'policies/show.html'
+    template = 'policies/show_widget.html' if isWidget(request) else 'policies/show.html'
 
     return render(c, render_callback, template )
 
@@ -79,7 +79,7 @@ def programmes_show(request, id, title, render_callback=None):
     # Ignore if possible the descriptions for execution data, they are truncated and ugly
     programme_descriptions = {}
     def _populate_programme_descriptions(column_name, item):
-        item_uid = getattr(item, _get_final_element_grouping(c))()
+        item_uid = getattr(item, get_final_element_grouping(c))()
         if not item.actual or not item_uid in programme_descriptions:
             programme_descriptions[item_uid] = getattr(item, 'description')
 
@@ -88,7 +88,7 @@ def programmes_show(request, id, title, render_callback=None):
     # i.e. depending on whether there are subprogrammes. The policy page will check whether
     # the breakdown exists and adapt accordingly.
     c['functional_breakdown'] = BudgetBreakdown(['subprogramme']) if c['use_subprogrammes'] else None
-    c['economic_breakdown'] = BudgetBreakdown(['chapter', 'article', 'heading', _get_final_element_grouping(c)])
+    c['economic_breakdown'] = BudgetBreakdown(['chapter', 'article', 'heading', get_final_element_grouping(c)])
     c['funding_breakdown'] = BudgetBreakdown(['source', 'fund']) if c['show_funding_tab'] else None
     c['institutional_breakdown'] = get_institutional_breakdown(c) if c['show_institutional_tab'] else None
     get_budget_breakdown(   "fc.programme = %s and e.id = %s", [ id, main_entity.id ],
@@ -114,13 +114,13 @@ def programmes_show(request, id, title, render_callback=None):
     populate_years(c, 'institutional_breakdown')
     populate_budget_statuses(c, main_entity.id)
     populate_area_descriptions(c, ['functional', 'funding', show_side])
-    _populate_csv_settings(c, 'programme', id)
-    _set_show_side(c, show_side)
-    _set_full_breakdown(c, True)
-    _set_starting_tab(c, 'functional' if c['use_subprogrammes'] else 'economic')
+    populate_csv_settings(c, 'programme', id)
+    set_show_side(c, show_side)
+    set_full_breakdown(c, True)
+    set_starting_tab(c, 'functional' if c['use_subprogrammes'] else 'economic')
 
     # if parameter widget defined use policies/widget template instead of policies/show
-    template = 'policies/show_widget.html' if _isWidget(request) else 'policies/show.html'
+    template = 'policies/show_widget.html' if isWidget(request) else 'policies/show.html'
 
     return render(c, render_callback, template )
 
@@ -144,12 +144,12 @@ def subprogrammes_show(request, id, title, render_callback=None):
     # Ignore if possible the descriptions for execution data, they are truncated and ugly
     programme_descriptions = {}
     def _populate_programme_descriptions(column_name, item):
-        item_uid = getattr(item, _get_final_element_grouping(c))()
+        item_uid = getattr(item, get_final_element_grouping(c))()
         if not item.actual or not item_uid in programme_descriptions:
             programme_descriptions[item_uid] = getattr(item, 'description')
 
     # Get the budget breakdown
-    c['economic_breakdown'] = BudgetBreakdown(['chapter', 'article', 'heading', _get_final_element_grouping(c)])
+    c['economic_breakdown'] = BudgetBreakdown(['chapter', 'article', 'heading', get_final_element_grouping(c)])
     c['funding_breakdown'] = BudgetBreakdown(['source', 'fund']) if c['show_funding_tab'] else None
     c['institutional_breakdown'] = get_institutional_breakdown(c) if c['show_institutional_tab'] else None
     get_budget_breakdown(   "fc.subprogramme = %s and e.id = %s", [ id, main_entity.id ],
@@ -174,13 +174,13 @@ def subprogrammes_show(request, id, title, render_callback=None):
     populate_years(c, 'institutional_breakdown')
     populate_budget_statuses(c, main_entity.id)
     populate_area_descriptions(c, ['functional', 'funding', show_side])
-    _populate_csv_settings(c, 'programme', id)
-    _set_show_side(c, show_side)
-    _set_full_breakdown(c, True)
-    _set_starting_tab(c, 'economic')
+    populate_csv_settings(c, 'programme', id)
+    set_show_side(c, show_side)
+    set_full_breakdown(c, True)
+    set_starting_tab(c, 'economic')
 
     # if parameter widget defined use policies/widget template instead of policies/show
-    template = 'policies/show_widget.html' if _isWidget(request) else 'policies/show.html'
+    template = 'policies/show_widget.html' if isWidget(request) else 'policies/show.html'
 
     return render(c, render_callback, template )
 
@@ -209,14 +209,14 @@ def articles_show(request, id, title, show_side, render_callback=None):
     # Ignore if possible the descriptions for execution data, they are truncated and ugly
     article_descriptions = {}
     def _populate_article_descriptions(column_name, item):
-        item_uid = getattr(item, _get_final_element_grouping(c))()
+        item_uid = getattr(item, get_final_element_grouping(c))()
         if not item.actual or not item_uid in article_descriptions:
             article_descriptions[item_uid] = getattr(item, 'description')
 
     # Get the budget breakdown.
     # The functional one is used only when showing expenses.
     c['functional_breakdown'] = BudgetBreakdown(['policy', 'programme']) if show_side=='expense' else None
-    c['economic_breakdown'] = BudgetBreakdown(['heading', _get_final_element_grouping(c)])
+    c['economic_breakdown'] = BudgetBreakdown(['heading', get_final_element_grouping(c)])
     c['funding_breakdown'] = BudgetBreakdown(['source', 'fund']) if c['show_funding_tab'] else None
     c['institutional_breakdown'] = get_institutional_breakdown(c) if c['show_institutional_tab'] else None
     get_budget_breakdown(   "ec.article = %s and e.id = %s and i.expense = %s",
@@ -243,61 +243,15 @@ def articles_show(request, id, title, show_side, render_callback=None):
     populate_budget_statuses(c, main_entity.id)
     populate_area_descriptions(c, ['functional', 'funding', show_side])
     if show_side=='income':
-        _populate_csv_settings(c, 'article_revenues', id)
+        populate_csv_settings(c, 'article_revenues', id)
     else:
-        _populate_csv_settings(c, 'article_expenditures', id)
-    _set_show_side(c, show_side)
-    _set_full_breakdown(c, True)
+        populate_csv_settings(c, 'article_expenditures', id)
+    set_show_side(c, show_side)
+    set_full_breakdown(c, True)
 
-    _set_starting_tab(c, 'economic')
+    set_starting_tab(c, 'economic')
 
     # if parameter widget defined use policies/widget template instead of policies/show
-    template = 'policies/show_widget.html' if _isWidget(request) else 'policies/show.html'
+    template = 'policies/show_widget.html' if isWidget(request) else 'policies/show.html'
 
     return render(c, render_callback, template )
-
-
-def _get_tab_titles(show_side):
-    if show_side == 'income':
-        return {
-            'economic': u"¿Cómo se ingresa?",
-            'funding': u"Tipo de ingresos",
-            'institutional': u"¿Quién recauda?"
-        }
-    else:
-        return {
-            'functional': u"¿En qué se gasta?",
-            'economic': u"¿Cómo se gasta?",
-            'funding': u"¿Cómo se financia?",
-            'institutional': u"¿Quién lo gasta?"
-        }
-
-# Should we group elements at the economic subheading level, or list all of them?
-# By default, and traditionally, we showed all of them, but in big administrations
-# this results in lists of items with identical names, because they belong to different
-# departments (see #135). In those cases we can group at the subheading level, but beware,
-# make sure subheadings are consistent across departments (not the case for PGE, f.ex.).
-def _get_final_element_grouping(c):
-    if hasattr(settings, 'BREAKDOWN_BY_UID') and settings.BREAKDOWN_BY_UID==False:
-        return 'economic_uid'
-    else:
-        return 'uid'
-
-def _populate_csv_settings(c, type, id):
-    c['csv_id'] = id
-    c['csv_type'] = type
-
-def _set_show_side(c, side):
-    c['show_side'] = side
-    c['tab_titles'] = _get_tab_titles(side)
-
-# Do we have an exhaustive budget, classified along four dimensions? I.e. display all tabs?
-def _set_full_breakdown(c, full_breakdown):
-    c['full_breakdown'] = full_breakdown
-
-def _set_starting_tab(c, tab):
-    c['starting_tab'] = tab;
-
-# Get widget parameter
-def _isWidget(request):
-    return request.GET.get('widget',False)
