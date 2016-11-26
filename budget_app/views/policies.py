@@ -26,23 +26,25 @@ def policies_show(request, id, title, render_callback=None):
     main_entity = get_main_entity(c)
 
     # Get the budget breakdown
-    c['functional_breakdown'] = BudgetBreakdown(['programme'])
-    c['economic_breakdown'] = BudgetBreakdown(['chapter', 'article', 'heading'])
-    c['funding_breakdown'] = BudgetBreakdown(['source', 'fund']) if c['show_funding_tab'] else None
-    c['institutional_breakdown'] = get_institutional_breakdown(c) if c['show_institutional_tab'] else None
+    c['breakdowns'] = {
+      'functional': BudgetBreakdown(['programme']),
+      'economic': BudgetBreakdown(['chapter', 'article', 'heading']),
+      'funding': BudgetBreakdown(['source', 'fund']) if c['show_funding_tab'] else None,
+      'institutional': get_institutional_breakdown(c) if c['show_institutional_tab'] else None
+    }
     get_budget_breakdown(   "fc.policy = %s and e.id = %s", [ id, main_entity.id ],
                             [ 
-                                c['functional_breakdown'], 
-                                c['economic_breakdown'],
-                                c['funding_breakdown'],
-                                c['institutional_breakdown']
+                                c['breakdowns']['functional'],
+                                c['breakdowns']['economic'],
+                                c['breakdowns']['funding'],
+                                c['breakdowns']['institutional']
                             ])
 
     # Additional data needed by the view
     show_side = 'expense'
     populate_stats(c)
-    populate_entity_descriptions(c, main_entity)
-    populate_years(c, 'functional_breakdown')
+    populate_entity_descriptions(c, main_entity, show_side)
+    populate_years(c, c['breakdowns']['functional'])
     populate_budget_statuses(c, main_entity.id)
     populate_area_descriptions(c, ['functional', 'funding', show_side])
     populate_csv_settings(c, 'policy', id)
@@ -87,16 +89,18 @@ def programmes_show(request, id, title, render_callback=None):
     # The functional breakdown may or may not exist, depending on whether we are at deepest level,
     # i.e. depending on whether there are subprogrammes. The policy page will check whether
     # the breakdown exists and adapt accordingly.
-    c['functional_breakdown'] = BudgetBreakdown(['subprogramme']) if c['use_subprogrammes'] else None
-    c['economic_breakdown'] = BudgetBreakdown(['chapter', 'article', 'heading', get_final_element_grouping(c)])
-    c['funding_breakdown'] = BudgetBreakdown(['source', 'fund']) if c['show_funding_tab'] else None
-    c['institutional_breakdown'] = get_institutional_breakdown(c) if c['show_institutional_tab'] else None
+    c['breakdowns'] = {
+      'functional': BudgetBreakdown(['subprogramme']) if c['use_subprogrammes'] else None,
+      'economic': BudgetBreakdown(['chapter', 'article', 'heading', get_final_element_grouping(c)]),
+      'funding': BudgetBreakdown(['source', 'fund']) if c['show_funding_tab'] else None,
+      'institutional': get_institutional_breakdown(c) if c['show_institutional_tab'] else None
+    }
     get_budget_breakdown(   "fc.programme = %s and e.id = %s", [ id, main_entity.id ],
                             [
-                                c['functional_breakdown'],
-                                c['economic_breakdown'],
-                                c['funding_breakdown'],
-                                c['institutional_breakdown']
+                                c['breakdowns']['functional'],
+                                c['breakdowns']['economic'],
+                                c['breakdowns']['funding'],
+                                c['breakdowns']['institutional']
                             ],
                             _populate_programme_descriptions)
 
@@ -104,14 +108,14 @@ def programmes_show(request, id, title, render_callback=None):
     # which is made of references to the hashes containing the descriptions themselves).
     c['descriptions'] = Budget.objects.get_all_descriptions(main_entity).copy()
     programme_descriptions.update(c['descriptions']['expense'])
-    c['descriptions']['expense'] = programme_descriptions
+    c['descriptions']['economic'] = programme_descriptions
     c['name'] = c['descriptions']['functional'].get(c['programme_id'])
     c['title_prefix'] = c['name']
 
     # Additional data needed by the view
     show_side = 'expense'
     populate_stats(c)
-    populate_years(c, 'institutional_breakdown')
+    populate_years(c, c['breakdowns']['institutional'])
     populate_budget_statuses(c, main_entity.id)
     populate_area_descriptions(c, ['functional', 'funding', show_side])
     populate_csv_settings(c, 'programme', id)
@@ -149,14 +153,16 @@ def subprogrammes_show(request, id, title, render_callback=None):
             programme_descriptions[item_uid] = getattr(item, 'description')
 
     # Get the budget breakdown
-    c['economic_breakdown'] = BudgetBreakdown(['chapter', 'article', 'heading', get_final_element_grouping(c)])
-    c['funding_breakdown'] = BudgetBreakdown(['source', 'fund']) if c['show_funding_tab'] else None
-    c['institutional_breakdown'] = get_institutional_breakdown(c) if c['show_institutional_tab'] else None
+    c['breakdowns'] = {
+      'economic': BudgetBreakdown(['chapter', 'article', 'heading', get_final_element_grouping(c)]),
+      'funding': BudgetBreakdown(['source', 'fund']) if c['show_funding_tab'] else None,
+      'institutional': get_institutional_breakdown(c) if c['show_institutional_tab'] else None
+    }
     get_budget_breakdown(   "fc.subprogramme = %s and e.id = %s", [ id, main_entity.id ],
                             [ 
-                                c['economic_breakdown'],
-                                c['funding_breakdown'],
-                                c['institutional_breakdown']
+                                c['breakdowns']['economic'],
+                                c['breakdowns']['funding'],
+                                c['breakdowns']['institutional']
                             ],
                             _populate_programme_descriptions)
 
@@ -164,14 +170,14 @@ def subprogrammes_show(request, id, title, render_callback=None):
     # which is made of references to the hashes containing the descriptions themselves).
     c['descriptions'] = Budget.objects.get_all_descriptions(main_entity).copy()
     programme_descriptions.update(c['descriptions']['expense'])
-    c['descriptions']['expense'] = programme_descriptions
+    c['descriptions']['economic'] = programme_descriptions
     c['name'] = c['descriptions']['functional'].get(c['subprogramme_id'])
     c['title_prefix'] = c['name']
 
     # Additional data needed by the view
     show_side = 'expense'
     populate_stats(c)
-    populate_years(c, 'institutional_breakdown')
+    populate_years(c, c['breakdowns']['institutional'])
     populate_budget_statuses(c, main_entity.id)
     populate_area_descriptions(c, ['functional', 'funding', show_side])
     populate_csv_settings(c, 'programme', id)
@@ -215,17 +221,19 @@ def articles_show(request, id, title, show_side, render_callback=None):
 
     # Get the budget breakdown.
     # The functional one is used only when showing expenses.
-    c['functional_breakdown'] = BudgetBreakdown(['policy', 'programme']) if show_side=='expense' else None
-    c['economic_breakdown'] = BudgetBreakdown(['heading', get_final_element_grouping(c)])
-    c['funding_breakdown'] = BudgetBreakdown(['source', 'fund']) if c['show_funding_tab'] else None
-    c['institutional_breakdown'] = get_institutional_breakdown(c) if c['show_institutional_tab'] else None
+    c['breakdowns'] = {
+      'functional': BudgetBreakdown(['policy', 'programme']) if show_side=='expense' else None,
+      'economic': BudgetBreakdown(['heading', get_final_element_grouping(c)]),
+      'funding': BudgetBreakdown(['source', 'fund']) if c['show_funding_tab'] else None,
+      'institutional': get_institutional_breakdown(c) if c['show_institutional_tab'] else None
+    }
     get_budget_breakdown(   "ec.article = %s and e.id = %s and i.expense = %s",
                             [ id, main_entity.id, show_side=='expense' ],
                             [ 
-                                c['functional_breakdown'],
-                                c['economic_breakdown'],
-                                c['funding_breakdown'],
-                                c['institutional_breakdown']
+                                c['breakdowns']['functional'],
+                                c['breakdowns']['economic'],
+                                c['breakdowns']['funding'],
+                                c['breakdowns']['institutional']
                             ],
                             _populate_article_descriptions)
 
@@ -233,19 +241,16 @@ def articles_show(request, id, title, show_side, render_callback=None):
     # which is made of references to the hashes containing the descriptions themselves).
     c['descriptions'] = Budget.objects.get_all_descriptions(main_entity).copy()
     article_descriptions.update(c['descriptions'][show_side])
-    c['descriptions'][show_side] = article_descriptions
-    c['name'] = c['descriptions'][show_side].get(c['article_id'])
+    c['descriptions']['economic'] = article_descriptions
+    c['name'] = c['descriptions']['economic'].get(c['article_id'])
     c['title_prefix'] = c['name']
 
     # Additional data needed by the view
     populate_stats(c)
-    populate_years(c, 'institutional_breakdown')
+    populate_years(c, c['breakdowns']['institutional'])
     populate_budget_statuses(c, main_entity.id)
     populate_area_descriptions(c, ['functional', 'funding', show_side])
-    if show_side=='income':
-        populate_csv_settings(c, 'article_revenues', id)
-    else:
-        populate_csv_settings(c, 'article_expenditures', id)
+    populate_csv_settings(c, 'article_revenues' if show_side=='income' else 'article_expenditures', id)
     set_show_side(c, show_side)
     set_full_breakdown(c, True)
 

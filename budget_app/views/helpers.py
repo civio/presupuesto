@@ -99,11 +99,14 @@ def populate_level_stats(c, level):
 def populate_descriptions(c):
     c['descriptions'] = Budget.objects.get_all_descriptions(get_main_entity(c))
 
-def populate_entity_descriptions(c, entity):
+def populate_entity_descriptions(c, entity, show_side=None):
     c['descriptions'] = Budget.objects.get_all_descriptions(entity)
+    # For convenience, after populating the descriptions, set also an 'alias'
+    # from 'economic' to the right income/expense descriptions, which simplifies the code
+    c['descriptions']['economic'] = c['descriptions'][show_side] if show_side else None
 
-def populate_years(c, breakdown_name):
-    years = sorted(list(set(c[breakdown_name].years.values())))
+def populate_years(c, breakdown):
+    years = sorted(list(set(breakdown.years.values())))
     c['years'] = json.dumps([str(year) for year in years])
     c['show_treemap'] = ( len(years) == 1 )     # TODO: Should be done by Javascript
 
@@ -114,8 +117,8 @@ def populate_years(c, breakdown_name):
     latest_budget = populate_latest_budget(c)
     c['starting_year'] = latest_budget.year if latest_budget.year in years else years[-1]
 
-def populate_comparison_years(c, breakdown_name_left, breakdown_name_right):
-    years = sorted(list(set(c[breakdown_name_left].years.values() + c[breakdown_name_right].years.values())))
+def populate_comparison_years(c, breakdown_left, breakdown_right):
+    years = sorted(list(set(breakdown_left.years.values() + breakdown_right.years.values())))
     c['years'] = json.dumps([str(year) for year in years])
     c['starting_year'] = years[-1]
 

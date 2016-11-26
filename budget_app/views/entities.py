@@ -19,7 +19,7 @@ def entities_index(request, c, level, render_callback=None):
     # Additional data needed by the view
     populate_level(c, level)
     populate_level_stats(c, level)
-    populate_years(c, 'economic_breakdown')
+    populate_years(c, c['economic_breakdown'])
     populate_entities(c, level)
 
     # XXX: The percentage format in pages listing entities is tricky and confusing, partly because
@@ -65,7 +65,7 @@ def entities_show(request, c, entity, render_callback=None):
     populate_entity_stats(c, entity)
     # TODO: We're doing this also for Aragon, check performance!
     populate_entity_descriptions(c, entity)
-    populate_years(c, 'economic_breakdown')
+    populate_years(c, c['economic_breakdown'])
     populate_budget_statuses(c, entity.id)
     populate_area_descriptions(c, ['functional', 'income', 'expense', 'institutional'])
     set_full_breakdown(c, entity.level == settings.MAIN_ENTITY_LEVEL)
@@ -102,7 +102,7 @@ def entities_compare(request, c, entity_left, entity_right):
     populate_entity_stats(c, entity_right, 'stats_right')
     populate_entity_descriptions(c, entity_left)
     populate_area_descriptions(c, ['income', 'expense'])
-    populate_comparison_years(c, 'economic_breakdown_left', 'economic_breakdown_right')
+    populate_comparison_years(c, c['economic_breakdown_left'], c['economic_breakdown_right'])
     populate_entities(c, entity_left.level)
 
     return render_to_response('entities/compare.html', c)
@@ -119,22 +119,22 @@ def entities_show_policy(request, c, entity, id, title, render_callback=None):
     c['policy_uid'] = id
 
     # Get the budget breakdown
-    c['functional_breakdown'] = BudgetBreakdown(['function', 'programme'])
-    c['economic_breakdown'] = BudgetBreakdown(['chapter', 'article', 'heading'])
-    c['funding_breakdown'] = BudgetBreakdown(['source', 'fund']) if c['show_funding_tab'] else None
-    c['institutional_breakdown'] = get_institutional_breakdown(c) if c['show_institutional_tab'] else None
+    c['breakdowns'] = {
+      'functional': BudgetBreakdown(['function', 'programme']),
+      'economic': BudgetBreakdown(['chapter', 'article', 'heading'])
+    }
     get_budget_breakdown(   "fc.policy = %s and e.id = %s", [ id, entity.id ],
                             [ 
-                                c['functional_breakdown'], 
-                                c['economic_breakdown']
+                                c['breakdowns']['functional'],
+                                c['breakdowns']['economic']
                             ])
 
     # Additional data needed by the view
     show_side = 'expense'
     populate_level(c, entity.level)
     populate_entity_stats(c, entity)
-    populate_entity_descriptions(c, entity)
-    populate_years(c, 'functional_breakdown')
+    populate_entity_descriptions(c, entity, show_side)
+    populate_years(c, c['breakdowns']['functional'])
     populate_budget_statuses(c, entity.id)
     populate_area_descriptions(c, ['functional', show_side])
     populate_csv_settings(c, 'policy', id)
@@ -173,26 +173,27 @@ def entities_show_article(request, c, entity, id, title, show_side, render_callb
             article_descriptions[item.uid()] = getattr(item, 'description')
 
     # Get the budget breakdown.
-    # The functional breakdown is an empty one because our small entity data is not fully broken, 
-    # down but since we're going to be displaying this data in the policy page we send a blank one
-    c['functional_breakdown'] = BudgetBreakdown([])
+    # The functional breakdown is an empty one because our small entity data is not fully broken.
+    c['breakdowns'] = {
+      'functional': None,
+      'funding': BudgetBreakdown(['source', 'fund']) if c['show_funding_tab'] else None,
+      'institutional': get_institutional_breakdown(c) if c['show_institutional_tab'] else None
+    }
     if c['is_chapter']:
         # XXX: Some entities combine different levels of data detail along the years. Trying
         # to display detailed categories (articles, headings) looks bad on the visualization,
         # because some years just 'disappear'. So we take the 'safe route', just visualizing
         # the chapter total. We could try to be smarter here.
-        c['economic_breakdown'] = BudgetBreakdown(['chapter', 'article'])
+        c['breakdowns']['economic_breakdown'] = BudgetBreakdown(['chapter', 'article'])
         query = "ec.chapter = %s and e.id = %s"
     else:
-        c['economic_breakdown'] = BudgetBreakdown(['heading', 'uid'])
+        c['breakdowns']['economic_breakdown'] = BudgetBreakdown(['heading', 'uid'])
         query = "ec.article = %s and e.id = %s"
-    c['funding_breakdown'] = BudgetBreakdown(['source', 'fund']) if c['show_funding_tab'] else None
-    c['institutional_breakdown'] = get_institutional_breakdown(c) if c['show_institutional_tab'] else None
     get_budget_breakdown(   query, [ id, entity.id ],
                             [ 
-                                c['economic_breakdown'],
-                                c['funding_breakdown'],
-                                c['institutional_breakdown']
+                                c['breakdowns']['economic'],
+                                c['breakdowns']['funding'],
+                                c['breakdowns']['institutional']
                             ],
                             _populate_article_descriptions)
 
@@ -208,7 +209,7 @@ def entities_show_article(request, c, entity, id, title, show_side, render_callb
     # Additional data needed by the view
     populate_level(c, entity.level)
     populate_entity_stats(c, entity)
-    populate_years(c, 'institutional_breakdown')
+    populate_years(c, c['breakdowns']['institutional'])
     populate_budget_statuses(c, entity.id)
     populate_area_descriptions(c, ['functional', 'funding', show_side])
     populate_csv_settings(c, 'article', id)

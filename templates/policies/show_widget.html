@@ -26,12 +26,11 @@
       <!-- Subtitle -->
       <!-- The right one will be shown and the other ones hidden via Javascript -->
       <div class="tab-title">
-        {% if functional_breakdown %}
-        <h3 class="functional">{{ _(tab_titles['functional']) }}</h3>
+      {% for tab in ['functional', 'economic', 'funding', 'institutional'] %}
+        {% if breakdowns[tab] %}
+        <h3 class="{{ tab }}">{{ _(tab_titles[tab]) }}</h3>
         {% endif %}
-        <h3 class="economic">{{ _(tab_titles['economic']) }}</h3>
-        <h3 class="funding">{{ _(tab_titles['funding']) }}</h3>
-        <h3 class="institutional">{{ _(tab_titles['institutional']) }}</h3>
+      {% endfor %}
       </div>
 
       <!-- Chart -->

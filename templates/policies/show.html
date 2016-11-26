@@ -34,48 +34,15 @@
     </div>
 
     <ul id="tabs" class="nav nav-tabs nav-tabs-centered" role="tablist">
-    {% if full_breakdown %}
-      {% if functional_breakdown %}
-      <li class="active" role="presentation">
-        <a href="#functional" role="tab">
-          <h3>{{ _(tab_titles['functional']) }}</h3>
-        </a>
-      </li>
-      {% endif %}
+    {% for tab in ['functional', 'economic', 'funding', 'institutional'] %}
+      {% if breakdowns[tab] %}
       <li role="presentation">
-        <a href="#economic" role="tab">
-          <h3>{{ _(tab_titles['economic']) }}</h3>
-        </a>
-      </li>
-      {% if show_funding_tab %}
-      <li role="presentation">
-        <a href="#funding" role="tab">
-          <h3>{{ _(tab_titles['funding']) }}</h3>
+        <a href="#{{ tab }}" role="tab">
+          <h3>{{ _(tab_titles[tab]) }}</h3>
         </a>
       </li>
       {% endif %}
-      {% if show_institutional_tab %}
-      <li role="presentation">
-        <a href="#institutional" role="tab">
-          <h3>{{ _(tab_titles['institutional']) }}</h3>
-        </a>
-      </li>
-      {% endif %}
-    {% else %}
-      {% if policy_uid %}
-      <li class="active" role="presentation">
-        <a href="#functional" role="tab">
-          <h3>{{ _(tab_titles['functional']) }}</h3>
-        </a>
-      </li>
-      {% else %}
-      <li class="active" role="presentation">
-        <a href="#economic" role="tab">
-          <h3>{{ _(tab_titles['economic']) }}</h3>
-        </a>
-      </li>
-      {% endif %}
-    {% endif %}
+    {% endfor %}
     </ul>
   </div>
 
@@ -118,16 +85,11 @@
 {% if not subprogramme %}
       <div class="panel-downloads">
     {% if full_breakdown %}
-      {% if functional_breakdown %}
-        {{ panel_downloads(_(tab_titles['functional']), 'functional', csv_type, csv_id) }} 
-      {% endif %}
-        {{ panel_downloads(_(tab_titles['economic']), 'economic', csv_type, csv_id) }}
-      {% if show_funding_tab %}
-        {{ panel_downloads(_(tab_titles['funding']), 'funding', csv_type, csv_id) }} 
-      {% endif %}
-      {% if show_institutional_tab %}
-        {{ panel_downloads(_(tab_titles['institutional']), 'institutional', csv_type, csv_id) }} 
-      {% endif %}
+      {% for tab in ['functional', 'economic', 'funding', 'institutional'] %}
+        {% if breakdowns[tab] %}
+          {{ panel_downloads(_(tab_titles[tab]), tab, csv_type, csv_id) }}
+        {% endif %}
+      {% endfor %}
     {% else %}
         {# The download links for small entities are too cumbersome to calculate in the macro #}
       {% if policy_uid %}
