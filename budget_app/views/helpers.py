@@ -224,11 +224,3 @@ def render(c, render_callback, template_name):
         return render_to_response(template_name, c)
     else:
         return render_callback.generate_response(c)
-
-
-@contextmanager
-def fix_cwd():
-    old_dir = os.getcwd()
-    os.chdir(ROOT_PATH)
-    yield
-    os.chdir(old_dir)
