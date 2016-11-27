@@ -141,7 +141,7 @@ function expenseArticleLinkFormatter(value, type, item) {
 function sectionLinkFormatter(value, type, item) {
   // XXX: The way the app works now, we're breaking down through institution
   // and department, but the detail pages only work for departments.
-  // This is subject to change, given how different public bodies behave.
+  // This is subject to change, given how different public bodies behave, see #347.
   if ( item.indent===0 )
     return rowNameFormatter(value, type, item);
 

@@ -15,6 +15,7 @@ def show_options_processor(request):
       'show_payments':            hasattr(settings, 'SHOW_PAYMENTS') and settings.SHOW_PAYMENTS,
       'show_tax_receipt':         hasattr(settings, 'SHOW_TAX_RECEIPT') and settings.SHOW_TAX_RECEIPT,
       'show_counties_and_towns':  hasattr(settings, 'SHOW_COUNTIES_AND_TOWNS') and settings.SHOW_COUNTIES_AND_TOWNS,
+      'show_institutional_pages': hasattr(settings, 'SHOW_INSTITUTIONAL_PAGES') and settings.SHOW_INSTITUTIONAL_PAGES,
       'institutional_max_levels': settings.INSTITUTIONAL_MAX_LEVELS if hasattr(settings, 'INSTITUTIONAL_MAX_LEVELS') else 1
     }
 
