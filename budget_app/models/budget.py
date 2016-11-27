@@ -80,11 +80,16 @@ class BudgetManager(models.Manager):
         key = "entity_"+entity.code
         if cache.get(key) == None:
             descriptions = {
-                'functional': self._to_hash(FunctionalCategory.objects.filter(budget_id__entity=entity)),
-                'income': self._get_economic_descriptions(EconomicCategory.objects.income().filter(budget_id__entity=entity)),
-                'expense': self._get_economic_descriptions(EconomicCategory.objects.expenses().filter(budget_id__entity=entity)),
-                'funding': self._to_hash(FundingCategory.objects.filter(budget_id__entity=entity)),
-                'institutional': self._get_institutional_descriptions(InstitutionalCategory.objects.filter(budget_id__entity=entity))
+                'functional': self._to_hash(FunctionalCategory.objects \
+                    .filter(budget_id__entity=entity).exclude(description='')),
+                'income': self._get_economic_descriptions(EconomicCategory.objects \
+                    .income().filter(budget_id__entity=entity).exclude(description='')),
+                'expense': self._get_economic_descriptions(EconomicCategory.objects \
+                    .expenses().filter(budget_id__entity=entity).exclude(description='')),
+                'funding': self._to_hash(FundingCategory.objects \
+                    .filter(budget_id__entity=entity).exclude(description='')),
+                'institutional': self._get_institutional_descriptions(InstitutionalCategory.objects \
+                    .filter(budget_id__entity=entity).exclude(description=''))
             }
             cache.set(key, descriptions)
             return descriptions
