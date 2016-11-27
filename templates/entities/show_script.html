@@ -105,7 +105,7 @@
       else if ( uiState.view == 'expense' )
         var formatter = expenseArticleLinkFormatter;
       else if ( uiState.view == 'institutional' )
-        var formatter = {{ 'sectionLinkFormatter' if show_institutional_pages else 'rowNameFormatter' }};
+        var formatter = {{ 'sectionLinkFormatter' if show_section_pages else 'rowNameFormatter' }};
       else
         var formatter = incomeArticleLinkFormatter;
       return formatter;
@@ -235,7 +235,7 @@
       } else if (uiState.view === 'income') {
         window.location = getIncomeArticleLink(d.id, d.name);
       } else if (uiState.view === 'institutional') {
-{% if show_institutional_pages %}
+{% if show_section_pages %}
         window.location = getSectionLink(d.id, d.name);
 {% endif %}
       }
