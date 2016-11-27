@@ -97,7 +97,7 @@ def _get_town_context(request, town):
 
 def entities_index(request, c, level, render_callback=None):
     # Get the budget breakdown
-    c['economic_breakdown'] = BudgetBreakdown(['name'])
+    c['breakdowns']['economic'] = BudgetBreakdown(['name'])
     # The top level entity has a nicely broken down budget, where each item is classified across
     # 4 dimensions. For smaller entities, however, we have two separate breakdowns as input,
     # that are loaded separately, with dummy values ('X') assigned to the three unknown dimensions. 
@@ -105,13 +105,13 @@ def entities_index(request, c, level, render_callback=None):
     # those items for which we know the category (i.e. not 'X')
     get_budget_breakdown(   "e.level = %s and ec.chapter <> 'X'", [ level ], 
                             [ 
-                                c['economic_breakdown'] 
+                                c['breakdowns']['economic']
                             ])
 
     # Additional data needed by the view
     populate_level(c, level)
     populate_level_stats(c, level)
-    populate_years(c, c['economic_breakdown'])
+    populate_years(c, c['breakdowns']['economic'])
     populate_entities(c, level)
 
     # XXX: The percentage format in pages listing entities is tricky and confusing, partly because
@@ -128,16 +128,16 @@ def entities_compare(request, c, entity_left, entity_right):
     # Get the budget breakdowns
     # XXX: No good functional data at this level so far
     # c['functional_breakdown_left'] = BudgetBreakdown(['policy'])
-    c['economic_breakdown_left'] = BudgetBreakdown(['chapter', 'article'])
+    c['breakdowns']['economic_left'] = BudgetBreakdown(['chapter', 'article'])
     get_budget_breakdown(   "e.name = %s and ec.chapter <> 'X'", [ entity_left.name ],
                             [ 
-                                c['economic_breakdown_left'] 
+                                c['breakdowns']['economic_left']
                             ])
 
-    c['economic_breakdown_right'] = BudgetBreakdown(['chapter', 'article'])
+    c['breakdowns']['economic_right'] = BudgetBreakdown(['chapter', 'article'])
     get_budget_breakdown(   "e.name = %s and ec.chapter <> 'X'", [ entity_right.name ],
                             [ 
-                                c['economic_breakdown_right'] 
+                                c['breakdowns']['economic_right']
                             ])
 
     # Additional data needed by the view
@@ -146,7 +146,7 @@ def entities_compare(request, c, entity_left, entity_right):
     populate_entity_stats(c, entity_right, 'stats_right')
     populate_entity_descriptions(c, entity_left)
     populate_area_descriptions(c, ['income', 'expense'])
-    populate_comparison_years(c, c['economic_breakdown_left'], c['economic_breakdown_right'])
+    populate_comparison_years(c, c['breakdowns']['economic_left'], c['breakdowns']['economic_right'])
     populate_entities(c, entity_left.level)
 
     return render_to_response('entities/compare.html', c)
@@ -227,10 +227,10 @@ def entities_show_article(request, c, entity, id, title, show_side, render_callb
         # to display detailed categories (articles, headings) looks bad on the visualization,
         # because some years just 'disappear'. So we take the 'safe route', just visualizing
         # the chapter total. We could try to be smarter here.
-        c['breakdowns']['economic_breakdown'] = BudgetBreakdown(['chapter', 'article'])
+        c['breakdowns']['economic'] = BudgetBreakdown(['chapter', 'article'])
         query = "ec.chapter = %s and e.id = %s"
     else:
-        c['breakdowns']['economic_breakdown'] = BudgetBreakdown(['heading', 'uid'])
+        c['breakdowns']['economic'] = BudgetBreakdown(['heading', 'uid'])
         query = "ec.article = %s and e.id = %s"
     get_budget_breakdown(   query, [ id, entity.id ],
                             [ 

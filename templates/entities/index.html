@@ -232,7 +232,7 @@
 
     var stats = {{ stats|safe }};
     var entities = {{ entities_json|safe }};
-    var economicBreakdown = {{ economic_breakdown.to_json()|safe }};
+    var economicBreakdown = {{ breakdowns['economic'].to_json()|safe }};
     var economicGridData = breakdownToTable(economicBreakdown);
     var i18n = {
       'Presupuestado': 'Presupuestado'

@@ -15,14 +15,14 @@
 {% if include_financial_chapters %}
     var includeFinancialChapters = true;
 {% else %}
-    var financialExpenseBreakdown = {{ financial_expense_breakdown.to_json()|safe }},
+    var financialExpenseBreakdown = {{ breakdowns['financial_expense'].to_json()|safe }},
         includeFinancialChapters = false;
 {% endif %}
     var breakdowns = {
-      'income':        {{ economic_breakdown.to_json( labels=descriptions['income'] )|safe }},
-      'functional':    {{ functional_breakdown.to_json( labels=descriptions['functional'] )|safe }},
-      'expense':       {{ economic_breakdown.to_json( labels=descriptions['expense'] )|safe }},
-      'institutional': {{ institutional_breakdown.to_json( labels=descriptions['institutional'] )|safe if institutional_breakdown else 'null'  }},
+      'income':        {{ breakdowns['economic'].to_json( labels=descriptions['income'] )|safe }},
+      'functional':    {{ breakdowns['functional'].to_json( labels=descriptions['functional'] )|safe }},
+      'expense':       {{ breakdowns['economic'].to_json( labels=descriptions['expense'] )|safe }},
+      'institutional': {{ breakdowns['institutional'].to_json( labels=descriptions['institutional'] )|safe if breakdowns['institutional'] else 'null'  }},
     };
     var gridData = {};
     var myGrid;
