@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-06 13:44+0200\n"
-"PO-Revision-Date: 2016-10-26 14:30+0200\n"
+"PO-Revision-Date: 2016-11-27 20:18+0100\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: gl\n"
@@ -157,8 +157,8 @@ msgid "El cálculo de los subtotales utiliza las cifras de ejecución para los a
 msgstr "O cálculo dos subtotales utiliza as cifras de execución para os anos cuxa liquidación está pechada, ou o orzamento aprobado en caso contrario."
 
 #: templates/budgets/budgets_totals.html:51
-msgid "Cantidades actualizadas con la inflación a fecha 1 de enero de"
-msgstr "Cantidades actualizadas coa inflación o 1 de xaneiro de"
+msgid "Cantidades actualizadas con la inflación a fecha 1 de enero de %s."
+msgstr "Cantidades actualizadas coa inflación o 1 de xaneiro de %s."
 
 #: templates/budgets/index.html:11
 msgid "Ingresos y gastos en el Gobierno de Aragón"
@@ -174,8 +174,8 @@ msgid "Año"
 msgstr "Ano"
 
 #: templates/budgets/index.html:41
-msgid "Datos presupuestarios en"
-msgstr "Datos orzamentarios en"
+msgid "Datos presupuestarios en <span id=\"totals-year\"></span>"
+msgstr "Datos orzamentarios en <span id=\"totals-year\"></span>"
 
 #: templates/budgets/index.html:53
 msgid "El cálculo de los indicadores utiliza las cifras de ejecución para los años cuya liquidación está cerrada, o el presupuesto aprobado en caso contrario."
@@ -447,8 +447,8 @@ msgid "Menú de programas, entidades y conceptos"
 msgstr "Menú de programas, entidades e conceptos"
 
 #: templates/policies/show.html:97 templates/policies/show_widget.html:71
-msgid "respecto a"
-msgstr "respecto a"
+msgid "respecto a <span class='popover-content-variation-year'></span>"
+msgstr "respecto a <span class='popover-content-variation-year'></span>"
 
 #: templates/policies/show.html:103 templates/policies/show_widget.html:77
 msgid "Comparte este gráfico"
