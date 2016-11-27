@@ -52,6 +52,12 @@ function getIncomeArticleLink(article_id, title) {
 }
 
 
+// Return path for section pages
+function getSectionLink(section_id, title) {
+  return "{{ url('budget_app.views.sections_show') }}/"+section_id+'/'+parameterize(title);
+}
+
+
 // Return path to overview page
 function getOverviewLink() {
   return "{{ url('budget_app.views.budgets') }}";
@@ -130,6 +136,19 @@ function incomeArticleLinkFormatter(value, type, item) {
 function expenseArticleLinkFormatter(value, type, item) {
   return articleLinkFormatter(value, type, item, getExpenseArticleLink);
 };
+
+// Convert a section name into a link
+function sectionLinkFormatter(value, type, item) {
+  // XXX: The way the app works now, we're breaking down through institution
+  // and department, but the detail pages only work for departments.
+  // This is subject to change, given how different public bodies behave.
+  if ( item.indent===0 )
+    return rowNameFormatter(value, type, item);
+
+  var link = getSectionLink(item.key, item.label);
+  var linkedValue = "<a href='"+link+"'>"+value+"</a>";
+  return rowNameFormatter(linkedValue, type, item);
+}
 
 // Convert a region name into a link
 function countyLinkFormatter(value, type, item) {

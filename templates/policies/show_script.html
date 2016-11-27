@@ -98,7 +98,11 @@
 {% else %}
         'functional': rowNameFormatter
 {% endif %}
+{% if show_global_institutional_treemap %}
+        'institutional': sectionLinkFormatter,
+{% else %}
         'institutional': rowNameFormatter,
+{% endif %}
         'funding': rowNameFormatter
       };
       return renders[tab];
