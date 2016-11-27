@@ -119,7 +119,7 @@ def programmes_show(request, id, title, render_callback=None):
     # Additional data needed by the view
     show_side = 'expense'
     populate_stats(c)
-    populate_years(c, c['breakdowns']['institutional'])
+    populate_years(c, c['breakdowns']['economic'])
     populate_budget_statuses(c, main_entity.id)
     populate_area_descriptions(c, ['functional', 'funding', show_side])
     populate_csv_settings(c, 'programme', id)
@@ -187,7 +187,7 @@ def subprogrammes_show(request, id, title, render_callback=None):
     # Additional data needed by the view
     show_side = 'expense'
     populate_stats(c)
-    populate_years(c, c['breakdowns']['institutional'])
+    populate_years(c, c['breakdowns']['economic'])
     populate_budget_statuses(c, main_entity.id)
     populate_area_descriptions(c, ['functional', 'funding', show_side])
     populate_csv_settings(c, 'programme', id)
