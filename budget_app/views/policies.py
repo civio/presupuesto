@@ -57,6 +57,8 @@ def policies_show(request, id, title, render_callback=None):
     c['name'] = c['descriptions']['functional'].get(c['policy_uid'])
     c['title_prefix'] = c['name']
 
+    # Back button: specify which tab in the main page to go to
+    c['back_to_tab'] = 'functional'
 
     # if parameter widget defined use policies/widget template instead of policies/show
     template = 'policies/show_widget.html' if isWidget(request) else 'policies/show.html'
@@ -267,8 +269,10 @@ def articles_show(request, id, title, show_side, render_callback=None):
     populate_csv_settings(c, 'article_revenues' if show_side=='income' else 'article_expenditures', id)
     set_show_side(c, show_side)
     set_full_breakdown(c, True)
-
     set_starting_tab(c, 'economic')
+
+    # Back button: specify which tab in the main page to go to
+    c['back_to_tab'] = show_side
 
     # if parameter widget defined use policies/widget template instead of policies/show
     template = 'policies/show_widget.html' if isWidget(request) else 'policies/show.html'

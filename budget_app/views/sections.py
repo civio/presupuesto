@@ -58,6 +58,9 @@ def sections_show(request, id, title, render_callback=None):
     set_full_breakdown(c, True)
     set_starting_tab(c, 'functional')
 
+    # Back button: specify which tab in the main page to go to
+    c['back_to_tab'] = 'institutional'
+
     # if parameter widget defined use policies/widget template instead of policies/show
     template = 'policies/show_widget.html' if isWidget(request) else 'policies/show.html'
 

@@ -14,9 +14,8 @@
         {% if back_button %}
           <a href="{{ back_button['url'] }}">&larr; {{ back_button['description'] }}</a>
         {% else %}
-          {# Default behaviour: back to main page. Try to go back to the tab we came from #}
-          {% set targetView = 'functional' if starting_tab=='functional' else show_side %}
-          <a href="{{ url(show_entity_url, entity.slug) if entity else url('budget_app.views.policies') }}#view={{targetView}}">&larr; {{ _('Volver a Políticas') }}</a>
+          {# Default behaviour: back to main page. Try to go back to the tab we came from. #}
+          <a href="{{ url(show_entity_url, entity.slug) if entity else url('budget_app.views.policies') }}#view={{ back_to_tab }}">&larr; {{ _('Volver a Políticas') }}</a>
         {% endif %}
       </p>
       <h2 class="page-title">{{ entity.name+': ' if entity }}{{ name }}</h2>
