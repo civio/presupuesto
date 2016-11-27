@@ -278,14 +278,12 @@ msgstr "Deskargatu <strong>diru-sarreren</strong> taula"
 #: templates/entities/index.html:42 templates/entities/index.html.py:48
 #: templates/entities/show.html:97 templates/entities/show.html.py:103
 #: templates/entities/show.html:109 templates/payments/index.html:41
-#: templates/shared/panel_downloads.html:4 templates/shared/payment_tab.html:6
 msgid "Descarga la tabla en CSV"
 msgstr "Deskargatu taula CSV formatuan"
 
 #: templates/entities/index.html:44 templates/entities/index.html.py:50
 #: templates/entities/show.html:99 templates/entities/show.html.py:105
 #: templates/entities/show.html:111 templates/payments/index.html:43
-#: templates/shared/panel_downloads.html:8 templates/shared/payment_tab.html:10
 msgid "Descarga la tabla en Excel"
 msgstr "Deskargatu taula Excel formatuan"
 
@@ -654,10 +652,6 @@ msgstr "Aurrekoa"
 #: templates/shared/pagination.html:23
 msgid "Siguiente"
 msgstr "Hurrengoa"
-
-#: templates/shared/panel_downloads.html:3 templates/shared/payment_tab.html:5
-msgid "Descarga la tabla de"
-msgstr "Deskargatu XXXXX(r)en taula"
 
 #: templates/shared/social_sharing.html:2
 msgid "Compártelo"
