@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-06 13:44+0200\n"
-"PO-Revision-Date: 2016-11-27 20:18+0100\n"
+"PO-Revision-Date: 2016-11-27 20:45+0100\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -470,12 +470,8 @@ msgid "Fondo"
 msgstr "Fons"
 
 #: templates/search/index.html:24 templates/terms/index.html:29
-msgid "Hemos encontrado"
-msgstr "Hem trobat"
-
-#: templates/search/index.html:25 templates/terms/index.html:30
-msgid "resultados</strong> relacionados con"
-msgstr "resultats</strong> relacionats amb"
+msgid "Hemos encontrado <strong>%s resultados</strong> relacionados con <strong>%s</strong>."
+msgstr "Hem trobat <strong>%s resultats</strong> relacionats amb <strong>%s</strong>."
 
 #: templates/search/index.html:32
 msgid "Mostrar resultados de"
@@ -576,8 +572,8 @@ msgid "Los ingresos y gastos mostrados incluyen únicamente al Gobierno de Arag�
 msgstr "Els ingressos i despeses mostrades inclouen únicament al Gobierno de Aragón"
 
 #: templates/shared/data_sources.html:15
-msgid "El ajuste de la inflación se realiza a <strong>1 de enero de"
-msgstr "L'ajust de la inflació es fa l'<strong>1 de gener de"
+msgid "El ajuste de la inflación se realiza a <strong>1 de enero de %s</strong>."
+msgstr "L'ajust de la inflació es fa l'<strong>1 de gener de %s</strong>."
 
 #: templates/shared/data_sources.html:15
 msgid "La tasa de inflación anual es la media de la tasa interanual de los doce meses del año."
@@ -682,8 +678,8 @@ msgid "cómo se distribuye el dinero que aportas con tus impuestos"
 msgstr "com es distribueixen els diners que aportes amb els teus impostos"
 
 #: templates/tax_receipt/index.html:28
-msgid "Detalle de tu contribución en"
-msgstr "Detall de la teva contribució en"
+msgid "Detalle de tu contribución en %s"
+msgstr "Detall de la teva contribució en %s"
 
 #: templates/tax_receipt/index.html:32
 msgid "Se incluyen únicamente los gastos e ingresos no financieros, es decir, capítulos I al VII."

@@ -472,11 +472,7 @@ msgid "Fondo"
 msgstr ""
 
 #: templates/search/index.html:24 templates/terms/index.html:29
-msgid "Hemos encontrado"
-msgstr ""
-
-#: templates/search/index.html:25 templates/terms/index.html:30
-msgid "resultados</strong> relacionados con"
+msgid "Hemos encontrado <strong>%s resultados</strong> relacionados con <strong>%s</strong>."
 msgstr ""
 
 #: templates/search/index.html:32
@@ -578,7 +574,7 @@ msgid "Los ingresos y gastos mostrados incluyen únicamente al Gobierno de Arag�
 msgstr ""
 
 #: templates/shared/data_sources.html:15
-msgid "El ajuste de la inflación se realiza a <strong>1 de enero de"
+msgid "El ajuste de la inflación se realiza a <strong>1 de enero de %s</strong>."
 msgstr ""
 
 #: templates/shared/data_sources.html:15
@@ -684,7 +680,7 @@ msgid "cómo se distribuye el dinero que aportas con tus impuestos"
 msgstr ""
 
 #: templates/tax_receipt/index.html:28
-msgid "Detalle de tu contribución en"
+msgid "Detalle de tu contribución en %s"
 msgstr ""
 
 #: templates/tax_receipt/index.html:32

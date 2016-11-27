@@ -12,7 +12,7 @@
           <p class="title">{{ _('Nota') }}</p>
           <ul>
             <li>{{ _('Los ingresos y gastos mostrados incluyen únicamente al Gobierno de Aragón') }}.</li>
-            <li>{{ _('El ajuste de la inflación se realiza a <strong>1 de enero de')|safe }} {{ last_inflation_year }}</strong>. {{ _('La tasa de inflación anual es la media de la tasa interanual de los doce meses del año.') }}</li>
+            <li>{{ _('El ajuste de la inflación se realiza a <strong>1 de enero de %s</strong>.')|safe|format(last_inflation_year) }} {{ _('La tasa de inflación anual es la media de la tasa interanual de los doce meses del año.') }}</li>
             {% include 'shared/data_sources_extra.html' %}
           </ul>
         </div>

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-06 13:44+0200\n"
-"PO-Revision-Date: 2016-11-27 20:18+0100\n"
+"PO-Revision-Date: 2016-11-27 20:45+0100\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -473,12 +473,8 @@ msgid "Fondo"
 msgstr ""
 
 #: templates/search/index.html:24 templates/terms/index.html:29
-msgid "Hemos encontrado"
-msgstr "We've found"
-
-#: templates/search/index.html:25 templates/terms/index.html:30
-msgid "resultados</strong> relacionados con"
-msgstr "results</strong> related to"
+msgid "Hemos encontrado <strong>%s resultados</strong> relacionados con <strong>%s</strong>."
+msgstr "We've found <strong>%s results</strong> related to <strong>%s</strong>."
 
 #: templates/search/index.html:32
 msgid "Mostrar resultados de"
@@ -579,8 +575,8 @@ msgid "Los ingresos y gastos mostrados incluyen únicamente al Gobierno de Arag�
 msgstr "Income and expenditure shown include only the Government of Aragon"
 
 #: templates/shared/data_sources.html:15
-msgid "El ajuste de la inflación se realiza a <strong>1 de enero de"
-msgstr "Inflation is adjusted to <strong>1st of January, "
+msgid "El ajuste de la inflación se realiza a <strong>1 de enero de %s</strong>."
+msgstr "Inflation is adjusted to <strong>1st of January, %s</strong>."
 
 #: templates/shared/data_sources.html:15
 msgid "La tasa de inflación anual es la media de la tasa interanual de los doce meses del año."
@@ -685,7 +681,7 @@ msgid "cómo se distribuye el dinero que aportas con tus impuestos"
 msgstr ""
 
 #: templates/tax_receipt/index.html:28
-msgid "Detalle de tu contribución en"
+msgid "Detalle de tu contribución en %s"
 msgstr ""
 
 #: templates/tax_receipt/index.html:32
