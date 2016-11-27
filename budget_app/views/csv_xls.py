@@ -4,9 +4,7 @@ import csv
 
 from django.http import HttpResponse
 from budget_app.models import Entity, Payment
-from budget_app.views import policies, policies_show, programmes_show, income_articles_show, expense_articles_show
-from budget_app.views import entities_index, entities_show, entities_show_article, entities_show_policy
-from budget_app.views import payment_search
+from budget_app.views import *
 from helpers import get_context
 from openpyxl import Workbook
 
@@ -117,6 +115,9 @@ def functional_programme_breakdown(request, id, format):
 def functional_article_expenditures_breakdown(request, id, format):
     return expense_articles_show(request, id, format, _generator("%s.funcional" % id, format, write_entity_functional_breakdown))
 
+def functional_section_breakdown(request, id, format):
+    return sections_show(request, id, format, _generator("%s.funcional" % id, format, write_entity_functional_breakdown))
+
 def entity_article_functional(request, level, slug, id, format):
     c = get_context(request)
     entity = Entity.objects.get(level=level, slug=slug, language=c['LANGUAGE_CODE'])
@@ -152,6 +153,9 @@ def write_detailed_economic_breakdown(c, writer):
 
 def economic_programme_breakdown(request, id, format):
     return programmes_show(request, id, '', _generator("%s.economica" % id, format, write_detailed_economic_breakdown))
+
+def economic_section_breakdown(request, id, format):
+    return sections_show(request, id, '', _generator("%s.economica" % id, format, write_detailed_economic_breakdown))
 
 
 #

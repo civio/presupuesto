@@ -59,6 +59,9 @@ budget_app_urlpatterns += url_patterns('budget_app.views',
     url(r'^articulos/i/(?P<id>[0-9]+)$', 'income_articles_show', name="policies-articles"),
     url(r'^articulos/i/(?P<id>[0-9]+)/(?P<title>.+)$', 'income_articles_show', name="policies-articles"),
 
+    # Secciones
+    url(r'^secciones/(?P<id>[0-9A-Z]+)/(?P<title>.+)$', 'sections_show', name="sections-show"),
+
     # Counties
     url(r'^comarcas$', 'counties'),
     url(r'^comarcas/(?P<county_slug>[a-z\-]+)$', 'counties_show'),
@@ -102,6 +105,10 @@ budget_app_urlpatterns += url_patterns('budget_app.views',
     url(r'^articulos/(?P<id>[0-9]+)_funding_expenditures\.(?P<format>.+)$', 'funding_article_expenditures_breakdown'),
     url(r'^articulos/(?P<id>[0-9]+)_institutional_revenues\.(?P<format>.+)$', 'institutional_article_revenues_breakdown'),
     url(r'^articulos/(?P<id>[0-9]+)_institutional_expenditures\.(?P<format>.+)$', 'institutional_article_expenditures_breakdown'),
+
+    # Sections
+    url(r'^secciones/(?P<id>[0-9A-Z]+)_functional\.(?P<format>.+)$', 'functional_section_breakdown'),
+    url(r'^secciones/(?P<id>[0-9A-Z]+)_economic\.(?P<format>.+)$', 'economic_section_breakdown'),
 
     # Entities lists
     url(r'^gastos_entidades_(?P<level>.+)\.(?P<format>.+)$', 'entities_expenses'),

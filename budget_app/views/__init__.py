@@ -1,6 +1,7 @@
 from budgets import budgets
 from policies import policies, policies_show, programmes_show, subprogrammes_show, income_articles_show, expense_articles_show
 from entities import entities_show
+from sections import sections_show
 from tax_receipt import tax_receipt
 from terms import terms
 from welcome import welcome
@@ -13,6 +14,7 @@ from towns_and_counties import entities_index, entities_show_article, entities_s
 from csv_xls import entity_expenses, entity_functional, entity_income, entity_article_expenses, entity_article_functional, entity_article_income, entity_payments
 from csv_xls import functional_policy_breakdown, economic_policy_breakdown, funding_policy_breakdown, institutional_policy_breakdown
 from csv_xls import functional_programme_breakdown, economic_programme_breakdown, funding_programme_breakdown, institutional_programme_breakdown
+from csv_xls import functional_section_breakdown, economic_section_breakdown
 from csv_xls import economic_article_revenues_breakdown, funding_article_revenues_breakdown, institutional_article_revenues_breakdown
 from csv_xls import economic_article_expenditures_breakdown, funding_article_expenditures_breakdown, institutional_article_expenditures_breakdown, functional_article_expenditures_breakdown
 from csv_xls import entities_expenses, entities_income
