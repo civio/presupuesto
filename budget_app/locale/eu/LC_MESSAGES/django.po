@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-06 13:44+0200\n"
-"PO-Revision-Date: 2016-11-07 17:06+0100\n"
+"PO-Revision-Date: 2016-11-27 19:49+0100\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: eu\n"
@@ -583,11 +583,11 @@ msgstr "Urteko inflazio-tasa urteko hamabi hilabeteen urte arteko inflazio-tasar
 
 #: templates/shared/footer.html:4
 msgid "Un proyecto de"
-msgstr "XXXX(r)en proiektu bat"
+msgstr "-en proiektu bat"
 
 #: templates/shared/footer.html:6
 msgid "basado en el código de"
-msgstr "XXXX(r)en kodean oinarrituta"
+msgstr "-en kodean oinarrituta"
 
 #: templates/shared/footer.html:19
 msgid "Aviso Legal"
