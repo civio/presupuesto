@@ -26,8 +26,7 @@
       {% if query %}
       <div class="glossary-search-results">
         <p class="alert note">
-          {{ _('Hemos encontrado') }} <strong>{{ terms|length }} 
-          {{ _('resultados</strong> relacionados con')|safe }} <strong>{{ query }}</strong>.
+            {{ _('Hemos encontrado <strong>%s resultados</strong> relacionados con <strong>%s</strong>.')|format(results_size, query)|safe }}
         </p>
       </div>
       {% endif %}

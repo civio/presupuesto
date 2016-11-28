@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-06 13:44+0200\n"
-"PO-Revision-Date: 2016-10-26 14:30+0200\n"
+"PO-Revision-Date: 2016-11-27 20:18+0100\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: es\n"
@@ -157,7 +157,7 @@ msgid "El cálculo de los subtotales utiliza las cifras de ejecución para los a
 msgstr ""
 
 #: templates/budgets/budgets_totals.html:51
-msgid "Cantidades actualizadas con la inflación a fecha 1 de enero de"
+msgid "Cantidades actualizadas con la inflación a fecha 1 de enero de %s."
 msgstr ""
 
 #: templates/budgets/index.html:11
@@ -174,7 +174,7 @@ msgid "Año"
 msgstr ""
 
 #: templates/budgets/index.html:41
-msgid "Datos presupuestarios en"
+msgid "Datos presupuestarios en <span id=\"totals-year\"></span>"
 msgstr ""
 
 #: templates/budgets/index.html:53
@@ -284,14 +284,12 @@ msgstr ""
 #: templates/entities/index.html:42 templates/entities/index.html.py:48
 #: templates/entities/show.html:97 templates/entities/show.html.py:103
 #: templates/entities/show.html:109 templates/payments/index.html:41
-#: templates/shared/panel_downloads.html:4 templates/shared/payment_tab.html:6
 msgid "Descarga la tabla en CSV"
 msgstr ""
 
 #: templates/entities/index.html:44 templates/entities/index.html.py:50
 #: templates/entities/show.html:99 templates/entities/show.html.py:105
 #: templates/entities/show.html:111 templates/payments/index.html:43
-#: templates/shared/panel_downloads.html:8 templates/shared/payment_tab.html:10
 msgid "Descarga la tabla en Excel"
 msgstr ""
 
@@ -449,7 +447,7 @@ msgid "Menú de programas, entidades y conceptos"
 msgstr ""
 
 #: templates/policies/show.html:97 templates/policies/show_widget.html:71
-msgid "respecto a"
+msgid "respecto a <span class='popover-content-variation-year'></span>"
 msgstr ""
 
 #: templates/policies/show.html:103 templates/policies/show_widget.html:77
@@ -474,11 +472,7 @@ msgid "Fondo"
 msgstr ""
 
 #: templates/search/index.html:24 templates/terms/index.html:29
-msgid "Hemos encontrado"
-msgstr ""
-
-#: templates/search/index.html:25 templates/terms/index.html:30
-msgid "resultados</strong> relacionados con"
+msgid "Hemos encontrado <strong>%s resultados</strong> relacionados con <strong>%s</strong>."
 msgstr ""
 
 #: templates/search/index.html:32
@@ -580,7 +574,7 @@ msgid "Los ingresos y gastos mostrados incluyen únicamente al Gobierno de Arag�
 msgstr ""
 
 #: templates/shared/data_sources.html:15
-msgid "El ajuste de la inflación se realiza a <strong>1 de enero de"
+msgid "El ajuste de la inflación se realiza a <strong>1 de enero de %s</strong>."
 msgstr ""
 
 #: templates/shared/data_sources.html:15
@@ -661,10 +655,6 @@ msgstr ""
 msgid "Siguiente"
 msgstr ""
 
-#: templates/shared/panel_downloads.html:3 templates/shared/payment_tab.html:5
-msgid "Descarga la tabla de"
-msgstr ""
-
 #: templates/shared/social_sharing.html:2
 msgid "Compártelo"
 msgstr ""
@@ -690,7 +680,7 @@ msgid "cómo se distribuye el dinero que aportas con tus impuestos"
 msgstr ""
 
 #: templates/tax_receipt/index.html:28
-msgid "Detalle de tu contribución en"
+msgid "Detalle de tu contribución en %s"
 msgstr ""
 
 #: templates/tax_receipt/index.html:32

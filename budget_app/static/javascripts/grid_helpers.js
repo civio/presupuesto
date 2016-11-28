@@ -1,12 +1,12 @@
 /**
- *  Helper methods for SlickGrid instances
+ *  Helper methods for DataTables instances
  */
 
 // We use this to remember the sorting status on UI updates (i.e. when changing
 // the year), since we rebuild the grid on each page update.
 var lastSort = null;
 
-// TODO: Can we get rid of this now that we removed SlickGrid?
+// TODO: Can we get rid of this now that we removed SlickGrid? See below.
 // Poor-man's auto key generator
 var id = 0;
 
@@ -42,7 +42,7 @@ function getBreakdownValueFunction(field, column) {
   };
 }
 
-// Convert a BudgetBreakdown object to an Array understood by SlickGrid
+// Convert a BudgetBreakdown object to an Array understood by DataTables
 function breakdownToTable(breakdown, indent) {
   if (breakdown === null || breakdown.sub === null) return [];
 

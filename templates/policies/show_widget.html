@@ -14,24 +14,19 @@
         <p class="history-back">
           <a href="{% url 'budget_app.views.policies_show' programme.policy, policy.slug() %}" id="policy-name-link" title="{{ descriptions['functional'].get(programme.policy) }}">&larr;</a>
         </p>
-        <a href="{{ request.path|urlencode }}" target="_parent">
-          <h2 class="page-title">{{ name }}:</h2>
-        </a>
-      {% else %}
-        <a href="{{ request.path|urlencode }}" target="_parent">
-          <h2 class="page-title">{{ entity.name+': ' if entity }}{{ name }}:</h2>
-        </a>
       {% endif %}
+      <a href="{{ request.path|urlencode }}" target="_parent">
+        <h2 class="page-title">{{ entity.name+': ' if entity }}{{ name }}:</h2>
+      </a>
       
       <!-- Subtitle -->
       <!-- The right one will be shown and the other ones hidden via Javascript -->
       <div class="tab-title">
-        {% if functional_breakdown %}
-        <h3 class="functional">{{ _(tab_titles['functional']) }}</h3>
+      {% for tab in ['functional', 'economic', 'funding', 'institutional'] %}
+        {% if breakdowns[tab] %}
+        <h3 class="{{ tab }}">{{ _(tab_titles[tab]) }}</h3>
         {% endif %}
-        <h3 class="economic">{{ _(tab_titles['economic']) }}</h3>
-        <h3 class="funding">{{ _(tab_titles['funding']) }}</h3>
-        <h3 class="institutional">{{ _(tab_titles['institutional']) }}</h3>
+      {% endfor %}
       </div>
 
       <!-- Chart -->
@@ -44,7 +39,7 @@
               <p class="popover-content-year"></p>
               <p class="popover-content-value"></p>
               <p class="popover-content-variation">
-                <span class="label"></span> <span class="popover-content-variation-label">{{ _('respecto a') }}</span> <span class="popover-content-variation-year"></span>
+                <span class="label"></span> <span class="popover-content-variation-label">{{ _("respecto a <span class='popover-content-variation-year'></span>")|safe }}</span>
               </p>
             </div>
           </div>

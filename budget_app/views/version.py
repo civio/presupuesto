@@ -1,4 +1,4 @@
-# -*- coding: ISO-8859-1 -*-
+# -*- coding: UTF-8 -*-
 
 import json
 import subprocess
@@ -7,10 +7,16 @@ import sys
 import django
 from django.http import HttpResponse
 
-from helpers import fix_cwd
 from local_settings import ENV
 from budget_app.models import InflationStat, Budget
 from helpers import *
+
+@contextmanager
+def fix_cwd():
+    old_dir = os.getcwd()
+    os.chdir(ROOT_PATH)
+    yield
+    os.chdir(old_dir)
 
 def fix_version(version):
     return '.'.join(

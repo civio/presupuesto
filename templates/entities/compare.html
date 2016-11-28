@@ -204,10 +204,10 @@
     // Breakdown data
     var statsLeft = {{ stats_left|safe }};
     var statsRight = {{ stats_right|safe }};
-    var expenseBreakdownLeft = {{ economic_breakdown_left.to_json( labels=descriptions['expense'] )|safe }};
-    var incomeBreakdownLeft = {{ economic_breakdown_left.to_json( labels=descriptions['income'] )|safe }};
-    var expenseBreakdownRight = {{ economic_breakdown_right.to_json( labels=descriptions['expense'] )|safe }};
-    var incomeBreakdownRight = {{ economic_breakdown_right.to_json( labels=descriptions['income'] )|safe }};
+    var expenseBreakdownLeft = {{ breakdowns['economic_left'].to_json( labels=descriptions['expense'] )|safe }};
+    var incomeBreakdownLeft = {{ breakdowns['economic_left'].to_json( labels=descriptions['income'] )|safe }};
+    var expenseBreakdownRight = {{ breakdowns['economic_right'].to_json( labels=descriptions['expense'] )|safe }};
+    var incomeBreakdownRight = {{ breakdowns['economic_right'].to_json( labels=descriptions['income'] )|safe }};
 
     // Top level area descriptions
     var incomeAreas = {{ income_areas|safe }};

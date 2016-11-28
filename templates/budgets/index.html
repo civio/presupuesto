@@ -38,7 +38,7 @@
 <div id="budgets-totals" class="budget-data">
   <div class="container">
 
-    <h2 class="page-title" id="indicadores">{{ _('Datos presupuestarios en') }} <span id="totals-year"></span></h2>
+    <h2 class="page-title" id="indicadores">{{ _('Datos presupuestarios en <span id="totals-year"></span>')|safe }}</h2>
     
     <div id="totals-panel" class="data-panel">
 
@@ -108,9 +108,9 @@
     var budgetStatuses = {{ budget_statuses|safe }};
     var adjustInflationFn = getInflationAdjustmentFunction(stats);
 
-    var functionalBreakdown = {{ functional_breakdown.to_json( labels=descriptions['functional'] )|safe }};
-    var economicBreakdown = {{ economic_breakdown.to_json( labels=descriptions['income'] )|safe }};
-    var chapterBreakdown = {{ chapter_breakdown.to_json()|safe }};  // Used for indicators
+    var functionalBreakdown = {{ breakdowns['functional'].to_json( labels=descriptions['functional'] )|safe }};
+    var economicBreakdown = {{ breakdowns['economic'].to_json( labels=descriptions['income'] )|safe }};
+    var chapterBreakdown = {{ breakdowns['chapter'].to_json()|safe }};  // Used for indicators
     var i18n = {
       'other': '{{ _("Otros") }}',
       'government': '{{ _("Gobierno de Aragón") }}',

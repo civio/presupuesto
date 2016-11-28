@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-06 13:44+0200\n"
-"PO-Revision-Date: 2016-11-07 17:06+0100\n"
+"PO-Revision-Date: 2016-11-27 20:45+0100\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: eu\n"
@@ -157,8 +157,8 @@ msgid "El cálculo de los subtotales utiliza las cifras de ejecución para los a
 msgstr "Guztizko partzialak kalkulatzeko likidazioa itxita duten urteetako erabilitako diru-kopuruen datuak erabiltzen dira, edo onartutako aurrekontua bestela."
 
 #: templates/budgets/budgets_totals.html:51
-msgid "Cantidades actualizadas con la inflación a fecha 1 de enero de"
-msgstr "Inflazioarekin eguneratutako kopuruak, XXXX(e)ko urtarrilaren 1eko datarekin."
+msgid "Cantidades actualizadas con la inflación a fecha 1 de enero de %s."
+msgstr "Inflazioarekin eguneratutako kopuruak, %s-ko urtarrilaren 1eko datarekin."
 
 #: templates/budgets/index.html:11
 msgid "Ingresos y gastos en el Gobierno de Aragón"
@@ -174,8 +174,8 @@ msgid "Año"
 msgstr "Urtea"
 
 #: templates/budgets/index.html:41
-msgid "Datos presupuestarios en"
-msgstr "XXXXXXX(e)ko aurrekontuen datuak"
+msgid "Datos presupuestarios en <span id=\"totals-year\"></span>"
+msgstr "<span id=\"totals-year\"></span>-ko aurrekontuen datuak"
 
 #: templates/budgets/index.html:53
 msgid "El cálculo de los indicadores utiliza las cifras de ejecución para los años cuya liquidación está cerrada, o el presupuesto aprobado en caso contrario."
@@ -278,14 +278,12 @@ msgstr "Deskargatu <strong>diru-sarreren</strong> taula"
 #: templates/entities/index.html:42 templates/entities/index.html.py:48
 #: templates/entities/show.html:97 templates/entities/show.html.py:103
 #: templates/entities/show.html:109 templates/payments/index.html:41
-#: templates/shared/panel_downloads.html:4 templates/shared/payment_tab.html:6
 msgid "Descarga la tabla en CSV"
 msgstr "Deskargatu taula CSV formatuan"
 
 #: templates/entities/index.html:44 templates/entities/index.html.py:50
 #: templates/entities/show.html:99 templates/entities/show.html.py:105
 #: templates/entities/show.html:111 templates/payments/index.html:43
-#: templates/shared/panel_downloads.html:8 templates/shared/payment_tab.html:10
 msgid "Descarga la tabla en Excel"
 msgstr "Deskargatu taula Excel formatuan"
 
@@ -443,8 +441,8 @@ msgid "Menú de programas, entidades y conceptos"
 msgstr "Programa, erakunde eta kontzeptuen menua"
 
 #: templates/policies/show.html:97 templates/policies/show_widget.html:71
-msgid "respecto a"
-msgstr "XXXXXXX(r)i buruz"
+msgid "respecto a <span class='popover-content-variation-year'></span>"
+msgstr "<span class='popover-content-variation-year'></span>-i buruz"
 
 #: templates/policies/show.html:103 templates/policies/show_widget.html:77
 msgid "Comparte este gráfico"
@@ -468,12 +466,8 @@ msgid "Fondo"
 msgstr "Funtsa"
 
 #: templates/search/index.html:24 templates/terms/index.html:29
-msgid "Hemos encontrado"
-msgstr "XXXXX emaitza aurkitu ditugu"
-
-#: templates/search/index.html:25 templates/terms/index.html:30
-msgid "resultados</strong> relacionados con"
-msgstr "XXXXXX(e)kin</strong> erlazionatuak"
+msgid "Hemos encontrado <strong>%s resultados</strong> relacionados con <strong>%s</strong>."
+msgstr "<strong>%s emaitza</strong> aurkitu ditugu <strong>%s-kin</strong> erlazionatuak."
 
 #: templates/search/index.html:32
 msgid "Mostrar resultados de"
@@ -574,8 +568,8 @@ msgid "Los ingresos y gastos mostrados incluyen únicamente al Gobierno de Arag�
 msgstr "Erakusten diren diru-sarrerak eta gastuak Nafarroako Gobernuari dagozkionak baino ez dira"
 
 #: templates/shared/data_sources.html:15
-msgid "El ajuste de la inflación se realiza a <strong>1 de enero de"
-msgstr "Inflazioaren araberako doikuntza <strong>(e)ko urtarrilaren 1eko datarekin egiten da"
+msgid "El ajuste de la inflación se realiza a <strong>1 de enero de %s</strong>."
+msgstr "Inflazioaren araberako doikuntza <strong>%s-ko urtarrilaren 1eko datarekin egiten da</strong>."
 
 #: templates/shared/data_sources.html:15
 msgid "La tasa de inflación anual es la media de la tasa interanual de los doce meses del año."
@@ -583,11 +577,11 @@ msgstr "Urteko inflazio-tasa urteko hamabi hilabeteen urte arteko inflazio-tasar
 
 #: templates/shared/footer.html:4
 msgid "Un proyecto de"
-msgstr "XXXX(r)en proiektu bat"
+msgstr "-en proiektu bat"
 
 #: templates/shared/footer.html:6
 msgid "basado en el código de"
-msgstr "XXXX(r)en kodean oinarrituta"
+msgstr "-en kodean oinarrituta"
 
 #: templates/shared/footer.html:19
 msgid "Aviso Legal"
@@ -655,10 +649,6 @@ msgstr "Aurrekoa"
 msgid "Siguiente"
 msgstr "Hurrengoa"
 
-#: templates/shared/panel_downloads.html:3 templates/shared/payment_tab.html:5
-msgid "Descarga la tabla de"
-msgstr "Deskargatu XXXXX(r)en taula"
-
 #: templates/shared/social_sharing.html:2
 msgid "Compártelo"
 msgstr "Partekatu"
@@ -684,8 +674,8 @@ msgid "cómo se distribuye el dinero que aportas con tus impuestos"
 msgstr "gutxi gorabehera nola banatzen den erakutsiko dizugu"
 
 #: templates/tax_receipt/index.html:28
-msgid "Detalle de tu contribución en"
-msgstr "XXXXX(e)ko zure ekarpenaren xehetasuna"
+msgid "Detalle de tu contribución en %s"
+msgstr "%s-ko zure ekarpenaren xehetasuna"
 
 #: templates/tax_receipt/index.html:32
 msgid "Se incluyen únicamente los gastos e ingresos no financieros, es decir, capítulos I al VII."

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-06 13:44+0200\n"
-"PO-Revision-Date: 2016-10-26 14:29+0200\n"
+"PO-Revision-Date: 2016-11-27 20:45+0100\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -158,8 +158,8 @@ msgid "El cálculo de los subtotales utiliza las cifras de ejecución para los a
 msgstr "El càlcul dels subtotals utilitza les xifres d'execució per als anys en què la liquidació està tancada, o el pressupost aprovat en cas contrari."
 
 #: templates/budgets/budgets_totals.html:51
-msgid "Cantidades actualizadas con la inflación a fecha 1 de enero de"
-msgstr "Quantitats actualitzades amb la inflació a data 1 de gener de"
+msgid "Cantidades actualizadas con la inflación a fecha 1 de enero de %s."
+msgstr "Quantitats actualitzades amb la inflació a data 1 de gener de %s."
 
 #: templates/budgets/index.html:11
 msgid "Ingresos y gastos en el Gobierno de Aragón"
@@ -175,8 +175,8 @@ msgid "Año"
 msgstr "Any"
 
 #: templates/budgets/index.html:41
-msgid "Datos presupuestarios en"
-msgstr "Dades pressupostàries al"
+msgid "Datos presupuestarios en <span id=\"totals-year\"></span>"
+msgstr "Dades pressupostàries al <span id=\"totals-year\"></span>"
 
 #: templates/budgets/index.html:53
 msgid "El cálculo de los indicadores utiliza las cifras de ejecución para los años cuya liquidación está cerrada, o el presupuesto aprobado en caso contrario."
@@ -285,14 +285,12 @@ msgstr "Descarrega la taula de <strong>Ingressos</strong>"
 #: templates/entities/index.html:42 templates/entities/index.html.py:48
 #: templates/entities/show.html:97 templates/entities/show.html.py:103
 #: templates/entities/show.html:109 templates/payments/index.html:41
-#: templates/shared/panel_downloads.html:4 templates/shared/payment_tab.html:6
 msgid "Descarga la tabla en CSV"
 msgstr "Descarrega la taula en CSV"
 
 #: templates/entities/index.html:44 templates/entities/index.html.py:50
 #: templates/entities/show.html:99 templates/entities/show.html.py:105
 #: templates/entities/show.html:111 templates/payments/index.html:43
-#: templates/shared/panel_downloads.html:8 templates/shared/payment_tab.html:10
 msgid "Descarga la tabla en Excel"
 msgstr "Descarrega la taula en Execl"
 
@@ -447,8 +445,8 @@ msgid "Menú de programas, entidades y conceptos"
 msgstr "Menú de programes, entitats i conceptes"
 
 #: templates/policies/show.html:97 templates/policies/show_widget.html:71
-msgid "respecto a"
-msgstr "respecte a"
+msgid "respecto a <span class='popover-content-variation-year'></span>"
+msgstr "respecte a <span class='popover-content-variation-year'></span>"
 
 #: templates/policies/show.html:103 templates/policies/show_widget.html:77
 msgid "Comparte este gráfico"
@@ -472,12 +470,8 @@ msgid "Fondo"
 msgstr "Fons"
 
 #: templates/search/index.html:24 templates/terms/index.html:29
-msgid "Hemos encontrado"
-msgstr "Hem trobat"
-
-#: templates/search/index.html:25 templates/terms/index.html:30
-msgid "resultados</strong> relacionados con"
-msgstr "resultats</strong> relacionats amb"
+msgid "Hemos encontrado <strong>%s resultados</strong> relacionados con <strong>%s</strong>."
+msgstr "Hem trobat <strong>%s resultats</strong> relacionats amb <strong>%s</strong>."
 
 #: templates/search/index.html:32
 msgid "Mostrar resultados de"
@@ -578,8 +572,8 @@ msgid "Los ingresos y gastos mostrados incluyen únicamente al Gobierno de Arag�
 msgstr "Els ingressos i despeses mostrades inclouen únicament al Gobierno de Aragón"
 
 #: templates/shared/data_sources.html:15
-msgid "El ajuste de la inflación se realiza a <strong>1 de enero de"
-msgstr "L'ajust de la inflació es fa l'<strong>1 de gener de"
+msgid "El ajuste de la inflación se realiza a <strong>1 de enero de %s</strong>."
+msgstr "L'ajust de la inflació es fa l'<strong>1 de gener de %s</strong>."
 
 #: templates/shared/data_sources.html:15
 msgid "La tasa de inflación anual es la media de la tasa interanual de los doce meses del año."
@@ -659,10 +653,6 @@ msgstr "Anterior"
 msgid "Siguiente"
 msgstr "Següent"
 
-#: templates/shared/panel_downloads.html:3 templates/shared/payment_tab.html:5
-msgid "Descarga la tabla de"
-msgstr "Descarrega la taula de"
-
 #: templates/shared/social_sharing.html:2
 msgid "Compártelo"
 msgstr "Comparteix-ho"
@@ -688,8 +678,8 @@ msgid "cómo se distribuye el dinero que aportas con tus impuestos"
 msgstr "com es distribueixen els diners que aportes amb els teus impostos"
 
 #: templates/tax_receipt/index.html:28
-msgid "Detalle de tu contribución en"
-msgstr "Detall de la teva contribució en"
+msgid "Detalle de tu contribución en %s"
+msgstr "Detall de la teva contribució en %s"
 
 #: templates/tax_receipt/index.html:32
 msgid "Se incluyen únicamente los gastos e ingresos no financieros, es decir, capítulos I al VII."

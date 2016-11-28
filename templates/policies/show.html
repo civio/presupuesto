@@ -10,72 +10,27 @@
   <div class="policies-header section-header">
 
     <div class="container">
-      {% if subprogramme %}
       <p class="history-back">
-        <a href="{% url 'budget_app.views.programmes_show' subprogramme.programme, programme.slug() %}" id="policy-name-link">
-          &larr; {{ descriptions['functional'].get(subprogramme.programme) }}
-        </a>
-      </p>
-      <h2 class="page-title">{{ name }}</h2>
-      {% elif programme %}
-      <p class="history-back">
-        <a href="{% url 'budget_app.views.policies_show' programme.policy, policy.slug() %}" id="policy-name-link">
-          &larr; {{ descriptions['functional'].get(programme.policy) }}
-        </a>
-      </p>
-      <h2 class="page-title">{{ name }}</h2>
-      {% else %}
-      <p class="history-back">
-        {% set targetView = 'functional' if starting_tab=='functional' else show_side %}
-        <a href="{{ url(show_entity_url, entity.slug) if entity else url('budget_app.views.policies') }}#view={{targetView}}">&larr; {{ _('Volver a Políticas') }}</a>
+        {% if back_button %}
+          <a href="{{ back_button['url'] }}">&larr; {{ back_button['description'] }}</a>
+        {% else %}
+          {# Default behaviour: back to main page. Try to go back to the tab we came from. #}
+          <a href="{{ url(show_entity_url, entity.slug) if entity else url('budget_app.views.policies') }}#view={{ back_to_tab }}">&larr; {{ _('Volver a Políticas') }}</a>
+        {% endif %}
       </p>
       <h2 class="page-title">{{ entity.name+': ' if entity }}{{ name }}</h2>
-      {% endif %}
     </div>
 
     <ul id="tabs" class="nav nav-tabs nav-tabs-centered" role="tablist">
-    {% if full_breakdown %}
-      {% if functional_breakdown %}
-      <li class="active" role="presentation">
-        <a href="#functional" role="tab">
-          <h3>{{ _(tab_titles['functional']) }}</h3>
-        </a>
-      </li>
-      {% endif %}
+    {% for tab in ['functional', 'economic', 'funding', 'institutional'] %}
+      {% if breakdowns[tab] %}
       <li role="presentation">
-        <a href="#economic" role="tab">
-          <h3>{{ _(tab_titles['economic']) }}</h3>
-        </a>
-      </li>
-      {% if show_funding_tab %}
-      <li role="presentation">
-        <a href="#funding" role="tab">
-          <h3>{{ _(tab_titles['funding']) }}</h3>
+        <a href="#{{ tab }}" role="tab">
+          <h3>{{ _(tab_titles[tab]) }}</h3>
         </a>
       </li>
       {% endif %}
-      {% if show_institutional_tab %}
-      <li role="presentation">
-        <a href="#institutional" role="tab">
-          <h3>{{ _(tab_titles['institutional']) }}</h3>
-        </a>
-      </li>
-      {% endif %}
-    {% else %}
-      {% if policy_uid %}
-      <li class="active" role="presentation">
-        <a href="#functional" role="tab">
-          <h3>{{ _(tab_titles['functional']) }}</h3>
-        </a>
-      </li>
-      {% else %}
-      <li class="active" role="presentation">
-        <a href="#economic" role="tab">
-          <h3>{{ _(tab_titles['economic']) }}</h3>
-        </a>
-      </li>
-      {% endif %}
-    {% endif %}
+    {% endfor %}
     </ul>
   </div>
 
@@ -92,7 +47,7 @@
               <p class="popover-content-year"></p>
               <p class="popover-content-value"></p>
               <p class="popover-content-variation">
-                <span class="label"></span> <span class="popover-content-variation-label">{{ _('respecto a') }}</span> <span class="popover-content-variation-year"></span>
+                <span class="label"></span> <span class="popover-content-variation-label">{{ _("respecto a <span class='popover-content-variation-year'></span>")|safe }}</span>
               </p>
             </div>
           </div>
@@ -118,16 +73,11 @@
 {% if not subprogramme %}
       <div class="panel-downloads">
     {% if full_breakdown %}
-      {% if functional_breakdown %}
-        {{ panel_downloads(_(tab_titles['functional']), 'functional', csv_type, csv_id) }} 
-      {% endif %}
-        {{ panel_downloads(_(tab_titles['economic']), 'economic', csv_type, csv_id) }}
-      {% if show_funding_tab %}
-        {{ panel_downloads(_(tab_titles['funding']), 'funding', csv_type, csv_id) }} 
-      {% endif %}
-      {% if show_institutional_tab %}
-        {{ panel_downloads(_(tab_titles['institutional']), 'institutional', csv_type, csv_id) }} 
-      {% endif %}
+      {% for tab in ['functional', 'economic', 'funding', 'institutional'] %}
+        {% if breakdowns[tab] %}
+          {{ panel_downloads(_(tab_titles[tab]), tab, csv_type, csv_id) }}
+        {% endif %}
+      {% endfor %}
     {% else %}
         {# The download links for small entities are too cumbersome to calculate in the macro #}
       {% if policy_uid %}

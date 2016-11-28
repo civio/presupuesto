@@ -14,21 +14,23 @@ def budgets(request):
     main_entity = get_main_entity(c)
 
     # Income/expense breakdown
-    c['functional_breakdown'] = BudgetBreakdown(['policy', 'programme'])
-    c['economic_breakdown'] = BudgetBreakdown(['article', 'heading'])
-    c['chapter_breakdown'] = BudgetBreakdown(['chapter']) # Used for indicators
+    c['breakdowns'] = {
+        'functional': BudgetBreakdown(['policy', 'programme']),
+        'economic': BudgetBreakdown(['article', 'heading']),
+        'chapter': BudgetBreakdown(['chapter']) # Used for indicators
+    }
     for item in BudgetItem.objects.each_denormalized("e.id = %s", [main_entity.id]):
         column_name = year_column_name(item)
-        c['chapter_breakdown'].add_item(column_name, item)
+        c['breakdowns']['chapter'].add_item(column_name, item)
         if c['include_financial_chapters'] or not item.is_financial():
-            c['functional_breakdown'].add_item(column_name, item)
-            c['economic_breakdown'].add_item(column_name, item)
+            c['breakdowns']['functional'].add_item(column_name, item)
+            c['breakdowns']['economic'].add_item(column_name, item)
 
     # Additional data needed by the view
     populate_stats(c)
     populate_descriptions(c)
     populate_budget_statuses(c, main_entity)
-    populate_years(c, 'functional_breakdown')
+    populate_years(c, c['breakdowns']['functional'])
 
     c['income_nodes'] = json.dumps(settings.OVERVIEW_INCOME_NODES)
     c['expense_nodes'] = json.dumps(settings.OVERVIEW_EXPENSE_NODES)

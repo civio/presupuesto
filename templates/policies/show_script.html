@@ -98,7 +98,11 @@
 {% else %}
         'functional': rowNameFormatter
 {% endif %}
+{% if show_section_pages %}
+        'institutional': sectionLinkFormatter,
+{% else %}
         'institutional': rowNameFormatter,
+{% endif %}
         'funding': rowNameFormatter
       };
       return renders[tab];
@@ -124,14 +128,10 @@
     var includeFinancialChapters = false;
 {% endif %}
 
-    // The income and expense descriptions for the economic breakdowns do not match,
-    // i.e. the same code, '2', means different things for income and expenses, so
-    // we need to use the right descriptions
     var breakdowns = {
-      'economic':       {{ economic_breakdown.to_json( labels=descriptions[show_side] )|safe if economic_breakdown else 'null' }},
-      'functional':     {{ functional_breakdown.to_json( labels=descriptions['functional'] )|safe if functional_breakdown else 'null'  }},
-      'institutional':  {{ institutional_breakdown.to_json( labels=descriptions['institutional'] )|safe if institutional_breakdown else 'null'  }},
-      'funding':        {{ funding_breakdown.to_json( labels=descriptions['funding'] )|safe if funding_breakdown else 'null'  }}
+      {% for tab in ['functional', 'economic', 'funding', 'institutional'] %}
+      '{{tab}}': {{ breakdowns[tab].to_json( labels=descriptions[tab] )|safe if breakdowns[tab] else 'null' }},
+      {% endfor %}
     }
 
     // Grid Data onjets
@@ -321,12 +321,12 @@
       var widget = $('body').hasClass('widget') ? '?widget=1' : '';
       var label = (event.view == 'policy-selected') ? d.name : d.label;
 
-{% if article %}
-      window.location = getPolicyLink(d.id, label, getUIState())+widget;
-{% elif policy_uid %}
+{% if policy_uid %}
       window.location = getProgrammeLink(d.id, label, getUIState())+widget;
-{% else %}
+{% elif programme_id %}
       window.location = getSubprogrammeLink(d.id, label, getUIState())+widget;
+{% else %}
+      window.location = getPolicyLink(d.id, label, getUIState())+widget;
 {% endif %}
     }
 

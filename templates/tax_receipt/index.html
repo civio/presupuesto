@@ -25,7 +25,7 @@
   <div class="tax-receipt-table-content">
     <div class="container">
       
-      <p class="tax-detail-intro">{{ _('Detalle de tu contribución en') }} {{ latest_budget.year }}</p>
+      <p class="tax-detail-intro">{{ _('Detalle de tu contribución en %s')|format(latest_budget.year) }}</p>
       
       <table id="myGrid" class="table-grid" width="100%"></table>
 {% if not include_financial_chapters %}

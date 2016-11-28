@@ -15,14 +15,14 @@
 {% if include_financial_chapters %}
     var includeFinancialChapters = true;
 {% else %}
-    var financialExpenseBreakdown = {{ financial_expense_breakdown.to_json()|safe }},
+    var financialExpenseBreakdown = {{ breakdowns['financial_expense'].to_json()|safe }},
         includeFinancialChapters = false;
 {% endif %}
     var breakdowns = {
-      'income':        {{ economic_breakdown.to_json( labels=descriptions['income'] )|safe }},
-      'functional':    {{ functional_breakdown.to_json( labels=descriptions['functional'] )|safe }},
-      'expense':       {{ economic_breakdown.to_json( labels=descriptions['expense'] )|safe }},
-      'institutional': {{ institutional_breakdown.to_json( labels=descriptions['institutional'] )|safe if institutional_breakdown else 'null'  }},
+      'income':        {{ breakdowns['economic'].to_json( labels=descriptions['income'] )|safe }},
+      'functional':    {{ breakdowns['functional'].to_json( labels=descriptions['functional'] )|safe }},
+      'expense':       {{ breakdowns['economic'].to_json( labels=descriptions['expense'] )|safe }},
+      'institutional': {{ breakdowns['institutional'].to_json( labels=descriptions['institutional'] )|safe if breakdowns['institutional'] else 'null'  }},
     };
     var gridData = {};
     var myGrid;
@@ -105,7 +105,7 @@
       else if ( uiState.view == 'expense' )
         var formatter = expenseArticleLinkFormatter;
       else if ( uiState.view == 'institutional' )
-        var formatter = rowNameFormatter;
+        var formatter = {{ 'sectionLinkFormatter' if show_section_pages else 'rowNameFormatter' }};
       else
         var formatter = incomeArticleLinkFormatter;
       return formatter;
@@ -200,6 +200,8 @@
       budgetSummary.update( breakdowns[uiState.view], areas[uiState.view], uiState.field, uiState.view, uiState.year );
 
       // Setup & Update Budget Treemap
+      // XXX: How many levels of institutional breakdown to show is subject to debate. See #347.
+      budgetTreemap.maxLevels(uiState.view==='institutional' ? {{ institutional_max_levels }} : 1);
       budgetTreemap.update( breakdowns[uiState.view], areas[uiState.view], uiState );
 
       // Show an alert if no data is available
@@ -232,6 +234,10 @@
         window.location = getPolicyLink(d.id, d.name);
       } else if (uiState.view === 'income') {
         window.location = getIncomeArticleLink(d.id, d.name);
+      } else if (uiState.view === 'institutional') {
+{% if show_section_pages %}
+        window.location = getSectionLink(d.id, d.name);
+{% endif %}
       }
 {% endif %}
     }

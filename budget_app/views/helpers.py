@@ -99,11 +99,14 @@ def populate_level_stats(c, level):
 def populate_descriptions(c):
     c['descriptions'] = Budget.objects.get_all_descriptions(get_main_entity(c))
 
-def populate_entity_descriptions(c, entity):
+def populate_entity_descriptions(c, entity, show_side=None):
     c['descriptions'] = Budget.objects.get_all_descriptions(entity)
+    # For convenience, after populating the descriptions, set also an 'alias'
+    # from 'economic' to the right income/expense descriptions, which simplifies the code
+    c['descriptions']['economic'] = c['descriptions'][show_side] if show_side else None
 
-def populate_years(c, breakdown_name):
-    years = sorted(list(set(c[breakdown_name].years.values())))
+def populate_years(c, breakdown):
+    years = sorted(list(set(breakdown.years.values())))
     c['years'] = json.dumps([str(year) for year in years])
     c['show_treemap'] = ( len(years) == 1 )     # TODO: Should be done by Javascript
 
@@ -114,8 +117,8 @@ def populate_years(c, breakdown_name):
     latest_budget = populate_latest_budget(c)
     c['starting_year'] = latest_budget.year if latest_budget.year in years else years[-1]
 
-def populate_comparison_years(c, breakdown_name_left, breakdown_name_right):
-    years = sorted(list(set(c[breakdown_name_left].years.values() + c[breakdown_name_right].years.values())))
+def populate_comparison_years(c, breakdown_left, breakdown_right):
+    years = sorted(list(set(breakdown_left.years.values() + breakdown_right.years.values())))
     c['years'] = json.dumps([str(year) for year in years])
     c['starting_year'] = years[-1]
 
@@ -134,6 +137,57 @@ def populate_level(c, level):
 def populate_entities(c, level):
     c['entities'] = Entity.objects.entities(level)
     c['entities_json'] = json.dumps(Entity.objects.get_entities_table(level))
+
+
+#
+# POLICIES TEMPLATE - variables and flags driving the template
+#
+
+
+# Should we group elements at the economic subheading level, or list all of them?
+# By default, and traditionally, we showed all of them, but in big administrations
+# this results in lists of items with identical names, because they belong to different
+# departments (see #135). In those cases we can group at the subheading level, but beware,
+# make sure subheadings are consistent across departments (not the case for PGE, f.ex.).
+def get_final_element_grouping(c):
+    if hasattr(settings, 'BREAKDOWN_BY_UID') and settings.BREAKDOWN_BY_UID==False:
+        return 'economic_uid'
+    else:
+        return 'uid'
+
+def populate_csv_settings(c, type, id):
+    c['csv_type'] = type
+    c['csv_id'] = id
+
+def _get_tab_titles(show_side):
+    if show_side == 'income':
+        return {
+            'economic': u"¿Cómo se ingresa?",
+            'funding': u"Tipo de ingresos",
+            'institutional': u"¿Quién recauda?"
+        }
+    else:
+        return {
+            'functional': u"¿En qué se gasta?",
+            'economic': u"¿Cómo se gasta?",
+            'funding': u"¿Cómo se financia?",
+            'institutional': u"¿Quién lo gasta?"
+        }
+
+def set_show_side(c, side):
+    c['show_side'] = side
+    c['tab_titles'] = _get_tab_titles(side)
+
+# Do we have an exhaustive budget, classified along four dimensions? I.e. display all tabs?
+def set_full_breakdown(c, full_breakdown):
+    c['full_breakdown'] = full_breakdown
+
+def set_starting_tab(c, tab):
+    c['starting_tab'] = tab;
+
+# Get widget parameter
+def isWidget(request):
+    return request.GET.get('widget',False)
 
 
 #
@@ -192,7 +246,7 @@ def get_budget_breakdown(condition, condition_arguments, breakdowns, callback=No
 def get_financial_breakdown_callback(c, breakdowns):
     def callback(column_name, item):
         if not c['include_financial_chapters'] and item.is_financial() and item.expense:
-            c['financial_expense_breakdown'].add_item(column_name, item)
+            c['breakdowns']['financial_expense'].add_item(column_name, item)
         else:
             for breakdown in breakdowns:
                 if breakdown != None:
@@ -224,11 +278,3 @@ def render(c, render_callback, template_name):
         return render_to_response(template_name, c)
     else:
         return render_callback.generate_response(c)
-
-
-@contextmanager
-def fix_cwd():
-    old_dir = os.getcwd()
-    os.chdir(ROOT_PATH)
-    yield
-    os.chdir(old_dir)
