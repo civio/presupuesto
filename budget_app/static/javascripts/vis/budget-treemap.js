@@ -4,8 +4,7 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
       stats               = _stats,
       budgetStatuses      = (_budgetStatuses) ? _budgetStatuses : {};
 
-  var aspectRatio         = 2,    // Treemap aspect ratio
-      colors              = ['#A9A69F', '#D3C488', '#2BA9A0', '#E8A063', '#9EBF7B', '#dbb0c0', '#7d8f69', '#a29ac8', '#6c6592', '#9e9674', '#e377c2', '#e7969c', '#bcbd22', '#17becf'],
+  var colors              = ['#A9A69F', '#D3C488', '#2BA9A0', '#E8A063', '#9EBF7B', '#dbb0c0', '#7d8f69', '#a29ac8', '#6c6592', '#9e9674', '#e377c2', '#e7969c', '#bcbd22', '#17becf'],
       labelsMinSize       = 70,   // Minimum node size in px (width or height) to add a label
       labelsFontSizeMin   = 11,   // Nodes label minimum size in px
       labelsFontSizeMax   = 74,   // Nodes label maximum size in px
@@ -348,11 +347,23 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
   // Set main element dimensions
   function setDimensions() {
     width       = $(selector).width();
-    height      = width / aspectRatio;
+    // Set height based on width container
+    if (width > 1000) {
+      height = width * 0.5;
+    }
+    else if (width > 700) {
+      height = width * 0.5625;
+    }
+    else if (width > 500) {
+      height = width * 0.75;
+    }
+    else {
+      height = width;
+    }
     // Set main element height
     $(selector).height( height );
     // Update font-size scale domain
-    fontSizeScale.domain([1, Math.sqrt(width*height)*0.5]);
+    fontSizeScale.domain([1, Math.sqrt(width*height) * 0.5]);
   }
 
   // Adjust the overall treemap size based on the size of this year's budget compared to the biggest ever
@@ -366,8 +377,8 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
     nodesContainer
       .transition()
         .duration(transitionDuration)
-        .style('top',  (height-treemapHeight)/2+'px')
-        .style('left', (width-treemapWidth)/2+'px');
+        .style('top',  (height-treemapHeight)*0.5 + 'px')
+        .style('left', (width-treemapWidth)*0.5 + 'px');
   }
 
   // Set colors scale based on colors array
@@ -395,7 +406,6 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
           id: item.id,
           parentId: 't',
           name: item.name,
-          //leaf: true
       };
       for (var year in columns) {
         dummy[year] = 0;
@@ -411,7 +421,6 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
           id: id,
           parentId: 't',
           name: items[id].label
-          //leaf: true
         };
         // Get numerical data, 'padding' the tree structure if needed.
         // Padding is needed because the trees/breakdowns need to have the same depth across
@@ -439,13 +448,6 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
       }
       return children;
     }
-
-    /*
-    return {
-      name: field,
-      children: getChildrenTree(breakdown.sub, 1)
-    };
-    */
 
     return getChildrenTree(breakdown.sub, 1);
   }
