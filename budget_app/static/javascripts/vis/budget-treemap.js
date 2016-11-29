@@ -9,10 +9,7 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
       labelsFontSizeMin   = 11,   // Nodes label minimum size in px
       labelsFontSizeMax   = 74,   // Nodes label maximum size in px
       nodesPadding        = 8,    // Define padding of nodes label container
-      transitionDuration  = 650;
-
-  var formatPercent       = d3.format('.2%'),
-      textLabelMap        = [],
+      transitionDuration  = 650,
       uiState             = {},
       yearTotals          = {};
       
@@ -26,9 +23,8 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
       treemapData,
       treemapItems,
       treemapRoot,
-      $popup;
-
-  var width,
+      $popup,
+      width,
       height,
       treemapWidth,
       treemapHeight;
@@ -98,11 +94,13 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
     if (uiState.view !== _uiState.view) {
       breakdown = _breakdown;
       areas     = _areas;
-      setupTreemap(_uiState);
+      uiState   = _uiState;
+      setupTreemap();
     }
     // Update with animation
     else {
-      updateTreemap(_uiState);
+      uiState = _uiState;
+      updateTreemap();
     }
 
     return this;
@@ -152,17 +150,15 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
 
 
   // Setup the treemap
-  function setupTreemap(_uiState) {
+  function setupTreemap() {
 
     // Load the data. We do it here, and not at object creation time, so we have time
     // to change default settings (treemap depth, f.ex.) if needed
-    loadBreakdown(breakdown, _uiState.field);
+    loadBreakdown(breakdown, uiState.field);
 
     // Do nothing if there's no data
-    if ( !yearTotals[_uiState.year] || !yearTotals[_uiState.year][_uiState.field] )
+    if ( !yearTotals[uiState.year] || !yearTotals[uiState.year][uiState.field] )
       return;
-
-    uiState = _uiState;
 
     setTreemapDimensions();
 
@@ -211,20 +207,10 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
   }
 
   // Update the treemap with transition animation
-  function updateTreemap(_uiState) {
+  function updateTreemap() {
 
-    /*
     // Do nothing if there's no data
-    if ( !yearTotals[_uiState.year] || !yearTotals[_uiState.year][_uiState.field] ) {
-      svg.style("opacity", 0);
-      return;
-    } else {
-      svg.style("opacity", 1);
-    }
-    */
-
-    // Render the treemap
-    uiState = _uiState;
+    if ( !yearTotals[uiState.year] || !yearTotals[uiState.year][uiState.field] ) return;
 
     setTreemapDimensions();
 
@@ -520,6 +506,7 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
   }
 
   function valueFormat(value, uiState) {
+    console.log('valueFormat', uiState.format);
     var transformedValue = getValue(value, uiState.format, uiState.field, uiState.year);
     switch (uiState.format) {
       case "nominal":
