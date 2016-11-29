@@ -1,100 +1,72 @@
-//function BudgetTreemap(selector, breakdown, stats, areas, aspectRatio, colors, labelsMinSize) {
-function BudgetTreemap(_selector, _stats, _aspectRatio, _colors, _labelsMinSize, _budgetStatuses) {
+function BudgetTreemap(_selector, _stats, _budgetStatuses) {
 
   var selector            = _selector,
       stats               = _stats,
-      aspectRatio         = (_aspectRatio) ? _aspectRatio : 1;        // Treemap aspect ratio
-      labelsMinSize       = (_labelsMinSize) ? _labelsMinSize : 70,   // Minimum node size in px (width or height) to add a label
       budgetStatuses      = (_budgetStatuses) ? _budgetStatuses : {};
 
-  var areas               = null,
-      breakdown           = null,
-      formatPercent       = d3.format('.2%'),
-      maxLevels           = -1,   // By default, don't limit treemap depth
-      maxTreemapValueEver = 0,
-      mouseOver           = true,
+  var aspectRatio         = 2,    // Treemap aspect ratio
+      colors              = ['#A9A69F', '#D3C488', '#2BA9A0', '#E8A063', '#9EBF7B', '#dbb0c0', '#7d8f69', '#a29ac8', '#6c6592', '#9e9674', '#e377c2', '#e7969c', '#bcbd22', '#17becf'],
+      labelsMinSize       = 70,   // Minimum node size in px (width or height) to add a label
       labelsFontSizeMin   = 11,   // Nodes label minimum size in px
-      labelsFontSizeMax   = 65,   // Nodes label maximum size in px
-      nodesPadding        = 5,    // Define padding of nodes label container
+      labelsFontSizeMax   = 74,   // Nodes label maximum size in px
+      nodesPadding        = 8,    // Define padding of nodes label container
+      transitionDuration  = 650;
+
+  var formatPercent       = d3.format('.2%'),
       paddedYears         = {},
       textLabelMap        = [],
-      treemapData         = null,
-      treemapItems        = null,
-      transitionDuration  = 650,
       uiState             = {},
       yearTotals          = {};
       
-  var width,
-      height,
-      treemapWidth,
-      treemapHeight,
+  var areas,
+      breakdown,
       colorScale,
       fontSizeScale,
       nodesContainer,
       nodes,
       treemap,
+      treemapData,
+      treemapItems,
       treemapRoot,
       $popup;
 
-  // colors array: use D3 category10 colors as starting point
-  var colors  = (_colors && _colors.length > 0) ?
-                _colors :
-                [ "#A9A69F", "#D3C488", "#2BA9A0", "#E8A063", "#9EBF7B", "#dbb0c0", "#7d8f69", "#a29ac8", "#6c6592", "#9e9674", "#e377c2", "#e7969c", "#bcbd22", "#17becf"];
+  var width,
+      height,
+      treemapWidth,
+      treemapHeight;
 
 
-
-  // Getters/setters
-  this.initialized = function() {
-    return treemap !== null;
-  };
-
-  // TODO!!! Check if we need this setters
-  this.budgetStatuses = function(_) {
-    if (!arguments.length) return _;
-    budgetStatuses = _;
-    return this;
-  };
-
+  // Getters/Setters
   this.colors = function(_) {
     if (!arguments.length) return colors;
-    colors = _;
-    setColorScale();
+    if (_.length > 0){
+      colors = _;
+      setColorScale();
+    }
     return this;
   };
 
-  this.maxLevels = function(_) {
-    if (!arguments.length) return maxLevels;
-    maxLevels = _;
+  this.labelsMinSize = function(_) {
+    if (!arguments.length) return labelsMinSize;
+    labelsMinSize = _;
     return this;
   };
 
-  this.maxTreemapValueEver = function(_) {
-    if (!arguments.length) return maxTreemapValueEver;
-    maxTreemapValueEver = _;
+  this.labelsFontSizeMin = function(_) {
+    if (!arguments.length) return labelsFontSizeMin;
+    labelsFontSizeMin = _;
     return this;
   };
 
-  this.mouseOver = function(_) {
-    if (!arguments.length) return mouseOver;
-    mouseOver = _;
+  this.labelsFontSizeMax = function(_) {
+    if (!arguments.length) return labelsFontSizeMax;
+    labelsFontSizeMax = _;
     return this;
   };
 
-  this.areaOver = function(d) {
-    var id = d.id;
-    nodes.classed('out', function(d) { return getParentId(d) !== id; });
-  };
 
-  this.areaOut = function() {
-    nodes.classed('out', false);
-  };
-  
-  
-  // Initialization at object creation time
-  setup();
-
-  // Setup SVG items on 
-  function setup() {
+  // Setup & initialize treemap
+  this.setup = function() {
     // Set popoup element
     $popup = $(selector+' .popover');
 
@@ -103,7 +75,7 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colors, _labelsMinSize,
 
     // Setup font-size scale (power of two scale)
     fontSizeScale = d3.scalePow()
-      .exponent(2)
+      .exponent(0.75)
       .range([labelsFontSizeMin, labelsFontSizeMax])
       .clamp(true);
 
@@ -114,139 +86,9 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colors, _labelsMinSize,
     nodesContainer = d3.select(selector)
       .append('div')
         .attr('class', 'nodes-container');
-  }
 
- 
-  // Calculate year totals, needed for percentage calculations later on
-  function calculateYearTotals(breakdown, field, columns) {
-    for (var year in columns) {
-      if ( !yearTotals[year] )
-        yearTotals[year] = {};
-      var column_name = columns[year];
-      yearTotals[year][field] = breakdown[field][column_name] || 0;
-    }
-  }
-
-  // Convert the data to the format D3.js expects
-  function loadBreakdownField(breakdown, field, columns) {
-    // Get a blank dummy child, copy of the given one, to be used for padding (see below)
-    function getDummyChild(item) {
-      var dummy = {
-          id: item.id,
-          parentId: 't',
-          name: item.name,
-          //leaf: true
-      };
-      for (var year in columns) {
-        dummy[year] = 0;
-      }
-      return dummy;
-    }
-
-    function getChildrenTree(items, level) {
-      var children = [];
-      for (var id in items) {
-        if ($.isEmptyObject(items[id][field])) continue;
-        var child = {
-          id: id,
-          parentId: 't',
-          name: items[id].label
-          //leaf: true
-        };
-        // Get children, recursively
-        if ( maxLevels==-1 || level<maxLevels ) {
-          if (items[id].sub) {
-            child.leaf = false;
-            child.children = getChildrenTree(items[id].sub, level+1);
-          }
-        }
-        // Get numerical data, 'padding' the tree structure if needed.
-        // Padding is needed because the trees/breakdowns need to have the same depth across
-        // the years, but our data often has different levels of detail. So we pad.
-        var dummy = getDummyChild(child);
-        var paddingNeeded = false;
-        for (var year in columns) {
-          var column_name = columns[year];
-          child[year] = items[id][field][column_name] || 0;
-
-          // 'Pad' the current item if its children don't add up to its value.
-          if ( child[year] && child.children ) {
-            var children_sum = child.children.reduce(function(a,b) { return a+b[year]; }, 0);
-            if ( child[year] != children_sum ) {
-              paddingNeeded = true;
-              paddedYears[year] = true;
-              dummy[year] = child[year] - children_sum; // Quite sure children_sum is 0, but just in case
-            }
-          }
-        }
-        if ( paddingNeeded )
-          child.children.push(dummy);
-
-        children.push(child);
-      }
-      return children;
-    }
-
-    /*
-    return {
-      name: field,
-      children: getChildrenTree(breakdown.sub, 1)
-    };
-    */
-
-    return getChildrenTree(breakdown.sub, 1);
-  }
-
-  function loadBreakdown(breakdown, field) {
-    // Do nothing if there's no data
-    if ( breakdown === null )
-      return;
-
-    // Pick the right column for each year: execution preferred over 'just' budget...
-    // TODO: This bit is duplicated in BudgetStackedChart
-    var columns = {};
-    for (var column_name in breakdown.years) {
-      var year = breakdown.years[column_name];
-
-      // ...unless we know the execution data is not complete (the year is not over),
-      // in which case we go with the budget.
-      if ( budgetStatuses[year] && budgetStatuses[year]!=='' && column_name.indexOf("actual_")===0 )
-        continue;
-
-      // Normally we do this:
-      if ( !columns[year] || column_name.indexOf("actual_")===0 )
-        columns[year] = column_name;
-    }
-
-    // In some rather unusual cases we actually have no data: we may have one year of execution
-    // data for a year that is not complete, for example. It happens. In those cases, we
-    // hide the visualization. It's not ideal for a visualization to hide its parent container,
-    // but there's not a simple clean solution: the way the code is structured now,
-    // the calling code doesn't know whether there's data, since it involves looking into
-    // budget statuses and so on (i.e. the code we just above)
-    if ( Object.keys(columns).length === 0 )
-      $(selector).hide();
-
-    calculateYearTotals(breakdown, field, columns);
-    // Get treemap data 
-    treemapData = loadBreakdownField(breakdown, field, columns);
-    // Add root item to treemap data
-    treemapData.unshift({id: 't'});
-  }
-
-  // Calculate the maximum value of the treemap along the years.
-  // Note that we use already calculated 'year totals', which will use _either_ budget or actual
-  // spending, not both. This matches the data we use for display. Using both budget and actual
-  // would be wrong, although in normal scenarios the difference wouldn't be huge.
-  function calculateMaxTreemapValueEver() {
-    var maxValue = 0;
-    for (var year in yearTotals) {
-      maxValue = Math.max(maxValue, getValue(yearTotals[year].income || 0, uiState.format, 'income', year) );
-      maxValue = Math.max(maxValue, getValue(yearTotals[year].expense || 0, uiState.format, 'expense', year) );
-    }
-    return maxValue;
-  }
-
+    return this;
+  };
 
   // Update treemap data
   this.update = function(_breakdown, _areas, _uiState) {
@@ -264,6 +106,8 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colors, _labelsMinSize,
     else {
       updateTreemap(_uiState);
     }
+
+    return this;
   };
 
   // Resize treemap
@@ -290,7 +134,24 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colors, _labelsMinSize,
       .call(setNodeTransition)
       .filter(isNodeLabelVisible)
         .call(setNodeLabel);
+
+    return this;
   };
+
+  // Public over/out methods
+  this.areaOver = function(d) {
+    var id = +d.id;
+    nodes.classed('out', function(d) { return getParentId(d) !== id; });
+
+    return this;
+  };
+
+  this.areaOut = function() {
+    nodes.classed('out', false);
+
+    return this;
+  };
+
 
   // Setup the treemap
   function setupTreemap(_uiState) {
@@ -361,20 +222,6 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colors, _labelsMinSize,
       return;
     } else {
       svg.style("opacity", 1);
-    }
-    */
-
-    /*
-    // We prefer the 'sticky' layout in the treemap, but it needs to have a consistent data structure
-    // across the years. (One item more or less is bearable, but a whole level appearing breaks
-    // the layout: the new items get displayed along only one dimension.) So we disable the
-    // 'stickyness' when we move between years with different levels of detail.
-    if ( uiState.year != _uiState.year ) {
-      var shouldBeSticky = (paddedYears[uiState.year] == paddedYears[_uiState.year]);
-      // Resetting sticky to true resets the treemap internal cache; we don't want that, so check.
-      // See https://github.com/mbostock/d3/wiki/Treemap-Layout#wiki-sticky
-      if ( treemap.sticky() != shouldBeSticky )
-        treemap.sticky(shouldBeSticky);
     }
     */
 
@@ -470,7 +317,6 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colors, _labelsMinSize,
   
   // Mouse Events handlers
   function onNodeOver(d) {
-    if (!mouseOver) return;
     var selected   = this;
     var id         = getParentId(d);
     var areaPrefix = areas[id] ? areas[id] : '';
@@ -484,7 +330,6 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colors, _labelsMinSize,
   }
 
   function onNodeMove(d) {
-    if (!mouseOver) return;
     var popParentOffset = $(selector).offset();
     var popLeft         = d3.event.pageX - popParentOffset.left - $popup.width()/2;
     var popBottom       = $(selector).height() - d3.event.pageY + popParentOffset.top + 15;
@@ -492,7 +337,6 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colors, _labelsMinSize,
   }
 
   function onNodeOut(d) {
-    if (!mouseOver) return;
     nodes.classed('out', false);
     $popup.hide();
   }
@@ -513,10 +357,10 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colors, _labelsMinSize,
 
   // Adjust the overall treemap size based on the size of this year's budget compared to the biggest ever
   function setTreemapDimensions() {
-    var maxValue  = maxTreemapValueEver || calculateMaxTreemapValueEver();
+    var maxValue  = calculateMaxTreemapValueEver();
     var ratio     = Math.sqrt( getValue(yearTotals[uiState.year][uiState.field], uiState.format, uiState.field, uiState.year) / maxValue );
-    treemapWidth  = (width * ratio);
-    treemapHeight = (height * ratio);
+    treemapWidth  = width * ratio;
+    treemapHeight = height * ratio;
 
     // Set nodes container position
     nodesContainer
@@ -532,6 +376,130 @@ function BudgetTreemap(_selector, _stats, _aspectRatio, _colors, _labelsMinSize,
       .range(colors)
       .domain([0,1,2,3,4,5,6,7,8,9]);
   }
+
+  // Calculate year totals, needed for percentage calculations later on
+  function calculateYearTotals(breakdown, field, columns) {
+    for (var year in columns) {
+      if ( !yearTotals[year] )
+        yearTotals[year] = {};
+      var column_name = columns[year];
+      yearTotals[year][field] = breakdown[field][column_name] || 0;
+    }
+  }
+
+  // Convert the data to the format D3.js expects
+  function loadBreakdownField(breakdown, field, columns) {
+    // Get a blank dummy child, copy of the given one, to be used for padding (see below)
+    function getDummyChild(item) {
+      var dummy = {
+          id: item.id,
+          parentId: 't',
+          name: item.name,
+          //leaf: true
+      };
+      for (var year in columns) {
+        dummy[year] = 0;
+      }
+      return dummy;
+    }
+
+    function getChildrenTree(items, level) {
+      var children = [];
+      for (var id in items) {
+        if ($.isEmptyObject(items[id][field])) continue;
+        var child = {
+          id: id,
+          parentId: 't',
+          name: items[id].label
+          //leaf: true
+        };
+        // Get numerical data, 'padding' the tree structure if needed.
+        // Padding is needed because the trees/breakdowns need to have the same depth across
+        // the years, but our data often has different levels of detail. So we pad.
+        var dummy = getDummyChild(child);
+        var paddingNeeded = false;
+        for (var year in columns) {
+          var column_name = columns[year];
+          child[year] = items[id][field][column_name] || 0;
+
+          // 'Pad' the current item if its children don't add up to its value.
+          if ( child[year] && child.children ) {
+            var children_sum = child.children.reduce(function(a,b) { return a+b[year]; }, 0);
+            if ( child[year] != children_sum ) {
+              paddingNeeded = true;
+              paddedYears[year] = true;
+              dummy[year] = child[year] - children_sum; // Quite sure children_sum is 0, but just in case
+            }
+          }
+        }
+        if ( paddingNeeded )
+          child.children.push(dummy);
+
+        children.push(child);
+      }
+      return children;
+    }
+
+    /*
+    return {
+      name: field,
+      children: getChildrenTree(breakdown.sub, 1)
+    };
+    */
+
+    return getChildrenTree(breakdown.sub, 1);
+  }
+
+  function loadBreakdown(breakdown, field) {
+    // Do nothing if there's no data
+    if ( breakdown === null )
+      return;
+
+    // Pick the right column for each year: execution preferred over 'just' budget...
+    // TODO: This bit is duplicated in BudgetStackedChart
+    var columns = {};
+    for (var column_name in breakdown.years) {
+      var year = breakdown.years[column_name];
+
+      // ...unless we know the execution data is not complete (the year is not over),
+      // in which case we go with the budget.
+      if ( budgetStatuses[year] && budgetStatuses[year]!=='' && column_name.indexOf("actual_")===0 )
+        continue;
+
+      // Normally we do this:
+      if ( !columns[year] || column_name.indexOf("actual_")===0 )
+        columns[year] = column_name;
+    }
+
+    // In some rather unusual cases we actually have no data: we may have one year of execution
+    // data for a year that is not complete, for example. It happens. In those cases, we
+    // hide the visualization. It's not ideal for a visualization to hide its parent container,
+    // but there's not a simple clean solution: the way the code is structured now,
+    // the calling code doesn't know whether there's data, since it involves looking into
+    // budget statuses and so on (i.e. the code we just above)
+    if ( Object.keys(columns).length === 0 )
+      $(selector).hide();
+
+    calculateYearTotals(breakdown, field, columns);
+    // Get treemap data 
+    treemapData = loadBreakdownField(breakdown, field, columns);
+    // Add root item to treemap data
+    treemapData.unshift({id: 't'});
+  }
+
+  // Calculate the maximum value of the treemap along the years.
+  // Note that we use already calculated 'year totals', which will use _either_ budget or actual
+  // spending, not both. This matches the data we use for display. Using both budget and actual
+  // would be wrong, although in normal scenarios the difference wouldn't be huge.
+  function calculateMaxTreemapValueEver() {
+    var maxValue = 0;
+    for (var year in yearTotals) {
+      maxValue = Math.max(maxValue, getValue(yearTotals[year].income || 0, uiState.format, 'income', year) );
+      maxValue = Math.max(maxValue, getValue(yearTotals[year].expense || 0, uiState.format, 'expense', year) );
+    }
+    return maxValue;
+  }
+
 
   
   // Helper methods

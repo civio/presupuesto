@@ -201,7 +201,7 @@
 
       // Setup & Update Budget Treemap
       // XXX: How many levels of institutional breakdown to show is subject to debate. See #347.
-      budgetTreemap.maxLevels(uiState.view==='institutional' ? {{ institutional_max_levels }} : 1);
+      //budgetTreemap.maxLevels(uiState.view==='institutional' ? {{ institutional_max_levels }} : 1);
       budgetTreemap.update( breakdowns[uiState.view], areas[uiState.view], uiState );
 
       // Show an alert if no data is available
@@ -264,11 +264,12 @@
     var budgetSummary = new BudgetSummary('#budget-summary', colorScale);
 
     // Create Budget Treemap
-    var budgetTreemap = new BudgetTreemap('#budget-treemap', stats, 2, colorScale, labelsMinSize, budgetStatuses);
-{% if not entities %}
-    // Limit treemap depth for top-level entities
-    budgetTreemap.maxLevels(1);
-{% endif %}
+    var budgetTreemap = new BudgetTreemap('#budget-treemap', stats, budgetStatuses)
+      .colors(colorScale)
+      .labelsMinSize(labelsMinSize)
+      .setup();
+
+    console.log(budgetTreemap);
 
     // Resize treemap
     $(window).resize( budgetTreemap.resize );
