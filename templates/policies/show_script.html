@@ -287,24 +287,31 @@
       // Setup treemap chart
       {% if show_treemap %}
       if (currentChart !== null) $('#policy-chart-container .treemap-chart').remove();
-      currentChart = new BudgetTreemap('#policy-chart-container', breakdowns[uiState.view], stats, areasData[uiState.view], 2, colorScale, labelsMinSize)
-        .i18n(i18n)
-        .maxLevels(2)
-        .budgetStatuses(budgetStatuses);
-      currentChart.createTreemap( uiState );
+
+      // Create Budget Treemap
+      var currentChart = new BudgetTreemap('#policy-chart-container', stats, budgetStatuses)
+        .colors(colorScale)
+        .labelsMinSize(labelsMinSize)
+        .treeLevels(2)
+        .setup()
+        .update(breakdowns[uiState.view], areasData[uiState.view], uiState);
+
+      // Resize treemap
+      $(window).resize( currentChart.resize );
+
       // Add area click event
       if (uiState.view == 'functional') {
         $('#policy-chart-container').bind('policy-selected', onItemSelected);
       } else {
-        $('#policy-chart-container .treemap-chart rect').css('cursor', 'auto');
+        $('#policy-chart-container .node').css('cursor', 'auto');
       }
 
       // Setup stacked area chart
       {% else %}
       currentChart = new BudgetStackedChart('#policy-chart-container', stats, colorScale, i18n)
-        .budgetStatuses(budgetStatuses);
-      currentChart.loadBreakdown(breakdowns[uiState.view], uiState.field);
-      currentChart.draw( uiState );
+        .budgetStatuses(budgetStatuses)
+        .loadBreakdown(breakdowns[uiState.view], uiState.field)
+        .draw(uiState);
       // Add area click event if type is functional
       if (uiState.view == 'functional') {
         $('#policy-chart-container .stacked-area-chart').addClass('clickable');
