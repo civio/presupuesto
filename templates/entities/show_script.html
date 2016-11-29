@@ -201,8 +201,9 @@
 
       // Setup & Update Budget Treemap
       // XXX: How many levels of institutional breakdown to show is subject to debate. See #347.
-      //budgetTreemap.maxLevels(uiState.view==='institutional' ? {{ institutional_max_levels }} : 1);
-      budgetTreemap.update( breakdowns[uiState.view], areas[uiState.view], uiState );
+      budgetTreemap
+        .treeLevels( uiState.view==='institutional' ? {{ institutional_max_levels }} : 1 )
+        .update( breakdowns[uiState.view], areas[uiState.view], uiState );
 
       // Show an alert if no data is available
       if ( myGrid.page.info().recordsDisplay != 0 ) {
