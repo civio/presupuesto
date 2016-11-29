@@ -12,7 +12,6 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
       transitionDuration  = 650;
 
   var formatPercent       = d3.format('.2%'),
-      paddedYears         = {},
       textLabelMap        = [],
       uiState             = {},
       yearTotals          = {};
@@ -436,7 +435,6 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
             var children_sum = child.children.reduce(function(a,b) { return a+b[year]; }, 0);
             if ( child[year] != children_sum ) {
               paddingNeeded = true;
-              paddedYears[year] = true;
               dummy[year] = child[year] - children_sum; // Quite sure children_sum is 0, but just in case
             }
           }
