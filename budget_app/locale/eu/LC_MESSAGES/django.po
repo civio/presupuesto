@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-06 13:44+0200\n"
-"PO-Revision-Date: 2016-11-27 20:45+0100\n"
+"PO-Revision-Date: 2016-11-29 03:47+0100\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: eu\n"
@@ -158,7 +158,7 @@ msgstr "Guztizko partzialak kalkulatzeko likidazioa itxita duten urteetako erabi
 
 #: templates/budgets/budgets_totals.html:51
 msgid "Cantidades actualizadas con la inflación a fecha 1 de enero de %s."
-msgstr "Inflazioarekin eguneratutako kopuruak, %s-ko urtarrilaren 1eko datarekin."
+msgstr "Inflazioarekin eguneratutako kopuruak, %s(e)ko urtarrilaren 1eko datarekin."
 
 #: templates/budgets/index.html:11
 msgid "Ingresos y gastos en el Gobierno de Aragón"
@@ -175,7 +175,7 @@ msgstr "Urtea"
 
 #: templates/budgets/index.html:41
 msgid "Datos presupuestarios en <span id=\"totals-year\"></span>"
-msgstr "<span id=\"totals-year\"></span>-ko aurrekontuen datuak"
+msgstr "<span id=\"totals-year\"></span>ko aurrekontuen datuak"
 
 #: templates/budgets/index.html:53
 msgid "El cálculo de los indicadores utiliza las cifras de ejecución para los años cuya liquidación está cerrada, o el presupuesto aprobado en caso contrario."
@@ -442,7 +442,7 @@ msgstr "Programa, erakunde eta kontzeptuen menua"
 
 #: templates/policies/show.html:97 templates/policies/show_widget.html:71
 msgid "respecto a <span class='popover-content-variation-year'></span>"
-msgstr "<span class='popover-content-variation-year'></span>-i buruz"
+msgstr "<span class='popover-content-variation-year'></span>(r)i buruz"
 
 #: templates/policies/show.html:103 templates/policies/show_widget.html:77
 msgid "Comparte este gráfico"
@@ -467,7 +467,7 @@ msgstr "Funtsa"
 
 #: templates/search/index.html:24 templates/terms/index.html:29
 msgid "Hemos encontrado <strong>%s resultados</strong> relacionados con <strong>%s</strong>."
-msgstr "<strong>%s emaitza</strong> aurkitu ditugu <strong>%s-kin</strong> erlazionatuak."
+msgstr "<strong>%s emaitza</strong> aurkitu ditugu <strong>%s(r)ekin</strong> erlazionatuak."
 
 #: templates/search/index.html:32
 msgid "Mostrar resultados de"
@@ -569,7 +569,7 @@ msgstr "Erakusten diren diru-sarrerak eta gastuak Nafarroako Gobernuari dagozkio
 
 #: templates/shared/data_sources.html:15
 msgid "El ajuste de la inflación se realiza a <strong>1 de enero de %s</strong>."
-msgstr "Inflazioaren araberako doikuntza <strong>%s-ko urtarrilaren 1eko datarekin egiten da</strong>."
+msgstr "Inflazioaren araberako doikuntza <strong>%s(e)ko urtarrilaren 1eko datarekin egiten da</strong>."
 
 #: templates/shared/data_sources.html:15
 msgid "La tasa de inflación anual es la media de la tasa interanual de los doce meses del año."
@@ -577,11 +577,11 @@ msgstr "Urteko inflazio-tasa urteko hamabi hilabeteen urte arteko inflazio-tasar
 
 #: templates/shared/footer.html:4
 msgid "Un proyecto de"
-msgstr "-en proiektu bat"
+msgstr "Egilea:"
 
 #: templates/shared/footer.html:6
 msgid "basado en el código de"
-msgstr "-en kodean oinarrituta"
+msgstr "Oinarri-kodea:"
 
 #: templates/shared/footer.html:19
 msgid "Aviso Legal"
@@ -675,7 +675,7 @@ msgstr "gutxi gorabehera nola banatzen den erakutsiko dizugu"
 
 #: templates/tax_receipt/index.html:28
 msgid "Detalle de tu contribución en %s"
-msgstr "%s-ko zure ekarpenaren xehetasuna"
+msgstr "%s(e)ko zure ekarpenaren xehetasuna"
 
 #: templates/tax_receipt/index.html:32
 msgid "Se incluyen únicamente los gastos e ingresos no financieros, es decir, capítulos I al VII."
