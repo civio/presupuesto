@@ -506,7 +506,6 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
   }
 
   function valueFormat(value, uiState) {
-    console.log('valueFormat', uiState.format);
     var transformedValue = getValue(value, uiState.format, uiState.field, uiState.year);
     switch (uiState.format) {
       case "nominal":

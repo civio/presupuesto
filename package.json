@@ -1,0 +1,15 @@
+{
+  "name": "d3-bundle",
+  "version": "0.0.1",
+  "scripts": {
+    "postinstall": "rollup -c -o budget_app/static/javascripts/vis/d3-bundle.js"
+  },
+  "dependencies": {
+    "d3-hierarchy": "1.0.3",
+    "d3-scale": "1.0.4",
+    "d3-selection": "1.0.3",
+    "d3-transition": "1.0.3",
+    "rollup": "^0.26.3",
+    "rollup-plugin-node-resolve": "^1.5.0"
+  }
+}
