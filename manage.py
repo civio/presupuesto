@@ -2,6 +2,13 @@
 import os
 import sys
 
+from subprocess import call
+
+def compile_less(theme):
+    filepath = ''.join([theme, '/static/stylesheets/main.{}'])
+    call(['sass',filepath.format('scss'),filepath.format('css')])
+
+
 if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project.settings")
 
@@ -18,8 +25,11 @@ if __name__ == "__main__":
 
         application = get_wsgi_application()
         server = Server(Cling(application))
+        compile_less(ENV['THEME'])
 
         # Add your watch
+        for filepath in formic.FileSet(include="**/*.scss"):
+            server.watch(filepath, lambda: compile_less(ENV['THEME']))
         for filepath in formic.FileSet(include=["**/*.html", "**/*.js"]):
             server.watch(filepath)
 
