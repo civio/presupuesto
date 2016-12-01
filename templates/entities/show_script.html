@@ -262,7 +262,9 @@
     }
 
     // Create Budget Summary
-    var budgetSummary = new BudgetSummary('#budget-summary', colorScale);
+    var budgetSummary = new BudgetSummary('#budget-summary')
+      .colors(colorScale)
+      .setup();
 
     // Create Budget Treemap
     var budgetTreemap = new BudgetTreemap('#budget-treemap', stats, budgetStatuses)

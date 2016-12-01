@@ -4,7 +4,7 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
       stats               = _stats,
       budgetStatuses      = (_budgetStatuses) ? _budgetStatuses : {};
 
-  var colors              = ['#A9A69F', '#D3C488', '#2BA9A0', '#E8A063', '#9EBF7B', '#dbb0c0', '#7d8f69', '#a29ac8', '#6c6592', '#9e9674', '#e377c2', '#e7969c', '#bcbd22', '#17becf'],
+  var colors              = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#e7969c', '#bcbd22', '#17becf'],
       labelsMinSize       = 70,   // Minimum node size in px (width or height) to add a label
       labelsFontSizeMin   = 11,   // Nodes label minimum size in px
       labelsFontSizeMax   = 74,   // Nodes label maximum size in px
