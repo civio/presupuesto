@@ -52,7 +52,7 @@
   margin-bottom: $grid-gutter-width;
   
   .panel-content{
-    background: $brand-secondary;
+    background: $page-header-bg;
     text-transform: none;
   }
 }
@@ -82,6 +82,8 @@
   .btn-primary{
     font-size: 0.913em;
     margin-top: $grid-gutter-width/2;
+    border-color: $brand-secondary;
+    background-color: $brand-secondary;
   }
 }
 

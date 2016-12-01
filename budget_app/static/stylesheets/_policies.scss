@@ -49,9 +49,7 @@
 .policies-chart{
   @extend .panel;
   position: relative;
-  background: $page-header-bg;
-  padding: $grid-gutter-width/2;
-  margin: $grid-gutter-width 0 $grid-gutter-width/2;
+  margin: $grid-gutter-width 0 0;
 }
 
 .policies.policy-breakdown{

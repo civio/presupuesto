@@ -152,6 +152,10 @@ header > .container{
     margin: 0;
 
     > li{
+  
+      [class*="icon-"]:before{
+        display: none;
+      }
 
       > a{
         color: $dvmi-navbar-color;
@@ -159,7 +163,7 @@ header > .container{
         padding-right: 0;
         padding-left: 0;
         border-bottom: 1px solid mix(white, $navbar-default-bg, 50%);
-        font-weight: $font-weight-300;
+        text-transform: uppercase;
         @include transition( background 0.3s ease-out );
 
         &:hover,
@@ -172,7 +176,7 @@ header > .container{
       &.active > a,
       &.active > a:hover,
       &.active > a:focus{
-        font-weight: $font-weight-400;
+        font-weight: $font-weight-600;
       }
 
       &:last-child > a{
