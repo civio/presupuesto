@@ -34,7 +34,7 @@ function BudgetStackedChart(theSelector, theStats, theColorScale, i18n) {
   // The color palette
   var colorScale =  (theColorScale && theColorScale.length > 0) ?
                     theColorScale :
-                    [ "#A9A69F", "#D3C488", "#2BA9A0", "#E8A063", "#9EBF7B", "#dbb0c0", "#7d8f69", "#a29ac8", "#6c6592", "#9e9674", "#e377c2", "#e7969c", "#bcbd22", "#17becf" ];
+                    ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#e7969c', '#bcbd22', '#17becf'];
 
   
   function loadBreakdownField(breakdown, field) {
