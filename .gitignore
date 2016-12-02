@@ -8,3 +8,5 @@ presupuesto-*
 .env
 .python-version
 budget_app/templates
+/node_modules
+/budget_app/static/javascripts/vis/d3-bundle.js

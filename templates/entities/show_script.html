@@ -43,14 +43,14 @@
       var format = function(amount) { return columnDef.render(amount, 'display', breakdown); },
           totalNonFinancial = totalFinancial = 0;
 
-      _.each(breakdown.sub, function(value, id) {
-        var amount = columnDef.data(breakdown.sub[id]);
-        if ( id[0]==='8' || id[0]==='9' ) {
+      for (var item in breakdown.sub) {
+        var amount = columnDef.data(breakdown.sub[item]);
+        if ( item[0]==='8' || item[0]==='9' ) {
           totalFinancial += amount
         } else {
           totalNonFinancial += amount
         }
-      });
+      }
 
       if ( !includeFinancialChapters ) {
         $("#non-financial-total "+classSelector+"-amount").text(format(totalNonFinancial));
@@ -201,8 +201,9 @@
 
       // Setup & Update Budget Treemap
       // XXX: How many levels of institutional breakdown to show is subject to debate. See #347.
-      budgetTreemap.maxLevels(uiState.view==='institutional' ? {{ institutional_max_levels }} : 1);
-      budgetTreemap.update( breakdowns[uiState.view], areas[uiState.view], uiState );
+      budgetTreemap
+        .treeLevels( uiState.view==='institutional' ? {{ institutional_max_levels }} : 1 )
+        .update( breakdowns[uiState.view], areas[uiState.view], uiState );
 
       // Show an alert if no data is available
       if ( myGrid.page.info().recordsDisplay != 0 ) {
@@ -255,17 +256,24 @@
 
     // Initialization
 
-    _.each(breakdowns, function(b, name) { gridData[name] = breakdownToTable(b); });
+    // Set gridData
+    for (var item in breakdowns) {
+      gridData[item] = breakdownToTable( breakdowns[item] );
+    }
 
     // Create Budget Summary
-    var budgetSummary = new BudgetSummary('#budget-summary', colorScale);
+    var budgetSummary = new BudgetSummary('#budget-summary')
+      .colors(colorScale)
+      .setup();
 
     // Create Budget Treemap
-    var budgetTreemap = new BudgetTreemap('#budget-treemap', stats, 2, colorScale, labelsMinSize, i18n, budgetStatuses);
-{% if not entities %}
-    // Limit treemap depth for top-level entities
-    budgetTreemap.maxLevels(1);
-{% endif %}
+    var budgetTreemap = new BudgetTreemap('#budget-treemap', stats, budgetStatuses)
+      .colors(colorScale)
+      .labelsMinSize(labelsMinSize)
+      .setup();
+
+    // Resize treemap
+    $(window).resize( budgetTreemap.resize );
 
     // Listen BudgetTreemap & BudgetSummary events
     $('#budget-treemap').bind('policy-selected',     onBudgetTreemapClick);

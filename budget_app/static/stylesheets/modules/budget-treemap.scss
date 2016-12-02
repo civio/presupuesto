@@ -1,33 +1,39 @@
 // TREEMAP
 .treemap-chart {
-	rect {
-		cursor: pointer;
-		@include transition( fill 0.3s ease-out );
 
-		&.out{
-			fill: rgb(134,134,134) !important;
-		}
+	.nodes-container{
+		position: relative;
+	}
 
-		&.parent {
-			fill-opacity: 0;
-		}
+	.node {
+	  box-sizing: border-box;
+	  position: absolute;
+	  overflow: hidden;
+	  outline: 1.5px solid white;
+	  cursor: pointer;
+		@include transition( background 0.3s ease-out );
 
-		g.bg & {
-			cursor: default;
+	  &.out{
+			background: rgb(134,134,134) !important;
 		}
 	}
 
-	.treemap-text {
-		font-size: 1em;
-		padding: 4px;
-		line-height: 1.1em;
-		display: block;
-		fill: #fff;
-		pointer-events: none;
-		text-align: center;
-		text-anchor: middle;
-		font-weight: $font-weight-300;
-		@include transition( opacity 0.3s ease-out );
+	.node-label {
+		display: table;
+		width: 100%;
+		height: 96%;
+
+		p{
+			display: table-cell;
+			margin: 0;
+			font-size: 1em;
+			line-height: 1.1em;
+			color: #fff;
+			text-align: center;
+			vertical-align: middle;
+			font-weight: $font-weight-300;
+			@include transition( opacity 0.3s ease-out );
+		}
 	}
 }
 

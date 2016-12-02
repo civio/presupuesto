@@ -91,6 +91,8 @@ function BudgetStackedChart(theSelector, theStats, theColorScale, i18n) {
     data = loadBreakdownField(theBreakdown, field);
     // Deep copy the data array in order to be able to change when a new category of data is selected
     $.extend(true, modifiedData, data);
+
+    return this;
   };
 
   // Function used to display the selected SAG
@@ -122,6 +124,8 @@ function BudgetStackedChart(theSelector, theStats, theColorScale, i18n) {
 
     // Chart set data & draw
     chart.setData( getSortedData(this.getNewData()), years.map(function(d){ return parseInt(d); }), budgetStatuses ).draw();
+  
+    return this;
   };
 
 
@@ -164,6 +168,8 @@ function BudgetStackedChart(theSelector, theStats, theColorScale, i18n) {
         }
         return newData;
     }
+
+    return this;
   };
 
   // Data order function

@@ -1,21 +1,63 @@
-function BudgetSummary(selector, _colorScale) {
+function BudgetSummary(_selector) {
 
-  var colorScale    = _colorScale,
-      year          = null,
-      view          = null,
-      areaNames     = null,
+  var selector      = _selector,
       areaAmounts   = {},
-      totalAmount   = 0,
+      areaNames     = null,
+      colors        = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#e7969c', '#bcbd22', '#17becf'],
       existingAreas = [],
-      $bar          = $('<div class="budget-summary"></div>'),
-      $barItems     = null;
+      totalAmount   = 0,
+      view          = null,
+      year          = null,
+      $bar,
+      $barItems;
   
 
-  // Insert bar in the DOM
-  $(selector).empty().append( $bar );
+  // Getters/Setters
+  this.colors = function(_) {
+    if (!arguments.length) return colors;
+    if (_.length > 0){
+      colors = _;
+    }
+    return this;
+  };
+
+
+  // Setup
+  this.setup = function() {
+    // Setup bar element
+    $bar = $('<div class="budget-summary"></div>');
+
+    // Insert bar in the DOM
+    $(selector).empty().append( $bar );
+
+    return this;
+  };
+
+
+  // Update
+  this.update = function( _breakdown, _areaNames, _field, _view, _year ) {
+    if (view == _view && year == _year) return;
+
+    // Setup
+    if (view != _view) {
+      setupData( _breakdown, _areaNames, _field, _year );
+      setupItems();
+    }
+    // Update
+    else {
+      setupData( _breakdown, _areaNames, _field, _year );
+      updateItems();
+    }
+
+    year = _year;
+    view = _view;
+
+    return this;
+  };
+
 
   // Setup Data
-  this.setupData = function( _breakdown, _areaNames, _field, _year ){
+  function setupData( _breakdown, _areaNames, _field, _year ) {
 
     areaNames   = _areaNames;
 
@@ -39,11 +81,11 @@ function BudgetSummary(selector, _colorScale) {
     existingAreas = [];
     for (area in areaAmounts) existingAreas.push(area);
     existingAreas.sort(function(a, b) { return areaAmounts[b] - areaAmounts[a]; });
-  };
+  }
 
 
   // Setup Items
-  this.setupItems = function(){
+  function setupItems() {
 
     // Clear conteiner
     $bar.empty();
@@ -63,7 +105,7 @@ function BudgetSummary(selector, _colorScale) {
       amountLabel = ( percentage >= 6 ) ? formatDecimal(percentage, 1)+'<small>%</small>' : '';
       
       $bar.append( '<div class="budget-summary-item" style="width:'+percentage+'%;">'+
-                    '<div class="budget-summary-bar" data-id="'+area+'" style="background-color: '+colorScale[Number(area)]+';">'+amountLabel+
+                    '<div class="budget-summary-bar" data-id="'+area+'" style="background-color: '+colors[Number(area)]+';">'+amountLabel+
                     '</div><div class="budget-summary-label">'+label+'</div></div>');
     }
 
@@ -80,11 +122,11 @@ function BudgetSummary(selector, _colorScale) {
         $barItems.removeClass('inactive active');
         $(selector).trigger('budget-summary-out');
       });
-  };
+  }
 
 
   // Update Items
-  this.updateItems = function() {
+  function updateItems() {
     var i,
         area,
         percentage,
@@ -102,29 +144,9 @@ function BudgetSummary(selector, _colorScale) {
       barItem.find('.budget-summary-bar')
         .data('id', area)
         .html(amountLabel)
-        .css('background-color', colorScale[Number(area)]);
+        .css('background-color', colors[Number(area)]);
       barItem.find('.budget-summary-label')
         .html(label);
     }
-  };
-
-
-  // Update
-  this.update = function( _breakdown, _areaNames, _field, _view, _year ) {
-    if (view == _view && year == _year) return;
-
-    // Setup
-    if (view != _view) {
-      this.setupData( _breakdown, _areaNames, _field, _year );
-      this.setupItems();
-    }
-    // Update
-    else {
-      this.setupData( _breakdown, _areaNames, _field, _year );
-      this.updateItems();
-    }
-
-    year = _year;
-    view = _view;
-  };
+  }
 }
