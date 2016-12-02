@@ -1,33 +1,21 @@
 # ENVIRONMENT-SPECIFIC SETTINGS
 #
-
 ENV = {
+  'THEME': 'theme-example',
 
-  'THEME': 'theme-aragon',
-
-#  'DEBUG': True,
-#  'TEMPLATE_DEBUG': True,
-
-  # Google Analytics
-  # If unset, Civio's one will be used
-#  'GA_CODE': '',
-
-  # Cookies warning url
-  # If unset, default one will be used
-#  'COOKIES_URL': ''
+  'DEBUG': True,
+  'TEMPLATE_DEBUG': True,
 
   # Database
-  'DATABASE_NAME': 'presupuestos',
+  'DATABASE_NAME': 'dvmi_example_dev',
   'DATABASE_USER': '',
   'DATABASE_PASSWORD': '',
 #  'SEARCH_CONFIG': 'unaccent_spa',
 
   # Caching
-#  'CACHES': {
-#      'default': {
-#          'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-#          'LOCATION': '/tmp'
-#      }
-#  }
-
+  'CACHES': {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
+    }
+  }
 }
