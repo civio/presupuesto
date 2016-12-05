@@ -119,7 +119,7 @@
       '1T': '{{ _("hasta el primer trimestre") }}',
       '2T': '{{ _("hasta el segundo trimestre") }}',
       '3T': '{{ _("hasta el tercer trimestre") }}',
-      'D': '{{ _("a día de hoy") }}',
+      'D': "{{ _("a día de hoy") | safe }}",
       'PR': '{{ _("proyecto") }}',
 {% if adjust_inflation_in_overview %}
       'amounts.are.real': '{{ _("(Cantidades actualizadas con la inflación)") }}',
