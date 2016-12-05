@@ -1,15 +1,13 @@
 function BudgetSummary(_selector) {
 
   var selector      = _selector,
-      areaAmounts   = {},
       areaNames     = null,
       colors        = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#e7969c', '#bcbd22', '#17becf'],
-      existingAreas = [],
-      totalAmount   = 0,
+      data          = [],
       view          = null,
       year          = null,
-      $bar,
-      $barItems;
+      bar,
+      barItems;
   
 
   // Getters/Setters
@@ -24,11 +22,10 @@ function BudgetSummary(_selector) {
 
   // Setup
   this.setup = function() {
-    // Setup bar element
-    $bar = $('<div class="budget-summary"></div>');
-
-    // Insert bar in the DOM
-    $(selector).empty().append( $bar );
+    // Insert bar element
+    bar = d3.select(selector)
+      .append('div')
+       .attr('class','budget-summary');
 
     return this;
   };
@@ -36,18 +33,17 @@ function BudgetSummary(_selector) {
 
   // Update
   this.update = function( _breakdown, _areaNames, _field, _view, _year ) {
-    if (view == _view && year == _year) return;
+    // Avoid redundancy
+    if (view == _view && year == _year)
+      return;
 
-    // Setup
-    if (view != _view) {
-      setupData( _breakdown, _areaNames, _field, _year );
-      setupItems();
+    // Clear bar items if view changes
+    if (view != _view && barItems) {
+      bar.selectAll('.budget-summary-item').remove();
     }
-    // Update
-    else {
-      setupData( _breakdown, _areaNames, _field, _year );
-      updateItems();
-    }
+
+    setupData( _breakdown, _areaNames, _field, _year );
+    updateItems();
 
     year = _year;
     view = _view;
@@ -58,95 +54,108 @@ function BudgetSummary(_selector) {
 
   // Setup Data
   function setupData( _breakdown, _areaNames, _field, _year ) {
-
-    areaNames   = _areaNames;
+    // Update area names
+    areaNames = _areaNames;
 
     // Reset variables holding the data.
     // Note that a BudgetSummary object can be setup a number of times, so this is needed.
-    areaAmounts = {};
-    totalAmount = 0;
+    var area,
+        areaAmounts = {},
+        i,
+        policyAmount,
+        totalAmount = 0;
 
     // Group breakdown by area
-    var i, area;
     for (i in _breakdown.sub) {
-      var policyAmount = _breakdown.sub[i][_field][_year];
-      if ( policyAmount !== undefined ) {
+      policyAmount = _breakdown.sub[i][_field][_year];
+      // Avoid undefined or negative values
+      if (policyAmount !== undefined && policyAmount >= 0) {
         area = i[0];
         areaAmounts[area] = (areaAmounts[area]||0) + policyAmount;
         totalAmount = totalAmount + policyAmount;
       }
     }
 
-    // Sort areas
-    existingAreas = [];
-    for (area in areaAmounts) existingAreas.push(area);
-    existingAreas.sort(function(a, b) { return areaAmounts[b] - areaAmounts[a]; });
+    // Setup existings areas
+    data = d3.entries(areaAmounts);
+    data.forEach(function(d){
+      d.percentage = 100*d.value/totalAmount;
+    });
+    data.sort(function(a, b) { return b.value - a.value; });
   }
-
-
-  // Setup Items
-  function setupItems() {
-
-    // Clear conteiner
-    $bar.empty();
-
-    // Render Items
-    var i,
-        area,
-        percentage,
-        label,
-        amountLabel;
-
-    for (i = 0; i < existingAreas.length; i++) {
-      area = existingAreas[i];
-      percentage = 100 * areaAmounts[area] / totalAmount;
-      // Hide  Labels if area is small (< 6% width)
-      label = (percentage >= 6 ) ? areaNames[area] : '';
-      amountLabel = ( percentage >= 6 ) ? formatDecimal(percentage, 1)+'<small>%</small>' : '';
-      
-      $bar.append( '<div class="budget-summary-item" style="width:'+percentage+'%;">'+
-                    '<div class="budget-summary-bar" data-id="'+area+'" style="background-color: '+colors[Number(area)]+';">'+amountLabel+
-                    '</div><div class="budget-summary-label">'+label+'</div></div>');
-    }
-
-    $barItems = $bar.find('.budget-summary-item');
-    
-    // Hover events
-    $barItems.find('.budget-summary-bar')
-      .mouseover(function(e){
-        $barItems.addClass('inactive');
-        $(this).parent().removeClass('inactive').addClass('active');
-        $(selector).trigger('budget-summary-over', {id: $(this).data('id')});
-      })
-      .mouseout(function(e){
-        $barItems.removeClass('inactive active');
-        $(selector).trigger('budget-summary-out');
-      });
-  }
-
 
   // Update Items
   function updateItems() {
-    var i,
-        area,
-        percentage,
-        label,
-        amountLabel,
-        barItem;
-    for (i = 0; i < existingAreas.length; i++) {
-      area = existingAreas[i];
-      percentage = 100 * areaAmounts[area] / totalAmount;
-      label = (percentage >= 6 ) ? areaNames[area] : ''; // Hide labels if area is small (< 6% width)
-      amountLabel = ( percentage >= 6 ) ? formatDecimal(percentage, 1)+'<small>%</small>' : '';
+    // Data Join
+    barItems = bar.selectAll('.budget-summary-item')
+      .data(data);
 
-      barItem = $($barItems.get(i));
-      barItem.css('width', percentage+'%');
-      barItem.find('.budget-summary-bar')
-        .data('id', area)
-        .html(amountLabel)
-        .css('background-color', colors[Number(area)]);
-      barItem.find('.budget-summary-label')
-        .html(label);
-    }
+    // Exit
+    barItems.exit().remove();
+
+    // Update
+    barItems
+      .style('width', setSummaryItemWidth);
+    // Set bar color & percentage
+    bar.selectAll('.budget-summary-bar')
+      .data(data)
+      .style('background-color', setSummaryItemColor)
+      .html(setSummaryItemPercentage);
+    // Set item label
+    bar.selectAll('.budget-summary-label')
+      .data(data)
+      .html(setSummaryItemLabel);
+  
+    // Enter
+    barItems.enter()
+      .call(setSummaryItem);
+  }
+
+  // Enter Summary Items
+  function setSummaryItem(selection){
+    // Set item
+    var item = selection
+      .append('div')
+        .attr('class', 'budget-summary-item')
+        .style('width', setSummaryItemWidth);
+    // Set item bar
+    item.append('div')
+      .attr('class', 'budget-summary-bar')
+      .style('background-color', setSummaryItemColor)
+      .html(setSummaryItemPercentage)
+      .on('mouseover', onSummaryItemOver)
+      .on('mouseout', onSummaryItemOut);
+    // Set item label
+    item.append('div')
+      .attr('class', 'budget-summary-label')
+      .html(setSummaryItemLabel);
+  }
+
+  function onSummaryItemOver(e){
+    bar.selectAll('.budget-summary-item')
+      .classed('inactive', function(d) { return d.key !== e.key; })
+      .classed('active', function(d) { return d.key === e.key; });
+    $(selector).trigger('budget-summary-over', {id: e.key});
+  }
+
+  function onSummaryItemOut(e){
+    bar.selectAll('.budget-summary-item').classed('inactive', false).classed('active', false);
+    $(selector).trigger('budget-summary-out');
+  }
+  
+  function setSummaryItemWidth(d) {
+    return d.percentage+'%';
+  }
+
+  function setSummaryItemColor(d) {
+    return colors[Number(d.key)];
+  }
+
+  function setSummaryItemPercentage(d) {
+    return ( d.percentage >= 6 ) ? formatDecimal(d.percentage, 1)+'<small>%</small>' : '';
+  }
+
+  function setSummaryItemLabel(d) {
+    return (d.percentage >= 6 ) ? areaNames[d.key] : '';
   }
 }

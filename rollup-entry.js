@@ -30,16 +30,18 @@ export {
   variance,
   zip
 } from "d3-array";
+*/
 
 export {
   entries,
-  keys,
-  values,
-  map,
-  set,
-  nest
+  //keys,
+  //values,
+  //map,
+  //set,
+  //nest
 } from "d3-collection";
 
+/*
 export {
   randomUniform,
   randomNormal,
