@@ -117,7 +117,7 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
   // Resize treemap
   this.resize = function(){
     // Skip if container width don't change
-    if ($(selector).width() === width) 
+    if ($(selector).width() === width)
       return;
 
     // Set width & height dimensions
@@ -419,9 +419,14 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
 
       // Get numerical data if has no childrens
       if (!hasChildrens) {
-        for (var year in columns) {
+        var value, year;
+        for (year in columns) {
           column_name = columns[year];
-          child[year] = item[field][column_name] || 0;
+          value = item[field][column_name];
+          // Avoid undefined or negative values
+          if (value !== undefined && value >= 0) {
+            child[year] = value;
+          }
         }
       }
 
@@ -440,6 +445,8 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
     for (var id in breakdown.sub) {
       getChildrenTree(breakdown.sub[id], id, 'r', 1);
     }
+
+    console.table(children);
 
     return children;
   }
