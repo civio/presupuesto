@@ -446,8 +446,6 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
       getChildrenTree(breakdown.sub[id], id, 'r', 1);
     }
 
-    console.table(children);
-
     return children;
   }
 
