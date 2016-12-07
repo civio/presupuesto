@@ -2,8 +2,23 @@
 
   padding-top: $grid-gutter-width;
 
-  .table th{
-    font-weight: $font-weight-600;
+  .table{
+    margin-bottom: 0;
+
+    thead{
+      text-transform: uppercase;
+    }
+
+    th{
+      font-weight: $font-weight-600;
+    }
+
+    >thead>tr>th,
+    >thead>tr>td,
+    >tbody>tr>th,
+    >tbody>tr>td{
+      padding: $grid-gutter-width/3 0px;
+    }
   }
   
   .alert{
@@ -38,18 +53,18 @@
 
     .panel-heading{
       background: $page-header-bg;
+      padding: $grid-gutter-width/2;
 
       h3{
-        margin: $grid-gutter-width/3 0;
-
-        &:before{
-          color: $brand-secondary;
-        }
+        font-size: 1.375em;
+        font-weight: $font-weight-400 !important;
+        text-transform: uppercase;
+        margin: 0;  //$grid-gutter-width/3 0;
       }
     }
 
     .panel-body{
-      padding: $grid-gutter-width/3 $grid-gutter-width/2 0;
+      padding: 0 $grid-gutter-width/2;
     }
   }
 
@@ -90,29 +105,30 @@
 
   .results-concepts{
 
-    th#inout,
-    [headers^="concept2"]{
+    th.col-2,
+    td.col-2{
       text-align: right;
     }
 
-    .concept-block {
-      font-weight: $font-weight-600;
+    .concept-heading,
+    .concept-value-heading{
+      color: $gray;
+      font-size: .913em;
+      margin-bottom: 8px;
+    }
+    .concept-heading a{
+      color: $gray;
     }
 
-    .concept {
+    .concept,
+    .concept-value{
       font-size: 1.125em; 
-      font-weight: $font-weight-600; 
-      //margin: 0 0 .25em;
+      margin: 0;
     }
-  
-    .programme {
-      display: block; 
-      font-size: .875em; 
-      font-style: italic; 
-      margin: 0 0 .5em;
+
+    .concept{
+      font-weight: $font-weight-700; 
     }
-  
-    .date {margin: 0;}
   }
 
   .pagination-container{
