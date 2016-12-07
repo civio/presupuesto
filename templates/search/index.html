@@ -211,27 +211,20 @@
                       {% endif %}
                       </a>
                     {% endif %}
-                    {# Policy #}
-                    {% if item.level==main_entity_level and item.expense and item.policy %}
-                      | <a class="policy" href="{% url 'budget_app.views.policies_show' item['policy'], descriptions['functional'].get(item['policy'])|slugify %}" id="policy-name-link">{{ descriptions['functional'].get(item['policy']) }}</a>
+                    {# Programme/Article #}
+                    {# XXX: We could try to show this for small entities, but we only have descriptions for top-level one #}
+                    {% if item.level==main_entity_level %}
+                      {% if item.expense %}
+                        {% if item.programme %}
+                          | <a class="programme" href="{% url 'budget_app.views.programmes_show' item.programme, descriptions['functional'].get(item.programme)|slugify %}">{{ descriptions['functional'].get(item.programme) }}</a>
+                        {% endif %}
+                      {% else %}
+                        | <a class="programme" href="{% url 'budget_app.views.income_articles_show' item['article'], descriptions['income'].get(item['article'])|slugify %}" id="policy-name-link">{{ descriptions['income'].get(item.article) }}</a>
+                      {% endif %}
                     {% endif %}
                   </p>
       
-                  {# Programme/Article #}
-                  {# XXX: We could try to show this for small entities, but we only have descriptions for top-level one #}
-                  {% if item.level==main_entity_level %}
-                    {% if item.expense %}
-                      {% if item.programme %}
-                        <p class="concept-heading">
-                          <a class="programme" href="{% url 'budget_app.views.programmes_show' item.programme, descriptions['functional'].get(item.programme)|slugify %}">{{ descriptions['functional'].get(item.programme) }}</a>
-                        </p>
-                      {% endif %}
-                    {% else %}
-                      <p class="concept-heading">
-                        <a class="programme" href="{% url 'budget_app.views.income_articles_show' item['article'], descriptions['income'].get(item['article'])|slugify %}" id="policy-name-link">{{ descriptions['income'].get(item.article) }}</a>
-                      </p>
-                    {% endif %}
-                  {% endif %}
+                  
 
                   {# Concept name #}
                   <p class="concept">
