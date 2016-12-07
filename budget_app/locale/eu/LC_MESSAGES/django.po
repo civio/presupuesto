@@ -489,9 +489,13 @@ msgstr "Politikak eta Programak"
 msgid "Política / Programa"
 msgstr "Politika / Programa"
 
-#: templates/search/index.html:126 templates/search/index.html.py:130
-msgid "Conceptos"
-msgstr "Kontzeptuak"
+#: templates/search/index.html:177
+msgid "Partidas"
+msgstr "Elementuak"
+
+#: templates/search/index.html:184
+msgid "Partida"
+msgstr "Elementua"
 
 #: templates/search/index.html:134
 msgid "Gastos / Ingresos"

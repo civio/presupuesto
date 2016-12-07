@@ -80,7 +80,7 @@
       {% if policies_ids or programmes_per_policy %}
       <div class="results-policies panel">
         <div class="panel-heading">
-          <h3 class="icon-policy">{{ _('Políticas y Programas') }}</h3>
+          <h3>{{ _('Políticas y Programas') }}</h3>
         </div>
         <div class="panel-body">
           <table class="table" summary="Resultados encontrados en Políticas y programas para el término buscado">
@@ -123,7 +123,7 @@
       {% if articles or headings %}
       <div class="results-policies panel">
         <div class="panel-heading">
-          <h3 class="icon-policy">{{ _('Artículos y conceptos') }}</h3>
+          <h3>{{ _('Artículos y conceptos') }}</h3>
         </div>
         <div class="panel-body">
           <table class="table" summary="Resultados encontrados en Artículos para el término buscado">
@@ -174,14 +174,14 @@
       {% if items %}
       <div class="results-concepts panel">
         <div class="panel-heading">
-          <h3>{{ _('Conceptos') }}</h3>
+          <h3>{{ _('Partidas') }}</h3>
         </div>
         <div class="panel-body">
-          <table class="table" summary="Resultados encontrados en Conceptos para el término buscado">
-            <caption class="hidden">{{ _('Conceptos') }}</caption>
+          <table class="table" summary="Resultados encontrados en Partidas para el término buscado">
+            <caption class="hidden">{{ _('Partidas') }}</caption>
             <thead>
               <tr>
-                <th id="concept">{{ _('Concepto') }}</th>
+                <th id="concept">{{ _('Partida') }}</th>
                 <th id="inout">{{ _('Gastos / Ingresos') }}</th>
               </tr>
             </thead>
@@ -195,7 +195,7 @@
                 {% set show_side = 'expense' if item.expense else 'income' %}
               {% endif %}
               <tr>
-                <th data-th="Concepto" headers="concept" id="concept1" scope="row">
+                <th data-th="Partida" headers="concept" id="concept1" scope="row">
                   <div class="concept-block">
                     {# Concept name #}
                     {% if item.level==main_entity_level %}
@@ -352,7 +352,7 @@
       {% if terms %}
       <div class="results-terms panel">
         <div class="panel-heading">
-          <h3 class="icon-glossary">{{ _('Términos') }}</h3>
+          <h3>{{ _('Términos') }}</h3>
         </div>
         <div class="panel-body">
           <table class="table glossary-terms">

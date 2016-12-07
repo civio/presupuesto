@@ -495,9 +495,13 @@ msgstr "Políticas e Programas"
 msgid "Política / Programa"
 msgstr "Política / Programa"
 
-#: templates/search/index.html:126 templates/search/index.html.py:130
-msgid "Conceptos"
-msgstr "Concepto"
+#: templates/search/index.html:177
+msgid "Partidas"
+msgstr "Liñas"
+
+#: templates/search/index.html:184
+msgid "Partida"
+msgstr "Liña"
 
 #: templates/search/index.html:134
 msgid "Gastos / Ingresos"
