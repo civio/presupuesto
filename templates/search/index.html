@@ -6,11 +6,8 @@
 
   <!-- Tax Receipt Header -->
   <div class="search-header section-header">
-
     <div class="container">
-
       <h2 class="page-title">{{ query.capitalize() }}</h2>
-      
     </div>
   </div>
 
@@ -18,7 +15,6 @@
     <div class="container">
 
       <div class="row">
-
         <div class="col-sm-6">
           <p class="alert note">
             {{ _('Hemos encontrado <strong>%s resultados</strong> relacionados con <strong>%s</strong>.')|format(results_size, query)|safe }}
@@ -83,33 +79,32 @@
           <h3>{{ _('Políticas y Programas') }}</h3>
         </div>
         <div class="panel-body">
-          <table class="table" summary="Resultados encontrados en Políticas y programas para el término buscado">
-            <caption class="hidden">{{ _('Política / Programa') }}</caption>
+          <table class="table">
             <thead>
               <tr>
-                <th id="policy-program">{{ _('Política / Programa') }}</th>
+                <th class="col-1">{{ _('Política') }}</th>
+                <th class="col-2">{{ _('Programa') }}</th>
               </tr>
             </thead>
             <tbody>
               {% for policy_id in policies_ids %}
               <tr>
-                <th data-th="Política" headers="policy-program" id="programme1" scope="row">
-                  <p class="policy">
-                    <a href="{% url 'budget_app.views.policies_show' policy_id, descriptions['functional'].get(policy_id)|slugify %}" id="policy-name-link">{{ descriptions['functional'].get(policy_id) }}</a>
-                  </p>
-                </th>
+                <td class="col-1">
+                  <a href="{% url 'budget_app.views.policies_show' policy_id, descriptions['functional'].get(policy_id)|slugify %}" id="policy-name-link">{{ descriptions['functional'].get(policy_id) }}</a>
+                </td>
+                <td></td>
               </tr>
               {% endfor %}
 
               {% for policy_id, programmes in programmes_per_policy.iteritems() %}
                 {% for programme_id in programmes %}
                 <tr>
-                  <th data-th="Programa" headers="policy-program" id="programme1" scope="row">
+                  <td class="col-1">
+                    <a href="{% url 'budget_app.views.policies_show' policy_id, descriptions['functional'].get(policy_id)|slugify %}" id="policy-name-link">{{ descriptions['functional'].get(policy_id) }}</a>
+                  </td>
+                  <td class="col-2">
                     <a href="{% url 'budget_app.views.programmes_show' programme_id, descriptions['functional'].get(programme_id|slugify) %}">{{ descriptions['functional'].get(programme_id) }}</a>
-                    <p class="policy">
-                      <a href="{% url 'budget_app.views.policies_show' policy_id, descriptions['functional'].get(policy_id)|slugify %}" id="policy-name-link">{{ descriptions['functional'].get(policy_id) }}</a>
-                    </p>
-                  </th>
+                  </td>
                 </tr>
                 {% endfor %}
               {% endfor %}
@@ -126,43 +121,44 @@
           <h3>{{ _('Artículos y conceptos') }}</h3>
         </div>
         <div class="panel-body">
-          <table class="table" summary="Resultados encontrados en Artículos para el término buscado">
-            <caption class="hidden">{{ _('Artículo / Concepto') }}</caption>
+          <table class="table">
             <thead>
               <tr>
-                <th id="policy-program">{{ _('Artículo / Concepto') }}</th>
+                <th class="col-1">{{ _('Artículo') }}</th>
+                <th class="col-2">{{ _('Concepto') }}</th>
               </tr>
             </thead>
             <tbody>
               {% for article in articles %}
               <tr>
-                <th data-th="Programa" headers="policy-program" id="programme1" scope="row">
-                  <p class="policy">
-                    {% if article.expense %}
-                    <a href="{% url 'budget_app.views.expense_articles_show' article.article, descriptions['expense'].get(article.article|slugify) %}">{{ descriptions['expense'].get(article.article) }}</a>
-                    {% else %}
-                    <a href="{% url 'budget_app.views.income_articles_show' article.article, descriptions['income'].get(article.article|slugify) %}">{{ descriptions['income'].get(article.article) }}</a>
-                    {% endif %}
-                  </p>
-                </th>
+                <td class="col-1">
+                {% if article.expense %}
+                  <a href="{% url 'budget_app.views.expense_articles_show' article.article, descriptions['expense'].get(article.article|slugify) %}">{{ descriptions['expense'].get(article.article) }}</a>
+                {% else %}
+                  <a href="{% url 'budget_app.views.income_articles_show' article.article, descriptions['income'].get(article.article|slugify) %}">{{ descriptions['income'].get(article.article) }}</a>
+                {% endif %}
+                </td>
+                <td class="col-2"></td>
               </tr>
               {% endfor %}
 
               {% for heading in headings %}
               <tr>
-                <th data-th="Programa" headers="policy-program" id="programme1" scope="row">
-                  {% if heading.expense %}
+                <td class="col-1">
+                {% if heading.expense %}
+                  <a href="{% url 'budget_app.views.expense_articles_show' heading.article, descriptions['expense'].get(heading.article|slugify) %}">{{ descriptions['expense'].get(heading.article) }}</a>
+                {% else %}
+                  <a href="{% url 'budget_app.views.income_articles_show' heading.article, descriptions['income'].get(heading.article|slugify) %}">{{ descriptions['income'].get(heading.article) }}</a>
+                {% endif %}
+                </td>
+
+                <td class="col-2">
+                {% if heading.expense %}
                   <a href="{% url 'budget_app.views.expense_articles_show' heading.article, descriptions['expense'].get(heading.article|slugify) %}">{{ descriptions['expense'].get(heading.heading) }}</a>
-                  <p class="policy">
-                    <a href="{% url 'budget_app.views.expense_articles_show' heading.article, descriptions['expense'].get(heading.article|slugify) %}">{{ descriptions['expense'].get(heading.article) }}</a>
-                  </p>
-                  {% else %}
+                {% else %}
                   <a href="{% url 'budget_app.views.income_articles_show' heading.article, descriptions['income'].get(heading.article|slugify) %}">{{ descriptions['income'].get(heading.heading) }}</a>
-                  <p class="policy">
-                    <a href="{% url 'budget_app.views.income_articles_show' heading.article, descriptions['income'].get(heading.article|slugify) %}">{{ descriptions['income'].get(heading.article) }}</a>
-                  </p>
                   {% endif %}
-                </th>
+                </td>
               </tr>
               {% endfor %}
             </tbody>
@@ -177,8 +173,7 @@
           <h3>{{ _('Partidas') }}</h3>
         </div>
         <div class="panel-body">
-          <table class="table" summary="Resultados encontrados en Partidas para el término buscado">
-            <caption class="hidden">{{ _('Partidas') }}</caption>
+          <table class="table">
             <thead>
               <tr>
                 <th class="col-1">{{ _('Partida') }}</th>
@@ -216,19 +211,27 @@
                       {% endif %}
                       </a>
                     {% endif %}
-                    |
-                    {# Programme/Article #}
-                    {# XXX: We could try to show this for small entities, but we only have descriptions for top-level one #}
-                    {% if item.level==main_entity_level %}
-                      {% if item.expense %}
-                        {% if item.programme %}
-                        <a class="programme" href="{% url 'budget_app.views.programmes_show' item.programme, descriptions['functional'].get(item.programme)|slugify %}">{{ descriptions['functional'].get(item.programme) }}</a>
-                        {% endif %}
-                      {% else %}
-                        <a class="programme" href="{% url 'budget_app.views.income_articles_show' item['article'], descriptions['income'].get(item['article'])|slugify %}" id="policy-name-link">{{ descriptions['income'].get(item.article) }}</a>
-                      {% endif %}
+                    {# Policy #}
+                    {% if item.level==main_entity_level and item.expense and item.policy %}
+                      | <a class="policy" href="{% url 'budget_app.views.policies_show' item['policy'], descriptions['functional'].get(item['policy'])|slugify %}" id="policy-name-link">{{ descriptions['functional'].get(item['policy']) }}</a>
                     {% endif %}
                   </p>
+      
+                  {# Programme/Article #}
+                  {# XXX: We could try to show this for small entities, but we only have descriptions for top-level one #}
+                  {% if item.level==main_entity_level %}
+                    {% if item.expense %}
+                      {% if item.programme %}
+                        <p class="concept-heading">
+                          <a class="programme" href="{% url 'budget_app.views.programmes_show' item.programme, descriptions['functional'].get(item.programme)|slugify %}">{{ descriptions['functional'].get(item.programme) }}</a>
+                        </p>
+                      {% endif %}
+                    {% else %}
+                      <p class="concept-heading">
+                        <a class="programme" href="{% url 'budget_app.views.income_articles_show' item['article'], descriptions['income'].get(item['article'])|slugify %}" id="policy-name-link">{{ descriptions['income'].get(item.article) }}</a>
+                      </p>
+                    {% endif %}
+                  {% endif %}
 
                   {# Concept name #}
                   <p class="concept">
@@ -253,14 +256,8 @@
                       <a href="{{ url(view_name, item.name|slugify, item_id) }}#item={{item_anchor}}" id="policy-name-link">{{ item.description|safe }}</a>
                     {% endif %}
                   </p>
-
-                  {# Policy #}
-                  {% if item.level==main_entity_level and item.expense and item.policy %}
-                  <p class="policy">
-                    <a href="{% url 'budget_app.views.policies_show' item['policy'], descriptions['functional'].get(item['policy'])|slugify %}" id="policy-name-link">{{ descriptions['functional'].get(item['policy']) }}</a>
-                  </p>
-                  {% endif %}
                 </td>
+
                 <td class="col-2">
                   <p class="concept-value-heading">
                     {{ 'Gastos' if item.expense else 'Ingresos' }}
@@ -285,48 +282,40 @@
           <h3>{{ _('Pagos e inversiones') }}</h3>
         </div>
         <div class="panel-body">
-          <table class="table" summary="Resultados encontrados en Pagos e Inversiones para el término buscado">
-            <caption class="hidden">{{ _('Pagos e inversiones') }}</caption>
+          <table class="table">
             <thead>
               <tr>
-                <th id="concept">{{ _('Concepto') }}</th>
-                <th id="inout">{{ _('Cantidad') }}</th>
+                <th class="col-1">{{ _('Concepto') }}</th>
+                <th class="col-2">{{ _('Cantidad') }}</th>
               </tr>
             </thead>
 
             <tbody>
             {% for payment in payments %}
               <tr>
-                <th data-th="Concepto" headers="concept" id="concept1" scope="row">
-                  <div class="concept-block">
-                    {# Concept name #}
-                    <p class="concept icon-concept">
-                      <a href="{{ url('budget_app.views.payments') }}#description={{payment.description}}" id="policy-name-link">{{ payment.payee|safe }}: {{ payment.description|safe }}</a>
-                    </p>
+                <td class="col-1">
+                  {# Year and location #}
+                  {% if payment.date %}
+                  <p class="concept-heading">
+                    {{ payment.date }}
+                  </p>
+                  {% endif %}
 
-                    {# Programme/Article #}
-                    {% if payment.programme %}
-                    <p class="programme icon-programme">
-                      <a href="{% url 'budget_app.views.programmes_show' payment.programme, payment.fc_description|slugify %}">{{ payment.fc_description|safe }}</a>
-                    </p>
-                    {% endif %}
+                  {# Concept name #}
+                  <p class="concept">
+                    <a href="{{ url('budget_app.views.payments') }}#description={{payment.description}}" id="policy-name-link">{{ payment.payee|safe }}: {{ payment.description|safe }}</a>
+                  </p>
 
-                    {# Year and location #}
-                    {% if payment.date %}
-                    <p class="date icon-calendar">
-                      {% if show_entity_names %}
-                      {{ payment.name }}
-                      {% endif %}
-                      {{ payment.date }}
-                    </p>
-                    {% endif %}
-                  </div>
-                </th>
-                <td data-th="Pagos" headers="concept2 inout">
-                  <p>
-                    <span class="n-<%= payment.expense ? 'out' : 'in' %>">
-                      {{ formatter(payment.amount/100) }} €
-                    </span>
+                  {# Programme/Article #}
+                  {% if payment.programme %}
+                  <p class="programme">
+                    <a href="{% url 'budget_app.views.programmes_show' payment.programme, payment.fc_description|slugify %}">{{ payment.fc_description|safe }}</a>
+                  </p>
+                  {% endif %}
+                </td>
+                <td class="col-2">
+                  <p class="concept-value">
+                    {{ formatter(payment.amount/100) }} €
                   </p>
                 </td>
               </tr>

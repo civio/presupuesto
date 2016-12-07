@@ -13,6 +13,10 @@
       font-weight: $font-weight-600;
     }
 
+    td{
+      vertical-align: bottom;
+    }
+
     >thead>tr>th,
     >thead>tr>td,
     >tbody>tr>th,
@@ -84,22 +88,14 @@
     }
   }
 
-  .policy {
-    font-size: .75em;
-    margin: $grid-gutter-width/6 0;
+  .results-policies{
+    .table td{
+      font-size: 1.125em;
+    }
 
-    a {
-      display: inline-block;
-      background: $gray-light;
-      color: white;
-      padding: $grid-gutter-width/6 $grid-gutter-width/3;
-      text-transform: uppercase;
-      font-weight: $font-weight-400;
-
-      &:hover{
-        background: $gray;
-        text-decoration: none;
-      }
+    td.col-1{
+      font-weight: $font-weight-600;
+      padding-right: $grid-gutter-width/3;
     }
   }
 
@@ -127,13 +123,17 @@
     }
 
     .concept{
-      font-weight: $font-weight-700; 
+      font-weight: $font-weight-600; 
     }
   }
 
   .pagination-container{
     text-align: center;
     margin: $grid-gutter-width 0;
+
+    .pagination{
+      margin-top: 0;
+    }
   }
 }
 
