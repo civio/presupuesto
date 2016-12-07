@@ -74,14 +74,11 @@
   .panel.indicators{
     margin-bottom: $grid-gutter-width/2;
 
-    .panel-content > p{
-      margin-bottom: $grid-gutter-width/3;
-      padding-bottom: $grid-gutter-width/3;
-      border-bottom: 1px solid mix( $data-panel-color, white, 40% );
-
-      &:last-child{
-        margin-bottom: 0;
-        padding-bottom: 0;
+    .row{
+      [class^="col-"]{
+        border-top: 1px solid mix( $data-panel-color, white, 40% );
+      }
+      &:first-child [class^="col-"]{
         border: none;
       }
     }
@@ -123,7 +120,7 @@
     }
 
     #totals-year{
-      float: right;
+      //float: right;
       margin-top: 0;
     }
   }
@@ -132,33 +129,71 @@
 #totals-panel{
   margin-bottom: $grid-gutter-width;
 
+  .panel-title{
+    padding-right: 0;
+    padding-left: 0;
+  }
+
   .panel-title,
   .panel-content{
     font-size: 1.375em;
   }
-}
 
-#non-financial-total{
-  display: none;
-  border-top: none;
-  margin-top: -1px;
-
-  .panel-title{
-    color: $text-color;
-    background: none;
-    margin-left: $grid-gutter-width/2;
-    margin-right: $grid-gutter-width/2;
-    padding-left: 0;
-    padding-right: 0;
+  .panel-content{
+    padding-top: 0;
     padding-bottom: 0;
-    border-top: 1px solid $data-panel-color;
 
-    .main-label{
-      font-weight: $font-weight-600;
+    .row{
+      margin-right: 0;
+      margin-left: 0;
+    }
+
+    [class^="col-"]{
+      padding: $grid-gutter-width/3 0;
     }
   }
 
-  .panel-content{
-    font-size: 1.25em;
+  #total{
+    font-size: 1.125em;
+    font-weight: $font-weight-700;
+    text-transform: none;
+
+    [class^="col-"]{
+      padding: $grid-gutter-width/2 0;
+    }
+  }
+
+  #financial-total,
+  #non-financial-total{
+    display: none;
+    text-transform: none;
+    border-top: 1px solid $data-panel-color;
+
+    //margin-top: -1px;
+
+    /*
+    .panel-title{
+      color: $text-color;
+      background: none;
+      margin-left: $grid-gutter-width/2;
+      margin-right: $grid-gutter-width/2;
+      padding-left: 0;
+      padding-right: 0;
+      padding-bottom: 0;
+      border-top: 1px solid $data-panel-color;
+
+      .main-label{
+        font-weight: $font-weight-600;
+      }
+    }
+
+    .panel-content{
+      font-size: 1.25em;
+    }
+    */
+  }
+
+  #financial-total{
+    border-top-color: mix( $data-panel-color, white, 40% );
   }
 }

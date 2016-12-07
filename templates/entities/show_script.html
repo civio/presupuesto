@@ -53,9 +53,11 @@
       }
 
       if ( !includeFinancialChapters ) {
+        console.log('includeFinancialChapters!');
         $("#non-financial-total "+classSelector+"-amount").text(format(totalNonFinancial));
+        $("#financial-total "+classSelector+"-amount").text(format(totalFinancial));
       }
-      $("#main-total "+classSelector+"-amount").text(format(totalNonFinancial+totalFinancial));
+      $("#main-total #total "+classSelector+"-amount").text(format(totalNonFinancial+totalFinancial));
     }
 
     function setFunctionalTotals(breakdown, columnDef, classSelector) {
@@ -63,8 +65,10 @@
           format = function(amount) { return columnDef.render(amount, 'display', breakdown); },
           total = getTotal(breakdown);
       if ( !includeFinancialChapters ) {
-        total += getTotal(financialExpenseBreakdown);
-        $("#non-financial-total "+classSelector+"-amount").text(format(getTotal(breakdown)));
+        var totalNonFinancial = getTotal(financialExpenseBreakdown)
+        total += totalNonFinancial;
+        $("#non-financial-total "+classSelector+"-amount").text(format(totalNonFinancial));
+        $("#financial-total "+classSelector+"-amount").text(format(total-totalNonFinancial));
       }
       $("#main-total "+classSelector+"-amount").text(format(total));
     }
@@ -185,7 +189,7 @@
 
       // We have two totals: non-financial/financial. Show non-financial panel only when needed
       if ( !includeFinancialChapters ) {
-        $('#non-financial-total').show();
+        $('#non-financial-total, #financial-total').show();
       }
 
       // Fill in the amounts in the totals
