@@ -5,6 +5,10 @@
     display: block;
     font-weight: $font-weight-400;
     margin-top: $grid-gutter-width/3;
+
+    small{
+      font-weight: $font-weight-300;
+    }
   }
 
   .panel{
@@ -127,17 +131,19 @@
 }
 
 #totals-panel{
-  margin-bottom: $grid-gutter-width;
+  margin-bottom: 1.5*$grid-gutter-width;
 
   .panel-title{
     padding-right: 0;
     padding-left: 0;
   }
 
+  /*
   .panel-title,
   .panel-content{
     font-size: 1.375em;
   }
+  */
 
   .panel-content{
     padding-top: 0;
