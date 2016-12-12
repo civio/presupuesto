@@ -212,7 +212,7 @@
           mainLabel = '{{ name }}',
           executionLabelPostfix = getExecutionTotalLabel(budgetStatuses[uiState.year], budgetStatusLabels);
       
-      TotalHelpers.setLabels('{{ _("Total") }} '+uiState.year+' '+executionLabelPostfix, executedLabel, mainLabel, includeFinancialChapters);
+      TotalHelpers.setLabels(uiState.year+' '+executionLabelPostfix, executedLabel, mainLabel, includeFinancialChapters);
 
       // Set total budgeted amounts
       TotalHelpers.setEconomicTotals(breakdown, columnDef, '.total-budgeted', includeFinancialChapters);
