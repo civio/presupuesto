@@ -158,11 +158,11 @@
                         TotalHelpers.setEconomicTotals;
       
       // Set total budgeted amount
-      setTotals(breakdown, columnDef, '.total-budgeted', includeFinancialChapters, financialExpenseBreakdown);
+      setTotals(breakdown, columnDef, '.total-budgeted', includeFinancialChapters, (!includeFinancialChapters) ? financialExpenseBreakdown : null);
 
       // Show total budgeted executed if hasActualData or clear otherwise
       if ( hasActualData ) {
-        setTotals(breakdown, executionColumnDef, '.total-executed', includeFinancialChapters, financialExpenseBreakdown);
+        setTotals(breakdown, executionColumnDef, '.total-executed', includeFinancialChapters, (!includeFinancialChapters) ? financialExpenseBreakdown : null);
       } else {
         TotalHelpers.clear('.total-executed');
       }
