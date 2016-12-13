@@ -489,10 +489,9 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
   // spending, not both. This matches the data we use for display. Using both budget and actual
   // would be wrong, although in normal scenarios the difference wouldn't be huge.
   function calculateMaxTreemapValueEver() {
-    var maxValue = 0;
-    for (var year in yearTotals) {
-      maxValue = Math.max(maxValue, getValue(yearTotals[year].income || 0, uiState.format, 'income', year) );
-      maxValue = Math.max(maxValue, getValue(yearTotals[year].expense || 0, uiState.format, 'expense', year) );
+    var year, maxValue = 0;
+    for (year in yearTotals) {
+      maxValue = Math.max( maxValue, getValue(yearTotals[year][uiState.field] || 0, uiState.format, uiState.field, year) );
     }
     return maxValue;
   }
