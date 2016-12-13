@@ -1,86 +1,68 @@
 <script>
   $(function () {
-    var totalTaxPaid = 0;
 
-    // Display amount as expense per capita
-    function calculatePersonalTax(value, type, item) {
-      if (value == null) return null;
-      if (type === 'filter') return value;  // We filter based on the raw data
+    var breakdown = {{ breakdown.to_json( labels=descriptions['functional'] )|safe }},
+        getBreakdownValue = getBreakdownValueFunction('expense', '{{ latest_budget.name()|safe }}'),
+        gridData = breakdownToTable(breakdown),
+        myGrid;
 
-      var percentage = value / getBreakdownValue(item.root);
-      return formatDecimal(percentage * totalTaxPaid) + " €";
-    }
 
-    function formatTaxAmount(value) {
-      return numeral(value).format( '0,0.00', Math.floor ) + " €";
-    }
+    // Set tax receipt taxes values
+    TaxReceipt.houseTax        = [333.91, 754.22, 1266.23, 1732.10];
+    TaxReceipt.vehicleTax      = [0, 68.16, 143.88];
+    TaxReceipt.vehicleExtraTax = [0, 68.16, 143.88];
+    TaxReceipt.garbageTax      = [112.50, 115.09, 109.86, 94.18];
+    TaxReceipt.parkingTax      = [0, 24.96, 163.52];
 
-    function getHouseTaxPaid() {
-      return [333.91, 754.22, 1266.23, 1732.10][$("#select-house").val()];
-    }
-    function getVehicleTaxPaid() {
-      return [0, 68.16, 143.88][$("#select-vehicle").val()];
-    }
-    function getExtraVehicleTaxPaid() {
-      return [0, 68.16, 143.88][$("#select-extra-vehicle").val()];
-    }
-    function getGarbageTaxPaid() {
-      return [112.50, 115.09, 109.86, 94.18][$("#select-garbage").val()];
-    }
-    function getParkingTaxPaid() {
-      return [0, 24.96, 163.52][$("#select-parking").val()];
-    }
+    // Override redrawGrid method
+    TaxReceipt.redrawGrid = function() {
+      if ( myGrid !== undefined ) {
+        myGrid.destroy();
+      }
 
-    function redrawGrid() {
-      var houseTaxPaid = getHouseTaxPaid();
-      $('#select-house-tax').text(formatTaxAmount(houseTaxPaid));
-
-      var vehicleTaxPaid = getVehicleTaxPaid();
-      $('#select-vehicle-tax').text(formatTaxAmount(vehicleTaxPaid));
-
-      var extraVehicleTaxPaid = getExtraVehicleTaxPaid();
-      $('#select-extra-vehicle-tax').text(formatTaxAmount(extraVehicleTaxPaid));
-
-      var garbageTaxPaid = getGarbageTaxPaid();
-      $('#select-garbage-tax').text(formatTaxAmount(garbageTaxPaid));
-
-      var parkingTaxPaid = getParkingTaxPaid();
-      $('#select-parking-tax').text(formatTaxAmount(parkingTaxPaid));
-
-      totalTaxPaid = houseTaxPaid + vehicleTaxPaid + extraVehicleTaxPaid + garbageTaxPaid + parkingTaxPaid;
-      $("#tax-amount-paid").text(formatTaxAmount(totalTaxPaid));
-      // XXX: window.location.hash = 'ingresos='+getIncomeInEuros();
-
-      if ( myGrid !== undefined )  myGrid.destroy();
-      myGrid = createBudgetGrid("#myGrid", gridData, [
-        { data: "label", title: '{{ _("Política") }}', render: getPolicyLinkFormatter() },
+      myGrid = createBudgetGrid('#myGrid', gridData, [
+        { data: 'label', title: '{{ _("Política") }}', render: getPolicyLinkFormatter() },
         {
           data: getBreakdownValue,
           title: '{{ _("Gasto") }}',
-          render: calculatePersonalTax,
+          render: TaxReceipt.calculatePersonalTax,
           year: breakdown.years['{{ latest_budget.name()|safe }}']
         }
       ]);
-    }
+    };
+    
+    // Add scenarios
+    TaxReceipt.addStatus('scenario-1', {
+      'house':         0,
+      'vehicle':       1, 
+      'extra-vehicle': 2, 
+      'garbage':       0, 
+      'parking':       0,
+    });
+    TaxReceipt.addStatus('scenario-2', {
+      'house':         1,
+      'vehicle':       1, 
+      'extra-vehicle': 2, 
+      'garbage':       1, 
+      'parking':       1,
+    });
+    TaxReceipt.addStatus('scenario-3', {
+      'house':         2,
+      'vehicle':       0, 
+      'extra-vehicle': 0, 
+      'garbage':       2, 
+      'parking':       0,
+    });
+    TaxReceipt.addStatus('scenario-4', {
+      'house':         3,
+      'vehicle':       1, 
+      'extra-vehicle': 2, 
+      'garbage':       3, 
+      'parking':       2,
+    });
 
-    function setStatus(house, vehicle, extraVehicle, garbage, parking) {
-      $('#select-house').val(house);
-      $('#select-vehicle').val(vehicle);
-      $('#select-extra-vehicle').val(extraVehicle);
-      $('#select-garbage').val(garbage);
-      $('#select-parking').val(parking);
-    }
-    $("#scenario-1").click(function() { setStatus(0, 1, 2, 0, 0); redrawGrid(); return false; });
-    $("#scenario-2").click(function() { setStatus(1, 1, 2, 1, 1); redrawGrid(); return false; });
-    $("#scenario-3").click(function() { setStatus(2, 0, 0, 2, 0); redrawGrid(); return false; });
-    $("#scenario-4").click(function() { setStatus(3, 1, 2, 3, 2); redrawGrid(); return false; });
+    // Initialize tax receipt
+    TaxReceipt.setup( breakdown, getBreakdownValue );
 
-    var breakdown = {{ breakdown.to_json( labels=descriptions['functional'] )|safe }};
-    var gridData = breakdownToTable(breakdown);
-    var getBreakdownValue = getBreakdownValueFunction('expense', '{{ latest_budget.name()|safe }}');
-    var myGrid;
-
-    $("select").change(redrawGrid);
-    redrawGrid();
-  })
+  });
 </script>
