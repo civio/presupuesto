@@ -102,7 +102,7 @@
 
   // Budges Totals Table
   .budget-totals{
-    margin-bottom: $grid-gutter-width;
+    margin-bottom: 1.5*$grid-gutter-width;
     text-align: left;
 
     .panel{
@@ -112,10 +112,12 @@
     .panel-title{
       display: none;
 
+      /*
       .col-sm-4{
         padding-right: 0;
         padding-left: 0;
       }
+      */
     }
 
     .panel-content{
@@ -131,11 +133,6 @@
 
       .col-sm-4{
         padding: $grid-gutter-width/3 0 0;
-      }
-
-      .data-label{
-        float: left;
-        text-transform: none;
       }
 
       .total-executed{
@@ -187,9 +184,6 @@
       }
       .col-sm-4{
         padding: $grid-gutter-width/3;
-      }
-      .data-label{
-        display: none;
       }
     }
   }

@@ -4,7 +4,10 @@
   #totals-year{
     display: block;
     font-weight: $font-weight-400;
-    margin-top: $grid-gutter-width/3;
+    
+    small{
+      font-weight: $font-weight-300;
+    }
   }
 
   .panel{
@@ -41,6 +44,11 @@
         font-weight: $font-weight-300;
       }
     }
+
+    .total-budgeted-label,
+    .total-executed-label{
+      display: none;
+    }
   }
 
   .panel-content{
@@ -60,6 +68,11 @@
       float: right; 
       text-align: right;
     }
+
+    .data-label{
+      float: left;
+      //text-transform: none;
+    }
   
     .total-executed{
       font-size: 1.125em;
@@ -74,15 +87,27 @@
   .panel.indicators{
     margin-bottom: $grid-gutter-width/2;
 
-    .panel-content > p{
-      margin-bottom: $grid-gutter-width/3;
-      padding-bottom: $grid-gutter-width/3;
-      border-bottom: 1px solid mix( $data-panel-color, white, 40% );
+    .panel-content {
+      
+      strong{
+        float: none;
+        text-align: left;
+      }
 
-      &:last-child{
-        margin-bottom: 0;
-        padding-bottom: 0;
-        border: none;
+      [class^="col-"] {
+        padding: $grid-gutter-width/2 0 !important;
+      }
+
+      .row{
+        .col-sm-4{
+          padding-top: 0 !important;
+        }
+        .col-sm-8{
+          border-top: 1px solid mix( $data-panel-color, white, 40% );
+        }
+        &:first-child [class^="col-"] {
+          border: none;
+        }
       }
     }
   }
@@ -115,50 +140,117 @@
   
     @include clearfix();
 
+    .panel-title{
+      .total-budgeted-label,
+      .total-executed-label{
+        display: inline;
+      }
+    }
+
     .panel-content{
+
+      .data-label{
+        display: none;
+      }
 
       .total-executed{       
         margin-bottom: $grid-gutter-width/6;
       }
     }
 
-    #totals-year{
-      float: right;
-      margin-top: 0;
+    .panel.indicators{
+      
+      .panel-content{
+
+        strong{
+          float: right;
+          text-align: right;
+          padding-bottom: 0;
+        }
+
+        .row .col-sm-4{
+          padding-top: $grid-gutter-width/2 !important;
+          border-top: 1px solid mix( $data-panel-color, white, 40% );
+        }
+      }
     }
   }
 }
 
 #totals-panel{
-  margin-bottom: $grid-gutter-width;
-
-  .panel-title,
-  .panel-content{
-    font-size: 1.375em;
-  }
-}
-
-#non-financial-total{
-  display: none;
-  border-top: none;
-  margin-top: -1px;
+  margin-bottom: 1.5*$grid-gutter-width;
 
   .panel-title{
-    color: $text-color;
-    background: none;
-    margin-left: $grid-gutter-width/2;
-    margin-right: $grid-gutter-width/2;
-    padding-left: 0;
     padding-right: 0;
-    padding-bottom: 0;
-    border-top: 1px solid $data-panel-color;
+    padding-left: 0;
+  }
 
-    .main-label{
-      font-weight: $font-weight-600;
+  .panel-content{
+    padding-top: 0;
+    padding-bottom: 0;
+
+    .row{
+      margin-right: 0;
+      margin-left: 0;
+    }
+
+    [class^="col-"]{
+      padding: $grid-gutter-width/3 0 0;
     }
   }
 
-  .panel-content{
-    font-size: 1.25em;
+  #total,
+  #financial-total,
+  #non-financial-total{
+    padding-bottom: $grid-gutter-width/2;
+  }
+
+  #total{
+    font-size: 1.125em;
+    font-weight: $font-weight-600;
+    text-transform: none;
+
+    [class^="col-"]{
+      padding: $grid-gutter-width/2 0 0;
+    }
+  }
+
+  #financial-total,
+  #non-financial-total{
+    display: none;
+    text-transform: none;
+    border-top: 1px solid $data-panel-color;
+
+    .col-sm-6{
+      padding-top: $grid-gutter-width/2;
+    }
+  }
+
+  #financial-total{
+    border-top-color: mix( $data-panel-color, white, 40% );
+  }
+
+  @media (min-width: $screen-sm-min) {
+  
+    .panel-content [class^="col-"] {
+      padding-bottom: $grid-gutter-width/3;
+    }
+
+    #total [class^="col-"] {
+      padding-bottom: $grid-gutter-width/2;
+    }
+
+    #total,
+    #financial-total,
+    #non-financial-total{
+      padding-bottom: 0;
+    }
+
+    #financial-total,
+    #non-financial-total{
+      .col-sm-6{
+        padding-top: $grid-gutter-width/3;
+      }
+    }
   }
 }

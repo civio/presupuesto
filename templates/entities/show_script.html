@@ -37,38 +37,6 @@
     var labelsMinSize = {{ treemap_labels_min_size|safe }};
 
 
-    // Helper functions to set the totals panel
-    // TODO: This is duplicated in policies/show_script.html. Must combine! Ongoing part of #364
-    function setEconomicTotals(breakdown, columnDef, classSelector) {
-      var format = function(amount) { return columnDef.render(amount, 'display', breakdown); },
-          totalNonFinancial = totalFinancial = 0;
-
-      for (var item in breakdown.sub) {
-        var amount = columnDef.data(breakdown.sub[item]);
-        if ( item[0]==='8' || item[0]==='9' ) {
-          totalFinancial += amount
-        } else {
-          totalNonFinancial += amount
-        }
-      }
-
-      if ( !includeFinancialChapters ) {
-        $("#non-financial-total "+classSelector+"-amount").text(format(totalNonFinancial));
-      }
-      $("#main-total "+classSelector+"-amount").text(format(totalNonFinancial+totalFinancial));
-    }
-
-    function setFunctionalTotals(breakdown, columnDef, classSelector) {
-      var getTotal = function(breakdown) { return columnDef.data(breakdown)||0; },
-          format = function(amount) { return columnDef.render(amount, 'display', breakdown); },
-          total = getTotal(breakdown);
-      if ( !includeFinancialChapters ) {
-        total += getTotal(financialExpenseBreakdown);
-        $("#non-financial-total "+classSelector+"-amount").text(format(getTotal(breakdown)));
-      }
-      $("#main-total "+classSelector+"-amount").text(format(total));
-    }
-
     function getColumnDefinition(uiState) {
       var getBreakdownValue = getBreakdownValueFunction(uiState.field, uiState.year);
       return {
@@ -165,36 +133,39 @@
         ,executionColumnDef
 {% endif %}
       ]);
+      
 
-      // Update totals texts
-      $('#totals-year').text(uiState.year);
-      var label = uiState.view == 'income' ? '{{ _("Ingresado") }}' : '{{ _("Gastado") }}';
-      $('#totals-panel .total-executed > span').html( label );
-      var executionLabelPostfix = getExecutionTotalLabel(budgetStatuses[uiState.year], budgetStatusLabels);
-      $("#main-total .main-label").html('{{ _("Total") }}' + executionLabelPostfix);
-
-      // Show actual/budgeted split only when there's data available
-      // (and the field format is not '% of total', gets confusing otherwise)
+      // Get breakdown
       var breakdown = breakdowns[uiState.view],
           hasActualData = breakdown[uiState.field]['actual_'+uiState.year];
-      if ( hasActualData && uiState.format!='percentage' ) {
-        $("#totals-panel .total-executed").show();
+
+      // Hide totals panel if format is '% of total'
+      if ( uiState.format === 'percentage' ) {
+        $('#totals-panel').hide();
       } else {
-        $("#totals-panel .total-executed").hide();
+        $('#totals-panel').show();
       }
 
-      // We have two totals: non-financial/financial. Show non-financial panel only when needed
-      if ( !includeFinancialChapters ) {
-        $('#non-financial-total').show();
-      }
+      // Set total labels
+      var executedLabel = uiState.view == 'income' ? '{{ _("Ingresado") }}' : '{{ _("Gastado") }}',
+          executionLabelPostfix = getExecutionTotalLabel(budgetStatuses[uiState.year], budgetStatusLabels);
 
-      // Fill in the amounts in the totals
-      var setTotals = (uiState.view === 'functional' || uiState.view==='institutional') ?
-                        setFunctionalTotals :
-                        setEconomicTotals;
-      setTotals(breakdown, columnDef, '.total-budgeted');
-      if ( hasActualData )
-        setTotals(breakdown, executionColumnDef, '.total-executed');
+      TotalHelpers.setLabels(uiState.year+' '+executionLabelPostfix, executedLabel, '{{ _("Total") }}', includeFinancialChapters);
+
+
+      var setTotals = (uiState.view === 'functional' || uiState.view === 'institutional') ?
+                        TotalHelpers.setFunctionalTotals :
+                        TotalHelpers.setEconomicTotals;
+      
+      // Set total budgeted amount
+      setTotals(breakdown, columnDef, '.total-budgeted', includeFinancialChapters, (!includeFinancialChapters) ? financialExpenseBreakdown : null);
+
+      // Show total budgeted executed if hasActualData or clear otherwise
+      if ( hasActualData ) {
+        setTotals(breakdown, executionColumnDef, '.total-executed', includeFinancialChapters, (!includeFinancialChapters) ? financialExpenseBreakdown : null);
+      } else {
+        TotalHelpers.clear('.total-executed');
+      }
 
       // Setup & Update Budget Summary
       budgetSummary.update( breakdowns[uiState.view], areas[uiState.view], uiState.field, uiState.view, uiState.year );

@@ -1,25 +1,5 @@
 <script>
   $(function () {
-    // Helper functions to set the totals panel
-    // TODO: This is duplicated in entities/show_script.html. Must combine! Ongoing part of #364
-    function setEconomicTotals(breakdown, columnDef, classSelector) {
-      var format = function(amount) { return columnDef.render(amount, 'display', breakdown); },
-          totalNonFinancial = totalFinancial = 0;
-
-      $.each(breakdown.sub, function(id, value) {
-        var amount = columnDef.data(breakdown.sub[id]);
-        if ( id[0]==='8' || id[0]==='9' )
-          totalFinancial += amount
-        else
-          totalNonFinancial += amount
-      });
-
-      if ( !includeFinancialChapters )
-        $("#non-financial-total "+classSelector+"-amount").text(format(totalNonFinancial));
-      $("#main-total "+classSelector+"-amount").text(format(totalNonFinancial+totalFinancial));
-    }
-
-
     //
     // GRID RENDERING
     //
@@ -215,47 +195,46 @@
 {% endif %}
                         ]);
 
-      // Update totals texts
-      $('#totals-year').text(uiState.year);
-      var label = uiState.field == 'income' ? '{{ _("Ingresado") }}' : '{{ _("Gastado") }}';
-      $('#totals-panel .total-executed > span').html( label );
-      var executionLabelPostfix = getExecutionTotalLabel(budgetStatuses[uiState.year], budgetStatusLabels);
-      $("#main-total .main-label").html('{{ _("Total") }} <strong>{{ name }}</strong>'+ executionLabelPostfix);
 
-      // Show actual/budgeted split only when there's data available
-      // (and the field format is not '% of total', gets confusing otherwise).
-      // Note: total amounts were the same whichever way you break down the items, so any breakdown
-      // would do... but this may change as part of ongoing #364
+      // Get breakdown
       var breakdown = breakdowns['economic'],
           hasActualData = breakdown[uiState.field]['actual_'+uiState.year];
-      if ( hasActualData && uiState.format!='percentage' ) {
-        $("#totals-panel .total-executed").show();
+
+      // Hide totals panel if format is '% of total'
+      if ( uiState.format === 'percentage' ) {
+        $('#totals-panel').hide();
       } else {
-        $("#totals-panel .total-executed").hide();
+        $('#totals-panel').show();
       }
 
-      // We have two totals: non-financial/financial. Show non-financial panel only when needed
-      if ( !includeFinancialChapters ) {
-        $('#non-financial-total').show();
-      }
+      // Set total labels
+      var executedLabel = uiState.field == 'income' ? '{{ _("Ingresado") }}' : '{{ _("Gastado") }}',
+          mainLabel = '{{ name }}',
+          executionLabelPostfix = getExecutionTotalLabel(budgetStatuses[uiState.year], budgetStatusLabels);
+      
+      TotalHelpers.setLabels(uiState.year+' '+executionLabelPostfix, executedLabel, mainLabel, includeFinancialChapters);
 
-      // Fill in the amounts in the totals. Part of ongoing #364
-      setEconomicTotals(breakdown, columnDef, '.total-budgeted');
-      if ( hasActualData )
-        setEconomicTotals(breakdown, executionColumnDef, '.total-executed');
+      // Set total budgeted amounts
+      TotalHelpers.setEconomicTotals(breakdown, columnDef, '.total-budgeted', includeFinancialChapters);
 
-      // Set total values
-      var getTotal = function(breakdown) { return columnDef.data(breakdown)||0; },
-          getActualTotal = function(breakdown) { return executionColumnDef.data(breakdown)||0; },
-          format = function(amount) { return columnDef.render(amount, 'display', breakdown); },
-          formatActual = function(amount) { return executionColumnDef.render(amount, 'display', breakdown); };
-
+      // Show total budgeted executed if hasActualData or clear otherwise
       if ( hasActualData ) {
-        $("#main-total .total-executed-amount").text(formatActual(getActualTotal(breakdown)));
-        $("#main-total .total-budgeted-amount").text(format(getTotal(breakdown)));
+        TotalHelpers.setEconomicTotals(breakdown, executionColumnDef, '.total-executed');
       } else {
-        $("#main-total .total-budgeted-amount").text(format(getTotal(breakdown)));
+        TotalHelpers.clear('.total-executed');
       }
+
+      // Hide financial/non-financial rows if has same value than total
+      if ( !includeFinancialChapters ) {
+        var totalBudgeted = $('#total .total-budgeted-amount').html(),
+            totalExecuted = $('#total .total-executed-amount').html();
+        if ( ($('#non-financial-total .total-budgeted-amount').html() === totalBudgeted || $('#financial-total .total-budgeted-amount').html() === totalBudgeted) && ($('#non-financial-total .total-executed-amount').html() === totalExecuted || $('#financial-total .total-executed-amount').html() === totalExecuted) ) {
+          $('#non-financial-total, #financial-total').hide();
+        } else {
+          $('#non-financial-total, #financial-total').show();
+        }
+      }
+
 
       // Handle the hash the page may have loaded with.
       var state = $.deparam.fragment();
