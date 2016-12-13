@@ -135,11 +135,6 @@
         padding: $grid-gutter-width/3 0 0;
       }
 
-      .data-label{
-        float: left;
-        text-transform: none;
-      }
-
       .total-executed{
         border: none;
         font-weight: $font-weight-600;
@@ -189,9 +184,6 @@
       }
       .col-sm-4{
         padding: $grid-gutter-width/3;
-      }
-      .data-label{
-        display: none;
       }
     }
   }

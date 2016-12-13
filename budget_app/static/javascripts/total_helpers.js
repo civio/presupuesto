@@ -69,7 +69,7 @@ var TotalHelpers = (function() {
 
   // Set Total Labels
   function setLabels(year, executedLabel, mainLabel, includeFinancialChapters) {
-    $('#totals-panel .total-executed-label').html(executedLabel);
+    $('#totals-panel .total-executed-label, #totals-panel .data-label-executed').html(executedLabel);
     $('#totals-year').html(year);
     $('#main-total .main-label').html(mainLabel);
 
