@@ -8,9 +8,9 @@ var TaxReceipt = (function() {
 
   var that = {},
       breakdown,
-      getBreakdownValue,
-      totalTaxPaid = 0;
+      getBreakdownValue;
 
+  that.totalTaxPaid = 0;
 
   // Tax paid select callback
   // We need to define that before taxes object
@@ -71,7 +71,7 @@ var TaxReceipt = (function() {
       return value;  // We filter based on the raw data
 
     var percentage = value / getBreakdownValue(item.root);
-    return formatDecimal(percentage * totalTaxPaid) + ' €';
+    return formatDecimal(percentage * that.totalTaxPaid) + ' €';
   };
 
   that.formatTaxAmount = function(value) {
@@ -86,7 +86,7 @@ var TaxReceipt = (function() {
   // Redraw method to calculate total tax paid & update all taxes values
   that.redraw = function() {
     // Initialize total tax paid to zero
-    totalTaxPaid = 0;
+    that.totalTaxPaid = 0;
 
     var key, tax, taxPaid;
 
@@ -96,13 +96,15 @@ var TaxReceipt = (function() {
       // Get tax amount using its callback
       taxAmount = tax.callback( tax.selector, tax.values );
       // Show formatted tax amount
-      $('#select-'+tax.selector+'-tax').text(that.formatTaxAmount(taxAmount));
+      $('#select-'+tax.selector+'-tax').html(that.formatTaxAmount(taxAmount));
       // Sum tax amount to total tax paid
-      totalTaxPaid += taxAmount;
+      that.totalTaxPaid += taxAmount;
+
+      console.log('totalTaxPaid', tax.selector, taxAmount, that.totalTaxPaid);
     }
     
     // Show formatted total tax paid
-    $('#tax-amount-paid').text(that.formatTaxAmount(totalTaxPaid));
+    $('#tax-amount-paid').html(that.formatTaxAmount(that.totalTaxPaid));
     // XXX: window.location.hash = 'ingresos='+getIncomeInEuros();
   
     // Redraw grid
@@ -114,7 +116,7 @@ var TaxReceipt = (function() {
     breakdown         = _breakdown;
     getBreakdownValue = _getBreakdownValue;
     // Set redraw listener
-    $('select').change(that.redraw);
+    $('.form-user-incomings select, .form-user-incomings input').change(that.redraw);
     that.redraw();
   };
 
