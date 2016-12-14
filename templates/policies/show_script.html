@@ -261,7 +261,8 @@
 
       // Setup Graph
       var colorScale = {{ color_scale|safe }};
-      var labelsMinSize = {{ treemap_labels_min_size|safe }};
+      var labelsMinSize = {{ treemap_labels_min_size }};
+      var labelsFontSizeMin = {{ treemap_labels_font_size_min }};
 
       // Setup treemap chart
       {% if show_treemap %}
@@ -271,6 +272,7 @@
       var currentChart = new BudgetTreemap('#policy-chart-container', stats, budgetStatuses)
         .colors(colorScale)
         .labelsMinSize(labelsMinSize)
+        .labelsFontSizeMin(labelsFontSizeMin)
         .treeLevels(2)
         .setup()
         .update(breakdowns[uiState.view], areasData[uiState.view], uiState);

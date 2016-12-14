@@ -34,8 +34,8 @@
     }
     var i18n          = { 'Presupuestado': 'Presupuestado' };
     var colorScale    = {{ color_scale|safe }};
-    var labelsMinSize = {{ treemap_labels_min_size|safe }};
-
+    var labelsMinSize = {{ treemap_labels_min_size }};
+    var labelsFontSizeMin = {{ treemap_labels_font_size_min }};
 
     function getColumnDefinition(uiState) {
       var getBreakdownValue = getBreakdownValueFunction(uiState.field, uiState.year);
@@ -241,6 +241,7 @@
     var budgetTreemap = new BudgetTreemap('#budget-treemap', stats, budgetStatuses)
       .colors(colorScale)
       .labelsMinSize(labelsMinSize)
+      .labelsFontSizeMin(labelsFontSizeMin)
       .setup();
 
     // Resize treemap

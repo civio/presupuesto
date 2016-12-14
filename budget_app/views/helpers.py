@@ -41,9 +41,13 @@ def get_context(request, css_class='', title=''):
 
     c['color_scale'] = getattr(settings, 'COLOR_SCALE', [])
 
-    c['treemap_labels_min_size'] = 'null'
+    c['treemap_labels_min_size'] = 70
     if hasattr(settings, 'TREEMAP_LABELS_MIN_SIZE'):
         c['treemap_labels_min_size'] = settings.TREEMAP_LABELS_MIN_SIZE
+
+    c['treemap_labels_font_size_min'] = 11
+    if hasattr(settings, 'TREEMAP_LABELS_FONT_SIZE_MIN'):
+        c['treemap_labels_font_size_min'] = settings.TREEMAP_LABELS_FONT_SIZE_MIN
 
     try:
         c['active_tab'] = filter(
