@@ -10,14 +10,43 @@ var TaxReceipt = (function() {
       breakdown,
       getBreakdownValue,
       totalTaxPaid = 0;
-      
-  // Taxes values
-  that.houseTax = [];
-  that.vehicleTax = [];
-  that.vehicleExtraTax = [];
-  that.garbageTax = [];
-  that.parkingTax = [];
 
+
+  // Tax paid select callback
+  // We need to define that before taxes object
+  that.getSelectTaxPaid = function(selector, values) {
+    return values[$('#select-'+selector).val()];
+  };
+
+
+  // Taxes object
+  that.taxes = {
+    house: {
+      selector: 'house',
+      values:   [],
+      callback: that.getSelectTaxPaid
+    },
+    vehicle: {
+      selector: 'vehicle',
+      values:   [],
+      callback: that.getSelectTaxPaid
+    },
+    vehicleExtra: {
+      selector: 'extra-vehicle',
+      values:   [],
+      callback: that.getSelectTaxPaid
+    },
+    garbage: {
+      selector: 'garbage',
+      values:   [],
+      callback: that.getSelectTaxPaid
+    },
+    parking: {
+      selector: 'parking',
+      values:   [],
+      callback: that.getSelectTaxPaid
+    },
+  };
 
   // Add status scenarios
   that.addStatus = function(selector, status) {
@@ -49,47 +78,34 @@ var TaxReceipt = (function() {
     return numeral(value).format( '0,0.00', Math.floor ) + ' €';
   };
 
-  that.getHouseTaxPaid = function() {
-    return that.houseTax[$('#select-house').val()];
-  };
-  that.getVehicleTaxPaid = function() {
-    return that.vehicleTax[$('#select-vehicle').val()];
-  };
-  that.getExtraVehicleTaxPaid = function() {
-    return that.vehicleExtraTax[$('#select-extra-vehicle').val()];
-  };
-  that.getGarbageTaxPaid = function() {
-    return that.garbageTax[$('#select-garbage').val()];
-  };
-  that.getParkingTaxPaid = function() {
-    return that.parkingTax[$('#select-parking').val()];
-  };
-
 
   // Redraw Grid method must be override in tax_receipt_script.html template
   that.redrawGrid = function() {};
 
 
+  // Redraw method to calculate total tax paid & update all taxes values
   that.redraw = function() {
-    var houseTaxPaid = that.getHouseTaxPaid();
-    $('#select-house-tax').text(that.formatTaxAmount(houseTaxPaid));
+    // Initialize total tax paid to zero
+    totalTaxPaid = 0;
 
-    var vehicleTaxPaid = that.getVehicleTaxPaid();
-    $('#select-vehicle-tax').text(that.formatTaxAmount(vehicleTaxPaid));
+    var key, tax, taxPaid;
 
-    var extraVehicleTaxPaid = that.getExtraVehicleTaxPaid();
-    $('#select-extra-vehicle-tax').text(that.formatTaxAmount(extraVehicleTaxPaid));
-
-    var garbageTaxPaid = that.getGarbageTaxPaid();
-    $('#select-garbage-tax').text(that.formatTaxAmount(garbageTaxPaid));
-
-    var parkingTaxPaid = that.getParkingTaxPaid();
-    $('#select-parking-tax').text(that.formatTaxAmount(parkingTaxPaid));
-
-    totalTaxPaid = houseTaxPaid + vehicleTaxPaid + extraVehicleTaxPaid + garbageTaxPaid + parkingTaxPaid;
+    // Loop through the taxes object
+    for(key in that.taxes) {
+      tax = that.taxes[key];
+      // Get tax amount using its callback
+      taxAmount = tax.callback( tax.selector, tax.values );
+      // Show formatted tax amount
+      $('#select-'+tax.selector+'-tax').text(that.formatTaxAmount(taxAmount));
+      // Sum tax amount to total tax paid
+      totalTaxPaid += taxAmount;
+    }
+    
+    // Show formatted total tax paid
     $('#tax-amount-paid').text(that.formatTaxAmount(totalTaxPaid));
     // XXX: window.location.hash = 'ingresos='+getIncomeInEuros();
   
+    // Redraw grid
     that.redrawGrid();
   };
 
