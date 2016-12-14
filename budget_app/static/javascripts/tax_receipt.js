@@ -99,8 +99,6 @@ var TaxReceipt = (function() {
       $('#select-'+tax.selector+'-tax').html(that.formatTaxAmount(taxAmount));
       // Sum tax amount to total tax paid
       that.totalTaxPaid += taxAmount;
-
-      console.log('totalTaxPaid', tax.selector, taxAmount, that.totalTaxPaid);
     }
     
     // Show formatted total tax paid
