@@ -8,16 +8,45 @@ var TaxReceipt = (function() {
 
   var that = {},
       breakdown,
-      getBreakdownValue,
-      totalTaxPaid = 0;
-      
-  // Taxes values
-  that.houseTax = [];
-  that.vehicleTax = [];
-  that.vehicleExtraTax = [];
-  that.garbageTax = [];
-  that.parkingTax = [];
+      getBreakdownValue;
 
+  that.totalTaxPaid = 0;
+
+  // Tax paid select callback
+  // We need to define that before taxes object
+  that.getSelectTaxPaid = function(selector, values) {
+    return values[$('#select-'+selector).val()];
+  };
+
+
+  // Taxes object
+  that.taxes = {
+    house: {
+      selector: 'house',
+      values:   [],
+      callback: that.getSelectTaxPaid
+    },
+    vehicle: {
+      selector: 'vehicle',
+      values:   [],
+      callback: that.getSelectTaxPaid
+    },
+    vehicleExtra: {
+      selector: 'extra-vehicle',
+      values:   [],
+      callback: that.getSelectTaxPaid
+    },
+    garbage: {
+      selector: 'garbage',
+      values:   [],
+      callback: that.getSelectTaxPaid
+    },
+    parking: {
+      selector: 'parking',
+      values:   [],
+      callback: that.getSelectTaxPaid
+    },
+  };
 
   // Add status scenarios
   that.addStatus = function(selector, status) {
@@ -42,27 +71,11 @@ var TaxReceipt = (function() {
       return value;  // We filter based on the raw data
 
     var percentage = value / getBreakdownValue(item.root);
-    return formatDecimal(percentage * totalTaxPaid) + ' €';
+    return formatDecimal(percentage * that.totalTaxPaid) + ' €';
   };
 
   that.formatTaxAmount = function(value) {
     return numeral(value).format( '0,0.00', Math.floor ) + ' €';
-  };
-
-  that.getHouseTaxPaid = function() {
-    return that.houseTax[$('#select-house').val()];
-  };
-  that.getVehicleTaxPaid = function() {
-    return that.vehicleTax[$('#select-vehicle').val()];
-  };
-  that.getExtraVehicleTaxPaid = function() {
-    return that.vehicleExtraTax[$('#select-extra-vehicle').val()];
-  };
-  that.getGarbageTaxPaid = function() {
-    return that.garbageTax[$('#select-garbage').val()];
-  };
-  that.getParkingTaxPaid = function() {
-    return that.parkingTax[$('#select-parking').val()];
   };
 
 
@@ -70,26 +83,29 @@ var TaxReceipt = (function() {
   that.redrawGrid = function() {};
 
 
+  // Redraw method to calculate total tax paid & update all taxes values
   that.redraw = function() {
-    var houseTaxPaid = that.getHouseTaxPaid();
-    $('#select-house-tax').text(that.formatTaxAmount(houseTaxPaid));
+    // Initialize total tax paid to zero
+    that.totalTaxPaid = 0;
 
-    var vehicleTaxPaid = that.getVehicleTaxPaid();
-    $('#select-vehicle-tax').text(that.formatTaxAmount(vehicleTaxPaid));
+    var key, tax, taxPaid;
 
-    var extraVehicleTaxPaid = that.getExtraVehicleTaxPaid();
-    $('#select-extra-vehicle-tax').text(that.formatTaxAmount(extraVehicleTaxPaid));
-
-    var garbageTaxPaid = that.getGarbageTaxPaid();
-    $('#select-garbage-tax').text(that.formatTaxAmount(garbageTaxPaid));
-
-    var parkingTaxPaid = that.getParkingTaxPaid();
-    $('#select-parking-tax').text(that.formatTaxAmount(parkingTaxPaid));
-
-    totalTaxPaid = houseTaxPaid + vehicleTaxPaid + extraVehicleTaxPaid + garbageTaxPaid + parkingTaxPaid;
-    $('#tax-amount-paid').text(that.formatTaxAmount(totalTaxPaid));
+    // Loop through the taxes object
+    for(key in that.taxes) {
+      tax = that.taxes[key];
+      // Get tax amount using its callback
+      taxAmount = tax.callback( tax.selector, tax.values );
+      // Show formatted tax amount
+      $('#select-'+tax.selector+'-tax').html(that.formatTaxAmount(taxAmount));
+      // Sum tax amount to total tax paid
+      that.totalTaxPaid += taxAmount;
+    }
+    
+    // Show formatted total tax paid
+    $('#tax-amount-paid').html(that.formatTaxAmount(that.totalTaxPaid));
     // XXX: window.location.hash = 'ingresos='+getIncomeInEuros();
   
+    // Redraw grid
     that.redrawGrid();
   };
 
@@ -98,7 +114,7 @@ var TaxReceipt = (function() {
     breakdown         = _breakdown;
     getBreakdownValue = _getBreakdownValue;
     // Set redraw listener
-    $('select').change(that.redraw);
+    $('.form-user-incomings select, .form-user-incomings input').change(that.redraw);
     that.redraw();
   };
 

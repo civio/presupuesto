@@ -8,11 +8,22 @@
 
 
     // Set tax receipt taxes values
-    TaxReceipt.houseTax        = [333.91, 754.22, 1266.23, 1732.10];
-    TaxReceipt.vehicleTax      = [0, 68.16, 143.88];
-    TaxReceipt.vehicleExtraTax = [0, 68.16, 143.88];
-    TaxReceipt.garbageTax      = [112.50, 115.09, 109.86, 94.18];
-    TaxReceipt.parkingTax      = [0, 24.96, 163.52];
+    TaxReceipt.taxes.house.values        = [333.91, 754.22, 1266.23, 1732.10];
+    TaxReceipt.taxes.vehicle.values      = [0, 68.16, 143.88];
+    TaxReceipt.taxes.vehicleExtra.values = [0, 68.16, 143.88];
+    TaxReceipt.taxes.garbage.values      = [112.50, 115.09, 109.86, 94.18];
+    TaxReceipt.taxes.parking.values      = [0, 24.96, 163.52];
+
+    // Add extra tax
+    // We can add new taxed to TaxReceipt.taxes object
+    // defining its selector, values array & callback function
+    /*
+    TaxReceipt.taxes.animal = {
+      selector: 'animal',
+      values:   [0, 100, 200, 300, 400],
+      callback: TaxReceipt.getSelectTaxPaid
+    }
+    */
 
     // Override redrawGrid method
     TaxReceipt.redrawGrid = function() {
@@ -23,10 +34,10 @@
       myGrid = createBudgetGrid('#myGrid', gridData, [
         { data: 'label', title: '{{ _("Política") }}', render: getPolicyLinkFormatter() },
         {
-          data: getBreakdownValue,
-          title: '{{ _("Gasto") }}',
+          data:   getBreakdownValue,
+          title:  '{{ _("Gasto") }}',
           render: TaxReceipt.calculatePersonalTax,
-          year: breakdown.years['{{ latest_budget.name()|safe }}']
+          year:   breakdown.years['{{ latest_budget.name()|safe }}']
         }
       ]);
     };
