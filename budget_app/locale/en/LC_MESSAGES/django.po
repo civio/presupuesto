@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-06 13:44+0200\n"
-"PO-Revision-Date: 2016-11-27 20:45+0100\n"
+"PO-Revision-Date: 2016-12-14 11:34+0100\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -125,7 +125,7 @@ msgid "Capítulos I-VII"
 msgstr "Chapters I-VII"
 
 #: templates/budgets/budgets_totals.html:23
-msgid "Subtotal No Financiero"
+msgid "Subtotal no financiero"
 msgstr "Non-financial subtotal"
 
 #: templates/budgets/budgets_totals.html:28
@@ -133,7 +133,7 @@ msgid "Capítulos I-V"
 msgstr "Chapters I-V"
 
 #: templates/budgets/budgets_totals.html:28
-msgid "Subtotal Corriente"
+msgid "Subtotal corriente"
 msgstr "Current subtotal"
 
 #: templates/budgets/budgets_totals.html:33
@@ -141,7 +141,7 @@ msgid "Capítulos VI-VII"
 msgstr "Chapters VI-VII"
 
 #: templates/budgets/budgets_totals.html:33
-msgid "Subtotal de Capital"
+msgid "Subtotal de capital"
 msgstr "Capital subtotal"
 
 #: templates/budgets/budgets_totals.html:38
@@ -149,7 +149,7 @@ msgid "Capítulos VIII-IX"
 msgstr "Chapters VIII-IX"
 
 #: templates/budgets/budgets_totals.html:38
-msgid "Subtotal Financiero"
+msgid "Subtotal financiero"
 msgstr "Financial subtotal"
 
 #: templates/budgets/budgets_totals.html:48
