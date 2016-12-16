@@ -613,8 +613,8 @@ function StackedAreaChart() {
         }
         i--;
       }
-      return _values;
     }
+    return _values;
   };
 
   var getPointsData = function( _data ) {
