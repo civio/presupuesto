@@ -94,7 +94,8 @@ function StackedAreaChart() {
 
   // Resize Event Handler
   _this.resize = function(){
-    if( parseInt(_this.svg.attr('width')) === $(_this.selector).width() ) return;
+    if (parseInt(_this.svg.attr('width')) === $(_this.selector).width())
+      return;
 
     setDimensions();
     _this.update(0);
@@ -113,14 +114,16 @@ function StackedAreaChart() {
       .attr('height', _this.height);
 
     // Update nonexecuted overlays
-    _this.overlays.select('rect')
-      .attr('height', _this.height)
-      .attr('width', function(d){ return _this.x(_this.x.domain()[0]+1); })
-      .attr('x', function(d){ return _this.x(d.key-1); });
+    if (_this.overlays) {
+      _this.overlays.select('rect')
+        .attr('height', _this.height)
+        .attr('width', function(d){ return _this.x(_this.x.domain()[0]+1); })
+        .attr('x', function(d){ return _this.x(d.key-1); });
 
-    _this.overlays.select('text')
-      .attr('x', function(d){ return _this.x(d.key-0.5); })
-      .attr('y', _this.height+10);
+      _this.overlays.select('text')
+        .attr('x', function(d){ return _this.x(d.key-0.5); })
+        .attr('y', _this.height+10);
+    }
   };
 
 
@@ -135,7 +138,7 @@ function StackedAreaChart() {
     // Fill data & stackData arrays
 
     _data.forEach(function(d, i){
-      
+
       // Check gaps in values array & fill with 0
       fillGapsInValues( d.values );
 
@@ -171,6 +174,10 @@ function StackedAreaChart() {
 
     // Setup X domain
     _this.x.domain( d3.extent(_this.years) );
+
+    // Force x axis ticks values to avoid gaps
+    // http://stackoverflow.com/questions/28129412/d3-non-continuous-dates-domain-gives-gaps-on-x-axis
+    _this.xAxis.tickValues(_this.years);
 
     // Set X section width
     _this.xSectionWidth = _this.width /( _this.x.domain()[1] - _this.x.domain()[0] );

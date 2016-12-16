@@ -66,16 +66,19 @@ function initSlider(selector, years, callback, startValue) {
   // Skip if container not exists
   if ($(selector).size()===0) return;
 
+  // Convert years array to number & fill gaps
+  years = fillGapsInYears(years.map(function(d){ return +d; }));
+
   var mostRecentYear = Number(years[years.length-1]);
 
   // Setup bootstrap-slider
   if ( years.length > 1 ) {
     $(selector).slider({
-      min: parseInt(years[0]),
+      min: years[0],
       max: mostRecentYear,
       value: startValue ? startValue : mostRecentYear,
       tooltip: 'always',
-      ticks: years.map(function(d){ return parseInt(d); }),
+      ticks: years,
       ticks_labels: years
     }).on('change', callback );
     
@@ -87,6 +90,19 @@ function initSlider(selector, years, callback, startValue) {
     $(selector).parent().append('<p>'+mostRecentYear+'</p>');
   }
 }
+
+var fillGapsInYears = function( _years ){
+  if ( _years.length !== _years[_years.length-1]-_years[0]+1 ) {
+    var i;
+    for (i = 0; i < _years.length-1; i++) {
+      if(_years[i+1] - _years[i] > 1){
+        _years.push(_years[i]+1);  // Fill gap
+      }
+    }
+    _years.sort(function(a,b){ return a-b; });
+  }
+  return _years;
+};
 
 function getUIState() {
   var field = $('section').data('field'),

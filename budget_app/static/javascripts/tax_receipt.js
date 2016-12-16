@@ -100,7 +100,7 @@ var TaxReceipt = (function() {
       // Sum tax amount to total tax paid
       that.totalTaxPaid += taxAmount;
     }
-    
+
     // Show formatted total tax paid
     $('#tax-amount-paid').html(that.formatTaxAmount(that.totalTaxPaid));
     // XXX: window.location.hash = 'ingresos='+getIncomeInEuros();
