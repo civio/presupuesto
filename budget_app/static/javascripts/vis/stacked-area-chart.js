@@ -140,7 +140,7 @@ function StackedAreaChart() {
     _data.forEach(function(d, i){
 
       // Check gaps in values array & fill with 0
-      fillGapsInValues( d.values );
+      d.values = fillGapsInValues( d.values );
 
       _this.data.push({
         id: d.id,
@@ -591,13 +591,13 @@ function StackedAreaChart() {
 
   var fillGapsInYears = function( _years ){
     if ( _years.length !== _years[_years.length-1]-_years[0]+1 ) {
-      var i;
-      for (i = 0; i < _years.length-1; i++) {
-        if(_years[i+1] - _years[i] > 1){
-          _years.push(_years[i]+1);  // Fill gap
-        }
+      var min = _years[0],
+          max = _years[_years.length-1],
+          i;
+      _years = [];
+      for (i = min; i <= max; i++) {
+        _years.push(i);
       }
-      _years.sort(function(a,b){ return a-b; });
     }
     return _years;
   };
@@ -605,13 +605,15 @@ function StackedAreaChart() {
   var fillGapsInValues = function( _values ) {
     // Check if array_length equals last_year_value - first_year_value + 1
     if ( _values.length !== _values[_values.length-1][0]-_values[0][0]+1 ) {
-      var i;
-      for (i = 0; i < _values.length-1; i++) {
-        if(_values[i+1][0] - _values[i][0] > 1){
-          _values.push([ _values[i][0]+1, 0 ]);  // Fill gap with 0 value
+      var i = _values.length-1;
+      while (i > 0) {
+        if (_values[i][0] - _values[i-1][0] > 1) {
+          _values.splice(i, 0, [_values[i][0]-1, 0]);
+          i++;
         }
+        i--;
       }
-      _values.sort(function(a,b){ return a[0] - b[0]; });
+      return _values;
     }
   };
 

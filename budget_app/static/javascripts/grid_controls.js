@@ -93,13 +93,13 @@ function initSlider(selector, years, callback, startValue) {
 
 var fillGapsInYears = function( _years ){
   if ( _years.length !== _years[_years.length-1]-_years[0]+1 ) {
-    var i;
-    for (i = 0; i < _years.length-1; i++) {
-      if(_years[i+1] - _years[i] > 1){
-        _years.push(_years[i]+1);  // Fill gap
-      }
+    var min = _years[0],
+        max = _years[_years.length-1],
+        i;
+    _years = [];
+    for (i = min; i <= max; i++) {
+      _years.push(i);
     }
-    _years.sort(function(a,b){ return a-b; });
   }
   return _years;
 };
