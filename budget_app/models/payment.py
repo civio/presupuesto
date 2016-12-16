@@ -105,14 +105,14 @@ class PaymentManager(models.Manager):
 
 class Payment(models.Model):
     budget = models.ForeignKey('Budget')
-    area = models.CharField(max_length=100, null=True)
+    area = models.CharField(max_length=100, null=True, db_index=True)
     programme = models.CharField(max_length=100, null=True)
     functional_category = models.ForeignKey('FunctionalCategory', db_column='functional_category_id', null=True)
     economic_category = models.ForeignKey('EconomicCategory', db_column='economic_category_id', null=True)
     economic_concept = models.CharField(max_length=10, null=True)
     date = models.DateField(null=True)
     contract_type = models.CharField(max_length=50, null=True)
-    payee = models.CharField(max_length=200)
+    payee = models.CharField(max_length=200, db_index=True)
     anonymized = models.BooleanField(default=False)
     expense = models.BooleanField()
     description = models.CharField(max_length=300)
