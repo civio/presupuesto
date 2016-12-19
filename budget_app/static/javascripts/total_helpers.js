@@ -55,9 +55,9 @@ var TotalHelpers = (function() {
     totals.total = getTotal(breakdown);
 
     if ( !includeFinancialChapters ) {
-      totals.nonFinancial = getTotal(financialBreakdown);
-      totals.total += totals.nonFinancial;
-      totals.financial = totals.total - totals.nonFinancial;
+      totals.financial = getTotal(financialBreakdown);
+      totals.total += totals.financial;
+      totals.nonFinancial = totals.total - totals.financial;
     }
 
     return totals;
