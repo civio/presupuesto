@@ -101,15 +101,14 @@ class BudgetItem(models.Model):
         # XXX: The subheading call originally assumed the values do exist; not true anymore 
         # with smaller entities. I'm working around it for now, partially, but I haven't 
         # thought fully about the implications of all this.
+        year = str(getattr(self, 'year'))
         subheading = getattr(self, 'subheading') if getattr(self, 'subheading') else (getattr(self, 'heading') if getattr(self, 'heading') else (getattr(self, 'article') if getattr(self, 'article') else getattr(self, 'chapter')))
         item_number = getattr(self, 'item_number') if getattr(self, 'item_number') else ''
-        return subheading + '/' + item_number
+        return year + '/' + subheading + '/' + item_number
 
     def uid(self):
         department = getattr(self, 'department') if getattr(self, 'department') else ''
-        return str(getattr(self, 'year')) + '/' + \
-                department + '/' + \
-                self.economic_uid()
+        return department + '/' + self.economic_uid()
 
     def year(self):
         return self.budget.year
