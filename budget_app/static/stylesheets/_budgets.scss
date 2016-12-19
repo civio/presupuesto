@@ -128,7 +128,7 @@
         margin-left:  0;
         margin-right: 0;
         padding-bottom: $grid-gutter-width/3;
-        border-top: 1px solid mix( $data-panel-color, white, 40% );
+        border-top: 1px solid mix( $panel-default-border, white, 40% );
       }
 
       .col-sm-4{
@@ -154,14 +154,14 @@
       }
       .chapters-sub{
         font-weight: $font-weight-300;
-        border-top-color: mix( $data-panel-color, white, 20% );
+        border-top-color: mix( $panel-default-border, white, 20% );
 
         &.chapters-sub-first{
-          border-top-color: mix( $data-panel-color, white, 40% );
+          border-top-color: mix( $panel-default-border, white, 40% );
         }
       }
       .chapters-first{
-        border-top-color: $data-panel-color;
+        border-top-color: $panel-default-border;
       }
     }
   }

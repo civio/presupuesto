@@ -1,5 +1,5 @@
 table.table-grid {
-  border: 1px solid $table-color;
+  border: 1px solid $panel-default-border;
   border-top: none;
   margin-bottom: $grid-gutter-width/2;
 
@@ -9,7 +9,7 @@ table.table-grid {
   
     th{
       color: white;
-      background: $table-color;
+      background: $panel-default-heading-bg;
       border-color: white;
       padding: $grid-gutter-width/2;
       font-size: 1.125em;
@@ -18,7 +18,7 @@ table.table-grid {
       text-align: right;
 
       &:hover{
-        background: mix( $table-color, white, 90% );
+        background: mix( $panel-default-heading-bg, white, 90% );
       }
 
       &:first-child{
@@ -71,7 +71,7 @@ table.table-grid {
     font-size: 1.25em;
     color: $text-color;
     font-weight: $font-weight-400;
-    border-bottom: 1px solid mix( $table-color, white, 50% );
+    border-bottom: 1px solid mix( $panel-default-border, white, 50% );
     padding: $grid-gutter-width/3;
     text-align: right;
 
@@ -81,12 +81,12 @@ table.table-grid {
 
     &.l0:hover{
       color: $text-color;
-      border-color: mix(white, $table-color, 80%);
-      background: mix(white, $table-color, 80%);
+      border-color: mix(white, $panel-default-border, 80%);
+      background: mix(white, $panel-default-heading-bg, 80%);
     }
 
     a{
-      color: $table-color;
+      color: $panel-default-heading-bg;
     }
 
     .toggle{
@@ -110,7 +110,7 @@ table.table-grid {
         font-weight: 300;
 
          &:hover{
-          background-color: $table-color;
+          background-color: $panel-default-heading-bg;
         }
       }
 

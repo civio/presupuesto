@@ -15,7 +15,7 @@
     margin: 0;
     padding: 0;
     border-radius: 0;
-    border-color: $data-panel-color;
+    border-color: $panel-default-border;
 
     &:first-child{
       border-top-right-radius: $panel-border-radius;
@@ -30,8 +30,8 @@
   .panel-title{
     margin: 0;
     padding: $grid-gutter-width/2;
-    color: mix( white, $data-panel-color, 95% );
-    background: $data-panel-color;
+    color: white;
+    background: $panel-default-heading-bg;
     font-size: 1.25em;
     font-weight: $font-weight-400;
     line-height: 1em;
@@ -103,7 +103,7 @@
           padding-top: 0 !important;
         }
         .col-sm-8{
-          border-top: 1px solid mix( $data-panel-color, white, 40% );
+          border-top: 1px solid mix( $panel-default-border, white, 40% );
         }
         &:first-child [class^="col-"] {
           border: none;
@@ -170,7 +170,7 @@
 
         .row .col-sm-4{
           padding-top: $grid-gutter-width/2 !important;
-          border-top: 1px solid mix( $data-panel-color, white, 40% );
+          border-top: 1px solid mix( $panel-default-border, white, 40% );
         }
       }
     }
@@ -219,7 +219,7 @@
   #non-financial-total{
     display: none;
     text-transform: none;
-    border-top: 1px solid $data-panel-color;
+    border-top: 1px solid $panel-default-border;
 
     .col-sm-6{
       padding-top: $grid-gutter-width/2;
@@ -227,7 +227,7 @@
   }
 
   #financial-total{
-    border-top-color: mix( $data-panel-color, white, 40% );
+    border-top-color: mix( $panel-default-border, white, 40% );
   }
 
   @media (min-width: $screen-sm-min) {

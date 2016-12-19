@@ -26,8 +26,6 @@ $link-color:            $brand-primary;
 $link-hover-color:      $link-color;
 $link-hover-decoration: underline;
 
-$table-color:           $brand-secondary;
-
 
 // Typography
 // -------------
@@ -80,6 +78,27 @@ $navbar-default-link-active-color:    $brand-primary;
 $navbar-default-link-active-bg:       $brand-terciary;
 
 
+// Footer
+// --------------
+
+$footer-color: white;
+$footer-bg: $brand-primary;
+
+
+// Page Header
+// --------------
+
+$page-header-bg:            mix( $brand-secondary, white, 8% );
+$page-header-border-color:  mix( $brand-secondary, white, 70% );
+
+
+// Panels
+// ---------------
+
+$panel-default-border:      $brand-primary;
+$panel-default-heading-bg:  $brand-primary;
+
+
 // Popover
 // --------------
 
@@ -118,24 +137,10 @@ $pagination-active-bg:                 $brand-secondary;
 $pagination-active-border:             $brand-secondary;
 
 
-// Footer
-// --------------
-
-$footer-color: white;
-$footer-bg: $brand-primary;
-
-
 // Search Form
 // --------------
 
 $search-form-bg: $brand-terciary;
-
-
-// Page Header
-// --------------
-
-$page-header-bg:            mix( $brand-secondary, white, 8% );
-$page-header-border-color:  mix( $brand-secondary, white, 70% );
 
 
 // Budget Stream
@@ -149,12 +154,6 @@ $budget-stream-color: $brand-secondary;
 
 $slider-bg:     $page-header-bg;
 $slider-color:  $brand-secondary;
-
-
-// Data Panel
-// --------------
-
-$data-panel-color: $brand-secondary;
 
 
 // Data Sources

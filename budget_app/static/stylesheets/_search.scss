@@ -52,14 +52,13 @@
 
   .panel{
     @extend .panel-default;
-    border-color: darken($page-header-bg, 10%);
     margin-bottom: $grid-gutter-width;
 
     .panel-heading{
-      background: $page-header-bg;
       padding: $grid-gutter-width/2;
 
       h3{
+        color: white;
         font-size: 1.375em;
         font-weight: $font-weight-400 !important;
         text-transform: uppercase;
