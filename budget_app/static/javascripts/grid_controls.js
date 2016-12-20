@@ -50,10 +50,10 @@ function unfoldItem(gridData, itemId) {
   var found = false;
   for ( i=0; i<gridData.length && !found; i++ ) {
     if ( gridData[i].key == itemId ) {
-      var parent = gridData[i].parent;
+      var parent = gridData[i]._parent;
       while (parent !== null) {
         parent._expanded = true;
-        parent = parent.parent;
+        parent = parent._parent;
       }
       found = true;
     }
