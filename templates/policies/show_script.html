@@ -234,16 +234,6 @@
           $('#non-financial-total, #financial-total').show();
         }
       }
-
-
-      // Handle the hash the page may have loaded with.
-      var state = $.deparam.fragment();
-      if ( state.item ) { // Highlight a particular item
-        unfoldItem( gridData[uiState.view], state.item );
-        window.setTimeout(function() {
-          $('html, body').animate({ scrollTop: $('#myGrid').offset().top }, 500);
-        }, 1000);
-      }
     }
 
     function redrawChart() {
@@ -321,6 +311,15 @@
     // Control Setup
     $('#select-format').change(redraw);
     initSlider("#year-selection", {{ years|safe }}, updateYear, {{ starting_year }});
+
+    // Handle the hash the page may have loaded with.
+    var state = $.deparam.fragment();
+    if ( state.item ) { // Highlight a particular item
+      unfoldItem( gridData[getUIState().view], state.item );
+      window.setTimeout(function() {
+        $('html, body').animate({ scrollTop: $('#myGrid').offset().top }, 500);
+      }, 1000);
+    }
 
     // Setup tabs navigation
     setRedrawOnTabsChange('#tabs', updateTab);
