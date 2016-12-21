@@ -97,6 +97,7 @@ class BudgetItem(models.Model):
     # along that dimension)
     # But sometimes we want to group across different entities, so we also has the option
     # of using only the economic category and the item number.
+    # See #135 for a longer discussion around this topic.
     def economic_uid(self):
         # XXX: The subheading call originally assumed the values do exist; not true anymore 
         # with smaller entities. I'm working around it for now, partially, but I haven't 
