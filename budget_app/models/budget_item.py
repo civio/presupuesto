@@ -102,10 +102,9 @@ class BudgetItem(models.Model):
         # with smaller entities. I'm working around it for now, partially, but I haven't 
         # thought fully about the implications of all this.
         year = str(getattr(self, 'year'))
-        programme = getattr(self, 'programme')
         subheading = getattr(self, 'subheading') if getattr(self, 'subheading') else (getattr(self, 'heading') if getattr(self, 'heading') else (getattr(self, 'article') if getattr(self, 'article') else getattr(self, 'chapter')))
         item_number = getattr(self, 'item_number') if getattr(self, 'item_number') else ''
-        return year + '/' + subheading + '/' + programme + '/' + item_number
+        return year + '/' + subheading + '/' + item_number
 
     def uid(self):
         department = getattr(self, 'department') if getattr(self, 'department') else ''
