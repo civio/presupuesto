@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-06 13:44+0200\n"
-"PO-Revision-Date: 2016-12-14 11:34+0100\n"
+"PO-Revision-Date: 2016-12-23 02:44+0100\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: eu\n"
@@ -815,7 +815,7 @@ msgstr "Nola eta zertan gastatzen du dirua Nafarroako Gobernuak?"
 
 #: templates/welcome/index.html:13
 msgid "Te mostramos de un modo claro cómo se distribuye nuestro presupuesto. De dónde vienen los ingresos y a qué destinamos el gasto"
-msgstr "Gure aurrekontuaren banaketa modu argi batean azaltzen dizugu. Nondik datozen diru-sarrerak eta zertan gastatzen den dirua."
+msgstr "Gure aurrekontuaren banaketa modu argi batean azaltzen dizugu. Nondik datozen diru-sarrerak eta zertan gastatzen den dirua"
 
 #: templates/welcome/index.html:18
 msgid "Algunos ejemplos"
