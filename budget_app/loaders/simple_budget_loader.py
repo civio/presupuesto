@@ -110,7 +110,7 @@ class SimpleBudgetLoader:
                                                 subheading = None,
                                                 budget=budget)
             if not ec:
-                print u"ALERTA: No se encuentra la categoría económica '%s' para '%s': %s€" % (item['ec_code'].decode("utf8"), item['description'].decode("utf8"), item['amount']/100)
+                print u"ALERTA: No se encuentra la categoría económica de %s '%s' para '%s': %s€" % ("gastos" if item['is_expense'] else "ingresos", item['ec_code'].decode("utf8"), item['description'].decode("utf8"), item['amount']/100)
                 continue
             else:
                 ec = ec[0]
