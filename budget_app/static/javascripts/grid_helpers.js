@@ -180,7 +180,11 @@ function createBudgetGrid(containerName, data, userColumns) {
     // Sort at startup by the previously chosen column; or by the rightmost column at startup
     // TODO: Actually, we're going to sort by the second column, I should use the rightmost... with data
     order: lastSort ? lastSort : [[1, 'desc']],
-    rowCallback: function(row, data) { $(row).addClass('indent-'+data.indent); }
+    rowCallback: function(row, data) { $(row).addClass('indent-'+data.indent); },
+    // i18n (TODO: enable translations)
+    language: {
+      zeroRecords: "No hay datos para este año"
+    }
   });
 
   // Handle toggling of items
