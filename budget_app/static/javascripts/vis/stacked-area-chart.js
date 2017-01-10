@@ -6,34 +6,29 @@ function StackedAreaChart() {
 
   _this.margin  = {top: 20, right: 20, bottom: 30, left: 80};
  
-  _this.x = d3.scale.linear();
-  _this.y = d3.scale.linear();
+  _this.x = d3.scaleLinear();
+  _this.y = d3.scaleLinear();
 
-  _this.line = d3.svg.line()
-    .x(function(d,i){ return _this.x(d.x); })
-    .y(function(d){ return _this.y(d.y0+d.y); });
+  _this.line = d3.line()
+    .x(function(d){ return _this.x(+d.data.year); })
+    .y(function(d){ return _this.y(d[1]); });
 
-  _this.color = d3.scale.category10();
+  _this.color = d3.scaleOrdinal( d3.schemeCategory10 );
 
-  _this.xAxis = d3.svg.axis()
-      .scale(_this.x)
-      .tickPadding(10)
-      .orient('bottom')
-      .tickSize(0);
+  _this.xAxis = d3.axisBottom()
+    .scale(_this.x)
+    .tickPadding(10)
+    .tickSize(0);
 
-  _this.yAxis = d3.svg.axis()
-      .scale(_this.y)
-      .tickPadding(6)
-      .orient('left')
-      .ticks(4);
+  _this.yAxis = d3.axisLeft()
+    .scale(_this.y)
+    .tickPadding(6)
+    .ticks(4);
 
-  _this.area = d3.svg.area()
-      .x(function(d) { return _this.x(d.x); })
-      .y0(function(d) { return _this.y(d.y0); })
-      .y1(function(d) { return _this.y(d.y0 + d.y); });
-
-  _this.stack = d3.layout.stack()
-      .values(function(d) { return d.values; });
+  _this.area = d3.area()
+    .x(function(d) { return _this.x(+d.data.year); })
+    .y0(function(d) { return _this.y(d[0]); })
+    .y1(function(d) { return _this.y(d[1]); });
 
   _this.dataFormat = null;
 
@@ -128,49 +123,26 @@ function StackedAreaChart() {
 
 
   // Setup Data
-  _this.setData = function( _data, _years, _budgetStatuses ){
-    _this.data = [];
-    _this.stackData = [];
+  _this.setData = function( _values, _labels, _years, _budgetStatuses ){
+
+    _this.values = _values;
+    _this.labels = _labels;
+    _this.years = fillGapsInYears( _years );
     _this.budgetStatuses = _budgetStatuses;
 
-    var dataValues;
+    // Setup stack
+    _this.stack = d3.stack()
+      .keys(Object.keys(_this.labels))
+      .order(d3.stackOrderDescending);
 
-    // Fill data & stackData arrays
+    _this.stackData = _this.stack(_this.values)
+      .map(function(d){ d.active = true; return d; })  // add active attribute
+      .sort(function(a,b){ return a.index-b.index; }); // sort data based on stack order index
 
-    _data.forEach(function(d, i){
-
-      // Check gaps in values array & fill with 0
-      d.values = fillGapsInValues( d.values );
-
-      _this.data.push({
-        id: d.id,
-        label: d.key,
-        values: d.values.map(function(e){
-          return {
-            x: e[0],
-            y: e[1]
-          };
-        })
-      });
-
-      _this.stackData.push({
-        i: i,
-        id: d.id,
-        label: d.key,
-        active: true,
-        values: d.values.map(function(e){
-          return {
-            x: e[0],
-            y: e[1]
-          };
-        })
-      });
-    });
-
-    _this.years = fillGapsInYears( _years );
+    console.table(_this.stackData);
 
     // Setup Color domain
-    _this.color.domain( _data.map(function(d){ return d.id; }) );
+    _this.color.domain( _this.stackData.map(function(d){ return d.key; }) );
 
     // Setup X domain
     _this.x.domain( d3.extent(_this.years) );
@@ -180,21 +152,11 @@ function StackedAreaChart() {
     _this.xAxis.tickValues(_this.years);
 
     // Set X section width
-    _this.xSectionWidth = _this.width /( _this.x.domain()[1] - _this.x.domain()[0] );
+    _this.xSectionWidth = _this.width / ( _this.x.domain()[1] - _this.x.domain()[0] );
 
     // Setup Y domain
-    var values = _data.map(function(d){ return d.values; });
-    var vals = [];
-    values.forEach(function(d){
-      d.forEach(function(e,i){
-        if( vals[i] ){
-          vals[i] += e[1];
-        } else{
-          vals[i] = e[1];
-        }
-      });
-    });
-    _this.y.domain([0, d3.max(vals)]);
+    var totals = _this.values.map(function(d){ return d3.sum(d3.values(d)); }); // we can get this data grom budget-stacked-chart
+    _this.y.domain([0, d3.max(totals)]);
 
     return _this;
   };
@@ -223,16 +185,16 @@ function StackedAreaChart() {
 
     // Setup Areas containers
     _this.areas = _this.svg.selectAll('.area')
-      .data( _this.stack(_this.stackData) )
+      .data( _this.stackData )
       .enter().append('g')
         .attr('class', 'area');
 
     // Setup Areas Paths
     _this.areas.append('path')
-      .attr('id', function(d) { return 'area-'+d.id; })
+      .attr('id', function(d) { return 'area-'+d.key; })
       .attr('class', 'area')
-      .attr('d', function(d) { return _this.area(d.values); })
-      .style('fill', function(d) { return _this.color(d.id); })
+      .attr('d', _this.area)
+      .style('fill', getColor)
       .on('mouseover',  onAreaMouseOver)
       .on('mouseout',   onAreaMouseOut)
       .on('mousemove',  onAreaMouseMove)
@@ -253,8 +215,8 @@ function StackedAreaChart() {
       .data( _this.stackData )
       .enter().append('path')
         .attr('class', 'line')
-        .attr('d', function(d){ return _this.line(d.values); })
-        .style('stroke', function(d) { return _this.color(d.id); });
+        .attr('d', _this.line)
+        .style('stroke', getColor);
 
     _this.lines
       .on('mouseover', function(d){
@@ -267,17 +229,17 @@ function StackedAreaChart() {
     _this.circles = _this.svg.selectAll('.points')
       .data( _this.stackData )
       .enter().append('g')
-        .attr('id', function(d) { return 'area-points-'+d.id; })
+        .attr('id', function(d) { return 'area-points-'+d.key; })
         .attr('class', 'area-points');
 
     _this.circles.selectAll('.point')
-      .data(function(d){ return getPointsData(d); })
+      .data(getPointsData)
       .enter().append('circle')
-      .attr('class', function(d){ return 'point point-'+d.x; })
-      .attr('transform', function(d){ return 'translate('+_this.x(d.x)+','+_this.y(d.y0+d.y)+')'; })
+      .attr('class', function(d){ return 'point point-'+d.data.year; })
+      .attr('transform', getPointTransform)
       .attr('r', 4)
-      .style('stroke', function(d) { return _this.color(d.id); })
-      .style('fill', function(d) { return _this.color(d.id); });
+      .style('stroke', getColor)
+      .style('fill', getColor);
 
     _this.circles
       .on('mouseover', function(d){
@@ -290,14 +252,14 @@ function StackedAreaChart() {
       .data( _this.stackData )
       .enter().append('div')
         .attr('class', 'label')
-        .attr('data-id', function(d){ return d.id; })
-        .text(function(d){ return d.label; })
+        .attr('data-id', function(d){ return d.key; })
+        .text(function(d){ return _this.labels[d.key]; })
         .on('mouseover',  onLegendLabelOver)
         .on('mouseout',   onLegendLabelOut)
         .on('click',      onLegendLabelClick)
         .append('span')
-          .style('background-color', function(d) { return _this.color(d.id); })
-          .style('border-color', function(d) { return _this.color(d.id); });
+          .style('background-color', getColor)
+          .style('border-color', getColor);
 
     return _this;
   };
@@ -337,18 +299,19 @@ function StackedAreaChart() {
     transitionDuration = typeof transitionDuration !== 'undefined' ? transitionDuration : 500;
 
     // Update Areas Paths
-    _this.areas.data( _this.stack(_this.stackData) );
+    _this.areas.data( _this.stackData );
     _this.areas.selectAll('.area')
       .transition()
-        .ease('cubic-out')
+        .ease(d3.easeCubicOut)
         .duration(transitionDuration)
-        .attr('d', function(d) { return _this.area(d.values); });
+        .attr('d', _this.area);
 
+    /*
     // Update Areas Lines
     _this.lines.data( _this.stackData )
       .style('display', 'block')
       .transition()
-        .ease('cubic-out')
+        .ease(d3.easeCubicOut)
         .duration(transitionDuration)
         .each('end', function(d) {
           if( !d.active ){
@@ -356,14 +319,22 @@ function StackedAreaChart() {
           }
         })
         .style('opacity', function(d){ return (d.active) ? 1 : 0; })
-        .attr('d', function(d){ return _this.line(d.values); });
+        .attr('d', this.line);
+    */
 
+     // Update Areas Lines
+    _this.lines.data( _this.stackData )
+      .style('display', 'block')
+      .style('opacity', function(d){ return (d.active) ? 1 : 0; })
+      .attr('d', _this.line);
+
+    /*
     // Update Area Points
     _this.circles.data( _this.stackData );
     _this.circles.selectAll('.point')
       .style('display', 'block')
       .transition()
-        .ease('cubic-out')
+        .ease(d3.easeCubicOut)
         .duration(transitionDuration)
         .each('end', function(d) {
           if( d.y === 0 ){
@@ -371,8 +342,16 @@ function StackedAreaChart() {
           }
         })
         .style('opacity', function(d){ return (d.y !== 0) ? 1 : 0; })
-        .attr('transform', function(d){ return 'translate('+_this.x(d.x)+','+_this.y(d.y0+d.y)+')'; });
-    };
+        .attr('transform', function(d){ return getPointTransform(d); });
+    */
+
+    // Update Area Points
+    _this.circles.data( _this.stackData );
+    _this.circles.selectAll('.point')
+      .style('display', 'block')
+      .style('opacity', function(d){ return (d.active) ? 1 : 0; })
+      .attr('transform', getPointTransform);
+  };
 
   // Area Mouse Events
   var onAreaMouseOver = function(d){
@@ -401,18 +380,18 @@ function StackedAreaChart() {
   };
 
   var onAreaClick = function(d){
-    $(_this.selector).trigger('area-selected', d);
+    $(_this.selector).trigger('area-selected', {id: d.key, label: _this.labels[d.key]});
   };
 
   // Legend Label Mouse Events
   var onLegendLabelOver = function(d){
-    d3.select('#area-'+d.id).classed('hover', true);
-    d3.selectAll('#area-points-'+d.id+' .point').classed('hover', true);
+    d3.select('#area-'+d.key).classed('hover', true);
+    d3.selectAll('#area-points-'+d.key+' .point').classed('hover', true);
   };
 
   var onLegendLabelOut = function(d){
-    d3.select('#area-'+d.id).classed('hover', false);
-    d3.selectAll('#area-points-'+d.id+' .point').classed('hover', false);
+    d3.select('#area-'+d.key).classed('hover', false);
+    d3.selectAll('#area-points-'+d.key+' .point').classed('hover', false);
   };
 
   var onLegendLabelClick = function(d){
@@ -433,7 +412,7 @@ function StackedAreaChart() {
     else{
       var val = d3.select(this).classed('inactive');
       d3.select(this).classed('inactive', !val);
-      updateDataActive(d.id, val);
+      updateDataActive(d.key, val);
     }
 
     _this.update();
@@ -460,7 +439,7 @@ function StackedAreaChart() {
     // Unselect all points
     _this.svg.selectAll('.point')
       .attr('r', 4)
-      .style('fill', function(d) { return _this.color(d.id); })
+      .style('fill', getColor)
       .classed('hover', false);
 
     // Unselect all years at x axis
@@ -480,16 +459,18 @@ function StackedAreaChart() {
   // Setup Popover Content
   var setupPopover = function( _data, _mouse ){
 
+    console.log('setup popover', _data, _mouse);
+
     if( !_data.active ){
        _this.$popover.hide();
       return;
     }
 
-    
-    if( _this.$popover.data('id') !== _data.id ){  // Avoid redundancy
+
+    if( _this.$popover.data('id') !== _data.key ){  // Avoid redundancy
       _this.popoverData = _data;
-      _this.$popover.data('id', _data.id);
-      _this.$popover.find('.popover-title').html( _data.label );
+      _this.$popover.data('id', _data.key);
+      _this.$popover.find('.popover-title').html( _this.labels[_data.key] );
     }
 
     // Get currentYear if undefined
@@ -507,31 +488,31 @@ function StackedAreaChart() {
   var setupPopoverContent = function(){
     if( _this.popoverData === null || _this.popoverData === undefined ) return; // Avoid unexpected errors
 
-    var popoverId = _this.$popover.data('id');
+    var key = _this.$popover.data('id');
 
     // Get currentYear values
-    var values = _this.popoverData.values.filter(function(d){ return d.x == _this.years[_this.currentYear]; });
-    var popoverValues = (values.length > 0) ? values[0] : 0;
+    var values = _this.popoverData.filter(function(d){ return d.data.year == _this.years[_this.currentYear]; });
+    var popoverValue = (values.length > 0) ? values[0].data[key] : 0;
      
     // Get currentYear values
-    var prevValues = _this.popoverData.values.filter(function(d){ return d.x == _this.years[_this.currentYear]-1; });
-    var popoverPrevValues = (prevValues.length > 0) ? prevValues[0].y : null;
+    var prevValues = _this.popoverData.filter(function(d){ return d.data.year == _this.years[_this.currentYear]-1; });
+    var popoverPrevValue = (prevValues.length > 0) ? prevValues[0].data[key] : null;
 
     // Setup year
     _this.$popover.find('.popover-content-year').html( _this.years[_this.currentYear] );
 
     // Setup value
-    if( _this.dataFormat === "percentage" ){
-      _this.$popover.find('.popover-content-value').html(formatPercentage(popoverValues.y));
+    if( _this.dataFormat === 'percentage' ){
+      _this.$popover.find('.popover-content-value').html(formatPercentage(popoverValue));
     } else if( _this.dataFormat === "per_capita" ){
-      _this.$popover.find('.popover-content-value').html(formatDecimalAmount(popoverValues.y, 2));
+      _this.$popover.find('.popover-content-value').html(formatDecimalAmount(popoverValue, 2));
     } else{
-      _this.$popover.find('.popover-content-value').html(formatAmount(popoverValues.y));
+      _this.$popover.find('.popover-content-value').html(formatAmount(popoverValue));
     }
 
     // Setup variation
-    if( popoverPrevValues ){
-      var percentageValue = ((popoverValues.y/popoverPrevValues)-1)*100;
+    if( popoverPrevValue ){
+      var percentageValue = ((popoverValue/popoverPrevValue)-1)*100;
       var labelClass      = (percentageValue >= 0) ? 'label-success' : 'label-danger';
       _this.$popover.find('.popover-content-variation .label').removeClass('label-success, label-danger').addClass(labelClass).html(_this.percentageFormat(percentageValue)+' %');
       _this.$popover.find('.popover-content-variation-year').html( _this.years[_this.currentYear-1] );
@@ -550,17 +531,24 @@ function StackedAreaChart() {
   };
 
   // Update Active State
-  var updateDataActive = function( _id, _value){
+  var updateDataActive = function( _key, _value){
+
+    console.log('updateDataActive', _key, _value);
+
     // Get area to update
-    var areaData = _this.stackData.filter(function(d){ return d.id == _id; })[0];
+    var areaData = _this.stackData.filter(function(d){ return d.key == _key; })[0];
     areaData.active = _value;
 
+    console.log(areaData);
+
+    /*
     // Update area values based on active state
     if( areaData.active ){
       areaData.values.forEach(function(d,j){ d.y = _this.data[areaData.i].values[j].y; });
     } else{
       areaData.values.forEach(function(d,j){ d.y = 0; });
     }
+    */
   };
 
   var updateAllDataActive = function(){
@@ -568,10 +556,12 @@ function StackedAreaChart() {
 
     _this.stackData.forEach(function(d){
       // Get active state based on related legend label inactive classed
-      active = !_this.legend.select('[data-id="'+d.id+'"]').classed('inactive');
+      active = !_this.legend.select('[data-id="'+d.key+'"]').classed('inactive');
       // Update area values if update active state
       if( d.active !== active ){
         d.active = active;
+        /*
+        console.log(d);
         // Update values based on active state
         if( d.active ){
           d.values.forEach(function(e,f){
@@ -582,6 +572,7 @@ function StackedAreaChart() {
             e.y = 0;
           });
         }
+        */
       }
     });
   };
@@ -602,6 +593,8 @@ function StackedAreaChart() {
     return _years;
   };
 
+
+  // !!!TODO --> we need this?
   var fillGapsInValues = function( _values ) {
     // Check if array_length equals last_year_value - first_year_value + 1
     if ( _values.length !== _values[_values.length-1][0]-_values[0][0]+1 ) {
@@ -617,14 +610,24 @@ function StackedAreaChart() {
     return _values;
   };
 
-  var getPointsData = function( _data ) {
-    return _data.values.map(function(d){
-      d.id = _data.id;    // Add breakdown id to point data
+  var getColor =  function(d) {
+    return _this.color(d.key);
+  };
+
+  var getPointsData = function(data) {
+    return data.map(function(d){
+      d.key = data.key;    // Add breakdown key to point data
       return d;
-    })
-    .filter(function(d){
-      return d.y !== 0;   // Remove from data years without values
     });
+    /*
+    .filter(function(d){
+      return d[1] !== 0;   // Remove from data years without values
+    });
+    */
+  };
+
+  var getPointTransform = function(d){
+    return 'translate('+_this.x(+d.data.year)+','+_this.y(d[1])+')';
   };
 
   var getBudgetExecutionLastYear = function( _budgetStatuses ){

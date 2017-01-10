@@ -1,12 +1,13 @@
 function BudgetStackedChart(theSelector, theStats, theColorScale, i18n) {
+
   var selector        = theSelector;
   var stats           = theStats;
   var budgetStatuses  = {};
   
   var breakdown;
-  var years;
-  var data            = [];
-  var modifiedData    = [];
+  var years, items, values;
+  var data            = []; // To remove !!!
+  var modifiedData    = []; // To remove !!!
   var totals          = {};
   var uiState;
   
@@ -60,29 +61,107 @@ function BudgetStackedChart(theSelector, theStats, theColorScale, i18n) {
     years = Object.keys(columns);
 
     // Convert the data to the format we need
-    result = [];
+    values = [];
+    items = {};
+
+    // Extract each category / year / value in result array
     for (var category in breakdown.sub) {
+
+      items[category] = breakdown.sub[category].label;
+
+      /*
       var programme = {
         id: category,
         key: breakdown.sub[category].label,
         values: []
       };
       var isEmpty = true;
+      */
 
       for (var year in columns) {
         var column_name = columns[year];
         var amount = breakdown.sub[category][field][column_name] || 0;
+        /*
         if ( amount )
           isEmpty = false;
         programme.values.push([+year, amount]);
+        */
+      
+        values.push({
+          id: category,
+          year: +year,
+          value: amount
+        });
       }
 
+      /*
       if (!isEmpty) {
         programme.values.sort();
         result.push(programme);
       }
+      */
     }
-    return result;
+  }
+
+  // Format values array as needed for d3 stack
+  function formatValues(values) {
+
+    // [ {id, value, year}, ...]
+
+    var formatValues = values;
+
+    console.log(formatValues);
+
+    switch (uiState.format) {
+
+      case 'real': // Adjust Inflation
+        formatValues.forEach(function(d){
+          d.value = adjustInflation(d.value, stats, d.year);
+        });
+        break;
+
+      /*
+      case 'percentage':
+        var total;
+        formatValues.forEach(function(d){
+          d.value = adjustInflation(d.value, stats, d.year);
+        });
+        for (i = 0; i < newData.length; i++) {
+            for (j = 0; j < newData[i].values.length; j++) {
+              total = uiState.field == "expense" ?
+                                            breakdown.expense[(data[i].values[j][0])] :
+                                            breakdown.income[(data[i].values[j][0])];
+              newData[i].values[j][1] = data[i].values[j][1] / totals[data[i].values[j][0]];
+            }
+        }
+        return newData;
+      */
+
+      case 'per_capita':
+        var population;
+        formatValues.forEach(function(d){
+          population = getPopulationFigure(stats, d.year);
+          d.value = adjustInflation(d.value, stats, d.year) / population;
+        });
+        break;
+    }
+
+    // Group result array objects by year
+    formatValues = d3.nest()
+      .key(function(d) { return d.year; })
+      .entries(formatValues);
+      
+    // Setup each year object as {year: 2015, categoryIdX: value, categoryIdY: value, ...}
+    // a better format for d3 stack (https://github.com/d3/d3-shape/blob/master/README.md#_stack)
+    formatValues = formatValues.map(function(d) {
+      var obj = {year: d.key};
+      d.values.forEach(function(e) {
+        obj[e.id] = e.value;
+      });
+      return obj;
+    });
+
+    return formatValues;
   }
 
   this.loadBreakdown = function(theBreakdown, field) {
@@ -107,13 +186,13 @@ function BudgetStackedChart(theSelector, theStats, theColorScale, i18n) {
     
     // Setup X & Y axis
     chart.xAxis
-        .tickValues( years )  // We make sure years only show up once in the axis
-        .tickFormat( d3.format("d") );
+      .tickValues( years )  // We make sure years only show up once in the axis
+      .tickFormat( d3.format("d") );
     
     chart.yAxis.tickFormat( uiState.format == "percentage" ? formatPercentage : formatAxis );
 
     // Setup Color Scale
-    chart.color = d3.scale.ordinal().range(colorScale);
+    chart.color = d3.scaleOrdinal(d3.schemeCategory10).range(colorScale);
 
     // Setup budgeted literal
     chart.budgeted = i18n.budgeted;
@@ -123,7 +202,8 @@ function BudgetStackedChart(theSelector, theStats, theColorScale, i18n) {
     chart.dataFormat = uiState.format;
 
     // Chart set data & draw
-    chart.setData( getSortedData(this.getNewData()), years.map(function(d){ return parseInt(d); }), budgetStatuses ).draw();
+    //chart.setData( getSortedData(this.getNewData()), years.map(function(d){ return parseInt(d); }), budgetStatuses ).draw();
+    chart.setData( formatValues(values), items, years.map(function(d){ return parseInt(d); }), budgetStatuses ).draw();
   
     return this;
   };
@@ -131,8 +211,10 @@ function BudgetStackedChart(theSelector, theStats, theColorScale, i18n) {
 
   // Given the user selection get the newData we need to display in the SAG
   this.getNewData = function() {
-    var newData = modifiedData,
+    var newData = modifiedData.values,
         i, j;
+
+    console.log(newData);
 
     switch (uiState.format) {
       case "nominal":
