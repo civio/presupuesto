@@ -36,7 +36,7 @@ def entities_show(request, c, entity, render_callback=None):
                                 [],
                                 get_financial_breakdown_callback(c, \
                                     [c['breakdowns']['functional'], \
-                                    c['breakdowns']['institutinoal']]) )
+                                    c['breakdowns']['institutional']]) )
         get_budget_breakdown(   "e.id = %s and ec.chapter <> 'X'", [ entity.id ],
                                 [ c['breakdowns']['economic'] ] )
 
