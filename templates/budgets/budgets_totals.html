@@ -10,7 +10,7 @@
     <div class="panel-content">
     {% if show_overview_subtotals %}
       <div class="total-executed row">
-        <div class="col-sm-4">{{ _('Total Ejecutado') }}</div>
+        <div class="col-sm-4">{{ _('Total Ejecutado') }}<div class="execution-status"></div></div>
         <div class="col-sm-4 text-right"><span class="data-label">{{ _('Ingresos') }}</span><span id="total-incomes-executed"></span></div>
         <div class="col-sm-4 text-right"><span class="data-label">{{ _('Gastos') }}</span><span id="total-expenses-executed"></span></div>
       </div>
@@ -41,7 +41,7 @@
       </div>
     {% else %}
       <div class="total-executed row">
-        <div class="col-sm-4">{{ _('Total Ejecutado') }}</div>
+        <div class="col-sm-4">{{ _('Total Ejecutado') }}<div class="execution-status"></div></div>
         <div class="col-sm-4 text-right"><span class="data-label">{{ _('Ingresos') }}</span><span id="total-chart-incomes-executed"></span></div>
         <div class="col-sm-4 text-right"><span class="data-label">{{ _('Gastos') }}</span><span id="total-chart-expenses-executed"></span></div>
       </div>
