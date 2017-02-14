@@ -1,5 +1,6 @@
 *pyc
 .DS_Store
+/bin
 /static
 local_settings*py
 fabfile.*
@@ -7,6 +8,7 @@ presupuesto-*
 /.sass-cache
 .env
 .python-version
+.node-version
 budget_app/templates
 /node_modules
 /budget_app/static/javascripts/vis/d3-bundle.js
