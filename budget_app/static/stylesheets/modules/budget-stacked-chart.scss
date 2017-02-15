@@ -61,7 +61,10 @@
     opacity: 0.8;
     @include transition( opacity 0.3s ease-out );
 
-    &.hover{
+    &.active{
+      opacity: 0.9;
+    }
+    &.inactive{
       opacity: 0.6;
     }
   }

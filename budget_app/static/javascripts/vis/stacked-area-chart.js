@@ -291,6 +291,7 @@ function StackedAreaChart() {
 
     // Update Areas Paths
     _this.areas.data( _this.stackData )
+      .attr('id', function(d) { return 'area-'+d.key; })
       .transition()
         .ease(d3.easeCubicOut)
         .duration(transitionDuration)
@@ -321,22 +322,26 @@ function StackedAreaChart() {
 
   // Area Mouse Events
   var onAreaMouseOver = function(d){
-    d3.select(this).classed('hover', true);
+    //d3.select(this).classed('hover', true);
 
-    if( !_this.currentYear )  _this.currentYear = getCurrentYear( d3.mouse(this) );
+    if( !_this.currentYear ) _this.currentYear = getCurrentYear( d3.mouse(this) );
 
     pointsOver();
     setupPopover(d, d3.mouse(this));
+
+    _this.areas.classed('inactive', true);
+    d3.select(this)
+      .classed('active', true)
+      .classed('inactive', false);
   };
 
   var onAreaMouseOut = function(d){
-    d3.select(this).classed('hover', false);
+    _this.areas.classed('active', false);
+    _this.areas.classed('inactive', false);
   };
 
   var onAreaMouseMove = function(){
     var newYear = getCurrentYear( d3.mouse(this) );
-
-    console.log('onAreaMouseMove', newYear);
 
     if( _this.currentYear != newYear ){
       _this.currentYear = newYear;
@@ -353,12 +358,12 @@ function StackedAreaChart() {
 
   // Legend Label Mouse Events
   var onLegendLabelOver = function(d){
-    d3.select('#area-'+d.key).classed('hover', true);
+    d3.select('#area-'+d.key).classed('active', true);
     d3.selectAll('#area-points-'+d.key+' .point').classed('hover', true);
   };
 
   var onLegendLabelOut = function(d){
-    d3.select('#area-'+d.key).classed('hover', false);
+    d3.select('#area-'+d.key).classed('active', false);
     d3.selectAll('#area-points-'+d.key+' .point').classed('hover', false);
   };
 
