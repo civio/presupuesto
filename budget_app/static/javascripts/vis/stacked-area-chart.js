@@ -137,9 +137,6 @@ function StackedAreaChart() {
 
     _this.stackData = getStackData(_this.values);
 
-    console.log('set data');
-    console.table(_this.values);
-
     // Setup Color domain
     _this.color.domain( _this.stackData.map(function(d){ return d.key; }) );
 
@@ -265,8 +262,9 @@ function StackedAreaChart() {
   // Draw Satatuses Overlays
   _this.drawStatusesOverlays = function(){
 
-    var nonexecutedYears = d3.entries(_this.budgetStatuses).filter(function(d){ return d.value!==''; });
-    
+    // get years where status is not empty & year is greater than first year in years array
+    var nonexecutedYears = d3.entries(_this.budgetStatuses).filter(function(d){ return d.value !== '' && +d.key > _this.years[0]; });
+
     if (nonexecutedYears.length > 0) {
       // Setup overlays
       _this.overlays = _this.svg.selectAll('.overlay')
