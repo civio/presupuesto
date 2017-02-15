@@ -1,15 +1,15 @@
-function BudgetStackedChart(theSelector, theStats, theColorScale, i18n) {
+function BudgetStackedChart(_selector, _stats, _colorScale, i18n) {
 
-  var selector        = theSelector;
-  var stats           = theStats;
+  var selector        = _selector;
+  var stats           = _stats;
   var budgetStatuses  = {};
-  
-  var breakdown;
-  var years, items, values;
-  var data            = []; // To remove !!!
-  var modifiedData    = []; // To remove !!!
   var totals          = {};
-  var uiState;
+  var breakdown,
+      years,
+      items,
+      values,
+      uiState;
+
   
   // Getters/setters
   this.budgetStatuses = function(_) {
@@ -23,17 +23,16 @@ function BudgetStackedChart(theSelector, theStats, theColorScale, i18n) {
 
   // The ticks in the Y axis sometimes get too long, so we show them as thousands/millions
   var formatAxis = function(d) {
-    if ( uiState.format=="nominal" || uiState.format=="real" ) {
+    if (uiState.format === 'nominal' || uiState.format === 'real') {
       return formatSimplifiedAmount(d, 1);
-
     } else {
       return formatAmount(d);
     }
   };
 
   // The color palette
-  var colorScale =  (theColorScale && theColorScale.length > 0) ?
-                    theColorScale :
+  var colorScale =  (_colorScale && _colorScale.length > 0) ?
+                    _colorScale :
                     ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#e7969c', '#bcbd22', '#17becf'];
 
   
@@ -46,11 +45,11 @@ function BudgetStackedChart(theSelector, theStats, theColorScale, i18n) {
 
       // ...unless we know the execution data is not complete (the year is not over),
       // in which case we go with the budget.
-      if ( budgetStatuses[year]!==undefined && budgetStatuses[year]!='' && column_name.indexOf("actual_")===0 )
+      if (budgetStatuses[year] !== undefined && budgetStatuses[year] !== '' && column_name.indexOf('actual_') === 0)
         continue;
 
       // Normally we do this:      
-      if ( !columns[year] || column_name.indexOf("actual_") === 0 ) {
+      if ( !columns[year] || column_name.indexOf('actual_') === 0 ) {
         columns[year] = column_name;
         totals[year] = breakdown[field][column_name];
       }
@@ -68,37 +67,15 @@ function BudgetStackedChart(theSelector, theStats, theColorScale, i18n) {
 
       items[category] = breakdown.sub[category].label;
 
-      /*
-      var programme = {
-        id: category,
-        key: breakdown.sub[category].label,
-        values: []
-      };
-      var isEmpty = true;
-      */
-
       for (var year in columns) {
         var column_name = columns[year];
         var amount = breakdown.sub[category][field][column_name] || 0;
-        /*
-        if ( amount )
-          isEmpty = false;
-        programme.values.push([+year, amount]);
-        */
-      
         values.push({
           id: category,
           year: +year,
           value: amount
         });
       }
-
-      /*
-      if (!isEmpty) {
-        programme.values.sort();
-        result.push(programme);
-      }
-      */
     }
   }
 
@@ -149,13 +126,9 @@ function BudgetStackedChart(theSelector, theStats, theColorScale, i18n) {
     return formatValues;
   }
 
-  this.loadBreakdown = function(theBreakdown, field) {
-
-    breakdown = theBreakdown;
-    data = loadBreakdownField(theBreakdown, field);
-    // Deep copy the data array in order to be able to change when a new category of data is selected
-    $.extend(true, modifiedData, data);
-
+  this.loadBreakdown = function(_breakdown, _field) {
+    breakdown = _breakdown;
+    loadBreakdownField(_breakdown, _field);
     return this;
   };
 

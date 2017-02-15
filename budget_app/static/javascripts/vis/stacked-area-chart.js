@@ -576,11 +576,6 @@ function StackedAreaChart() {
       d.active = data.active;
       return d;
     });
-    /*
-    .filter(function(d){
-      return d[1] !== 0;   // Remove from data years without values
-    });
-    */
   };
 
   var getPointTransform = function(d){
