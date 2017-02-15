@@ -1,9 +1,9 @@
-function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, adjustInflationFn, theBudgetStatuses, i18n) {
+function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationFn, _budgetStatuses, i18n) {
 
   var _this = this;
-  var functionalBreakdown = theFunctionalBreakdown;
-  var economicBreakdown = theEconomicBreakdown;
-  var budgetStatuses = theBudgetStatuses;
+  var functionalBreakdown = _functionalBreakdown;
+  var economicBreakdown = _economicBreakdown;
+  var budgetStatuses = _budgetStatuses;
   var maxAmountEver = 0;
   var nodePadding = 10;
   var relaxFactor = 0.79;
@@ -17,7 +17,6 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, adjustInflat
   var sankey;
   var uiState;
   var $popup = $("#pop-up");
-  var color = d3.scale.category20();
   var language = null;
 
   var transitionLength = 1000;
@@ -202,10 +201,12 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, adjustInflat
     addSourceFlows(getIncomeNodes(), government_id);
     addTargetFlows(government_id, getExpenseNodes());
 
+    console.log(result, sankey);
+
     sankey
-        .nodes(result.nodes)
-        .links(result.links)
-        .layout(32);
+      .nodes(result.nodes)
+      .links(result.links)
+      .layout(32);
 
     return result;
   };
@@ -222,21 +223,29 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, adjustInflat
     // Set height to selector for IE11
     $(selector).height( height + margin.top + margin.bottom );
 
-    var color = d3.scale.category20();
-
     svg = d3.select(selector).append("svg")
         // Use viewBox instead width/height to avoid problems in IE11 (https://stackoverflow.com/questions/22250642/d3js-responsive-force-layout-not-working-in-ie-11)
         .attr("viewBox", "0 0 " + (width+margin.left+margin.right) + " " + (height+margin.top+margin.bottom) )
       .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+    sankey = d3.sankey()
+      .nodeWidth(2)
+      .nodePadding(nodePadding)
+      .size([width, height]);
+
+    /*
     sankey = d3.sankey(width, height)
         .nodeWidth(2)
         .nodePadding(nodePadding)
         .relaxFactor(relaxFactor)
         .size([width, height]);
-    if ( maxAmountEver !== 0 )
+    */
+
+    /*
+    if (maxAmountEver !== 0)
       sankey.maxAmountEver(maxAmountEver);
+    */
 
     var path = sankey.link();
 
@@ -388,7 +397,7 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, adjustInflat
       // Hide elements who are practically zero: our workaround for Sankey layout and null elements
       .attr("opacity", function(d) { return ((d.budgeted||0)+(d.actual||0)) > 1 ? 1 : 0; })
       .style("fill", function(d) { return d.color == d.name ? "#333" : "#FFF"; })
-      .style("stroke", function(d) { return d.name ? d3.rgb(d.color) : "none"; })
+      .style("stroke", function(d) { return d.name ? d.color : "none"; })
       .style("cursor", function(d) { return d.name ? 'pointer' : 'auto'; });
   }
 
@@ -399,15 +408,16 @@ function BudgetSankey(theFunctionalBreakdown, theEconomicBreakdown, adjustInflat
       .attr("y", function(d) { return d.dy / 2; });
   }
   
-  function setupCallbacks() {
-    this.on("mouseover", onMouseOver)
-        .on("mouseout", onMouseOut)
-        .on("mousemove", onMouseMove)
-        .on("click", click);
+  function setupCallbacks(element) {
+    element
+      .on("mouseover", onMouseOver)
+      .on("mouseout", onMouseOut)
+      .on("mousemove", onMouseMove)
+      .on("click", click);
   }
 
   function onMouseOver(d) {
-    if ( d.name=='' )   // Central node, nothing to do
+    if (d.name === '')   // Central node, nothing to do
       return;
 
     var name = d.name ? d.name : (d.source.name ? d.source.name : d.target.name);

@@ -418,3 +418,5 @@ export {
   zoomTransform
 } from "d3-zoom";
 */
+
+export * from "d3-sankey";
