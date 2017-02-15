@@ -436,11 +436,9 @@ function StackedAreaChart() {
       return;
     }
 
-    if( _this.$popover.data('id') !== _data.key ){  // Avoid redundancy
-      _this.popoverData = _data;
-      _this.$popover.data('id', _data.key);
-      _this.$popover.find('.popover-title').html( _this.labels[_data.key] );
-    }
+    _this.popoverData = _data;
+    _this.$popover.data('id', _data.key);
+    _this.$popover.find('.popover-title').html( _this.labels[_data.key] );
 
     // Get currentYear if undefined
     if( _this.currentYear === null ){
