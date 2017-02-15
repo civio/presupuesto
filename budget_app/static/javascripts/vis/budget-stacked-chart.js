@@ -110,7 +110,7 @@ function BudgetStackedChart(theSelector, theStats, theColorScale, i18n) {
 
     var formatValues = values;
 
-    console.log(formatValues);
+    //console.log(formatValues);
 
     switch (uiState.format) {
 
@@ -213,8 +213,6 @@ function BudgetStackedChart(theSelector, theStats, theColorScale, i18n) {
   this.getNewData = function() {
     var newData = modifiedData.values,
         i, j;
-
-    console.log(newData);
 
     switch (uiState.format) {
       case "nominal":

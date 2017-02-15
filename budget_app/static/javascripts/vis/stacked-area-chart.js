@@ -135,11 +135,7 @@ function StackedAreaChart() {
       .keys(Object.keys(_this.labels))
       .order(d3.stackOrderDescending);
 
-    _this.stackData = _this.stack(_this.values)
-      .map(function(d){ d.active = true; return d; })  // add active attribute
-      .sort(function(a,b){ return a.index-b.index; }); // sort data based on stack order index
-
-    console.table(_this.stackData);
+    _this.stackData = getStackData(_this.values);
 
     // Setup Color domain
     _this.color.domain( _this.stackData.map(function(d){ return d.key; }) );
@@ -160,7 +156,6 @@ function StackedAreaChart() {
 
     return _this;
   };
-
 
   // Draw Data
   _this.draw = function(){
@@ -183,23 +178,19 @@ function StackedAreaChart() {
       .attr('class', 'y axis')
       .call(_this.yAxis);
 
-    // Setup Areas containers
+    // Setup Areas
     _this.areas = _this.svg.selectAll('.area')
       .data( _this.stackData )
-      .enter().append('g')
-        .attr('class', 'area');
-
-    // Setup Areas Paths
-    _this.areas.append('path')
-      .attr('id', function(d) { return 'area-'+d.key; })
-      .attr('class', 'area')
-      .attr('d', _this.area)
-      .style('fill', getColor)
-      .on('mouseover',  onAreaMouseOver)
-      .on('mouseout',   onAreaMouseOut)
-      .on('mousemove',  onAreaMouseMove)
-      // event to be listened in the template
-      .on('click',      onAreaClick);
+      .enter().append('path')
+        .attr('id', function(d) { return 'area-'+d.key; })
+        .attr('class', 'area')
+        .attr('d', _this.area)
+        .style('fill', getColor)
+        .on('mouseover',  onAreaMouseOver)
+        .on('mouseout',   onAreaMouseOut)
+        .on('mousemove',  onAreaMouseMove)
+        // event to be listened in the template
+        .on('click',      onAreaClick);
 
     _this.svg.on('mouseout', function(e){
       pointsOut();
@@ -299,58 +290,33 @@ function StackedAreaChart() {
     transitionDuration = typeof transitionDuration !== 'undefined' ? transitionDuration : 500;
 
     // Update Areas Paths
-    _this.areas.data( _this.stackData );
-    _this.areas.selectAll('.area')
+    _this.areas.data( _this.stackData )
       .transition()
         .ease(d3.easeCubicOut)
         .duration(transitionDuration)
+        .style('fill', getColor)
         .attr('d', _this.area);
 
-    /*
     // Update Areas Lines
     _this.lines.data( _this.stackData )
-      .style('display', 'block')
       .transition()
         .ease(d3.easeCubicOut)
         .duration(transitionDuration)
-        .each('end', function(d) {
-          if( !d.active ){
-            d3.select(this).style('display', 'none');
-          }
-        })
         .style('opacity', function(d){ return (d.active) ? 1 : 0; })
+        .style('stroke', getColor)
         .attr('d', this.line);
-    */
 
-     // Update Areas Lines
-    _this.lines.data( _this.stackData )
-      .style('display', 'block')
-      .style('opacity', function(d){ return (d.active) ? 1 : 0; })
-      .attr('d', _this.line);
-
-    /*
     // Update Area Points
     _this.circles.data( _this.stackData );
     _this.circles.selectAll('.point')
-      .style('display', 'block')
+      .data(getPointsData)
       .transition()
         .ease(d3.easeCubicOut)
         .duration(transitionDuration)
-        .each('end', function(d) {
-          if( d.y === 0 ){
-            d3.select(this).style('display', 'none');
-          }
-        })
-        .style('opacity', function(d){ return (d.y !== 0) ? 1 : 0; })
-        .attr('transform', function(d){ return getPointTransform(d); });
-    */
-
-    // Update Area Points
-    _this.circles.data( _this.stackData );
-    _this.circles.selectAll('.point')
-      .style('display', 'block')
-      .style('opacity', function(d){ return (d.active) ? 1 : 0; })
-      .attr('transform', getPointTransform);
+        .style('opacity', function(d){ return (d.active) ? 1 : 0; })
+        .style('stroke', getColor)
+        .style('fill', getColor)
+        .attr('transform', getPointTransform);
   };
 
   // Area Mouse Events
@@ -369,6 +335,8 @@ function StackedAreaChart() {
 
   var onAreaMouseMove = function(){
     var newYear = getCurrentYear( d3.mouse(this) );
+
+    console.log('onAreaMouseMove', newYear);
 
     if( _this.currentYear != newYear ){
       _this.currentYear = newYear;
@@ -401,19 +369,18 @@ function StackedAreaChart() {
     if( labelsInactives === 0 ){
       _this.legend.selectAll('.label').classed('inactive', true);
       d3.select(this).classed('inactive', false);
-      updateAllDataActive();
     }
     // Activate all labels if there's only one label active & we are going to desactivate
     else if( labelsInactives === _this.legend.selectAll('.label').size()-1 && !d3.select(this).classed('inactive') ){
       _this.legend.selectAll('.label').classed('inactive', false);
-      updateAllDataActive();
     }
     // Toogle inactive value
     else{
       var val = d3.select(this).classed('inactive');
       d3.select(this).classed('inactive', !val);
-      updateDataActive(d.key, val);
     }
+
+    updateDataActive();
 
     _this.update();
   };
@@ -459,13 +426,10 @@ function StackedAreaChart() {
   // Setup Popover Content
   var setupPopover = function( _data, _mouse ){
 
-    console.log('setup popover', _data, _mouse);
-
     if( !_data.active ){
        _this.$popover.hide();
       return;
     }
-
 
     if( _this.$popover.data('id') !== _data.key ){  // Avoid redundancy
       _this.popoverData = _data;
@@ -531,54 +495,39 @@ function StackedAreaChart() {
   };
 
   // Update Active State
-  var updateDataActive = function( _key, _value){
+  var updateDataActive = function(){
+    var active,
+        valueUpdated,
+        valuesUpdated = [];
 
-    console.log('updateDataActive', _key, _value);
-
-    // Get area to update
-    var areaData = _this.stackData.filter(function(d){ return d.key == _key; })[0];
-    areaData.active = _value;
-
-    console.log(areaData);
-
-    /*
-    // Update area values based on active state
-    if( areaData.active ){
-      areaData.values.forEach(function(d,j){ d.y = _this.data[areaData.i].values[j].y; });
-    } else{
-      areaData.values.forEach(function(d,j){ d.y = 0; });
-    }
-    */
-  };
-
-  var updateAllDataActive = function(){
-    var active;
-
-    _this.stackData.forEach(function(d){
-      // Get active state based on related legend label inactive classed
-      active = !_this.legend.select('[data-id="'+d.key+'"]').classed('inactive');
-      // Update area values if update active state
-      if( d.active !== active ){
-        d.active = active;
-        /*
-        console.log(d);
-        // Update values based on active state
-        if( d.active ){
-          d.values.forEach(function(e,f){
-            e.y = _this.data[d.i].values[f].y;
-          });
-        } else{
-          d.values.forEach(function(e,f){
-            e.y = 0;
-          });
+    // get valuesUpdated array
+    _this.values.forEach(function(d){
+      valueUpdated = {};
+      for (var value in d) {
+        if (value !== 'year') {
+          active = !_this.legend.select('[data-id="'+value+'"]').classed('inactive');
+          valueUpdated[value] = active ? d[value] : 0;
         }
-        */
       }
+      valueUpdated.year = d.year;
+      valuesUpdated.push(valueUpdated);
+    });
+
+    // Update stackData
+    _this.stackData = getStackData(valuesUpdated);
+    _this.stackData.forEach(function(d){
+      d.active = !_this.legend.select('[data-id="'+d.key+'"]').classed('inactive');
     });
   };
 
 
   // Auxiliar Methods
+
+  var getStackData = function( values ) {
+    return _this.stack(values)
+      .map(function(d){ d.active = true; return d; })  // add active attribute
+      .sort(function(a,b){ return a.index-b.index; }); // sort data based on stack order index
+  };
 
   var fillGapsInYears = function( _years ){
     if ( _years.length !== _years[_years.length-1]-_years[0]+1 ) {
@@ -617,6 +566,7 @@ function StackedAreaChart() {
   var getPointsData = function(data) {
     return data.map(function(d){
       d.key = data.key;    // Add breakdown key to point data
+      d.active = data.active;
       return d;
     });
     /*
