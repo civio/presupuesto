@@ -19,8 +19,7 @@ function BudgetStackedChart(theSelector, theStats, theColorScale, i18n) {
   };
 
   // Formatting functions
-  var formatPercent = d3.format("%");
-  var formatPercentage = function(d) { return formatPercent(d).replace(".",","); };
+  var formatPercent = d3.format('.0%');
 
   // The ticks in the Y axis sometimes get too long, so we show them as thousands/millions
   var formatAxis = function(d) {
@@ -104,13 +103,10 @@ function BudgetStackedChart(theSelector, theStats, theColorScale, i18n) {
   }
 
   // Format values array as needed for d3 stack
+  // values is an array of objects with id, value & year properties
   function formatValues(values) {
 
-    // [ {id, value, year}, ...]
-
     var formatValues = values;
-
-    //console.log(formatValues);
 
     switch (uiState.format) {
 
@@ -120,22 +116,11 @@ function BudgetStackedChart(theSelector, theStats, theColorScale, i18n) {
         });
         break;
 
-      /*
       case 'percentage':
-        var total;
         formatValues.forEach(function(d){
-          d.value = adjustInflation(d.value, stats, d.year);
+          d.value = d.value / totals[d.year];
         });
-        for (i = 0; i < newData.length; i++) {
-            for (j = 0; j < newData[i].values.length; j++) {
-              total = uiState.field == "expense" ?
-                                            breakdown.expense[(data[i].values[j][0])] :
-                                            breakdown.income[(data[i].values[j][0])];
-              newData[i].values[j][1] = data[i].values[j][1] / totals[data[i].values[j][0]];
-            }
-        }
-        return newData;
-      */
+        break;
 
       case 'per_capita':
         var population;
@@ -177,7 +162,8 @@ function BudgetStackedChart(theSelector, theStats, theColorScale, i18n) {
   // Function used to display the selected SAG
   this.draw = function( newUIState ) {
     // Do nothing if only the year changed
-    if ( uiState && uiState.format==newUIState.format && uiState.field==newUIState.field ) return;
+    if (uiState && uiState.format == newUIState.format && uiState.field == newUIState.field)
+      return;
 
     uiState = newUIState;
 
@@ -186,10 +172,10 @@ function BudgetStackedChart(theSelector, theStats, theColorScale, i18n) {
     
     // Setup X & Y axis
     chart.xAxis
-      .tickValues( years )  // We make sure years only show up once in the axis
-      .tickFormat( d3.format("d") );
+      .tickValues(years)  // We make sure years only show up once in the axis
+      .tickFormat(d3.format('d'));
     
-    chart.yAxis.tickFormat( uiState.format == "percentage" ? formatPercentage : formatAxis );
+    chart.yAxis.tickFormat(uiState.format == 'percentage' ? formatPercent : formatAxis);
 
     // Setup Color Scale
     chart.color = d3.scaleOrdinal(d3.schemeCategory10).range(colorScale);
@@ -203,59 +189,10 @@ function BudgetStackedChart(theSelector, theStats, theColorScale, i18n) {
 
     // Chart set data & draw
     //chart.setData( getSortedData(this.getNewData()), years.map(function(d){ return parseInt(d); }), budgetStatuses ).draw();
-    chart.setData( formatValues(values), items, years.map(function(d){ return parseInt(d); }), budgetStatuses ).draw();
+    chart
+      .setData(formatValues(values), items, years.map(function(d){ return parseInt(d); }), budgetStatuses)
+      .draw();
   
     return this;
   };
-
-
-  // Given the user selection get the newData we need to display in the SAG
-  this.getNewData = function() {
-    var newData = modifiedData.values,
-        i, j;
-
-    switch (uiState.format) {
-      case "nominal":
-        return data;
-
-      case "real": // Adjust Inflation
-        for (i = 0; i < newData.length; i++) {
-            for (j = 0; j < newData[i].values.length; j++) {
-              newData[i].values[j][1] = adjustInflation(data[i].values[j][1], stats, data[i].values[j][0]);
-            }
-        }
-        return newData;
-
-      case "percentage":
-        var total;
-        for (i = 0; i < newData.length; i++) {
-            for (j = 0; j < newData[i].values.length; j++) {
-              total = uiState.field == "expense" ?
-                                            breakdown.expense[(data[i].values[j][0])] :
-                                            breakdown.income[(data[i].values[j][0])];
-              newData[i].values[j][1] = data[i].values[j][1] / totals[data[i].values[j][0]];
-            }
-        }
-        return newData;
-
-      case "per_capita":
-        var population;
-        for (i = 0; i < newData.length; i++) {
-            for (j = 0; j < newData[i].values.length; j++) {
-              population = getPopulationFigure(stats, data[i].values[j][0]);
-              newData[i].values[j][1] = adjustInflation(data[i].values[j][1], stats, data[i].values[j][0]) / population;
-            }
-        }
-        return newData;
-    }
-
-    return this;
-  };
-
-  // Data order function
-  function getSortedData(_data){
-    return _data.sort( function(a,b) {
-      return b.values[0][1] - a.values[0][1];
-    });
-  }
 }

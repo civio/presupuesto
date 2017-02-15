@@ -137,6 +137,9 @@ function StackedAreaChart() {
 
     _this.stackData = getStackData(_this.values);
 
+    console.log('set data');
+    console.table(_this.values);
+
     // Setup Color domain
     _this.color.domain( _this.stackData.map(function(d){ return d.key; }) );
 
@@ -151,7 +154,10 @@ function StackedAreaChart() {
     _this.xSectionWidth = _this.width / ( _this.x.domain()[1] - _this.x.domain()[0] );
 
     // Setup Y domain
-    var totals = _this.values.map(function(d){ return d3.sum(d3.values(d)); }); // we can get this data grom budget-stacked-chart
+    var totals = _this.values.map( function(d) {
+      var values = d3.entries(d).filter(function(e){ return e.key !== 'year'; }); // get values except year
+      return d3.sum(values, function(e){ return e.value; });
+    });
     _this.y.domain([0, d3.max(totals)]);
 
     return _this;
