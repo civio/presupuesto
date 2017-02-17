@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-06 13:44+0200\n"
-"PO-Revision-Date: 2017-01-15 17:59+0100\n"
+"PO-Revision-Date: 2017-02-17 16:54+0100\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -491,6 +491,9 @@ msgstr "any year"
 #: templates/search/index.html:56 templates/search/index.html.py:60
 msgid "Comarcas y municipios"
 msgstr "Counties and towns"
+
+msgid "Áreas"
+msgstr "Areas"
 
 #: templates/search/index.html:84
 msgid "Políticas y Programas"
