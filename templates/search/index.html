@@ -51,7 +51,7 @@
           <h3>{{ _('Comarcas y municipios') }}</h3>
         </div>
         <div class="panel-body">
-          <table class="table" summary="Resultados encontrados en Políticas y programas para el término buscado">
+          <table class="table" summary="Resultados encontrados en Comarcas y municipios para el término buscado">
             <caption class="hidden">{{ _('Comarcas y municipios') }}</caption>
             <tbody>
             {% for entity in entities %}
@@ -72,6 +72,27 @@
       </div>
       {% endif %}
 
+      {% if departments %}
+      <div class="results-terms panel">
+        <div class="panel-heading">
+          <h3>{{ _('Áreas') }}</h3>
+        </div>
+        <div class="panel-body">
+          <table class="table" summary="Resultados encontrados en Secciones para el término buscado">
+            <caption class="hidden">{{ _('Secciones') }}</caption>
+            <tbody>
+            {% for department in departments %}
+              <tr>
+                <th data-th="Política" headers="policy-program" id="programme1" scope="row">
+                  <a href="{{ url('budget_app.views.sections_show', department.department, department.description|slugify) }}">{{ department.description }}</a>
+                </th>
+              </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      {% endif %}
 
       {% if policies_ids or programmes_per_policy %}
       <div class="results-policies panel">
