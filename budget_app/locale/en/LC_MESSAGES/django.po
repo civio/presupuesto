@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-06 13:44+0200\n"
-"PO-Revision-Date: 2017-02-17 16:54+0100\n"
+"PO-Revision-Date: 2017-02-28 19:28+0100\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 1.8.12\n"
 
 #: templates/base-widget.html:7 templates/base-widget.html.py:26
 #: templates/base.html:7 templates/shared/meta.html:9
@@ -494,6 +494,9 @@ msgstr "Counties and towns"
 
 msgid "Áreas"
 msgstr "Areas"
+
+msgid "Artículos y conceptos"
+msgstr "Articles and items"
 
 #: templates/search/index.html:84
 msgid "Políticas y Programas"
