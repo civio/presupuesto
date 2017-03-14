@@ -11,3 +11,4 @@ six==1.9.0
 openpyxl==2.3.4
 dj-static==0.0.6
 south==1.0.2
+python-dateutil==2.6.0
