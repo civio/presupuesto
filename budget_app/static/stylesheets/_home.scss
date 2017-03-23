@@ -36,9 +36,8 @@
 
     li{
       list-style: none;
-      @extend .well;
-      @extend .well-sm;
-      @include box-shadow( none );
+      min-height: 20px;
+      padding: 9px;
       margin-bottom: $grid-gutter-width/3;
       background: $page-header-bg;
       border: none;
