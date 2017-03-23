@@ -201,8 +201,6 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
     addSourceFlows(getIncomeNodes(), government_id);
     addTargetFlows(government_id, getExpenseNodes());
 
-    console.log(result, sankey);
-
     sankey
       .nodes(result.nodes)
       .links(result.links)
@@ -232,15 +230,8 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
     sankey = d3.sankey()
       .nodeWidth(2)
       .nodePadding(nodePadding)
+      //.relaxFactor(relaxFactor)
       .size([width, height]);
-
-    /*
-    sankey = d3.sankey(width, height)
-        .nodeWidth(2)
-        .nodePadding(nodePadding)
-        .relaxFactor(relaxFactor)
-        .size([width, height]);
-    */
 
     /*
     if (maxAmountEver !== 0)
@@ -251,18 +242,23 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
 
     var budget = this.getSankeyData(uiState.year);
 
-    var link = svg.append("g").selectAll(".link")
+    // draw links
+    link = svg.append("g").selectAll(".link")
         .data(budget.links)
       .enter().append("path")
+        .attr("class", "link with-data")
         .call(setupLink)
         .call(setupCallbacks);
 
-    var executionLinks = svg.append("g").selectAll(".link-execution")
+    // draw execution links
+    svg.append("g").selectAll(".link-execution")
         .data(budget.links)
       .enter().append("path")
+        .attr("class", "link-execution with-data")
         .call(setupExecutionLink)
         .call(setupCallbacks);
 
+    // draw nodes
     var node = svg.append("g").selectAll(".node")
         .data(budget.nodes)
       .enter().append("g")
@@ -371,18 +367,16 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
   function setupLink(link) {
     link
       .attr("d", sankey.link())
-      .attr("class", "link with-data")
       // Hide elements who are practically zero: our workaround for Sankey layout and null elements
       .attr("opacity", function(d) { return ((d.budgeted||0)+(d.actual||0)) > 1 ? 1 : 0; })
-      .style("stroke-width", function(d) { return (d.budgeted || 0) / d.value * d.dy; });
+      .attr("stroke-width", function(d) { return (d.budgeted || 0) / d.value * d.dy; });
   }
 
   function setupExecutionLink(link) {
     link
       .attr("d", sankey.link())
-      .attr("class", "link-execution with-data")
       .style("display", function(d) { return (d.actual || 0) ? '': 'none'; })
-      .style("stroke-width", function(d) { return (d.actual || 0) / d.value * d.dy; });
+      .attr("stroke-width", function(d) {return (d.actual || 0) / d.value * d.dy; });
   }
 
   function setupNodeRect(rect) {
