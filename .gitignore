@@ -7,6 +7,9 @@ fabfile.*
 presupuesto-*
 /.sass-cache
 .env
+/env
+import
+sys.path
 .python-version
 .node-version
 budget_app/templates
