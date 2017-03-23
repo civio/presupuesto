@@ -1,8 +1,18 @@
 from django.db import models
+from django.conf import settings
 
 
 class InstitutionalCategoriesManager(models.Manager):
-    pass
+    def search_departments(self, query, budget):
+        sql =   "select * from institutional_categories " \
+                    "where department is not null and " \
+                    "to_tsvector('"+settings.SEARCH_CONFIG+"',description) @@ plainto_tsquery('"+settings.SEARCH_CONFIG+"',%s) "
+
+        if budget:
+            sql += " and budget_id='%s'" % budget.id
+
+        sql += "order by description asc"
+        return self.raw(sql, (query, ))
 
 
 class InstitutionalCategory(models.Model):

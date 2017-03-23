@@ -207,13 +207,13 @@ function isPartiallyExecuted(s) {
 }
 
 function getExecutionColumnName(budgetStatus, label, budgetStatusLabels) {
-  return isPartiallyExecuted(budgetStatus) ?
+  return (isPartiallyExecuted(budgetStatus) && budgetStatus!='0T') ?
             "<abbr title='("+budgetStatusLabels[budgetStatus]+")'>"+label+"*</abbr>" :
             label;
 }
 
 function getExecutionTotalLabel(budgetStatus, budgetStatusLabels) {
-  return isPartiallyExecuted(budgetStatus) ?
+  return (isPartiallyExecuted(budgetStatus) && budgetStatus!='0T') ?
             " <small>("+budgetStatusLabels[budgetStatus]+")</small>" :
             "";
 }

@@ -248,7 +248,7 @@ class SimpleBudgetLoader:
         if s.isupper():
           # We need to do the casing operation on an Unicode string so it handles accented characters correctly
           s = unicode(s, encoding='utf8')
-          return s[0].upper() + s[1:].lower()
+          return s.capitalize()
         else:
           return s
 

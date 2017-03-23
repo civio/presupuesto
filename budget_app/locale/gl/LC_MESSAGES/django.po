@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-06 13:44+0200\n"
-"PO-Revision-Date: 2016-12-14 11:35+0100\n"
+"PO-Revision-Date: 2017-01-30 07:49+0100\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: gl\n"
@@ -25,11 +25,11 @@ msgstr ""
 
 #: templates/base.html:87
 msgid "Esta web utiliza cookies propias y de terceros para ofrecerte la mejor experiencia de usuario. Si continúas navegando, entendemos que autorizas el uso de estas cookies."
-msgstr "Esta web utiliza cookies propias e de terceiros para ofrecerche a mellor experiencia de usuario. Se continúas navegando, entendemos que autorizas o uso de estas cookies."
+msgstr "Esta web utiliza cookies propias e de terceiros para ofrecerche a mellor experiencia de usuario. Se continúas navegando, entendemos que autorizas o uso destas cookies."
 
 #: templates/base.html:90
 msgid "Más información"
-msgstr "Mais información"
+msgstr "Máis información"
 
 #: templates/budgets/budgets_indicators.html:2
 msgid "Indicadores presupuestarios"
@@ -280,6 +280,10 @@ msgstr "Gastado"
 #: templates/entities/index.html:41 templates/entities/show.html:96
 msgid "Descarga la tabla de <strong>Ingresos</strong>"
 msgstr "Descarga a táboa de <strong>Ingresos</strong>"
+
+#
+msgid "Descarga la tabla de <strong>%s</strong> en "
+msgstr "Descarga a táboa de <strong>%s</strong> en "
 
 #: templates/entities/index.html:42 templates/entities/index.html.py:48
 #: templates/entities/show.html:97 templates/entities/show.html.py:103

@@ -68,6 +68,7 @@
       var uiState = getUIState();
       sankey.update(uiState);
       updateBudgetTotals(chapterBreakdown, economicBreakdown, budgetStatuses, adjustInflationFn, uiState);
+      $('.execution-status').html(getExecutionTotalLabel(budgetStatuses[uiState.year], i18n));
 {% if calculate_budget_indicators %}
       calculateIndicators(chapterBreakdown, budgetStatuses, adjustInflationFn, uiState);
 {% else %}

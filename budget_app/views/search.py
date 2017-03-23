@@ -1,7 +1,7 @@
 from coffin.shortcuts import render_to_response
 from django.core.paginator import EmptyPage
 from django.conf import settings
-from budget_app.models import Budget, Payment, GlossaryTerm, EconomicCategory, FunctionalCategory, BudgetItem, Entity
+from budget_app.models import *
 from helpers import *
 from paginator import DiggPaginator as Paginator
 
@@ -29,10 +29,15 @@ def search(request):
 
     # Get search results
     c['years'] = map(str, Budget.objects.get_years(get_main_entity(c).id))
+
     c['terms'] = list(GlossaryTerm.objects.search(c['query'], c['LANGUAGE_CODE']))
+
     if hasattr(settings, 'SEARCH_ENTITIES') and settings.SEARCH_ENTITIES:
         c['entities'] = list(Entity.objects.search(c['query']))
         c['show_entity_names'] = True
+
+    if hasattr(settings, 'SHOW_SECTION_PAGES') and settings.SHOW_SECTION_PAGES:
+        c['departments'] = list(InstitutionalCategory.objects.search_departments(c['query'], budget))
 
     all_items = list(BudgetItem.objects.search(c['query'], budget, c['page']))
     try:
@@ -71,6 +76,8 @@ def search(request):
 
     # Count the results
     c['results_size'] = len(c['terms']) + \
+                        (len(c['entities']) if 'entities' in c else 0) + \
+                        (len(c['departments']) if 'departments' in c else 0) + \
                         len(c['policies_ids']) + \
                         len(c['articles']) + \
                         len(c['headings']) + \

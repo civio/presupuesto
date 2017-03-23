@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-06 13:44+0200\n"
-"PO-Revision-Date: 2016-12-14 11:34+0100\n"
+"PO-Revision-Date: 2017-02-28 19:28+0100\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 1.8.12\n"
 
 #: templates/base-widget.html:7 templates/base-widget.html.py:26
 #: templates/base.html:7 templates/shared/meta.html:9
@@ -281,6 +281,10 @@ msgstr "Actual"
 msgid "Descarga la tabla de <strong>Ingresos</strong>"
 msgstr "Download the <strong>Revenue</strong> table"
 
+#
+msgid "Descarga la tabla de <strong>%s</strong> en "
+msgstr "Download the <strong>%s</strong> table in "
+
 #: templates/entities/index.html:42 templates/entities/index.html.py:48
 #: templates/entities/show.html:97 templates/entities/show.html.py:103
 #: templates/entities/show.html:109 templates/payments/index.html:41
@@ -487,6 +491,12 @@ msgstr "any year"
 #: templates/search/index.html:56 templates/search/index.html.py:60
 msgid "Comarcas y municipios"
 msgstr "Counties and towns"
+
+msgid "Áreas"
+msgstr "Areas"
+
+msgid "Artículos y conceptos"
+msgstr "Articles and items"
 
 #: templates/search/index.html:84
 msgid "Políticas y Programas"

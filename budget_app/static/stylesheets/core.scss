@@ -1,7 +1,7 @@
 // Plugins
 @import "dist/bootstrap-slider";
 @import "dist/chosen";
-@import "dist/datatables";
+//@import "dist/datatables"; // We use DataTable plugin but we don't need it's styles
 
 // Bootstrap
 @import "_bootstrap";

@@ -124,7 +124,7 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
     setDimensions();
 
     // Set treemap dimensions
-    setTreemapDimensions();
+    setTreemapDimensions(false);
 
     // Update tremap size
     treemap.size([treemapWidth,treemapHeight]);
@@ -169,7 +169,7 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
     if (!yearTotals[uiState.year] || !yearTotals[uiState.year][uiState.field])
       return;
 
-    setTreemapDimensions();
+    setTreemapDimensions(false);
 
     // Setup treemap
     treemap = d3.treemap()
@@ -222,7 +222,7 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
     if (!yearTotals[uiState.year] || !yearTotals[uiState.year][uiState.field])
       return;
 
-    setTreemapDimensions();
+    setTreemapDimensions(true);
 
     // Update tremap size
     treemap.size([treemapWidth,treemapHeight]);
@@ -362,7 +362,7 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
   }
 
   // Adjust the overall treemap size based on the size of this year's budget compared to the biggest ever
-  function setTreemapDimensions() {
+  function setTreemapDimensions(transition) {
     var maxValue  = calculateMaxTreemapValueEver();
     var ratio     = Math.sqrt( getValue(yearTotals[uiState.year][uiState.field], uiState.format, uiState.field, uiState.year) / maxValue );
     treemapWidth  = width * ratio;
@@ -371,7 +371,7 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
     // Set nodes container position
     nodesContainer
       .transition()
-        .duration(transitionDuration)
+        .duration((transition) ? transitionDuration : 0)
         .style('top',  (height-treemapHeight)*0.5 + 'px')
         .style('left', (width-treemapWidth)*0.5 + 'px');
   }
