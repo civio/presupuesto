@@ -230,13 +230,11 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
     sankey = d3.sankey()
       .nodeWidth(2)
       .nodePadding(nodePadding)
-      //.relaxFactor(relaxFactor)
+      .relaxFactor(relaxFactor)
       .size([width, height]);
 
-    /*
     if (maxAmountEver !== 0)
       sankey.maxAmountEver(maxAmountEver);
-    */
 
     var path = sankey.link();
 
@@ -266,19 +264,17 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
         .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
 
     node.append("rect")
+        .attr("class", function(d) { return d.name ? "" : "node-central"; })
         .call(setupNodeRect)
         .call(setupCallbacks);
 
     node.append("text")
-        .attr("x", -6)
         .attr("dy", ".35em")
-        .attr("text-anchor", "end")
         .attr("transform", null)
+        .attr("x", function(d) { return (d.sourceLinks.length == 0) ? -6 : 6 + sankey.nodeWidth(); })
+        .attr("text-anchor", function(d) { return (d.sourceLinks.length == 0) ? "end" : "start"; })
         .text(function(d) { return d.name; })
         .call(setupNodeText)
-      .filter(function(d) { return d.x < width / 2; })
-        .attr("x", 6 + sankey.nodeWidth())
-        .attr("text-anchor", "start");
 
     // Add a basic legend. Not the most elegant implementation...
     var legend = svg.append('g').attr("transform", "translate(5,"+height+")");
@@ -383,16 +379,16 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
     // We draw the central node differently. To distinguish it we rely on the fact
     // that it's name is ''.
     rect
-      .attr("class", function(d) { return d.name ? "node-central" : ""; })
       .attr("height", function(d) { return d.name ? ((d.budgeted||0) / d.value * d.dy) : d.dy+20; })
       .attr("width", function(d) { return d.name ? sankey.nodeWidth() : 10*sankey.nodeWidth(); })
       .attr("x", function(d) { return d.name ? 0 : -5*sankey.nodeWidth(); })
       .attr("y", function(d) { return d.name ? (1 - (d.budgeted||0) / d.value) * d.dy / 2 : -10; })
       // Hide elements who are practically zero: our workaround for Sankey layout and null elements
       .attr("opacity", function(d) { return ((d.budgeted||0)+(d.actual||0)) > 1 ? 1 : 0; })
-      .style("fill", function(d) { return d.color == d.name ? "#333" : "#FFF"; })
-      .style("stroke", function(d) { return d.name ? d.color : "none"; })
-      .style("cursor", function(d) { return d.name ? 'pointer' : 'auto'; });
+      // Define fill, stroke & cursor in css
+      //.style("fill", function(d) { return d.color == d.name ? "#333" : "#FFF"; })
+      //.style("stroke", function(d) { return d.name ? d.color : "none"; })
+      //.style("cursor", function(d) { return d.name ? 'pointer' : 'auto'; });
   }
 
   function setupNodeText(text) {
