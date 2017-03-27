@@ -16,7 +16,7 @@ function getSum(breakdown, ids, field, year, budgetStatuses) {
 // Update budget totals
 function updateBudgetTotals(chapterBreakdown, economicBreakdown, budgetStatuses, adjustInflationFn, uiState) {
   function format(amount) {
-    return formatAmount(adjustInflationFn(amount, uiState.year));
+    return Formatter.amount(adjustInflationFn(amount, uiState.year));
   }
 
   // The economic breakdown is aware of whether we're including the financial chapters,
@@ -70,7 +70,7 @@ function updateBudgetTotals(chapterBreakdown, economicBreakdown, budgetStatuses,
 // Calculate global budget indicators
 function calculateIndicators(chapterBreakdown, budgetStatuses, adjustInflationFn, uiState) {
   function format(amount) {
-    return formatAmount(adjustInflationFn(amount, uiState.year));
+    return Formatter.amount(adjustInflationFn(amount, uiState.year));
   }
 
   var gross_savings = getSum(chapterBreakdown, _.range(1, 6), 'income', uiState.year, budgetStatuses) -

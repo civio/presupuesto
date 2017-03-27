@@ -152,7 +152,7 @@ function BudgetSummary(_selector) {
   }
 
   function setSummaryItemPercentage(d) {
-    return ( d.percentage >= 6 ) ? formatDecimal(d.percentage, 1)+'<small>%</small>' : '';
+    return ( d.percentage >= 6 ) ? Formatter.decimal(d.percentage, .1)+'<small>%</small>' : '';
   }
 
   function setSummaryItemLabel(d) {

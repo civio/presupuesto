@@ -82,7 +82,7 @@
     function getInflationAdjustmentFunction(stats) {
       return function(value, year) {
 {% if adjust_inflation_in_overview %}
-        return adjustInflation(value, stats, year);
+        return Formatter.adjustInflation(value, stats, year);
 {% else %}
         return value;
 {% endif %}

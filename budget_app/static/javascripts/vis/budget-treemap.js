@@ -504,14 +504,14 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
       case "nominal":
         return value;
       case "real":
-        return adjustInflation(value, stats, year);
+        return Formatter.adjustInflation(value, stats, year);
       case "percentage":
         var total = (field == "expense") ? yearTotals[year].expense : yearTotals[year].income;
         // Avoid division by zero (f.ex. when only one of the sides is available)
         return total > 0 ? value/total : 0;
       case "per_capita":
-        var population = getPopulationFigure(stats, year);
-        return adjustInflation(value, stats, year) / population;
+        var population = Formatter.getPopulationFigure(stats, year);
+        return Formatter.adjustInflation(value, stats, year) / population;
     }
   }
 
@@ -519,13 +519,13 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
     var transformedValue = getValue(value, uiState.format, uiState.field, uiState.year);
     switch (uiState.format) {
       case "nominal":
-        return formatAmount(transformedValue);
+        return Formatter.amount(transformedValue);
       case "real":
-        return formatAmount(transformedValue);
+        return Formatter.amount(transformedValue);
       case "percentage":
-        return formatPercentage(transformedValue);
+        return Formatter.percentage(transformedValue);
       case "per_capita":
-        return formatDecimalAmount(transformedValue, 2);
+        return Formatter.amountDecimal(transformedValue, .01);
     }
   }
 

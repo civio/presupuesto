@@ -302,16 +302,14 @@ export {
 */
 
 export {
-  format
-  /*,
-  formatPrefix,
-  formatLocale,
+  format,
+  // formatPrefix,
+  // formatLocale,
   formatDefaultLocale,
-  formatSpecifier,
+  // formatSpecifier,
   precisionFixed,
-  precisionPrefix,
-  precisionRound
-  */
+  // precisionPrefix,
+  // precisionRound
 } from "d3-format";
 
 /*

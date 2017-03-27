@@ -437,25 +437,25 @@ function BudgetMap( dataGrid,
       case "nominal":
         return value;
       case "real":
-        return adjustInflation(value, stats, year);
+        return Formatter.adjustInflation(value, stats, year);
       // case "percentage":
       //   return value/yearTotals[year];
       case "per_capita":
-        var population = getPopulationFigure(stats, year, entity_id);
-        return adjustInflation(value, stats, year) / population;
+        var population = Formatter.getPopulationFigure(stats, year, entity_id);
+        return Formatter.adjustInflation(value, stats, year) / population;
     }
   }
 
   function format(value, format) {
     switch (format) {
       case "nominal":
-        return formatSimplifiedAmount(value);
+        return Formatter.amountSimplified(value);
       case "real":
-        return formatSimplifiedAmount(value);
+        return Formatter.amountSimplified(value);
       case "percentage":
-        return formatPercent(value).replace(".",",");
+        return Formatter.percent(value);
       case "per_capita":
-        return formatDecimal(value/100, 1) + " €";
+        return Formatter.amountDecimal(value, .1);
     }
   }
 }

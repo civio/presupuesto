@@ -2,7 +2,6 @@ function BudgetComparison(container_id, leftBreakdown, rightBreakdown, leftStats
   var leftData = loadBreakdown(leftBreakdown, side, leftStats);
   var rightData = loadBreakdown(rightBreakdown, side, rightStats);
   var categories = getCategories(leftData, rightData);
-  var formatPercent = d3.format(".2%");
 
   var bars = "<ul class='meters__list'> \
                   <li class='meter meter__left'> \
@@ -158,25 +157,25 @@ function BudgetComparison(container_id, leftBreakdown, rightBreakdown, leftStats
       case "nominal":
         return value;
       case "real":
-        return adjustInflation(value, stats, year);
+        return Formatter.adjustInflation(value, stats, year);
       case "percentage":
         return value/yearTotals[year];
       case "per_capita":
-        var population = getPopulationFigure(stats, year);
-        return adjustInflation(value, stats, year) / population;
+        var population = Formatter.getPopulationFigure(stats, year);
+        return Formatter.adjustInflation(value, stats, year) / population;
     }
   }
 
   function format(value, format) {
     switch (format) {
       case "nominal":
-        return formatAmount(value);
+        return Formatter.amount(value);
       case "real":
-        return formatAmount(value);
+        return Formatter.amount(value);
       case "percentage":
-        return formatPercent(value).replace(".",",");
+        return Formatter.percent(value);
       case "per_capita":
-        return formatDecimal(value/100) + " €";
+        return Formatter.decimal(value/100);
     }
   }
 }

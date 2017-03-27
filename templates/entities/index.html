@@ -114,10 +114,10 @@
         case "nominal":
           return value;
         case "real":
-          return adjustInflation(value, stats, uiState.year);
+          return Formatter.adjustInflation(value, stats, uiState.year);
         case "per_capita":
-          var population = getPopulationFigure(stats, uiState.year, entity_id);
-          return adjustInflation(value, stats, uiState.year) / population;
+          var population = Formatter.getPopulationFigure(stats, uiState.year, entity_id);
+          return Formatter.adjustInflation(value, stats, uiState.year) / population;
         case "percentage":  // XXX: hidden for now
       }
     }
@@ -128,13 +128,13 @@
 
       switch (uiState.format) {
         case "nominal":
-          return formatAmount(value);
+          return Formatter.amount(value);
         case "real":
-          return formatAmount(value);
+          return Formatter.amount(value);
         case "per_capita":
-          return formatDecimal(value/100) + " €";
+          return Formatter.amountDecimal(value, .01);
         case "percentage":
-          return formatPercent(value).replace(".",",");
+          return Formatter.percent(value);
       }
     }
 
@@ -153,7 +153,7 @@
 
       // Update name and population
       $('.map-info__title h2').text(name);
-      $('#map-info__population').text( formatNumber(getPopulationFigure(stats, uiState.year, name)) );
+      $('#map-info__population').text( Formatter.number(Formatter.getPopulationFigure(stats, uiState.year, name)) );
 
       // Update economic values
       var data = economicBreakdown.sub[name];

@@ -32,8 +32,6 @@ function StackedAreaChart() {
 
   _this.dataFormat = null;
 
-  _this.percentageFormat = d3.format('+.1f'); // used in popover percentage variation
-
 
   // Setup SVG Object
   _this.setup = function(selector){
@@ -474,18 +472,18 @@ function StackedAreaChart() {
 
     // Setup value
     if( _this.dataFormat === 'percentage' ){
-      _this.$popover.find('.popover-content-value').html(formatPercentage(popoverValue));
+      _this.$popover.find('.popover-content-value').html(Formatter.percentage(popoverValue));
     } else if( _this.dataFormat === "per_capita" ){
-      _this.$popover.find('.popover-content-value').html(formatDecimalAmount(popoverValue, 2));
+      _this.$popover.find('.popover-content-value').html(Formatter.amountDecimal(popoverValue, .01));
     } else{
-      _this.$popover.find('.popover-content-value').html(formatAmount(popoverValue));
+      _this.$popover.find('.popover-content-value').html(Formatter.amount(popoverValue));
     }
 
     // Setup variation
     if( popoverPrevValue ){
-      var percentageValue = ((popoverValue/popoverPrevValue)-1)*100;
+      var percentageValue = (popoverValue/popoverPrevValue)-1;
       var labelClass      = (percentageValue >= 0) ? 'label-success' : 'label-danger';
-      _this.$popover.find('.popover-content-variation .label').removeClass('label-success, label-danger').addClass(labelClass).html(_this.percentageFormat(percentageValue)+' %');
+      _this.$popover.find('.popover-content-variation .label').removeClass('label-success, label-danger').addClass(labelClass).html(Formatter.percentageSigned(percentageValue));
       _this.$popover.find('.popover-content-variation-year').html( _this.years[_this.currentYear-1] );
       _this.$popover.find('.popover-content-variation').show();
     } else{

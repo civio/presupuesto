@@ -34,7 +34,7 @@
         title: uiState.field=='expense' ? "{{ _('Gastos') }}" : "{{ _('Ingresos') }}",
 {% endif %}
         data: getBreakdownValue,
-        render: getFormatter(uiState.format, stats, Number(uiState.year), getBreakdownValue)
+        render: Formatter.getFormatter(uiState.format, stats, Number(uiState.year), getBreakdownValue)
       }; 
     }
 

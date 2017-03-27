@@ -10,7 +10,7 @@ $(function () {
     $programme = $(hiddenProgrammes[chosenProgramme]);
     // Skip if chosen programme has been chose previously
     if ($programme.hasClass('hidden')) {
-      $programme.find('strong').text( formatAmount($programme.data('budget')) );
+      $programme.find('strong').text( Formatter.amount($programme.data('budget')) );
       $programme.removeClass('hidden');
       counter--;
     }

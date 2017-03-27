@@ -18,15 +18,12 @@ function BudgetStackedChart(_selector, _stats, _colorScale, i18n) {
     return this;
   };
 
-  // Formatting functions
-  var formatPercent = d3.format('.0%');
-
   // The ticks in the Y axis sometimes get too long, so we show them as thousands/millions
   var formatAxis = function(d) {
     if (uiState.format === 'nominal' || uiState.format === 'real') {
-      return formatSimplifiedAmount(d, 1);
+      return Formatter.amountSimplified(100*d, .1); // Formatter.amountSimplified expect value in cents
     } else {
-      return formatAmount(d);
+      return Formatter.amount(d);
     }
   };
 
@@ -89,7 +86,7 @@ function BudgetStackedChart(_selector, _stats, _colorScale, i18n) {
 
       case 'real': // Adjust Inflation
         formatValues.forEach(function(d){
-          d.value = adjustInflation(d.value, stats, d.year);
+          d.value = Formatter.adjustInflation(d.value, stats, d.year);
         });
         break;
 
@@ -102,8 +99,8 @@ function BudgetStackedChart(_selector, _stats, _colorScale, i18n) {
       case 'per_capita':
         var population;
         formatValues.forEach(function(d){
-          population = getPopulationFigure(stats, d.year);
-          d.value = adjustInflation(d.value, stats, d.year) / population;
+          population = Formatter.getPopulationFigure(stats, d.year);
+          d.value = Formatter.adjustInflation(d.value, stats, d.year) / population;
         });
         break;
     }
@@ -146,9 +143,9 @@ function BudgetStackedChart(_selector, _stats, _colorScale, i18n) {
     // Setup X & Y axis
     chart.xAxis
       .tickValues(years)  // We make sure years only show up once in the axis
-      .tickFormat(d3.format('d'));
+      .tickFormat(Formatter.year);
     
-    chart.yAxis.tickFormat(uiState.format == 'percentage' ? formatPercent : formatAxis);
+    chart.yAxis.tickFormat(uiState.format == 'percentage' ? Formatter.percentageRounded : formatAxis);
 
     // Setup Color Scale
     chart.color = d3.scaleOrdinal(d3.schemeCategory10).range(colorScale);

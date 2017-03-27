@@ -71,11 +71,11 @@ var TaxReceipt = (function() {
       return value;  // We filter based on the raw data
 
     var percentage = value / getBreakdownValue(item.root);
-    return formatDecimal(percentage * that.totalTaxPaid) + ' €';
+    return Formatter.amountDecimal(percentage * that.totalTaxPaid * 100, .01); // Formatter.amountDecimal expect cents values
   };
 
   that.formatTaxAmount = function(value) {
-    return numeral(value).format( '0,0.00', Math.floor ) + ' €';
+    return Formatter.amountDecimal(value * 100, .01);  // Formatter.amountDecimal expect cents values
   };
 
 

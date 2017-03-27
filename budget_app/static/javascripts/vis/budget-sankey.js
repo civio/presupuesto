@@ -413,9 +413,9 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
     var name = d.name ? d.name : (d.source.name ? d.source.name : d.target.name);
     $popup.find(".popover-title").html(name);
 
-    var html = d.budgeted ? '<span class="budgeted">'+i18n['budgeted']+'</span><br/><span class="popover-content-value">'+formatAmount(d.budgeted)+'</span><br/>' : '';
+    var html = d.budgeted ? '<span class="budgeted">'+i18n['budgeted']+'</span><br/><span class="popover-content-value">'+Formatter.amount(d.budgeted)+'</span><br/>' : '';
     if ( hasExecution )
-      html += d.actual ? '<span class="executed">'+i18n['executed']+'</span><br/><span class="popover-content-value">'+formatAmount(d.actual)+'</span>' : '';
+      html += d.actual ? '<span class="executed">'+i18n['executed']+'</span><br/><span class="popover-content-value">'+Formatter.amount(d.actual)+'</span>' : '';
     $popup.find(".popover-content").html(html);
     $popup.show();
   }

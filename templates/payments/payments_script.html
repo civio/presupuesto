@@ -15,7 +15,7 @@
       return { 
         data: getBreakdownValueFunction('expense', 'pagos'),
         title: '{{ _("Pago") }}',
-        render: getFormatter('nominal', null, null)
+        render: Formatter.getFormatter('nominal', null, null)
       }; 
     }
 
@@ -110,8 +110,8 @@
       }
       $('#query-panel .payments-query').html( queryStr.join(' + ') );
 
-      $("#payments-total").text( formatAmount(totalAmount) );
-      $("#payments-size").text( formatNumber(paymentsCount) );
+      $("#payments-total").text( Formatter.amount(totalAmount) );
+      $("#payments-size").text( Formatter.number(paymentsCount) );
 
       // Update download links
       var queryString = window.location.hash.replace("#", "");

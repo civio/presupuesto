@@ -84,7 +84,7 @@
     // We don't have grids in this page, but we reuse the formatters, who expect certain structure
     function getColumnDefinition(uiState, stats) {
       return { 
-        formatter: getFormatter(uiState.format),
+        formatter: Formatter.getFormatter(uiState.format),
         year: Number(uiState.year),
         stats: stats
       }; 
