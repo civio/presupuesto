@@ -21,15 +21,14 @@
   {% endcompress %}
 </head>
 <body class="{{ page_css_class }} widget">
-  
+  <!--[if lt IE 9]>
+    {% include 'shared/chromeframe.html' %}
+  <![endif]-->
+
   <div class="content" role="main">
     <a href="{{ url('budget_app.views.welcome') }}" class="widget-title" target="_parent"><h1>{{ _('Presupuestos del Gobierno de Aragón') }}</h1></a>
     {% block content %}{% endblock %} 
   </div>
-
-  <!--[if lt IE 9]>
-    {% include 'shared/chromeframe.html' %}
-  <![endif]-->
 
   {% compress js %}
   <!-- Jquery plugins -->
@@ -48,7 +47,7 @@
   <script src="{{ STATIC_URL }}javascripts/grid_formatters.js"></script>
   <script src="{{ STATIC_URL }}javascripts/grid_helpers.js"></script>
   <!-- D3 & Visualization modules -->
-  <script src="{{ STATIC_URL }}javascripts/vis/d3.js"></script>
+  <script src="{{ STATIC_URL }}javascripts/vis/d3-bundle.js"></script>
   <script src="{{ STATIC_URL }}javascripts/vis/stacked-area-chart.js"></script>
   <script src="{{ STATIC_URL }}javascripts/vis/budget-stacked-chart.js"></script>
   {% endcompress %}

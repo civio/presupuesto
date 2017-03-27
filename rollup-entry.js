@@ -1,44 +1,42 @@
-/*
 export {
-  bisect,
-  bisectRight,
-  bisectLeft,
-  ascending,
-  bisector,
-  descending,
-  deviation,
+  // bisect,
+  // bisectRight,
+  // bisectLeft,
+  // ascending,
+  // bisector,
+  // descending,
+  // deviation,
   extent,
-  histogram,
-  thresholdFreedmanDiaconis,
-  thresholdScott,
-  thresholdSturges,
+  // histogram,
+  // thresholdFreedmanDiaconis,
+  // thresholdScott,
+  // thresholdSturges,
   max,
-  mean,
-  median,
-  merge,
+  // mean,
+  // median,
+  // merge,
   min,
-  pairs,
-  permute,
-  quantile,
-  range,
-  scan,
-  shuffle,
+  // pairs,
+  // permute,
+  // quantile,
+  // range,
+  // scan,
+  // shuffle,
   sum,
-  ticks,
-  tickStep,
-  transpose,
-  variance,
-  zip
+  // ticks,
+  // tickStep,
+  // transpose,
+  // variance,
+  // zip
 } from "d3-array";
-*/
 
 export {
   entries,
-  //keys,
-  //values,
+  keys,
+  values,
   //map,
   //set,
-  //nest
+  nest
 } from "d3-collection";
 
 /*
@@ -50,47 +48,49 @@ export {
   randomIrwinHall,
   randomExponential
 } from "d3-random";
+*/
 
 export {
-  easeLinear,
-  easeQuad,
-  easeQuadIn,
-  easeQuadOut,
-  easeQuadInOut,
+  // easeLinear,
+  // easeQuad,
+  // easeQuadIn,
+  // easeQuadOut,
+  // easeQuadInOut,
   easeCubic,
-  easeCubicIn,
+  // easeCubicIn,
   easeCubicOut,
-  easeCubicInOut,
-  easePoly,
-  easePolyIn,
-  easePolyOut,
-  easePolyInOut,
-  easeSin,
-  easeSinIn,
-  easeSinOut,
-  easeSinInOut,
-  easeExp,
-  easeExpIn,
-  easeExpOut,
-  easeExpInOut,
-  easeCircle,
-  easeCircleIn,
-  easeCircleOut,
-  easeCircleInOut,
-  easeBounce,
-  easeBounceIn,
-  easeBounceOut,
-  easeBounceInOut,
-  easeBack,
-  easeBackIn,
-  easeBackOut,
-  easeBackInOut,
-  easeElastic,
-  easeElasticIn,
-  easeElasticOut,
-  easeElasticInOut
+  // easeCubicInOut,
+  // easePoly,
+  // easePolyIn,
+  // easePolyOut,
+  // easePolyInOut,
+  // easeSin,
+  // easeSinIn,
+  // easeSinOut,
+  // easeSinInOut,
+  // easeExp,
+  // easeExpIn,
+  // easeExpOut,
+  // easeExpInOut,
+  // easeCircle,
+  // easeCircleIn,
+  // easeCircleOut,
+  // easeCircleInOut,
+  // easeBounce,
+  // easeBounceIn,
+  // easeBounceOut,
+  // easeBounceInOut,
+  // easeBack,
+  // easeBackIn,
+  // easeBackOut,
+  // easeBackInOut,
+  // easeElastic,
+  // easeElasticIn,
+  // easeElasticOut,
+  // easeElasticInOut
 } from "d3-ease";
 
+/*
 export {
   polygonArea,
   polygonCentroid,
@@ -110,11 +110,13 @@ export {
 export {
   queue
 } from "d3-queue";
+*/
 
 export {
-  arc,
+  //arc,
   area,
   line,
+  /*
   pie,
   radialArea,
   radialLine,
@@ -145,18 +147,24 @@ export {
   curveStep,
   curveStepAfter,
   curveStepBefore,
+  */
   stack,
+  /*
   stackOffsetExpand,
   stackOffsetNone,
   stackOffsetSilhouette,
   stackOffsetWiggle,
   stackOrderAscending,
+  */
   stackOrderDescending,
+  /*
   stackOrderInsideOut,
   stackOrderNone,
   stackOrderReverse
+  */
 } from "d3-shape"
 
+/*
 export {
   color,
   rgb,
@@ -165,33 +173,35 @@ export {
   hcl,
   cubehelix
 } from "d3-color";
+*/
 
 export {
-  interpolate,
-  interpolateArray,
-  interpolateDate,
+  // interpolate,
+  // interpolateArray,
+  // interpolateDate,
   interpolateNumber,
-  interpolateObject,
-  interpolateRound,
-  interpolateString,
-  interpolateTransformCss,
-  interpolateTransformSvg,
-  interpolateZoom,
-  interpolateRgb,
-  interpolateRgbBasis,
-  interpolateRgbBasisClosed,
-  interpolateHsl,
-  interpolateHslLong,
-  interpolateLab,
-  interpolateHcl,
-  interpolateHclLong,
-  interpolateCubehelix,
-  interpolateCubehelixLong,
-  interpolateBasis,
-  interpolateBasisClosed,
-  quantize
+  // interpolateObject,
+  // interpolateRound,
+  // interpolateString,
+  // interpolateTransformCss,
+  // interpolateTransformSvg,
+  // interpolateZoom,
+  // interpolateRgb,
+  // interpolateRgbBasis,
+  // interpolateRgbBasisClosed,
+  // interpolateHsl,
+  // interpolateHslLong,
+  // interpolateLab,
+  // interpolateHcl,
+  // interpolateHclLong,
+  // interpolateCubehelix,
+  // interpolateCubehelixLong,
+  // interpolateBasis,
+  // interpolateBasisClosed,
+  // quantize
 } from "d3-interpolate";
 
+/*
 export {
   dispatch
 } from "d3-dispatch";
@@ -289,9 +299,11 @@ export {
   utcYear,
   utcYears
 } from "d3-time";
+*/
 
 export {
-  format,
+  format
+  /*,
   formatPrefix,
   formatLocale,
   formatDefaultLocale,
@@ -299,8 +311,10 @@ export {
   precisionFixed,
   precisionPrefix,
   precisionRound
+  */
 } from "d3-format";
 
+/*
 export {
   timeFormat,
   timeParse,
@@ -317,7 +331,7 @@ export {
   // scaleBand,
   // scalePoint,
   // scaleIdentity,
-  // scaleLinear,
+  scaleLinear,
   // scaleLog,
   scaleOrdinal,
   //scaleImplicit,
@@ -328,7 +342,7 @@ export {
   // scaleThreshold,
   // scaleTime,
   // scaleUtc,
-  // schemeCategory10,
+  schemeCategory10,
   // schemeCategory20b,
   // schemeCategory20c,
   // schemeCategory20,
@@ -349,7 +363,7 @@ export {
   event,
   //local,
   //matcher,
-  //mouse,
+  mouse,
   //namespace,
   //namespaces,
   select,
@@ -368,14 +382,12 @@ export {
   transition
 } from "d3-transition";
 
-/*
 export {
-  axisTop,
-  axisRight,
+  //axisTop,
+  //axisRight,
   axisBottom,
   axisLeft
 } from "d3-axis";
-*/
 
 export {
   //cluster,

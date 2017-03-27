@@ -1,4 +1,7 @@
-d3.sankey = function(width, height) {
+// Custom version of d3.sankey https://github.com/d3/d3-sankey
+// We add relaxFactor & maxAmountEver variables
+
+d3.sankey = function() {
   var sankey = {},
       nodeWidth = 18,
       nodePadding = 8,
@@ -132,7 +135,9 @@ d3.sankey = function(width, height) {
         node.x = x;
         node.dx = nodeWidth;
         node.sourceLinks.forEach(function(link) {
-          nextNodes.push(link.target);
+          if (nextNodes.indexOf(link.target) < 0) {
+            nextNodes.push(link.target);
+          }
         });
       });
       remainingNodes = nextNodes;
@@ -142,7 +147,7 @@ d3.sankey = function(width, height) {
     //
     //dcabo moveSinksRight(x);
     moveSourcesRight(); // added by dcabo
-    scaleNodeBreadths((width - nodeWidth) / (x - 1));
+    scaleNodeBreadths((size[0] - nodeWidth) / (x - 1));
   }
 
   function moveSourcesRight() {
@@ -202,7 +207,7 @@ d3.sankey = function(width, height) {
     }
 
     function relaxLeftToRight(alpha) {
-      nodesByBreadth.forEach(function(nodes, breadth) {
+      nodesByBreadth.forEach(function(nodes) {
         nodes.forEach(function(node) {
           if (node.targetLinks.length) {
             var y = d3.sum(node.targetLinks, weightedSource) / d3.sum(node.targetLinks, value);

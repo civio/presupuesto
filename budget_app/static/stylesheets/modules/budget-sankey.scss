@@ -43,11 +43,24 @@
     cursor:pointer;
   }
 
-  .node text {
-    fill: $gray-darker;
-    pointer-events: none;
-    font-weight: $font-weight-400;
-    font-size: 1em;
+  .node{
+    rect{
+      fill: $text-color;
+      stroke: none;
+      cursor: pointer;
+    
+      &.node-central{
+        fill: #fff;
+        cursor: auto;
+      }
+    }
+
+    text {
+      fill: $text-color;
+      pointer-events: none;
+      font-weight: $font-weight-400;
+      font-size: 1em;
+    }
   }
 
   .legend-item text{

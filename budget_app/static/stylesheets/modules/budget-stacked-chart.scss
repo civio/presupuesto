@@ -42,7 +42,8 @@
 
   .axis text{
     fill: $text-color;
-    font-size: 0.875em;
+    font-size: 12px;
+    font-family: $font-family-sans-serif;
     font-weight: $font-weight-300;
   }
 
@@ -60,7 +61,10 @@
     opacity: 0.8;
     @include transition( opacity 0.3s ease-out );
 
-    &.hover{
+    &.active{
+      opacity: 0.9;
+    }
+    &.inactive{
       opacity: 0.6;
     }
   }
