@@ -10,11 +10,14 @@
     <div class="tab-content">
 
       <!-- Title -->
-      {% if programme %}
-        <p class="history-back">
-          <a href="{% url 'budget_app.views.policies_show' programme.policy, policy.slug() %}" id="policy-name-link" title="{{ descriptions['functional'].get(programme.policy) }}">&larr;</a>
-        </p>
-      {% endif %}
+      <p class="history-back">
+        {% if programme %}
+        <a href="{% url 'budget_app.views.policies_show' programme.policy, policy.slug() %}" id="policy-name-link" title="{{ descriptions['functional'].get(programme.policy) }}">&larr;</a>
+        {% else %}
+        <a href="{{ url(show_entity_url, entity.slug) if entity else url('budget_app.views.policies') }}#view={{ back_to_tab }}">&larr;</a>
+        {% endif %}
+      </p>
+
       <a href="{{ request.path|urlencode }}" target="_parent">
         <h2 class="page-title">{{ entity.name+': ' if entity }}{{ name }}:</h2>
       </a>
@@ -64,8 +67,15 @@
 <script type="text/javascript">
   // Show history-back button if we come from other widget
   if (document.referrer.indexOf('?widget=1') !== -1) {
+    var link = $('.history-back > a').attr('href');
+    if (link.indexOf('#') != -1) {
+      var position = link.indexOf('#');
+      link = [link.slice(0, position), '?widget=1', link.slice(position)].join('');
+    } else {
+      link += '?widget=1';
+    }
     // Add current url parameters to back button link
-    $('.history-back > a').attr('href', $('.history-back > a').attr('href')+window.location.search);
+    $('.history-back > a').attr('href', link);
     $('.history-back').show();
   }
 </script>

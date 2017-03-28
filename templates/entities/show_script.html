@@ -105,13 +105,6 @@
     function redraw() {
       // Update uiState
       uiState = getUIState();
-
-      redrawChart();
-      redrawGrid();
-    }
-
-    // Do all the hard work of drawing the grids
-    function redrawGrid() {
       
       // Do work
       var columnDef                   = getColumnDefinition(uiState),
@@ -177,20 +170,18 @@
       } else {
         TotalHelpers.clear('.total-executed');
       }
-    }
+    
+      if (uiState !== null) {
 
+        // Setup & Update Budget Summary
+        budgetSummary.update( breakdowns[uiState.view], areas[uiState.view], uiState.field, uiState.view, uiState.year );
 
-    function redrawChart() {
-      if (uiState === null) return;
-
-      // Setup & Update Budget Summary
-      budgetSummary.update( breakdowns[uiState.view], areas[uiState.view], uiState.field, uiState.view, uiState.year );
-
-      // Setup & Update Budget Treemap
-      // XXX: How many levels of institutional breakdown to show is subject to debate. See #347.
-      budgetTreemap
-        .treeLevels( uiState.view==='institutional' ? {{ institutional_max_levels }} : 1 )
-        .update( breakdowns[uiState.view], areas[uiState.view], uiState );
+        // Setup & Update Budget Treemap
+        // XXX: How many levels of institutional breakdown to show is subject to debate. See #347.
+        budgetTreemap
+          .treeLevels( uiState.view==='institutional' ? {{ institutional_max_levels }} : 1 )
+          .update( breakdowns[uiState.view], areas[uiState.view], uiState );
+      }
 
       // Show an alert if no data is available
       if ( myGrid === undefined || myGrid.page.info().recordsDisplay != 0 ) {
@@ -202,6 +193,7 @@
 
     // Listen click on Treemap & link to selected programme
     function onBudgetTreemapClick(e, d) {
+      var widget = $('body').hasClass('widget') ? '?widget=1' : '';
 {% if entities %}
       var getExpenseLink    = {{ 'getCountyExpenseLink' if is_county else 'getTownExpenseLink' }},
           getFunctionalLink = {{ 'getCountyFunctionalLink' if is_county else 'getTownFunctionalLink' }},
@@ -209,22 +201,22 @@
           entitySlug        = '{{ entity.slug }}';
 
       if (uiState.view === 'expense') {
-        window.location = getExpenseLink(entitySlug, d.id);
+        window.location = getExpenseLink(entitySlug, d.id)+widget;
       } else if (uiState.view === 'functional') {
-        window.location = getFunctionalLink(entitySlug, d.id);
+        window.location = getFunctionalLink(entitySlug, d.id)+widget;
       } else if (uiState.view === 'income') {
-        window.location = getIncomeLink(entitySlug, d.id);
+        window.location = getIncomeLink(entitySlug, d.id)+widget;
       }
 {% else %}
       if (uiState.view === 'expense') {
-        window.location = getExpenseArticleLink(d.id, d.name);
+        window.location = getExpenseArticleLink(d.id, d.name)+widget;
       } else if (uiState.view === 'functional') {
-        window.location = getPolicyLink(d.id, d.name);
+        window.location = getPolicyLink(d.id, d.name)+widget;
       } else if (uiState.view === 'income') {
-        window.location = getIncomeArticleLink(d.id, d.name);
+        window.location = getIncomeArticleLink(d.id, d.name)+widget;
       } else if (uiState.view === 'institutional') {
 {% if show_section_pages %}
-        window.location = getSectionLink(d.id, d.name);
+        window.location = getSectionLink(d.id, d.name)+widget;
 {% endif %}
       }
 {% endif %}
