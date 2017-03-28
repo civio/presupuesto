@@ -172,29 +172,30 @@
 
     // Do all the hard work of drawing the grids
     function redrawGrid() {
-      if( $('#myGrid').size() == 0 ) return;
 
       // Do work
       var columnDef = getColumnDefinition(uiState);
       var executionColumnDef = getExecutionColumnDefinition(uiState);
       var addEconomicCategoriesPrefix = {{ 'true' if add_economic_categories_prefix else 'false' }};
 
-      if ( myGrid !== undefined ) myGrid.destroy();
 
-      myGrid = createBudgetGrid( "#myGrid", gridData[uiState.view], [
-                          {
-                            data: addEconomicCategoriesPrefix && uiState.view=='economic' ?
-                                    addEconomicCategoryPrefix :
-                                    'label',
-                            title: getLabelColumnTitle(uiState.view),
-                            render: getLabelColumnRender(uiState.view),
-                          },
-                          columnDef
+      if ($('#myGrid').size() > 0 ) {
+        if ( myGrid !== undefined ) myGrid.destroy();
+
+        myGrid = createBudgetGrid( "#myGrid", gridData[uiState.view], [
+                            {
+                              data: addEconomicCategoriesPrefix && uiState.view=='economic' ?
+                                      addEconomicCategoryPrefix :
+                                      'label',
+                              title: getLabelColumnTitle(uiState.view),
+                              render: getLabelColumnRender(uiState.view),
+                            },
+                            columnDef
 {% if show_actual %}
-                          ,executionColumnDef
+                            ,executionColumnDef
 {% endif %}
-                        ]);
-
+                          ]);
+      }
 
       // Get breakdown
       var breakdown = breakdowns['economic'],

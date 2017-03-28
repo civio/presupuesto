@@ -106,6 +106,13 @@
       // Update uiState
       uiState = getUIState();
 
+      redrawChart();
+      redrawGrid();
+    }
+
+    // Do all the hard work of drawing the grids
+    function redrawGrid() {
+      
       // Do work
       var columnDef                   = getColumnDefinition(uiState),
           executionColumnDef          = getExecutionColumnDefinition(uiState),
@@ -117,23 +124,27 @@
             'institutional': '{{ _("Organismo") }}',
           };
 
-      if (myGrid !== undefined) {
-        myGrid.destroy();
-      }
-      myGrid = createBudgetGrid("#myGrid", gridData[uiState.view], [
-        {
-          data: addEconomicCategoriesPrefix && uiState.view!='functional' && uiState.view!='institutional' ?
-                  addEconomicCategoryPrefix :
-                  'label',
-          title: columnNames[uiState.view],
-          render: getEntityLinkFormatter()
-        },
-        columnDef
+      // Setup myGrid if exist item #myGrid
+      if ($('#myGrid').size() > 0) {
+
+        if (myGrid !== undefined) {
+          myGrid.destroy();
+        }
+
+        myGrid = createBudgetGrid("#myGrid", gridData[uiState.view], [
+          {
+            data: addEconomicCategoriesPrefix && uiState.view!='functional' && uiState.view!='institutional' ?
+                    addEconomicCategoryPrefix :
+                    'label',
+            title: columnNames[uiState.view],
+            render: getEntityLinkFormatter()
+          },
+          columnDef
 {% if show_actual %}
-        ,executionColumnDef
+          ,executionColumnDef
 {% endif %}
-      ]);
-      
+        ]);  
+      }
 
       // Get breakdown
       var breakdown = breakdowns[uiState.view],
@@ -166,6 +177,11 @@
       } else {
         TotalHelpers.clear('.total-executed');
       }
+    }
+
+
+    function redrawChart() {
+      if (uiState === null) return;
 
       // Setup & Update Budget Summary
       budgetSummary.update( breakdowns[uiState.view], areas[uiState.view], uiState.field, uiState.view, uiState.year );
@@ -177,7 +193,7 @@
         .update( breakdowns[uiState.view], areas[uiState.view], uiState );
 
       // Show an alert if no data is available
-      if ( myGrid.page.info().recordsDisplay != 0 ) {
+      if ( myGrid === undefined || myGrid.page.info().recordsDisplay != 0 ) {
         $('.no-data-alert').hide();
       } else {
         $('.no-data-alert').show();

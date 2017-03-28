@@ -50,6 +50,7 @@
   @extend .panel;
   position: relative;
   margin: $grid-gutter-width 0 0;
+  @include box-shadow( 0 0 0 rgba(0,0,0,0) );
 }
 
 .policies.policy-breakdown{

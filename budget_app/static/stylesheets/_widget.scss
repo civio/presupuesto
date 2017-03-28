@@ -20,6 +20,11 @@ body.widget{
     }
   }
 
+  .policies-content{
+    margin-right: $grid-gutter-width/2;
+    margin-left: $grid-gutter-width/2;
+  }
+
   .page-title{
     display: inline-block;
     font-size: 1.75em;
@@ -67,7 +72,7 @@ body.widget{
     margin-top: 2*$grid-gutter-width/3;
   }
 
-  .tab-content{
+  .policies-content{
     text-align: center;
   }
 
@@ -84,37 +89,44 @@ body.widget{
     padding-bottom: $grid-gutter-width/2;
   }
 
-  .data-controllers{
-    width: 150px;
-    margin: -$grid-gutter-width/2 auto 2*$grid-gutter-width/3;
-
-    .title{
-      padding: $grid-gutter-width/6 0;
-      font-weight: $font-weight-600;
-      text-align: center;
-    }
-
-    .col-sm-3{
-      width: 100%;
-      font-size: 0.875em;
-      text-align: right;
-
-      .form-control{
-        height: 30px;
-        font-size: 12px;
-      }
-    }
-
-    .col-sm-9{
-      display: none;
-    }
+  .stacked-area-chart-legend{
+    text-align: left;
+    margin-right: $grid-gutter-width/2;
   }
 
   .chart-embed-btn{
     display: none;
   }
 
-  .stacked-area-chart-legend{
+  .data-controllers{
+    font-size: 0.875em;
+    margin-bottom: $grid-gutter-width;
+
+    .title{
+      padding: $grid-gutter-width/2 0 $grid-gutter-width/6;
+      font-weight: $font-weight-600;
+    }
+
+    .form-control{
+      height: 30px;
+      font-size: 12px;
+    }
+
+    .slider.slider-horizontal .slider-tick-label{
+      margin-top: 2px;
+    }
+  }
+
+  #totals-panel{
     text-align: left;
+    font-size: 0.875em;
+    margin-bottom: $grid-gutter-width;
+  }
+}
+
+.body-policies.widget{
+
+  .page-title{
+    margin-bottom: $grid-gutter-width/6;
   }
 }

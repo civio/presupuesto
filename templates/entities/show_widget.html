@@ -1,11 +1,6 @@
 {% extends 'base-widget.html' %}
 {% from 'shared/entity_select.html' import render_entity_select as render_entity_select %}
-{% block extra_javascript %}
-<script src="{{ STATIC_URL }}javascripts/vis/d3.v3.min.js"></script>
-<script src="{{ STATIC_URL }}javascripts/vis/budget-treemap.js"></script>
-<script src="{{ STATIC_URL }}javascripts/vis/budget-summary.js"></script>
-<script src="{{ STATIC_URL }}javascripts/comparator.js"></script>
-{% endblock %}
+
 {% block content %}
 
 <!-- Politicas -->
@@ -13,7 +8,6 @@
 
   <!-- Policies Content -->
   <div class="policies-content">
-    <div class="container">
 
       <h2 class="page-title">{{ _('Políticas') }}</h2>
 
@@ -26,7 +20,8 @@
 
       {% include 'shared/data_controllers.html' %}
 
-    </div>
+      {% include 'entities/totals.html' %}
+
   </div>
 </section>
 
