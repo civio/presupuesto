@@ -2,21 +2,27 @@
 
 var Formatter = (function() {
 
+  var thousand, millions;
+
   // Setup format default locale
-  if ($('html').attr('lang') == 'es') {
-    d3.formatDefaultLocale({
-      "currency": [""," €"],
-      "decimal": ",",
-      "thousands": ".",
-      "grouping": [3]
-    });
-  } else{
+  if ($('html').attr('lang') == 'en') {
     d3.formatDefaultLocale({
       "currency": ["€",""],
       "decimal": ".",
       "thousands": ",",
       "grouping": [3]
     });
+    thousand = "K";
+    millions = "M";
+  } else{
+     d3.formatDefaultLocale({
+      "currency": [""," €"],
+      "decimal": ",",
+      "thousands": ".",
+      "grouping": [3]
+    });
+    thousand = "mil";
+    millions = "mill.";
   }
 
   var that                        = {},
@@ -66,12 +72,19 @@ var Formatter = (function() {
   that.amountSimplified = function (value) {
     if (value == null) return '';
     value = Number(value/100); // Also note value is in cents originally
-    if (value >= 1000000) {
-      var precision = (value >= 10000000 ? 0 : 1);  // Best-guess number of decimals to show
-      return that.amountDecimal(value/1000000, precision)+'\xA0mill.';
-    } else if (value >= 1000) {
-      var precision = (value >= 10000 ? 0 : 1);
-      return that.amountDecimal(value/1000, precision)+'\xA0mil';
+    console.log(value);
+    if (value >= 100000000) {
+      if ($('html').attr('lang') == 'en') {
+        return that.amountDecimal(value/1000000, 0)+' '+millions;
+      } else {
+        return that.amountDecimal(value/1000000, 0).replace('€',millions+' €');
+      }
+    } else if (value >= 100000) {
+      if ($('html').attr('lang') == 'en') {
+        return that.amountDecimal(value/1000, 0)+' '+thousand;
+      } else {
+        return that.amountDecimal(value/1000, 0).replace('€',thousand+' €');
+      }
     }
     return that.amount(value);
   };
