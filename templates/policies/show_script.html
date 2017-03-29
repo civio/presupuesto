@@ -179,7 +179,7 @@
       var addEconomicCategoriesPrefix = {{ 'true' if add_economic_categories_prefix else 'false' }};
 
 
-      if ($('#myGrid').size() > 0 ) {
+      if ($('#myGrid').length > 0 ) {
         if ( myGrid !== undefined ) myGrid.destroy();
 
         myGrid = createBudgetGrid( "#myGrid", gridData[uiState.view], [

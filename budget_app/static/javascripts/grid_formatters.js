@@ -72,7 +72,6 @@ var Formatter = (function() {
   that.amountSimplified = function (value) {
     if (value == null) return '';
     value = Number(value/100); // Also note value is in cents originally
-    console.log(value);
     if (value >= 100000000) {
       if ($('html').attr('lang') == 'en') {
         return that.amountDecimal(value/1000000, 0)+' '+millions;

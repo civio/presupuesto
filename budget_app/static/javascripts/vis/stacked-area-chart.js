@@ -38,7 +38,7 @@ function StackedAreaChart() {
     _this.selector = selector;
 
     // Remove charts previously created
-    if( $(selector+' .stacked-area-chart').size() > 0 ){
+    if( $(selector+' .stacked-area-chart').length > 0 ){
       $(selector+' .stacked-area-chart').remove();
       $(selector+' .stacked-area-chart-legend').remove();
     }
@@ -372,7 +372,7 @@ function StackedAreaChart() {
   };
 
   var onLegendLabelClick = function(d){
-    var labelsInactives = _this.legend.selectAll('.label.inactive').size();
+    var labelsInactives = _this.legend.selectAll('.label.inactive').length;
 
     // Desactivate all labels except clicked if there's no labels inactives
     if( labelsInactives === 0 ){
@@ -380,7 +380,7 @@ function StackedAreaChart() {
       d3.select(this).classed('inactive', false);
     }
     // Activate all labels if there's only one label active & we are going to desactivate
-    else if( labelsInactives === _this.legend.selectAll('.label').size()-1 && !d3.select(this).classed('inactive') ){
+    else if( labelsInactives === _this.legend.selectAll('.label').length-1 && !d3.select(this).classed('inactive') ){
       _this.legend.selectAll('.label').classed('inactive', false);
     }
     // Toogle inactive value

@@ -45,7 +45,7 @@ function BudgetStackedChart(_selector, _stats, _colorScale, i18n) {
       if (budgetStatuses[year] !== undefined && budgetStatuses[year] !== '' && column_name.indexOf('actual_') === 0)
         continue;
 
-      // Normally we do this:      
+      // Normally we do this:
       if ( !columns[year] || column_name.indexOf('actual_') === 0 ) {
         columns[year] = column_name;
         totals[year] = breakdown[field][column_name];
