@@ -371,8 +371,7 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
   function setupExecutionLink(link) {
     link
       .attr("d", sankey.link())
-      .style("display", function(d) { return (d.actual || 0) ? '': 'none'; })
-      .attr("stroke-width", function(d) {return (d.actual || 0) / d.value * d.dy; });
+      .attr("stroke-width", function(d) { return (d.actual && d.actual > 1) ? d.actual/d.value*d.dy : 0; });
   }
 
   function setupNodeRect(rect) {
@@ -385,10 +384,6 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
       .attr("y", function(d) { return d.name ? (1 - (d.budgeted||0) / d.value) * d.dy / 2 : -10; })
       // Hide elements who are practically zero: our workaround for Sankey layout and null elements
       .attr("opacity", function(d) { return ((d.budgeted||0)+(d.actual||0)) > 1 ? 1 : 0; })
-      // Define fill, stroke & cursor in css
-      //.style("fill", function(d) { return d.color == d.name ? "#333" : "#FFF"; })
-      //.style("stroke", function(d) { return d.name ? d.color : "none"; })
-      //.style("cursor", function(d) { return d.name ? 'pointer' : 'auto'; });
   }
 
   function setupNodeText(text) {
