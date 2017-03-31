@@ -2,7 +2,7 @@
 .panel-downloads{
   @extend .panel;
   @extend .panel-default;
-  border-color: $brand-secondary;
+  border: none;
   background: mix( $brand-secondary, white, 30% );
   padding: $grid-gutter-width/2;
   margin-top: $grid-gutter-width;

@@ -102,6 +102,16 @@ body.widget{
     font-size: 0.875em;
     margin-bottom: $grid-gutter-width;
 
+    .quantity-selection{
+      margin-left: 0;
+    }
+
+    @media (min-width: $screen-sm-min) {
+      .layout-slider {
+        margin-left: 225px;
+      }
+    }
+
     .title{
       padding: $grid-gutter-width/2 0 $grid-gutter-width/6;
       font-weight: $font-weight-600;

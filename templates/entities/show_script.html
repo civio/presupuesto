@@ -277,5 +277,13 @@
     // This will also show the tab selected in the URL hash (if any). Do it
     // before creating the treemaps, so the active one has time to render fully.
     setRedrawOnTabsChange('#tabs', updateTab);
+
+    // Add click embed btn event
+    $('.data-controllers .chart-embed-btn').click(function(e){
+      e.preventDefault();
+      var url   = window.location.protocol+'//'+window.location.host+window.location.pathname+'?widget=1'+window.location.hash;
+      var code  = '<iframe src="'+url+'" width="100%" scrolling="no" marginheight="0" frameborder="0"></iframe><\script type="text/javascript" src="'+window.location.origin+'/static/javascripts/iframeResizer.min.js"\>\<\/script\>\<script type="text/javascript"\>iFrameResize();\<\/script\>';
+      $('#modal-embed .modal-body textarea').val( code );
+    });
   });
 </script>

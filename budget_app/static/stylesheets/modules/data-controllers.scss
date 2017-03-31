@@ -1,5 +1,6 @@
 // Data controllers
 .data-controllers {
+  position: relative;
   margin-bottom: 1.5*$grid-gutter-width;
   text-align: center;
 
@@ -7,8 +8,13 @@
     color: $gray;
   }
 
+  .quantity-selection{
+    margin-left: 55px;
+  }
+
   .layout-slider{
-    margin: 0 $grid-gutter-width/3;
+    margin-left: $grid-gutter-width/3;
+    margin-right: $grid-gutter-width/3;
 
     label{
       display: none;
@@ -74,6 +80,7 @@
     .tooltip.top{
       margin-left: -22px;
       margin-top: -38px;
+      z-index: 1040; // we need to force z-index in order to put it behind modal background
     }
     .tooltip-inner{
       font-size: 1.25em;
@@ -108,6 +115,26 @@
       }
     }
   }
+
+  .chart-embed-btn span,
+  .chart-embed-btn a{
+    display: block;
+    position: absolute;
+    top: 46px;
+    left: 0;
+    width: 34px;
+    height: 34px;
+    background: url(../assets/icon-share.png) no-repeat center center $panel-default-heading-bg;
+    cursor: pointer;
+
+    &:hover{
+      background-color: lighten( $panel-default-heading-bg, 5% );
+    }
+  }
+}
+
+.budget-viz .data-controllers .layout-slider{
+  margin: 0 $grid-gutter-width/3;
 }
 
 
@@ -115,8 +142,15 @@
 
   .data-controllers {
 
-   .quantity-selection{
-      text-align: left;
+    .quantity-selection{
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 190px;
+    }
+
+    .layout-slider{
+      margin-left: 275px;
     }
 
     .single-year{

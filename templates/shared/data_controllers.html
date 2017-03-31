@@ -1,17 +1,14 @@
-<div class="data-controllers">
-  <div class="row">
-    <div class="col-sm-3">
-      <div class="quantity-selection">
-        <label for="select-format" class="title">{{ _('Cantidades') }}</label>
-        {% include 'shared/data_controllers_select.html' %}
-      </div>
-    </div>
-    <div class="col-sm-9">
-      <p class="title">{{ _('Año') }}</p>
-      <div class="layout-slider">
-        <label for="year-selection">{{ _('Año') }}</label>
-        <input id="year-selection" type="text" value="{{ starting_year }}" />
-      </div>
-    </div>
+<div class="data-controllers"> 
+  <div class="quantity-selection">
+    <label for="select-format" class="title">{{ _('Cantidades') }}</label>
+    {% include 'shared/data_controllers_select.html' %}
   </div>
+  <span class="chart-embed-btn" data-toggle="modal" data-target="#modal-embed">
+    <span data-toggle="tooltip" data-placement="top" data-original-title="{{ _('Comparte este gráfico') }}"></span>
+  </span>
+  <div class="layout-slider">
+    <p class="title">{{ _('Año') }}</p>
+    <label for="year-selection">{{ _('Año') }}</label>
+    <input id="year-selection" type="text" value="{{ starting_year }}" />
+  </div> 
 </div>
