@@ -2,9 +2,13 @@
 $(function () {
   // Show featured programmes, at random.
   // We used to do the selection on the server, but then the page would be cached, hence not random anymore.
-  var i, chosenProgramme, $programme;
-  var hiddenProgrammes = $('div.expense-examples li.hidden');
-  var counter = {{ number_of_featured_programmes }};
+  var i, 
+      chosenProgramme, 
+      $programme,
+      hiddenProgrammes = $('div.expense-examples li.hidden'),
+      counter = {{ number_of_featured_programmes }},
+      c = 0;
+
   while (counter > 0) {
     chosenProgramme = Math.floor(Math.random()*hiddenProgrammes.length);
     $programme = $(hiddenProgrammes[chosenProgramme]);
@@ -14,6 +18,9 @@ $(function () {
       $programme.removeClass('hidden');
       counter--;
     }
+    // Avoid infinite loops
+    c++;
+    if (c > 1000) counter = 0;
   }
 
   // Make hero boxes react to clicks
