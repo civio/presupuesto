@@ -181,6 +181,10 @@
         budgetTreemap
           .treeLevels( uiState.view==='institutional' ? {{ institutional_max_levels }} : 1 )
           .update( breakdowns[uiState.view], areas[uiState.view], uiState );
+
+        console.log(uiState);
+
+        budgetTreemap.getMaxValue( breakdowns[uiState.view], areas[uiState.view], uiState );
       }
 
       // Show an alert if no data is available
@@ -244,6 +248,23 @@
     var budgetSummary = new BudgetSummary('#budget-summary')
       .colors(colorScale)
       .setup();
+
+    // Get max value !!!
+    uiState = getUIState();
+
+    var dumpTreemap = new BudgetTreemap('#budget-treemap', stats, budgetStatuses)
+
+    uiState.field = 'expense';
+    uiState.view = 'functional';
+    dumpTreemap.getMaxValue( breakdowns[uiState.view], areas[uiState.view], uiState );
+
+    uiState.view = 'expense';
+    dumpTreemap.getMaxValue( breakdowns[uiState.view], areas[uiState.view], uiState );
+
+    uiState.field = 'income';
+    uiState.view = 'income';
+    dumpTreemap.getMaxValue( breakdowns[uiState.view], areas[uiState.view], uiState );
+    
 
     // Create Budget Treemap
     var budgetTreemap = new BudgetTreemap('#budget-treemap', stats, budgetStatuses)

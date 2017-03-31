@@ -92,6 +92,25 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
     return this;
   };
 
+  this.getMaxValue = function(_breakdown, _areas, _uiState){
+
+    breakdown = _breakdown;
+    areas     = _areas;
+    uiState   = _uiState;
+
+    // Load the data. We do it here, and not at object creation time, so we have time
+    // to change default settings (treemap depth, f.ex.) if needed
+    loadBreakdown(breakdown, uiState.field);
+
+    // Do nothing if there's no data
+    if (!yearTotals[uiState.year] || !yearTotals[uiState.year][uiState.field])
+      return;
+
+    var maxValue  = calculateMaxTreemapValueEver();
+
+    console.log(maxValue);
+  };
+
   // Update treemap data
   this.update = function(_breakdown, _areas, _uiState) {
     // Avoid redundancy
