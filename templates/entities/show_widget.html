@@ -9,7 +9,9 @@
   <!-- Policies Content -->
   <div class="policies-content">
 
-      <h2 class="page-title">{{ _('Políticas') }}</h2>
+      <a href="{{ request.path|urlencode }}" target="_blank">
+        <h2 class="page-title">{{ _('Políticas') }}</h2>
+      </a>
 
       <!-- Policies Chart -->
       {% include 'entities/policies-chart.html' %}
