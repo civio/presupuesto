@@ -74,6 +74,7 @@ table.table-grid {
     border-bottom: 1px solid mix( $panel-default-border, white, 50% );
     padding: $grid-gutter-width/3;
     text-align: right;
+    min-width: 120px;
 
     &:first-child{
       text-align: left;
