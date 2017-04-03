@@ -266,7 +266,7 @@
         .labelsFontSizeMin(labelsFontSizeMin)
         .treeLevels(2)
         .setup()
-        .update(breakdowns[uiState.view], areasData[uiState.view], uiState);
+        .update(breakdowns[uiState.view], areasData[uiState.view], uiState, null);
 
       // Resize treemap
       $(window).resize( currentChart.resize );
