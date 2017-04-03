@@ -234,12 +234,14 @@
 
     // Get global treemaps max value
     function getBudgetTreemapMaxValue() {
-      // Get max value !!!
       var dumpUIState = getUIState(),
           states = [
             {view: 'functional', field: 'expense'},
             {view: 'expense', field: 'expense'},
-            {view: 'income', field: 'income'}
+            {view: 'income', field: 'income'},
+{% if breakdowns['institutional'] %}
+            {view: 'institutional', field: 'expense'}
+{% endif %}
           ],
           dumpTreemap = new BudgetTreemap('#budget-treemap', stats, budgetStatuses, null),
           maxValues = [];
@@ -288,7 +290,13 @@
     $('#budget-summary').bind('budget-summary-out',  onBudgetSummaryOut);
 
     // Set up controls (format selector & year slider)
-    $('#select-format').change(redraw);
+    $('#select-format').change(function() {
+{% if treemap_global_max_value %} 
+      budgetTreemapMaxValue = getBudgetTreemapMaxValue();
+{% endif %};
+      redraw();
+    });
+      
     initSlider("#year-selection", {{ years|safe }}, redraw, {{ starting_year }});
 
     // Entity select dropdown
