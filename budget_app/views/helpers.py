@@ -49,6 +49,8 @@ def get_context(request, css_class='', title=''):
     if hasattr(settings, 'TREEMAP_LABELS_FONT_SIZE_MIN'):
         c['treemap_labels_font_size_min'] = settings.TREEMAP_LABELS_FONT_SIZE_MIN
 
+    c['treemap_global_max_value'] = not hasattr(settings, 'TREEMAP_GLOBAL_MAX_VALUE') or settings.TREEMAP_GLOBAL_MAX_VALUE
+
     try:
         c['active_tab'] = filter(
             lambda k: current_url_equals(c, TABS[k]),

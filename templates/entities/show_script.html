@@ -180,7 +180,7 @@
         // XXX: How many levels of institutional breakdown to show is subject to debate. See #347.
         budgetTreemap
           .treeLevels( uiState.view==='institutional' ? {{ institutional_max_levels }} : 1 )
-          .update( breakdowns[uiState.view], areas[uiState.view], uiState );
+          .update( breakdowns[uiState.view], areas[uiState.view], uiState, budgetTreemapMaxValue );
       }
 
       // Show an alert if no data is available
@@ -232,6 +232,29 @@
       budgetTreemap.areaOut();
     }
 
+    // Get global treemaps max value
+    function getBudgetTreemapMaxValue() {
+      var dumpUIState = getUIState(),
+          states = [
+            {view: 'functional', field: 'expense'},
+            {view: 'expense', field: 'expense'},
+            {view: 'income', field: 'income'},
+{% if breakdowns['institutional'] %}
+            {view: 'institutional', field: 'expense'}
+{% endif %}
+          ],
+          dumpTreemap = new BudgetTreemap('#budget-treemap', stats, budgetStatuses, null),
+          maxValues = [];
+
+      states.forEach(function(d){
+        dumpUIState.view = d.view;
+        dumpUIState.field = d.field;
+        maxValues.push( dumpTreemap.getMaxValue( breakdowns[d.view], areas[d.view], dumpUIState ) );
+      });
+
+      return d3.max(maxValues);
+    }
+
 
     // Initialization
 
@@ -244,6 +267,12 @@
     var budgetSummary = new BudgetSummary('#budget-summary')
       .colors(colorScale)
       .setup();
+
+    // Get Treemap Max Value
+    var budgetTreemapMaxValue = null;
+{% if treemap_global_max_value %} 
+    budgetTreemapMaxValue = getBudgetTreemapMaxValue();
+{% endif %};
 
     // Create Budget Treemap
     var budgetTreemap = new BudgetTreemap('#budget-treemap', stats, budgetStatuses)
@@ -261,7 +290,13 @@
     $('#budget-summary').bind('budget-summary-out',  onBudgetSummaryOut);
 
     // Set up controls (format selector & year slider)
-    $('#select-format').change(redraw);
+    $('#select-format').change(function() {
+{% if treemap_global_max_value %} 
+      budgetTreemapMaxValue = getBudgetTreemapMaxValue();
+{% endif %};
+      redraw();
+    });
+      
     initSlider("#year-selection", {{ years|safe }}, redraw, {{ starting_year }});
 
     // Entity select dropdown

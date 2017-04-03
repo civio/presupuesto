@@ -13,7 +13,8 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
   var nodesPadding        = 8,    // Define padding of nodes label container
       transitionDuration  = 650,
       uiState             = {},
-      yearTotals          = {};
+      yearTotals          = {},
+      maxValue            = null;
       
   var areas,
       breakdown,
@@ -92,11 +93,30 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
     return this;
   };
 
+  this.getMaxValue = function(_breakdown, _areas, _uiState){
+
+    breakdown = _breakdown;
+    areas     = _areas;
+    uiState   = _uiState;
+
+    // Load the data. We do it here, and not at object creation time, so we have time
+    // to change default settings (treemap depth, f.ex.) if needed
+    loadBreakdown(breakdown, uiState.field);
+
+    // Do nothing if there's no data
+    if (!yearTotals[uiState.year] || !yearTotals[uiState.year][uiState.field])
+      return null;
+
+    return calculateMaxTreemapValueEver();
+  };
+
   // Update treemap data
-  this.update = function(_breakdown, _areas, _uiState) {
+  this.update = function(_breakdown, _areas, _uiState, _maxValue) {
     // Avoid redundancy
     if (uiState.view === _uiState.view && uiState.year === _uiState.year && uiState.format === _uiState.format)
       return;
+
+    maxValue = _maxValue;
 
     // Setup if view changes
     if (uiState.view !== _uiState.view) {
@@ -169,6 +189,11 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
     if (!yearTotals[uiState.year] || !yearTotals[uiState.year][uiState.field])
       return;
 
+    // calculate max value if null
+    if (maxValue == null) {
+      maxValue = calculateMaxTreemapValueEver();
+    }
+
     setTreemapDimensions(false);
 
     // Setup treemap
@@ -221,6 +246,11 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
     // Do nothing if there's no data
     if (!yearTotals[uiState.year] || !yearTotals[uiState.year][uiState.field])
       return;
+
+    // calculate max value if null
+    if (maxValue == null) {
+      maxValue = calculateMaxTreemapValueEver();
+    }
 
     setTreemapDimensions(true);
 
@@ -363,7 +393,6 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
 
   // Adjust the overall treemap size based on the size of this year's budget compared to the biggest ever
   function setTreemapDimensions(transition) {
-    var maxValue  = calculateMaxTreemapValueEver();
     var ratio     = Math.sqrt( getValue(yearTotals[uiState.year][uiState.field], uiState.format, uiState.field, uiState.year) / maxValue );
     treemapWidth  = width * ratio;
     treemapHeight = height * ratio;
@@ -489,11 +518,11 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
   // spending, not both. This matches the data we use for display. Using both budget and actual
   // would be wrong, although in normal scenarios the difference wouldn't be huge.
   function calculateMaxTreemapValueEver() {
-    var year, maxValue = 0;
+    var year, val = 0;
     for (year in yearTotals) {
-      maxValue = Math.max( maxValue, getValue(yearTotals[year][uiState.field] || 0, uiState.format, uiState.field, year) );
+      val = Math.max( val, getValue(yearTotals[year][uiState.field] || 0, uiState.format, uiState.field, year) );
     }
-    return maxValue;
+    return val;
   }
 
 
