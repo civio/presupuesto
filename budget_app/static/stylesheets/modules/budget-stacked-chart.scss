@@ -99,8 +99,7 @@
 }
 
 .stacked-area-chart-legend{
-  margin-left: 80px;
-  margin-right: 50px;
+  margin-left: 70px;
 
   .label{
     position: relative;
@@ -108,12 +107,13 @@
     color: $text-color;
     font-size: 0.875em;
     font-weight: $font-weight-400;
-    padding: 0 $grid-gutter-width/6;
+    padding: 2px $grid-gutter-width/6 2px 19px;
     margin-right: $grid-gutter-width/6;
-    margin-bottom: 4px;
-    line-height: 20px;
+    margin-bottom: -1 + $grid-gutter-width/6;
+    line-height: 1.375em;
     cursor: pointer;
-    text-indent: $grid-gutter-width/2;
+    white-space: normal;
+    text-align: left;
 
     &:hover{
       color: black;

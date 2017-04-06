@@ -372,7 +372,7 @@ function StackedAreaChart() {
   };
 
   var onLegendLabelClick = function(d){
-    var labelsInactives = _this.legend.selectAll('.label.inactive').length;
+    var labelsInactives = _this.legend.selectAll('.label.inactive').size();
 
     // Desactivate all labels except clicked if there's no labels inactives
     if( labelsInactives === 0 ){
@@ -380,7 +380,7 @@ function StackedAreaChart() {
       d3.select(this).classed('inactive', false);
     }
     // Activate all labels if there's only one label active & we are going to desactivate
-    else if( labelsInactives === _this.legend.selectAll('.label').length-1 && !d3.select(this).classed('inactive') ){
+    else if( labelsInactives === _this.legend.selectAll('.label').size()-1 && !d3.select(this).classed('inactive') ){
       _this.legend.selectAll('.label').classed('inactive', false);
     }
     // Toogle inactive value
@@ -512,6 +512,7 @@ function StackedAreaChart() {
       valueUpdated = {};
       for (var value in d) {
         if (value !== 'year') {
+
           active = !_this.legend.select('[data-id="'+value+'"]').classed('inactive');
           valueUpdated[value] = active ? d[value] : 0;
         }
