@@ -37,14 +37,14 @@ class PaymentManager(models.Manager):
                 "left join budgets b on p.budget_id = b.id " \
             "where " \
                 "p.anonymized = FALSE and " \
-                "b.entity_id = "+str(entity.id)+" and " \
-                "b.year >= "+str(from_year)+" and " \
-                "b.year <= "+str(to_year)+" " \
+                "b.entity_id = %s and " \
+                "b.year >= %s and " \
+                "b.year <= %s " \
             "group by payee " \
             "order by sum(amount) desc " \
             "limit " + str(limit)
         cursor = connection.cursor()
-        cursor.execute(sql)
+        cursor.execute(sql, [str(entity.id), str(from_year), str(to_year)])
         return list(cursor.fetchall())
 
     # Return the area breakdown. Same issues as above.
@@ -58,13 +58,13 @@ class PaymentManager(models.Manager):
                 "payments p " \
                 "left join budgets b on p.budget_id = b.id " \
             "where " \
-                "b.entity_id = "+str(entity.id)+" and " \
-                "b.year >= "+str(from_year)+" and " \
-                "b.year <= "+str(to_year)+" " \
+                "b.entity_id = %s and " \
+                "b.year >= %s and " \
+                "b.year <= %s " \
             "group by area " \
             "order by sum(amount) desc"
         cursor = connection.cursor()
-        cursor.execute(sql)
+        cursor.execute(sql, [str(entity.id), str(from_year), str(to_year)])
         return list(cursor.fetchall())
 
     def each_denormalized(self, additional_constraints=None, additional_arguments=None):
