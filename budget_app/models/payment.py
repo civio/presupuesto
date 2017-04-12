@@ -28,7 +28,7 @@ class PaymentManager(models.Manager):
     # Unfortunately we couldn't find a way to bend the Django aggregate functions to do this,
     # and raw() needs the primary key to be in the result list, so we end up having to
     # access the DB connection directly. :/
-    def get_biggest_payees(self, entity, limit):
+    def get_biggest_payees(self, entity, from_year, to_year, limit):
         sql = \
             "select " \
                 "p.payee, sum(p.amount) " \
@@ -37,7 +37,9 @@ class PaymentManager(models.Manager):
                 "left join budgets b on p.budget_id = b.id " \
             "where " \
                 "p.anonymized = FALSE and " \
-                "b.entity_id = "+str(entity.id)+" " \
+                "b.entity_id = "+str(entity.id)+" and " \
+                "b.year >= "+str(from_year)+" and " \
+                "b.year <= "+str(to_year)+" " \
             "group by payee " \
             "order by sum(amount) desc " \
             "limit " + str(limit)
@@ -48,7 +50,7 @@ class PaymentManager(models.Manager):
     # Return the area breakdown. Same issues as above.
     # Note that we could retrieve all the payments and aggregate them ourselves, but
     # it's more efficient like this, since we don't need the individual payments.
-    def get_area_breakdown(self, entity):
+    def get_area_breakdown(self, entity, from_year, to_year):
         sql = \
             "select " \
                 "p.area, sum(p.amount) " \
@@ -56,7 +58,9 @@ class PaymentManager(models.Manager):
                 "payments p " \
                 "left join budgets b on p.budget_id = b.id " \
             "where " \
-                "b.entity_id = "+str(entity.id)+" " \
+                "b.entity_id = "+str(entity.id)+" and " \
+                "b.year >= "+str(from_year)+" and " \
+                "b.year <= "+str(to_year)+" " \
             "group by area " \
             "order by sum(amount) desc"
         cursor = connection.cursor()

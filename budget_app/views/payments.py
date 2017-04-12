@@ -32,7 +32,7 @@ def payments(request, render_callback=None):
 
     # Get the list of biggest payees
     c['payee_breakdown'] = BudgetBreakdown(['payee'])
-    for payee in Payment.objects.get_biggest_payees(c['entity'], 50):
+    for payee in Payment.objects.get_biggest_payees(c['entity'], c['first_year'], c['last_year'], 50):
         # Wrap the database result in an object, so it can be handled by BudgetBreakdown
         payment = MockPayment()
         payment.payee = payee[0]
@@ -42,7 +42,7 @@ def payments(request, render_callback=None):
 
     # Get the area breakdown
     c['area_breakdown'] = BudgetBreakdown(['area'])
-    for area in Payment.objects.get_area_breakdown(c['entity']):
+    for area in Payment.objects.get_area_breakdown(c['entity'], c['first_year'], c['last_year']):
         # Wrap the database result in an object, so it can be handled by BudgetBreakdown
         payment = MockPayment()
         payment.area = area[0]
