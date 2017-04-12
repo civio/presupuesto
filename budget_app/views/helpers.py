@@ -263,10 +263,12 @@ def get_financial_breakdown_callback(c, breakdowns):
 # along the years: if they are not, i.e. if they change over the years, we need to tag them
 # with the year so they're unique along time, not only inside a given budget.
 def _get_year_tagged_institution(item):
-    return str(getattr(item, 'year')) + '/' + getattr(item, 'institution')
+    # We put the year at the end to be able to access the original code from the visualizations
+    return getattr(item, 'institution') + '/' + str(getattr(item, 'year'))
 
 def _get_year_tagged_department(item):
-    return str(getattr(item, 'year')) + '/' + getattr(item, 'department')
+    # We put the year at the end to be able to access the original code from the visualizations
+    return getattr(item, 'department') + '/' + str(getattr(item, 'year'))
 
 def get_institutional_breakdown(c):
     consistent_institutional_codes = hasattr(settings, 'CONSISTENT_INSTITUTIONAL_CODES') and settings.CONSISTENT_INSTITUTIONAL_CODES

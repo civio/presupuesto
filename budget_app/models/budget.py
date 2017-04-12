@@ -57,12 +57,13 @@ class BudgetManager(models.Manager):
         consistent_institutional_codes = hasattr(settings, 'CONSISTENT_INSTITUTIONAL_CODES') and settings.CONSISTENT_INSTITUTIONAL_CODES
         result = {}
         for item in items:
-            key = str(item.budget.year)+'/'+item.uid() if not consistent_institutional_codes else item.uid()
+            # We put the year at the end to be able to access the original code from the visualizations
+            key = item.uid() + '/' + str(item.budget.year) if not consistent_institutional_codes else item.uid()
             result[key] = item.description
         return result
 
     # We need to differentiate between items with the same name in chapters 4 and 7,
-    # which have the same structure. We should probably do this during the loading 
+    # which have the same structure. We should probably do this during the loading
     # process, but it's too late now.
     def _get_economic_descriptions(self, items):
         result = {}
