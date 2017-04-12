@@ -27,28 +27,9 @@ def payments(request, render_callback=None):
     c['last_year'] = c['years'][len(c['years'])-1]
 
     c['payees'] = Payment.objects.get_payees(c['entity'])
-
     c['areas'] = Payment.objects.get_areas(c['entity'])
 
-    # Get the list of biggest payees
-    c['payee_breakdown'] = BudgetBreakdown(['payee'])
-    for payee in Payment.objects.get_biggest_payees(c['entity'], c['first_year'], c['last_year'], 50):
-        # Wrap the database result in an object, so it can be handled by BudgetBreakdown
-        payment = MockPayment()
-        payment.payee = payee[0]
-        payment.amount = int(payee[1])
-        payment.expense = True
-        c['payee_breakdown'].add_item('pagos', payment)
-
-    # Get the area breakdown
-    c['area_breakdown'] = BudgetBreakdown(['area'])
-    for area in Payment.objects.get_area_breakdown(c['entity'], c['first_year'], c['last_year']):
-        # Wrap the database result in an object, so it can be handled by BudgetBreakdown
-        payment = MockPayment()
-        payment.area = area[0]
-        payment.amount = int(area[1])
-        payment.expense = True
-        c['area_breakdown'].add_item('pagos', payment)
+    __populate_summary_breakdowns(c)
 
     # Needed for the footnote on inflation
     populate_stats(c)
@@ -98,11 +79,33 @@ def payment_search(request, render_callback=None):
     if render_callback:
         return render(c, render_callback, '')
     else:
-        __populate_breakdowns(c)
+        __populate_detailed_breakdowns(c)
         return render_to_response('payments/search.json', c, content_type="application/json")
 
 
-def __populate_breakdowns(c):
+def __populate_summary_breakdowns(c):
+    # Get the list of biggest payees
+    c['payee_breakdown'] = BudgetBreakdown(['payee'])
+    for payee in Payment.objects.get_biggest_payees(c['entity'], c['first_year'], c['last_year'], 50):
+        # Wrap the database result in an object, so it can be handled by BudgetBreakdown
+        payment = MockPayment()
+        payment.payee = payee[0]
+        payment.amount = int(payee[1])
+        payment.expense = True
+        c['payee_breakdown'].add_item('pagos', payment)
+
+    # Get the area breakdown
+    c['area_breakdown'] = BudgetBreakdown(['area'])
+    for area in Payment.objects.get_area_breakdown(c['entity'], c['first_year'], c['last_year']):
+        # Wrap the database result in an object, so it can be handled by BudgetBreakdown
+        payment = MockPayment()
+        payment.area = area[0]
+        payment.amount = int(area[1])
+        payment.expense = True
+        c['area_breakdown'].add_item('pagos', payment)
+
+
+def __populate_detailed_breakdowns(c):
     breakdown_by_payee_criteria = ['payee', 'area', 'description']
     if hasattr(settings, 'PAYMENTS_BREAKDOWN_BY_PAYEE'):
         breakdown_by_payee_criteria = settings.PAYMENTS_BREAKDOWN_BY_PAYEE
