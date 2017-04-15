@@ -5,9 +5,9 @@
         myGrid,
         areaBreakdown   = {{ area_breakdown.to_json()|safe }},
         payeeBreakdown  = {{ payee_breakdown.to_json()|safe }},
-        query           = { description: '' },
+        query           = { description: '', area: '', payee: '', date: '' },
         years           = {{ years }},
-        paymentsCount,
+        paymentsCount   = -1,
         totalAmount;
 
     // Grid rendering
@@ -19,11 +19,11 @@
       }; 
     }
 
-    // Are we still showing the initial summary? Decide whether we're displaying
-    // the main payee list or a search result by checking for a variable only
+    // Are we showing a summary? Decide whether we're displaying the main payee list
+    // or a detailed search result by checking for an actual value in a variable only
     // populated by the search
-    function showingInitialSummary() {
-      return paymentsCount === undefined;
+    function showingSummary() {
+      return paymentsCount == -1;
     }
 
     // Render payee name with a link to search for that payee
@@ -38,32 +38,16 @@
 
     //Update Tab
     function updateTab() {
-
       var queryHash = getQueryHash();
 
       // Update query & send ajax search (if query is not empty)
       if (!isSameQuery(queryHash)) {
         query = queryHash;
-        if (!isEmptyQuery(queryHash)) {
-          sendSearchQuery();
-        }
-      }
-      // Update tabs
-      else {
+        sendSearchQuery();
 
-        // Show Payees Summary if query is empty
-        if (isEmptyQuery(queryHash)) {
-          setupPayeesSummary();
-          return;
-        }
-
+      } else { // Update tabs
         // Setup inputs val if needed
         setupInputs();
-
-        // Hide summary & show tabs
-        $('#query-panel').show();
-        $('#area-tab').text("{{ _('Por área') }}");
-        $('#payee-tab').text("{{ _('Por beneficiario') }}");
 
         // Update uiState
         uiState = getUIState();
@@ -78,7 +62,7 @@
     // Do all the hard work of drawing the grids
     function redrawGrid() {
       var data      = (uiState.view == 'area') ? areaBreakdown : payeeBreakdown;
-      var formatter = showingInitialSummary() ?
+      var formatter = showingSummary() ?
                         ((uiState.view == 'area') ? areaFormatter : mainPayeeFormatter) :
                         rowNameFormatter;
       var columnDef = getColumnDefinition(uiState);
@@ -95,23 +79,37 @@
                           columnDef
                         ]);
 
-      var queryStr = [];
-      if (query.description && query.description !== '')
-        queryStr.push('{{ _("Descripción") }} <strong>'+query.description+'</strong>');
-      if (query.area)
-        queryStr.push('{{ _("Área") }} <strong>'+query.area+'</strong>');
-      if (query.payee)
-        queryStr.push('{{ _("Proveedor") }} <strong>'+query.payee+'</strong>');
-      if (query.date) {
-        var dates = query.date.split(',');
-        queryStr.push(dates[0] !== dates[1] ?
-                        '<strong>'+dates[0]+'</strong> - <strong>'+dates[1]+'</strong>' :
-                        '<strong>'+dates[0]+'</strong>');
-      }
-      $('#query-panel .payments-query').html( queryStr.join(' + ') );
+      // We don't have (yet) overall dataset statistics when displaying a summary, so we
+      // hide the info box in those cases.
+      if ( showingSummary() ) {
+        $('#query-panel').hide();
 
-      $("#payments-total").text( Formatter.amount(totalAmount) );
-      $("#payments-size").text( Formatter.number(paymentsCount) );
+        $('#area-tab').text("{{ _('Desglose por área') }}");
+        $('#payee-tab').text("{{ _('Principales proveedores') }}");
+
+      } else {
+        var queryStr = [];
+        if (query.description && query.description !== '')
+          queryStr.push('{{ _("Descripción") }} <strong>'+query.description+'</strong>');
+        if (query.area)
+          queryStr.push('{{ _("Área") }} <strong>'+query.area+'</strong>');
+        if (query.payee)
+          queryStr.push('{{ _("Proveedor") }} <strong>'+query.payee+'</strong>');
+        if (query.date) {
+          var dates = query.date.split(',');
+          queryStr.push(dates[0] !== dates[1] ?
+                          '<strong>'+dates[0]+'</strong> - <strong>'+dates[1]+'</strong>' :
+                          '<strong>'+dates[0]+'</strong>');
+        }
+        $('#query-panel .payments-query').html( queryStr.join(' + ') );
+
+        $("#payments-total").text( Formatter.amount(totalAmount) );
+        $("#payments-size").text( Formatter.number(paymentsCount) );
+
+        $('#query-panel').show();
+        $('#area-tab').text("{{ _('Por área') }}");
+        $('#payee-tab').text("{{ _('Por beneficiario') }}");
+      }
 
       // Update download links
       var queryString = window.location.hash.replace("#", "");
@@ -138,7 +136,6 @@
     }
 
     function onSearchSuccess(response) {
-
       // Setup values
       paymentsCount   = response.totalResults;
       totalAmount     = response.totalAmount;
@@ -162,40 +159,28 @@
         $('#input-description').val(query.description);
       }
       if (query.area !== $('#input-area').val()){
-        $('#input-area').val(query.area).trigger("chosen:updated");
+        $('#input-area').val(query.area);
       }
       if (query.payee !== $('#input-payee').val()){
-        $('#input-payee').val(query.payee).trigger("chosen:updated");
+        $('#input-payee').val(query.payee);
       }
       if (query.date !== $('#input-date').val()){
         $('#input-date').val(query.date);
       }
     }
 
-    function setupPayeesSummary() {
-      uiState = getUIState();
-      $('#tabs .active').removeClass('active');
-      $('a[href="#'+uiState.view+'"]').blur().parent().addClass('active');
-      $('#query-panel').hide();
-      redrawGrid();
-    }
-
     function isSameQuery(_query) {
       return query.description === _query.description && query.payee === _query.payee && query.area === _query.area && query.date === _query.date;
-    }
-
-    function isEmptyQuery(_query) {
-      return Object.keys(_query).length === 1 && _query.description === ''
     }
 
     function getQueryHash(){
       var hash = $.deparam.fragment();
       var queryHash = {
-        description: ( hash.description ) ? hash.description : ''
+        description:  ( hash.description ) ? hash.description : '',
+        date:         ( hash.date ) ? hash.date : '',
+        payee:        ( hash.payee ) ? hash.payee : '',
+        area:         ( hash.area ) ? hash.area : ''
       };
-      if( hash.date )         queryHash.date = hash.date;
-      if( hash.payee )        queryHash.payee = hash.payee;
-      if( hash.area )         queryHash.area = hash.area;
       return queryHash;
     }
 
@@ -222,24 +207,15 @@
     $('#payments-search').submit(function(e){
       e.preventDefault();
 
-      // Show alert if there's no filter parameter
-      if ($('#input-description').val().trim() === '' && ($('#input-payee').val() === null || $('#input-payee').val() === '') && ($('#input-area').val() === null || $('#input-area').val() === '')) {
-        $(this).find('.alert').show();
-        $('#input-description, #input-payee, #input-area').one('change', function(){
-          $('#payments-search .alert').hide();
-        });
-        return;
-      }
-
       // Show submit loader
       $(this).find('button[type="submit"]').attr('disabled', true).children('.glyphicon').removeClass('hide');
     
       var state = {
         description:  $('#input-description').val().trim(),
-        date:         $('#input-date').val()
+        date:         $('#input-date').val(),
+        payee:        $('#input-payee').val(),
+        area:         $('#input-area').val()
       }
-      state.payee = $('#input-payee').val();
-      state.area = $('#input-area').val();
 
       // If submit the previous query we hide submit loader & do nothing
       if (isSameQuery(state)) {

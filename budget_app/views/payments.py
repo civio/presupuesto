@@ -22,14 +22,11 @@ def payments(request, render_callback=None):
     c['entity'] = get_main_entity(c)
 
     # Retrieve the information needed for the search form: years, areas and payees
-    c['years'] = list(Payment.objects.get_years(c['entity']))
-    c['first_year'] = c['years'][0]
-    c['last_year'] = c['years'][len(c['years'])-1]
-
+    __set_year_range(c)
     c['payees'] = Payment.objects.get_payees(c['entity'])
     c['areas'] = Payment.objects.get_areas(c['entity'])
 
-    __populate_summary_breakdowns(c)
+    __populate_summary_breakdowns(c, c['first_year'], c['last_year'])
 
     # Needed for the footnote on inflation
     populate_stats(c)
@@ -41,14 +38,21 @@ def payment_search(request, render_callback=None):
     # Get search parameters
     area = request.GET.get('area', '')
     payee = request.GET.get('payee', '')
-    years = request.GET.get('date', '')
     description = request.GET.get('description', '')
+    years = request.GET.get('date', '')
 
     # Get request context
     c = get_context(request)
 
     # Retrieve the entity to display
     c['entity'] = get_main_entity(c)
+
+    # Get year range
+    if ( years != '' ):
+        from_year, to_year = __parse_year_arguments(years)
+    else:
+        __set_year_range(c)
+        from_year, to_year = c['first_year'], c['last_year']
 
     # Create basic query...
     query = "b.entity_id = %s"
@@ -63,30 +67,39 @@ def payment_search(request, render_callback=None):
         query += " AND p.payee = %s"
         query_arguments.append(payee)
 
-    if ( years != '' ):
-        from_year, to_year = years.split(',')
-        if from_year > to_year:     # Sometimes the slider turns around. Cope with it
-            to_year, from_year = from_year, to_year
-        query += " AND b.year >= %s AND b.year <= %s"
-        query_arguments.extend([from_year, to_year])
-
     if ( description != '' ):
         query += " AND to_tsvector('"+settings.SEARCH_CONFIG+"',p.description) @@ plainto_tsquery('"+settings.SEARCH_CONFIG+"',%s)"
         query_arguments.append(description)
 
-    c['payments'] = Payment.objects.each_denormalized(query, query_arguments)
+    # At this point we check whether there's actually any search criteria. If not, displaying
+    # the whole list is unmanageable, so we only display to the summary stats.
+    if len(query_arguments) == 1:
+        __populate_summary_breakdowns(c, from_year, to_year)
+
+    else:
+        # We add the year range criteria...
+        if ( years != '' ):
+            query += " AND b.year >= %s AND b.year <= %s"
+            query_arguments.extend([from_year, to_year])
+
+        # ...and query the database, finally.
+        c['payments'] = Payment.objects.each_denormalized(query, query_arguments)
+
+        # Populate the breakdowns, unless we're rendering CSV/Excels, not needed then
+        if not render_callback:
+            __populate_detailed_breakdowns(c)
+
 
     if render_callback:
         return render(c, render_callback, '')
     else:
-        __populate_detailed_breakdowns(c)
         return render_to_response('payments/search.json', c, content_type="application/json")
 
 
-def __populate_summary_breakdowns(c):
+def __populate_summary_breakdowns(c, from_year, to_year):
     # Get the list of biggest payees
     c['payee_breakdown'] = BudgetBreakdown(['payee'])
-    for payee in Payment.objects.get_biggest_payees(c['entity'], c['first_year'], c['last_year'], 50):
+    for payee in Payment.objects.get_biggest_payees(c['entity'], from_year, to_year, 50):
         # Wrap the database result in an object, so it can be handled by BudgetBreakdown
         payment = MockPayment()
         payment.payee = payee[0]
@@ -96,13 +109,18 @@ def __populate_summary_breakdowns(c):
 
     # Get the area breakdown
     c['area_breakdown'] = BudgetBreakdown(['area'])
-    for area in Payment.objects.get_area_breakdown(c['entity'], c['first_year'], c['last_year']):
+    for area in Payment.objects.get_area_breakdown(c['entity'], from_year, to_year):
         # Wrap the database result in an object, so it can be handled by BudgetBreakdown
         payment = MockPayment()
         payment.area = area[0]
         payment.amount = int(area[1])
         payment.expense = True
         c['area_breakdown'].add_item('pagos', payment)
+
+    # Get basic stats for the overall dataset
+    # TODO: Replace this with actual values. We're not showing them at the moment, but we could.
+    c['payments_count'] = -1
+    c['total_amount'] = -1
 
 
 def __populate_detailed_breakdowns(c):
@@ -131,3 +149,18 @@ def __populate_detailed_breakdowns(c):
     # Get basic stats for the overall dataset
     c['payments_count'] = payments_count
     c['total_amount'] = c['payee_breakdown'].total_expense['pagos'] if payments_count > 0 else 0
+
+def __set_year_range(c):
+    c['years'] = list(Payment.objects.get_years(c['entity']))
+    c['first_year'] = c['years'][0]
+    c['last_year'] = c['years'][len(c['years'])-1]
+
+def __parse_year_arguments(years):
+    if ( years != '' ):
+        from_year, to_year = years.split(',')
+        if from_year > to_year:     # Sometimes the slider turns around. Cope with it
+            to_year, from_year = from_year, to_year
+        return from_year, to_year
+
+    else:
+        return '', ''

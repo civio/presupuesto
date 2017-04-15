@@ -434,10 +434,6 @@ msgstr "Data"
 msgid "Buscar"
 msgstr "Procurar"
 
-#: templates/payments/payments_search.html:50
-msgid "Debes seleccionar al menos un criterio de búsqueda"
-msgstr "Debes seleccionar polo menos un criterio de procura"
-
 #: templates/policies/show.html:22
 msgid "Volver a Políticas"
 msgstr "Voltar a Políticas"
