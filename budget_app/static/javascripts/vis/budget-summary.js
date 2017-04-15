@@ -3,6 +3,7 @@ function BudgetSummary(_selector) {
   var selector      = _selector,
       areaNames     = null,
       colors        = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#e7969c', '#bcbd22', '#17becf'],
+      colorScale,
       data          = [],
       view          = null,
       year          = null,
@@ -15,6 +16,7 @@ function BudgetSummary(_selector) {
     if (!arguments.length) return colors;
     if (_.length > 0){
       colors = _;
+      setColorScale();
     }
     return this;
   };
@@ -26,6 +28,9 @@ function BudgetSummary(_selector) {
     bar = d3.select(selector)
       .append('div')
        .attr('class','budget-summary');
+
+    // Setup color scale
+    setColorScale();
 
     return this;
   };
@@ -99,7 +104,7 @@ function BudgetSummary(_selector) {
     // Set bar color & percentage
     bar.selectAll('.budget-summary-bar')
       .data(data)
-      .style('background-color', setSummaryItemColor)
+      .style('background-color', function(d) { return colorScale(d.key); })
       .html(setSummaryItemPercentage);
     // Set item label
     bar.selectAll('.budget-summary-label')
@@ -121,7 +126,7 @@ function BudgetSummary(_selector) {
     // Set item bar
     item.append('div')
       .attr('class', 'budget-summary-bar')
-      .style('background-color', setSummaryItemColor)
+      .style('background-color', function(d) { return colorScale(d.key); })
       .html(setSummaryItemPercentage)
       .on('mouseover', onSummaryItemOver)
       .on('mouseout', onSummaryItemOut);
@@ -147,15 +152,18 @@ function BudgetSummary(_selector) {
     return d.percentage+'%';
   }
 
-  function setSummaryItemColor(d) {
-    return colors[Number(d.key)];
-  }
-
   function setSummaryItemPercentage(d) {
     return ( d.percentage >= 6 ) ? Formatter.decimal(d.percentage, .1)+'<small>%</small>' : '';
   }
 
   function setSummaryItemLabel(d) {
     return (d.percentage >= 6 ) ? areaNames[d.key] : '';
+  }
+
+  // Set colors scale based on colors array
+  function setColorScale() {
+    colorScale = d3.scaleOrdinal()
+      .range(colors)
+      .domain([0,1,2,3,4,5,6,7,8,9]);
   }
 }
