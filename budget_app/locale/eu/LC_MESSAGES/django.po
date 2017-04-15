@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-06 13:44+0200\n"
-"PO-Revision-Date: 2017-01-18 11:15+0100\n"
+"PO-Revision-Date: 2017-04-15 17:44+0200\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: eu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 2.0.1\n"
 
 #: templates/base-widget.html:7 templates/base-widget.html.py:26
 #: templates/base.html:7 templates/shared/meta.html:9
@@ -358,6 +358,10 @@ msgstr "Inbertsioak eta ordainketa"
 #: templates/payments/index.html:25
 msgid "Hay <strong id=\"payments-size\"></strong> pagos que suman un total de <strong id=\"payments-total\"></strong> para la búsqueda"
 msgstr "<strong id=\"payments-size\"></strong> ordainketa daude bilaketa honetan, eta guztira <strong id=\"payments-total\"></strong> dira"
+
+#: templates/payments/index.html:25
+msgid "Hay <strong id=\"payments-size\"></strong> pagos que suman un total de <strong id=\"payments-total\"></strong> para los años <span id=\"payments-years\"></span>"
+msgstr "<strong id=\"payments-size\"></strong> ordainketa daude bilaketa honetan, eta guztira <strong id=\"payments-total\"></strong> dira. Urte <span id=\"payments-years\"></span>"
 
 #: templates/payments/index.html:32
 msgid "Desglose por área"
