@@ -47,7 +47,8 @@ function BudgetSummary(_selector) {
       bar.selectAll('.budget-summary-item').remove();
     }
 
-    setupData( _breakdown, _areaNames, _field, _year );
+    areaNames = _areaNames;
+    setupData( _breakdown, _field, _year );
     updateItems();
 
     year = _year;
@@ -58,10 +59,7 @@ function BudgetSummary(_selector) {
 
 
   // Setup Data
-  function setupData( _breakdown, _areaNames, _field, _year ) {
-    // Update area names
-    areaNames = _areaNames;
-
+  function setupData( _breakdown, _field, _year ) {
     // Reset variables holding the data.
     // Note that a BudgetSummary object can be setup a number of times, so this is needed.
     var area,
@@ -100,6 +98,7 @@ function BudgetSummary(_selector) {
 
     // Update
     barItems
+      .attr('class', setSummaryItemClass)
       .style('width', setSummaryItemWidth);
     // Set bar color & percentage
     bar.selectAll('.budget-summary-bar')
@@ -121,7 +120,7 @@ function BudgetSummary(_selector) {
     // Set item
     var item = selection
       .append('div')
-        .attr('class', 'budget-summary-item')
+        .attr('class', setSummaryItemClass)
         .style('width', setSummaryItemWidth);
     // Set item bar
     item.append('div')
@@ -148,6 +147,10 @@ function BudgetSummary(_selector) {
     $(selector).trigger('budget-summary-out');
   }
   
+  function setSummaryItemClass(d) {
+    return 'budget-summary-item budget-summary-item-'+d.key;
+  }
+
   function setSummaryItemWidth(d) {
     return d.percentage+'%';
   }
