@@ -97,14 +97,22 @@ def payment_search(request, render_callback=None):
 
 
 def __populate_summary_breakdowns(c, from_year, to_year):
+    payments_count = 0
+    total_amount = 0
+
     # Get the list of biggest payees
     c['payee_breakdown'] = BudgetBreakdown(['payee'])
     for payee in Payment.objects.get_biggest_payees(c['entity'], from_year, to_year, 50):
         # Wrap the database result in an object, so it can be handled by BudgetBreakdown
         payment = MockPayment()
         payment.payee = payee[0]
-        payment.amount = int(payee[1])
         payment.expense = True
+
+        amount = int(payee[2])
+        payment.amount = amount
+        total_amount += amount
+        payments_count += int(payee[1])
+
         c['payee_breakdown'].add_item('pagos', payment)
 
     # Get the area breakdown
@@ -113,14 +121,19 @@ def __populate_summary_breakdowns(c, from_year, to_year):
         # Wrap the database result in an object, so it can be handled by BudgetBreakdown
         payment = MockPayment()
         payment.area = area[0]
-        payment.amount = int(area[1])
         payment.expense = True
+
+        amount = int(area[2])
+        payment.amount = amount
+        total_amount += amount
+        payments_count += int(area[1])
+
         c['area_breakdown'].add_item('pagos', payment)
 
     # Get basic stats for the overall dataset
-    # TODO: Replace this with actual values. We're not showing them at the moment, but we could.
-    c['payments_count'] = -1
-    c['total_amount'] = -1
+    c['payments_count'] = payments_count
+    c['total_amount'] = total_amount
+    c['is_summary'] = True
 
 
 def __populate_detailed_breakdowns(c):
@@ -149,6 +162,7 @@ def __populate_detailed_breakdowns(c):
     # Get basic stats for the overall dataset
     c['payments_count'] = payments_count
     c['total_amount'] = c['payee_breakdown'].total_expense['pagos'] if payments_count > 0 else 0
+    c['is_summary'] = False
 
 def __set_year_range(c):
     c['years'] = list(Payment.objects.get_years(c['entity']))

@@ -31,7 +31,7 @@ class PaymentManager(models.Manager):
     def get_biggest_payees(self, entity, from_year, to_year, limit):
         sql = \
             "select " \
-                "p.payee, sum(p.amount) " \
+                "p.payee, count(p.amount), sum(p.amount) " \
             "from " \
                 "payments p " \
                 "left join budgets b on p.budget_id = b.id " \
@@ -53,7 +53,7 @@ class PaymentManager(models.Manager):
     def get_area_breakdown(self, entity, from_year, to_year):
         sql = \
             "select " \
-                "p.area, sum(p.amount) " \
+                "p.area, count(p.amount), sum(p.amount) " \
             "from " \
                 "payments p " \
                 "left join budgets b on p.budget_id = b.id " \

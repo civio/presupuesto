@@ -1,4 +1,5 @@
 {
+  "isSummary": {{ 'true' if is_summary else 'false' }},
   "totalResults": {{ payments_count }},
   "totalAmount": {{ total_amount }},
   "moreResultsAvailable": false,
