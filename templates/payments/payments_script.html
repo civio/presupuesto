@@ -164,8 +164,10 @@
       if (query.payee !== $('#input-payee').val()){
         $('#input-payee').val(query.payee);
       }
-      if (query.date !== $('#input-date').val()){
-        $('#input-date').val(query.date);
+      if (query.date && query.date !== $('#input-date').val()){
+        // Using $().val(value) didn't update the slider appearance
+        var years = query.date.split(',');
+        $('#input-date').slider('setValue', [parseInt(years[0]), parseInt(years[1])]);
       }
     }
 
