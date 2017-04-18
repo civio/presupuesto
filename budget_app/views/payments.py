@@ -110,8 +110,6 @@ def __populate_summary_breakdowns(c, from_year, to_year):
 
         amount = int(payee[2])
         payment.amount = amount
-        total_amount += amount
-        payments_count += int(payee[1])
 
         c['payee_breakdown'].add_item('pagos', payment)
 
@@ -125,6 +123,9 @@ def __populate_summary_breakdowns(c, from_year, to_year):
 
         amount = int(area[2])
         payment.amount = amount
+
+        # We calculate the overall stats using the area breakdown. The payee one
+        # doesn't include anonymised data.
         total_amount += amount
         payments_count += int(area[1])
 
