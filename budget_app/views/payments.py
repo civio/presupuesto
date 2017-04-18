@@ -73,7 +73,10 @@ def payment_search(request, render_callback=None):
 
     # At this point we check whether there's actually any search criteria. If not, displaying
     # the whole list is unmanageable, so we only display to the summary stats.
-    if len(query_arguments) == 1:
+    # XXX: There's one exception to this: if we're generating a CSV or XLS file we do need
+    # to have the whole list. Maybe we shouldn't offer those full-blown files in the UI,
+    # but at the moment we do, so we deal with it.
+    if len(query_arguments) == 1 and not render_callback:
         __populate_summary_breakdowns(c, from_year, to_year)
 
     else:
