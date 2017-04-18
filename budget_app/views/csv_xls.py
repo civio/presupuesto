@@ -73,12 +73,11 @@ def entity_income(request, level, slug, format):
 # PAYMENTS BREAKDOWN
 #
 def write_entity_payment_breakdown(c, writer):
-    writer.writerow(['#Año', 'Área/Política', 'Programa', 'Beneficiario', 'Concepto', 'Cantidad'])
+    writer.writerow(['#Año', 'Área/Política', 'Beneficiario', 'Concepto', 'Cantidad'])
     for payment in c['payments']:
         writer.writerow([
             payment.year,
             payment.area.encode("utf-8"),
-            payment.programme.encode("utf-8") if payment.programme else '',
             payment.payee.encode("utf-8"),
             payment.description.encode('utf-8'),
             payment.amount / 100.0
