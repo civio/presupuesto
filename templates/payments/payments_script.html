@@ -107,7 +107,7 @@
           queryStr.push('{{ _("Área") }} <strong>'+query.area+'</strong>');
         if (query.payee)
           queryStr.push('{{ _("Proveedor") }} <strong>'+query.payee+'</strong>');
-        if (query.date) {
+        if (query.date && years.length > 1) {
           var queryYears = query.date.split(',');
           queryStr.push(formatYearRange(queryYears[0], queryYears[1]));
         }
