@@ -173,10 +173,10 @@
         $('#input-description').val(query.description);
       }
       if (query.area !== $('#input-area').val()){
-        $('#input-area').val(query.area);
+        $('#input-area').val(query.area).trigger('chosen:updated');
       }
       if (query.payee !== $('#input-payee').val()){
-        $('#input-payee').val(query.payee);
+        $('#input-payee').val(query.payee).trigger('chosen:updated');
       }
       if (query.date && query.date !== $('#input-date').val()){
         // Using $().val(value) didn't update the slider appearance
