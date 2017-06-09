@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-06 13:44+0200\n"
-"PO-Revision-Date: 2017-05-30 01:23+0200\n"
+"PO-Revision-Date: 2017-06-09 07:29-0300\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -223,6 +223,39 @@ msgstr "up to the second quarter"
 #: templates/policies/show_script.html:94
 msgid "hasta el tercer trimestre"
 msgstr "up to the third quarter"
+
+msgid "hasta enero"
+msgstr "up to January"
+
+msgid "hasta febrero"
+msgstr "up to February"
+
+msgid "hasta marzo"
+msgstr "up to March"
+
+msgid "hasta abril"
+msgstr "up to April"
+
+msgid "hasta mayo"
+msgstr "up to May"
+
+msgid "hasta junio"
+msgstr "up to June"
+
+msgid "hasta julio"
+msgstr "up to July"
+
+msgid "hasta agosto"
+msgstr "up to August"
+
+msgid "hasta septiembre"
+msgstr "up to September"
+
+msgid "hasta octubre"
+msgstr "up to October"
+
+msgid "hasta noviembre"
+msgstr "up to November"
 
 #: templates/budgets/index.html:124 templates/entities/show_script.html:260
 #: templates/policies/show_script.html:95

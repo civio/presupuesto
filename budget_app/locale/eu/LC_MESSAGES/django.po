@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-06 13:44+0200\n"
-"PO-Revision-Date: 2017-05-30 01:23+0200\n"
+"PO-Revision-Date: 2017-06-09 07:29-0300\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: eu\n"
@@ -223,6 +223,39 @@ msgstr "bigarren hiruhilekora arte"
 #: templates/policies/show_script.html:94
 msgid "hasta el tercer trimestre"
 msgstr "hirugarren hiruhilekora arte"
+
+msgid "hasta enero"
+msgstr ""
+
+msgid "hasta febrero"
+msgstr ""
+
+msgid "hasta marzo"
+msgstr ""
+
+msgid "hasta abril"
+msgstr ""
+
+msgid "hasta mayo"
+msgstr ""
+
+msgid "hasta junio"
+msgstr ""
+
+msgid "hasta julio"
+msgstr ""
+
+msgid "hasta agosto"
+msgstr ""
+
+msgid "hasta septiembre"
+msgstr ""
+
+msgid "hasta octubre"
+msgstr ""
+
+msgid "hasta noviembre"
+msgstr ""
 
 #: templates/budgets/index.html:124 templates/entities/show_script.html:260
 #: templates/policies/show_script.html:95
