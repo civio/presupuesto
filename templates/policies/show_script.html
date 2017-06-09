@@ -94,13 +94,6 @@
     //
     var stats = {{ stats|safe }};
     var budgetStatuses = {{ budget_statuses|safe }};
-    var budgetStatusLabels = {
-      '1T': '{{ _("hasta el primer trimestre") }}',
-      '2T': '{{ _("hasta el segundo trimestre") }}',
-      '3T': '{{ _("hasta el tercer trimestre") }}',
-      'D': '{{ _("a día de hoy") }}',
-      'PR': '{{ _("proyecto") }}'
-    };
 
 {% if include_financial_chapters %}
     var includeFinancialChapters = true;

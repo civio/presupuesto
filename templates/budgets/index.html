@@ -60,6 +60,7 @@
 
 <!-- Some extra Javascript, camouflaged as HTML files :/ -->
 {% include 'shared/policy_paths.html' %}
+{% include 'shared/budget_status_labels.html' %}
 {% include 'budgets/budgets_update_indicators.html' %}
 
 <script>
@@ -112,21 +113,16 @@
     var functionalBreakdown = {{ breakdowns['functional'].to_json( labels=descriptions['functional'] )|safe }};
     var economicBreakdown = {{ breakdowns['economic'].to_json( labels=descriptions['income'] )|safe }};
     var chapterBreakdown = {{ breakdowns['chapter'].to_json()|safe }};  // Used for indicators
-    var i18n = {
+    var i18n = $.extend({}, budgetStatusLabels, {
       'other': '{{ _("Otros") }}',
       'government': '{{ _("Gobierno de Aragón") }}',
       'budgeted': '{{ _("Presupuestado") }}',
       'executed': '{{ _("Ejecutado") }}',
-      '1T': '{{ _("hasta el primer trimestre") }}',
-      '2T': '{{ _("hasta el segundo trimestre") }}',
-      '3T': '{{ _("hasta el tercer trimestre") }}',
-      'D': "{{ _("a día de hoy") | safe }}",
-      'PR': '{{ _("proyecto") }}',
 {% if adjust_inflation_in_overview %}
       'amounts.are.real': '{{ _("(Cantidades actualizadas con la inflación)") }}',
 {% endif %}
       'n/d': 'No hay datos'
-    };
+    });
 
     var sankey = new BudgetSankey(functionalBreakdown, economicBreakdown, adjustInflationFn, budgetStatuses, i18n);
     sankey.incomeNodes({{ income_nodes|safe }});
