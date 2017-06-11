@@ -30,7 +30,7 @@ class SimpleBudgetLoader:
     def parse_budget_data(self, budget_items, filename):
         if os.path.isfile(filename):
             print "Leyendo datos de %s..." % filename
-            reader = csv.reader(open(filename, 'rb'))
+            reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
             for index, line in enumerate(reader):
                 if re.match("^#", line[0]):         # Ignore comments
                     continue
@@ -159,7 +159,7 @@ class SimpleBudgetLoader:
 
     # Load the institutional categories
     def load_institutional_classification(self, path, budget):
-        reader = csv.reader(open(os.path.join(path, '..', '..', 'clasificacion_organica.csv'), 'rb'))
+        reader = csv.reader(open(os.path.join(path, '..', '..', 'clasificacion_organica.csv'), 'rb'), delimiter=self._get_delimiter())
         for index, line in enumerate(reader):
             if re.match("^#", line[0]):  # Ignore comments
                 continue
@@ -179,7 +179,7 @@ class SimpleBudgetLoader:
 
     # Load the economic categories
     def load_economic_classification(self, path, budget):
-        reader = csv.reader(open(os.path.join(path, '..', '..', 'clasificacion_economica.csv'), 'rb'))
+        reader = csv.reader(open(os.path.join(path, '..', '..', 'clasificacion_economica.csv'), 'rb'), delimiter=self._get_delimiter())
         for index, line in enumerate(reader):
             if re.match("^#", line[0]):  # Ignore comments
                 continue
@@ -201,7 +201,7 @@ class SimpleBudgetLoader:
 
     # Load the functional categories
     def load_functional_classification(self, path, budget):
-        reader = csv.reader(open(os.path.join(path, '..', '..', 'areas_funcionales.csv'), 'rb'))
+        reader = csv.reader(open(os.path.join(path, '..', '..', 'areas_funcionales.csv'), 'rb'), delimiter=self._get_delimiter())
         for index, line in enumerate(reader):
             if len(line)==0:
                 continue
@@ -230,6 +230,10 @@ class SimpleBudgetLoader:
                                     budget=budget)
             fc.save()
 
+
+    # Make input file delimiter configurable by children
+    def _get_delimiter(self):
+        return ','
 
     # Read number in English format (123,456.78), and return as number of cents
     def _read_english_number(self, s):
