@@ -41,7 +41,7 @@ def get_context(request, css_class='', title=''):
 
     c['color_scale'] = getattr(settings, 'COLOR_SCALE', [])
 
-    c['treemap_labels_min_size'] = 70
+    c['treemap_labels_min_size'] = 30
     if hasattr(settings, 'TREEMAP_LABELS_MIN_SIZE'):
         c['treemap_labels_min_size'] = settings.TREEMAP_LABELS_MIN_SIZE
 

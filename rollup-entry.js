@@ -397,12 +397,12 @@ export {
   stratify,
   //tree,
   treemap,
-  // treemapBinary,
-  // treemapDice,
-  // treemapSlice,
-  // treemapSliceDice,
-  // treemapSquarify,
-  // treemapResquarify
+  //treemapBinary,
+  //treemapDice,
+  treemapSlice,
+  //treemapSliceDice,
+  treemapSquarify,
+  //treemapResquarify
 } from "d3-hierarchy";
 
 /*

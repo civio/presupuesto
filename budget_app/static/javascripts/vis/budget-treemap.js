@@ -5,10 +5,11 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
       budgetStatuses      = (_budgetStatuses) ? _budgetStatuses : {};
 
   var colors              = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#e7969c', '#bcbd22', '#17becf'],
-      labelsMinSize       = 70,   // Minimum node size in px (width or height) to add a label
+      labelsMinSize       = 30,   // Minimum node size in px (width or height) to add a label
       labelsFontSizeMin   = 11,   // Nodes label minimum size in px
       labelsFontSizeMax   = 74,   // Nodes label maximum size in px
-      treeLevels          = 1;    // Number of levels in treemap hierarchy (-1 allow to search all levels)
+      treeLevels          = 1,    // Number of levels in treemap hierarchy (-1 allow to search all levels)
+      mobileBreakpoint    = 620;  // Width size to use mobile layout
       
   var nodesPadding        = 8,    // Define padding of nodes label container
       transitionDuration  = 650,
@@ -200,10 +201,15 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
     treemap = d3.treemap()
       .size([treemapWidth,treemapHeight])
       .padding(0)
+      //.tile(d3.treemapSquarify)
+      //.tile(d3.treemapSlice)
       //.tile(d3.treemapBinary)
       //.tile(d3.treemapSquarify.ratio(1))
       //.tile(d3.treemapResquarify) //.ratio(1))
       .round(true);
+    if (width <= mobileBreakpoint) {
+      treemap.tile(d3.treemapSlice);
+    }
     treemapRoot = d3.stratify()(treemapData);
     treemapRoot
       .sum(function(d) { return d[uiState.year]; })
@@ -290,7 +296,9 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
     selection
       .style('padding',    function(d) { return (d.x1-d.x0 > 2*nodesPadding && d.y1-d.y0 > 2*nodesPadding ) ? nodesPadding+'px' : 0; })
       .style('background', function(d) { while (d.depth > 1) d = d.parent; return colorScale(getParentId(d)); })
-      .style('visibility', function(d) { return (d.x1-d.x0 === 0) || (d.y1-d.y0 === 0) ? 'hidden' : 'visible'; });
+      .style('visibility', function(d) { return (d.x1-d.x0 === 0) || (d.y1-d.y0 === 0) ? 'hidden' : 'visible'; })
+      .select('.node-label')
+        .style('visibility', 'hidden');
   }
 
   // setNodeTransition for attributes with transition animation (position & dimensions)
@@ -334,8 +342,7 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
       }
       
       // Hide node label if doesn't fit node width or height
-      label
-        .style('visibility', (label.node().scrollWidth <= nodeWidth && label.node().scrollHeight <= nodeHeight) ? 'visible' : 'hidden');
+      label.style('visibility', (label.node().scrollWidth <= nodeWidth && label.node().scrollHeight <= nodeHeight) ? 'visible' : 'hidden');
     });
   }
   
@@ -371,19 +378,27 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
 
   // Set main element dimensions
   function setDimensions() {
-    width       = $(selector).width();
+    width = $(selector).width();
     // Set height based on width container
     if (width > 1000) {
       height = width * 0.5;
     }
-    else if (width > 700) {
+    else if (width > 780) {
       height = width * 0.5625;
     }
-    else if (width > 500) {
+    else if (width > mobileBreakpoint) {
       height = width * 0.75;
     }
     else {
-      height = width;
+      height = width * 1.75;
+    }
+    // Set treempa tile based on width
+    if (treemap) {
+      if (width > mobileBreakpoint) {
+        treemap.tile(d3.treemapSquarify);
+      } else {
+        treemap.tile(d3.treemapSlice);
+      }
     }
     // Set main element height
     $(selector).height( height );
