@@ -15,7 +15,15 @@
         <p class="sankey-label-incomes">{{ _('Ingresos') }}</p>
         <p class="sankey-label-expenses">{{ _('Gastos') }}</p>
       </div>
+
       <div class="sankey chart-container" id="chart">
+        <svg>
+          <defs>
+            <pattern id="pattern-stripe" width="3" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <rect width="0.5" height="8" transform="translate(0,0)" fill="black"></rect>
+            </pattern>
+          </defs>
+        </svg>
         <div id="pop-up" class="popover top" role="tooltip">
           <div class="arrow"></div>
           <div class="popover-title"></div>
@@ -92,16 +100,18 @@
 
     // Calculate maximum amount to display across all years, so we can set a global scale for the Sankey
     function calculateMaximumSankeyAmount(breakdown) {
-      var highest_amount = 0;
-      for (var column in breakdown.years) {
-        var year = breakdown.years[column].toString();
-        var highest_this_year = Math.max( 
-                                  (breakdown.income[year]||0), 
-                                  (breakdown.income['actual_'+year]||0),
-                                  (breakdown.expense[year]||0), 
-                                  (breakdown.expense['actual_'+year]||0) );
-        var highest_amount = Math.max(highest_amount, 
-                                      adjustInflationFn(highest_this_year, breakdown.years[column]));
+      var highest_amount = 0,
+          column,
+          year,
+          highest_this_year;
+      for (column in breakdown.years) {
+        year = breakdown.years[column].toString();
+        highest_this_year = Math.max( 
+                              (breakdown.income[year]||0), 
+                              (breakdown.income['actual_'+year]||0),
+                              (breakdown.expense[year]||0), 
+                              (breakdown.expense['actual_'+year]||0) );
+        highest_amount = Math.max(highest_amount, adjustInflationFn(highest_this_year, breakdown.years[column]));
       }
       return highest_amount;
     }
@@ -128,8 +138,8 @@
     sankey.incomeNodes({{ income_nodes|safe }});
     sankey.expenseNodes({{ expense_nodes|safe }});
     // Set a constant scale for the Sankey diagram across the years (otherwise each year would look
-    // equally big). Note: 4% margin to avoid clipping, as there is some spacing between the items.
-    sankey.maxAmountEver( calculateMaximumSankeyAmount(functionalBreakdown) * 1.04 );
+    // equally big).
+    sankey.maxAmountEver( calculateMaximumSankeyAmount(functionalBreakdown) );
 
     {# If we have multiple languages, let the Sankey chart know which one to use #}
     {% if LANGUAGES|length > 1 %}

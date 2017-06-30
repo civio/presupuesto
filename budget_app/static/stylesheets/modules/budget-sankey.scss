@@ -1,16 +1,55 @@
 // Budget Sankey Chart Styles
 
 .sankey{
+  padding-top: 30px;
+  padding-bottom: 20px;
 
-  .link,
-  .link-execution{
-    @include transition( stroke-opacity 0.3s ease-out );
+  .incomes {
+    .node-budget,
+    .total{
+      fill: steelblue;
+    }
+    .node-executed{
+      outline: 1px solid steelblue;
+    }
+    .node:hover .node-budget{
+      /*fill: #59a3e0;*/
+      fill: #5599dc;
+    }
+    .wall{
+      fill: darken(#5599dc, 10%);
+    }
   }
 
-  .link.with-data {
-    fill: none;
-    stroke: $sankey-budget-color;
-    stroke-opacity: .5;
+  .expenses {
+    .node-budget,
+    .total{
+      fill: #f09078;
+    }
+    .node-executed{
+      outline: 1px solid #f09078;
+    }
+    .node:hover .node-budget{
+      /*fill: #f7af97;*/
+      fill: #f4aa92;
+    }
+    .wall{
+      fill: darken(#f4aa92, 10%);
+    }
+  }
+
+  .node-executed,
+  .total-executed{
+    fill: url(#pattern-stripe);
+    fill-opacity: .5;
+  }
+
+  .node-title{
+    fill: white;
+    font-size: 1.125em;
+    letter-spacing: .01em;
+    font-weight: 300;
+    text-shadow: 0 0 2px rgba(0,0,0,.6);
   }
 
   .legend-budget circle{
@@ -18,49 +57,9 @@
     opacity: .5;
   }
 
-  .link-execution.with-data {
-    fill: none;
-    stroke: $sankey-execution-color;
-    stroke-opacity: .5;
-  }
-
   .legend-execution circle{
     fill: $sankey-execution-color;
     opacity: .5;
-  }
-
-  .link.no-data,
-  .link-execution.no-data {
-    fill: none;
-    stroke: $sankey-budget-color;
-    stroke-opacity: .5;
-  }
-
-  .link:hover,
-  .node:hover,
-  .link-execution:hover {
-    stroke-opacity: .9;
-    cursor:pointer;
-  }
-
-  .node{
-    rect{
-      fill: $text-color;
-      stroke: none;
-      cursor: pointer;
-    
-      &.node-central{
-        fill: #fff;
-        cursor: auto;
-      }
-    }
-
-    text {
-      fill: $text-color;
-      pointer-events: none;
-      font-weight: $font-weight-400;
-      font-size: 1em;
-    }
   }
 
   .legend-item text{
