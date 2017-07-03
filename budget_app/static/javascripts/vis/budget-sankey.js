@@ -12,9 +12,9 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
       totalsHeightRatio   = 0.82, // Total bars height ratio (bars_height/treemaps_height)
       totalsPadding       = 10,   // Padding between total bars
       orderByValue        = true, // Order treemap nodes by value
-      transitionLength    = 1000,
-      transitionDelay     = 100,
+      transitionDuration  = 650,
       hasExecution        = false,
+      initialized         = false,
 
       selector,
       svg,
@@ -27,8 +27,8 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
       width,
       height,
       treemapWidth,
-      treemapHeight,
 
+      budget,
       incomeNodes = [],
       expenseNodes = [],
 
@@ -52,12 +52,6 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
   this.nodePadding = function(_) {
     if (!arguments.length) return nodePadding;
     nodePadding = _;
-    return this;
-  };
-
-  this.relaxFactor = function(_) {
-    if (!arguments.length) return relaxFactor;
-    relaxFactor = _;
     return this;
   };
 
@@ -134,7 +128,7 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
     function getNodes(breakdown, ids, field, linkGenerator) {
       var nodes = [{
         id:       field,
-        actual:   real(breakdown[field]["actual_"+year]),
+        actual:   (breakdown[field]["actual_"+year] !== undefined) ? real(breakdown[field]["actual_"+year]) : 0,
         budgeted: real(breakdown[field][year])
       }];
       var accumulatedTotal = 0;
@@ -171,8 +165,6 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
                       "link": linkGenerator(null, null) });
       }
 
-      console.log(nodes);
-
       return nodes;
     }
 
@@ -192,8 +184,8 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
   this.draw = function(_selector, _uiState) {
 
     selector = _selector;
-    uiState  = _uiState;
-
+    uiState = _uiState;
+    
     // Set width & height dimensions
     setDimensions();
 
@@ -215,8 +207,11 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
       .attr('class', 'expenses')
       .attr('transform', 'translate('+(treemapWidth+centerPadding)+',0)');
 
-    // Get data
-    var budget = this.getFormattedData(uiState.year);
+    incomesCont.append('g').attr('class', 'nodes');
+    expensesCont.append('g').attr('class', 'nodes');
+
+    // Get budget data
+    budget = this.getFormattedData(uiState.year);
 
     // Calculate maxAmountEver if not setted
     if (maxAmountEver == 0){
@@ -225,39 +220,15 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
 
     // Setup treemap
     treemap = d3.treemap()
-      .size([treemapWidth, treemapHeight])
       .padding(nodePadding)
       .paddingLeft(0)
       .paddingRight(0)
       .tile(d3.treemapSlice)
       .round(true);
 
-    // set incomes & expenses treemap roots
-    setTreemapRoots(budget);
-
-    // Create treemap nodes
-    setNodes(incomesCont, incomesRoot.leaves());
-    setNodes(expensesCont, expensesRoot.leaves());
-
-    // Create total bars
-    //setTotal(incomesCont, incomesRoot.data.actual, incomesRoot.data.budgeted, 'left');
-    //setTotal(expensesCont, expensesRoot.data.actual, expensesRoot.data.budgeted, 'right');
-
-    /*
-    // Create walls between treemaps & totals bars
-    setWall(incomesCont, incomesRoot.value, 'left');
-    setWall(expensesCont, expensesRoot.value, 'right');
-    */
-
-    // Add a basic legend. Not the most elegant implementation...
-    var legend = svg.append('g').attr("transform", "translate(5,"+height+")");
-    addLegendItem(legend, 0, i18n['budgeted'], 'legend-budget');
-    addLegendItem(legend, 1, i18n['executed'], 'legend-execution');
-    var note = svg.append('g').attr("transform", "translate(-10,"+(height+20)+")");
-    if ( i18n['amounts.are.real'] !== undefined )
-      addLegendItem(note, 0, i18n['amounts.are.real'], 'legend-note');
-
-    updateExecution();  // Remove this!?
+    // Update chart
+    updateChart();
+    initialized = true;
 
     d3.select(window).on('resize', _this.resize);
   };
@@ -267,99 +238,88 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
       return; // Do nothing if the year hasn't changed. We don't care about the other fields
     uiState = newUIState;
 
-    console.log(uiState.year);
+    budget = this.getFormattedData(uiState.year);
 
-    var budget = this.getFormattedData(uiState.year);
-
-    // Update tremap size
-    treemap.size([treemapWidth, treemapHeight]);
-
-    // Set incomes & expenses treemap roots
-    setTreemapRoots(budget);
-
-    // Create treemap nodes
-    setNodes(incomesCont, incomesRoot.leaves());
-    setNodes(expensesCont, expensesRoot.leaves());
-
-    updateExecution();   // Remove this!?
+    updateChart();
   };
 
   this.resize = function(){
-  
     // Avoid redraw when container width keeps the same    
-    if( width == $(selector).width() - margin.left - margin.right ) return;
+    if( width == $(selector).width() ) return;
 
-    // Remove svg & redraw
-    d3.select(selector).select("svg").remove();
-    _this.draw(selector, uiState);
+    // Set width & height dimensions
+    setDimensions();
+
+    // Set svg
+    svg.attr('width', width).attr('height', height);
+    expensesCont.attr('transform', 'translate('+(treemapWidth+centerPadding)+',0)');
+
+    // set initialized to false before update in order to avoid transition
+    initialized = false;
+    updateChart();
+    initialized = true;
+
+    // TODO!!! Split treemaps in mobile resolutions
   };
 
-  function updateExecution(){
-    // Hide or show 'legend-execution' based on hasExecution variable
-    var visibility = ( hasExecution ) ? 'visible' : 'hidden';
-    d3.select('.legend-execution').style('visibility', visibility );
+  function updateChart(){
+    // Set incomes & expenses treemap roots
+    incomesRoot = getTreemapRoot(incomesCont, budget.incomes);
+    expensesRoot = getTreemapRoot(expensesCont, budget.expenses);
 
-    // Update execution text based on budgetStatuses
-    if (hasExecution && budgetStatuses) {
-      var txt = i18n['executed'];
-      if(budgetStatuses[uiState.year] && budgetStatuses[uiState.year] !== ''){
-        txt += ' '+i18n[budgetStatuses[uiState.year]];
-      }
-      d3.select('.legend-execution text').text( txt );
-    }
+    // update treemap nodes
+    setNodes(incomesCont, incomesRoot.leaves());
+    setNodes(expensesCont, expensesRoot.leaves());
+
+    // update total bars
+    setTotal(incomesCont, incomesRoot.data.budgeted, 'total', 'left');
+    setTotal(incomesCont, incomesRoot.data.actual, 'total-executed', 'left');
+    setTotal(expensesCont, expensesRoot.data.budgeted, 'total', 'right');
+    setTotal(expensesCont, expensesRoot.data.actual, 'total-executed', 'right');
+
+    // Create walls between treemaps & totals bars
+    setWall(incomesCont, incomesRoot, 'left');
+    setWall(expensesCont, expensesRoot, 'right');
   }
 
-  function addLegendItem(legend, i, text, cssClass) {
-    var g = legend.append('g')
-      .attr("class", 'legend-item '+cssClass)
-      .attr("transform", "translate("+i*150+",0)");
-    g.append("circle")
-      .attr("r", "5");
-    g.append("text")
-      .attr("text-anchor", "start")
-      .attr("x", 10)
-      .attr("dy", ".32em")
-      .text(text);
-  }
+  function getTreemapRoot(cont, budget){
 
-  function setTreemapRoots(budget){
+    var heightRatio = Math.max(budget[0].actual, budget[0].budgeted)/maxAmountEver;
+
+    // Setup treemap size based on max budget value / maxAmountEver
+    treemap.size([treemapWidth, height*heightRatio]);
+
     // Set incomesRoot
-    incomesRoot = d3.stratify()(budget.incomes);
-    incomesRoot
+    var root = d3.stratify()(budget);
+    root
       .sum(function(d) { return d.value; })
       .sort(function(a, b) { return (orderByValue) ? b.value - a.value : b.i - a.i; });
-    treemap(incomesRoot);
+    treemap(root);
 
-    // Set expensesRoot
-    expensesRoot = d3.stratify()(budget.expenses);
-    expensesRoot
-      .sum(function(d) { return d.value; })
-      .sort(function(a, b) { return (orderByValue) ? b.value - a.value : b.i - a.i; });
-    treemap(expensesRoot);
+    // Translate incomes cont
+    cont.select('.nodes')
+      .transition()
+      .duration( initialized ? transitionDuration : 0 )
+      .attr('transform', 'translate(0,'+(height*(1-heightRatio)|0)+')');
 
-    console.log(incomesRoot.leaves());
+    return root;
   }
 
   // Create nodes group
   function setNodes(el, data) {
     // DATA JOIN
-    // Join new data with old elements, if any.
-    var nodes = el.selectAll('.node').data(data);
-    // ENTER
-    // Create new elements as needed.
-    //
+    var nodes = el.select('.nodes').selectAll('.node').data(data);
     // ENTER + UPDATE
-    // After merging the entered elements with the update selection,
-    // apply operations to both.
     nodes.enter().append('g')
         .attr('class', 'node')
         .call(setNode)
       .merge(nodes)
+        .transition()
+        .duration( initialized ? transitionDuration : 0 )
         .call(updateNode)
         .call(setNodePosition);
     // EXIT
-    // Remove old elements as needed.
-    nodes.exit().remove()
+    nodes.exit().remove();
   }
 
   // Setup nodes budgeted, executed & title
@@ -374,7 +334,6 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
     node.append('text')
       .attr('class', 'node-title')
       .attr('dy', '-.5em')
-      .attr('x', function(d){ return (d.parent.id == 'income') ? 8 : treemapWidth-8 })
       .attr('text-anchor', function(d){ return (d.parent.id == 'income') ? 'start' : 'end' });
   }
 
@@ -397,10 +356,9 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
   }
 
   function setNodeDimensions(node) {
-    console.log('setNodeDimensions', node, node.datum());
     node
       .attr('y', function(d){ return (1-(d.data.budgeted/d.value))*(d.y1-d.y0) })
-      .attr('height', function(d){ console.log(d.id,d.value); return d.data.budgeted/d.value*(d.y1-d.y0) }) //(d.y1-d.y0 > 10) ? d.y1-d.y0 : 1 })
+      .attr('height', function(d){ return d.data.budgeted/d.value*(d.y1-d.y0) }) //(d.y1-d.y0 > 10) ? d.y1-d.y0 : 1 })
       .attr('width', treemapWidth);
   }
 
@@ -415,6 +373,7 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
 
   function setNodeTitle(node){
     node
+      .attr('x', function(d){ return (d.parent.id == 'income') ? 8 : treemapWidth-8 })
       .attr('y', function(d){ return d.y1-d.y0 })
       .style('visibility', function(d){ return (d.y1-d.y0 > 18) ? 'visible' : 'hidden' })
       .style('font-size', getNodeTitleFontSize)
@@ -422,65 +381,72 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
   }
 
   // Create totals bars
-  function setTotal(cont, executed, budgeted, align) {
-    cont.selectAll('.total')
-      .data([{'value': budgeted, 'align': align}])
-      .enter().append('rect')
-        .attr('class', 'total')
+  function setTotal(cont, budget, name, align) {
+    // DATA JOIN
+    var total = cont.selectAll('.'+name).data([{'value': budget, 'align': align, 'executed': name == 'total-executed'}]);
+    // ENTER + UPDATE
+    total.enter().append('rect')
+        .attr('class', name)
+      .merge(total)
+        .transition()
+        .duration( initialized ? transitionDuration : 0 )
         .call(setTotalDimensions);
-    // set total execution
-    cont.selectAll('.total-executed')
-      .data([{'value': executed, 'align': align}])
-      .enter().append('rect')
-        .attr('class', 'total-executed');
+    // EXIT
+    total.exit().remove();
   }
 
   function setTotalDimensions(total) {
     total
-      .attr('x', function(d){ return (d.align == 'left') ? ((width-totalsPadding)*0.5)-totalsWidth : (totalsPadding-centerPadding)*0.5 })
-      .attr('y', function(d){ return (d.align == 'left') ? getTotalOffset() : getTotalExecutedOffset() })
-      .attr('height', function(d){ return (d.align == 'left') ? getTotalHeight() : getTotalExecutedHeight() })
-      .attr('width', totalsWidth);
-  }
-
-  function setTotalExecutedDimensions(total) {
-    total
-      .attr('x', function(d){ return (d.align == 'left') ? ((width-totalsPadding)*0.5)-totalsWidth : (totalsPadding-centerPadding)*0.5 })
-      .attr('y', function(d){ return (d.align == 'left') ?  getTotalOffset()+((1-r)*getTotalHeight()) : getTotalExecutedOffset()+((1-r)*getTotalExecutedHeight()) })
-      .attr('height', function(d){ return (d.align == 'left') ? r*getTotalHeight() : r*getTotalExecutedHeight() })
-      .attr('width', totalsWidth);
+      .attr('x', getTotalX)
+      .attr('y', getTotalY)
+      .attr('height', getTotalHeight)
+      .attr('width', function(d){ return d.executed ? totalsWidth-2 : totalsWidth });
   }
 
   // Create wall between treemap & totals bar
   function setWall(cont, data, align) {
-    cont.selectAll('.wall')
-      .data([{'value': data, 'align': align}])
-      .enter().append('polygon')
+
+    // DATA JOIN
+    var wall = cont.selectAll('.wall').data([{'value': Math.max(data.data.actual,data.data.budgeted)/maxAmountEver, 'align': align}]);
+    // ENTER + UPDATE
+    wall.enter().append('polygon')
         .attr('class', 'wall')
+      .merge(wall)
+        .transition()
+        .duration( initialized ? transitionDuration : 0 )
         .call(setWallDimensions);
+    // EXIT
+    wall.exit().remove();
   }
 
   function setWallDimensions(wall) {
     wall
       .attr('transform', function(d){ return (d.align == 'left') ? 'translate('+treemapWidth+',0)' : 'translate(0,0)' })
-      .attr('points', function(d){ return (d.align == 'left') ?
-        [[0,5], [((centerPadding-totalsPadding)*.5)-totalsWidth,height*(1-totalsHeightRatio)*.5], [((centerPadding-totalsPadding)*.5)-totalsWidth,height*(1+totalsHeightRatio)*.5], [0,height-5], [0,5]] : 
-        [[0,5], [totalsWidth-((centerPadding-totalsPadding)*.5),height*(1.1-totalsHeightRatio)*.5], [totalsWidth-((centerPadding-totalsPadding)*.5),height*(1+totalsHeightRatio)*.5], [0,height-5], [0,5]] });
-        //[[0,5], [((centerPadding-totalsPadding)*.5)-totalsWidth,-50], [((centerPadding-totalsPadding)*.5)-totalsWidth,height-60], [0,height-5], [0,5]] : 
-        //[[0,5], [totalsWidth-((centerPadding-totalsPadding)*.5),-50], [totalsWidth-((centerPadding-totalsPadding)*.5),height-60], [0,height-5], [0,5]] });
+      .attr('points', function(d){
+        var x = (d.align == 'left') ? -totalsWidth+((centerPadding-totalsPadding)*.5) : totalsWidth-((centerPadding-totalsPadding)*.5),
+            treemapH = d.value*height,
+            treemapY = height*(1-d.value)|0;
+            totalH   = treemapH*totalsHeightRatio,
+            totalY   = (height*(1-totalsHeightRatio)*.5) + ((1-d.value)*height*totalsHeightRatio);
+        return [
+          [0, treemapY+nodePadding],
+          [x, totalY],
+          [x, totalY+totalH],
+          [0, treemapY+treemapH-nodePadding]];
+      });
   }
 
-  function getTotalHeight() {
-    return height*totalsHeightRatio;
+  function getTotalX(d){
+    var value = (d.align == 'left') ? ((width-totalsPadding)*0.5)-totalsWidth : (totalsPadding-centerPadding)*0.5;
+    return d.executed ? value+1 : value;
   }
-  function getTotalOffset() {
-    return height*(1-totalsHeightRatio)*.5;
+  function getTotalY(d){
+    var value = (height*(1-totalsHeightRatio)*.5) + ((1-(d.value/maxAmountEver))*height*totalsHeightRatio);
+    return d.executed ? value+1 : value;
   }
-  function getTotalExecutedHeight() {
-    return height*(totalsHeightRatio-.05);
-  }
-  function getTotalExecutedOffset() {
-    return height*(1.1-totalsHeightRatio)*.5;
+  function getTotalHeight(d) {
+    var value = d.value*height*totalsHeightRatio/maxAmountEver;
+    return d.executed && value > 2 ? value-2 : value;
   }
 
   function getNodeTitleFontSize(d) {
@@ -492,7 +458,6 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
     var el = d3.select(this),
         length = el.node().getComputedTextLength(),
         text = el.text();
-    //console.log('wrapText', el, length, text);
     while (length > treemapWidth-50 && text.length > 0) {
       text = text.slice(0, -1);
       el.text(text + '...');
@@ -525,11 +490,6 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
       height = width;
     }
     treemapWidth = (width-centerPadding) * 0.5;
-    treemapHeight = height;
-    /*
-    var ratio     = Math.sqrt( getValue(yearTotals[uiState.year][uiState.field], uiState.format, uiState.field, uiState.year) / maxValue );
-    treemapHeight = height * ratio;
-    */
 
     // Set height to selector for IE11
     //$(selector).height( height );

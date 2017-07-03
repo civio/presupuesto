@@ -9,15 +9,15 @@
     .total{
       fill: steelblue;
     }
-    .node-executed{
+    .node-executed,
+    .total-executed{
       outline: 1px solid steelblue;
     }
     .node:hover .node-budget{
-      /*fill: #59a3e0;*/
       fill: #5599dc;
     }
     .wall{
-      fill: darken(#5599dc, 10%);
+      fill: darken(steelblue, 12%);
     }
   }
 
@@ -26,15 +26,15 @@
     .total{
       fill: #f09078;
     }
-    .node-executed{
+    .node-executed,
+    .total-executed{
       outline: 1px solid #f09078;
     }
     .node:hover .node-budget{
-      /*fill: #f7af97;*/
       fill: #f4aa92;
     }
     .wall{
-      fill: darken(#f4aa92, 10%);
+      fill: darken(#f09078, 12%);
     }
   }
 

@@ -152,12 +152,6 @@
     sankey.nodePadding(nodePadding);
     {% endif %}
 
-    {# The aggressiveness of the Sankey layout algorithm can be customized for best results. #}
-    {% if relax_factor %}
-    var relaxFactor = {{ relax_factor }};
-    sankey.relaxFactor(relaxFactor);
-    {% endif %}
-
     initSlider("#year-selection", {{ years|safe }}, redraw, {{ starting_year }});
     sankey.draw("#chart", getUIState());
     redraw();
