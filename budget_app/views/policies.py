@@ -75,11 +75,11 @@ def programmes_show(request, id, title, render_callback=None):
 
     # Extra request context info
     c['programme_id'] = id
-    c['programme'] = FunctionalCategory.objects.filter( budget__entity=main_entity, 
-                                                        programme=id,
-                                                        subprogramme__isnull=True)[0]
-    c['policy'] = FunctionalCategory.objects.filter(budget__entity=main_entity, 
-                                                    policy=c['programme'].policy, 
+    programme = FunctionalCategory.objects.filter(budget__entity=main_entity,
+                                                    programme=id,
+                                                    subprogramme__isnull=True)[0]
+    c['policy'] = FunctionalCategory.objects.filter(budget__entity=main_entity,
+                                                    policy=programme.policy,
                                                     function__isnull=True)[0]
 
     # Ignore if possible the descriptions for execution data, they are truncated and ugly
@@ -129,8 +129,8 @@ def programmes_show(request, id, title, render_callback=None):
 
     # Back button: go back to parent policy
     c['back_button'] = {
-        'url': reverse('budget_app.views.policies_show', args=[c['programme'].policy, c['policy'].slug()]),
-        'description': c['descriptions']['functional'].get(c['programme'].policy)
+        'url': reverse('budget_app.views.policies_show', args=[programme.policy, c['policy'].slug()]),
+        'description': c['descriptions']['functional'].get(programme.policy)
     }
 
     # if parameter widget defined use policies/widget template instead of policies/show
@@ -149,11 +149,15 @@ def subprogrammes_show(request, id, title, render_callback=None):
 
     # Extra request context info
     c['subprogramme_id'] = id
-    c['subprogramme'] = FunctionalCategory.objects.filter(  budget__entity=main_entity, 
-                                                            subprogramme=id)[0]
-    c['programme'] = FunctionalCategory.objects.filter(budget__entity=main_entity, 
-                                                    programme=c['subprogramme'].programme, 
-                                                    subprogramme__isnull=True)[0]
+    subprogramme = FunctionalCategory.objects.filter(budget__entity=main_entity,
+                                                        subprogramme=id)[0]
+    c['programme'] = FunctionalCategory.objects.filter(budget__entity=main_entity,
+                                                        programme=subprogramme.programme,
+                                                        subprogramme__isnull=True)[0]
+    # The policy object is needed for the breadcrumb only
+    c['policy'] = FunctionalCategory.objects.filter(budget__entity=main_entity,
+                                                    policy=subprogramme.policy,
+                                                    programme__isnull=True)[0]
 
     # Ignore if possible the descriptions for execution data, they are truncated and ugly
     programme_descriptions = {}
@@ -197,8 +201,8 @@ def subprogrammes_show(request, id, title, render_callback=None):
 
     # Back button: go back to parent programme
     c['back_button'] = {
-        'url': reverse('budget_app.views.programmes_show', args=[c['subprogramme'].programme, c['programme'].slug()]),
-        'description': c['descriptions']['functional'].get(c['subprogramme'].programme)
+        'url': reverse('budget_app.views.programmes_show', args=[subprogramme.programme, c['programme'].slug()]),
+        'description': c['descriptions']['functional'].get(subprogramme.programme)
     }
 
     # if parameter widget defined use policies/widget template instead of policies/show
