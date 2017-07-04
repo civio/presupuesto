@@ -1,6 +1,5 @@
 # -*- coding: UTF-8 -*-
 
-from coffin.shortcuts import render_to_response
 from paginator import DiggPaginator as Paginator
 from django.utils.translation import ugettext as _
 from budget_app.models import GlossaryTerm
@@ -18,4 +17,4 @@ def terms(request):
     results = Paginator(list(GlossaryTerm.objects.search(c['query'], c['LANGUAGE_CODE'])), PAGE_LENGTH, body=6, padding=2)
     c['terms'] = results.page(c['page'])
 
-    return render_to_response('terms/index.html', c)
+    return render_response('terms/index.html', c)

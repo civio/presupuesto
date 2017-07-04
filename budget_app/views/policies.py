@@ -1,7 +1,6 @@
 # -*- coding: UTF-8 -*-
 
 from django.core.urlresolvers import reverse
-from coffin.shortcuts import render_to_response
 from budget_app.models import Budget, BudgetBreakdown, FunctionalCategory, EconomicCategory
 from entities import entities_show
 from helpers import *

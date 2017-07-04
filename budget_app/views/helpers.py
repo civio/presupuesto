@@ -1,17 +1,19 @@
 # -*- coding: UTF-8 -*-
 # Small utility functions shared by all views
+
 import json
 import os
 import re
+
 from contextlib import contextmanager
 from coffin.shortcuts import render_to_response
-from budget_app.models import Budget, BudgetBreakdown, BudgetItem, InflationStat, PopulationStat, Entity
 from django.template import RequestContext
 from django.conf import settings
 from django.core import urlresolvers
 
 from project.settings import ROOT_PATH
 
+from budget_app.models import Budget, BudgetBreakdown, BudgetItem, InflationStat, PopulationStat, Entity
 
 TABS = {
     'general': r'^budgets.*',
@@ -282,8 +284,21 @@ def get_institutional_breakdown(c):
 #
 # RENDER RESPONSE
 #
+
+# Set metadata fields before response is returned.
+# Themes can override this method if needed (e.g. see #469)
+def _set_meta_fields():
+    pass
+
+# Wrapper around render_to_response, useful to hold code to be called for all responses
+def render_response(template_name, c):
+    _set_meta_fields()
+
+    return render_to_response(template_name, c)
+
+# Check whether a callback is provided and, based on that, render HTML or call back.
 def render(c, render_callback, template_name):
     if not render_callback:
-        return render_to_response(template_name, c)
+        return render_response(template_name, c)
     else:
         return render_callback.generate_response(c)

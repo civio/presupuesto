@@ -1,4 +1,3 @@
-from coffin.shortcuts import render_to_response
 from django.conf import settings
 from django.utils.translation import ugettext as _
 from budget_app.models import Budget, Entity, FunctionalCategory, BudgetBreakdown, BudgetItem
@@ -35,4 +34,4 @@ def welcome(request):
     for item in items:
         c['breakdown'].add_item(c['latest_budget'].year, item)
 
-    return render_to_response('welcome/index.html', c)
+    return render_response('welcome/index.html', c)

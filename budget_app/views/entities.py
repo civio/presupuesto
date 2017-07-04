@@ -1,5 +1,4 @@
 # -*- coding: UTF-8 -*-
-from coffin.shortcuts import render_to_response
 from budget_app.models import BudgetBreakdown, Entity, EconomicCategory
 from helpers import *
 

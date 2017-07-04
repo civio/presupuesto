@@ -1,4 +1,3 @@
-from coffin.shortcuts import render_to_response
 from django.core.paginator import EmptyPage
 from django.conf import settings
 from budget_app.models import *
@@ -90,4 +89,4 @@ def search(request):
     c['formatter'] = add_thousands_separator
     c['main_entity_level'] = settings.MAIN_ENTITY_LEVEL
 
-    return render_to_response('search/index.html', c)
+    return render_response('search/index.html', c)
