@@ -2,7 +2,7 @@
   <p class="title">{{ _('Compártelo') }}</p>
   <ul class="social-sharing-toolbox">
       <li>
-        <a class="twitter" onClick='window.open("https://twitter.com/intent/tweet?text={{ title_prefix+' - ' if title_prefix }}{{ _('Presupuestos del Gobierno de Aragón') }}&url={{ request.build_absolute_uri() }}","sharer","toolbar=0,status=0,width=548,height=500");return false;' href="https://twitter.com/intent/tweet?text={{ title_prefix+' - ' if title_prefix }}{{ _('Presupuestos del Gobierno de Aragón') }}&url={{ request.build_absolute_uri() }}">{{ _('Comparte esta página en Twitter') }}</a>
+        <a class="twitter" onClick='window.open("https://twitter.com/intent/tweet?text={{ meta_tweet_text }}&url={{ request.build_absolute_uri() }}","sharer","toolbar=0,status=0,width=548,height=500");return false;' href="https://twitter.com/intent/tweet?text={{ meta_tweet_text }}&url={{ request.build_absolute_uri() }}">{{ _('Comparte esta página en Twitter') }}</a>
       </li>
 
       <li>

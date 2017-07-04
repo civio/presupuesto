@@ -10,6 +10,7 @@ from coffin.shortcuts import render_to_response
 from django.template import RequestContext
 from django.conf import settings
 from django.core import urlresolvers
+from django.utils.translation import ugettext as _
 
 from project.settings import ROOT_PATH
 
@@ -282,17 +283,32 @@ def get_institutional_breakdown(c):
 
 
 #
-# RENDER RESPONSE
+# META FIELDS
 #
 
 # Set metadata fields before response is returned.
 # Themes can override this method if needed (e.g. see #469)
-def _set_meta_fields():
-    pass
+def _set_meta_fields(c):
+    c['meta_title'] = _(u'Presupuestos del Gobierno de Aragón')
+    if c['title_prefix']:
+        c['meta_title'] = c['title_prefix'] + ' - ' + c['meta_title']
+
+    c['meta_description'] = _(u'Información presupuestaria del Gobierno de Aragón')
+    c['meta_keywords'] = _('presupuestos, gastos, ingresos') + ', ' + _(u'Gobierno de Aragón')
+
+    c['meta_og_title'] = c['meta_title']
+    c['meta_og_description'] = c['meta_description']
+
+    c['meta_tweet_text'] = c['meta_title']
+
+
+#
+# RENDER RESPONSE
+#
 
 # Wrapper around render_to_response, useful to hold code to be called for all responses
 def render_response(template_name, c):
-    _set_meta_fields()
+    _set_meta_fields(c)
 
     return render_to_response(template_name, c)
 
