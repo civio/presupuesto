@@ -105,6 +105,7 @@ $sankey-expense-color-dark: darken($sankey-expense-color, 12%);
     font-size: 1.125em;
     letter-spacing: .01em;
     font-weight: 300;
+    alignment-baseline: middle;
     //text-shadow: 0 0 2px rgba(0,0,0,.6);
     //text-shadow: 0 0 1px rgba(0,0,0,.6);
   }

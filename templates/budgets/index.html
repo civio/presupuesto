@@ -158,9 +158,13 @@
     {% endif %}
 
     {# The padding of the Sankey layout algorithm can be customized for best results. #}
-    {% if node_padding %}
-    var nodePadding = {{ node_padding }};
-    sankey.nodePadding(nodePadding);
+    {% if overview_node_padding %}
+    sankey.nodePadding({{ overview_node_padding }});
+    {% endif %}
+
+    {# We can force nodes order to remain the same as nodes array #}
+    {% if overview_force_order %}
+    sankey.forceOrder(true);
     {% endif %}
 
     initSlider("#year-selection", {{ years|safe }}, redraw, {{ starting_year }});

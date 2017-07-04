@@ -6,7 +6,7 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
       budgetStatuses      = _budgetStatuses,
       margin              = {top: 20, right: 1, bottom: 25, left: 1},  // ?
       maxAmountEver       = 0,
-      nodePadding         = 4,    // Padding between treemap nodes
+      nodePadding         = 2,    // Padding between treemap nodes
       centerPadding       = 180,  // Padding between left & right treemaps
       totalsWidth         = 50,   // Total bars width
       totalsHeightRatio   = 0.82, // Total bars height ratio (bars_height/treemaps_height)
@@ -53,6 +53,12 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
   this.nodePadding = function(_) {
     if (!arguments.length) return nodePadding;
     nodePadding = _;
+    return this;
+  };
+
+  this.forceOrder = function(_) {
+    if (!arguments.length) return !orderByValue;
+    orderByValue = !_;
     return this;
   };
 
@@ -295,7 +301,7 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
     var root = d3.stratify()(budget);
     root
       .sum(function(d) { return d.value; })
-      .sort(function(a, b) { return (orderByValue) ? b.value - a.value : b.i - a.i; });
+      .sort(function(a, b) { return (orderByValue) ? b.value - a.value : a.id - b.id; });
     treemap(root);
 
     // Translate incomes cont
@@ -336,7 +342,7 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
     // add title
     node.append('text')
       .attr('class', 'node-title')
-      .attr('dy', '-.5em')
+      .attr('dy', '.1em')
       .attr('text-anchor', function(d){ return (d.parent.id == 'income') ? 'start' : 'end' });
   }
 
@@ -376,8 +382,8 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
   function setNodeTitle(node){
     node
       .attr('x', function(d){ return (d.parent.id == 'income') ? 8 : treemapWidth-8 })
-      .attr('y', function(d){ return d.y1-d.y0 })
-      .style('visibility', function(d){ return (d.y1-d.y0 > 18) ? 'visible' : 'hidden' })
+      .attr('y', function(d){ return (d.y1-d.y0)*.5 })
+      .style('visibility', function(d){ return (d.y1-d.y0 < 16) ? 'hidden' : 'visible' })
       .style('font-size', getNodeTitleFontSize)
       .text(function(d){ 
         var threshold = (width > 1000) ? 44 : (width > 780) ? 32 : 24;
@@ -458,7 +464,7 @@ treemapWidth = (width-centerPadding)*.5;
   }
 
   function getNodeTitleFontSize(d) {
-    var s = ((d.value/d.parent.value)+.4)*36;
+    var s = ((d.value/d.parent.value)+.35)*38;
     return (s > 10) ? (s|0)+'px' : '10px';
   }
 
