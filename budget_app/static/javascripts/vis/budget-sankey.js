@@ -4,7 +4,6 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
       functionalBreakdown = _functionalBreakdown,
       economicBreakdown   = _economicBreakdown,
       budgetStatuses      = _budgetStatuses,
-      margin              = {top: 20, right: 1, bottom: 25, left: 1},  // ?
       maxAmountEver       = 0,
       nodePadding         = 2,    // Padding between treemap nodes
       centerPadding       = 180,  // Padding between left & right treemaps
@@ -271,6 +270,9 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
   };
 
   function updateChart(){
+    // Show/hide executed labels
+    $('.sankey-labels .sankey-label-executed').css('visibility', (hasExecution) ? 'visible' : 'hidden');
+
     // Set incomes & expenses treemap roots
     incomesRoot = getTreemapRoot(incomesCont, budget.incomes);
     expensesRoot = getTreemapRoot(expensesCont, budget.expenses);
@@ -511,10 +513,10 @@ treemapWidth = (width-centerPadding)*.5;
 
   function onMouseOver(d) {
     $popup.find('.popover-title').html( d.data.name);
-
     var html = d.data.budgeted ? '<span class="budgeted">'+i18n['budgeted']+'</span><br/><span class="popover-content-value">'+Formatter.amount(d.data.budgeted)+'</span><br/>' : '';
-    if ( hasExecution )
+    if (hasExecution) {
       html += d.data.actual ? '<span class="executed">'+i18n['executed']+'</span><br/><span class="popover-content-value">'+Formatter.amount(d.data.actual)+'</span>' : '';
+    }
     $popup.find('.popover-content').html(html);
     $popup.show();
   }
