@@ -27,6 +27,7 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
       width,
       height,
       treemapWidth,
+      treemapHeight,
 
       budget,
       incomeNodes = [],
@@ -205,7 +206,7 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
       .attr('class', 'incomes');
     expensesCont = svg.append('g')
       .attr('class', 'expenses')
-      .attr('transform', 'translate('+(treemapWidth+centerPadding)+',0)');
+      .attr('transform', getExpensesContTransform);
 
     incomesCont.append('g').attr('class', 'nodes');
     expensesCont.append('g').attr('class', 'nodes');
@@ -252,7 +253,8 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
 
     // Set svg
     svg.attr('width', width).attr('height', height);
-    expensesCont.attr('transform', 'translate('+(treemapWidth+centerPadding)+',0)');
+
+    expensesCont.attr('transform', getExpensesContTransform);
 
     // set initialized to false before update in order to avoid transition
     initialized = false;
@@ -287,8 +289,8 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
     var heightRatio = Math.max(budget[0].actual, budget[0].budgeted)/maxAmountEver;
 
     // Setup treemap size based on max budget value / maxAmountEver
-    treemap.size([treemapWidth, height*heightRatio]);
-
+    treemap.size([treemapWidth, treemapHeight*heightRatio]);
+   
     // Set incomesRoot
     var root = d3.stratify()(budget);
     root
@@ -300,7 +302,7 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
     cont.select('.nodes')
       .transition()
       .duration( initialized ? transitionDuration : 0 )
-      .attr('transform', 'translate(0,'+(height*(1-heightRatio)|0)+')');
+      .attr('transform', 'translate(0,'+(treemapHeight*(1-heightRatio)|0)+')');
 
     return root;
   }
@@ -427,10 +429,10 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
       .attr('transform', function(d){ return (d.align == 'left') ? 'translate('+treemapWidth+',0)' : 'translate(0,0)' })
       .attr('points', function(d){
         var x = (d.align == 'left') ? -totalsWidth+((centerPadding-totalsPadding)*.5) : totalsWidth-((centerPadding-totalsPadding)*.5),
-            treemapH = d.value*height,
-            treemapY = height*(1-d.value)|0;
+            treemapH = d.value*treemapHeight,
+            treemapY = treemapHeight*(1-d.value)|0;
             totalH   = treemapH*totalsHeightRatio,
-            totalY   = (height*(1-totalsHeightRatio)*.5) + ((1-d.value)*height*totalsHeightRatio);
+            totalY   = (treemapHeight*(1-totalsHeightRatio)*.5) + ((1-d.value)*treemapHeight*totalsHeightRatio);
         return [
           [0, treemapY+nodePadding],
           [x, totalY],
@@ -439,16 +441,19 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
       });
   }
 
+treemapWidth = (width-centerPadding)*.5;
+
   function getTotalX(d){
-    var value = (d.align == 'left') ? ((width-totalsPadding)*0.5)-totalsWidth : (totalsPadding-centerPadding)*0.5;
+    //var value = (d.align == 'left') ? ((width-totalsPadding)*0.5)-totalsWidth : (totalsPadding-centerPadding)*0.5;
+    var value = (d.align != 'left') ? (totalsPadding-centerPadding)*.5 : (height < width) ? ((width-totalsPadding)*.5)-totalsWidth : width-totalsWidth-(totalsPadding*.5);
     return value;
   }
   function getTotalY(d){
-    var value = (height*(1-totalsHeightRatio)*.5) + ((1-(d.value/maxAmountEver))*height*totalsHeightRatio);
+    var value = (treemapHeight*(1-totalsHeightRatio)*.5) + ((1-(d.value/maxAmountEver))*treemapHeight*totalsHeightRatio);
     return d.executed ? value+1 : value;
   }
   function getTotalHeight(d) {
-    var value = d.value*height*totalsHeightRatio/maxAmountEver;
+    var value = d.value*treemapHeight*totalsHeightRatio/maxAmountEver;
     return d.executed && value > 2 ? value-2 : value;
   }
 
@@ -457,24 +462,35 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
     return (s > 10) ? (s|0)+'px' : '10px';
   }
 
+  function getExpensesContTransform(d) {
+    return (height < width) ? 'translate('+(treemapWidth+centerPadding)+',0)' : 'translate('+(centerPadding*.5)+','+treemapHeight+')';
+  }
+
   // Set main element dimensions
   function setDimensions() {
     width = $(selector).width();
     // Set height based on width container
-    if (width > 1000) {
+    if (width >= 1080) {
       height = width * 0.5;
     }
-    else if (width > 780) {
+    else if (width >= 940) {
       height = width * 0.5625;
     }
-    else if (width > 640) {
+    else if (width >= 720) {
       height = width * 0.75;
     }
     else {
-      height = width;
+      height = 2*width;
     }
-    treemapWidth = (width-centerPadding) * 0.5;
 
+    if (height < width) {
+      treemapWidth = (width-centerPadding)*.5;
+      treemapHeight = height;
+    } else {
+      treemapWidth = width-(centerPadding*.5);
+      treemapHeight = height*.5;
+    }
+    
     // Set height to selector for IE11
     //$(selector).height( height );
   }
