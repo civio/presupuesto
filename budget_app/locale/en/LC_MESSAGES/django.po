@@ -112,6 +112,22 @@ msgstr "Revenue"
 msgid "Gastos"
 msgstr "Expenditure"
 
+#: templates/budgets/index.html:16
+msgid "Ingresos presupuestados"
+msgstr "Budgeted revenue"
+
+#: templates/budgets/index.html:17
+msgid "Ingresos ejecutados"
+msgstr "Actual revenue"
+
+#: templates/budgets/index.html:20
+msgid "Gastos presupuestados"
+msgstr "Budgeted expenditure"
+
+#: templates/budgets/index.html:21
+msgid "Gastos ejecutados"
+msgstr "Actual expenditure"
+
 #: templates/budgets/budgets_totals.html:12
 msgid "Total Ejecutado"
 msgstr "Actual total"

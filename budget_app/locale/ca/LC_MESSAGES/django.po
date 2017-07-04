@@ -113,6 +113,22 @@ msgstr "Ingressos"
 msgid "Gastos"
 msgstr "Despeses"
 
+#: templates/budgets/index.html:16
+msgid "Ingresos presupuestados"
+msgstr "Ingressos pressupostats"
+
+#: templates/budgets/index.html:17
+msgid "Ingresos ejecutados"
+msgstr "Ingressos executats"
+
+#: templates/budgets/index.html:20
+msgid "Gastos presupuestados"
+msgstr "Despeses pressupostades"
+
+#: templates/budgets/index.html:21
+msgid "Gastos ejecutados"
+msgstr "Despeses executades"
+
 #: templates/budgets/budgets_totals.html:12
 msgid "Total Ejecutado"
 msgstr "Total Executat"
