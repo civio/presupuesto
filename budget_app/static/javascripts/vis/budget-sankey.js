@@ -313,6 +313,7 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
     nodes.enter().append('g')
         .attr('class', 'node')
         .call(setNode)
+        .call(setupCallbacks)
       .merge(nodes)
         .transition()
         .duration( initialized ? transitionDuration : 0 )
@@ -347,8 +348,7 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
       .call(setNodeExecutionDimensions);
     // add title
     node.select('.node-title')
-      .call(setNodeTitle)
-      .each(wrapText);
+      .call(setNodeTitle);
   }
 
   function setNodePosition(node) {
@@ -363,12 +363,12 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
   }
 
   function setNodeExecutionDimensions(node) {
-    // Set height minus 2px & y posisiont minus 1px to avoid outline overflows node dimensions
+    // Set height minus 2px & y posision y minus 1px to avoid outline overflows node dimensions
     node
-      .attr('x', 1)
+      .attr('x', function(d){ return (d.parent.id == 'income') ? 1 : 0; })
       .attr('y', function(d){ var y = (1-(d.data.actual/d.value))*(d.y1-d.y0), h = d.data.actual/d.value*(d.y1-d.y0); return (h > 2) ? y+1 : y })
       .attr('height', function(d){ var h = d.data.actual/d.value*(d.y1-d.y0); return (h > 2) ? h-2 : h })
-      .attr('width', treemapWidth-2);
+      .attr('width', function(d){ return (d.parent.id == 'income') ? treemapWidth : treemapWidth-1; });
   }
 
   function setNodeTitle(node){
@@ -377,7 +377,10 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
       .attr('y', function(d){ return d.y1-d.y0 })
       .style('visibility', function(d){ return (d.y1-d.y0 > 18) ? 'visible' : 'hidden' })
       .style('font-size', getNodeTitleFontSize)
-      .text(function(d){ return d.data.name });
+      .text(function(d){ 
+        var threshold = (width > 1000) ? 44 : (width > 780) ? 32 : 24;
+        return (d.data.name.length-threshold < 3) ? d.data.name : d.data.name.substring(0,threshold)+'...'; 
+      });
   }
 
   // Create totals bars
@@ -400,7 +403,7 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
       .attr('x', getTotalX)
       .attr('y', getTotalY)
       .attr('height', getTotalHeight)
-      .attr('width', function(d){ return d.executed ? totalsWidth-2 : totalsWidth });
+      .attr('width', totalsWidth );
   }
 
   // Create wall between treemap & totals bar
@@ -438,7 +441,7 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
 
   function getTotalX(d){
     var value = (d.align == 'left') ? ((width-totalsPadding)*0.5)-totalsWidth : (totalsPadding-centerPadding)*0.5;
-    return d.executed ? value+1 : value;
+    return value;
   }
   function getTotalY(d){
     var value = (height*(1-totalsHeightRatio)*.5) + ((1-(d.value/maxAmountEver))*height*totalsHeightRatio);
@@ -450,27 +453,8 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
   }
 
   function getNodeTitleFontSize(d) {
-    var s = ((d.value/d.parent.value)+.4)*30;
-    return (s > 10) ? s : 10;
-  }
-
-  function wrapText() {
-    var el = d3.select(this),
-        length = el.node().getComputedTextLength(),
-        text = el.text();
-    while (length > treemapWidth-50 && text.length > 0) {
-      text = text.slice(0, -1);
-      el.text(text + '...');
-      length = el.node().getComputedTextLength();
-    }
-  }
-  
-  function setupCallbacks(element) {
-    element
-      .on("mouseover", onMouseOver)
-      .on("mouseout", onMouseOut)
-      .on("mousemove", onMouseMove)
-      .on("click", click);
+    var s = ((d.value/d.parent.value)+.4)*36;
+    return (s > 10) ? (s|0)+'px' : '10px';
   }
 
   // Set main element dimensions
@@ -495,29 +479,33 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
     //$(selector).height( height );
   }
 
+  function setupCallbacks(element) {
+    element
+      .on('mouseover', onMouseOver)
+      .on('mouseout',  onMouseOut)
+      .on('mousemove', onMouseMove)
+      .on('click', click);
+  }
+
   function onMouseOver(d) {
-    if (d.name === '')   // Central node, nothing to do
-      return;
+    $popup.find('.popover-title').html( d.data.name);
 
-    var name = d.name ? d.name : (d.source.name ? d.source.name : d.target.name);
-    $popup.find(".popover-title").html(name);
-
-    var html = d.budgeted ? '<span class="budgeted">'+i18n['budgeted']+'</span><br/><span class="popover-content-value">'+Formatter.amount(d.budgeted)+'</span><br/>' : '';
+    var html = d.data.budgeted ? '<span class="budgeted">'+i18n['budgeted']+'</span><br/><span class="popover-content-value">'+Formatter.amount(d.data.budgeted)+'</span><br/>' : '';
     if ( hasExecution )
-      html += d.actual ? '<span class="executed">'+i18n['executed']+'</span><br/><span class="popover-content-value">'+Formatter.amount(d.actual)+'</span>' : '';
-    $popup.find(".popover-content").html(html);
+      html += d.data.actual ? '<span class="executed">'+i18n['executed']+'</span><br/><span class="popover-content-value">'+Formatter.amount(d.data.actual)+'</span>' : '';
+    $popup.find('.popover-content').html(html);
     $popup.show();
   }
   
   function onMouseMove(d) {
-    var popParentOffset = $(selector).offset();
-    var popLeft         = d3.event.pageX - popParentOffset.left - $popup.width()/2;
-    var popBottom       = $(selector).height() - d3.event.pageY + popParentOffset.top + 15;
+    var popParentOffset = $(selector).offset(),
+        popLeft         = d3.event.pageX - popParentOffset.left - ($popup.width()*.5),
+        popBottom       = $(selector).height() - d3.event.pageY + popParentOffset.top + 40;
 
     popLeft = (popLeft < 0 ) ? 0 : popLeft;
     popLeft = (popLeft+$popup.width() < $('body').width()) ? popLeft : 0;
 
-    $popup.css({"left":popLeft, "bottom":popBottom});
+    $popup.css({'left':popLeft, 'bottom':popBottom});
   }
 
   function onMouseOut(d) {
@@ -525,6 +513,6 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
   }
 
   function click(d) {
-    if ( d.link )  window.location = d.link;
+    if (d.data.link) window.location = d.data.link;
   }
 }

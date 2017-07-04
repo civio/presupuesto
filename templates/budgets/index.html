@@ -12,15 +12,26 @@
 
     <div class="sankey-container">
       <div class="sankey-labels">
-        <p class="sankey-label-incomes">{{ _('Ingresos') }}</p>
-        <p class="sankey-label-expenses">{{ _('Gastos') }}</p>
+        <div class="sankey-label-incomes">
+          <p class="sankey-label-budget"><span></span>{{ _('Ingresos presupuestados') }}</p>
+          <p class="sankey-label-executed"><span></span>{{ _('Ingresos ejecutados') }}</p>
+        </div>
+        <div class="sankey-label-expenses">
+          <p class="sankey-label-budget">{{ _('Gastos presupuestados') }}<span></span></p>
+          <p class="sankey-label-executed">{{ _('Gastos ejecutados') }}<span></span></p>
+        </div>
       </div>
 
       <div class="sankey chart-container" id="chart">
         <svg>
           <defs>
-            <pattern id="pattern-stripe" width="3" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-              <rect width="0.5" height="8" transform="translate(0,0)" fill="black"></rect>
+            <pattern id="pattern-budget" class="pattern-stripe" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <rect width="4" height="4" />
+              <line x1="0" x2="0" y1="0" y2="4" />
+            </pattern>
+            <pattern id="pattern-executed" class="pattern-stripe" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <rect width="4" height="4" />
+              <line x1="0" x2="0" y1="0" y2="4" />
             </pattern>
           </defs>
         </svg>

@@ -1,47 +1,103 @@
 // Budget Sankey Chart Styles
 
+$sankey-income-color-light: mix($sankey-income-color, white, 50%);
+$sankey-income-color-dark: darken($sankey-income-color, 12%);
+
+$sankey-expense-color-light: mix($sankey-expense-color, white, 50%);
+$sankey-expense-color-dark: darken($sankey-expense-color, 12%);
+
+.sankey-labels{
+  color: $gray-light;
+  font-size: 0.929em;
+  text-transform: uppercase;
+  font-weight: $font-weight-600;
+
+  p{
+    margin-bottom: 5px; 
+  }
+
+  span{
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+  }
+
+  .sankey-label-incomes{
+    float: left;
+    text-align: left;
+
+    span{
+      margin-right: 5px;
+    }
+    .sankey-label-budget span{
+      background: $sankey-income-color;
+    }
+    .sankey-label-executed span{
+      background-color: $sankey-income-color-light;
+      background-image: repeating-linear-gradient(-45deg, transparent, transparent 2px, $sankey-income-color-dark 3px, $sankey-income-color-dark 3px);
+      border: 1px solid $sankey-income-color-dark;
+    }
+  }
+  .sankey-label-expenses{
+    float: right;
+    text-align: right;
+
+    span{
+      margin-left: 5px;
+    }
+    .sankey-label-budget span{
+      background: $sankey-expense-color;
+    }
+    .sankey-label-executed span{
+      background-color: mix($sankey-expense-color, white, 50%);
+      background-image: repeating-linear-gradient(-45deg, transparent, transparent 2px, $sankey-expense-color-dark 3px, $sankey-expense-color-dark 3px);
+      border: 1px solid $sankey-expense-color-dark;
+    }
+  }
+}
+
 .sankey{
-  padding-top: 30px;
+  //padding-top: 30px;
   padding-bottom: 20px;
+
+  .node{
+    cursor: pointer;
+  }
 
   .incomes {
     .node-budget,
     .total{
-      fill: steelblue;
+      fill: $sankey-income-color;
     }
     .node-executed,
     .total-executed{
-      outline: 1px solid steelblue;
+      fill: url(#pattern-budget);
+      outline: 1px solid $sankey-income-color-dark;
     }
     .node:hover .node-budget{
-      fill: #5599dc;
+      fill: lighten($sankey-income-color, 5%);
     }
     .wall{
-      fill: darken(steelblue, 12%);
+      fill: darken($sankey-income-color, 12%);
     }
   }
 
   .expenses {
     .node-budget,
     .total{
-      fill: #f09078;
+      fill: $sankey-expense-color;
     }
     .node-executed,
     .total-executed{
-      outline: 1px solid #f09078;
+      fill: url(#pattern-executed);
+      outline: 1px solid $sankey-expense-color-dark;
     }
     .node:hover .node-budget{
-      fill: #f4aa92;
+      fill: lighten($sankey-expense-color, 5%);
     }
     .wall{
-      fill: darken(#f09078, 12%);
+      fill: darken($sankey-expense-color, 12%);
     }
-  }
-
-  .node-executed,
-  .total-executed{
-    fill: url(#pattern-stripe);
-    fill-opacity: .5;
   }
 
   .node-title{
@@ -49,50 +105,51 @@
     font-size: 1.125em;
     letter-spacing: .01em;
     font-weight: 300;
-    text-shadow: 0 0 2px rgba(0,0,0,.6);
+    //text-shadow: 0 0 2px rgba(0,0,0,.6);
+    //text-shadow: 0 0 1px rgba(0,0,0,.6);
   }
 
-  .legend-budget circle{
-    fill: $sankey-budget-color;
-    opacity: .5;
+  .incomes .node-title{
+    text-shadow: 0 1px 0 $sankey-income-color-dark;
   }
-
-  .legend-execution circle{
-    fill: $sankey-execution-color;
-    opacity: .5;
-  }
-
-  .legend-item text{
-    fill: $gray-light;
-    font-size: 0.929em;
-    font-weight: $font-weight-600;
-    text-transform: uppercase;
-  }
-
-  .legend-note {
-    circle{
-      fill: none;
-    }
-    text{
-      fill: $gray;
-      font-size: 0.875em;
-      font-weight: $font-weight-400 !important;
-    }
+  .expenses .node-title{
+    text-shadow: 0 1px 0 $sankey-expense-color-dark;
   }
 
   .popover-content{
 
     .executed, .budgeted{
       display: inline-block;
+      color: $brand-primary;
+      margin-top: $grid-gutter-width/6;
       margin-bottom: $grid-gutter-width/6;
     }
-    
-    .budgeted{
-      color: $sankey-budget-color;
-    }
-    .executed{
-      color: $sankey-execution-color;
-      margin-top: $grid-gutter-width/3;
-    }
+  }
+}
+
+.pattern-stripe{
+  rect{
+    fill-opacity: 0.3;
+  }
+  line{
+    fill: none;
+    stroke-width: 1px;
+    stroke-linecap: square;
+  }
+}
+#pattern-budget{
+  rect{
+    fill: $sankey-income-color-light;
+  }
+  line{
+    stroke: $sankey-income-color-dark;
+  }
+}
+#pattern-executed{
+  rect{
+    fill: $sankey-expense-color-light;
+  }
+  line{
+    stroke: $sankey-expense-color-dark;
   }
 }
