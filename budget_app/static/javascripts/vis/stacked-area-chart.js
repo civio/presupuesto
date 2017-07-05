@@ -66,16 +66,28 @@ function StackedAreaChart() {
 
   // Set Dimensions
   var setDimensions = function(){
+    var w = $(_this.selector).width();
+    // Setup right & left margins based on width
+    if (w > 620){
+      _this.margin.right = 20;
+      _this.margin.left = 80;
+      _this.yAxis.tickPadding(6);
+    } else {
+      _this.margin.right = _this.margin.left = 15;
+      _this.yAxis.tickPadding(0);
+    }
     // Setup width & height based on container
-    _this.width   = $(_this.selector).width() - _this.margin.left - _this.margin.right;
+    _this.width   = w - _this.margin.left - _this.margin.right;
     // Set height based on width container
-    var aspectRatio = (_this.width > 900) ? 0.5 : (_this.width > 500) ? 0.5625 : 0.75;
+    var aspectRatio = (w > 920) ? 0.5 : (w > 620) ? 0.5625 : 0.75;
     _this.height  = aspectRatio * $(_this.selector).width() - _this.margin.top - _this.margin.bottom;
 
     // Setup SVG dimensions
     d3.select(_this.selector+' .stacked-area-chart')
       .attr('width', _this.width + _this.margin.left + _this.margin.right)
       .attr('height', _this.height + _this.margin.top + _this.margin.bottom);
+
+    _this.svg.attr('transform', 'translate(' + _this.margin.left + ',' + _this.margin.top + ')');
 
     // Setup X & Y scale range
     _this.x.range([0, _this.width]);

@@ -100,6 +100,7 @@
 
 .stacked-area-chart-legend{
   margin-left: 70px;
+  margin-bottom: 10px;
 
   .label{
     position: relative;
@@ -177,5 +178,23 @@
     .overlay text{
       display: block;
     }
+  }
+}
+
+@media (max-width: 650px) {
+  .stacked-area-chart{
+    .y.axis .tick text{
+      display: none;
+      text-anchor: start;
+      alignment-baseline: hanging;
+    }
+    .y.axis .tick:last-child text{
+      display: inline;
+    }
+  }
+  .policy-breakdown .policies-chart .alert,
+  .stacked-area-chart-legend{
+    margin-right: 5px !important;
+    margin-left: 5px !important;
   }
 }

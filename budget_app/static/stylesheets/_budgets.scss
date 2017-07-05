@@ -65,27 +65,6 @@
     margin-bottom: $grid-gutter-width;
   }
 
-  .sankey-labels{
-    position: relative;
-    color: $gray-light;
-    font-size: 0.929em;
-    text-transform: uppercase;
-    font-weight: $font-weight-600;
-
-    .sankey-label-incomes,
-    .sankey-label-expenses{
-      position: absolute;
-      top: 0;
-    }
-        
-    .sankey-label-incomes{
-      left: 3px;
-    }
-    .sankey-label-expenses{
-      right: 3px;
-    }
-  }
-
   .data-controllers{
     margin-top: -$grid-gutter-width/3;
   }

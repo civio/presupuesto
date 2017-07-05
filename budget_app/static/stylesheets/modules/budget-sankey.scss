@@ -1,99 +1,186 @@
 // Budget Sankey Chart Styles
 
+$sankey-income-color-light: mix($sankey-income-color, white, 60%);
+$sankey-income-color-dark: darken($sankey-income-color, 10%);
+
+$sankey-expense-color-light: mix($sankey-expense-color, white, 60%);
+$sankey-expense-color-dark: darken($sankey-expense-color, 10%);
+
+.sankey-labels{
+  color: $gray-light;
+  font-size: 0.929em;
+  text-transform: uppercase;
+  font-weight: $font-weight-600;
+
+  p{
+    margin-bottom: 5px; 
+  }
+
+  span{
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+  }
+
+  .sankey-label-incomes{
+    float: left;
+    text-align: left;
+
+    span{
+      margin-right: 5px;
+    }
+    .sankey-label-executed span{
+      background: $sankey-income-color;
+    }
+    .sankey-label-budgeted span{
+      background-color: $sankey-income-color-light;
+      background-image: repeating-linear-gradient(-45deg, transparent, transparent 2px, $sankey-income-color-dark 3px, $sankey-income-color-dark 3px);
+      border: 1px solid $sankey-income-color-dark;
+    }
+  }
+  .sankey-label-expenses{
+    float: right;
+    text-align: right;
+
+    span{
+      margin-left: 5px;
+    }
+    .sankey-label-executed span{
+      background: $sankey-expense-color;
+    }
+    .sankey-label-budgeted span{
+      background-color: mix($sankey-expense-color, white, 50%);
+      background-image: repeating-linear-gradient(-45deg, transparent, transparent 2px, $sankey-expense-color-dark 3px, $sankey-expense-color-dark 3px);
+      border: 1px solid $sankey-expense-color-dark;
+    }
+  }
+}
+
 .sankey{
-
-  .link,
-  .link-execution{
-    @include transition( stroke-opacity 0.3s ease-out );
-  }
-
-  .link.with-data {
-    fill: none;
-    stroke: $sankey-budget-color;
-    stroke-opacity: .5;
-  }
-
-  .legend-budget circle{
-    fill: $sankey-budget-color;
-    opacity: .5;
-  }
-
-  .link-execution.with-data {
-    fill: none;
-    stroke: $sankey-execution-color;
-    stroke-opacity: .5;
-  }
-
-  .legend-execution circle{
-    fill: $sankey-execution-color;
-    opacity: .5;
-  }
-
-  .link.no-data,
-  .link-execution.no-data {
-    fill: none;
-    stroke: $sankey-budget-color;
-    stroke-opacity: .5;
-  }
-
-  .link:hover,
-  .node:hover,
-  .link-execution:hover {
-    stroke-opacity: .9;
-    cursor:pointer;
-  }
+  padding-bottom: 20px;
 
   .node{
-    rect{
-      fill: $text-color;
-      stroke: none;
-      cursor: pointer;
-    
-      &.node-central{
-        fill: #fff;
-        cursor: auto;
-      }
-    }
+    cursor: pointer;
+  }
 
-    text {
-      fill: $text-color;
-      pointer-events: none;
+  .node-budget,
+  .total{
+    fill-opacity: .9;
+
+    &:hover{
+      fill-opacity: 1;
+    }
+  }
+
+  .incomes {
+    .node-executed,
+    .total-executed{
+      fill: $sankey-income-color;
+    }
+    .node-budget,
+    .total{
+      fill: url(#pattern-budget);
+      outline: 1px solid $sankey-income-color-dark;
+    }
+    .node:hover .node-executed,
+    .totals:hover .total-executed{
+      fill: lighten($sankey-income-color, 5%);
+    }
+    .wall{
+      fill: darken($sankey-income-color, 6%);
+    }
+  }
+
+  .expenses {
+    .node-executed,
+    .total-executed{
+      fill: $sankey-expense-color;
+    }
+    .node-budget,
+    .total{
+      fill: url(#pattern-executed);
+      outline: 1px solid $sankey-expense-color-dark;
+    }
+    .node:hover .node-executed,
+    .totals:hover .total-executed{
+      fill: lighten($sankey-expense-color, 5%);
+    }
+    .wall{
+      fill: darken($sankey-expense-color, 6%);
+      @include transition( fill-opacity .3s ease-in-out );
+    }
+  }
+
+  .no-execution  .wall{
+    fill-opacity: .6;
+  }
+
+  .node-label{
+    fill: white;
+    font-size: 1.125em;
+    letter-spacing: .01em;
+    font-weight: $font-weight-300;
+    dominant-baseline: middle;
+
+    &.invert{
       font-weight: $font-weight-400;
-      font-size: 1em;
     }
   }
 
-  .legend-item text{
-    fill: $gray-light;
-    font-size: 0.929em;
-    font-weight: $font-weight-600;
-    text-transform: uppercase;
-  }
-
-  .legend-note {
-    circle{
-      fill: none;
+  .incomes .node-label{
+    text-shadow: 1px 1px 1px $sankey-income-color-dark;
+    &.invert{
+      fill: darken( $sankey-income-color-dark, 5% );
+      text-shadow: 0 0 4px white;
     }
-    text{
-      fill: $gray;
-      font-size: 0.875em;
-      font-weight: $font-weight-400 !important;
+  }
+  .expenses .node-label{
+    text-shadow: 1px 1px 1px $sankey-expense-color-dark;
+    &.invert{
+      fill: darken( $sankey-expense-color-dark, 5% );
+      text-shadow: 0 0 4px white;
     }
   }
 
   .popover-content{
-
     .executed, .budgeted{
-      display: inline-block;
+      display: block;
+      color: $brand-primary;
+      margin-top: $grid-gutter-width/6;
       margin-bottom: $grid-gutter-width/6;
     }
-    
-    .budgeted{
-      color: $sankey-budget-color;
-    }
     .executed{
-      color: $sankey-execution-color;
-      margin-top: $grid-gutter-width/3;
+      font-weight: $font-weight-600;
     }
+    .popover-content-budgeted{
+      font-weight: $font-weight-400 !important;
+    }
+  }
+}
+
+.pattern-stripe{
+  rect{
+    fill-opacity: .4;
+  }
+  line{
+    fill: none;
+    stroke-width: 1px;
+    stroke-linecap: square;
+  }
+}
+#pattern-budget{
+  rect{
+    fill: $sankey-income-color-light;
+  }
+  line{
+    stroke: $sankey-income-color-dark;
+  }
+}
+#pattern-executed{
+  rect{
+    fill: $sankey-expense-color-light;
+  }
+  line{
+    stroke: $sankey-expense-color-dark;
   }
 }

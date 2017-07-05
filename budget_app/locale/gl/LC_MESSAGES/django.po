@@ -112,6 +112,30 @@ msgstr "Ingresos"
 msgid "Gastos"
 msgstr "Gastos"
 
+#: templates/budgets/index.html:16
+msgid "Ingresos presupuestados"
+msgstr "Ingresos orzados"
+
+#: templates/budgets/index.html:17
+msgid "Ingresos ejecutados"
+msgstr "Ingresos executados"
+
+#: templates/budgets/index.html:20
+msgid "Gastos presupuestados"
+msgstr "Gastos orzados"
+
+#: templates/budgets/index.html:21
+msgid "Gastos ejecutados"
+msgstr "Gastos executados"
+
+#: templates/budgets/index.html:142
+msgid "Total ingresos"
+msgstr "Total ingresos"
+
+#: templates/budgets/index.html:143
+msgid "Total gastos"
+msgstr "Total gastos"
+
 #: templates/budgets/budgets_totals.html:12
 msgid "Total Ejecutado"
 msgstr "Total Executado"
