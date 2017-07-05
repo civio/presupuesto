@@ -578,9 +578,8 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
     var popParentOffset = $(selector).offset(),
         popLeft         = d3.event.pageX - popParentOffset.left - ($popup.width()*.5),
         popBottom       = $(selector).height() - d3.event.pageY + popParentOffset.top + 40;
-    popLeft = (popLeft < 0 ) ? 0 : popLeft;
-    popLeft = (popLeft+$popup.width() < $('body').width()) ? popLeft : 0;
-    $popup.css({'left':popLeft, 'bottom':popBottom});
+    popLeft = (popLeft < 0) ? 0 : (popLeft > width-$popup.width()) ? width-$popup.width() : popLeft;
+    $popup.css({'left': popLeft, 'bottom': popBottom});
   }
 
   function onMouseOut(d) {
