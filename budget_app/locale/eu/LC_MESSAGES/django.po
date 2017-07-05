@@ -114,19 +114,19 @@ msgstr "Gastuak"
 
 #: templates/budgets/index.html:16
 msgid "Ingresos presupuestados"
-msgstr "Ingresos presupuestados"
+msgstr "Aurrekontuko diru-sarrerak"
 
 #: templates/budgets/index.html:17
 msgid "Ingresos ejecutados"
-msgstr "Ingresos ejecutados"
+msgstr "Gauzatutako diru-sarrerak"
 
 #: templates/budgets/index.html:20
 msgid "Gastos presupuestados"
-msgstr "Gastos presupuestados"
+msgstr "Aurrekontuko gastuak"
 
 #: templates/budgets/index.html:21
 msgid "Gastos ejecutados"
-msgstr "Gastos ejecutados"
+msgstr "Gauzatutako gastuak"
 
 #: templates/budgets/index.html:142
 msgid "Total ingresos"
