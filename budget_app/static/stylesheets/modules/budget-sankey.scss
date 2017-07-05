@@ -115,7 +115,7 @@ $sankey-expense-color-dark: darken($sankey-expense-color, 10%);
     font-size: 1.125em;
     letter-spacing: .01em;
     font-weight: $font-weight-300;
-    alignment-baseline: middle;
+    dominant-baseline: middle;
 
     &.invert{
       font-weight: $font-weight-400;
