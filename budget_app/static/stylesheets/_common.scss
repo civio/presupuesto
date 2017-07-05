@@ -107,6 +107,17 @@ label{
   }
 }
 
+// Breadcrumbs
+.breadcrumb{
+  font-size: 0.857em;
+  margin: 0 auto;
+  padding-bottom: 0;
+  text-align: center;
+  >li+li:before {
+    padding: 0 2px;
+  }
+}
+
 // Chromeframe
 .chromeframe{
   margin-bottom: $grid-gutter-width;

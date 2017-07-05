@@ -1,17 +1,20 @@
 # -*- coding: UTF-8 -*-
 # Small utility functions shared by all views
+
 import json
 import os
 import re
+
 from contextlib import contextmanager
 from coffin.shortcuts import render_to_response
-from budget_app.models import Budget, BudgetBreakdown, BudgetItem, InflationStat, PopulationStat, Entity
 from django.template import RequestContext
 from django.conf import settings
 from django.core import urlresolvers
+from django.utils.translation import ugettext as _
 
 from project.settings import ROOT_PATH
 
+from budget_app.models import Budget, BudgetBreakdown, BudgetItem, InflationStat, PopulationStat, Entity
 
 TABS = {
     'general': r'^budgets.*',
@@ -35,6 +38,7 @@ def get_context(request, css_class='', title=''):
     c['show_global_institutional_treemap'] = hasattr(settings, 'SHOW_GLOBAL_INSTITUTIONAL_TREEMAP') and settings.SHOW_GLOBAL_INSTITUTIONAL_TREEMAP
     c['show_funding_tab'] = hasattr(settings, 'SHOW_FUNDING_TAB') and settings.SHOW_FUNDING_TAB
     c['show_actual'] = not hasattr(settings, 'SHOW_ACTUAL') or settings.SHOW_ACTUAL
+    c['show_breadcrumbs'] = hasattr(settings, 'SHOW_BREADCRUMBS') and settings.SHOW_BREADCRUMBS
     c['use_subprogrammes'] = hasattr(settings, 'USE_SUBPROGRAMMES') and settings.USE_SUBPROGRAMMES
     c['include_financial_chapters'] = hasattr(settings, 'INCLUDE_FINANCIAL_CHAPTERS_IN_BREAKDOWNS') and settings.INCLUDE_FINANCIAL_CHAPTERS_IN_BREAKDOWNS
     c['add_economic_categories_prefix'] = hasattr(settings, 'ADD_ECONOMIC_CATEGORIES_PREFIX') and settings.ADD_ECONOMIC_CATEGORIES_PREFIX
@@ -279,10 +283,38 @@ def get_institutional_breakdown(c):
 
 
 #
+# META FIELDS
+#
+
+# Set metadata fields before response is returned.
+# Themes can override this method if needed (e.g. see #469)
+def _set_meta_fields(c):
+    c['meta_title'] = _(u'Presupuestos del Gobierno de Aragón')
+    if c['title_prefix']:
+        c['meta_title'] = c['title_prefix'] + ' - ' + c['meta_title']
+
+    c['meta_description'] = _(u'Información presupuestaria del Gobierno de Aragón')
+    c['meta_keywords'] = _('presupuestos, gastos, ingresos') + ', ' + _(u'Gobierno de Aragón')
+
+    c['meta_og_title'] = c['meta_title']
+    c['meta_og_description'] = c['meta_description']
+
+    c['meta_tweet_text'] = c['meta_title']
+
+
+#
 # RENDER RESPONSE
 #
+
+# Wrapper around render_to_response, useful to hold code to be called for all responses
+def render_response(template_name, c):
+    _set_meta_fields(c)
+
+    return render_to_response(template_name, c)
+
+# Check whether a callback is provided and, based on that, render HTML or call back.
 def render(c, render_callback, template_name):
     if not render_callback:
-        return render_to_response(template_name, c)
+        return render_response(template_name, c)
     else:
         return render_callback.generate_response(c)

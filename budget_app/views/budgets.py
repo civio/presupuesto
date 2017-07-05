@@ -1,6 +1,5 @@
 # -*- coding: UTF-8 -*-
 
-from coffin.shortcuts import render_to_response
 from django.conf import settings
 from budget_app.models import Budget, BudgetBreakdown, BudgetItem
 from helpers import *
@@ -59,4 +58,4 @@ def budgets(request):
     if hasattr(settings, 'CALCULATE_BUDGET_INDICATORS'):
         c['calculate_budget_indicators'] = settings.CALCULATE_BUDGET_INDICATORS
 
-    return render_to_response('budgets/index.html', c)
+    return render_response('budgets/index.html', c)

@@ -5,7 +5,6 @@ import json
 from django.conf import settings
 from django.http import HttpResponse
 from django.utils.translation import ugettext as _
-from coffin.shortcuts import render_to_response
 from budget_app.models import BudgetBreakdown, Payment
 from helpers import *
 
@@ -31,7 +30,7 @@ def payments(request, render_callback=None):
     # Needed for the footnote on inflation
     populate_stats(c)
 
-    return render_to_response('payments/index.html', c)
+    return render_response('payments/index.html', c)
 
 
 def payment_search(request, render_callback=None):
@@ -92,11 +91,11 @@ def payment_search(request, render_callback=None):
         if not render_callback:
             __populate_detailed_breakdowns(c)
 
-
+    # We can't use render() as it is now because we need to set the content_type
     if render_callback:
         return render(c, render_callback, '')
     else:
-        return render_to_response('payments/search.json', c, content_type="application/json")
+        return render_response('payments/search.json', c, content_type="application/json")
 
 
 def __populate_summary_breakdowns(c, from_year, to_year):

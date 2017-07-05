@@ -99,6 +99,16 @@ $panel-default-border:      $brand-primary;
 $panel-default-heading-bg:  $brand-primary;
 
 
+// Breadcrumbs
+// --------------
+
+$breadcrumb-padding-vertical:   $grid-gutter-width/2;
+$breadcrumb-padding-horizontal: $grid-gutter-width/2;
+$breadcrumb-bg:                 transparent;
+$breadcrumb-color:              $gray-light;
+$breadcrumb-separator:          "»";
+
+
 // Popover
 // --------------
 

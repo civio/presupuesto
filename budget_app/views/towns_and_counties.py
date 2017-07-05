@@ -2,7 +2,6 @@
 
 import json
 
-from coffin.shortcuts import render_to_response
 from budget_app.models import BudgetBreakdown, Entity
 from entities import entities_show
 from helpers import *
@@ -149,7 +148,7 @@ def entities_compare(request, c, entity_left, entity_right):
     populate_comparison_years(c, c['breakdowns']['economic_left'], c['breakdowns']['economic_right'])
     populate_entities(c, entity_left.level)
 
-    return render_to_response('entities/compare.html', c)
+    return render_response('entities/compare.html', c)
 
 
 # FIXME: from here below it's a big copy-paste from the policies view, should clean-up.

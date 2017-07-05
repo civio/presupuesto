@@ -1,0 +1,10 @@
+<ol class="breadcrumb">
+  {# Try to go back to the tab we came from. #}
+  <li><a href="{{ url('budget_app.views.policies') }}#view={{ back_to_tab }}">{{ _('Políticas') }}</a></li>
+  {% if policy %}
+  <li><a href="{{ url('budget_app.views.policies_show', policy.uid(), descriptions['functional'].get(policy.uid())|slugify) }}">{{ policy.description }}</a></li>
+  {% endif %}
+  {% if programme %}
+  <li><a href="{{ url('budget_app.views.programmes_show', programme.uid(), descriptions['functional'].get(programme.uid())|slugify) }}">{{ programme.description }}</a></li>
+  {% endif %}
+</ol>
