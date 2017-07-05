@@ -14,6 +14,7 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
       labelsMinSize       = 16,   // Minimum node height in px to show its label
       labelsFontSizeMin   = 11,   // Nodes label minimum size in px
       labelsFontSizeMax   = 38,   // Nodes label maximum size in px
+      labelsOffsetX       = 8,
       transitionDuration  = 650,
       hasExecution        = false,
       initialized         = false,
@@ -26,6 +27,7 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
       incomesRoot,
       expensesRoot,
       fontSizeScale,
+      textAux,
 
       width,
       height,
@@ -251,6 +253,8 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
       .attr('class', 'totals total-expenses')
       .call(setTotalEvents);
 
+    textAux = svg.append('text').style('visibility', 'hidden');
+
     // Get budget data
     budget = this.getFormattedData(uiState.year);
 
@@ -361,15 +365,38 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
         .call(setNode)
         .call(setNodeEvents)
       .merge(nodes)
+        .call(updateNode)
         .transition()
         .duration( initialized ? transitionDuration : 0 )
-        .call(updateNode)
         .call(setNodePosition);
+    // EXIT
+    /*
+    // ENTER + UPDATE
+    nodes.enter().append('g')
+        .attr('class', 'node')
+        .call(setNode)
+        .call(setNodeEvents)
+        .call(updateNode)
+        .call(setNodePosition)
+        .select('.node-label')
+          .call(setNodeLabel);
+
+    // add label
+    nodes.selectAll('.node-label')
+      .data(function(d){ return d })
+      .call(setNodeLabel);
+
+    nodes
+      .transition()
+      .duration(transitionDuration)
+      .call(updateNode)
+      .call(setNodePosition);
+    */
     // EXIT
     nodes.exit().remove();
   }
 
-  // Setup nodes budgeted, executed & title
+  // Setup nodes budgeted, executed & label
   function setNode(node) {
     // add execution rect
     node.append('rect')
@@ -377,24 +404,31 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
     // add budget rect
     node.append('rect')
       .attr('class', 'node-budget');
-    // add title
+    // add label
     node.append('text')
-      .attr('class', 'node-title')
+      .attr('class', 'node-label')
       .attr('dy', '.1em')
       .attr('text-anchor', function(d){ return (d.parent.id == 'income') ? 'start' : 'end' });
   }
 
-  // Update nodes budgeted, executed & title
+  // Update nodes budgeted, executed & label
   function updateNode(node) {
     // add budget rect
     node.select('.node-budget')
+      .transition()
+      .duration( initialized ? transitionDuration : 0 )
       .call(setNodeDimensions);
     // add execution rect
     node.select('.node-executed')
+      .transition()
+      .duration( initialized ? transitionDuration : 0 )
       .call(setNodeExecutionDimensions);
-    // add title
-    node.select('.node-title')
-      .call(setNodeTitle);
+    // add label
+    node.select('.node-label')
+      .call(wrapText)
+      .transition()
+      .duration( initialized ? transitionDuration : 0 )
+      .call(setNodeLabel);
   }
 
   function setNodePosition(node) {
@@ -417,17 +451,44 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
       .attr('width', treemapWidth);
   }
 
-  function setNodeTitle(node){
+  function setNodeLabel(node){
     node
-      .attr('class', function(d){ return (d.data.actual/d.data.budgeted > .5) ? 'node-title' : 'node-title invert' })
-      .attr('x', function(d){ return (d.parent.id == 'income') ? 8 : treemapWidth-8 })
-      .attr('y', function(d){ return (d.y1-d.y0)*.5 })
       .style('visibility', function(d){ return (d.y1-d.y0 < labelsMinSize) ? 'hidden' : 'visible' })
-      .style('font-size', function(d){ return Math.round(fontSizeScale(d.y1-d.y0))+'px' })
-      .text(function(d){ 
-        var threshold = (width > 1000) ? 44 : (width > 780) ? 32 : 24;
-        return (d.data.name.length-threshold < 3) ? d.data.name : d.data.name.substring(0,threshold)+'...'; 
-      });
+      .attr('x', function(d){ return (d.parent.id == 'income') ? labelsOffsetX : treemapWidth-labelsOffsetX })
+      .attr('y', function(d){ return (d.y1-d.y0)*.5 })
+      .attr('class', setNodeLabelClass)
+      .style('font-size', setNodeLabelFontSize);
+  }
+
+  function setNodeLabelClass(d){
+    return (d.data.actual/d.data.budgeted > .5) ? 'node-label' : 'node-label invert' 
+  }
+  function setNodeLabelFontSize(d){
+    return Math.round(fontSizeScale(d.y1-d.y0))+'px'
+  }
+  function setNodeLabelText(d){
+    return d.data.name
+  }
+
+  function wrapText(node){
+    node.each(function(){
+      var self = d3.select(this),
+          text,
+          textLength;
+      textAux
+        .data(self.data())
+        .attr('class', setNodeLabelClass)
+        .style('font-size', setNodeLabelFontSize)
+        .text(setNodeLabelText);
+      textLength = textAux.node().getComputedTextLength();
+      text = textAux.text();
+      while (treemapWidth-textLength < 2*labelsOffsetX && textAux.text().length > 0) {
+        text = text.slice(0, -1);
+        textAux.text(text + '...');
+        textLength = textAux.node().getComputedTextLength();
+      }
+      self.text(textAux.text());
+    });
   }
 
   // Create totals bars

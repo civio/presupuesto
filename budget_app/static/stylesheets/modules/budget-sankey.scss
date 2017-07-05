@@ -115,7 +115,7 @@ $sankey-expense-color-dark: darken($sankey-expense-color, 10%);
     fill-opacity: .6;
   }
 
-  .node-title{
+  .node-label{
     fill: white;
     font-size: 1.125em;
     letter-spacing: .01em;
@@ -127,14 +127,14 @@ $sankey-expense-color-dark: darken($sankey-expense-color, 10%);
     }
   }
 
-  .incomes .node-title{
+  .incomes .node-label{
     text-shadow: 1px 1px 1px $sankey-income-color-dark;
     &.invert{
       fill: darken( $sankey-income-color-dark, 5% );
       text-shadow: 0 0 4px white;
     }
   }
-  .expenses .node-title{
+  .expenses .node-label{
     text-shadow: 1px 1px 1px $sankey-expense-color-dark;
     &.invert{
       fill: darken( $sankey-expense-color-dark, 5% );
