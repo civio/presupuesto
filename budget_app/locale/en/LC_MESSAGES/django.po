@@ -128,6 +128,14 @@ msgstr "Budgeted expenditure"
 msgid "Gastos ejecutados"
 msgstr "Actual expenditure"
 
+#: templates/budgets/index.html:142
+msgid "Total ingresos"
+msgstr "Total revenue"
+
+#: templates/budgets/index.html:143
+msgid "Total gastos"
+msgstr "Total expenditure"
+
 #: templates/budgets/budgets_totals.html:12
 msgid "Total Ejecutado"
 msgstr "Actual total"

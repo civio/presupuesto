@@ -112,6 +112,30 @@ msgstr "Diru-sarrerak"
 msgid "Gastos"
 msgstr "Gastuak"
 
+#: templates/budgets/index.html:16
+msgid "Ingresos presupuestados"
+msgstr "Ingresos presupuestados"
+
+#: templates/budgets/index.html:17
+msgid "Ingresos ejecutados"
+msgstr "Ingresos ejecutados"
+
+#: templates/budgets/index.html:20
+msgid "Gastos presupuestados"
+msgstr "Gastos presupuestados"
+
+#: templates/budgets/index.html:21
+msgid "Gastos ejecutados"
+msgstr "Gastos ejecutados"
+
+#: templates/budgets/index.html:142
+msgid "Total ingresos"
+msgstr "Total ingresos"
+
+#: templates/budgets/index.html:143
+msgid "Total gastos"
+msgstr "Total gastos"
+
 #: templates/budgets/budgets_totals.html:12
 msgid "Total Ejecutado"
 msgstr "Burututako guztizkoa"

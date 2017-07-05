@@ -129,6 +129,14 @@ msgstr "Despeses pressupostades"
 msgid "Gastos ejecutados"
 msgstr "Despeses executades"
 
+#: templates/budgets/index.html:142
+msgid "Total ingresos"
+msgstr "Total ingressos"
+
+#: templates/budgets/index.html:143
+msgid "Total gastos"
+msgstr "Total despeses"
+
 #: templates/budgets/budgets_totals.html:12
 msgid "Total Ejecutado"
 msgstr "Total Executat"

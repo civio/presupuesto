@@ -128,6 +128,14 @@ msgstr ""
 msgid "Gastos ejecutados"
 msgstr ""
 
+#: templates/budgets/index.html:142
+msgid "Total ingresos"
+msgstr ""
+
+#: templates/budgets/index.html:143
+msgid "Total gastos"
+msgstr ""
+
 #: templates/budgets/budgets_totals.html:12
 msgid "Total Ejecutado"
 msgstr ""
