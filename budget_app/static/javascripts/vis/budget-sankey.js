@@ -229,12 +229,6 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
     svg = d3.select(selector).select('svg')
       .attr('width', width)
       .attr('height', height);
-      /*
-      // Use viewBox instead width/height to avoid problems in IE11 (https://stackoverflow.com/questions/22250642/d3js-responsive-force-layout-not-working-in-ie-11)
-        .attr("viewBox", "0 0 " + (width+margin.left+margin.right) + " " + (height+margin.top+margin.bottom) )
-      .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-      */
 
     // Setup incomes & expenses containers
     incomesCont  = svg.append('g')
@@ -369,29 +363,6 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
         .transition()
         .duration( initialized ? transitionDuration : 0 )
         .call(setNodePosition);
-    // EXIT
-    /*
-    // ENTER + UPDATE
-    nodes.enter().append('g')
-        .attr('class', 'node')
-        .call(setNode)
-        .call(setNodeEvents)
-        .call(updateNode)
-        .call(setNodePosition)
-        .select('.node-label')
-          .call(setNodeLabel);
-
-    // add label
-    nodes.selectAll('.node-label')
-      .data(function(d){ return d })
-      .call(setNodeLabel);
-
-    nodes
-      .transition()
-      .duration(transitionDuration)
-      .call(updateNode)
-      .call(setNodePosition);
-    */
     // EXIT
     nodes.exit().remove();
   }
@@ -595,9 +566,6 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
 
     // update fontSizeScale domain
     fontSizeScale.domain([labelsMinSize, treemapHeight*.5]);
-    
-    // Set height to selector for IE11
-    //$(selector).height( height );
   }
 
   function setNodeEvents(node) {
