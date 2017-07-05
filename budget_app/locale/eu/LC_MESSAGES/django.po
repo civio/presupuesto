@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-06 13:44+0200\n"
-"PO-Revision-Date: 2017-06-09 07:29-0300\n"
+"PO-Revision-Date: 2017-07-06 01:16+0200\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: eu\n"
@@ -130,11 +130,11 @@ msgstr "Gauzatutako gastuak"
 
 #: templates/budgets/index.html:142
 msgid "Total ingresos"
-msgstr "Total ingresos"
+msgstr "Diru-sarrerak guztira"
 
 #: templates/budgets/index.html:143
 msgid "Total gastos"
-msgstr "Total gastos"
+msgstr "Gastuak guztira"
 
 #: templates/budgets/budgets_totals.html:12
 msgid "Total Ejecutado"
