@@ -91,11 +91,13 @@ def payment_search(request, render_callback=None):
         if not render_callback:
             __populate_detailed_breakdowns(c)
 
-    # We can't use render() as it is now because we need to set the content_type
+    # XXX: We can't use render() as it is now because we need to set the content_type.
+    # Also because of the content type, note we're not using our render_response() wrapper,
+    # which sets meta, although it's not needed for the JSON response.
     if render_callback:
         return render(c, render_callback, '')
     else:
-        return render_response('payments/search.json', c, content_type="application/json")
+        return render_to_response('payments/search.json', c, content_type="application/json")
 
 
 def __populate_summary_breakdowns(c, from_year, to_year):
