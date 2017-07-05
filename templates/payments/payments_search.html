@@ -40,7 +40,11 @@
         </div>
         <div class="form-group data-controllers">
           <label for="input-date">{{ _('Fecha') }}</label>
+          {% if payments_year_range %}
           <input  type="text" id="input-date" class="form-control" data-slider-min="{{first_year}}" data-slider-max="{{last_year}}" data-slider-value="[{{first_year}}, {{last_year}}]" />
+          {% else %}
+          <input  type="text" id="input-date" class="form-control" data-value="{{last_year}}" value="{{last_year}}" />
+          {% endif %}
         </div>
         <button type="submit" class="btn btn-default btn-primary">
           <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate hide"></span>

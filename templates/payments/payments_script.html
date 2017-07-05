@@ -10,6 +10,7 @@
         showingSummary  = {{ 'true' if is_summary else 'false' }},
         paymentsCount   = {{ payments_count }},
         totalAmount     = {{ total_amount }};
+        yearAsRange     = {{ 'true' if payments_year_range else 'false' }};
 
     // Grid rendering
     function getColumnDefinition(uiState) {
@@ -82,14 +83,18 @@
 
       // We don't have (yet) overall dataset statistics when displaying a summary, so we
       // hide the info box in those cases.
-      if ( showingSummary ) {
+      if (showingSummary) {
         $("#payments-info-summary #payments-total").text( Formatter.amount(totalAmount) );
         $("#payments-info-summary #payments-size").text( Formatter.number(paymentsCount) );
-        if ( query.date ) {
-          var queryYears = query.date.split(',');
-          $("#payments-info-summary #payments-years").html( formatYearRange(queryYears[0], queryYears[1]) );
+        if (yearAsRange) {
+          if ( query.date ) {
+            var queryYears = query.date.split(',');
+            $("#payments-info-summary #payments-years").html( formatYearRange(queryYears[0], queryYears[1]) );
+          } else {
+            $("#payments-info-summary #payments-years").html( formatYearRange(years[0], years[years.length-1]) );
+          }
         } else {
-          $("#payments-info-summary #payments-years").html( formatYearRange(years[0], years[years.length-1]) );
+          $("#payments-info-summary #payments-years").html( (query.date) ? query.date : years[years.length-1] );
         }
 
         $('#area-tab').text("{{ _('Desglose por área') }}");
@@ -108,8 +113,12 @@
         if (query.payee)
           queryStr.push('{{ _("Proveedor") }} <strong>'+query.payee+'</strong>');
         if (query.date && years.length > 1) {
-          var queryYears = query.date.split(',');
-          queryStr.push(formatYearRange(queryYears[0], queryYears[1]));
+          if (yearAsRange) {
+            var queryYears = query.date.split(',');
+            queryStr.push(formatYearRange(queryYears[0], queryYears[1]));
+          } else {
+            queryStr.push('<strong>'+query.date+'</strong>');
+          }
         }
         $('#query-panel .payments-query').html( queryStr.join(' + ') );
 
@@ -140,7 +149,7 @@
           description:  query.description,
           payee:        query.payee,
           area:         query.area,
-          date:         query.date
+          date:         (yearAsRange) ? query.date : query.date+','+query.date
         },
         contentType:    'application/json; charset=utf-8',
         success:        onSearchSuccess,
@@ -180,8 +189,13 @@
       }
       if (query.date && query.date !== $('#input-date').val()){
         // Using $().val(value) didn't update the slider appearance
-        var queryYears = query.date.split(',');
-        $('#input-date').slider('setValue', [parseInt(queryYears[0]), parseInt(queryYears[1])]);
+        if (yearAsRange) {
+          var queryYears = query.date.split(',');
+          $('#input-date').slider('setValue', [parseInt(queryYears[0]), parseInt(queryYears[1])]);
+        }
+        else {
+          $('#input-date').slider('setValue', parseInt(query.date));
+        }
       }
     }
 
@@ -209,11 +223,20 @@
     $('#input-payee').chosen({width: '100%'});
 
     // Setup year slider
-    $('#input-date').slider({
-      //tooltip: 'always',
-      ticks: years.map(function(d){ return parseInt(d); }),
-      ticks_labels: years
-    });
+    if (yearAsRange) {
+      $('#input-date').slider({
+        ticks: years.map(function(d){ return parseInt(d); }),
+        ticks_labels: years
+      });
+    } else {
+      $('#input-date').slider({
+        value: {{last_year}},
+        tooltip: 'always',
+        ticks: years.map(function(d){ return parseInt(d); }),
+        ticks_labels: years
+      });
+    }
+
     // Hide year slider if there's only one year
     if (years.length <= 1) {
       $('#payments-search .data-controllers').hide();

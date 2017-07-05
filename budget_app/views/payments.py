@@ -30,6 +30,10 @@ def payments(request, render_callback=None):
     # Needed for the footnote on inflation
     populate_stats(c)
 
+    c['payments_year_range'] = True
+    if hasattr(settings, 'PAYMENTS_YEAR_RANGE'):
+        c['payments_year_range'] = settings.PAYMENTS_YEAR_RANGE
+
     return render_response('payments/index.html', c)
 
 
