@@ -300,13 +300,14 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
     initialized = false;
     updateChart();
     initialized = true;
-
-    // TODO!!! Split treemaps in mobile resolutions
   };
 
   function updateChart(){
     // Show/hide executed labels
     $('.sankey-labels .sankey-label-executed').css('visibility', (hasExecution) ? 'visible' : 'hidden');
+
+    // add no-execution class when budget has no execution
+    svg.classed('no-execution', !hasExecution); 
 
     // Set incomes & expenses treemap roots
     incomesRoot = getTreemapRoot(incomesCont, budget.incomes);
@@ -406,7 +407,7 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
       .attr('x', function(d){ return (d.parent.id == 'income') ? 1 : 0; })
       .attr('y', function(d){ var y = (1-(d.data.budgeted/d.value))*(d.y1-d.y0), h = d.data.budgeted/d.value*(d.y1-d.y0); return (h > 2) ? y+1 : y })
       .attr('height', function(d){ var h = d.data.budgeted/d.value*(d.y1-d.y0); return (h > 2) ? h-2 : h })
-      .attr('width', function(d){ return (d.parent.id == 'income') ? treemapWidth : treemapWidth-1; });
+      .attr('width', treemapWidth-1);
   }
 
   function setNodeExecutionDimensions(node) {

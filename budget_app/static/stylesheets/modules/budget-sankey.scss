@@ -87,7 +87,7 @@ $sankey-expense-color-dark: darken($sankey-expense-color, 10%);
       fill: lighten($sankey-income-color, 5%);
     }
     .wall{
-      fill: darken($sankey-income-color, 12%);
+      fill: darken($sankey-income-color, 6%);
     }
   }
 
@@ -106,8 +106,13 @@ $sankey-expense-color-dark: darken($sankey-expense-color, 10%);
       fill: lighten($sankey-expense-color, 5%);
     }
     .wall{
-      fill: darken($sankey-expense-color, 12%);
+      fill: darken($sankey-expense-color, 6%);
+      @include transition( fill-opacity .3s ease-in-out );
     }
+  }
+
+  .no-execution  .wall{
+    fill-opacity: .6;
   }
 
   .node-title{
