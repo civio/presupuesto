@@ -216,6 +216,13 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
     incomesCont.append('g').attr('class', 'nodes');
     expensesCont.append('g').attr('class', 'nodes');
 
+    incomesCont.append('g')
+      .attr('class', 'totals total-incomes')
+      .call(setTotalEvents);
+    expensesCont.append('g')
+      .attr('class', 'totals total-expenses')
+      .call(setTotalEvents);
+
     // Get budget data
     budget = this.getFormattedData(uiState.year);
 
@@ -282,10 +289,10 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
     setNodes(expensesCont, expensesRoot.leaves());
 
     // update total bars
-    setTotal(incomesCont, incomesRoot.data.budgeted, 'total', 'left');
     setTotal(incomesCont, incomesRoot.data.actual, 'total-executed', 'left');
-    setTotal(expensesCont, expensesRoot.data.budgeted, 'total', 'right');
+    setTotal(incomesCont, incomesRoot.data.budgeted, 'total', 'left');
     setTotal(expensesCont, expensesRoot.data.actual, 'total-executed', 'right');
+    setTotal(expensesCont, expensesRoot.data.budgeted, 'total', 'right');
 
     // Create walls between treemaps & totals bars
     setWall(incomesCont, incomesRoot, 'left');
@@ -323,7 +330,7 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
     nodes.enter().append('g')
         .attr('class', 'node')
         .call(setNode)
-        .call(setupCallbacks)
+        .call(setNodeEvents)
       .merge(nodes)
         .transition()
         .duration( initialized ? transitionDuration : 0 )
@@ -335,12 +342,12 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
 
   // Setup nodes budgeted, executed & title
   function setNode(node) {
-    // add budget rect
-    node.append('rect')
-      .attr('class', 'node-budget');
     // add execution rect
     node.append('rect')
       .attr('class', 'node-executed');
+    // add budget rect
+    node.append('rect')
+      .attr('class', 'node-budget');
     // add title
     node.append('text')
       .attr('class', 'node-title')
@@ -366,23 +373,24 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
   }
 
   function setNodeDimensions(node) {
-    node
-      .attr('y', function(d){ return (1-(d.data.budgeted/d.value))*(d.y1-d.y0) })
-      .attr('height', function(d){ return d.data.budgeted/d.value*(d.y1-d.y0) }) //(d.y1-d.y0 > 10) ? d.y1-d.y0 : 1 })
-      .attr('width', treemapWidth);
-  }
-
-  function setNodeExecutionDimensions(node) {
     // Set height minus 2px & y posision y minus 1px to avoid outline overflows node dimensions
     node
       .attr('x', function(d){ return (d.parent.id == 'income') ? 1 : 0; })
-      .attr('y', function(d){ var y = (1-(d.data.actual/d.value))*(d.y1-d.y0), h = d.data.actual/d.value*(d.y1-d.y0); return (h > 2) ? y+1 : y })
-      .attr('height', function(d){ var h = d.data.actual/d.value*(d.y1-d.y0); return (h > 2) ? h-2 : h })
+      .attr('y', function(d){ var y = (1-(d.data.budgeted/d.value))*(d.y1-d.y0), h = d.data.budgeted/d.value*(d.y1-d.y0); return (h > 2) ? y+1 : y })
+      .attr('height', function(d){ var h = d.data.budgeted/d.value*(d.y1-d.y0); return (h > 2) ? h-2 : h })
       .attr('width', function(d){ return (d.parent.id == 'income') ? treemapWidth : treemapWidth-1; });
+  }
+
+  function setNodeExecutionDimensions(node) {
+    node
+      .attr('y', function(d){ return (1-(d.data.actual/d.value))*(d.y1-d.y0) })
+      .attr('height', function(d){ return d.data.actual/d.value*(d.y1-d.y0) }) //(d.y1-d.y0 > 10) ? d.y1-d.y0 : 1 })
+      .attr('width', treemapWidth);
   }
 
   function setNodeTitle(node){
     node
+      .attr('class', function(d){ return (d.data.actual/d.data.budgeted > .5) ? 'node-title' : 'node-title invert' })
       .attr('x', function(d){ return (d.parent.id == 'income') ? 8 : treemapWidth-8 })
       .attr('y', function(d){ return (d.y1-d.y0)*.5 })
       .style('visibility', function(d){ return (d.y1-d.y0 < 16) ? 'hidden' : 'visible' })
@@ -396,7 +404,9 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
   // Create totals bars
   function setTotal(cont, budget, name, align) {
     // DATA JOIN
-    var total = cont.selectAll('.'+name).data([{'value': budget, 'align': align, 'executed': name == 'total-executed'}]);
+    var total = cont.select('.totals')
+      .selectAll('.'+name)
+      .data([{'value': budget, 'align': align, 'executed': name == 'total-executed'}]);
     // ENTER + UPDATE
     total.enter().append('rect')
         .attr('class', name)
@@ -420,7 +430,8 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
   function setWall(cont, data, align) {
 
     // DATA JOIN
-    var wall = cont.selectAll('.wall').data([{'value': Math.max(data.data.actual,data.data.budgeted)/maxAmountEver, 'align': align}]);
+    var wall = cont.selectAll('.wall')
+      .data([{'value': Math.max(data.data.actual,data.data.budgeted)/maxAmountEver, 'align': align}]);
     // ENTER + UPDATE
     wall.enter().append('polygon')
         .attr('class', 'wall')
@@ -458,11 +469,11 @@ treemapWidth = (width-centerPadding)*.5;
   }
   function getTotalY(d){
     var value = (treemapHeight*(1-totalsHeightRatio)*.5) + ((1-(d.value/maxAmountEver))*treemapHeight*totalsHeightRatio);
-    return d.executed ? value+1 : value;
+    return !d.executed ? value+1 : value;
   }
   function getTotalHeight(d) {
     var value = d.value*treemapHeight*totalsHeightRatio/maxAmountEver;
-    return d.executed && value > 2 ? value-2 : value;
+    return !d.executed && value > 2 ? value-2 : value;
   }
 
   function getNodeTitleFontSize(d) {
@@ -503,20 +514,38 @@ treemapWidth = (width-centerPadding)*.5;
     //$(selector).height( height );
   }
 
-  function setupCallbacks(element) {
-    element
-      .on('mouseover', onMouseOver)
+  function setNodeEvents(node) {
+    node
+      .on('mouseover', onNodeMouseOver)
       .on('mouseout',  onMouseOut)
       .on('mousemove', onMouseMove)
-      .on('click', click);
+      .on('click', onNodeClick);
   }
 
-  function onMouseOver(d) {
+  function setTotalEvents(total) {
+    total
+      .on('mouseover', onTotalMouseOver)
+      .on('mouseout',  onMouseOut)
+      .on('mousemove', onMouseMove);
+  }
+
+  function onNodeMouseOver(d) {
     $popup.find('.popover-title').html( d.data.name);
-    var html = d.data.budgeted ? '<span class="budgeted">'+i18n['budgeted']+'</span><br/><span class="popover-content-value">'+Formatter.amount(d.data.budgeted)+'</span><br/>' : '';
+    setPopupData(d.data);
+  }
+
+  function onTotalMouseOver(d) {
+    var isIncomes = d3.select(this).classed('total-incomes');
+    $popup.find('.popover-title').html( isIncomes ? i18n['total_incomes'] : i18n['total_expenses'] );
+    setPopupData(isIncomes ? budget.incomes[0] : budget.expenses[0]);
+  }
+
+  function setPopupData(data){
+    var html = '';
     if (hasExecution) {
-      html += d.data.actual ? '<span class="executed">'+i18n['executed']+'</span><br/><span class="popover-content-value">'+Formatter.amount(d.data.actual)+'</span>' : '';
+      html += data.actual ? '<span class="executed">'+i18n['executed']+'</span><span class="popover-content-value popover-content-executed">'+Formatter.amount(data.actual)+'</span>' : '';
     }
+    html += data.budgeted ? '<span class="budgeted">'+i18n['budgeted']+'</span><span class="popover-content-value popover-content-budgeted">'+Formatter.amount(data.budgeted)+'</span>' : '';
     $popup.find('.popover-content').html(html);
     $popup.show();
   }
@@ -525,10 +554,8 @@ treemapWidth = (width-centerPadding)*.5;
     var popParentOffset = $(selector).offset(),
         popLeft         = d3.event.pageX - popParentOffset.left - ($popup.width()*.5),
         popBottom       = $(selector).height() - d3.event.pageY + popParentOffset.top + 40;
-
     popLeft = (popLeft < 0 ) ? 0 : popLeft;
     popLeft = (popLeft+$popup.width() < $('body').width()) ? popLeft : 0;
-
     $popup.css({'left':popLeft, 'bottom':popBottom});
   }
 
@@ -536,7 +563,7 @@ treemapWidth = (width-centerPadding)*.5;
     $popup.hide();
   }
 
-  function click(d) {
+  function onNodeClick(d) {
     if (d.data.link) window.location = d.data.link;
   }
 }

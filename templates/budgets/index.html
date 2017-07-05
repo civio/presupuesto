@@ -13,12 +13,12 @@
     <div class="sankey-container">
       <div class="sankey-labels">
         <div class="sankey-label-incomes">
-          <p class="sankey-label-budget"><span></span>{{ _('Ingresos presupuestados') }}</p>
           <p class="sankey-label-executed"><span></span>{{ _('Ingresos ejecutados') }}</p>
+          <p class="sankey-label-budgeted"><span></span>{{ _('Ingresos presupuestados') }}</p>
         </div>
         <div class="sankey-label-expenses">
-          <p class="sankey-label-budget">{{ _('Gastos presupuestados') }}<span></span></p>
           <p class="sankey-label-executed">{{ _('Gastos ejecutados') }}<span></span></p>
+          <p class="sankey-label-budgeted">{{ _('Gastos presupuestados') }}<span></span></p>
         </div>
       </div>
 
@@ -139,6 +139,8 @@
       'government': '{{ _("Gobierno de Aragón") }}',
       'budgeted': '{{ _("Presupuestado") }}',
       'executed': '{{ _("Ejecutado") }}',
+      'total_incomes': '{{ _("Total ingresos") }}',
+      'total_expenses': '{{ _("Total gastos") }}',
 {% if adjust_inflation_in_overview %}
       'amounts.are.real': '{{ _("(Cantidades actualizadas con la inflación)") }}',
 {% endif %}

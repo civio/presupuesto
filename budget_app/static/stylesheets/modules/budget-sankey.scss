@@ -1,10 +1,10 @@
 // Budget Sankey Chart Styles
 
-$sankey-income-color-light: mix($sankey-income-color, white, 50%);
-$sankey-income-color-dark: darken($sankey-income-color, 12%);
+$sankey-income-color-light: mix($sankey-income-color, white, 60%);
+$sankey-income-color-dark: darken($sankey-income-color, 10%);
 
-$sankey-expense-color-light: mix($sankey-expense-color, white, 50%);
-$sankey-expense-color-dark: darken($sankey-expense-color, 12%);
+$sankey-expense-color-light: mix($sankey-expense-color, white, 60%);
+$sankey-expense-color-dark: darken($sankey-expense-color, 10%);
 
 .sankey-labels{
   color: $gray-light;
@@ -29,10 +29,10 @@ $sankey-expense-color-dark: darken($sankey-expense-color, 12%);
     span{
       margin-right: 5px;
     }
-    .sankey-label-budget span{
+    .sankey-label-executed span{
       background: $sankey-income-color;
     }
-    .sankey-label-executed span{
+    .sankey-label-budgeted span{
       background-color: $sankey-income-color-light;
       background-image: repeating-linear-gradient(-45deg, transparent, transparent 2px, $sankey-income-color-dark 3px, $sankey-income-color-dark 3px);
       border: 1px solid $sankey-income-color-dark;
@@ -45,10 +45,10 @@ $sankey-expense-color-dark: darken($sankey-expense-color, 12%);
     span{
       margin-left: 5px;
     }
-    .sankey-label-budget span{
+    .sankey-label-executed span{
       background: $sankey-expense-color;
     }
-    .sankey-label-executed span{
+    .sankey-label-budgeted span{
       background-color: mix($sankey-expense-color, white, 50%);
       background-image: repeating-linear-gradient(-45deg, transparent, transparent 2px, $sankey-expense-color-dark 3px, $sankey-expense-color-dark 3px);
       border: 1px solid $sankey-expense-color-dark;
@@ -57,24 +57,33 @@ $sankey-expense-color-dark: darken($sankey-expense-color, 12%);
 }
 
 .sankey{
-  //padding-top: 30px;
   padding-bottom: 20px;
 
   .node{
     cursor: pointer;
   }
 
-  .incomes {
-    .node-budget,
-    .total{
-      fill: $sankey-income-color;
+  .node-budget,
+  .total{
+    fill-opacity: .9;
+
+    &:hover{
+      fill-opacity: 1;
     }
+  }
+
+  .incomes {
     .node-executed,
     .total-executed{
+      fill: $sankey-income-color;
+    }
+    .node-budget,
+    .total{
       fill: url(#pattern-budget);
       outline: 1px solid $sankey-income-color-dark;
     }
-    .node:hover .node-budget{
+    .node:hover .node-executed,
+    .totals:hover .total-executed{
       fill: lighten($sankey-income-color, 5%);
     }
     .wall{
@@ -83,16 +92,17 @@ $sankey-expense-color-dark: darken($sankey-expense-color, 12%);
   }
 
   .expenses {
-    .node-budget,
-    .total{
-      fill: $sankey-expense-color;
-    }
     .node-executed,
     .total-executed{
+      fill: $sankey-expense-color;
+    }
+    .node-budget,
+    .total{
       fill: url(#pattern-executed);
       outline: 1px solid $sankey-expense-color-dark;
     }
-    .node:hover .node-budget{
+    .node:hover .node-executed,
+    .totals:hover .total-executed{
       fill: lighten($sankey-expense-color, 5%);
     }
     .wall{
@@ -104,33 +114,48 @@ $sankey-expense-color-dark: darken($sankey-expense-color, 12%);
     fill: white;
     font-size: 1.125em;
     letter-spacing: .01em;
-    font-weight: 300;
+    font-weight: $font-weight-300;
     alignment-baseline: middle;
-    //text-shadow: 0 0 2px rgba(0,0,0,.6);
-    //text-shadow: 0 0 1px rgba(0,0,0,.6);
+
+    &.invert{
+      font-weight: $font-weight-400;
+    }
   }
 
   .incomes .node-title{
-    text-shadow: 0 1px 0 $sankey-income-color-dark;
+    text-shadow: 1px 1px 1px $sankey-income-color-dark;
+    &.invert{
+      fill: darken( $sankey-income-color-dark, 5% );
+      text-shadow: 0 0 4px white;
+    }
   }
   .expenses .node-title{
-    text-shadow: 0 1px 0 $sankey-expense-color-dark;
+    text-shadow: 1px 1px 1px $sankey-expense-color-dark;
+    &.invert{
+      fill: darken( $sankey-expense-color-dark, 5% );
+      text-shadow: 0 0 4px white;
+    }
   }
 
   .popover-content{
-
     .executed, .budgeted{
-      display: inline-block;
+      display: block;
       color: $brand-primary;
       margin-top: $grid-gutter-width/6;
       margin-bottom: $grid-gutter-width/6;
+    }
+    .executed{
+      font-weight: $font-weight-600;
+    }
+    .popover-content-budgeted{
+      font-weight: $font-weight-400 !important;
     }
   }
 }
 
 .pattern-stripe{
   rect{
-    fill-opacity: 0.3;
+    fill-opacity: .4;
   }
   line{
     fill: none;
