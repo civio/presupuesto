@@ -40,6 +40,13 @@ def budgets(request):
     if hasattr(settings, 'OVERVIEW_FORCE_ORDER'):
         c['overview_force_order'] = settings.OVERVIEW_FORCE_ORDER
 
+    if hasattr(settings, 'OVERVIEW_LABELS_MIN_SIZE'):
+        c['overview_labels_min_size'] = settings.OVERVIEW_LABELS_MIN_SIZE
+    if hasattr(settings, 'OVERVIEW_LABELS_FONT_SIZE_MIN'):
+        c['overview_labels_font_size_min'] = settings.OVERVIEW_LABELS_FONT_SIZE_MIN
+    if hasattr(settings, 'OVERVIEW_LABELS_FONT_SIZE_MAX'):
+        c['overview_labels_font_size_max'] = settings.OVERVIEW_LABELS_FONT_SIZE_MAX
+
     c['adjust_inflation_in_overview'] = True
     if hasattr(settings, 'ADJUST_INFLATION_IN_OVERVIEW'):
         c['adjust_inflation_in_overview'] = settings.ADJUST_INFLATION_IN_OVERVIEW

@@ -164,6 +164,16 @@
     sankey.nodePadding({{ overview_node_padding }});
     {% endif %}
 
+    {% if overview_labels_min_size %}
+    sankey.labelsMinSize({{ overview_labels_min_size }});
+    {% endif %}
+    {% if overview_labels_font_size_min %}
+    sankey.labelsFontSizeMin({{ overview_labels_font_size_min }});
+    {% endif %}
+    {% if toverview_labels_font_size_max %}
+    sankey.labelsFontSizeMax({{ overview_labels_font_size_max }});
+    {% endif %}
+
     {# We can force nodes order to remain the same as nodes array #}
     {% if overview_force_order %}
     sankey.forceOrder(true);

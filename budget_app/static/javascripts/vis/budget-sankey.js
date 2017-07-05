@@ -11,6 +11,9 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
       totalsHeightRatio   = 0.82, // Total bars height ratio (bars_height/treemaps_height)
       totalsPadding       = 10,   // Padding between total bars
       orderByValue        = true, // Order treemap nodes by value
+      labelsMinSize       = 16,   // Minimum node height in px to show its label
+      labelsFontSizeMin   = 11,   // Nodes label minimum size in px
+      labelsFontSizeMax   = 38,   // Nodes label maximum size in px
       transitionDuration  = 650,
       hasExecution        = false,
       initialized         = false,
@@ -22,6 +25,7 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
       treemap,
       incomesRoot,
       expensesRoot,
+      fontSizeScale,
 
       width,
       height,
@@ -52,6 +56,24 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
   this.nodePadding = function(_) {
     if (!arguments.length) return nodePadding;
     nodePadding = _;
+    return this;
+  };
+
+  this.labelsMinSize = function(_) {
+    if (!arguments.length) return labelsMinSize;
+    labelsMinSize = _;
+    return this;
+  };
+
+  this.labelsFontSizeMin = function(_) {
+    if (!arguments.length) return labelsFontSizeMin;
+    labelsFontSizeMin = _;
+    return this;
+  };
+
+  this.labelsFontSizeMax = function(_) {
+    if (!arguments.length) return labelsFontSizeMax;
+    labelsFontSizeMax = _;
     return this;
   };
 
@@ -191,6 +213,12 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
 
     selector = _selector;
     uiState = _uiState;
+
+    // Setup font-size scale
+    fontSizeScale = d3.scalePow()
+      .exponent(0.75)
+      .range([labelsFontSizeMin, labelsFontSizeMax])
+      .clamp(true);
     
     // Set width & height dimensions
     setDimensions();
@@ -393,8 +421,8 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
       .attr('class', function(d){ return (d.data.actual/d.data.budgeted > .5) ? 'node-title' : 'node-title invert' })
       .attr('x', function(d){ return (d.parent.id == 'income') ? 8 : treemapWidth-8 })
       .attr('y', function(d){ return (d.y1-d.y0)*.5 })
-      .style('visibility', function(d){ return (d.y1-d.y0 < 16) ? 'hidden' : 'visible' })
-      .style('font-size', getNodeTitleFontSize)
+      .style('visibility', function(d){ return (d.y1-d.y0 < labelsMinSize) ? 'hidden' : 'visible' })
+      .style('font-size', function(d){ return Math.round(fontSizeScale(d.y1-d.y0))+'px' })
       .text(function(d){ 
         var threshold = (width > 1000) ? 44 : (width > 780) ? 32 : 24;
         return (d.data.name.length-threshold < 3) ? d.data.name : d.data.name.substring(0,threshold)+'...'; 
@@ -460,8 +488,6 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
       });
   }
 
-treemapWidth = (width-centerPadding)*.5;
-
   function getTotalX(d){
     //var value = (d.align == 'left') ? ((width-totalsPadding)*0.5)-totalsWidth : (totalsPadding-centerPadding)*0.5;
     var value = (d.align != 'left') ? (totalsPadding-centerPadding)*.5 : (height < width) ? ((width-totalsPadding)*.5)-totalsWidth : width-totalsWidth-(totalsPadding*.5);
@@ -474,11 +500,6 @@ treemapWidth = (width-centerPadding)*.5;
   function getTotalHeight(d) {
     var value = d.value*treemapHeight*totalsHeightRatio/maxAmountEver;
     return !d.executed && value > 2 ? value-2 : value;
-  }
-
-  function getNodeTitleFontSize(d) {
-    var s = ((d.value/d.parent.value)+.35)*38;
-    return (s > 10) ? (s|0)+'px' : '10px';
   }
 
   function getExpensesContTransform(d) {
@@ -509,6 +530,9 @@ treemapWidth = (width-centerPadding)*.5;
       treemapWidth = width-(centerPadding*.5);
       treemapHeight = height*.5;
     }
+
+    // update fontSizeScale domain
+    fontSizeScale.domain([labelsMinSize, treemapHeight*.5]);
     
     // Set height to selector for IE11
     //$(selector).height( height );
