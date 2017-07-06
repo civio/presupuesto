@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-06 13:44+0200\n"
-"PO-Revision-Date: 2017-06-09 07:29-0300\n"
+"PO-Revision-Date: 2017-07-06 15:19+0200\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -250,37 +250,37 @@ msgid "hasta el tercer trimestre"
 msgstr "fins al tercer trimestre"
 
 msgid "hasta enero"
-msgstr ""
+msgstr "fins al gener"
 
 msgid "hasta febrero"
-msgstr ""
+msgstr "fins al febrer"
 
 msgid "hasta marzo"
-msgstr ""
+msgstr "fins al març"
 
 msgid "hasta abril"
-msgstr ""
+msgstr "fins a l'abril"
 
 msgid "hasta mayo"
-msgstr ""
+msgstr "fins al maig"
 
 msgid "hasta junio"
-msgstr ""
+msgstr "fins al juny"
 
 msgid "hasta julio"
-msgstr ""
+msgstr "fins al juliol"
 
 msgid "hasta agosto"
-msgstr ""
+msgstr "fins a l'agost"
 
 msgid "hasta septiembre"
-msgstr ""
+msgstr "fins al setembre"
 
 msgid "hasta octubre"
-msgstr ""
+msgstr "fins a l'octubre"
 
 msgid "hasta noviembre"
-msgstr ""
+msgstr "fins al novembre"
 
 #: templates/budgets/index.html:124 templates/entities/show_script.html:260
 #: templates/policies/show_script.html:95
