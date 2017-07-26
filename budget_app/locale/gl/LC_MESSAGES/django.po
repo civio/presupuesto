@@ -916,6 +916,10 @@ msgstr "Contámosche en que se inviste o diñeiro que recadamos dos teus imposto
 msgid "Inicio"
 msgstr "Inicio"
 
+#: templates/shared/cookiebar.html:6
+msgid "Aceptar"
+msgstr "Aceptar"
+
 msgid "¿Quién lo gasta?"
 msgstr "Quen o gasta?"
 

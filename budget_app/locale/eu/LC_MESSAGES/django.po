@@ -916,6 +916,10 @@ msgstr "Zure zergetatik bildutako dirua zertan inbertitzen den azaltzen dizugu"
 msgid "Inicio"
 msgstr "Hasiera"
 
+#: templates/shared/cookiebar.html:6
+msgid "Aceptar"
+msgstr "Aceptar"
+
 msgid "¿Quién lo gasta?"
 msgstr "Nork gastatzen du?"
 

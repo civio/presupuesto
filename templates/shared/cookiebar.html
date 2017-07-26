@@ -3,14 +3,15 @@
   $(document).ready(function(){
     $.cookieBar({
       message: "{{ _('Esta web utiliza cookies propias y de terceros para ofrecerte la mejor experiencia de usuario. Si continúas navegando, entendemos que autorizas el uso de estas cookies.') }}",
-      acceptText: 'Aceptar',
+      acceptText: "{{ _('Aceptar') }}",
       policyButton: true,
       policyText: "{{ _('Más información') }}",
       {% if cookies_url %}
       policyURL: '{{ cookies_url }}',
       {% else %}
-      policyURL: '/politica-de-cookies',
+      policyURL: 'politica-de-cookies',
       {% endif %}
+      //forceShow: true
     });
   });
 </script>

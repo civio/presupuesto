@@ -923,6 +923,10 @@ msgstr ""
 msgid "Inicio"
 msgstr "Home"
 
+#: templates/shared/cookiebar.html:6
+msgid "Aceptar"
+msgstr "Accept"
+
 msgid "Selecciona Area"
 msgstr "Pick an area"
 

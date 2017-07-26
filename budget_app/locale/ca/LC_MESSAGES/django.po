@@ -914,6 +914,10 @@ msgstr "T'expliquem en què s'inverteix els diners que recaptem dels teus impost
 msgid "Inicio"
 msgstr "Inici"
 
+#: templates/shared/cookiebar.html:6
+msgid "Aceptar"
+msgstr "Acceptar"
+
 msgid "Nota sobre el cálculo realizado"
 msgstr "Nota sobre el càlcul realitzat"
 

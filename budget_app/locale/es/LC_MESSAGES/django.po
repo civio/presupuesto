@@ -916,6 +916,10 @@ msgstr ""
 msgid "Inicio"
 msgstr ""
 
+#: templates/shared/cookiebar.html:6
+msgid "Aceptar"
+msgstr ""
+
 msgid "¿Quién lo gasta?"
 msgstr ""
 
