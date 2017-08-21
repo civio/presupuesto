@@ -22,7 +22,7 @@ Para instalar la aplicación en local es necesario seguir los siguientes pasos:
 
         $ createdb -h localhost presupuestos
 
-* Copiar `local_settings.py-example` a `local_settings.py` y modificar las credenciales de la base de datos.
+* Copiar `local_settings.py-example` a `local_settings.py` y modificar las credenciales de la base de datos. Elegir la carpeta donde se alojará el THEME o aspecto visual del proyecto.
 
 * Crear el esquema de la base de datos y cargar los datos básicos:
 
@@ -34,17 +34,22 @@ Para instalar la aplicación en local es necesario seguir los siguientes pasos:
         $ python manage.py load_stats
         $ python manage.py load_budget 2014
 
-* Arrancar el servidor
+### Adaptando el aspecto visual
 
-        $ python manage.py runserver
+La aplicación soporta el concepto de 'themes' capaces de modificar el aspecto visual de la web: tanto recursos estáticos (imágenes, hojas de estilo...) como las plantillas que generan el contenido de la web. El repositorio [`presupuesto-dvmi`](https://github.com/civio/presupuesto-dvmi) de Civio -una adaptación del software de Aragón Open Data a los Presupuestos Generales del Estado- es un buen ejemplo de cómo puede organizarse el contenido de un theme. Si su proyecto tiene ámbito municipal puede basarse en el repositorio de [`presupuesto-torrelodones`](https://github.com/civio/presupuesto-torrelodones)
 
-* Arrancar el servidor en modo livereload:
+El theme a usar se configura mediante la variable `THEME` en local_settings.py. Es referenciada en diversos puntos de `settings.py` para instalar los directorios del theme (plantillas y recursos estáticos) justo antes de los de la aplicación principal.
 
-        $ python manage.py livereload
+Es necesario compilar todos los recursos estáticos. Para ello:
 
-[4]: https://docs.djangoproject.com/en/1.7/internals/deprecation/#deprecation-removed-in-1-7
-[5]: https://docs.djangoproject.com/en/1.5/topics/python3/#philosophy
+* Instalar herramientas de compresión y generación de bundles:
 
+		$ npm install rollup
+		$ ./node_modules/rollup/bin/rollup -c
+		$ cd ./<directorio_del_theme>
+		$ npm install
+		$ npm install node-sass
+		$ npm run css-build
 
 ### Configurando el buscador
 
@@ -68,9 +73,15 @@ Pero para usarlo de manera regular debemos configurar la aplicación, vía `loca
 
     'SEARCH_CONFIG': 'unaccent_spa'
 
+### Arrancando el servidor
 
-### Adaptando el aspecto visual
+* Arrancar el servidor
 
-La aplicación soporta el concepto de 'themes' capaces de modificar el aspecto visual de la web: tanto recursos estáticos (imágenes, hojas de estilo...) como las plantillas que generan el contenido de la web. El repositorio [`presupuesto-dvmi`](https://github.com/civio/presupuesto-dvmi) de Civio -una adaptación del software de Aragón Open Data a los Presupuestos Generales del Estado- es un buen ejemplo de cómo puede organizarse el contenido de un theme.
+        $ python manage.py runserver
 
-El theme a usar se configura mediante la variable `THEME`, que es referenciada en diversos puntos de `settings.py` para instalar los directorios del theme (plantillas y recursos estáticos) justo antes de los de la aplicación principal.
+* Arrancar el servidor en modo livereload:
+
+        $ python manage.py livereload
+
+[4]: https://docs.djangoproject.com/en/1.7/internals/deprecation/#deprecation-removed-in-1-7
+[5]: https://docs.djangoproject.com/en/1.5/topics/python3/#philosophy
