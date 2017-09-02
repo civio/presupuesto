@@ -31,7 +31,7 @@ def sections_show(request, id, title, render_callback=None):
       'economic': BudgetBreakdown(['chapter', 'article', 'heading', get_final_element_grouping(c)]),
       'institutional': None
     }
-    get_budget_breakdown(   "ic.department = %s and e.id = %s", [ id, main_entity.id ],
+    get_budget_breakdown(   "ic.department = %s and e.id = %s and i.expense = true", [ id, main_entity.id ],
                             [ 
                                 c['breakdowns']['functional'],
                                 c['breakdowns']['economic'],
