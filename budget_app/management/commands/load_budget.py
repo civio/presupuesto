@@ -17,8 +17,7 @@ class Command(BaseCommand):
             action='store',
             dest='language',
             default=settings.LANGUAGE_CODE,
-            help='Set data language'
-        ),
+            help='Set data language'),
     )
 
     help = u"Carga el presupuesto del año"
@@ -59,17 +58,19 @@ class Command(BaseCommand):
         for language in languages:
             entity = self._get_entity(level, name, language)
             for year in years:
-                if language:
-                    path = os.path.join(
-                        settings.ROOT_PATH,
-                        settings.THEME,
-                        'data',
-                        language,
-                        level,
-                        year
-                    )
-                else:
-                    path = os.path.join(settings.ROOT_PATH, settings.THEME, 'data', level, year)
+                path = os.path.join(
+                    settings.ROOT_PATH,
+                    settings.THEME,
+                    'data',
+                    language,
+                    level,
+                    # XXX: It would make sense to include always the entity name,
+                    # but we weren't doing it in the past, so we'd need to change
+                    # all the themes. So we'll live with this ugly patch:
+                    # append the entity name only if given in the command line.
+                    '' if len(args) < 3 else args[2],
+                    year
+                )
 
                 try:
                     with open(os.path.join(path, '.budget_status'), 'r') as quarter:
