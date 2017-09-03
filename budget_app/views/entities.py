@@ -2,6 +2,20 @@
 from budget_app.models import BudgetBreakdown, Entity, EconomicCategory
 from helpers import *
 
+# XXX: This should be called entities_show, but the name is taken, for historical
+# reasons, and it's a bit of a pain to change now.
+def entities_show_helper(request, id, title, render_callback=None):
+    # Get request context
+    c = get_context(request, css_class='body-entities', title='')
+
+    # Retrieve the entity to display
+    entity = Entity.objects.filter(code=id)[0]
+    set_title(c, entity.name)
+
+    return entities_show(request, c, entity, render_callback)
+
+
+# XXX: See note above regarding the function name
 def entities_show(request, c, entity, render_callback=None):
     # Prepare the budget breakdowns
     c['breakdowns'] = {
