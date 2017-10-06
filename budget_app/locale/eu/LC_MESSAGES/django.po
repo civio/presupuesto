@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-06 13:44+0200\n"
-"PO-Revision-Date: 2017-07-26 22:04+0200\n"
+"PO-Revision-Date: 2017-10-06 20:50+0200\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: eu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.2\n"
+"X-Generator: Poedit 2.0.4\n"
 
 #: templates/base-widget.html:7 templates/base-widget.html.py:26
 #: templates/base.html:7 templates/shared/meta.html:9
@@ -249,37 +249,37 @@ msgid "hasta el tercer trimestre"
 msgstr "hirugarren hiruhilekora arte"
 
 msgid "hasta enero"
-msgstr ""
+msgstr "urtarrila arte"
 
 msgid "hasta febrero"
-msgstr ""
+msgstr "otsaila arte"
 
 msgid "hasta marzo"
-msgstr ""
+msgstr "martxoa arte"
 
 msgid "hasta abril"
-msgstr ""
+msgstr "apirila arte"
 
 msgid "hasta mayo"
-msgstr ""
+msgstr "maiatza arte"
 
 msgid "hasta junio"
-msgstr ""
+msgstr "ekaina arte"
 
 msgid "hasta julio"
-msgstr ""
+msgstr "uztaila arte"
 
 msgid "hasta agosto"
-msgstr ""
+msgstr "abuztua arte"
 
 msgid "hasta septiembre"
-msgstr ""
+msgstr "iraila arte"
 
 msgid "hasta octubre"
-msgstr ""
+msgstr "urria arte"
 
 msgid "hasta noviembre"
-msgstr ""
+msgstr "azaroa arte"
 
 #: templates/budgets/index.html:124 templates/entities/show_script.html:260
 #: templates/policies/show_script.html:95
@@ -898,7 +898,7 @@ msgstr "Politika zehatzak"
 
 #: templates/welcome/index.html:59
 msgid "Educación, protección y bienestar social, cultura... ¿Qué área te interesa?"
-msgstr "Hezkuntza, gizarte-babesa eta ongizatea, kultua... zer alor interesatzen zaizu?"
+msgstr "Hezkuntza, gizarte-babesa eta ongizatea, kultura... zein alor interesatzen zaizu?"
 
 #: templates/welcome/index.html:71
 msgid "Te mostramos en detalle todos las facturas y pagos efectuados por el Ayuntamiento"
@@ -928,3 +928,6 @@ msgstr "Nola biltzen da dirua?"
 
 msgid "¿Quién recauda?"
 msgstr "Nork biltzen du?"
+
+msgid " (cap. %(chapter)s)"
+msgstr " (%(chapter)s. kap)"
