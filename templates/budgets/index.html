@@ -12,6 +12,7 @@
 
     <div class="sankey-container">
       <div class="sankey-labels">
+        {% if overview_use_new_vis %}
         <div class="sankey-label-incomes">
           <p class="sankey-label-executed"><span></span>{{ _('Ingresos ejecutados') }}</p>
           <p class="sankey-label-budgeted"><span></span>{{ _('Ingresos presupuestados') }}</p>
@@ -20,10 +21,15 @@
           <p class="sankey-label-executed">{{ _('Gastos ejecutados') }}<span></span></p>
           <p class="sankey-label-budgeted">{{ _('Gastos presupuestados') }}<span></span></p>
         </div>
+        {% else %}
+        <p class="sankey-label-incomes">{{ _('Ingresos') }}</p>
+        <p class="sankey-label-expenses">{{ _('Gastos') }}</p>
+        {% endif %}
       </div>
 
-      <div class="sankey chart-container" id="chart">
+      <div class="sankey chart-container{% if not overview_use_new_vis %} sankey-old{% endif %}" id="chart">
         <svg>
+          {% if overview_use_new_vis %}
           <defs>
             <pattern id="pattern-budget" class="pattern-stripe" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
               <rect width="4" height="4" />
@@ -34,6 +40,7 @@
               <line x1="0" x2="0" y1="0" y2="4" />
             </pattern>
           </defs>
+          {% endif %}
         </svg>
         <div id="pop-up" class="popover top" role="tooltip">
           <div class="arrow"></div>
@@ -162,6 +169,12 @@
     {# The padding of the Sankey layout algorithm can be customized for best results. #}
     {% if overview_node_padding %}
     sankey.nodePadding({{ overview_node_padding }});
+    {% endif %}
+
+    {# The aggressiveness of the Sankey layout algorithm can be customized for best results. #}
+    {% if not overview_use_new_vis and relax_factor %}
+    var relaxFactor = {{ relax_factor }};
+    sankey.relaxFactor(relaxFactor);
     {% endif %}
 
     {% if overview_labels_min_size %}

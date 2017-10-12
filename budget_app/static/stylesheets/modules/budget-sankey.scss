@@ -184,3 +184,97 @@ $sankey-expense-color-dark: darken($sankey-expense-color, 10%);
     stroke: $sankey-expense-color-dark;
   }
 }
+
+// Old Sankey
+
+.sankey-old{
+  padding-bottom: 0;
+
+  .link,
+  .link-execution{
+    @include transition( stroke-opacity 0.3s ease-out );
+  }
+
+  .link.with-data {
+    fill: none;
+    stroke: $sankey-budget-color;
+    stroke-opacity: .5;
+  }
+
+  .legend-budget circle{
+    fill: $sankey-budget-color;
+    opacity: .5;
+  }
+
+  .link-execution.with-data {
+    fill: none;
+    stroke: $sankey-execution-color;
+    stroke-opacity: .5;
+  }
+
+  .legend-execution circle{
+    fill: $sankey-execution-color;
+    opacity: .5;
+  }
+
+  .link.no-data,
+  .link-execution.no-data {
+    fill: none;
+    stroke: $sankey-budget-color;
+    stroke-opacity: .5;
+  }
+
+  .link:hover,
+  .node:hover,
+  .link-execution:hover {
+    stroke-opacity: .9;
+    cursor:pointer;
+  }
+
+  .node{
+    rect{
+      fill: $text-color;
+      stroke: none;
+      cursor: pointer;
+    
+      &.node-central{
+        fill: #fff;
+        cursor: auto;
+      }
+    }
+
+    text {
+      fill: $text-color;
+      pointer-events: none;
+      font-weight: $font-weight-400;
+      font-size: 1em;
+    }
+  }
+
+  .legend-item text{
+    fill: $gray-light;
+    font-size: 0.929em;
+    font-weight: $font-weight-600;
+    text-transform: uppercase;
+  }
+
+  .legend-note {
+    circle{
+      fill: none;
+    }
+    text{
+      fill: $gray;
+      font-size: 0.875em;
+      font-weight: $font-weight-400 !important;
+    }
+  }
+
+  .popover-content{
+    .budgeted{
+      color: $sankey-budget-color;
+    }
+    .executed{
+      color: $sankey-execution-color;
+    }
+  }
+}

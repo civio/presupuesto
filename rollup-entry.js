@@ -175,33 +175,31 @@ export {
 } from "d3-color";
 */
 
-/*
 export {
-  interpolate,
-  interpolateArray,
-  interpolateDate,
+  // interpolate,
+  // interpolateArray,
+  // interpolateDate,
   interpolateNumber,
-  interpolateObject,
-  interpolateRound,
-  interpolateString,
-  interpolateTransformCss,
-  interpolateTransformSvg,
-  interpolateZoom,
-  interpolateRgb,
-  interpolateRgbBasis,
-  interpolateRgbBasisClosed,
-  interpolateHsl,
-  interpolateHslLong,
-  interpolateLab,
-  interpolateHcl,
-  interpolateHclLong,
-  interpolateCubehelix,
-  interpolateCubehelixLong,
-  interpolateBasis,
-  interpolateBasisClosed,
-  quantize
+  // interpolateObject,
+  // interpolateRound,
+  // interpolateString,
+  // interpolateTransformCss,
+  // interpolateTransformSvg,
+  // interpolateZoom,
+  // interpolateRgb,
+  // interpolateRgbBasis,
+  // interpolateRgbBasisClosed,
+  // interpolateHsl,
+  // interpolateHslLong,
+  // interpolateLab,
+  // interpolateHcl,
+  // interpolateHclLong,
+  // interpolateCubehelix,
+  // interpolateCubehelixLong,
+  // interpolateBasis,
+  // interpolateBasisClosed,
+  // quantize
 } from "d3-interpolate";
-*/
 
 /*
 export {

@@ -34,6 +34,8 @@ def budgets(request):
     c['income_nodes'] = json.dumps(settings.OVERVIEW_INCOME_NODES)
     c['expense_nodes'] = json.dumps(settings.OVERVIEW_EXPENSE_NODES)
 
+    if hasattr(settings, 'OVERVIEW_RELAX_FACTOR'):
+        c['relax_factor'] = settings.OVERVIEW_RELAX_FACTOR
     if hasattr(settings, 'OVERVIEW_NODE_PADDING'):
         c['overview_node_padding'] = settings.OVERVIEW_NODE_PADDING
     if hasattr(settings, 'OVERVIEW_FORCE_ORDER'):
