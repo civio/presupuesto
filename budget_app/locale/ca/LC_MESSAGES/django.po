@@ -114,6 +114,14 @@ msgid "Gastos"
 msgstr "Despeses"
 
 #: templates/budgets/index.html:16
+msgid "Ver detalle de ingresos"
+msgstr "Veure detall d'ingressos"
+
+#: templates/budgets/index.html:16
+msgid "Ver detalle de gastos"
+msgstr "Veure detall de despeses"
+
+#: templates/budgets/index.html:16
 msgid "Ingresos presupuestados"
 msgstr "Ingressos pressupostats"
 

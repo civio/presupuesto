@@ -14,21 +14,23 @@
       <div class="sankey-labels">
         {% if overview_use_new_vis %}
         <div class="sankey-label-incomes">
+          <a href="{{ url('budget_app.views.policies') }}#view=income" title="{{ _('Ver detalle de ingresos') }}" aria-label="{{ _('Ver detalle de ingresos') }}">{{ _('Ingresos') }}</a>
           <p class="sankey-label-executed"><span></span>{{ _('Ingresos ejecutados') }}</p>
           <p class="sankey-label-budgeted"><span></span>{{ _('Ingresos presupuestados') }}</p>
         </div>
         <div class="sankey-label-expenses">
+          <a href="{{ url('budget_app.views.policies') }}" title="{{ _('Ver detalle de gastos') }}" aria-label="{{ _('Ver detalle de gastos') }}">{{ _('Gastos') }}</a>
           <p class="sankey-label-executed">{{ _('Gastos ejecutados') }}<span></span></p>
           <p class="sankey-label-budgeted">{{ _('Gastos presupuestados') }}<span></span></p>
         </div>
         {% else %}
-        <p class="sankey-label-incomes">{{ _('Ingresos') }}</p>
-        <p class="sankey-label-expenses">{{ _('Gastos') }}</p>
+        <p class="sankey-label-incomes"><a href="{{ url('budget_app.views.policies') }}#view=income" title="{{ _('Ver detalle de ingresos') }}" aria-label="{{ _('Ver detalle de ingresos') }}">{{ _('Ingresos') }}</a></p>
+        <p class="sankey-label-expenses"><a href="{{ url('budget_app.views.policies') }}" title="{{ _('Ver detalle de gastos') }}" aria-label="{{ _('Ver detalle de gastos') }}">{{ _('Gastos') }}</a></p>
         {% endif %}
       </div>
 
       <div class="sankey chart-container{% if not overview_use_new_vis %} sankey-old{% endif %}" id="chart">
-        <svg>
+        <svg aria-hidden="true">
           {% if overview_use_new_vis %}
           <defs>
             <pattern id="pattern-budget" class="pattern-stripe" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">

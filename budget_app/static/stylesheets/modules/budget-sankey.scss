@@ -11,6 +11,12 @@ $sankey-expense-color-dark: darken($sankey-expense-color, 10%);
   font-size: 0.929em;
   text-transform: uppercase;
   font-weight: $font-weight-600;
+  position: relative;
+  z-index: 90;
+
+  a{
+    color: $gray-light;
+  }
 
   p{
     margin-bottom: 5px; 
@@ -20,6 +26,16 @@ $sankey-expense-color-dark: darken($sankey-expense-color, 10%);
     display: inline-block;
     width: 10px;
     height: 10px;
+  }
+
+  // Hide aria label
+  .sankey-label-incomes,
+  .sankey-label-expenses{
+    > a{
+      display: block;
+      height: 0;
+      overflow: hidden;
+    }
   }
 
   .sankey-label-incomes{

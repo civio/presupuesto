@@ -113,6 +113,14 @@ msgid "Gastos"
 msgstr "Gastuak"
 
 #: templates/budgets/index.html:16
+msgid "Ver detalle de ingresos"
+msgstr "Sarrera ikustea"
+
+#: templates/budgets/index.html:16
+msgid "Ver detalle de gastos"
+msgstr "Gastu-oparitxoa ikustea"
+
+#: templates/budgets/index.html:16
 msgid "Ingresos presupuestados"
 msgstr "Aurrekontuko diru-sarrerak"
 
