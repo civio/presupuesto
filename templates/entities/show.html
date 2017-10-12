@@ -23,26 +23,18 @@
 
     <ul id="tabs" class="nav nav-tabs nav-tabs-centered" role="tablist">
       <li role="presentation">
-        <a href="#income"role="tab">
-          <h3>{{ _('Ingresos') }}</h3>
-        </a>
+        <a href="#income" role="tab">{{ _('Ingresos') }}</a>
       </li>
       <li role="presentation">
-        <a href="#expense" role="tab">
-          <h3>{{ _('¿Cómo se gasta?') }}</h3>
-        </a>
+        <a href="#expense" role="tab">{{ _('¿Cómo se gasta?') }}</a>
       </li>
       {% if breakdowns['institutional'] %}
       <li role="presentation">
-        <a href="#institutional" role="tab">
-          <h3>{{ _('¿Quién lo gasta?') }}</h3>
-        </a>
+        <a href="#institutional" role="tab">{{ _('¿Quién lo gasta?') }}</a>
       </li>
       {% endif %}
       <li role="presentation">
-        <a href="#functional" role="tab">
-          <h3>{{ _('¿En qué se gasta?') }}</h3>
-        </a>
+        <a href="#functional" role="tab">{{ _('¿En qué se gasta?') }}</a>
       </li>
     </ul>
   </div>
@@ -50,6 +42,8 @@
   <!-- Policies Content -->
   <div class="policies-content">
     <div class="container">
+
+      <h3 id="tab-title"></h3>
 
       <!-- Policies Chart -->
       {% include 'entities/policies-chart.html' %}

@@ -14,12 +14,6 @@
       border: 1px solid $page-header-border-color;
       border-radius: $nav-pills-border-radius;
 
-      h3{
-        font-size: 1em;
-        margin: 0;
-        font-weight: $font-weight-400;
-      }
-
       &:hover{
         border-color: $nav-tabs-border-color;
         background: white;
@@ -31,10 +25,6 @@
       font-weight: $font-weight-600;
       border-color: $page-header-border-color;
 
-      h3{
-        font-weight: $font-weight-600;
-      }
-
       &:hover,
       &:focus{
         background: white;
@@ -43,6 +33,14 @@
     }
   }
 }
+
+// Use tab-title as h3 title but hidden
+.policies-content #tab-title{
+  height: 0;
+  overflow: hidden;
+  display: block;
+}
+
 
 // Nav Tabs Centered
 .nav-tabs-centered{

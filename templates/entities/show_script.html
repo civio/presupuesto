@@ -81,6 +81,7 @@
       if (!$('body').hasClass('widget')) {
         $('#tabs .active').removeClass('active');
         $('a[href="#'+uiState.view+'"]').blur().parent().addClass('active');
+        $('#tab-title').html( $('#tabs .active a').html() );
       }
       // Setup widget tab title
       else{

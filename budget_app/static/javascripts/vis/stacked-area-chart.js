@@ -53,6 +53,7 @@ function StackedAreaChart() {
     // Add SVG
     _this.svg = d3.select(selector).append('svg')
         .attr('class', 'stacked-area-chart')
+        .attr('aria-hidden', 'true')
       .append('g')
         .attr('transform', 'translate(' + _this.margin.left + ',' + _this.margin.top + ')');
 

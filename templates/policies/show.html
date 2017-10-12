@@ -29,9 +29,7 @@
     {% for tab in ['functional', 'economic', 'funding', 'institutional'] %}
       {% if breakdowns[tab] %}
       <li role="presentation">
-        <a href="#{{ tab }}" role="tab">
-          <h3>{{ _(tab_titles[tab]) }}</h3>
-        </a>
+        <a href="#{{ tab }}" role="tab">{{ _(tab_titles[tab]) }}</a>
       </li>
       {% endif %}
     {% endfor %}
@@ -42,8 +40,10 @@
   <div class="policies-content">
     <div class="container tab-content">
 
+      <h3 id="tab-title"></h3>
+
       <div class="policies-chart">
-        <div id="policy-chart-container" class="chart-container {{ 'treemap-chart' if show_treemap else 'stacked-area-chart' }}">
+        <div id="policy-chart-container" class="chart-container {{ 'treemap-chart' if show_treemap else 'stacked-area-chart' }}" aria-hidden="true">
           <div class="popover top" role="tooltip">
             <div class="arrow"></div>
             <div class="popover-title"></div>
