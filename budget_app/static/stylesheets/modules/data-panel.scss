@@ -150,7 +150,9 @@
     .panel-content{
 
       .data-label{
-        display: none;
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
       }
 
       .total-executed{       
@@ -188,31 +190,40 @@
   .panel-content{
     padding-top: 0;
     padding-bottom: 0;
+    margin-bottom: 0;
 
     .row{
       margin-right: 0;
       margin-left: 0;
     }
 
-    [class^="col-"]{
-      padding: $grid-gutter-width/3 0 0;
+    p{
+      margin-bottom: 0;
     }
-  }
 
-  #total,
-  #financial-total,
-  #non-financial-total{
-    padding-bottom: $grid-gutter-width/2;
+    ul{
+      padding: 0;
+    }
+
+    li{
+      list-style: none;
+    }
+
+    > li{
+      padding: $grid-gutter-width/2 0;
+
+      > ul > li{
+        clear: both;
+        text-align: right;
+        padding-top: $grid-gutter-width/3;
+      }
+    }
   }
 
   #total{
     font-size: 1.125em;
     font-weight: $font-weight-600;
     text-transform: none;
-
-    [class^="col-"]{
-      padding: $grid-gutter-width/2 0 0;
-    }
   }
 
   #financial-total,
@@ -220,10 +231,6 @@
     display: none;
     text-transform: none;
     border-top: 1px solid $panel-default-border;
-
-    .col-sm-6{
-      padding-top: $grid-gutter-width/2;
-    }
   }
 
   #financial-total{
@@ -231,26 +238,31 @@
   }
 
   @media (min-width: $screen-sm-min) {
-  
-    .panel-content [class^="col-"] {
+
+    .panel-content > li{
       padding-bottom: $grid-gutter-width/3;
     }
 
-    #total [class^="col-"] {
-      padding-bottom: $grid-gutter-width/2;
+    .panel-content > li > div{
+      float: left;
+      width: 50%;
     }
 
-    #total,
-    #financial-total,
-    #non-financial-total{
-      padding-bottom: 0;
-    }
+    .panel-content > li > ul{
+      display: inline-block;
+      width: 50%;
+      text-align: right;
 
-    #financial-total,
-    #non-financial-total{
-      .col-sm-6{
-        padding-top: $grid-gutter-width/3;
+      > li{
+        clear: none;
+        float: left;
+        width: 50%;
+        padding-top: 0;
       }
+    }
+
+    .panel-content [class^="col-"] {
+      padding-bottom: $grid-gutter-width/3;
     }
   }
 }

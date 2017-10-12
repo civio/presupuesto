@@ -3,40 +3,74 @@
     <div class="panel-title row">
       <div class="col-sm-6"><span id="totals-year"></span></div>
       {% if show_actual %}
-      <div class="col-sm-3 text-right"><span class="total-budgeted-label">{{ _('Presupuestado') }}</span></div>
-      <div class="col-sm-3 text-right"><span class="total-executed-label">{{ _('Ingresado') }}</span></div>
+      <div class="col-sm-3 text-right" aria-hidden="true"><span class="total-budgeted-label">{{ _('Presupuestado') }}</span></div>
+      <div class="col-sm-3 text-right" aria-hidden="true"><span class="total-executed-label">{{ _('Ingresado') }}</span></div>
       {% else %}
-      <div class="col-sm-6 text-right"><span class="total-budgeted-label">{{ _('Presupuestado') }}</span></div>
+      <div class="col-sm-6 text-right" aria-hidden="true"><span class="total-budgeted-label">{{ _('Presupuestado') }}</span></div>
       {% endif %}
     </div>
-    <div class="panel-content">
-      <div id="total" class="row">
-        <div class="col-sm-6"><span class="main-label"></span></div>
-        {% if show_actual %}
-        <div class="col-sm-3 text-right"><span class="data-label">{{ _('Presupuestado') }}</span><span class="total-budgeted-amount"></span></div>
-        <div class="col-sm-3 text-right"><span class="data-label data-label-executed">{{ _('Ingresado') }}</span><span class="total-executed-amount"></span></div>
-        {% else %}
-        <div class="col-sm-6 text-right"><span class="data-label">{{ _('Presupuestado') }}</span><span class="total-budgeted-amount"></span></div>
-        {% endif %}
-      </div>
-      <div id="non-financial-total" class="row">
-        <div class="col-sm-6"><div class="icon-question" data-toggle="tooltip" data-placement="right" title="{{ _('Capítulos I-VII') }}"></div> {{ _('Subtotal no financiero') }}</div>
-        {% if show_actual %}
-        <div class="col-sm-3 text-right"><span class="data-label">{{ _('Presupuestado') }}</span><span class="total-budgeted-amount"></span></div>
-        <div class="col-sm-3 text-right"><span class="data-label data-label-executed">{{ _('Ingresado') }}</span><span class="total-executed-amount"></span></div>
-        {% else %}
-        <div class="col-sm-6 text-right"><span class="data-label">{{ _('Presupuestado') }}</span><span class="total-budgeted-amount"></span></div>
-        {% endif %}
-      </div>
-      <div id="financial-total" class="row">
-        <div class="col-sm-6"><div class="icon-question" data-toggle="tooltip" data-placement="right" title="{{ _('Capítulos VIII-IX') }}"></div> {{ _('Subtotal financiero') }}</div>
-        {% if show_actual %}
-        <div class="col-sm-3 text-right"><span class="data-label">{{ _('Presupuestado') }}</span><span class="total-budgeted-amount"></span></div>
-        <div class="col-sm-3 text-right"><span class="data-label data-label-executed">{{ _('Ingresado') }}</span><span class="total-executed-amount"></span></div>
-        {% else %}
-        <div class="col-sm-6 text-right"><span class="data-label">{{ _('Presupuestado') }}</span><span class="total-budgeted-amount"></span></div>
-        {% endif %}
-      </div>
-    </div>
+    <ul class="panel-content">
+      <li id="total">
+        <div class="main-label"></div>
+        <ul>
+          {% if show_actual %}
+          <li>
+            <p class="data-label">{{ _('Presupuestado') }}</p>
+            <p class="total-budgeted-amount"></p>
+          </li>
+          <li>
+            <p class="data-label data-label-executed">{{ _('Ingresado') }}</p>
+            <p class="total-executed-amount"></p>
+          </li>
+        <!--
+          <div class="col-sm-3 text-right"><span class="data-label">{{ _('Presupuestado') }}</span><span class="total-budgeted-amount"></span></div>
+          <div class="col-sm-3 text-right"><span class="data-label data-label-executed">{{ _('Ingresado') }}</span><span class="total-executed-amount"></span></div>
+          -->
+          {% else %}
+          <div class="col-sm-6 text-right"><span class="data-label">{{ _('Presupuestado') }}</span><span class="total-budgeted-amount"></span></div>
+          {% endif %}
+        </ul>
+      </li>
+      <li id="non-financial-total">
+        <div><div class="icon-question" data-toggle="tooltip" data-placement="right" title="{{ _('Capítulos I-VII') }}"></div> {{ _('Subtotal no financiero') }}</div>
+        <ul>
+          {% if show_actual %}
+          <li>
+            <p class="data-label">{{ _('Presupuestado') }}</p>
+            <p class="total-budgeted-amount"></p>
+          </li>
+          <li>
+            <p class="data-label data-label-executed">{{ _('Ingresado') }}</p>
+            <p class="total-executed-amount"></p>
+          </li>
+          {% else %}
+          <li>
+            <p class="data-label">{{ _('Presupuestado') }}</p>
+            <p class="total-budgeted-amount"></p>
+          </li>
+          {% endif %}
+        </ul>
+      </li>
+      <li id="financial-total">
+        <div><div class="icon-question" data-toggle="tooltip" data-placement="right" title="{{ _('Capítulos VIII-IX') }}"></div> {{ _('Subtotal financiero') }}</div>
+        <ul>
+          {% if show_actual %}
+          <li>
+            <p class="data-label">{{ _('Presupuestado') }}</p>
+            <p class="total-budgeted-amount"></p>
+          </li>
+          <li>
+            <p class="data-label data-label-executed">{{ _('Ingresado') }}</p>
+            <p class="total-executed-amount"></p>
+          </li>
+          {% else %}
+          <li>
+            <p class="data-label">{{ _('Presupuestado') }}</p>
+            <p class="total-budgeted-amount"></p>
+          </li>
+          {% endif %}
+        </ul>
+      </li>
+    </ul>
   </div>
 </div>
