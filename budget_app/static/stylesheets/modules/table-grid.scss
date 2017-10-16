@@ -119,6 +119,10 @@ table.table-grid {
         line-height: 18px;  // Adjust vertical align for '-' sign
       }
     }
+
+    a.toggle:hover{
+      text-decoration: none;
+    }
   }
 
   tr:last-child td{

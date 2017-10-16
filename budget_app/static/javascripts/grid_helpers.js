@@ -21,7 +21,7 @@ function rowNameFormatter(value, type, item) {
   if (item.sub && !$.isEmptyObject(item.sub)) {
     toggleStatus = item._expanded ? 'collapse' : 'expand';
     toggleValue = item._expanded ? '–' : '+';
-    return "<span class='toggle "+toggleStatus+"'>"+toggleValue+"</span>" + valuewrap;
+    return "<a class='toggle "+toggleStatus+"'>"+toggleValue+"</a>" + valuewrap;
   }
   return valuewrap;
 }
@@ -188,7 +188,7 @@ function createBudgetGrid(containerName, data, userColumns) {
   });
 
   // Handle toggling of items
-  $(containerName+' tbody').off('click', 'span.toggle').on('click', 'span.toggle', function (e) {
+  $(containerName+' tbody').off('click', '.toggle').on('click', '.toggle', function (e) {
     if ($(e.target).hasClass("toggle")) {
       var cell = grid.cell( $(this).parent() );
       var item = data[cell[0][0].row];
