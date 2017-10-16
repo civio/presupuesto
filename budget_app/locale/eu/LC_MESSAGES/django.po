@@ -939,3 +939,6 @@ msgstr "Nork biltzen du?"
 
 msgid " (cap. %(chapter)s)"
 msgstr " (%(chapter)s. kap)"
+
+msgid "Cerrar"
+msgstr "Itxi"

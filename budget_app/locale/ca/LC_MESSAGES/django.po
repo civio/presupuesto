@@ -979,3 +979,12 @@ msgstr "Qui recapta?"
 
 msgid "o"
 msgstr ""
+
+msgid "Cerrar"
+msgstr "Tancar"
+
+msgid ": Clicar para ordenar ascendentemente"
+msgstr ": Clicar per ordenar ascendentment"
+
+msgid ": Clicar para ordenar descendentemente"
+msgstr ": Clicar per ordenar descendentment"

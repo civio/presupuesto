@@ -36,7 +36,8 @@ table.table-grid {
       &.sorting_desc,
       &.sorting_asc_disabled, 
       &.sorting_desc_disabled{
-        padding-right: $grid-gutter-width + $grid-gutter-width/3;
+        padding-right: $grid-gutter-width/2;
+        padding-left: $grid-gutter-width/2;
       }
     }
    
@@ -47,23 +48,37 @@ table.table-grid {
     .sorting_desc_disabled{
 
       &:after{
-        position: static;
+        content: "";
         display: inline-block;
-        font-size: 12px;
-        margin-left: $grid-gutter-width/3;
-        margin-right: -$grid-gutter-width;
+        position: relative;
+        top: 1px;
+        width: 9px;
+        height: 15px;
+        margin-left: 7px;
+        background: url('../assets/datatable/sort_both.png') no-repeat center right transparent;
       }
+    }
+
+    .sorting_desc:after{
+      background-image: url('../assets/datatable/sort_desc.png') 
+    }
+    .sorting_asc:after{
+      background-image: url('../assets/datatable/sort_asc.png') 
     }
 
     .sorting:after,
     .sorting_asc_disabled:after, 
     .sorting_desc_disabled:after{
-      opacity: 0.4;
+      opacity: 0.3;
     }
 
     .sorting_asc:after,
     .sorting_desc:after{
       opacity: 0.8;
+    }
+
+    th.sorting:hover:after{
+      opacity: 0.6;
     }
   }
 
@@ -72,7 +87,7 @@ table.table-grid {
     color: $text-color;
     font-weight: $font-weight-400;
     border-bottom: 1px solid mix( $panel-default-border, white, 50% );
-    padding: $grid-gutter-width/3;
+    padding: $grid-gutter-width/3 $grid-gutter-width/2;
     text-align: right;
     min-width: 120px;
 
@@ -145,5 +160,15 @@ table.table-grid {
   }
   tr.indent-3 td:first-child{
     padding-left: 100px;  //90px;
+  }
+
+  tr th,
+  tr td{
+    vertical-align: bottom;
+    white-space: nowrap;
+  }
+  tr th:first-child,
+  tr td:first-child{
+    white-space: normal;
   }
 }

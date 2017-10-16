@@ -936,3 +936,6 @@ msgstr "Como se ingresa?"
 
 msgid "¿Quién recauda?"
 msgstr "Quen recauda?"
+
+msgid "Cerrar"
+msgstr "Pechar"

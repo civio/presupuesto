@@ -84,7 +84,7 @@ function columnValueExtractor(item, getter) {
 }
 
 // Create a DataTable with budget data
-function createBudgetGrid(containerName, data, userColumns) {
+function createBudgetGrid(containerName, data, userColumns, i18n) {
   // Add some default settings to the column definitions given by the user
   var columns = [];
   $.each(userColumns, function(i, column) {
@@ -183,7 +183,8 @@ function createBudgetGrid(containerName, data, userColumns) {
     rowCallback: function(row, data) { $(row).addClass('indent-'+data.indent); },
     // i18n (TODO: enable translations)
     language: {
-      zeroRecords: "No hay datos para este año"
+      'zeroRecords': 'No hay datos para este año',
+      'aria': i18n
     }
   });
 

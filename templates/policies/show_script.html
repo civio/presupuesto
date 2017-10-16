@@ -127,7 +127,11 @@
         currentChart  = null,
         i18n          = { 
           'budgeted': '{{ _("Presupuestado.StackedArea") }}',
-          'proposed': '{{ _("Proyecto.StackedArea") }}'
+          'proposed': '{{ _("Proyecto.StackedArea") }}',
+          'table': {
+            'sortAscending': '{{ _(": Clicar para ordenar ascendentemente") }}',
+            'sortDescending': '{{ _(": Clicar para ordenar descendentemente") }}'
+          }
         };
 
     //Update Tab
@@ -188,7 +192,7 @@
 {% if show_actual %}
                             ,executionColumnDef
 {% endif %}
-                          ]);
+                          ], i18n.table);
       }
 
       // Get breakdown

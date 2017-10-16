@@ -967,3 +967,12 @@ msgstr "Who collects it?"
 
 msgid " (cap. %(chapter)s)"
 msgstr " (Ch. %(chapter)s)"
+
+msgid "Cerrar"
+msgstr "Close"
+
+msgid ": Clicar para ordenar ascendentemente"
+msgstr ": Click to sort ascending"
+
+msgid ": Clicar para ordenar descendentemente"
+msgstr ": Click to sort descending"

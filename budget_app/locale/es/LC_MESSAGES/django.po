@@ -928,3 +928,6 @@ msgstr ""
 
 msgid "¿Quién recauda?"
 msgstr ""
+
+msgid "Cerrar"
+msgstr ""
