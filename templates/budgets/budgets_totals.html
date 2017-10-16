@@ -1,59 +1,121 @@
 <!-- Budget Totals -->
 <div class="budget-totals">
-
   <div class="panel totals">
     <div class="panel-title row">
-      <div class="col-sm-4"></div>
-      <div class="col-sm-4 text-right">{{ _('Ingresos') }}</div>
-      <div class="col-sm-4 text-right">{{ _('Gastos') }}</div>
+      <div class="col-sm-6"></div>
+      <div class="col-sm-3 text-right" aria-hidden="true">{{ _('Ingresos') }}</div>
+      <div class="col-sm-3 text-right" aria-hidden="true">{{ _('Gastos') }}</div>
     </div>
-    <div class="panel-content">
+    <ul class="panel-content">
     {% if show_overview_subtotals %}
-      <div class="total-executed row">
-        <div class="col-sm-4">{{ _('Total Ejecutado') }}<div class="execution-status"></div></div>
-        <div class="col-sm-4 text-right"><span class="data-label">{{ _('Ingresos') }}</span><span id="total-incomes-executed"></span></div>
-        <div class="col-sm-4 text-right"><span class="data-label">{{ _('Gastos') }}</span><span id="total-expenses-executed"></span></div>
-      </div>
-      <div class="total-budgeted row">
-        <div class="col-sm-4">{{ _('Total Presupuestado') }}</div>
-        <div class="col-sm-4 text-right"><span class="data-label">{{ _('Ingresos') }}</span><span id="total-incomes-budgeted"></span></div>
-        <div class="col-sm-4 text-right"><span class="data-label">{{ _('Gastos') }}</span><span id="total-expenses-budgeted"></span></div>
-      </div>
-      <div class="chapters chapters-first row">
-        <div class="col-sm-4"><div class="icon-question" data-toggle="tooltip" data-placement="right" title="{{ _('Capítulos I-VII') }}"></div> {{ _('Subtotal no financiero') }}</div>
-        <div class="col-sm-4 text-right"><span class="data-label">{{ _('Ingresos') }}</span><span id="chapters-1-7-incomes"></span></div>
-        <div class="col-sm-4 text-right"><span class="data-label">{{ _('Gastos') }}</span><span id="chapters-1-7-expenses"></span></div>
-      </div>
-      <div class="chapters chapters-sub chapters-sub-first row">
-        <div class="col-sm-4"><div class="icon-question" data-toggle="tooltip" data-placement="right" title="{{ _('Capítulos I-V') }}"></div> {{ _('Subtotal corriente') }}</div>
-        <div class="col-sm-4 text-right"><span class="data-label">{{ _('Ingresos') }}</span><span id="chapters-1-5-incomes"></span></div>
-        <div class="col-sm-4 text-right"><span class="data-label">{{ _('Gastos') }}</span><span id="chapters-1-5-expenses"></span></div>
-      </div>
-      <div class="chapters chapters-sub row">
-        <div class="col-sm-4"><div class="icon-question" data-toggle="tooltip" data-placement="right" title="{{ _('Capítulos VI-VII') }}"></div> {{ _('Subtotal de capital') }}</div>
-        <div class="col-sm-4 text-right"><span class="data-label">{{ _('Ingresos') }}</span><span id="chapters-6-7-incomes"></span></div>
-        <div class="col-sm-4 text-right"><span class="data-label">{{ _('Gastos') }}</span><span id="chapters-6-7-expenses"></span></div>
-      </div>
-      <div class="chapters row">
-        <div class="col-sm-4"><div class="icon-question" data-toggle="tooltip" data-placement="right" title="{{ _('Capítulos VIII-IX') }}"></div> {{ _('Subtotal financiero') }}</div>
-        <div class="col-sm-4 text-right"><span class="data-label">{{ _('Ingresos') }}</span><span id="chapters-8-9-incomes"></span></div>
-        <div class="col-sm-4 text-right"><span class="data-label">{{ _('Gastos') }}</span><span id="chapters-8-9-expenses"></span></div>
-      </div>
+      <li class="total-executed">
+        <div>{{ _('Total Ejecutado') }} <span class="execution-status"></span></div>
+        <ul>
+          <li>
+            <p class="data-label">{{ _('Ingresos') }}</p>
+            <p id="total-incomes-executed"></p>
+          </li>
+          <li>
+            <p class="data-label">{{ _('Gastos') }}</p>
+            <p id="total-expenses-executed"></p>
+          </li>
+        </ul>
+      </li>
+      <li class="total-budgeted">
+        <div>{{ _('Total Presupuestado') }}</div>
+        <ul>
+          <li>
+            <p class="data-label">{{ _('Ingresos') }}</p>
+            <p id="total-incomes-budgeted"></p>
+          </li>
+          <li>
+            <p class="data-label">{{ _('Gastos') }}</p>
+            <p id="total-expenses-budgeted"></p>
+          </li>
+        </ul>
+      </li>
+      <li class="chapters chapters-first">
+        <div><div class="icon-question" data-toggle="tooltip" data-placement="right" title="{{ _('Capítulos I-VII') }}"></div> {{ _('Subtotal no financiero') }}</div>
+        <ul>
+          <li>
+            <p class="data-label">{{ _('Ingresos') }}</p>
+            <p id="chapters-1-7-incomes"></p>
+          </li>
+          <li>
+            <p class="data-label">{{ _('Gastos') }}</p>
+            <p id="chapters-1-7-expenses"></p>
+          </li>
+        </ul>
+      </li>
+      <li class="chapters chapters-sub chapters-sub-first">
+        <div><div class="icon-question" data-toggle="tooltip" data-placement="right" title="{{ _('Capítulos I-V') }}"></div> {{ _('Subtotal corriente') }}</div>
+        <ul>
+          <li>
+            <p class="data-label">{{ _('Ingresos') }}</p>
+            <p id="chapters-1-5-incomes"></p>
+          </li>
+          <li>
+            <p class="data-label">{{ _('Gastos') }}</p>
+            <p id="chapters-1-5-expenses"></p>
+          </li>
+        </ul>
+      </li>
+      <li class="chapters chapters-sub">
+        <div><div class="icon-question" data-toggle="tooltip" data-placement="right" title="{{ _('Capítulos VI-VII') }}"></div> {{ _('Subtotal de capital') }}</div>
+        <ul>
+          <li>
+            <p class="data-label">{{ _('Ingresos') }}</p>
+            <p id="chapters-6-7-incomes"></p>
+          </li>
+          <li>
+            <p class="data-label">{{ _('Gastos') }}</p>
+            <p id="chapters-6-7-expenses"></p>
+          </li>
+        </ul>
+      </li>
+      <li class="chapters">
+        <div><div class="icon-question" data-toggle="tooltip" data-placement="right" title="{{ _('Capítulos VIII-IX') }}"></div> {{ _('Subtotal financiero') }}</div>
+        <ul>
+          <li>
+            <p class="data-label">{{ _('Ingresos') }}</p>
+            <p id="chapters-8-9-incomes"></p>
+          </li>
+          <li>
+            <p class="data-label">{{ _('Gastos') }}</p>
+            <p id="chapters-8-9-expenses"></p>
+          </li>
+        </ul>
+      </li>
     {% else %}
-      <div class="total-executed row">
-        <div class="col-sm-4">{{ _('Total Ejecutado') }}<div class="execution-status"></div></div>
-        <div class="col-sm-4 text-right"><span class="data-label">{{ _('Ingresos') }}</span><span id="total-chart-incomes-executed"></span></div>
-        <div class="col-sm-4 text-right"><span class="data-label">{{ _('Gastos') }}</span><span id="total-chart-expenses-executed"></span></div>
-      </div>
-      <div class="total-budgeted row">
-        <div class="col-sm-4">{{ _('Total Presupuestado') }}</div>
-        <div class="col-sm-4 text-right"><span class="data-label">{{ _('Ingresos') }}</span><span id="total-chart-incomes-budgeted"></span></div>
-        <div class="col-sm-4 text-right"><span class="data-label">{{ _('Gastos') }}</span><span id="total-chart-expenses-budgeted"></span></div>
-      </div>
+      <li class="total-executed">
+        <div>{{ _('Total Ejecutado') }}<div class="execution-status"></div></div>
+        <ul>
+          <li>
+            <p class="data-label">{{ _('Ingresos') }}</p>
+            <p id="total-chart-incomes-executed"></p>
+          </li>
+          <li>
+            <p class="data-label">{{ _('Gastos') }}</p>
+            <p id="total-chart-expenses-executed"></p>
+          </li>
+        </ul>
+      </li>
+      <li class="total-budgeted">
+        <div>{{ _('Total Presupuestado') }}</div>
+        <ul>
+          <li>
+            <p class="data-label">{{ _('Ingresos') }}</p>
+            <p id="total-chart-incomes-budgeted"></p>
+          </li>
+          <li>
+            <p class="data-label">{{ _('Gastos') }}</p>
+            <p id="total-chart-expenses-budgeted"></p>
+          </li>
+        </ul>
+      </li>
     {% endif %}
-    </div>
+    </ul>
   </div>
-
   <p class="text-center"><small>
   {% if show_actual and show_overview_subtotals %}
   {{ _('El cálculo de los subtotales utiliza las cifras de ejecución para los años cuya liquidación está cerrada, o el presupuesto aprobado en caso contrario.') }}

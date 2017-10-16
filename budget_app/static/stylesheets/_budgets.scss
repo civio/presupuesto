@@ -72,7 +72,7 @@
 
 
 // Budgets Data Panel
-.budget-data{
+#budgets-totals{
   background: $page-header-bg;
 
   .data-panel{
@@ -90,45 +90,28 @@
 
     .panel-title{
       display: none;
-
-      /*
-      .col-sm-4{
-        padding-right: 0;
-        padding-left: 0;
-      }
-      */
     }
 
     .panel-content{
       padding-top: $grid-gutter-width/6;
       padding-bottom: 0;
 
-      .row{
-        margin-left:  0;
-        margin-right: 0;
-        padding-bottom: $grid-gutter-width/3;
+      > li{
+        padding: $grid-gutter-width/3 0;
         border-top: 1px solid mix( $panel-default-border, white, 40% );
-      }
-
-      .col-sm-4{
-        padding: $grid-gutter-width/3 0 0;
       }
 
       .total-executed{
         border: none;
         font-weight: $font-weight-600;
         margin-bottom: 0;
-
-        > .col-sm-4{
-          padding-bottom: 0;
-        }
       }
 
       .total-budgeted{
         border-top: none;
       }
 
-      .chapters{
+      > li.chapters{
         text-transform: none;
       }
       .chapters-sub{
@@ -146,6 +129,9 @@
   }
 }
 
+#totals-panel .indicators .panel-content .row{
+  padding: 0;
+}
 
 @media (min-width: $screen-sm-min) {
 
@@ -153,17 +139,28 @@
     display: block;
   }
   
-  .budget-data .budget-totals{
+  #budgets-totals .budget-totals{
     .panel-title{
       display: block;
     }
     .panel-content{
-      .row{
+      > li{
         padding-bottom: 0;
       }
-      .col-sm-4{
-        padding: $grid-gutter-width/3;
+      > li.chapters,
+      > li.total-executed{
+        padding-bottom: $grid-gutter-width/6;
       }
     }
   }
+
+  #totals-panel .indicators .panel-content {
+    > li .col-sm-8{
+      width: 66.66667%;
+    }
+    > li .col-sm-4{
+      width: 33.33333%;
+    }
+  }
+
 }

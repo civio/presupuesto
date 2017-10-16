@@ -210,6 +210,7 @@
     }
 
     > li{
+      clear: both;
       padding: $grid-gutter-width/2 0;
 
       > ul > li{
