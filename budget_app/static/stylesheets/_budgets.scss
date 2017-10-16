@@ -93,8 +93,6 @@
     }
 
     .panel-content{
-      padding-top: $grid-gutter-width/6;
-      padding-bottom: 0;
 
       > li{
         padding: $grid-gutter-width/3 0;
@@ -146,9 +144,12 @@
     .panel-content{
       > li{
         padding-bottom: 0;
+
+        &:nth-child(2){
+          padding-bottom: $grid-gutter-width/6;
+        }
       }
-      > li.chapters,
-      > li.total-executed{
+      > li.chapters{
         padding-bottom: $grid-gutter-width/6;
       }
     }
