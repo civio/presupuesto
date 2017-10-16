@@ -10,7 +10,7 @@
   <div class="container">
     <h2 class="page-title">{{ _('Ingresos y gastos en el Gobierno de Aragón') }}</h2>
 
-    <div class="sankey-container">
+    <div class="sankey-container{% if not overview_use_new_vis %} sankey-old{% endif %}">
       <div class="sankey-labels">
         {% if overview_use_new_vis %}
         <div class="sankey-label-incomes">
@@ -29,7 +29,7 @@
         {% endif %}
       </div>
 
-      <div class="sankey chart-container{% if not overview_use_new_vis %} sankey-old{% endif %}" id="chart">
+      <div class="sankey chart-container" id="chart">
         <svg aria-hidden="true">
           {% if overview_use_new_vis %}
           <defs>

@@ -204,7 +204,23 @@ $sankey-expense-color-dark: darken($sankey-expense-color, 10%);
 // Old Sankey
 
 .sankey-old{
-  padding-bottom: 0;
+  .chart-container{
+    padding-bottom: 0;
+  }
+
+  // Hide aria label
+  .sankey-labels{
+    p{
+      margin-bottom: 0;
+    }
+    .sankey-label-incomes,
+    .sankey-label-expenses{
+      > a{
+        height: auto;
+        overflow: visible;
+      }
+    }
+  }
 
   .link,
   .link-execution{
