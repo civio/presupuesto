@@ -10,170 +10,169 @@ $gray-light:            lighten($gray-base, 46.7%) !default; // #777
 $gray-lighter:          lighten($gray-base, 93.5%) !default; // #eee
 $gray-lightest:         lighten($gray-base, 96%) !default;
 
-$text-color:            #414141;
+$text-color:            #414141 !default;
 
-$brand-primary:         #d32e12;
-$brand-secondary:       #49647A;
-$brand-terciary:        #DDCFC1;
+$brand-primary:         #d32e12 !default;
+$brand-secondary:       #49647A !default;
+$brand-terciary:        #DDCFC1 !default;
 
-/*
-$brand-primary:         #3F1712;
-$brand-secondary:       #717F4C;
-$brand-terciary:        #FCEEAE;
-*/
-
-$link-color:            $brand-primary;
-$link-hover-color:      $link-color;
-$link-hover-decoration: underline;
+$link-color:            $brand-primary !default;
+$link-hover-color:      $link-color !default;
+$link-hover-decoration: underline !default;
 
 
 // Typography
 // -------------
 
-$font-family-sans-serif:  "Source Sans Pro", Helvetica, Arial, sans-serif;
-$font-family-serif:       Georgia, "Times New Roman", Times, serif;
-$font-family-base:        $font-family-sans-serif;
+$font-family-sans-serif:  "Source Sans Pro", Helvetica, Arial, sans-serif !default;
+$font-family-serif:       Georgia, "Times New Roman", Times, serif !default;
+$font-family-base:        $font-family-sans-serif !default;
 
-$font-weight-300:         300;
-$font-weight-400:         400;
-$font-weight-600:         600; 
-$font-weight-700:         700; 
+$font-weight-300:         300 !default;
+$font-weight-400:         400 !default;
+$font-weight-600:         600 !default; 
+$font-weight-700:         700 !default; 
 
-$headings-font-weight:    $font-weight-600;
+$headings-font-weight:    $font-weight-600 !default;
 
 // Container sizes
 // -------------
 
-$grid-gutter-width:        30px;
+$grid-gutter-width:        30px !default;
 
 // Large screen / wide desktop
-$container-large-desktop:  (1050px + $grid-gutter-width);
+$container-large-desktop:  (1050px + $grid-gutter-width) !default;
 
 
 // Main Entity Logo
 // -------------
 
-$main-entity-logo-width:   200px;
-$main-entity-logo-height:  200px;
+$main-entity-logo-width:   200px !default;
+$main-entity-logo-height:  200px !default;
 
 
 // Navbar
 // -------------
 
-$navbar-border-radius: 0;
+$navbar-border-radius: 0 !default;
 
 // Point at which the navbar becomes uncollapsed
 // $grid-float-breakpoint: 992px;  // $screen-md
 
-$dvmi-menu-length: 5;  // Number of items in main menu
+$dvmi-menu-length: 5 !default;  // Number of items in main menu
 
 // Navbar background color
-$navbar-default-bg:       $brand-primary;
-$navbar-default-bg-hover: mix( $navbar-default-bg, white, 75% );
+$navbar-default-bg:       $brand-primary !default;
+$navbar-default-bg-hover: mix( $navbar-default-bg, white, 75% ) !default;
 
 // Navbar options text color
-$dvmi-navbar-color: mix( $brand-primary, white, 10% );
+$dvmi-navbar-color: mix( $brand-primary, white, 10% ) !default;
 
-$navbar-default-link-active-color:    $brand-primary;
-$navbar-default-link-active-bg:       $brand-terciary;
+$navbar-default-link-active-color:    $brand-primary !default;
+$navbar-default-link-active-bg:       $brand-terciary !default;
 
 
 // Footer
 // --------------
 
-$footer-color: white;
-$footer-bg: $brand-primary;
+$footer-color: white !default;
+$footer-bg: $brand-primary !default;
 
 
 // Page Header
 // --------------
 
-$page-header-bg:            mix( $brand-secondary, white, 8% );
-$page-header-border-color:  mix( $brand-secondary, white, 70% );
+$page-header-bg:            mix( $brand-secondary, white, 8% ) !default;
+$page-header-border-color:  mix( $brand-secondary, white, 70% ) !default;
 
 
 // Panels
 // ---------------
 
-$panel-default-border:      $brand-primary;
-$panel-default-heading-bg:  $brand-primary;
+$panel-default-border:      $brand-primary !default;
+$panel-default-heading-bg:  $brand-primary !default;
 
 
 // Breadcrumbs
 // --------------
 
-$breadcrumb-padding-vertical:   $grid-gutter-width/2;
-$breadcrumb-padding-horizontal: $grid-gutter-width/2;
-$breadcrumb-bg:                 transparent;
-$breadcrumb-color:              $gray-light;
-$breadcrumb-separator:          "»";
+$breadcrumb-padding-vertical:   $grid-gutter-width/2 !default;
+$breadcrumb-padding-horizontal: $grid-gutter-width/2 !default;
+$breadcrumb-bg:                 transparent !default;
+$breadcrumb-color:              $gray-light !default;
+$breadcrumb-separator:          "»" !default;
 
 
 // Popover
 // --------------
 
-$popover-max-width:                   250px;
+$popover-max-width:                   250px !default;
 
-$popover-border-color:                transparent;
-$popover-fallback-border-color:       transparent;
+$popover-border-color:                transparent !default;
+$popover-fallback-border-color:       transparent !default;
 
-$popover-arrow-width:                 6px;
+$popover-arrow-width:                 6px !default;
 
-$popover-arrow-outer-color:           white;
-$popover-arrow-outer-fallback-color:  white;
+$popover-arrow-outer-color:           white !default;
+$popover-arrow-outer-fallback-color:  white !default;
 
 
 // Tooltips
 // --------------
 
-$tooltip-color:               white;
-$tooltip-bg:                  $gray;
-$tooltip-opacity:             1;
+$tooltip-color:               white !default;
+$tooltip-bg:                  $gray !default;
+$tooltip-opacity:             1 !default;
 
 // Modals
 // --------------
 
 //** Modal backdrop opacity
-$modal-backdrop-opacity:      .75;
+$modal-backdrop-opacity:      .75 !default;
 
 
 // Pagination
 // --------------
 
-$pagination-color:                     $brand-secondary;
-$pagination-hover-color:               $brand-secondary;
+$pagination-color:                     $brand-secondary !default;
+$pagination-hover-color:               $brand-secondary !default;
 
-$pagination-active-bg:                 $brand-secondary;
-$pagination-active-border:             $brand-secondary;
+$pagination-active-bg:                 $brand-secondary !default;
+$pagination-active-border:             $brand-secondary !default;
 
 
 // Search Form
 // --------------
 
-$search-form-bg: $brand-terciary;
+$search-form-bg: $brand-terciary !default;
 
 
 // Budget Stream
 // --------------
 
-$budget-stream-color: $brand-secondary;
+$budget-stream-color: $brand-secondary !default;
 
 
 // Year Slider
 // --------------
 
-$slider-bg:     $page-header-bg;
-$slider-color:  $brand-secondary;
+$slider-bg:     $page-header-bg !default;
+$slider-color:  $brand-secondary !default;
 
 
 // Data Sources
 // --------------
 
-$data-sources-color: $brand-terciary;
+$data-sources-color: $brand-terciary !default;
 
 
 // Sankey Viz
 // --------------
 
-$sankey-income-color:   $brand-primary;
-$sankey-expense-color:  complement($sankey-income-color);
+// Old Sankey
+$sankey-budget-color:     $brand-primary !default;
+$sankey-execution-color:  complement($brand-primary) !default;
+
+// New Sankey
+$sankey-income-color:   $brand-primary !default;
+$sankey-expense-color:  complement($brand-primary) !default;

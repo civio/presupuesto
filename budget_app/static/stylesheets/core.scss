@@ -3,6 +3,9 @@
 @import "dist/chosen";
 //@import "dist/datatables"; // We use DataTable plugin but we don't need it's styles
 
+// Default variables
+@import "_variables";
+
 // Bootstrap
 @import "_bootstrap";
 
