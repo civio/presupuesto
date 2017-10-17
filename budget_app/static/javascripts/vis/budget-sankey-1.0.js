@@ -290,12 +290,12 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
   };
 
   this.resize = function(){
-  
+
     // Avoid redraw when container width keeps the same    
     if( width == $(selector).width() - margin.left - margin.right ) return;
 
-    // Remove svg & redraw
-    d3.select(selector).select("svg").remove();
+    // Remove svg content & redraw svg
+    d3.select(selector).select('svg').selectAll('*').remove();
     _this.draw(selector, uiState);
   };
 
