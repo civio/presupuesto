@@ -10,7 +10,11 @@
   <div class="policies-content">
 
       <a href="{{ request.path|urlencode }}" target="_blank">
+        {% if entity_name %}
+        <h2 class="page-title">{{ entity_name + ': ' + _('Políticas') }}</h2>
+        {% else %}
         <h2 class="page-title">{{ _('Políticas') }}</h2>
+        {% endif %}
       </a>
 
       <!-- Policies Chart -->

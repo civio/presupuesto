@@ -12,6 +12,13 @@ def entities_show_helper(request, id, title, render_callback=None):
     entity = Entity.objects.filter(code=id)[0]
     set_title(c, entity.name)
 
+    # Set the entity name
+    # Note that this variable is only set when accessing the URL for a particular entity,
+    # not when accessing the main policies page, which picks the main entity automatically.
+    # This controls whether the template shows the entity name (which assumes there're
+    # multiple entities) or not (assumes only one entity). See #105.
+    set_entity_name(c, entity.name)
+
     return entities_show(request, c, entity, render_callback)
 
 

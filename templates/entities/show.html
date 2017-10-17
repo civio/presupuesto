@@ -19,7 +19,11 @@
   <!-- Politicas Header -->
   <div class="policies-header section-header">
     
+    {% if entity_name %}
+    <h2 class="page-title">{{ entity_name + ': ' + _('Políticas') }}</h2>
+    {% else %}
     <h2 class="page-title">{{ _('Políticas') }}</h2>
+    {% endif %}
 
     <ul id="tabs" class="nav nav-tabs nav-tabs-centered" role="tablist">
       <li role="presentation">
