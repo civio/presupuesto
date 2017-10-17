@@ -21,7 +21,7 @@ function BudgetStackedChart(_selector, _stats, _colorScale, i18n) {
   // The ticks in the Y axis sometimes get too long, so we show them as thousands/millions
   var formatAxis = function(d) {
     if (uiState.format === 'nominal' || uiState.format === 'real') {
-      return Formatter.amountSimplified(100*d, .1); // Formatter.amountSimplified expect value in cents
+      return Formatter.amountSimplified(100*d); // Formatter.amountSimplified expect value in cents
     } else {
       return Formatter.amount(d);
     }

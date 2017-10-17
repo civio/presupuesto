@@ -73,10 +73,11 @@ var Formatter = (function() {
     if (value == null) return '';
     value = Number(value/100); // Also note value is in cents originally
     if (value >= 100000000) {
+      var decimals = (value >= 1000000000) ? 0 : (value.toString()[1] == '0') ? 0 : .1;  // Use 1 decimal between 1 mill. & 10 mill. if is not round
       if ($('html').attr('lang') == 'en') {
-        return that.amountDecimal(value/1000000, 0)+' '+millions;
+        return that.amountDecimal(value/1000000, decimals)+' '+millions;
       } else {
-        return that.amountDecimal(value/1000000, 0).replace('€',millions+' €');
+        return that.amountDecimal(value/1000000, decimals).replace('€',millions+' €');
       }
     } else if (value >= 100000) {
       if ($('html').attr('lang') == 'en') {
