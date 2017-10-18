@@ -68,8 +68,10 @@
       <table id="myGrid" class="table-grid" width="100%"></table>
 
       <!-- Panel Downloads -->
-{# FIXME: Disabled temporarily for subprogrammes #}
+{# FIXME: Disabled temporarily for subprogrammes. See #346 #}
 {% if not subprogramme %}
+{# XXX: Disable CSV downloads for entities. See #105 #}
+{% if not entity_name %}
       <div class="panel-downloads">
     {% if full_breakdown %}
       {% for tab in ['functional', 'economic', 'funding', 'institutional'] %}
@@ -99,6 +101,7 @@
       {% endif %}
     {% endif %}
       </div>
+{% endif %}
 {% endif %}
     </div>
 
