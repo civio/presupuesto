@@ -104,8 +104,13 @@ def programmes_show_helper(request, c, entity, id, title, render_callback=None):
     set_starting_tab(c, 'functional' if c['use_subprogrammes'] else 'economic')
 
     # Back button: go back to parent policy
+    if c['entity']:
+        back_url = reverse('budget_app.views.entities_policies_show', args=[c['entity'].code, programme.policy, c['policy'].slug()])
+    else:
+        back_url = reverse('budget_app.views.policies_show', args=[programme.policy, c['policy'].slug()])
+
     c['back_button'] = {
-        'url': reverse('budget_app.views.policies_show', args=[programme.policy, c['policy'].slug()]),
+        'url': back_url,
         'description': c['descriptions']['functional'].get(programme.policy)
     }
 

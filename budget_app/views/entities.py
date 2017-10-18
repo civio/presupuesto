@@ -117,7 +117,7 @@ def _fetch_entity(c, id):
     # Note that these variables are only set when accessing the URL for a particular entity,
     # not when accessing the main policies page, which picks the main entity automatically.
     # This controls whether the template shows the entity name (which assumes there're
-    # multiple entities) or not (assumes only one entity). See #105.
-    set_entity_details(c, entity.code, entity.name)
+    # multiple entities) or not (assumes only one entity), for example. See #105.
+    set_entity(c, entity)
 
     return entity
