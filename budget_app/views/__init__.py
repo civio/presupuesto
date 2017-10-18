@@ -1,6 +1,8 @@
 from budgets import budgets
 from policies import policies, policies_show, programmes_show, subprogrammes_show, income_articles_show, expense_articles_show
-from entities import entities_show, entities_show_helper
+from policies_helpers import policies_show_helper, programmes_show_helper, articles_show_helper
+from entities import entities_show, entities_show_helper, entities_policies, entities_policies_show, entities_programmes, entities_programmes_show
+from entities import entities_income_articles, entities_income_articles_show, entities_expense_articles, entities_expense_articles_show
 from sections import sections_show
 from tax_receipt import tax_receipt
 from terms import terms

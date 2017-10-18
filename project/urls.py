@@ -66,6 +66,14 @@ budget_app_urlpatterns += url_patterns('budget_app.views',
     url(r'^secciones/(?P<id>[0-9A-Z]+)/(?P<title>.+)$', 'sections_show', name="sections-show"),
 
     # Child entities
+    url(r'^entidades/(?P<id>[0-9A-Z]+)/politicas$', 'entities_policies', name="entities-policies"),
+    url(r'^entidades/(?P<id>[0-9A-Z]+)/politicas/(?P<policy_id>[0-9]+)/(?P<title>.+)$', 'entities_policies_show', name="entities-policies-show"),
+    url(r'^entidades/(?P<id>[0-9A-Z]+)/programas$', 'entities_programmes', name="entities-programmes"),
+    url(r'^entidades/(?P<id>[0-9A-Z]+)/programas/(?P<programme_id>[0-9A-Z]+)/(?P<title>.+)$', 'entities_programmes_show', name="entities-programmes-show"),
+    url(r'^entidades/(?P<id>[0-9A-Z]+)/articulos/i$', 'entities_income_articles_show', name="entities-income-articles"),
+    url(r'^entidades/(?P<id>[0-9A-Z]+)/articulos/i/(?P<article_id>[0-9]+)/(?P<title>.+)$', 'entities_income_articles_show', name="entities-income-articles-show"),
+    url(r'^entidades/(?P<id>[0-9A-Z]+)/articulos/g$', 'entities_expense_articles_show', name="entities-expense-articles"),
+    url(r'^entidades/(?P<id>[0-9A-Z]+)/articulos/g/(?P<article_id>[0-9]+)/(?P<title>.+)$', 'entities_expense_articles_show', name="entities-expense-articles-show"),
     url(r'^entidades/(?P<id>[0-9A-Z]+)/(?P<title>.+)$', 'entities_show_helper', name="entities-show"),
 
     # Counties

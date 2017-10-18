@@ -1,24 +1,14 @@
 # -*- coding: UTF-8 -*-
+
 from budget_app.models import BudgetBreakdown, Entity, EconomicCategory
+from policies_helpers import policies_show_helper, programmes_show_helper, articles_show_helper
 from helpers import *
 
 # XXX: This should be called entities_show, but the name is taken, for historical
 # reasons, and it's a bit of a pain to change now.
 def entities_show_helper(request, id, title, render_callback=None):
-    # Get request context
     c = get_context(request, css_class='body-entities', title='')
-
-    # Retrieve the entity to display
-    entity = Entity.objects.filter(code=id)[0]
-    set_title(c, entity.name)
-
-    # Set the entity name
-    # Note that this variable is only set when accessing the URL for a particular entity,
-    # not when accessing the main policies page, which picks the main entity automatically.
-    # This controls whether the template shows the entity name (which assumes there're
-    # multiple entities) or not (assumes only one entity). See #105.
-    set_entity_name(c, entity.name)
-
+    entity = _fetch_entity(c, id)
     return entities_show(request, c, entity, render_callback)
 
 
@@ -75,3 +65,59 @@ def entities_show(request, c, entity, render_callback=None):
     template = 'entities/show_widget.html' if isWidget(request) else 'entities/show.html'
 
     return render(c, render_callback, template)
+
+
+# XXX: This function only exists so the Javascript at policy_paths.html
+# can build the full URL. Doesn't get called.
+def entities_policies(request, id, render_callback=None):
+    return entities_show_helper(request, id, '', render_callback)
+
+def entities_policies_show(request, id, policy_id, title, render_callback=None):
+    c = get_context(request, css_class='body-entities body-policies', title='')
+    entity = _fetch_entity(c, id)
+    return policies_show_helper(request, c, entity, policy_id, title, render_callback)
+
+
+# XXX: This function only exists so the Javascript at policy_paths.html
+# can build the full URL. Doesn't get called.
+def entities_programmes(request, id, render_callback=None):
+    return entities_show_helper(request, id, '', render_callback)
+
+def entities_programmes_show(request, id, programme_id, title, render_callback=None):
+    c = get_context(request, css_class='body-entities body-policies body-programmes', title='')
+    entity = _fetch_entity(c, id)
+    return programmes_show_helper(request, c, entity, programme_id, title, render_callback)
+
+
+# XXX: This function only exists so the Javascript at policy_paths.html
+# can build the full URL. Doesn't get called.
+def entities_income_articles(request, id, render_callback=None):
+    return entities_show_helper(request, id, '', render_callback)
+
+def entities_expense_articles(request, id, render_callback=None):
+    return entities_show_helper(request, id, '', render_callback)
+
+def entities_income_articles_show(request, id, article_id, title, render_callback=None):
+    c = get_context(request, css_class='body-entities body-articles', title='')
+    entity = _fetch_entity(c, id)
+    return articles_show_helper(request, c, entity, article_id, title, 'income', render_callback)
+
+def entities_expense_articles_show(request, id, article_id, title, render_callback=None):
+    c = get_context(request, css_class='body-entities body-articles', title='')
+    entity = _fetch_entity(c, id)
+    return articles_show_helper(request, c, entity, article_id, title, 'expense', render_callback)
+
+
+def _fetch_entity(c, id):
+    # Retrieve the entity to display
+    entity = Entity.objects.filter(code=id)[0]
+    set_title(c, entity.name)
+
+    # Set the entity id and name
+    # Note that these variables are only set when accessing the URL for a particular entity,
+    # not when accessing the main policies page, which picks the main entity automatically.
+    # This controls whether the template shows the entity name (which assumes there're
+    # multiple entities) or not (assumes only one entity). See #105.
+    set_entity_details(c, entity.code, entity.name)
+
+    return entity

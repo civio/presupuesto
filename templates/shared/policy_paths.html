@@ -16,7 +16,12 @@ function parameterize(s) {
 // Note: we ignore policy ids that are a complex object, which happens when we have
 // a custom Sankey chart: we default to the parent policies page.
 function getPolicyLink(policy_id, title) {
+  {% if entity_id %}
+  var url = "{{ url('budget_app.views.entities_policies', entity_id) }}";
+  {% else %}
   var url = "{{ url('budget_app.views.policies') }}";
+  {% endif %}
+
   if ( policy_id && typeof policy_id!="object" )
     url = url + '/'+policy_id+'/'+parameterize(title);
   return url;
@@ -24,7 +29,13 @@ function getPolicyLink(policy_id, title) {
 
 // Return path to a programme, inside a policy page
 function getProgrammeLink(programme_id, title) {
-  var url = "{{ url('budget_app.views.programmes_show') }}/"+programme_id+'/'+parameterize(title);
+  {% if entity_id %}
+  var url = "{{ url('budget_app.views.entities_programmes', entity_id) }}";
+  {% else %}
+  var url = "{{ url('budget_app.views.programmes_show') }}";
+  {% endif %}
+
+  url = url + '/' + programme_id + '/' + parameterize(title);
   return url;
 }
 
@@ -37,18 +48,33 @@ function getSubprogrammeLink(subprogramme_id, title) {
 
 // Return path to article pages
 function getExpenseArticleLink(article_id, title) {
-  if ( article_id )
-    return "{{ url('budget_app.views.expense_articles_show') }}/"+article_id+'/'+parameterize(title);
-  else
+  if ( article_id ) {
+    {% if entity_id %}
+    var url = "{{ url('budget_app.views.entities_expense_articles_show', entity_id) }}"
+    {% else %}
+    var url = "{{ url('budget_app.views.expense_articles_show') }}";
+    {% endif %}
+
+    return url + '/' + article_id + '/' + parameterize(title);
+  } else {
     return "{{ url('budget_app.views.policies') }}#view=expense";
+  }
 }
+
 function getIncomeArticleLink(article_id, title) {
   // Note: we ignore policy ids that are a complex object, which happens when we have
   // a custom Sankey chart: we default to the parent policies page.
-  if ( article_id && typeof article_id!="object" )
-    return "{{ url('budget_app.views.income_articles_show') }}/"+article_id+'/'+parameterize(title);
-  else
+  if ( article_id && typeof article_id!="object" ) {
+    {% if entity_id %}
+    var url = "{{ url('budget_app.views.entities_income_articles_show', entity_id) }}"
+    {% else %}
+    var url = "{{ url('budget_app.views.income_articles_show') }}";
+    {% endif %}
+
+    return url + '/' + article_id + '/' + parameterize(title);
+  } else {
     return "{{ url('budget_app.views.policies') }}#view=income";
+  }
 }
 
 
