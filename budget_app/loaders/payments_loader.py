@@ -23,8 +23,9 @@ class PaymentsLoader:
         Payment.objects.filter(budget=budget).delete()
 
         # Store the data in the database
-        print u"Cargando pagos para entidad '%s' año %s..." % (entity.name, year)
-        self.load_items(budget, items)
+        if len(items) > 0:
+            print u"Cargando pagos para entidad '%s' año %s..." % (entity.name, year)
+            self.load_items(budget, items)
 
 
     def parse_data(self, filename):
@@ -41,6 +42,8 @@ class PaymentsLoader:
 
                 # Finally, we have useful data
                 items.append(line)
+        else:
+            print "No se encontró el fichero %s" % filename
 
         return items
 
