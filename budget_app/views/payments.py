@@ -14,18 +14,18 @@ class MockPayment(object):
     pass
 
 def payments(request, render_callback=None):
-    # Get request context
     c = get_context(request, css_class='body-payments', title=_('Inversiones y pagos'))
+    main_entity = get_main_entity(c)
+    return payments_helper(request, c, main_entity, render_callback)
 
-    # Retrieve the entity to display
-    c['entity'] = get_main_entity(c)
-
+def payments_helper(request, c, entity, render_callback=None):
     # Retrieve the information needed for the search form: years, areas and payees
-    __set_year_range(c)
-    c['payees'] = Payment.objects.get_payees(c['entity'])
-    c['areas'] = Payment.objects.get_areas(c['entity'])
+    set_entity(c, entity)
+    __set_year_range(c, entity)
+    c['payees'] = Payment.objects.get_payees(entity)
+    c['areas'] = Payment.objects.get_areas(entity)
 
-    __populate_summary_breakdowns(c, c['first_year'], c['last_year'])
+    __populate_summary_breakdowns(c, entity, c['first_year'], c['last_year'])
 
     # Needed for the footnote on inflation
     populate_stats(c)
@@ -38,17 +38,18 @@ def payments(request, render_callback=None):
 
 
 def payment_search(request, render_callback=None):
+    c = get_context(request)
+    main_entity = get_main_entity(c)
+    return payment_search_helper(request, c, main_entity, render_callback)
+
+def payment_search_helper(request, c, entity, render_callback=None):
+    set_entity(c, entity)
+
     # Get search parameters
     area = request.GET.get('area', '')
     payee = request.GET.get('payee', '')
     description = request.GET.get('description', '')
     years = request.GET.get('date', '')
-
-    # Get request context
-    c = get_context(request)
-
-    # Retrieve the entity to display
-    c['entity'] = get_main_entity(c)
 
     # Get year range
     if ( years != '' ):
@@ -80,7 +81,7 @@ def payment_search(request, render_callback=None):
     # to have the whole list. Maybe we shouldn't offer those full-blown files in the UI,
     # but at the moment we do, so we deal with it.
     if len(query_arguments) == 1 and not render_callback:
-        __populate_summary_breakdowns(c, from_year, to_year)
+        __populate_summary_breakdowns(c, c['entity'], from_year, to_year)
 
     else:
         # We add the year range criteria...
@@ -104,13 +105,13 @@ def payment_search(request, render_callback=None):
         return render_to_response('payments/search.json', c, content_type="application/json")
 
 
-def __populate_summary_breakdowns(c, from_year, to_year):
+def __populate_summary_breakdowns(c, entity, from_year, to_year):
     payments_count = 0
     total_amount = 0
 
     # Get the list of biggest payees
     c['payee_breakdown'] = BudgetBreakdown(['payee'])
-    for payee in Payment.objects.get_biggest_payees(c['entity'], from_year, to_year, 50):
+    for payee in Payment.objects.get_biggest_payees(entity, from_year, to_year, 50):
         # Wrap the database result in an object, so it can be handled by BudgetBreakdown
         payment = MockPayment()
         payment.payee = payee[0]
@@ -123,7 +124,7 @@ def __populate_summary_breakdowns(c, from_year, to_year):
 
     # Get the area breakdown
     c['area_breakdown'] = BudgetBreakdown(['area'])
-    for area in Payment.objects.get_area_breakdown(c['entity'], from_year, to_year):
+    for area in Payment.objects.get_area_breakdown(entity, from_year, to_year):
         # Wrap the database result in an object, so it can be handled by BudgetBreakdown
         payment = MockPayment()
         payment.area = area[0]
@@ -173,8 +174,8 @@ def __populate_detailed_breakdowns(c):
     c['total_amount'] = c['payee_breakdown'].total_expense['pagos'] if payments_count > 0 else 0
     c['is_summary'] = False
 
-def __set_year_range(c):
-    c['years'] = list(Payment.objects.get_years(c['entity']))
+def __set_year_range(c, entity):
+    c['years'] = list(Payment.objects.get_years(entity))
     c['first_year'] = c['years'][0]
     c['last_year'] = c['years'][len(c['years'])-1]
 

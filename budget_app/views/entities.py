@@ -2,6 +2,7 @@
 
 from budget_app.models import BudgetBreakdown, Entity, EconomicCategory
 from policies_helpers import policies_show_helper, programmes_show_helper, articles_show_helper
+from payments import payments_helper, payment_search_helper
 from helpers import *
 
 # XXX: This should be called entities_show, but the name is taken, for historical
@@ -106,6 +107,17 @@ def entities_expense_articles_show(request, id, article_id, title, render_callba
     c = get_context(request, css_class='body-entities body-articles', title='')
     entity = _fetch_entity(c, id)
     return articles_show_helper(request, c, entity, article_id, title, 'expense', render_callback)
+
+
+def entities_payments(request, id, render_callback=None):
+    c = get_context(request, css_class='body-payments', title='')
+    entity = _fetch_entity(c, id)
+    return payments_helper(request, c, entity, render_callback)
+
+def entities_payments_search(request, id, render_callback=None):
+    c = get_context(request)
+    entity = _fetch_entity(c, id)
+    return payment_search_helper(request, c, entity, render_callback)
 
 
 def _fetch_entity(c, id):
