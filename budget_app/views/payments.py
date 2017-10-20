@@ -55,7 +55,7 @@ def payment_search_helper(request, c, entity, render_callback=None):
     if ( years != '' ):
         from_year, to_year = __parse_year_arguments(years)
     else:
-        __set_year_range(c)
+        __set_year_range(c, entity)
         from_year, to_year = c['first_year'], c['last_year']
 
     # Create basic query...
