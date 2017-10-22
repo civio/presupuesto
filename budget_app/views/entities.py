@@ -126,10 +126,14 @@ def _fetch_entity(c, id):
     set_title(c, entity.name)
 
     # Set the entity id and name
-    # Note that these variables are only set when accessing the URL for a particular entity,
-    # not when accessing the main policies page, which picks the main entity automatically.
-    # This controls whether the template shows the entity name (which assumes there're
-    # multiple entities) or not (assumes only one entity), for example. See #105.
-    set_entity(c, entity)
+    # is_secondary_entity is only set when accessing the URL for a particular entity,
+    # (that is, in a context with multiple entities), not when accessing the main
+    # policies page. See #105.
+    # XXX: Would it make sense to have this as a setting for the whole site (replacing
+    # maybe the too-specific SEARCH_ENTITIES)? I.e. do we need to support an scenario where
+    # the entity name is shown for child entities but not the default? For PGE maybe?
+    # If not, we could even set this automatically based on whether there're multiple
+    # entities in the database for a given language.
+    set_entity(c, entity, is_secondary_entity=True)
 
     return entity

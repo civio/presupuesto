@@ -83,8 +83,12 @@ def current_url_equals(context, url_name_pattern, **kwargs):
 def set_title(c, title):
     c['title_prefix'] = title
 
-def set_entity(c, entity):
+def set_entity(c, entity, is_secondary_entity=False):
     c['entity'] = entity
+    c['is_secondary_entity'] = is_secondary_entity
+
+def is_secondary_entity(c):
+    return c.get('is_secondary_entity', False)
 
 def get_main_entity(c):
     return Entity.objects.filter(level=settings.MAIN_ENTITY_LEVEL,

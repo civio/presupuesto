@@ -16,11 +16,11 @@ class MockPayment(object):
 def payments(request, render_callback=None):
     c = get_context(request, css_class='body-payments', title=_('Inversiones y pagos'))
     main_entity = get_main_entity(c)
+    set_entity(c, main_entity)
     return payments_helper(request, c, main_entity, render_callback)
 
 def payments_helper(request, c, entity, render_callback=None):
     # Retrieve the information needed for the search form: years, areas and payees
-    set_entity(c, entity)
     __set_year_range(c, entity)
     c['payees'] = Payment.objects.get_payees(entity)
     c['areas'] = Payment.objects.get_areas(entity)
