@@ -56,17 +56,17 @@ def write_entity_income_breakdown(c, writer):
 def entity_expenses(request, level, slug, format):
     c = get_context(request)
     entity = Entity.objects.get(level=level, slug=slug, language=c['LANGUAGE_CODE'])
-    return entities_show(request, c, entity, _generator('gastos-%s-%s' % (level, slug), format, write_entity_economic_expense_breakdown))
+    return entities_show_helper(request, c, entity, _generator('gastos-%s-%s' % (level, slug), format, write_entity_economic_expense_breakdown))
 
 def entity_functional(request, level, slug, format):
     c = get_context(request)
     entity = Entity.objects.get(level=level, slug=slug, language=c['LANGUAGE_CODE'])
-    return entities_show(request, c, entity, _generator('gastosf-%s-%s' % (level, slug), format, write_entity_functional_breakdown))
+    return entities_show_helper(request, c, entity, _generator('gastosf-%s-%s' % (level, slug), format, write_entity_functional_breakdown))
 
 def entity_income(request, level, slug, format):
     c = get_context(request)
     entity = Entity.objects.get(level=level, slug=slug, language=c['LANGUAGE_CODE'])
-    return entities_show(request, c, entity, _generator('ingresos-%s-%s' % (level, slug), format, write_entity_income_breakdown))
+    return entities_show_helper(request, c, entity, _generator('ingresos-%s-%s' % (level, slug), format, write_entity_income_breakdown))
 
 
 #
