@@ -60,7 +60,7 @@
       <table id="myGrid" class="table-grid" width="100%"></table>
 
       {# XXX: Disable CSV downloads for entities. See #105 #}
-      {% if not entity %}
+      {% if not is_secondary_entity %}
       <div class="panel-downloads">
         <p class="downloads hidden" id="income-downloads">
           {{ _('Descarga la tabla de <strong>Ingresos</strong>')|safe }}

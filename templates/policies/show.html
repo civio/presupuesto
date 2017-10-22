@@ -18,7 +18,7 @@
           <a href="{{ back_button['url'] }}">&larr; {{ back_button['description'] }}</a>
         {% else %}
           {# Default behaviour: back to main page. Try to go back to the tab we came from. #}
-          <a href="{{ url('budget_app.views.entities_show_helper', entity.code, entity.slug) if entity else url('budget_app.views.policies') }}#view={{ back_to_tab }}">&larr; {{ _('Volver a Políticas') }}</a>
+          <a href="{{ url('budget_app.views.entities_policies', entity.code) if entity else url('budget_app.views.policies') }}#view={{ back_to_tab }}">&larr; {{ _('Volver a Políticas') }}</a>
         {% endif %}
       </p>
       {% endif %}
@@ -71,7 +71,7 @@
 {# FIXME: Disabled temporarily for subprogrammes. See #346 #}
 {% if not subprogramme %}
 {# XXX: Disable CSV downloads for entities. See #105 #}
-{% if not entity %}
+{% if not is_secondary_entity %}
       <div class="panel-downloads">
     {% if full_breakdown %}
       {% for tab in ['functional', 'economic', 'funding', 'institutional'] %}
