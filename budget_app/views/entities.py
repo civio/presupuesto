@@ -5,16 +5,13 @@ from policies_helpers import policies_show_helper, programmes_show_helper, artic
 from payments import payments_helper, payment_search_helper
 from helpers import *
 
-# XXX: This should be called entities_show, but the name is taken, for historical
-# reasons, and it's a bit of a pain to change now.
-def entities_show_helper(request, id, title, render_callback=None):
+def entities_policies(request, id, render_callback=None):
     c = get_context(request, css_class='body-entities', title='')
     entity = _fetch_entity(c, id)
-    return entities_show(request, c, entity, render_callback)
+    return entities_show_helper(request, c, entity, render_callback)
 
 
-# XXX: See note above regarding the function name
-def entities_show(request, c, entity, render_callback=None):
+def entities_show_helper(request, c, entity, render_callback=None):
     # Prepare the budget breakdowns
     c['breakdowns'] = {
         'financial_expense': BudgetBreakdown(),
@@ -68,11 +65,6 @@ def entities_show(request, c, entity, render_callback=None):
     return render(c, render_callback, template)
 
 
-# XXX: This function only exists so the Javascript at policy_paths.html
-# can build the full URL. Doesn't get called.
-def entities_policies(request, id, render_callback=None):
-    return entities_show_helper(request, id, '', render_callback)
-
 def entities_policies_show(request, id, policy_id, title, render_callback=None):
     c = get_context(request, css_class='body-entities body-policies', title='')
     entity = _fetch_entity(c, id)
@@ -82,7 +74,7 @@ def entities_policies_show(request, id, policy_id, title, render_callback=None):
 # XXX: This function only exists so the Javascript at policy_paths.html
 # can build the full URL. Doesn't get called.
 def entities_programmes(request, id, render_callback=None):
-    return entities_show_helper(request, id, '', render_callback)
+    return entities_policies(request, id, render_callback)
 
 def entities_programmes_show(request, id, programme_id, title, render_callback=None):
     c = get_context(request, css_class='body-entities body-policies body-programmes', title='')
@@ -93,10 +85,10 @@ def entities_programmes_show(request, id, programme_id, title, render_callback=N
 # XXX: This function only exists so the Javascript at policy_paths.html
 # can build the full URL. Doesn't get called.
 def entities_income_articles(request, id, render_callback=None):
-    return entities_show_helper(request, id, '', render_callback)
+    return entities_policies(request, id, render_callback)
 
 def entities_expense_articles(request, id, render_callback=None):
-    return entities_show_helper(request, id, '', render_callback)
+    return entities_policies(request, id, render_callback)
 
 def entities_income_articles_show(request, id, article_id, title, render_callback=None):
     c = get_context(request, css_class='body-entities body-articles', title='')

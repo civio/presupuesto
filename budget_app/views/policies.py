@@ -2,7 +2,7 @@
 
 from django.core.urlresolvers import reverse
 from budget_app.models import Budget, BudgetBreakdown, FunctionalCategory, EconomicCategory
-from entities import entities_show
+from entities import entities_show_helper
 from policies_helpers import policies_show_helper, programmes_show_helper, articles_show_helper
 from helpers import *
 import json
@@ -16,7 +16,7 @@ def policies(request, render_callback=None):
     main_entity = get_main_entity(c)
     set_title(c, main_entity.name)
 
-    return entities_show(request, c, main_entity, render_callback)
+    return entities_show_helper(request, c, main_entity, render_callback)
 
 
 def policies_show(request, id, title, render_callback=None):

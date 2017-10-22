@@ -3,7 +3,7 @@
 import json
 
 from budget_app.models import BudgetBreakdown, Entity
-from entities import entities_show
+from entities import entities_show_helper
 from helpers import *
 
 
@@ -13,7 +13,7 @@ def counties(request, render_callback=None):
 
 def counties_show(request, county_slug, render_callback=None):
     county = _get_county(county_slug)
-    return entities_show(request, _get_county_context(request, county), county, render_callback)
+    return entities_show_helper(request, _get_county_context(request, county), county, render_callback)
 
 def counties_show_income(request, county_slug, id, render_callback=None):
     county = _get_county(county_slug)
@@ -56,7 +56,7 @@ def towns(request, render_callback=None):
 
 def towns_show(request, town_slug, render_callback=None):
     town = _get_town(town_slug)
-    return entities_show(request, _get_town_context(request, town), town, render_callback)
+    return entities_show_helper(request, _get_town_context(request, town), town, render_callback)
 
 def towns_show_income(request, town_slug, id, render_callback=None):
     town = _get_town(town_slug)

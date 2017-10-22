@@ -76,7 +76,6 @@ budget_app_urlpatterns += url_patterns('budget_app.views',
     url(r'^entidades/(?P<id>[0-9A-Z]+)/articulos/g/(?P<article_id>[0-9]+)/(?P<title>.+)$', 'entities_expense_articles_show', name="entities-expense-articles-show"),
     url(r'^entidades/(?P<id>[0-9A-Z]+)/pagos$', 'entities_payments', name="entities-payments"),
     url(r'^entidades/(?P<id>[0-9A-Z]+)/pagos/search$', 'entities_payments_search', name="entities_payments_search"),
-    url(r'^entidades/(?P<id>[0-9A-Z]+)/(?P<title>.+)$', 'entities_show_helper', name="entities-show"),
 
     # Counties
     url(r'^comarcas$', 'counties'),
