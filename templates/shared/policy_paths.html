@@ -16,7 +16,7 @@ function parameterize(s) {
 // Note: we ignore policy ids that are a complex object, which happens when we have
 // a custom Sankey chart: we default to the parent policies page.
 function getPolicyLink(policy_id, title) {
-  {% if entity %}
+  {% if is_secondary_entity %}
   var url = "{{ url('budget_app.views.entities_policies', entity.code) }}";
   {% else %}
   var url = "{{ url('budget_app.views.policies') }}";
@@ -29,7 +29,7 @@ function getPolicyLink(policy_id, title) {
 
 // Return path to a programme, inside a policy page
 function getProgrammeLink(programme_id, title) {
-  {% if entity %}
+  {% if is_secondary_entity %}
   var url = "{{ url('budget_app.views.entities_programmes', entity.code) }}";
   {% else %}
   var url = "{{ url('budget_app.views.programmes_show') }}";
@@ -49,7 +49,7 @@ function getSubprogrammeLink(subprogramme_id, title) {
 // Return path to article pages
 function getExpenseArticleLink(article_id, title) {
   if ( article_id ) {
-    {% if entity %}
+    {% if is_secondary_entity %}
     var url = "{{ url('budget_app.views.entities_expense_articles_show', entity.code) }}"
     {% else %}
     var url = "{{ url('budget_app.views.expense_articles_show') }}";
@@ -65,7 +65,7 @@ function getIncomeArticleLink(article_id, title) {
   // Note: we ignore policy ids that are a complex object, which happens when we have
   // a custom Sankey chart: we default to the parent policies page.
   if ( article_id && typeof article_id!="object" ) {
-    {% if entity %}
+    {% if is_secondary_entity %}
     var url = "{{ url('budget_app.views.entities_income_articles_show', entity.code) }}"
     {% else %}
     var url = "{{ url('budget_app.views.income_articles_show') }}";

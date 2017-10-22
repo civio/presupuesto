@@ -14,7 +14,7 @@
         {% if programme %}
         <a href="{% url 'budget_app.views.policies_show' programme.policy, policy.slug() %}" id="policy-name-link" title="{{ descriptions['functional'].get(programme.policy) }}">&larr;</a>
         {% else %}
-        <a href="{{ url(show_entity_url, entity.slug) if entity else url('budget_app.views.policies') }}#view={{ back_to_tab }}">&larr;</a>
+        <a href="{{ url(show_entity_url, entity.slug) if is_secondary_entity else url('budget_app.views.policies') }}#view={{ back_to_tab }}">&larr;</a>
         {% endif %}
       </p>
 

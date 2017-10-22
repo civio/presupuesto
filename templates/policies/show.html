@@ -18,7 +18,7 @@
           <a href="{{ back_button['url'] }}">&larr; {{ back_button['description'] }}</a>
         {% else %}
           {# Default behaviour: back to main page. Try to go back to the tab we came from. #}
-          <a href="{{ url('budget_app.views.entities_policies', entity.code) if entity else url('budget_app.views.policies') }}#view={{ back_to_tab }}">&larr; {{ _('Volver a Políticas') }}</a>
+          <a href="{{ url('budget_app.views.entities_policies', entity.code) if is_secondary_entity else url('budget_app.views.policies') }}#view={{ back_to_tab }}">&larr; {{ _('Volver a Políticas') }}</a>
         {% endif %}
       </p>
       {% endif %}
