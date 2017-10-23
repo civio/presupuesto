@@ -4,7 +4,7 @@
 <head>
   {% include 'shared/meta.html' %}
 
-  <title>{{ meta_title }}</title>
+  <title>{{ meta_title|safe }}</title>
   
   <link href="{{ STATIC_URL }}assets/favicon.png" rel="icon" type="image/x-icon" />
   
