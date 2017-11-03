@@ -235,7 +235,7 @@ msgid "Presupuestado.StackedArea"
 msgstr "Aurrekontukoa"
 
 msgid "Proyecto.StackedArea"
-msgstr "Proyecto"
+msgstr "Proiektua"
 
 #: templates/budgets/index.html:120
 msgid "Ejecutado"
