@@ -113,6 +113,8 @@ var TaxReceipt = (function() {
   that.setup = function(_breakdown, _getBreakdownValue) {
     breakdown         = _breakdown;
     getBreakdownValue = _getBreakdownValue;
+    // Avoid submit form
+    $('.form-user-incomings').submit(function(){ return false; });
     // Set redraw listener
     $('.form-user-incomings select, .form-user-incomings input').change(that.redraw);
     that.redraw();
