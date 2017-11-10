@@ -100,19 +100,14 @@
     text-transform: uppercase;
   }
 
-  .single-year{
+  &.single-year{
 
     #year-selection{
       display: none;
     }
 
-    .layout-slider{
-
-      > p{
-        font-size: 1.25em;
-        line-height: $grid-gutter-width;
-        font-weight: $font-weight-600;
-      }
+    .layout-slider > p{
+      font-weight: $font-weight-600;
     }
   }
 
