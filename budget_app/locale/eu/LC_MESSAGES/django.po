@@ -85,7 +85,7 @@ msgstr "Zertan erabiltzen da?"
 
 #: templates/budgets/budgets_intro.html:22
 msgid "El ayuntamiento utiliza el dinero recaudado, junto con otras fuentes de financiación como la deuda, para mantener los servicios públicos y la infraestructura de la ciudad."
-msgstr "Udaletxeak zerbitzu publikoak bermatzeko eta hiriko azpiegiturak mantentzeko erabiltzen du bildutako dirua, zorra eta beste finantzaketa-iturri batzuekin batera."
+msgstr "Udalak zerbitzu publikoak bermatzeko eta hiriko azpiegiturak mantentzeko erabiltzen du bildutako dirua, zorra eta beste finantzaketa-iturri batzuekin batera."
 
 #: templates/budgets/budgets_totals.html:7
 #: templates/budgets/budgets_totals.html:13
@@ -211,7 +211,7 @@ msgstr "<span id=\"totals-year\"></span>ko aurrekontuen datuak"
 
 #: templates/budgets/index.html:53
 msgid "El cálculo de los indicadores utiliza las cifras de ejecución para los años cuya liquidación está cerrada, o el presupuesto aprobado en caso contrario."
-msgstr "Adierazleak kalkulatzeko likidazioa itxita duten urteetako erabilitako diru-kopuruen datuak erabiltzen dira, edo onartutako aurrekontua bestela."
+msgstr "Adierazleak kalkulatzeko likidazioa itxita duten urteetan erabilitako diru-kopuruen datuak erabiltzen dira, edo onartutako aurrekontua bestela."
 
 #: templates/budgets/index.html:117
 msgid "Otros"
