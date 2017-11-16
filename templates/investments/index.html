@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<!-- Inversiones -->
+<section class="investments" role="region">
+  
+  <!-- Inversiones Header -->
+  <div class="investments-header section-header">
+    <div class="container">
+      <h2 class="page-title">{{ _('Inversiones por distritos') }}</h2>
+    </div>
+  </div>
+
+  <!-- Inversiones Content -->
+  <div class="investments-content">
+    <div class="container">
+
+      <!-- TODO!!! Añadir enlaces a cada distrito -->
+      <div class="districts-select">
+        <ul>
+        {% for district in districts %}
+          <li><a href="/{{ LANGUAGE_CODE }}/inversiones/1/{{ district.path }}">{{ district.name|safe }}</a></li>
+        {% endfor %}
+        </ul>
+        {% include 'investments/districts_map.html' %}
+      </div>
+
+      {% include 'shared/data_controllers.html' %}
+
+      {% include 'entities/totals.html' %}
+
+      <!-- Inversiones Table -->
+      <table id="myGrid" class="table-grid" width="100%"></table>
+
+      <!-- TODO!!! Añadir enlaces a csv y xls -->
+      <div class="panel-downloads">
+        <p class="downloads"">
+          {{ _('Descarga la tabla de <strong>Inversiones</strong>')|safe }}
+          <a class="icon-file-excel" href="#" title="{{ _('Descarga la tabla en CSV') }}"><span class="file-info">CSV</span></a>
+          o
+          <a class="icon-file-excel" href="#" title="{{ _('Descarga la tabla en Excel') }}"><span class="file-info">Excel</span></a>
+        </p>
+      </div>
+
+      {% include 'shared/social_sharing.html' %}
+    </div>
+  </div>
+</section>
+
+{% include 'shared/data_sources.html' %}
+{% include 'investments/index_script.html' %}
+
+{% endblock %}

@@ -1,0 +1,21 @@
+<script>
+  $(function () {
+
+    // Variable Definitions
+    var uiState = null;
+    var gridData = {};
+    var myGrid;
+    var i18n          = { 'Presupuestado': 'Presupuestado' };
+
+    function redraw() {
+      
+    }
+
+    // Set up controls (format selector & year slider)
+    $('#select-format').change(function() {
+      redraw();
+    });
+      
+    initSlider("#year-selection", ["2011", "2012", "2013", "2014", "2015", "2016", "2017"], redraw, 2017);
+  });
+</script>

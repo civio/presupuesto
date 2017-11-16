@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- Inversiones Detalle -->
+<section class="investments investment-breakdown" role="region">
+
+  <!-- Inversiones Header -->
+  <div class="investments-header policies-header section-header">
+
+    <div class="container">
+      {% if show_breadcrumbs %}
+      {% include 'shared/breadcrumbs.html' %}
+      {% else %}
+      <p class="history-back">
+        <a href="{{ url('budget_app.views.investments') }}">&larr; {{ _('Volver a Inversiones') }}</a>
+      </p>
+      {% endif %}
+      <h2 class="page-title">{{ name }}</h2>
+    </div>
+  </div>
+
+  <!-- Inversiones Content -->
+  <div class="investments-content">
+    <div class="container">
+
+      <div class="policies-chart">
+        <div id="policy-chart-container" class="chart-container {{ 'treemap-chart' if show_treemap else 'stacked-area-chart' }}" aria-hidden="true">
+          <div class="popover top" role="tooltip">
+            <div class="arrow"></div>
+            <div class="popover-title"></div>
+            <div class="popover-content">
+              <p class="popover-content-year"></p>
+              <p class="popover-content-value"></p>
+              <p class="popover-content-variation">
+                <span class="label"></span> <span class="popover-content-variation-label">{{ _("respecto a <span class='popover-content-variation-year'></span>")|safe }}</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+       <!-- Data Controller -->
+      {% include 'shared/data_controllers.html' %}
+
+      <!-- Totals Panel -->
+      {% include 'entities/totals.html' %}
+
+      <!-- Table Grid -->
+      <table id="myGrid" class="table-grid" width="100%"></table>
+
+      <!-- Panel Downloads -->
+      <!-- TODO!!! Añadir enlaces a csv y xls -->
+      <div class="panel-downloads">
+        <p class="downloads"">
+          {{ _('Descarga la tabla de <strong>Inversiones</strong>')|safe }}
+          <a class="icon-file-excel" href="#" title="{{ _('Descarga la tabla en CSV') }}"><span class="file-info">CSV</span></a>
+          o
+          <a class="icon-file-excel" href="#" title="{{ _('Descarga la tabla en Excel') }}"><span class="file-info">Excel</span></a>
+        </p>
+      </div>
+    </div>
+
+    {% include 'shared/social_sharing.html' %}
+  </div>
+</section>
+
+{% include 'shared/data_sources.html' %}
+{% include 'investments/show_script.html' %}
+
+{% endblock %}
