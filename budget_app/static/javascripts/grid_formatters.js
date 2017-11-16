@@ -14,8 +14,8 @@ var Formatter = (function() {
     });
     thousand = "K";
     millions = "M";
-  } else{
-     d3.formatDefaultLocale({
+  } else {
+    d3.formatDefaultLocale({
       "currency": [""," €"],
       "decimal": ",",
       "thousands": ".",
@@ -23,6 +23,10 @@ var Formatter = (function() {
     });
     thousand = "mil";
     millions = "mill.";
+    if ($('html').attr('lang') == 'eu') {
+      thousand = "mila";
+      millions = "milioi";
+    }
   }
 
   var that                        = {},
@@ -89,7 +93,7 @@ var Formatter = (function() {
     return that.amount(value);
   };
 
-  
+
   // Format percentage
   that.percentage = function (value) {
     return formatFloatPercentage(value);
