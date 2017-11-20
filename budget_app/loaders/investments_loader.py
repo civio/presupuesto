@@ -65,7 +65,7 @@ class InvestmentsLoader:
                 continue
 
             # Create the payment record
-            Payment(area=fields['area'],
+            Investment(area=fields['area'],
                     expense=True,
                     amount=fields['amount'],
                     description=fields['description'],
