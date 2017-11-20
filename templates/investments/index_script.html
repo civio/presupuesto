@@ -2,13 +2,34 @@
   $(function () {
 
     // Variable Definitions
-    var uiState = null;
-    var gridData = {};
-    var myGrid;
-    var i18n          = { 'Presupuestado': 'Presupuestado' };
+    var uiState         = null,
+        myGrid,
+        areaBreakdown   = {{ area_breakdown.to_json()|safe }};
+
+    // Grid rendering
+    function getColumnDefinition(uiState) {
+      return {
+        data: getBreakdownValueFunction('expense', 'inversiones'),
+        title: '{{ _("Inversión") }}',
+        render: Formatter.getFormatter('nominal', null, null)
+      };
+    }
 
     function redraw() {
-      
+      var data      = areaBreakdown,
+          formatter = rowNameFormatter,
+          columnDef = getColumnDefinition(uiState);
+
+      if ( myGrid !== undefined )  myGrid.destroy();
+      myGrid = createBudgetGrid("#myGrid", breakdownToTable(data),
+                        [
+                          {
+                            data: "key",
+                            title: '{{ _("Área") }}',
+                            render: formatter
+                          },
+                          columnDef
+                        ]);
     }
 
     // Set up controls (format selector & year slider)
@@ -16,6 +37,8 @@
       redraw();
     });
       
-    initSlider("#year-selection", ["2011", "2012", "2013", "2014", "2015", "2016", "2017"], redraw, 2017);
+    initSlider("#year-selection", {{ years|safe }}, redraw, {{ starting_year }});
+
+    redraw();
   });
 </script>

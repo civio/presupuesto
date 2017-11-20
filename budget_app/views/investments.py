@@ -1,11 +1,14 @@
 # -*- coding: UTF-8 -*-
 
 from django.utils.translation import ugettext as _
+from budget_app.models import BudgetBreakdown, Investment
 from helpers import *
 
 
 def investments(request):
     c = get_context(request, css_class='body-investments', title=_(u'Inversiones por distrito'))
+
+    entity = get_main_entity(c)
 
     c['districts'] = [
         {
@@ -93,6 +96,14 @@ def investments(request):
         'name': 'Villaverde'
         }
     ]
+
+    # Get the investments breakdown
+    investments = Investment.objects.each_denormalized()
+    c['area_breakdown'] = BudgetBreakdown(['area'])
+    for item in investments:
+        c['area_breakdown'].add_item('inversiones', item)
+
+    populate_years(c, c['area_breakdown'])
 
     return render_response('investments/index.html', c)
 
