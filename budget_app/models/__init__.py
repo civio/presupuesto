@@ -10,3 +10,4 @@ from institutional_category import *
 from inflation_stat import *
 from population_stat import *
 from payment import *
+from investment import *
