@@ -31,7 +31,7 @@ class InvestmentsLoader:
         items = []
         if os.path.isfile(filename):
             print "Leyendo datos de %s..." % filename
-            reader = csv.reader(open(filename, 'rb'))
+            reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
             for index, line in enumerate(reader):
                 if re.match("^#", line[0]):         # Ignore comments
                     continue
@@ -50,7 +50,7 @@ class InvestmentsLoader:
     # Parse an input line into fields
     def parse_item(self, budget, line):
         return {
-            'area': line[0].strip(),
+            'gc_code': line[0].strip(),
             'description': self._spanish_titlecase(line[1].strip()),
             'amount': self._read_english_number(line[2])
         }
@@ -64,8 +64,18 @@ class InvestmentsLoader:
             if fields == None or fields['amount'] == 0:
                 continue
 
+            # Fetch economic category
+            gc = GeographicCategory.objects.filter( uid=fields['gc_code'],
+                                                    budget=budget)
+            if not gc:
+                print u"ALERTA: No se encuentra la categoría geográfica '%s' para '%s': %s€" % (fields['gc_code'], fields['description'], fields['amount']/100)
+                continue
+            else:
+                gc = gc[0]
+
+
             # Create the payment record
-            Investment(area=fields['area'],
+            Investment(geographic_category=gc,
                     expense=True,
                     amount=fields['amount'],
                     description=fields['description'],
@@ -76,6 +86,10 @@ class InvestmentsLoader:
     # They are needed sometimes by the SimpleBudgetLoader.
     # (It may be worth checking also what other loaders are doing regarding Unicode, since it's always
     # a tricky business.)
+
+    # Make input file delimiter configurable by children
+    def _get_delimiter(self):
+        return ','
 
     # Read number in Spanish format (123.456,78), and return as number of cents
     def _read_spanish_number(self, s):

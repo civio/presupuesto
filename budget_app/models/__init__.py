@@ -11,3 +11,4 @@ from inflation_stat import *
 from population_stat import *
 from payment import *
 from investment import *
+from geographic_category import *

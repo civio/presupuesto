@@ -8,11 +8,22 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
+        # Adding model 'GeographicCategory'
+        db.create_table('geographic_categories', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('budget', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['budget_app.Budget'])),
+            ('uid', self.gf('django.db.models.fields.CharField')(max_length=5)),
+            ('description', self.gf('django.db.models.fields.CharField')(max_length=200)),
+            ('updated_at', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
+            ('created_at', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+        ))
+        db.send_create_signal('budget_app', ['GeographicCategory'])
+
         # Adding model 'Investment'
         db.create_table('investments', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('budget', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['budget_app.Budget'])),
-            ('area', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, db_index=True)),
+            ('geographic_category', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['budget_app.GeographicCategory'], db_column='geographic_category_id')),
             ('expense', self.gf('django.db.models.fields.BooleanField')(default=False)),
             ('description', self.gf('django.db.models.fields.CharField')(max_length=300)),
             ('amount', self.gf('django.db.models.fields.BigIntegerField')()),
@@ -23,6 +34,9 @@ class Migration(SchemaMigration):
 
 
     def backwards(self, orm):
+        # Deleting model 'GeographicCategory'
+        db.delete_table('geographic_categories')
+
         # Deleting model 'Investment'
         db.delete_table('investments')
 
@@ -102,6 +116,15 @@ class Migration(SchemaMigration):
             'source': ('django.db.models.fields.CharField', [], {'max_length': '1'}),
             'updated_at': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'})
         },
+        'budget_app.geographiccategory': {
+            'Meta': {'object_name': 'GeographicCategory', 'db_table': "'geographic_categories'"},
+            'budget': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['budget_app.Budget']"}),
+            'created_at': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'description': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'uid': ('django.db.models.fields.CharField', [], {'max_length': '5'}),
+            'updated_at': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'})
+        },
         'budget_app.glossaryterm': {
             'Meta': {'object_name': 'GlossaryTerm', 'db_table': "'glossary_terms'"},
             'created_at': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
@@ -133,11 +156,11 @@ class Migration(SchemaMigration):
         'budget_app.investment': {
             'Meta': {'object_name': 'Investment', 'db_table': "'investments'"},
             'amount': ('django.db.models.fields.BigIntegerField', [], {}),
-            'area': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'db_index': 'True'}),
             'budget': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['budget_app.Budget']"}),
             'created_at': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'description': ('django.db.models.fields.CharField', [], {'max_length': '300'}),
             'expense': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'geographic_category': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['budget_app.GeographicCategory']", 'db_column': "'geographic_category_id'"}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'updated_at': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'})
         },

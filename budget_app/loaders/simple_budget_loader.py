@@ -55,6 +55,7 @@ class SimpleBudgetLoader:
         self.load_economic_classification(path, budget)
         self.load_institutional_classification(path, budget)
         self.load_functional_classification(path, budget)
+        self.load_geographic_classification(path, budget)
 
         # Process the budget item
         self.load_budget_items(budget, items)
@@ -229,6 +230,24 @@ class SimpleBudgetLoader:
                                     description=description,
                                     budget=budget)
             fc.save()
+
+
+    # Load the geographic categories (optional)
+    def load_geographic_classification(self, path, budget):
+        filename = os.path.join(path, '..', '..', 'clasificacion_geografica.csv')
+        if os.path.isfile(filename):
+            reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
+            for index, line in enumerate(reader):
+                if re.match("^#", line[0]):  # Ignore comments
+                    continue
+
+                uid = line[0]
+                description = line[1]
+
+                gc = GeographicCategory(uid=uid,
+                                        description=description,
+                                        budget=budget)
+                gc.save()
 
 
     # Make input file delimiter configurable by children

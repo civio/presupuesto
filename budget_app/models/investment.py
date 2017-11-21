@@ -13,10 +13,12 @@ class PaymentManager(models.Manager):
     def each_denormalized(self, additional_constraints=None, additional_arguments=None):
         sql = \
             "select " \
-                "i.id, i.area, i.amount, i.description, i.expense, " \
+                "i.id, i.amount, i.description, i.expense, " \
+                "gc.description as area, " \
                 "b.year " \
             "from " \
                 "investments i " \
+                "left join geographic_categories gc on i.geographic_category_id = gc.id " \
                 "left join budgets b on i.budget_id = b.id "
 
         return self.raw(sql)
@@ -24,7 +26,7 @@ class PaymentManager(models.Manager):
 
 class Investment(models.Model):
     budget = models.ForeignKey('Budget')
-    area = models.CharField(max_length=100, null=True, db_index=True)
+    geographic_category = models.ForeignKey('GeographicCategory', db_column='geographic_category_id')
     expense = models.BooleanField()
     description = models.CharField(max_length=300)
     amount = models.BigIntegerField()
