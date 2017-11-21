@@ -16,7 +16,7 @@ def investments(request):
         column_name = year_column_name(item)
         c['area_breakdown'].add_item(column_name, item)
 
-    # Get list of districts
+    # Get list of investment areas
     c['districts'] = GeographicCategory.objects.categories(entity)
 
     # Get additional information
@@ -26,6 +26,10 @@ def investments(request):
     return render_response('investments/index.html', c)
 
 def investments_show(request, id, title, render_callback=None):
-    c = get_context(request, css_class='body-investments', title=title)
-    c['name'] = title;
+    c = get_context(request, css_class='body-investments', title=_(u'Inversiones por distrito'))
+    entity = get_main_entity(c)
+
+    c['area'] = GeographicCategory.objects.filter(  budget__entity=entity,
+                                                    code=id)[0]
+
     return render_response('investments/show.html', c)
