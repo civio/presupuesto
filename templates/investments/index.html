@@ -21,7 +21,7 @@
       <div class="districts-select">
         <ul>
         {% for district in districts %}
-          <li><a href="/{{ LANGUAGE_CODE }}/inversiones/1/{{ district.path }}">{{ district.name|safe }}</a></li>
+          <li><a href="{% url 'budget_app.views.investments_show' district.code, district.slug() %}">{{ district.description|safe }}</a></li>
         {% endfor %}
         </ul>
         {% include 'investments/districts_map.html' %}
@@ -49,6 +49,7 @@
   </div>
 </section>
 
+{% include 'shared/policy_paths.html' %}
 {% include 'shared/data_sources.html' %}
 {% include 'investments/index_script.html' %}
 

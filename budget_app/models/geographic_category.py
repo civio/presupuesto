@@ -1,9 +1,11 @@
+from django.template.defaultfilters import slugify
 from django.db import models
 from django.conf import settings
 
 
 class GeographicCategoriesManager(models.Manager):
-    pass
+    def categories(self, entity):
+        return self.filter(budget__entity=entity)
 
 
 class GeographicCategory(models.Model):
@@ -23,6 +25,9 @@ class GeographicCategory(models.Model):
     # in a budget
     def uid(self):
         return self.code
+
+    def slug(self):
+        return slugify(self.description)
 
     def __unicode__(self):
         return self.description

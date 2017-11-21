@@ -2,7 +2,7 @@ from django.db import models, connection
 
 from django.conf import settings
 
-class PaymentManager(models.Manager):
+class InvestmentManager(models.Manager):
     # Return the list of areas
     # def get_areas(self, entity_id):
     #     return self.values_list('area', flat=True) \
@@ -33,7 +33,7 @@ class Investment(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
-    objects = PaymentManager()
+    objects = InvestmentManager()
 
     class Meta:
         app_label = "budget_app"

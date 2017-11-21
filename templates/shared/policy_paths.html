@@ -90,6 +90,12 @@ function getOverviewLink() {
 }
 
 
+// Return path for investment pages
+function getInvestmentAreaLink(area_id, title) {
+  return "{{ url('budget_app.views.investments') }}/"+area_id+'/'+parameterize(title);
+}
+
+
 // Return path to a county page
 function getCountyLink(slug) {
   var url = "{{ url('budget_app.views.counties') }}/"+slug;
@@ -172,6 +178,13 @@ function sectionLinkFormatter(value, type, item) {
     return rowNameFormatter(value, type, item);
 
   var link = getSectionLink(item.key, item.label);
+  var linkedValue = "<a href='"+link+"'>"+value+"</a>";
+  return rowNameFormatter(linkedValue, type, item);
+}
+
+// Convert an area name into an investment page link
+function investmentAreaLinkFormatter(value, type, item) {
+  var link = getInvestmentAreaLink(item.key, item.label);
   var linkedValue = "<a href='"+link+"'>"+value+"</a>";
   return rowNameFormatter(linkedValue, type, item);
 }
