@@ -4,29 +4,29 @@
     // Variable Definitions
     var uiState         = null,
         myGrid,
-        areaBreakdown   = {{ area_breakdown.to_json()|safe }};
+        areaBreakdown   = {{ area_breakdown.to_json( labels=descriptions['geographic'] )|safe }};
 
     // Grid rendering
     function getColumnDefinition(uiState) {
+      var getBreakdownValue = getBreakdownValueFunction(uiState.field, uiState.year);
       return {
-        data: getBreakdownValueFunction('expense', 'inversiones'),
+        data: getBreakdownValue,
         title: '{{ _("Inversión") }}',
         render: Formatter.getFormatter('nominal', null, null)
       };
     }
 
     function redraw() {
-      var data      = areaBreakdown,
-          formatter = rowNameFormatter,
+      var uiState = getUIState(),
           columnDef = getColumnDefinition(uiState);
 
       if ( myGrid !== undefined )  myGrid.destroy();
-      myGrid = createBudgetGrid("#myGrid", breakdownToTable(data),
+      myGrid = createBudgetGrid("#myGrid", breakdownToTable(areaBreakdown),
                         [
                           {
-                            data: "key",
-                            title: '{{ _("Área") }}',
-                            render: formatter
+                            data: 'label',
+                            title: '{{ _("Distrito") }}',
+                            render: rowNameFormatter
                           },
                           columnDef
                         ]);

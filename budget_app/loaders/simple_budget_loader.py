@@ -241,10 +241,10 @@ class SimpleBudgetLoader:
                 if re.match("^#", line[0]):  # Ignore comments
                     continue
 
-                uid = line[0]
+                code = line[0]
                 description = line[1]
 
-                gc = GeographicCategory(uid=uid,
+                gc = GeographicCategory(code=code,
                                         description=description,
                                         budget=budget)
                 gc.save()

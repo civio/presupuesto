@@ -101,9 +101,11 @@ def investments(request):
     investments = Investment.objects.each_denormalized()
     c['area_breakdown'] = BudgetBreakdown(['area'])
     for item in investments:
-        c['area_breakdown'].add_item('inversiones', item)
+        column_name = year_column_name(item)
+        c['area_breakdown'].add_item(column_name, item)
 
     populate_years(c, c['area_breakdown'])
+    populate_entity_descriptions(c, entity)
 
     return render_response('investments/index.html', c)
 

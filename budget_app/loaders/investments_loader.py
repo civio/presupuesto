@@ -65,7 +65,7 @@ class InvestmentsLoader:
                 continue
 
             # Fetch economic category
-            gc = GeographicCategory.objects.filter( uid=fields['gc_code'],
+            gc = GeographicCategory.objects.filter( code=fields['gc_code'],
                                                     budget=budget)
             if not gc:
                 print u"ALERTA: No se encuentra la categoría geográfica '%s' para '%s': %s€" % (fields['gc_code'], fields['description'], fields['amount']/100)
