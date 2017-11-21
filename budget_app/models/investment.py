@@ -13,7 +13,7 @@ class PaymentManager(models.Manager):
     def each_denormalized(self, additional_constraints=None, additional_arguments=None):
         sql = \
             "select " \
-                "i.id, i.area, i.amount, i.description, " \
+                "i.id, i.area, i.amount, i.description, i.expense, " \
                 "b.year " \
             "from " \
                 "investments i " \
