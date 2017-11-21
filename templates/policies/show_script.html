@@ -3,12 +3,6 @@
     //
     // GRID RENDERING
     //
-    
-    // Shows the uid next to an item
-    function fullIdFormatter(row, cell, value, columnDef, dataContext) {
-      var fullName = (value||'') + " (" + dataContext.key + ")";
-      return rowNameFormatter(row, cell, fullName, columnDef, dataContext);
-    };
 
 {% if is_chapter %}
     // Convert an article name into a link
