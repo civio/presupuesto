@@ -2,23 +2,33 @@
   $(function () {
 
     // Variable Definitions
-    var uiState = null,
+    var uiState         = null,
         myGrid,
-        areaBreakdown   = {{ area_breakdown.to_json( labels=descriptions['geographic'] )|safe }};
+        areaBreakdown   = {{ area_breakdown.to_json( labels=descriptions['geographic'] )|safe }},
+        stats           = {{ stats|safe }},
+        budgetStatuses  = {{ budget_statuses|safe }};
 
     // Grid rendering
     function getColumnDefinition(uiState) {
       var getBreakdownValue = getBreakdownValueFunction(uiState.field, uiState.year);
       return {
         data: getBreakdownValue,
-        title: '{{ _("Gastado") }}',
+        title: '{{ _("Presupuestado") }}',
         render: Formatter.getFormatter('nominal', null, null)
       };
     }
 
+    function getExecutionColumnDefinition(uiState) {
+      var columnDef = getColumnDefinition(uiState);
+      columnDef.title = getExecutionColumnName(budgetStatuses[uiState.year], '{{ _("Invertido") }}', budgetStatusLabels);
+      columnDef.data = getBreakdownValueFunction(uiState.field, "actual_" + uiState.year);
+      return columnDef;
+    }
+
     function redraw() {
       var uiState = getUIState(),
-          columnDef = getColumnDefinition(uiState);
+          columnDef = getColumnDefinition(uiState),
+          executionColumnDef = getExecutionColumnDefinition(uiState);
 
       if ( myGrid !== undefined )  myGrid.destroy();
       myGrid = createBudgetGrid("#myGrid", breakdownToTable(areaBreakdown),
@@ -28,8 +38,35 @@
                             title: '{{ _("Inversión") }}',
                             render: rowNameFormatter
                           },
-                          columnDef
+                          columnDef,
+                          executionColumnDef
                         ]);
+
+      // XXX: This is very similar to policies/show_script and investments/index_script, should refactor.
+      // Hide totals panel if format is '% of total'
+      if ( uiState.format === 'percentage' ) {
+        $('#totals-panel').hide();
+      } else {
+        $('#totals-panel').show();
+      }
+
+      // Set total labels
+      var executedLabel = '{{ _("Invertido") }}',
+          mainLabel = '{{ area.description }}',
+          executionLabelPostfix = getExecutionTotalLabel(budgetStatuses[uiState.year], budgetStatusLabels),
+          hasActualData = areaBreakdown[uiState.field]['actual_'+uiState.year];
+
+      TotalHelpers.setLabels(uiState.year+' '+executionLabelPostfix, executedLabel, mainLabel, true);
+
+      // Set total budgeted amounts
+      TotalHelpers.setEconomicTotals(areaBreakdown, columnDef, '.total-budgeted', true);
+
+      // Show total budgeted executed if hasActualData or clear otherwise
+      if ( hasActualData ) {
+        TotalHelpers.setEconomicTotals(areaBreakdown, executionColumnDef, '.total-executed');
+      } else {
+        TotalHelpers.clear('.total-executed');
+      }
     }
 
     // Set up controls (format selector & year slider)

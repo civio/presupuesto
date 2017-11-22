@@ -6,7 +6,7 @@ class InvestmentManager(models.Manager):
     def each_denormalized(self, additional_constraints=None, additional_arguments=None):
         sql = \
             "select " \
-                "i.id, i.amount, i.description, i.expense, FALSE as actual, " \
+                "i.id, i.amount, i.description, i.expense, TRUE as actual, " \
                 "gc.code as area, " \
                 "b.year " \
             "from " \

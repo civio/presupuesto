@@ -21,8 +21,10 @@ def investments(request):
     c['areas'] = GeographicCategory.objects.categories(entity)
 
     # Get additional information
-    populate_years(c, c['area_breakdown'])
+    populate_stats(c)
     populate_entity_descriptions(c, entity)
+    populate_years(c, c['area_breakdown'])
+    populate_budget_statuses(c, entity.id)
 
     return render_response('investments/index.html', c)
 
@@ -44,7 +46,9 @@ def investments_show(request, id, title, render_callback=None):
         c['area_breakdown'].add_item(column_name, item)
 
     # Get additional information
-    populate_years(c, c['area_breakdown'])
+    populate_stats(c)
     populate_entity_descriptions(c, entity)
+    populate_years(c, c['area_breakdown'])
+    populate_budget_statuses(c, entity.id)
 
     return render_response('investments/show.html', c)

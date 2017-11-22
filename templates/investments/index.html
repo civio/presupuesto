@@ -29,6 +29,9 @@
 
       {% include 'shared/data_controllers.html' %}
 
+      <!-- Totals Panel -->
+      {% include 'entities/totals.html' %}
+
       <!-- Inversiones Table -->
       <table id="myGrid" class="table-grid" width="100%"></table>
 
@@ -50,6 +53,7 @@
 </section>
 
 {% include 'shared/policy_paths.html' %}
+{% include 'shared/budget_status_labels.html' %}
 {% include 'shared/data_sources.html' %}
 {% include 'investments/index_script.html' %}
 
