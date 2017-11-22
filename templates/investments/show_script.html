@@ -9,20 +9,23 @@
         budgetStatuses  = {{ budget_statuses|safe }};
 
     // Grid rendering
+    // XXX: Some of the code may be duplicated in index_script
     function getColumnDefinition(uiState) {
       var getBreakdownValue = getBreakdownValueFunction(uiState.field, uiState.year);
       return {
         data: getBreakdownValue,
         title: '{{ _("Presupuestado") }}',
-        render: Formatter.getFormatter('nominal', null, null)
+        render: Formatter.getFormatter(uiState.format, stats, Number(uiState.year), getBreakdownValue)
       };
     }
 
     function getExecutionColumnDefinition(uiState) {
-      var columnDef = getColumnDefinition(uiState);
-      columnDef.title = getExecutionColumnName(budgetStatuses[uiState.year], '{{ _("Invertido") }}', budgetStatusLabels);
-      columnDef.data = getBreakdownValueFunction(uiState.field, "actual_" + uiState.year);
-      return columnDef;
+      var getBreakdownValue = getBreakdownValueFunction(uiState.field, "actual_" + uiState.year);
+      return {
+        data: getBreakdownValue,
+        title: getExecutionColumnName(budgetStatuses[uiState.year], '{{ _("Invertido") }}', budgetStatusLabels),
+        render: Formatter.getFormatter(uiState.format, stats, Number(uiState.year), getBreakdownValue)
+      };
     }
 
     function redraw() {

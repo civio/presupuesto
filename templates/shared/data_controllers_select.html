@@ -4,5 +4,7 @@
   {% if not hide_percentage_format %}
   <option value="percentage">{{ _('Porcentaje sobre el total') }}</option>
   {% endif %}
+  {% if not hide_per_capita_format %}
   <option value="per_capita">{{ _('Per-capita (real)') }}</option>
+  {% endif %}
 </select>

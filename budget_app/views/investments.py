@@ -26,6 +26,10 @@ def investments(request):
     populate_years(c, c['area_breakdown'])
     populate_budget_statuses(c, entity.id)
 
+    # The per-capita format in investment pages is misleading, as it refers to the whole
+    # entity population, not the particular districts/neighborhoods/areas, so we hide it.
+    c['hide_per_capita_format'] = True
+
     return render_response('investments/index.html', c)
 
 
@@ -50,5 +54,9 @@ def investments_show(request, id, title, render_callback=None):
     populate_entity_descriptions(c, entity)
     populate_years(c, c['area_breakdown'])
     populate_budget_statuses(c, entity.id)
+
+    # The per-capita format in investment pages is misleading, as it refers to the whole
+    # entity population, not the particular districts/neighborhoods/areas, so we hide it.
+    c['hide_per_capita_format'] = True
 
     return render_response('investments/show.html', c)
