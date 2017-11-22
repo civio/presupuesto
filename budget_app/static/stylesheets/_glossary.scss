@@ -22,9 +22,12 @@
 .glossary-terms{
   padding: 0;
   margin: 0 0 $grid-gutter-width;
+  border-bottom: 1px solid $table-border-color;
 
-  > tbody{
-    border-bottom: 1px solid $table-border-color;
+  > li{
+    list-style: none;
+    border-top: 1px solid $table-border-color;
+    padding: 8px;
   }
 
   h3,

@@ -31,18 +31,14 @@
       </div>
       {% endif %}
 
-      <table class="glossary-terms table" role="presentation">
-        <tbody>
+      <ul class="glossary-terms">
         {% for term in terms %}
-        <tr>
-          <td>
-            <h3 class="icon-term">{{ term.title }}</h3>
-            <div class="term-description">{{ term.description|safe }}</div>
-          </td>
-        </tr>
+        <li>
+          <h3 class="icon-term">{{ term.title }}</h3>
+          <div class="term-description">{{ term.description|safe }}</div>
+        </li>
         {% endfor %}
-        </tbody>
-      </table>
+      </ul>
 
       {{ render_pagination_controls(terms, request) }}
 
