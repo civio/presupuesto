@@ -3,13 +3,6 @@ from django.db import models, connection
 from django.conf import settings
 
 class InvestmentManager(models.Manager):
-    # Return the list of areas
-    # def get_areas(self, entity_id):
-    #     return self.values_list('area', flat=True) \
-    #                 .filter(budget_id__entity=entity_id) \
-    #                 .distinct() \
-    #                 .order_by('area')
-
     def each_denormalized(self, additional_constraints=None, additional_arguments=None):
         sql = \
             "select " \
@@ -19,9 +12,13 @@ class InvestmentManager(models.Manager):
             "from " \
                 "investments i " \
                 "left join geographic_categories gc on i.geographic_category_id = gc.id " \
-                "left join budgets b on i.budget_id = b.id "
+                "left join budgets b on i.budget_id = b.id " \
+                "left join entities e on b.entity_id = e.id "
 
-        return self.raw(sql)
+        if additional_constraints:
+            sql += " where " + additional_constraints
+
+        return self.raw(sql, additional_arguments)
 
 
 class Investment(models.Model):

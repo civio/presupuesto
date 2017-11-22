@@ -10,7 +10,8 @@ def investments(request):
     entity = get_main_entity(c)
 
     # Get the investments breakdown
-    investments = Investment.objects.each_denormalized()
+    query = "e.id = %s"
+    investments = Investment.objects.each_denormalized(query, [ entity.id ])
     c['area_breakdown'] = BudgetBreakdown(['area'])
     for item in investments:
         column_name = year_column_name(item)
@@ -25,11 +26,25 @@ def investments(request):
 
     return render_response('investments/index.html', c)
 
+
 def investments_show(request, id, title, render_callback=None):
     c = get_context(request, css_class='body-investments', title=_(u'Inversiones por distrito'))
     entity = get_main_entity(c)
 
+    # Get area name
     c['area'] = GeographicCategory.objects.filter(  budget__entity=entity,
                                                     code=id)[0]
+
+    # Get the investments breakdown
+    query = "gc.code = %s and e.id = %s"
+    investments = Investment.objects.each_denormalized(query, [ id, entity.id ])
+    c['area_breakdown'] = BudgetBreakdown(['description'])
+    for item in investments:
+        column_name = year_column_name(item)
+        c['area_breakdown'].add_item(column_name, item)
+
+    # Get additional information
+    populate_years(c, c['area_breakdown'])
+    populate_entity_descriptions(c, entity)
 
     return render_response('investments/show.html', c)
