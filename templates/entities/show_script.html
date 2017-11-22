@@ -25,7 +25,13 @@
       'expense':       {{ expense_areas|safe }},
       'institutional': {{ institutional_areas|safe }},
     }
-    var i18n          = { 'Presupuestado': 'Presupuestado' };
+    var i18n          = { 
+      'Presupuestado': 'Presupuestado',
+      'table': {
+        'sortAscending': '{{ _(": Clicar para ordenar ascendentemente") }}',
+        'sortDescending': '{{ _(": Clicar para ordenar descendentemente") }}'
+      }
+    };
     var colorScale    = {{ color_scale|safe }};
     var labelsMinSize = {{ treemap_labels_min_size }};
     var labelsFontSizeMin = {{ treemap_labels_font_size_min }};
@@ -130,7 +136,7 @@
 {% if show_actual %}
           ,executionColumnDef
 {% endif %}
-        ]);  
+        ], i18n.table);
       }
 
       // Get breakdown
