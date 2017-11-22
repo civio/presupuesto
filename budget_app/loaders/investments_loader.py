@@ -9,7 +9,9 @@ import re
 class InvestmentsLoader:
 
     def load(self, entity, year, path):
-        items = self.parse_data(os.path.join(path, 'inversiones.csv'))
+        items = []
+        self.parse_data(items, os.path.join(path, 'inversiones.csv'))
+        self.parse_data(items, os.path.join(path, 'ejecucion_inversiones.csv'))
 
         # Find the budget the investments relates to
         budget = Budget.objects.filter(entity=entity, year=year)
@@ -27,8 +29,7 @@ class InvestmentsLoader:
             self.load_items(budget, items)
 
 
-    def parse_data(self, filename):
-        items = []
+    def parse_data(self, items, filename):
         if os.path.isfile(filename):
             print "Leyendo datos de %s..." % filename
             reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
@@ -40,46 +41,43 @@ class InvestmentsLoader:
                     continue
 
                 # Finally, we have useful data
-                items.append(line)
+                items.append(self.parse_item(filename, line))
         else:
             print "No se encontró el fichero %s" % filename
 
         return items
 
 
-    # Parse an input line into fields
-    def parse_item(self, budget, line):
-        return {
-            'gc_code': line[0].strip(),
-            'description': self._spanish_titlecase(line[1].strip()),
-            'amount': self._read_english_number(line[2])
-        }
+    # OVERRIDE THIS!
+    # I don't think it's worth offering a base implementation, not at this point at least, since
+    # every input data we get has a different structure, and there's value in keeping the CSV files
+    # as close as possible to the original database, PDF, XLS, whatever.
+    def parse_item(self, filename, line):
+        return {}
 
 
     def load_items(self, budget, items):
         for item in items:
-            fields = self.parse_item(budget, item)
-
             # Ignore null entries or entries with no amount
-            if fields == None or fields['amount'] == 0:
+            if item == None or item['amount'] == 0:
                 continue
 
             # Fetch economic category
-            gc = GeographicCategory.objects.filter( code=fields['gc_code'],
+            gc = GeographicCategory.objects.filter( code=item['gc_code'],
                                                     budget=budget)
             if not gc:
-                print u"ALERTA: No se encuentra la categoría geográfica '%s' para '%s': %s€" % (fields['gc_code'], fields['description'], fields['amount']/100)
+                print u"ALERTA: No se encuentra la categoría geográfica '%s' para '%s': %s€" % (item['gc_code'], item['description'], item['amount']/100)
                 continue
             else:
                 gc = gc[0]
 
 
             # Create the payment record
-            Investment(geographic_category=gc,
-                    expense=True,
-                    amount=fields['amount'],
-                    description=fields['description'],
-                    budget=budget).save()
+            Investment( geographic_category=gc,
+                        actual=item['is_actual'],
+                        amount=item['amount'],
+                        description=item['description'],
+                        budget=budget).save()
 
 
     # TODO: These below are probably useful enough to move to some base/utils class.

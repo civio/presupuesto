@@ -6,7 +6,7 @@ class InvestmentManager(models.Manager):
     def each_denormalized(self, additional_constraints=None, additional_arguments=None):
         sql = \
             "select " \
-                "i.id, i.amount, i.description, i.expense, TRUE as actual, " \
+                "i.id, i.amount, i.description, TRUE as expense, i.actual, " \
                 "gc.code as area, " \
                 "b.year " \
             "from " \
@@ -23,8 +23,8 @@ class InvestmentManager(models.Manager):
 
 class Investment(models.Model):
     budget = models.ForeignKey('Budget')
+    actual = models.BooleanField()
     geographic_category = models.ForeignKey('GeographicCategory', db_column='geographic_category_id')
-    expense = models.BooleanField()
     description = models.CharField(max_length=300)
     amount = models.BigIntegerField()
     updated_at = models.DateTimeField(auto_now=True)
