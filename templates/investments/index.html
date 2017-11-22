@@ -18,13 +18,13 @@
     <div class="container">
 
       <!-- TODO!!! Añadir enlaces a cada distrito -->
-      <div class="districts-select">
+      <div class="areas-select">
         <ul>
-        {% for district in districts %}
-          <li><a href="{% url 'budget_app.views.investments_show' district.code, district.slug() %}">{{ district.description|safe }}</a></li>
+        {% for area in areas %}
+          <li><a href="{% url 'budget_app.views.investments_show' area.code, area.slug() %}">{{ area.description|safe }}</a></li>
         {% endfor %}
         </ul>
-        {% include 'investments/districts_map.html' %}
+        {% include 'investments/areas_map.html' %}
       </div>
 
       {% include 'shared/data_controllers.html' %}

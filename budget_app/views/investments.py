@@ -17,7 +17,7 @@ def investments(request):
         c['area_breakdown'].add_item(column_name, item)
 
     # Get list of investment areas
-    c['districts'] = GeographicCategory.objects.categories(entity)
+    c['areas'] = GeographicCategory.objects.categories(entity)
 
     # Get additional information
     populate_years(c, c['area_breakdown'])
