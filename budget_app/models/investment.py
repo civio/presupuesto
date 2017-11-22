@@ -25,6 +25,7 @@ class Investment(models.Model):
     budget = models.ForeignKey('Budget')
     actual = models.BooleanField()
     geographic_category = models.ForeignKey('GeographicCategory', db_column='geographic_category_id')
+    project_id = models.CharField(max_length=20, null=True)
     description = models.CharField(max_length=300)
     amount = models.BigIntegerField()
     updated_at = models.DateTimeField(auto_now=True)

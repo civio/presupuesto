@@ -76,6 +76,7 @@ class InvestmentsLoader:
             Investment( geographic_category=gc,
                         actual=item['is_actual'],
                         amount=item['amount'],
+                        project_id=item['project_id'],
                         description=item['description'],
                         budget=budget).save()
 
