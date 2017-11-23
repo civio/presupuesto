@@ -4,9 +4,12 @@
     // Variable Definitions
     var uiState         = null,
         myGrid,
+        currentChart,
         areaBreakdown   = {{ area_breakdown.to_json( labels=descriptions['functional'] )|safe }},
+        gridData        = breakdownToTable(areaBreakdown),
         stats           = {{ stats|safe }},
-        budgetStatuses  = {{ budget_statuses|safe }};
+        budgetStatuses  = {{ budget_statuses|safe }},
+        i18n            = {};
 
     // Grid rendering
     // XXX: Some of the code may be duplicated in index_script
@@ -34,7 +37,7 @@
           executionColumnDef = getExecutionColumnDefinition(uiState);
 
       if ( myGrid !== undefined )  myGrid.destroy();
-      myGrid = createBudgetGrid("#myGrid", breakdownToTable(areaBreakdown),
+      myGrid = createBudgetGrid("#myGrid", gridData,
                         [
                           {
                             data: function(item) { return item.label || item.key; },
@@ -44,6 +47,13 @@
                           columnDef,
                           executionColumnDef
                         ]);
+
+      // Redraw chart
+      var colorScale = {{ color_scale|safe }};
+      currentChart = new BudgetStackedChart('#policy-chart-container', stats, colorScale, i18n)
+        .budgetStatuses(budgetStatuses)
+        .loadBreakdown(areaBreakdown, uiState.field)
+        .draw(uiState);
 
       // XXX: This is very similar to policies/show_script and investments/index_script, should refactor.
       // Hide totals panel if format is '% of total'
