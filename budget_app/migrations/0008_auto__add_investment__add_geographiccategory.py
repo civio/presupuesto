@@ -12,8 +12,10 @@ class Migration(SchemaMigration):
         db.create_table('investments', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('budget', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['budget_app.Budget'])),
-            ('geographic_category', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['budget_app.GeographicCategory'], db_column='geographic_category_id')),
-            ('expense', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('actual', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('functional_category', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['budget_app.FunctionalCategory'], null=True, db_column='functional_category_id')),
+            ('geographic_category', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['budget_app.GeographicCategory'], null=True, db_column='geographic_category_id')),
+            ('project_id', self.gf('django.db.models.fields.CharField')(max_length=20, null=True)),
             ('description', self.gf('django.db.models.fields.CharField')(max_length=300)),
             ('amount', self.gf('django.db.models.fields.BigIntegerField')()),
             ('updated_at', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
@@ -155,13 +157,15 @@ class Migration(SchemaMigration):
         },
         'budget_app.investment': {
             'Meta': {'object_name': 'Investment', 'db_table': "'investments'"},
+            'actual': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'amount': ('django.db.models.fields.BigIntegerField', [], {}),
             'budget': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['budget_app.Budget']"}),
             'created_at': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
             'description': ('django.db.models.fields.CharField', [], {'max_length': '300'}),
-            'expense': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
-            'geographic_category': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['budget_app.GeographicCategory']", 'db_column': "'geographic_category_id'"}),
+            'functional_category': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['budget_app.FunctionalCategory']", 'null': 'True', 'db_column': "'functional_category_id'"}),
+            'geographic_category': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['budget_app.GeographicCategory']", 'null': 'True', 'db_column': "'geographic_category_id'"}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'project_id': ('django.db.models.fields.CharField', [], {'max_length': '20', 'null': 'True'}),
             'updated_at': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'})
         },
         'budget_app.payment': {

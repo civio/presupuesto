@@ -4,7 +4,7 @@
     // Variable Definitions
     var uiState         = null,
         myGrid,
-        areaBreakdown   = {{ area_breakdown.to_json( labels=descriptions['geographic'] )|safe }},
+        areaBreakdown   = {{ area_breakdown.to_json( labels=descriptions['functional'] )|safe }},
         stats           = {{ stats|safe }},
         budgetStatuses  = {{ budget_statuses|safe }};
 
@@ -37,7 +37,7 @@
       myGrid = createBudgetGrid("#myGrid", breakdownToTable(areaBreakdown),
                         [
                           {
-                            data: 'key',
+                            data: function(item) { return item.label || item.key; },
                             title: '{{ _("Inversión") }}',
                             render: rowNameFormatter
                           },

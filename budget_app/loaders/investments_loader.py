@@ -62,7 +62,20 @@ class InvestmentsLoader:
             if item == None or item['amount'] == 0:
                 continue
 
-            # Fetch economic category
+            # Fetch functional category
+            fc = FunctionalCategory.objects.filter( area=item.get('fc_area', None),
+                                                    policy=item.get('fc_policy', None),
+                                                    function=item.get('fc_function', None),
+                                                    programme=item.get('fc_programme', None),
+                                                    subprogramme=item.get('fc_subprogramme', None),
+                                                    budget=budget)
+            if not fc:
+                print u"ALERTA: No se encuentra la categoría funcional '%s' para '%s': %s€" % (item['fc_code'], item['description'], item['amount']/100)
+                continue
+            else:
+                fc = fc[0]
+
+            # Fetch geographic category
             gc = GeographicCategory.objects.filter( code=item['gc_code'],
                                                     budget=budget)
             if not gc:
@@ -71,9 +84,9 @@ class InvestmentsLoader:
             else:
                 gc = gc[0]
 
-
             # Create the payment record
-            Investment( geographic_category=gc,
+            Investment( functional_category=fc,
+                        geographic_category=gc,
                         actual=item['is_actual'],
                         amount=item['amount'],
                         project_id=item['project_id'],

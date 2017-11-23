@@ -8,9 +8,11 @@ class InvestmentManager(models.Manager):
             "select " \
                 "i.id, i.amount, i.description, TRUE as expense, i.actual, " \
                 "gc.code as area, " \
+                "fc.policy, " \
                 "b.year " \
             "from " \
                 "investments i " \
+                "left join functional_categories fc on i.functional_category_id = fc.id " \
                 "left join geographic_categories gc on i.geographic_category_id = gc.id " \
                 "left join budgets b on i.budget_id = b.id " \
                 "left join entities e on b.entity_id = e.id "
@@ -24,7 +26,8 @@ class InvestmentManager(models.Manager):
 class Investment(models.Model):
     budget = models.ForeignKey('Budget')
     actual = models.BooleanField()
-    geographic_category = models.ForeignKey('GeographicCategory', db_column='geographic_category_id')
+    functional_category = models.ForeignKey('FunctionalCategory', db_column='functional_category_id', null=True)
+    geographic_category = models.ForeignKey('GeographicCategory', db_column='geographic_category_id', null=True)
     project_id = models.CharField(max_length=20, null=True)
     description = models.CharField(max_length=300)
     amount = models.BigIntegerField()

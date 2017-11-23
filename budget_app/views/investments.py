@@ -44,7 +44,7 @@ def investments_show(request, id, title, render_callback=None):
     # Get the investments breakdown
     query = "gc.code = %s and e.id = %s"
     investments = Investment.objects.each_denormalized(query, [ id, entity.id ])
-    c['area_breakdown'] = BudgetBreakdown(['description'])
+    c['area_breakdown'] = BudgetBreakdown(['policy', 'description'])
     for item in investments:
         column_name = year_column_name(item)
         c['area_breakdown'].add_item(column_name, item)
