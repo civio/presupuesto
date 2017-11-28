@@ -149,7 +149,7 @@
           description:  query.description,
           payee:        query.payee,
           area:         query.area,
-          date:         (yearAsRange) ? query.date : query.date+','+query.date
+          date:         (yearAsRange || query.date=='') ? query.date : query.date+','+query.date
         },
         contentType:    'application/json; charset=utf-8',
         success:        onSearchSuccess,

@@ -30,10 +30,6 @@ def payments_helper(request, c, entity, render_callback=None):
     # Needed for the footnote on inflation
     populate_stats(c)
 
-    c['payments_year_range'] = True
-    if hasattr(settings, 'PAYMENTS_YEAR_RANGE'):
-        c['payments_year_range'] = settings.PAYMENTS_YEAR_RANGE
-
     return render_response('payments/index.html', c)
 
 
@@ -175,9 +171,14 @@ def __populate_detailed_breakdowns(c):
     c['is_summary'] = False
 
 def __set_year_range(c, entity):
+    # Are we working with year ranges, or just one at a time?
+    c['payments_year_range'] = True
+    if hasattr(settings, 'PAYMENTS_YEAR_RANGE'):
+        c['payments_year_range'] = settings.PAYMENTS_YEAR_RANGE
+
     c['years'] = list(Payment.objects.get_years(entity))
-    c['first_year'] = c['years'][0]
     c['last_year'] = c['years'][len(c['years'])-1]
+    c['first_year'] = c['years'][0] if c['payments_year_range'] else c['last_year']
 
 def __parse_year_arguments(years):
     if ( years != '' ):
