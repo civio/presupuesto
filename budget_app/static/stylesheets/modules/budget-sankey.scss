@@ -139,21 +139,20 @@ $sankey-expense-color-dark: darken($sankey-expense-color, 10%);
     dominant-baseline: middle;
 
     &.invert{
+      fill: $gray-darker;
       font-weight: $font-weight-400;
     }
   }
 
   .incomes .node-label{
-    text-shadow: 1px 1px 1px $sankey-income-color-dark;
+    text-shadow: 0 -1px 0 $sankey-income-color-dark, 0 0 2px $sankey-income-color-dark;
     &.invert{
-      fill: darken( $sankey-income-color-dark, 5% );
       text-shadow: 0 0 4px white;
     }
   }
   .expenses .node-label{
-    text-shadow: 1px 1px 1px $sankey-expense-color-dark;
+    text-shadow: 0 -1px 0 $sankey-expense-color-dark, 0 0 2px $sankey-expense-color-dark;
     &.invert{
-      fill: darken( $sankey-expense-color-dark, 5% );
       text-shadow: 0 0 4px white;
     }
   }

@@ -432,7 +432,7 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
   }
 
   function setNodeLabelClass(d){
-    return (d.data.actual/d.data.budgeted > .5) ? 'node-label' : 'node-label invert' 
+    return (d.data.actual/d.data.budgeted > .6) ? 'node-label' : 'node-label invert' 
   }
   function setNodeLabelFontSize(d){
     return Math.round(fontSizeScale(d.y1-d.y0))+'px'
