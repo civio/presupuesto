@@ -361,7 +361,7 @@ msgstr "Descarrega la taula en CSV"
 #: templates/entities/show.html:99 templates/entities/show.html.py:105
 #: templates/entities/show.html:111 templates/payments/index.html:43
 msgid "Descarga la tabla en Excel"
-msgstr "Descarrega la taula en Execl"
+msgstr "Descarrega la taula en Excel"
 
 #: templates/entities/index.html:47 templates/entities/show.html:108
 msgid "Descarga la tabla de <strong>Gastos</strong>"
