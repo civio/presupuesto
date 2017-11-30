@@ -1,6 +1,6 @@
 // Data Panel
 .data-panel {
-  
+
   #totals-year{
     display: block;
     font-weight: $font-weight-400;
@@ -16,7 +16,9 @@
     padding: 0;
     border-radius: 0;
     border-color: $panel-default-border;
-
+    border-radius: $panel-border-radius;
+    overflow: hidden;
+    /*
     &:first-child{
       border-top-right-radius: $panel-border-radius;
       border-top-left-radius: $panel-border-radius;
@@ -25,6 +27,7 @@
       border-bottom-right-radius: $panel-border-radius;
       border-bottom-left-radius: $panel-border-radius;
     }
+    */
   }
 
   .panel-title{

@@ -8,6 +8,7 @@
     @extend .panel;
     @extend .panel-default;
     margin-bottom: $grid-gutter-width;
+    overflow: hidden;
     border-color: darken( $budget-stream-color, 10% ); 
     text-align: left;
 
