@@ -1,6 +1,11 @@
 .areas-select{
   ul{
-    display: none;
+    // Hide element but allow access to screen readers
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    left: -100px;
   }
 }
 
