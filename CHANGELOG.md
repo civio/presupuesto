@@ -2,16 +2,78 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+
+## [4.1] - 2017-06-20
+### Added
+- Add support for subprogrammes, including loader, view and templates. #210
+- Add support for proposed budget in Stacked Area Chart viz. #330
+- Add institutional (section) pages, optional, configurable via `SHOW_SECTION_PAGES`. #347.
+- Add new budget status (`PR`) to support proposed budgets. #326
+- Add new budget status (`T0`) for budgets where no execution data is available yet. #367
+- Add budget status labels for months.
+- Add embed button for treemaps.
+- Add setting `ADD_ECONOMIC_CATEGORIES_PREFIX` to include codes in items' descriptions. #326
+- Add setting `BREAKDOWN_BY_UID` to group budget items per uid or subheading. #326
+- Show non-financial totals in detailed policy pages. #364
+- Add support for `TREEMAP_LABELS_MIN_SIZE` setting. #349
+- Add support for `FACEBOOK_ID` setting. #363
+- Create a management command to remove unusued functional categories from DB. #372
+- Include articles (and sections, if institutional pages are on) in search results. #370
+- Generate a bundle with D3 modules for budget treemap with `npm` & `rollup`.
+- Add `TREEMAP_GLOBAL_MAX_VALUE` setting to (optionally) share the same scale across tabs.
+- Add total amount/count stats to payment summary searches. #455
+
+### Changed
+- Adapt Sankey chart to D3.js v4.
+- Ignore lines starting with # on budget loader.
+- Randomize order of featured programmes in homepage.
+- Load execution data as part of loading a budget, also for the 'not simple' loader.
+- Sort data in CSV/XLS files by year, to avoid confusion. #362
+- Split `welcome#index` in different partials. #376
+- Move `version.json` and `robots.txt` outside the i18n paths. #262
+- Make TaxReceipt more flexible using a taxes object to define form taxes.
+- Remove treemap position transition in setup & resize.
+- Reimplement grid_formatters using `d3.format` instead of `numeral.js`.
+- Support payment searches with no parameters.
+
+### Fixed
+- Fix typo in the glossary link title in the navigation header.
+- Refactor, clean-up and fix code handling (non-)financial totals. #340
+- Fix glossary button click. #366
+- Fix error when paginating search URLs with Unicode characters. #293
+- Remove unnecessary Javascript dependencies in widget code. #377
+- Make sure budget summary labels and colors are correct even if order is different on year change. #354
+- Clean up and refactor away from templates the code handling the back button.
+- Ignore empty descriptions when building in-memory master table of descriptions. #361
+- Fix `BudgetTreemap` to avoid childs with negative values.
+- Fix gaps in stacked area chart & years slider when one year is missing. #301
+- Translate dataTables message when table is empty to Spanish.
+- Fix CSV/XLS payment downloads when no filters applied. #455
+- Make CSV delimiter configurable for the simple budget loader.
+- Avoid issues with single quotes in budget status translations.
+- Remove extra spaces from glossary.
+
+## [4.0] - 2016-10-14
 ### Added
 - Nodes in the global view chart can now be customized and combined as needed.
 - Nodes in Sankey chart can now be combined and labelled as will.
 - Sankey chart layout aggressiveness can be configured from the theme settings.
 - Labels in Sankey chart can now be localized.
-- Styles for selected option in main navagation menu.
 - Added subtotals list in Overview totals panel.
 - Clicking on a functional stacked area chart takes you to the programme page.
-- Started English translation of the user interface.
-- Search layout for payments
+- Search layout for payments.
+- Make list of biggest payment beneficiaries configurable.
+- Redesign initial state of payment page to show area breakdown. #215
+- Add `data_sources_extra` partial for custom theme notes.
+- Support custom links in complex Sankey charts. #227
+- Make Sankey node padding configurable. #246
+- Create a Javascript file for themes. #230
+- Make number of featured programmes configurable. #246
+- Add a new (optional) institutional treemap to the Policy page. #326
+- Support overriding `STATIC_URL` setting from local settings. #236
+- Make database port and host configurable from local settings. #295
+- Make CSV delimiter configurable for the 'non-simple' budget loader.
+- Add Catalan, Basque, English and Galician translations.
 
 ### Changed
 - Major front-end rewrite, now using Bootstrap 3.
@@ -20,17 +82,45 @@ All notable changes to this project will be documented in this file.
 - Improve year slider changing jslider plugin by [bootstrap-slider](http://seiyria.com/bootstrap-slider/)
 - Localised URLs don't have a language prefix if only one language is available.
 - Tax receipt is aware of whether financial chapters have to be included or not.
-- Update & translate metatags & improve base markup
-- Unify js files in 2 main files & move the big one to the footer
+- Update & translate metatags & improve base markup.
+- Unify JS files in 2 main files & move the big one to the footer.
+- Remove payments year slider if there's only one year.
+- Disable SQL console logging when loading data, so we can see the errors.
+- Improvements to payment downloads: refactored code, download only filtered data, use XLSX... #215 #223
+- Make inflation-adjustment in overview page optional. #229
+- Improve footer image links markup in order to allow theme-customization.
+- Adapt budget treemap and stacked area chart visualizations to D3.js v4.
+- Add `ANALYTICS_CODE` from theme settings instead of `local_settings`.
+- Allow theme loaders to return null budget items if needed.
+- Increased BudgetItem.item_number size to seven characters. #264
+- Avoid hardcoding language for `numeral.js`, and add support for Catalan, Basque and Galician. #274
+- Make sure number formatting is not hardcoded across the application. #274
+- Remove unused Bootstrap 3 dependencies.
+- Go back to the previously active tab from detail pages. #272
+- Anonymized payments are not included in list of biggest payees. #246
+- Amend budget loader so length of institutional fields is not hardcoded.
 
 ### Fixed
 - Site cache is now working again, after fixing HTTP headers.
 - Root url now works again in production when no locale is specified.
 - Friendly URLs were cut at the first single quote. Not anymore.
-- Added missing translation strings. Catalan default translation completed.
 - Pagination controls fixed to show only a range of pages, not all available.
 - 'Back to Sankey' button in policy page didn't work in multi-language setting.
-- IE9 & above support
+- IE9 & above support.
+- Make sure the list of biggest payees includes only data for the current language. #222
+- Don't show execution part in Sankey pop-up when no info available.
+- Fix crash in Chrome/Windows when acceding to Policies page, merging all the treemaps. #52
+- Fixed accesibility issues (e.g. from `b` to `strong`, duplicated ids...) raised by Barcelona.
+- Fix page HTML titles, were blank or not i18n. #246
+- Hide treemap when there's no information to show. #260
+- Fix article data downloads, were showing always income side. #273
+- Make sure descriptions for income and expense economic concepts don't get mixed. #277
+- Fix pop-up messages in stacked chart after one item is selected. #279
+- Improve Sankey layout on edge scenarios (e.g. missing data, tiny values, budget mismatches). #283
+- Avoid Javascript error when hovering Sankey's central node. #304
+- Fix missing inflation year in tax receipt page footer. #309
+- Fix wrong accent marks in messages for embedded charts. #311
+- Clicks in a policy treemap, when shown, now leads to the selected programme. #258
 
 ## [3.1.5] - 2016-06-23
 ### Changed
@@ -62,27 +152,27 @@ All notable changes to this project will be documented in this file.
 
 ## [3.1] - 2016-02-15
 ### Added
-- Version info API on `/version.json`
-- Add a default glossary to be loaded if the theme does not contain one
-- Add the option to extend the default glossary with the theme file
-- Extended options for `load_budget`: supports lists of years and languages
-- `load_budget` now can read the budget status from the file `.budget_status`
-- Enabled URL localization
-- Payment information can now be downloaded in CSV or XLS formats
-- Add variables for entity and data sources links in theme settings
+- Version info API on `/version.json`.
+- Add a default glossary to be loaded if the theme does not contain one.
+- Add the option to extend the default glossary with the theme file.
+- Extended options for `load_budget`: supports lists of years and languages.
+- `load_budget` now can read the budget status from the file `.budget_status`.
+- Enabled URL localization.
+- Payment information can now be downloaded in CSV or XLS formats.
+- Add variables for entity and data sources links in theme settings.
 
 ### Changed
-- Google Analytics ID is now set via `local_settings`
-- Added watchers for `.html` and `.js` files
+- Google Analytics ID is now set via `local_settings`.
+- Added watchers for `.html` and `.js` files.
 
 ### Fixed
-- Fix language filtering when searching any term
-- `.less` blob syntax is no longer wrong in `manage.py`
+- Fix language filtering when searching any term.
+- `.less` blob syntax is no longer wrong in `manage.py`.
 
 ## [3.0] - 2016-02-02
 ### Added
-- Added livereload option to `manage.py`
-- Added a watcher to the livereload on `.less` files
+- Added livereload option to `manage.py`.
+- Added a watcher to the livereload on `.less` files.
 
 ### Changed
 - Removed `theme-aragon` from the base project
@@ -90,7 +180,9 @@ All notable changes to this project will be documented in this file.
 ### Forked from [aragonopendata/presupuesto](https://github.com/aragonopendata/presupuesto) - 2016-01-28
 
 
-[Unreleased]: https://github.com/civio/presupuesto/compare/3.1...HEAD
-[3.1]: https://github.com/civio/presupuesto/releases/tag/3.1
-[3.0]: https://github.com/civio/presupuesto/releases/tag/3.0
+[Unreleased]: https://github.com/civio/presupuesto/compare/v4.0...HEAD
+[4.1]: https://github.com/civio/presupuesto/releases/tag/v4.1
+[4.0]: https://github.com/civio/presupuesto/releases/tag/v4.0
+[3.1]: https://github.com/civio/presupuesto/releases/tag/v3.1
+[3.0]: https://github.com/civio/presupuesto/releases/tag/v3.0
 [aragonopendata/presupuesto]: https://github.com/aragonopendata/presupuesto/
