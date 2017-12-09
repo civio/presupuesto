@@ -2,13 +2,15 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+### Changed
+- Glossary: loader now supports multiple languages as parameter.
 
 ## [4.2.1] - 2017-12-09
 ### Changed
 - Expand support for secondary pages: detail pages now supported. #105
 - Payments loader now supports multiple entities, but default behaviour is not changed. #105
 - Amend Basque glossary to match Spanish one.
-- Overview: Improve label readibility in new visualization.
+- Overview: Improve label readability in new visualization.
 
 ### Fixed
 - Payments hero box in homepage was not reacting to clicks.

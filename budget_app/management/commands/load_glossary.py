@@ -29,6 +29,14 @@ class Command(BaseCommand):
 
     help = u"Carga los términos del glosario desde un fichero, _reemplazando el actual_"
 
+    @staticmethod
+    def _parse_languages(languages):
+        try:
+            result = languages.split(',')
+        except:
+            result = [None]
+        return result
+
     def handle(self, *args, **options):
         # Allow overriding the data path from command line
         glossary_loader = GlossaryLoader()
@@ -39,24 +47,25 @@ class Command(BaseCommand):
         else:
             path = args[0]
 
-        language = options.get('language')
-        filename = "glosario_%s.csv" % (language, )
-        default_filename = "glosario_default_%s.csv" % (options['language'])
+        languages = self._parse_languages(options['language'])
 
-        glossary_loader.delete_all(language)
-        if options.get('extend', False):
-            glossary_loader.load(
-                os.path.join(PATH_TO_DEFAULT, default_filename),
-                options['language']
-            )
-            glossary_loader.load(os.path.join(path, filename), language)
-        else:
-            try:
-                glossary_loader.load(os.path.join(path, filename), language)
-            except IOError:
-                print('Fichero no encontrado. Se va a cargar el glosario por defecto.')
+        for language in languages:
+            filename = "glosario_%s.csv" % (language, )
+            default_filename = "glosario_default_%s.csv" % (language)
+            glossary_loader.delete_all(language)
+            if options.get('extend', False):
                 glossary_loader.load(
                     os.path.join(PATH_TO_DEFAULT, default_filename),
-                    language
+                    options['language']
                 )
+                glossary_loader.load(os.path.join(path, filename), language)
+            else:
+                try:
+                    glossary_loader.load(os.path.join(path, filename), language)
+                except IOError:
+                    print('Fichero no encontrado. Se va a cargar el glosario por defecto.')
+                    glossary_loader.load(
+                        os.path.join(PATH_TO_DEFAULT, default_filename),
+                        language
+                    )
 
