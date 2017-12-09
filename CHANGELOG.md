@@ -32,6 +32,20 @@ All notable changes to this project will be documented in this file.
 - 'Back to Sankey' button in policy page didn't work in multi-language setting.
 - IE9 & above support
 
+## [3.1.5] - 2016-06-23
+### Changed
+- Convert existing application to South. #194
+- Add programme description column to payments. #161
+- Increased BudgetItem.item_number size to seven characters. #264
+
+## [3.1.4] - 2016-06-20
+### Fixed
+- Hide treemap when there's no information to show. #260
+
+## [3.1.3] - 2016-04-05
+### Fixed
+- Swap locale order so the theme can override the core. #136
+
 ## [3.1.2] - 2016-03-06
 ### Fixed
 - Root url now works again in production when no locale is specified.
