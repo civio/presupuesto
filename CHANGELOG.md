@@ -3,6 +3,42 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [4.2.1] - 2017-12-09
+### Changed
+- Expand support for secondary pages: detail pages now supported. #105
+- Payments loader now supports multiple entities, but default behaviour is not changed. #105
+- Amend Basque glossary to match Spanish one.
+- Overview: Improve label readibility in new visualization.
+
+### Fixed
+- Payments hero box in homepage was not reacting to clicks.
+- Render meta tags in safe mode to display quotes correctly.
+- Avoid form submit in tax receipt.
+- Fix the appearence of the year slider when only one year is available.
+- Fix 'thousands' and 'millions' abbreviations for Basque.
+- Accessibility: hide policies treemap for screen readers.
+- Accessibility: translate policies table header.
+- Accessibility: use list instead table for Glossary terms.
+- Payments: starting year now set to last available when year range is disabled.
+
+## [4.2] - 2017-10-17
+### Added
+- Add support for breadcrumbs, controlled via `SHOW_BREADCRUMBS`.
+- Add new Overview visualization, an alternative to existing Sankey. Enable with `OVERVIEW_USE_NEW_VIS`.
+- The content of meta fields can now be populated dynamically by themes. #469
+- Add pages for secondary entities, a generic version of Aragon's counties and towns. #105
+- `PAYMENTS_YEAR_RANGE` setting to configures payment slider as range or single year.
+- Add content to the default cookies page.
+
+### Changed
+- Improved layout of data visualizations in mobile resolutions.
+- Budget loader now supports multiple entities, but default behaviour is not changed. #105
+- Add support for year ranges and multiple language parameters to payment loader.
+
+### Fixed
+- Accessibility improvements to comply with AENOR N certification.
+
+
 ## [4.1] - 2017-06-20
 ### Added
 - Add support for subprogrammes, including loader, view and templates. #210
@@ -180,7 +216,9 @@ All notable changes to this project will be documented in this file.
 ### Forked from [aragonopendata/presupuesto](https://github.com/aragonopendata/presupuesto) - 2016-01-28
 
 
-[Unreleased]: https://github.com/civio/presupuesto/compare/v4.0...HEAD
+[Unreleased]: https://github.com/civio/presupuesto/compare/v4.2.1...HEAD
+[4.2.1]: https://github.com/civio/presupuesto/releases/tag/v4.2.1
+[4.2]: https://github.com/civio/presupuesto/releases/tag/v4.2
 [4.1]: https://github.com/civio/presupuesto/releases/tag/v4.1
 [4.0]: https://github.com/civio/presupuesto/releases/tag/v4.0
 [3.1]: https://github.com/civio/presupuesto/releases/tag/v3.1
