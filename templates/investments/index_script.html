@@ -8,6 +8,14 @@
         stats           = {{ stats|safe }},
         budgetStatuses  = {{ budget_statuses|safe }};
 
+    // Translations
+    var i18n = {
+      'table': {
+        'sortAscending': '{{ _(": Clicar para ordenar ascendentemente") }}',
+        'sortDescending': '{{ _(": Clicar para ordenar descendentemente") }}'
+      }
+    };
+
     // Grid rendering
     // XXX: Some of the code may be duplicated in show_script
     function getColumnDefinition(uiState) {
@@ -43,7 +51,7 @@
                           },
                           columnDef,
                           executionColumnDef
-                        ]);
+                        ], i18n.table);
 
       // XXX: This is very similar to policies/show_script and investments/show_script, should refactor.
       // Hide totals panel if format is '% of total'
