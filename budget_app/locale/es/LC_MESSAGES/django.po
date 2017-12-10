@@ -931,3 +931,9 @@ msgstr ""
 
 msgid "Cerrar"
 msgstr ""
+
+msgid "Inversiones por distritos"
+msgstr ""
+
+msgid "Volver a Inversiones"
+msgstr ""

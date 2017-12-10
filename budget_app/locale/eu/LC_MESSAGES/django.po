@@ -942,3 +942,9 @@ msgstr " (%(chapter)s. kap)"
 
 msgid "Cerrar"
 msgstr "Itxi"
+
+msgid "Inversiones por distritos"
+msgstr ""
+
+msgid "Volver a Inversiones"
+msgstr ""

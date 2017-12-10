@@ -939,3 +939,9 @@ msgstr "Quen recauda?"
 
 msgid "Cerrar"
 msgstr "Pechar"
+
+msgid "Inversiones por distritos"
+msgstr ""
+
+msgid "Volver a Inversiones"
+msgstr ""

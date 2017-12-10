@@ -988,3 +988,9 @@ msgstr ": Clicar per ordenar ascendentment"
 
 msgid ": Clicar para ordenar descendentemente"
 msgstr ": Clicar per ordenar descendentment"
+
+msgid "Inversiones por distritos"
+msgstr ""
+
+msgid "Volver a Inversiones"
+msgstr ""
