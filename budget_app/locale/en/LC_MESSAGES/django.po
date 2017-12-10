@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-06 13:44+0200\n"
-"PO-Revision-Date: 2017-12-10 23:53+0100\n"
+"PO-Revision-Date: 2017-12-11 00:11+0100\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -392,6 +392,9 @@ msgstr "Actual"
 #: templates/entities/show_script.html:85
 #: templates/tax_receipt/tax_receipt_script.html:56
 msgid "Política"
+msgstr "Policy"
+
+msgid "Política.Inversiones"
 msgstr "Policy"
 
 #: templates/entities/show_script.html:85
@@ -982,3 +985,6 @@ msgstr "Investments by district"
 
 msgid "Volver a Inversiones"
 msgstr "Back to investments"
+
+msgid "Distrito"
+msgstr "District"
