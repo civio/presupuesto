@@ -4,7 +4,9 @@
     // Variable Definitions
     var uiState         = null,
         myGrid,
+        myGridExtra,
         areaBreakdown   = {{ area_breakdown.to_json( labels=descriptions['geographic'] )|safe }},
+        noAreaBreakdown = {{ no_area_breakdown.to_json( labels=descriptions['geographic'] )|safe }},
         stats           = {{ stats|safe }},
         budgetStatuses  = {{ budget_statuses|safe }};
 
@@ -23,7 +25,10 @@
       return {
         data: getBreakdownValue,
         title: '{{ _("Presupuestado") }}',
-        render: Formatter.getFormatter(uiState.format, stats, Number(uiState.year), getBreakdownValue)
+        render: Formatter.getFormatter(uiState.format, stats, Number(uiState.year), getBreakdownValue),
+        // XXX: Normally we don't set the column width, but here we have two data tables on top of
+        // each other, and we want them to be aligned. Also, see #185.
+        width: '20%'
       };
     }
 
@@ -32,7 +37,8 @@
       return {
         data: getBreakdownValue,
         title: getExecutionColumnName(budgetStatuses[uiState.year], '{{ _("Invertido") }}', budgetStatusLabels),
-        render: Formatter.getFormatter(uiState.format, stats, Number(uiState.year), getBreakdownValue)
+        render: Formatter.getFormatter(uiState.format, stats, Number(uiState.year), getBreakdownValue),
+        width: '20%'  // XXX: See above
       };
     }
 
@@ -51,6 +57,19 @@
                           },
                           columnDef,
                           executionColumnDef
+                        ], i18n.table, [[0, 'asc']]);
+
+      if ( myGridExtra !== undefined )  myGridExtra.destroy();
+      myGridExtra = createBudgetGrid("#myGridExtra", breakdownToTable(noAreaBreakdown),
+                        [
+                          {
+                            data: 'label',
+                            title: '{{ _("Inversiones adicionales") }}',
+                            render: investmentAreaLinkFormatter,
+                            bSortable: false
+                          },
+                          $.extend(columnDef, { bSortable: false }),
+                          $.extend(executionColumnDef, { bSortable: false})
                         ], i18n.table, [[0, 'asc']]);
 
       // XXX: This is very similar to policies/show_script and investments/show_script, should refactor.

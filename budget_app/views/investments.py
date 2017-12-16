@@ -13,9 +13,13 @@ def investments(request):
     query = "e.id = %s"
     investments = Investment.objects.each_denormalized(query, [ entity.id ])
     c['area_breakdown'] = BudgetBreakdown(['area'])
+    c['no_area_breakdown'] = BudgetBreakdown(['area'])
     for item in investments:
         column_name = year_column_name(item)
-        c['area_breakdown'].add_item(column_name, item)
+        if item.area in ['NN', 'NA']:
+            c['no_area_breakdown'].add_item(column_name, item)
+        else:
+            c['area_breakdown'].add_item(column_name, item)
 
     # Get list of investment areas
     c['areas'] = GeographicCategory.objects.categories(entity)
