@@ -163,6 +163,6 @@ if settings.DEBUG:
 
 # Add the theme URL patterns, if they exist, in front of the default app ones
 if hasattr(settings, 'EXTRA_URLS'):
-    urlpatterns = settings.EXTRA_URLS + budget_app_urlpatterns
+    urlpatterns = url_patterns(settings.THEME+'.views', *settings.EXTRA_URLS) + budget_app_urlpatterns
 else:
     urlpatterns = budget_app_urlpatterns
