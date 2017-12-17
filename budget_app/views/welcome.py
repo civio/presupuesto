@@ -30,7 +30,8 @@ def welcome(request):
     items = BudgetItem.objects \
                         .filter(budget=c['latest_budget']) \
                         .filter(functional_category__programme__in=settings.FEATURED_PROGRAMMES) \
-                        .filter(actual=use_actual)
+                        .filter(actual=use_actual) \
+                        .select_related('functional_category')
     for item in items:
         c['breakdown'].add_item(c['latest_budget'].year, item)
 

@@ -23,12 +23,12 @@
 
     // Render payee name with a link to search for that payee
     function mainPayeeFormatter(value, type, item) {
-      return "<a href='#view=area&payee="+value+"'>"+value+"</a>";
+      return "<a href='#view=area&payee="+value.replace("'", "&#39;")+"'>"+value+"</a>";
     }
 
     // Render area name with a link to search for that area
     function areaFormatter(value, type, item) {
-      return "<a href='#view=payee&area="+value+"'>"+value+"</a>";
+      return "<a href='#view=payee&area="+value.replace("'", "&#39;")+"'>"+value+"</a>";
     }
 
     // Display a year range nicely
