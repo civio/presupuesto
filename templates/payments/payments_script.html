@@ -103,6 +103,7 @@
         $('#payments-info-summary').show();
         $('#payments-info-detailed').hide();
         $('.payments-query').hide();
+        $('#tabs').show();
 
       } else {
         var queryStr = [];
@@ -128,6 +129,13 @@
         $('#payments-info-summary').hide();
         $('#payments-info-detailed').show();
         $('.payments-query').show();
+
+        // Show the alternative area/payee tabs only if it makes sense, i.e. only if they show
+        // the data in a different way. Remember that active filters are removed from the output.
+        if ( query.area==='' && query.payee==='' )
+          $('#tabs').show();
+        else
+          $('#tabs').hide();
 
         $('#area-tab').text("{{ _('Por área') }}");
         $('#payee-tab').text("{{ _('Por beneficiario') }}");

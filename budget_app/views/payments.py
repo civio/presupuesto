@@ -57,15 +57,18 @@ def payment_search_helper(request, c, entity, render_callback=None):
     # Create basic query...
     query = "b.entity_id = %s"
     query_arguments = [c['entity'].id]
+    active_filters = []
 
     # ...and add criteria as needed
     if ( area != '' ):
         query += " AND p.area = %s"
         query_arguments.append(area)
+        active_filters.append('area')
 
     if ( payee != '' ):
         query += " AND p.payee = %s"
         query_arguments.append(payee)
+        active_filters.append('payee')
 
     if ( description != '' ):
         query += " AND to_tsvector('"+settings.SEARCH_CONFIG+"',p.description) @@ plainto_tsquery('"+settings.SEARCH_CONFIG+"',%s)"
@@ -90,7 +93,7 @@ def payment_search_helper(request, c, entity, render_callback=None):
 
         # Populate the breakdowns, unless we're rendering CSV/Excels, not needed then
         if not render_callback:
-            __populate_detailed_breakdowns(c)
+            __populate_detailed_breakdowns(c, active_filters)
 
     # XXX: We can't use render() as it is now because we need to set the content_type.
     # Also because of the content type, note we're not using our render_response() wrapper,
@@ -142,15 +145,24 @@ def __populate_summary_breakdowns(c, entity, from_year, to_year):
     c['is_summary'] = True
 
 
-def __populate_detailed_breakdowns(c):
+def __populate_detailed_breakdowns(c, active_filters):
+    # Read settings on how to structure the search results...
     breakdown_by_payee_criteria = ['payee', 'area', 'description']
     if hasattr(settings, 'PAYMENTS_BREAKDOWN_BY_PAYEE'):
         breakdown_by_payee_criteria = settings.PAYMENTS_BREAKDOWN_BY_PAYEE
-    c['payee_breakdown'] = BudgetBreakdown(breakdown_by_payee_criteria)
 
     breakdown_by_area_criteria = ['area', 'payee', 'description']
     if hasattr(settings, 'PAYMENTS_BREAKDOWN_BY_AREA'):
         breakdown_by_area_criteria = settings.PAYMENTS_BREAKDOWN_BY_AREA
+
+    # But, before moving forward, remove from the search results those criteria
+    # that are being used to filter, as they are redundant.
+    for filter in active_filters:
+        breakdown_by_area_criteria.remove(filter)
+        breakdown_by_payee_criteria.remove(filter)
+
+    # We're ready to create the breakdowns and move forward.
+    c['payee_breakdown'] = BudgetBreakdown(breakdown_by_payee_criteria)
     c['area_breakdown'] = BudgetBreakdown(breakdown_by_area_criteria)
 
     payments_count = 0
