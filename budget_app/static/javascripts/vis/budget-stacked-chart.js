@@ -3,7 +3,9 @@ function BudgetStackedChart(_selector, _stats, _colorScale, i18n) {
   var selector        = _selector;
   var stats           = _stats;
   var budgetStatuses  = {};
+  var colorDomain     = [];
   var totals          = {};
+  var colorScale      = (_colorScale && _colorScale.length > 0) ? _colorScale : null;
   var breakdown,
       years,
       items,
@@ -18,6 +20,12 @@ function BudgetStackedChart(_selector, _stats, _colorScale, i18n) {
     return this;
   };
 
+  this.colorDomain = function(_) {
+    if (!arguments.length) return _;
+    colorDomain = _;
+    return this;
+  };
+
   // The ticks in the Y axis sometimes get too long, so we show them as thousands/millions
   var formatAxis = function(d) {
     if (uiState.format === 'nominal' || uiState.format === 'real') {
@@ -26,12 +34,6 @@ function BudgetStackedChart(_selector, _stats, _colorScale, i18n) {
       return Formatter.amount(d);
     }
   };
-
-  // The color palette
-  var colorScale =  (_colorScale && _colorScale.length > 0) ?
-                    _colorScale :
-                    ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#e7969c', '#bcbd22', '#17becf'];
-
   
   function loadBreakdownField(breakdown, field) {
     // Pick the right dataset for each year: execution preferred over 'just' budget
@@ -148,7 +150,7 @@ function BudgetStackedChart(_selector, _stats, _colorScale, i18n) {
     chart.yAxis.tickFormat(uiState.format == 'percentage' ? Formatter.percentageRounded : formatAxis);
 
     // Setup Color Scale
-    chart.color = d3.scaleOrdinal(d3.schemeCategory10).range(colorScale);
+    chart.color = d3.scaleOrdinal(colorScale ? colorScale : d3.schemeCategory10).domain(colorDomain);
 
     // Setup budgeted literal
     chart.budgeted = i18n.budgeted;
@@ -158,7 +160,6 @@ function BudgetStackedChart(_selector, _stats, _colorScale, i18n) {
     chart.dataFormat = uiState.format;
 
     // Chart set data & draw
-    //chart.setData( getSortedData(this.getNewData()), years.map(function(d){ return parseInt(d); }), budgetStatuses ).draw();
     chart
       .setData(formatValues(values), items, years.map(function(d){ return parseInt(d); }), budgetStatuses)
       .draw();

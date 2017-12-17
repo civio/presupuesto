@@ -150,8 +150,9 @@ function StackedAreaChart() {
 
     _this.stackData = getStackData(_this.values);
 
-    // Setup Color domain
-    _this.color.domain( _this.stackData.map(function(d){ return d.key; }) );
+    // Setup Color domain based on given data, unless another one was previously specified explicitely
+    if ( _this.color.domain == [] )
+      _this.color.domain( _this.stackData.map(function(d){ return d.key; }) );
 
     // Setup X domain
     _this.x.domain( d3.extent(_this.years) );
