@@ -84,7 +84,7 @@ function columnValueExtractor(item, getter) {
 }
 
 // Create a DataTable with budget data
-function createBudgetGrid(containerName, data, userColumns, i18n) {
+function createBudgetGrid(containerName, data, userColumns, i18n, startingSort) {
   // Add some default settings to the column definitions given by the user
   var columns = [];
   $.each(userColumns, function(i, column) {
@@ -179,7 +179,7 @@ function createBudgetGrid(containerName, data, userColumns, i18n) {
     columns: columns,
     // Sort at startup by the previously chosen column; or by the rightmost column at startup
     // TODO: Actually, we're going to sort by the second column, I should use the rightmost... with data
-    order: lastSort ? lastSort : [[1, 'desc']],
+    order: lastSort ? lastSort : (startingSort===undefined ? [[1, 'desc']] : startingSort),
     rowCallback: function(row, data) { $(row).addClass('indent-'+data.indent); },
     // i18n (TODO: enable translations)
     language: {

@@ -5,3 +5,4 @@ from glossary_loader import GlossaryLoader
 from stat_loader import StatLoader
 from entity_loader import EntityLoader
 from payments_loader import PaymentsLoader
+from investments_loader import InvestmentsLoader

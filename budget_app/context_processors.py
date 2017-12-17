@@ -14,6 +14,7 @@ def show_options_processor(request):
   return {
     'show_payments':            hasattr(settings, 'SHOW_PAYMENTS') and settings.SHOW_PAYMENTS,
     'show_tax_receipt':         hasattr(settings, 'SHOW_TAX_RECEIPT') and settings.SHOW_TAX_RECEIPT,
+    'show_investments':         hasattr(settings, 'SHOW_INVESTMENTS') and settings.SHOW_INVESTMENTS,
     'show_counties_and_towns':  hasattr(settings, 'SHOW_COUNTIES_AND_TOWNS') and settings.SHOW_COUNTIES_AND_TOWNS,
     'show_section_pages':       hasattr(settings, 'SHOW_SECTION_PAGES') and settings.SHOW_SECTION_PAGES,
     'breakdown_by_uid':         True if not hasattr(settings, 'BREAKDOWN_BY_UID') else settings.BREAKDOWN_BY_UID,

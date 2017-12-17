@@ -1,0 +1,101 @@
+<script>
+  $(function () {
+
+    // Variable Definitions
+    var uiState         = null,
+        myGrid,
+        currentChart,
+        areaBreakdown   = {{ area_breakdown.to_json( labels=descriptions['functional'] )|safe }},
+        gridData        = breakdownToTable(areaBreakdown),
+        stats           = {{ stats|safe }},
+        budgetStatuses  = {{ budget_statuses|safe }};
+
+    // Translations
+    var i18n = {
+      'table': {
+        'sortAscending': '{{ _(": Clicar para ordenar ascendentemente") }}',
+        'sortDescending': '{{ _(": Clicar para ordenar descendentemente") }}'
+      }
+    };
+
+    // Grid rendering
+    // XXX: Some of the code may be duplicated in index_script
+    function getColumnDefinition(uiState) {
+      var getBreakdownValue = getBreakdownValueFunction(uiState.field, uiState.year);
+      return {
+        data: getBreakdownValue,
+        title: '{{ _("Presupuestado") }}',
+        render: Formatter.getFormatter(uiState.format, stats, Number(uiState.year), getBreakdownValue)
+      };
+    }
+
+    function getExecutionColumnDefinition(uiState) {
+      var getBreakdownValue = getBreakdownValueFunction(uiState.field, "actual_" + uiState.year);
+      return {
+        data: getBreakdownValue,
+        title: getExecutionColumnName(budgetStatuses[uiState.year], '{{ _("Invertido") }}', budgetStatusLabels),
+        render: Formatter.getFormatter(uiState.format, stats, Number(uiState.year), getBreakdownValue)
+      };
+    }
+
+    function redraw() {
+      var uiState = getUIState(),
+          columnDef = getColumnDefinition(uiState),
+          executionColumnDef = getExecutionColumnDefinition(uiState);
+
+      if ( myGrid !== undefined )  myGrid.destroy();
+      myGrid = createBudgetGrid("#myGrid", gridData,
+                        [
+                          {
+                            data: function(item) { return item.label || item.key; },
+                            title: '{{ _("Política.Inversiones") }}',
+                            render: rowNameFormatter
+                          },
+                          columnDef,
+                          executionColumnDef
+                        ], i18n.table);
+
+      // Redraw chart
+      var colorScale = {{ color_scale|safe }};
+      currentChart = new BudgetStackedChart('#policy-chart-container', stats, colorScale, i18n)
+        .budgetStatuses(budgetStatuses)
+        .loadBreakdown(areaBreakdown, uiState.field)
+        .draw(uiState);
+
+      // XXX: This is very similar to policies/show_script and investments/index_script, should refactor.
+      // Hide totals panel if format is '% of total'
+      if ( uiState.format === 'percentage' ) {
+        $('#totals-panel').hide();
+      } else {
+        $('#totals-panel').show();
+      }
+
+      // Set total labels
+      var executedLabel = '{{ _("Invertido") }}',
+          mainLabel = '{{ area.description }}',
+          executionLabelPostfix = getExecutionTotalLabel(budgetStatuses[uiState.year], budgetStatusLabels),
+          hasActualData = areaBreakdown[uiState.field]['actual_'+uiState.year];
+
+      TotalHelpers.setLabels(uiState.year+' '+executionLabelPostfix, executedLabel, mainLabel, true);
+
+      // Set total budgeted amounts
+      TotalHelpers.setEconomicTotals(areaBreakdown, columnDef, '.total-budgeted', true);
+
+      // Show total budgeted executed if hasActualData or clear otherwise
+      if ( hasActualData ) {
+        TotalHelpers.setEconomicTotals(areaBreakdown, executionColumnDef, '.total-executed');
+      } else {
+        TotalHelpers.clear('.total-executed');
+      }
+    }
+
+    // Set up controls (format selector & year slider)
+    $('#select-format').change(function() {
+      redraw();
+    });
+      
+    initSlider("#year-selection", {{ years|safe }}, redraw, {{ starting_year }});
+
+    redraw();
+  });
+</script>

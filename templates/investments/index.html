@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<!-- Inversiones -->
+<section class="investments" role="region">
+  
+  <!-- Inversiones Header -->
+  <div class="investments-header section-header">
+    <div class="container">
+      <h2 class="page-title">{{ _('Inversiones por distritos') }}</h2>
+    </div>
+  </div>
+
+  <!-- Inversiones Content -->
+  <div class="investments-content">
+    <div class="container">
+
+      <!-- Districts select -->
+      <div class="areas-select">
+        <ul>
+        {% for area in areas %}
+          <li><a href="{% url 'budget_app.views.investments_show' area.code, area.slug() %}">{{ area.description|safe }}</a></li>
+        {% endfor %}
+        </ul>
+        {% include 'investments/areas_map.html' %}
+      </div>
+
+      {% include 'shared/data_controllers.html' %}
+
+      <!-- Totals Panel -->
+      {% include 'entities/totals.html' %}
+
+      <!-- Inversiones Table -->
+      <table id="myGrid" class="table-grid" width="100%"></table>
+
+      <table id="myGridExtra" class="table-grid" width="100%"></table>
+
+      <!-- TODO!!! Añadir enlaces a csv y xls -->
+      <!--
+      <div class="panel-downloads">
+        <p class="downloads"">
+          {{ _('Descarga la tabla de <strong>Inversiones</strong>')|safe }}
+          <a class="icon-file-excel" href="#" title="{{ _('Descarga la tabla en CSV') }}"><span class="file-info">CSV</span></a>
+          o
+          <a class="icon-file-excel" href="#" title="{{ _('Descarga la tabla en Excel') }}"><span class="file-info">Excel</span></a>
+        </p>
+      </div>
+      -->
+
+      {% include 'shared/social_sharing.html' %}
+    </div>
+  </div>
+</section>
+
+{% include 'shared/policy_paths.html' %}
+{% include 'shared/budget_status_labels.html' %}
+{% include 'shared/data_sources.html' %}
+{% include 'investments/index_script.html' %}
+
+{% endblock %}

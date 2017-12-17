@@ -1,0 +1,111 @@
+<script>
+  $(function () {
+
+    // Variable Definitions
+    var uiState         = null,
+        myGrid,
+        myGridExtra,
+        areaBreakdown   = {{ area_breakdown.to_json( labels=descriptions['geographic'] )|safe }},
+        noAreaBreakdown = {{ no_area_breakdown.to_json( labels=descriptions['geographic'] )|safe }},
+        stats           = {{ stats|safe }},
+        budgetStatuses  = {{ budget_statuses|safe }};
+
+    // Translations
+    var i18n = {
+      'table': {
+        'sortAscending': '{{ _(": Clicar para ordenar ascendentemente") }}',
+        'sortDescending': '{{ _(": Clicar para ordenar descendentemente") }}'
+      }
+    };
+
+    // Grid rendering
+    // XXX: Some of the code may be duplicated in show_script
+    function getColumnDefinition(uiState) {
+      var getBreakdownValue = getBreakdownValueFunction(uiState.field, uiState.year);
+      return {
+        data: getBreakdownValue,
+        title: '{{ _("Presupuestado") }}',
+        render: Formatter.getFormatter(uiState.format, stats, Number(uiState.year), getBreakdownValue),
+        // XXX: Normally we don't set the column width, but here we have two data tables on top of
+        // each other, and we want them to be aligned. Also, see #185.
+        width: '20%'
+      };
+    }
+
+    function getExecutionColumnDefinition(uiState) {
+      var getBreakdownValue = getBreakdownValueFunction(uiState.field, "actual_" + uiState.year);
+      return {
+        data: getBreakdownValue,
+        title: getExecutionColumnName(budgetStatuses[uiState.year], '{{ _("Invertido") }}', budgetStatusLabels),
+        render: Formatter.getFormatter(uiState.format, stats, Number(uiState.year), getBreakdownValue),
+        width: '20%'  // XXX: See above
+      };
+    }
+
+    function redraw() {
+      var uiState = getUIState(),
+          columnDef = getColumnDefinition(uiState),
+          executionColumnDef = getExecutionColumnDefinition(uiState);
+
+      if ( myGrid !== undefined )  myGrid.destroy();
+      myGrid = createBudgetGrid("#myGrid", breakdownToTable(areaBreakdown),
+                        [
+                          {
+                            data: 'label',
+                            title: '{{ _("Distrito") }}',
+                            render: investmentAreaLinkFormatter
+                          },
+                          columnDef,
+                          executionColumnDef
+                        ], i18n.table, [[0, 'asc']]);
+
+      if ( myGridExtra !== undefined )  myGridExtra.destroy();
+      myGridExtra = createBudgetGrid("#myGridExtra", breakdownToTable(noAreaBreakdown),
+                        [
+                          {
+                            data: 'label',
+                            title: '{{ _("Inversiones adicionales") }}',
+                            render: investmentAreaLinkFormatter,
+                            bSortable: false
+                          },
+                          $.extend(columnDef, { bSortable: false }),
+                          $.extend(executionColumnDef, { bSortable: false})
+                        ], i18n.table, [[0, 'asc']]);
+
+      // XXX: This is very similar to policies/show_script and investments/show_script, should refactor.
+      // Hide totals panel if format is '% of total'
+      if ( uiState.format === 'percentage' ) {
+        $('#totals-panel').hide();
+      } else {
+        $('#totals-panel').show();
+      }
+
+      // Set total labels
+      var executedLabel = '{{ _("Invertido") }}',
+          mainLabel = "{{ _('Inversiones por distritos') }}",
+          executionLabelPostfix = getExecutionTotalLabel(budgetStatuses[uiState.year], budgetStatusLabels),
+          hasActualData = areaBreakdown[uiState.field]['actual_'+uiState.year];
+
+      TotalHelpers.setLabels(uiState.year+' '+executionLabelPostfix, executedLabel, mainLabel, true);
+
+      // Set total budgeted amounts
+      TotalHelpers.setEconomicTotals(areaBreakdown, columnDef, '.total-budgeted', true);
+
+      // Show total budgeted executed if hasActualData or clear otherwise
+      if ( hasActualData ) {
+        TotalHelpers.setEconomicTotals(areaBreakdown, executionColumnDef, '.total-executed');
+      } else {
+        TotalHelpers.clear('.total-executed');
+      }
+    }
+
+    // Set up controls (format selector & year slider)
+    $('#select-format').change(function() {
+      redraw();
+    });
+      
+    initSlider("#year-selection", {{ years|safe }}, redraw, {{ starting_year }});
+
+    redraw();
+  });
+</script>

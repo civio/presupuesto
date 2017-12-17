@@ -1,0 +1,22 @@
+.areas-select{
+  ul{
+    // Hide element but allow access to screen readers
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    left: -100px;
+  }
+}
+
+@media (min-width: $screen-sm-min) {
+
+  .investments-header{
+
+    .history-back{
+      top: 50%;
+      bottom: auto;
+      margin-top: -1rem;
+    }
+  }
+}
