@@ -12,7 +12,6 @@
             <form id="form_{{language[0]}}" method="get" action="/i18n/setlang/">
               <input type="hidden" name="next" value="{{ request.path|redirect_url(language[0]) }}" />
               <input type="hidden" name="language" value="{{ language[0] }}"/>
-              {#<a for="form_{{language[0]}}" href="javascript: document.form_{{language[0]}}.submitform()"{% if language[0].lower() == LANGUAGE_CODE %} class="active"{% endif %}>{{ language[1]|safe }}</a>#}
               <input type="submit" value="{{ language[1]|safe }}" form="form_{{language[0]}}" {% if language[0].lower() == LANGUAGE_CODE %} class="active"{% endif %}/>
             </form>
           </li>
