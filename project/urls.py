@@ -5,7 +5,7 @@ from django.conf.urls import patterns, url, include
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-from django.views.generic.simple import direct_to_template
+from django.shortcuts import render
 
 # Do we have more than one language? If so, localize the URLs and add Django's i18n paths
 if len(settings.LANGUAGES) > 1:
@@ -152,8 +152,7 @@ budget_app_urlpatterns += patterns('budget_app.views',
     url(r'^version.json$', 'version_api'),
 
     # Robots
-    # See http://fredericiana.com/2010/06/09/three-ways-to-add-a-robots-txt-to-your-django-project/
-    url(r'^robots\.txt$', direct_to_template, {'template': 'robots.txt', 'mimetype': 'text/plain'}),
+    url(r'^robots\.txt$', lambda request: render(request, 'robots.txt', content_type='text/plain')),
 )
 
 # Include Jasmine urls fot JS Unit Tests only in development
