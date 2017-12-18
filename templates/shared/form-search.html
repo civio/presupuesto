@@ -3,7 +3,7 @@
     <form class="form-inline" action="{{ url('budget_app.views.search') }}" method="get">
       <div class="form-group">
         <label for="q">{{ _('¿Buscas algo en concreto?') }}</label>
-        <input type="text" id="q" class="form-control" name="q" placeholder="{{ _('Escribe aquí tu término de búsqueda') }}">
+        <input type="text" id="q" class="form-control" name="q" placeholder="{{ _('Escribe aquí tu término de búsqueda') }}" required>
       </div>
       <button type="submit" class="btn btn-default btn-primary icon-search" >{{ _('Buscar') }}</button>
     </form>

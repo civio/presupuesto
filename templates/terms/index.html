@@ -18,7 +18,7 @@
       <form class="form-search-glossary form-inline" action="{{ url('budget_app.views.terms') }}" method="get">
           <div class="form-group">
             <label for="glossary-q">{{ _('Busca dentro del glosario') }}</label>
-            <input placeholder="{{ _('Escribe aquí tu término de búsqueda') }}" class="form-control" name="q" id="glossary-q" type="text">
+            <input placeholder="{{ _('Escribe aquí tu término de búsqueda') }}" class="form-control" name="q" id="glossary-q" type="text" required>
           </div>
           <button class="btn btn-default btn-primary icon-search" type="submit">{{ _('Buscar') }}</button>
       </form>
