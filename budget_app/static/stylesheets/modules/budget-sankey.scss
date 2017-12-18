@@ -90,7 +90,8 @@ $sankey-expense-color-dark: darken($sankey-expense-color, 10%);
 
   .incomes {
     .node-executed,
-    .total-executed{
+    .total-executed,
+    .node-label-bkg{
       fill: $sankey-income-color;
     }
     .node-budget,
@@ -109,7 +110,8 @@ $sankey-expense-color-dark: darken($sankey-expense-color, 10%);
 
   .expenses {
     .node-executed,
-    .total-executed{
+    .total-executed,
+    .node-label-bkg{
       fill: $sankey-expense-color;
     }
     .node-budget,
@@ -127,6 +129,10 @@ $sankey-expense-color-dark: darken($sankey-expense-color, 10%);
     }
   }
 
+  .node-label-bkg{
+    fill-opacity: .7;
+  }
+
   .no-execution  .wall{
     fill-opacity: .6;
   }
@@ -137,24 +143,6 @@ $sankey-expense-color-dark: darken($sankey-expense-color, 10%);
     letter-spacing: .01em;
     font-weight: $font-weight-300;
     dominant-baseline: middle;
-
-    &.invert{
-      fill: $gray-darker;
-      font-weight: $font-weight-400;
-    }
-  }
-
-  .incomes .node-label{
-    text-shadow: 0 -1px 0 $sankey-income-color-dark, 0 0 2px $sankey-income-color-dark;
-    &.invert{
-      text-shadow: 0 0 4px white;
-    }
-  }
-  .expenses .node-label{
-    text-shadow: 0 -1px 0 $sankey-expense-color-dark, 0 0 2px $sankey-expense-color-dark;
-    &.invert{
-      text-shadow: 0 0 4px white;
-    }
   }
 
   .popover-content{

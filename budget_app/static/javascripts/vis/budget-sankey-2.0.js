@@ -356,6 +356,7 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
     // ENTER + UPDATE
     nodes.enter().append('g')
         .attr('class', 'node')
+        .attr('id', function(d){ return 'node-'+d.data.parentId+'-'+d.data.id; })
         .call(setNode)
         .call(setNodeEvents)
       .merge(nodes)
@@ -375,6 +376,9 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
     // add budget rect
     node.append('rect')
       .attr('class', 'node-budget');
+    // add label background
+    node.append('rect')
+      .attr('class', 'node-label-bkg')
     // add label
     node.append('text')
       .attr('class', 'node-label')
@@ -384,6 +388,12 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
 
   // Update nodes budgeted, executed & label
   function updateNode(node) {
+    // hide label bkg
+    node.select('.node-label-bkg')
+      .transition()
+      .duration( initialized ? transitionDuration/2 : 0 )
+      .style('opacity', '0');
+      //.style('visibility', 'hidden');
     // add budget rect
     node.select('.node-budget')
       .transition()
@@ -399,7 +409,8 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
       .call(wrapText)
       .transition()
       .duration( initialized ? transitionDuration : 0 )
-      .call(setNodeLabel);
+      .call(setNodeLabel)
+      .on('end', setNodeLabelBkg);
   }
 
   function setNodePosition(node) {
@@ -427,8 +438,24 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
       .style('visibility', function(d){ return (d.y1-d.y0 < labelsMinSize) ? 'hidden' : 'visible' })
       .attr('x', function(d){ return (d.parent.id == 'income') ? labelsOffsetX : treemapWidth-labelsOffsetX })
       .attr('y', function(d){ return (d.y1-d.y0)*.5 })
-      .attr('class', setNodeLabelClass)
       .style('font-size', setNodeLabelFontSize);
+  }
+
+  function setNodeLabelBkg(node){
+    parent = d3.select('#node-'+node.data.parentId+'-'+node.data.id);
+    text = parent.select('.node-label')
+    rect = parent.select('.node-label-bkg')
+    box = text.node().getBBox();
+
+    rect
+      .attr('x', box.x-2)
+      .attr('y', box.y)
+      .attr('width', box.width+4)
+      .attr('height', box.height)
+      .style('visibility', text.style('visibility'))
+      .transition()
+      .duration(200)
+      .style('opacity', '1');
   }
 
   function setNodeLabelClass(d){
