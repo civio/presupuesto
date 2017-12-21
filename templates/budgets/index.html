@@ -95,6 +95,7 @@
   $(function() {
     function redraw() {
       var uiState = getUIState();
+      if (years.indexOf(uiState.year) == -1) return;
       sankey.update(uiState);
       updateBudgetTotals(chapterBreakdown, economicBreakdown, budgetStatuses, adjustInflationFn, uiState);
       $('.execution-status').html(getExecutionTotalLabel(budgetStatuses[uiState.year], i18n));
@@ -137,6 +138,7 @@
     }
 
     var stats = {{ stats|safe }};
+    var years = {{ years|safe }};
     var budgetStatuses = {{ budget_statuses|safe }};
     var adjustInflationFn = getInflationAdjustmentFunction(stats);
 
@@ -194,9 +196,11 @@
     sankey.forceOrder(true);
     {% endif %}
 
-    initSlider("#year-selection", {{ years|safe }}, redraw, {{ starting_year }});
+    initSlider("#year-selection", years, redraw, {{ starting_year }});
     sankey.draw("#chart", getUIState());
-    redraw();
+    //redraw();
+
+    setRedrawOnSliderChange("#year-selection", {{ starting_year }}, redraw);
   })
 </script>
 
