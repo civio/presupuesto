@@ -442,20 +442,22 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
   }
 
   function setNodeLabelBkg(node){
-    parent = d3.select('#node-'+node.data.parentId+'-'+node.data.id);
-    text = parent.select('.node-label')
-    rect = parent.select('.node-label-bkg')
-    box = text.node().getBBox();
+    var nodeParent = d3.select('#node-'+node.data.parentId+'-'+node.data.id);
+    if (nodeParent) {
+      text = nodeParent.select('.node-label');
+      rect = nodeParent.select('.node-label-bkg');
+      box = text.node().getBBox();
 
-    rect
-      .attr('x', box.x-2)
-      .attr('y', box.y)
-      .attr('width', box.width+4)
-      .attr('height', box.height)
-      .style('visibility', text.style('visibility'))
-      .transition()
-      .duration(200)
-      .style('opacity', '1');
+      rect
+        .attr('x', box.x-2)
+        .attr('y', box.y)
+        .attr('width', box.width+4)
+        .attr('height', box.height)
+        .style('visibility', text.style('visibility'))
+        .transition()
+        .duration(200)
+        .style('opacity', '1');
+    }
   }
 
   function setNodeLabelClass(d){
