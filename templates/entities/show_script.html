@@ -4,6 +4,7 @@
     // Variable Definitions
     var uiState = null;
     var stats = {{ stats|safe }};
+    var years = {{ years|safe }};
     var budgetStatuses = {{ budget_statuses|safe }};
 {% if include_financial_chapters %}
     var includeFinancialChapters = true;
@@ -105,6 +106,7 @@
     function redraw() {
       // Update uiState
       uiState = getUIState();
+      if (years.indexOf(uiState.year) == -1) return;
       
       // Do work
       var columnDef                   = getColumnDefinition(uiState),
@@ -297,7 +299,7 @@
       redraw();
     });
       
-    initSlider("#year-selection", {{ years|safe }}, redraw, {{ starting_year }});
+    initSlider('#year-selection', years, redraw, {{ starting_year }});
 
     // Entity select dropdown
     $('#entity-select').submit(function(e) {
@@ -312,6 +314,8 @@
     // This will also show the tab selected in the URL hash (if any). Do it
     // before creating the treemaps, so the active one has time to render fully.
     setRedrawOnTabsChange('#tabs', updateTab);
+
+    setRedrawOnSliderChange('#year-selection', {{ starting_year }}, redraw);
 
     // Add click embed btn event
     $('.data-controllers .chart-embed-btn').click(function(e){

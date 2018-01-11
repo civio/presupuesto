@@ -80,14 +80,41 @@ function initSlider(selector, years, callback, startValue) {
       tooltip: 'always',
       ticks: years,
       ticks_labels: years
-    }).on('change', callback );
-    
+    });
   }
   // Hide year slider & add current year
   else {
     $(selector).val(mostRecentYear);
     $(selector).parent().parent().addClass('single-year');
     $(selector).parent().append('<p>'+mostRecentYear+'</p>');
+  }
+}
+
+function setRedrawOnSliderChange(selector, startValue, callback) {
+
+  // Listen changes on url hash
+  $(window).bind('hashchange', function(e) {
+    // Get hash states    
+    var state = $.deparam.fragment();
+    // Change year
+    if (state.year) {
+      $(selector).slider('setValue', +state.year);
+      callback();
+    }
+  });
+
+  // Handle change on year slider with pushState
+  $(selector).on('change', function(e) {
+    $.bbq.pushState({'year': e.value.newValue});
+  });
+
+  // Initially trigger hashchange   
+  var state = $.deparam.fragment();
+  if (state.year && state.year != startValue) {
+    $(window).trigger('hashchange');
+  } else {
+    state.year = $(selector).val();
+    $.bbq.pushState(state);
   }
 }
 
@@ -105,8 +132,10 @@ var fillGapsInYears = function( _years ){
 };
 
 function getUIState() {
+  var state = $.deparam.fragment();
   var field = $('section').data('field'),
-      view = $('section').data('tab');
+      view = $('section').data('tab'),
+      year = (state.year && state.year !== '') ? state.year : $('#year-selection').val();
 
   return {
     // The templates used to display one particular programme or article have a defined
@@ -116,7 +145,7 @@ function getUIState() {
     field:  (field !== undefined) ? field : (view == 'income' ? 'income' : 'expense'),
     view:   view,
     format: $('#select-format').val(),
-    year:   $("#year-selection").val()
+    year:   year
   };
 }
 

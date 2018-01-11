@@ -87,6 +87,7 @@
     // POLICY DATA
     //
     var stats = {{ stats|safe }};
+    var years = {{ years|safe }};
     var budgetStatuses = {{ budget_statuses|safe }};
 
 {% if include_financial_chapters %}
@@ -303,7 +304,7 @@
 
     // Control Setup
     $('#select-format').change(redraw);
-    initSlider("#year-selection", {{ years|safe }}, updateYear, {{ starting_year }});
+    initSlider('#year-selection', years, updateYear, {{ starting_year }});
 
     // Handle the hash the page may have loaded with.
     var state = $.deparam.fragment();
@@ -316,6 +317,8 @@
 
     // Setup tabs navigation
     setRedrawOnTabsChange('#tabs', updateTab);
+
+    setRedrawOnSliderChange('#year-selection', {{ starting_year }}, redraw);
 
     // Add click embed btn event
     $('.data-controllers .chart-embed-btn').click(function(e){
