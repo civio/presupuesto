@@ -47,7 +47,11 @@
 {% else %}
         'economic': "{{ _('Concepto') }}",
 {% endif %}
+{% if programme_id %}
+        'functional': "{{ _('Subprograma') }}",
+{% else %}
         'functional': "{{ _('Programa') }}",
+{% endif %}
         'institutional': "{{ _('Entidad') }}",
         'funding': "{{ _('Fondo') }}"
       };

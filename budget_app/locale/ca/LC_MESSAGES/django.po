@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-06 13:44+0200\n"
-"PO-Revision-Date: 2017-12-17 01:29+0100\n"
+"PO-Revision-Date: 2018-01-11 14:24+0100\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -532,6 +532,9 @@ msgstr "Concepte"
 #: templates/policies/show_script.html:56
 msgid "Programa"
 msgstr "Programa"
+
+msgid "Subprograma"
+msgstr "Subprograma"
 
 #: templates/policies/show_script.html:57
 msgid "Entidad"
