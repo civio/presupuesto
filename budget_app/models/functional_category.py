@@ -18,7 +18,7 @@ class FunctionalCategoriesManager(models.Manager):
         return self.raw(sql, (query, ))
 
     def search_policies(self, query, budget=None):
-        return self._search(query, budget, "policy is not null and function is null and policy<>'XX'")
+        return self._search(query, budget, "policy is not null and function is null and area<>'X' and policy<>'XX'")
 
     def search_programmes(self, query, budget=None):
         return self._search(query, budget, "programme is not null and programme<>'XXXX'")
