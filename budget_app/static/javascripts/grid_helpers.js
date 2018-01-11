@@ -204,17 +204,17 @@ function createBudgetGrid(containerName, data, userColumns, i18n, startingSort) 
 
 // Helper methods to return text labels
 function isPartiallyExecuted(s) {
-  return s && s !== '';
+  return s && s!=='' && s!=='0T' && s!=='0M';
 }
 
 function getExecutionColumnName(budgetStatus, label, budgetStatusLabels) {
-  return (isPartiallyExecuted(budgetStatus) && budgetStatus!='0T') ?
+  return isPartiallyExecuted(budgetStatus) ?
             "<abbr title='("+budgetStatusLabels[budgetStatus]+")'>"+label+"*</abbr>" :
             label;
 }
 
 function getExecutionTotalLabel(budgetStatus, budgetStatusLabels) {
-  return (isPartiallyExecuted(budgetStatus) && budgetStatus!='0T') ?
+  return isPartiallyExecuted(budgetStatus) ?
             " <small>("+budgetStatusLabels[budgetStatus]+")</small>" :
             "";
 }
