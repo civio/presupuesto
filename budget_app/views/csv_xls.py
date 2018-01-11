@@ -38,6 +38,14 @@ def write_entity_functional_breakdown(c, writer):
             for programme_id, programme in policy.subtotals.iteritems():
                 write_breakdown_item(writer, year, programme, 'expense', [policy_id, programme_id], c['descriptions']['functional'])
 
+def write_entity_institutional_breakdown(c, writer):
+    writer.writerow(['#Año', 'Id Institución', 'Nombre Institución', 'Id Sección', 'Nombre Sección', 'Presupuesto Gasto', 'Gasto Real'])
+    for year in sorted(_unique(c['breakdowns']['institutional'].years.values())):
+        for institution_id, institution in c['breakdowns']['institutional'].subtotals.iteritems():
+            write_breakdown_item(writer, year, institution, 'expense', [institution_id, None], c['descriptions']['institutional'])
+            for section_id, section in institution.subtotals.iteritems():
+                write_breakdown_item(writer, year, section, 'expense', [institution_id, section_id], c['descriptions']['institutional'])
+
 def write_entity_economic_breakdown(c, field, writer):
     field_username = 'Gastos' if field == 'expense' else 'Ingresos'
     writer.writerow(['#Año', 'Id Artículo', 'Nombre Artículo', 'Id Concepto', 'Nombre Concepto', 'Presupuesto '+field_username, field_username+' Reales'])
@@ -62,6 +70,11 @@ def entity_functional(request, level, slug, format):
     c = get_context(request)
     entity = Entity.objects.get(level=level, slug=slug, language=c['LANGUAGE_CODE'])
     return entities_show_helper(request, c, entity, _generator('gastosf-%s-%s' % (level, slug), format, write_entity_functional_breakdown))
+
+def entity_institutional(request, level, slug, format):
+    c = get_context(request)
+    entity = Entity.objects.get(level=level, slug=slug, language=c['LANGUAGE_CODE'])
+    return entities_show_helper(request, c, entity, _generator('gastosi-%s-%s' % (level, slug), format, write_entity_institutional_breakdown))
 
 def entity_income(request, level, slug, format):
     c = get_context(request)
