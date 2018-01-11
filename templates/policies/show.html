@@ -68,8 +68,6 @@
       <table id="myGrid" class="table-grid" width="100%"></table>
 
       <!-- Panel Downloads -->
-{# FIXME: Disabled temporarily for subprogrammes. See #346 #}
-{% if not subprogramme %}
 {# XXX: Disable CSV downloads for entities. See #105 #}
 {% if not is_secondary_entity %}
       <div class="panel-downloads">
@@ -101,7 +99,6 @@
       {% endif %}
     {% endif %}
       </div>
-{% endif %}
 {% endif %}
     </div>
 

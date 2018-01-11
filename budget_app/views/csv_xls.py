@@ -153,6 +153,9 @@ def write_detailed_economic_breakdown(c, writer):
 def economic_programme_breakdown(request, id, format):
     return programmes_show(request, id, '', _generator("%s.economica" % id, format, write_detailed_economic_breakdown))
 
+def economic_subprogramme_breakdown(request, id, format):
+    return subprogrammes_show(request, id, '', _generator("%s.economica" % id, format, write_detailed_economic_breakdown))
+
 def economic_section_breakdown(request, id, format):
     return sections_show(request, id, '', _generator("%s.economica" % id, format, write_detailed_economic_breakdown))
 
@@ -211,6 +214,9 @@ def funding_policy_breakdown(request, id, format):
 def funding_programme_breakdown(request, id, format):
     return programmes_show(request, id, '', _generator("%s.financiacion" % id, format, write_funding_breakdown))
 
+def funding_subprogramme_breakdown(request, id, format):
+    return subprogrammes_show(request, id, '', _generator("%s.financiacion" % id, format, write_funding_breakdown))
+
 def funding_article_revenues_breakdown(request, id, format):
     return income_articles_show(request, id, '', _generator("%s.ingresos.financiacion" % id, format, write_funding_breakdown))
 
@@ -235,6 +241,9 @@ def institutional_policy_breakdown(request, id, format):
 
 def institutional_programme_breakdown(request, id, format):
     return programmes_show(request, id, '', _generator("%s.organica" % id, format, write_institutional_breakdown))
+
+def institutional_subprogramme_breakdown(request, id, format):
+    return subprogrammes_show(request, id, '', _generator("%s.organica" % id, format, write_institutional_breakdown))
 
 def institutional_article_revenues_breakdown(request, id, format):
     return income_articles_show(request, id, '', _generator("%s.ingresos.organica" % id, format, write_institutional_breakdown))
