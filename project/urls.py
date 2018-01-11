@@ -134,6 +134,10 @@ budget_app_urlpatterns += url_patterns('budget_app.views',
     url(r'^secciones/(?P<id>[0-9A-Z]+)_functional\.(?P<format>.+)$', 'functional_section_breakdown'),
     url(r'^secciones/(?P<id>[0-9A-Z]+)_economic\.(?P<format>.+)$', 'economic_section_breakdown'),
 
+    # Investments
+    url(r'^inversiones/(?P<slug>.+)_inversiones\.(?P<format>.+)$', 'entity_investments_breakdown'),
+    url(r'^inversiones/(?P<slug>.+)_inversiones_(?P<id>[0-9A-Z]+)\.(?P<format>.+)$', 'entity_investment_line_breakdown'),
+
     # Entities lists
     url(r'^gastos_entidades_(?P<level>.+)\.(?P<format>.+)$', 'entities_expenses'),
     url(r'^ingresos_entidades_(?P<level>.+)\.(?P<format>.+)$', 'entities_income'),

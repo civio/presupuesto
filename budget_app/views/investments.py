@@ -5,9 +5,10 @@ from budget_app.models import BudgetBreakdown, Investment, GeographicCategory
 from helpers import *
 
 
-def investments(request):
+def investments(request, render_callback=None):
     c = get_context(request, css_class='body-investments', title=_(u'Inversiones por distrito'))
     entity = get_main_entity(c)
+    set_entity(c, entity)
 
     # Get the investments breakdown
     query = "e.id = %s"
@@ -34,12 +35,13 @@ def investments(request):
     # entity population, not the particular districts/neighborhoods/areas, so we hide it.
     c['hide_per_capita_format'] = True
 
-    return render_response('investments/index.html', c)
+    return render(c, render_callback, 'investments/index.html')
 
 
 def investments_show(request, id, title, render_callback=None):
     c = get_context(request, css_class='body-investments', title=_(u'Inversiones por distrito'))
     entity = get_main_entity(c)
+    set_entity(c, entity)
 
     # Get area name
     c['area'] = GeographicCategory.objects.filter(  budget__entity=entity,
@@ -63,4 +65,4 @@ def investments_show(request, id, title, render_callback=None):
     # entity population, not the particular districts/neighborhoods/areas, so we hide it.
     c['hide_per_capita_format'] = True
 
-    return render_response('investments/show.html', c)
+    return render(c, render_callback, 'investments/show.html')

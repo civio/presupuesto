@@ -50,17 +50,14 @@
       <table id="myGrid" class="table-grid" width="100%"></table>
 
       <!-- Panel Downloads -->
-      <!-- TODO!!! Añadir enlaces a csv y xls -->
-      <!--
       <div class="panel-downloads">
         <p class="downloads"">
           {{ _('Descarga la tabla de <strong>Inversiones</strong>')|safe }}
-          <a class="icon-file-excel" href="#" title="{{ _('Descarga la tabla en CSV') }}"><span class="file-info">CSV</span></a>
+          <a class="icon-file-excel" href="{{ url('budget_app.views.entity_investment_line_breakdown', entity.slug, area.code, 'csv') }}" title="{{ _('Descarga la tabla en CSV') }}"><span class="file-info">CSV</span></a>
           o
-          <a class="icon-file-excel" href="#" title="{{ _('Descarga la tabla en Excel') }}"><span class="file-info">Excel</span></a>
+          <a class="icon-file-excel" href="{{ url('budget_app.views.entity_investment_line_breakdown', entity.slug, area.code, 'xlsx') }}" title="{{ _('Descarga la tabla en Excel') }}"><span class="file-info">Excel</span></a>
         </p>
       </div>
-      -->
     </div>
 
     {% include 'shared/social_sharing.html' %}

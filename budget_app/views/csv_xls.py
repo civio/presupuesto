@@ -96,11 +96,38 @@ def write_entity_payment_breakdown(c, writer):
             payment.amount / 100.0
         ])
 
-
 def entity_payments(request, slug, format):
     c = get_context(request)
     c['payments'] = Payment.objects.all().prefetch_related('budget').order_by("-budget__year")
     return payment_search(request, _generator('pagos-%s' % (slug), format, write_entity_payment_breakdown))
+
+
+#
+# INVESTMENTS BREAKDOWN
+#
+def write_entity_investments_breakdown(c, writer):
+    writer.writerow(['#Año', 'Id Área', 'Nombre Área', 'Presupuesto Gasto', 'Gasto Real'])
+    for year in sorted(_unique(c['area_breakdown'].years.values())):
+        for area_id, area in c['area_breakdown'].subtotals.iteritems():
+            write_breakdown_item(writer, year, area, 'expense', [area_id], c['descriptions']['geographic'])
+        for area_id, area in c['no_area_breakdown'].subtotals.iteritems():
+            write_breakdown_item(writer, year, area, 'expense', [area_id], c['descriptions']['geographic'])
+
+def write_entity_investment_line_breakdown(c, writer):
+    writer.writerow(['#Año', 'Id Línea', 'Nombre Línea', 'Inversión', 'Inversión', 'Presupuesto Gasto', 'Gasto Real'])
+    for year in sorted(_unique(c['area_breakdown'].years.values())):
+        for line_id, line in c['area_breakdown'].subtotals.iteritems():
+            write_breakdown_item(writer, year, line, 'expense', [line_id, None], c['descriptions']['functional'])
+            for investment_id, investment in line.subtotals.iteritems():
+                write_breakdown_item(writer, year, investment, 'expense', [line_id, investment_id], c['descriptions']['functional'])
+
+def entity_investments_breakdown(request, slug, format):
+    c = get_context(request)
+    return investments(request, _generator('inversiones-%s' % (slug), format, write_entity_investments_breakdown))
+
+def entity_investment_line_breakdown(request, slug, id, format):
+    c = get_context(request)
+    return investments_show(request, id, '', _generator('inversiones-%s-%s' % (slug, id), format, write_entity_investment_line_breakdown))
 
 
 #
