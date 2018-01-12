@@ -246,7 +246,8 @@ function StackedAreaChart() {
       .attr('transform', getPointTransform)
       .attr('r', 4)
       .style('stroke', getColor)
-      .style('fill', getColor);
+      .style('fill', getColor)
+      .style('visibility', getPointVisibility);
 
     _this.circles
       .on('mouseover', function(d){
@@ -334,7 +335,8 @@ function StackedAreaChart() {
         .style('opacity', function(d){ return (d.active) ? 1 : 0; })
         .style('stroke', getColor)
         .style('fill', getColor)
-        .attr('transform', getPointTransform);
+        .attr('transform', getPointTransform)
+        .style('visibility', getPointVisibility);
   };
 
   // Area Mouse Events
@@ -595,6 +597,10 @@ function StackedAreaChart() {
   var getPointTransform = function(d){
     return 'translate('+_this.x(+d.data.year)+','+_this.y(d[1])+')';
   };
+
+  var getPointVisibility = function(d){
+    return (d.data[d.key] !== 0) ? 'visible' : 'hidden';
+  }
 
   var getBudgetExecutionLastYear = function( _budgetStatuses ){
     var status = null, i = _this.years.length-1;
