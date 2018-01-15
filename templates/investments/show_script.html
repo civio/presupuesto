@@ -39,8 +39,9 @@
     }
 
     function redraw() {
-      var uiState = getUIState(),
-          columnDef = getColumnDefinition(uiState),
+      uiState = getUIState();
+
+      var columnDef = getColumnDefinition(uiState),
           executionColumnDef = getExecutionColumnDefinition(uiState);
 
       // Setup myGrid if exist item #myGrid
@@ -67,7 +68,7 @@
 
       // XXX: This is very similar to policies/show_script and investments/index_script, should refactor.
       // Hide totals panel if format is '% of total'
-      if ( uiState.format === 'percentage' ) {
+      if (uiState.format === 'percentage') {
         $('#totals-panel').hide();
       } else {
         $('#totals-panel').show();
@@ -85,7 +86,7 @@
       TotalHelpers.setEconomicTotals(areaBreakdown, columnDef, '.total-budgeted', true);
 
       // Show total budgeted executed if hasActualData or clear otherwise
-      if ( hasActualData ) {
+      if (hasActualData) {
         TotalHelpers.setEconomicTotals(areaBreakdown, executionColumnDef, '.total-executed');
       } else {
         TotalHelpers.clear('.total-executed');
@@ -93,11 +94,10 @@
     }
 
     // Set up controls (format selector & year slider)
-    $('#select-format').change(function() {
-      redraw();
-    });
+    $('#select-format').change(redraw);
       
-    initSlider("#year-selection", {{ years|safe }}, redraw, {{ starting_year }});
+    initSlider('#year-selection', {{ years|safe }}, {{ starting_year }});
+    setRedrawOnSliderChange('#year-selection', {{ starting_year }}, redraw);
 
     redraw();
 

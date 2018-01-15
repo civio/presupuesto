@@ -100,11 +100,10 @@
     }
 
     // Set up controls (format selector & year slider)
-    $('#select-format').change(function() {
-      redraw();
-    });
+    $('#select-format').change(redraw);
       
-    initSlider("#year-selection", {{ years|safe }}, redraw, {{ starting_year }});
+    initSlider("#year-selection", {{ years|safe }}, {{ starting_year }});
+    setRedrawOnSliderChange("#year-selection", {{ starting_year }}, redraw);
 
     redraw();
   });

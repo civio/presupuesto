@@ -226,14 +226,12 @@
     // Set up controls
     setRedrawOnButtonGroupChange('.btn-group', redraw);
     $('#select-format').change(redraw);
-    initSlider("#year-selection", {{ years|safe }}, redraw, {{ starting_year }});
+    initSlider("#year-selection", {{ years|safe }}, {{ starting_year }});
+    setRedrawOnSliderChange('#year-selection', {{ starting_year }}, redraw);
 
     // Select income/expense based on location hash
     var state = $.deparam.fragment();
     $("#"+state.field).click();
-
-    // Draw visualizations once we're done
-    redraw();
 
     // Entity select dropdowns
     $('#comparator-dropdown-left').submit(function(e) {

@@ -308,7 +308,7 @@
 
     // Control Setup
     $('#select-format').change(redraw);
-    initSlider('#year-selection', years, updateYear, {{ starting_year }});
+    initSlider('#year-selection', years, {{ starting_year }});
 
     // Handle the hash the page may have loaded with.
     var state = $.deparam.fragment();
@@ -322,7 +322,7 @@
     // Setup tabs navigation
     setRedrawOnTabsChange('#tabs', updateTab);
 
-    setRedrawOnSliderChange('#year-selection', {{ starting_year }}, redraw);
+    setRedrawOnSliderChange('#year-selection', {{ starting_year }}, updateYear);
 
     // Add click embed btn event
     $('.data-controllers .chart-embed-btn').click(function(e){

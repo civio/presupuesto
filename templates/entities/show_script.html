@@ -299,7 +299,7 @@
       redraw();
     });
       
-    initSlider('#year-selection', years, redraw, {{ starting_year }});
+    initSlider('#year-selection', years, {{ starting_year }});
 
     // Entity select dropdown
     $('#entity-select').submit(function(e) {

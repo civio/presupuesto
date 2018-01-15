@@ -196,12 +196,10 @@
     sankey.forceOrder(true);
     {% endif %}
 
-    initSlider("#year-selection", years, redraw, {{ starting_year }});
+    initSlider("#year-selection", years, {{ starting_year }});
     sankey.draw("#chart", getUIState());
-    //redraw();
-
     setRedrawOnSliderChange("#year-selection", {{ starting_year }}, redraw);
-  })
+  });
 </script>
 
 {% endblock %}

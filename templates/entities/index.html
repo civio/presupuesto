@@ -242,7 +242,7 @@
     setRedrawOnButtonGroupChange('.btn-group', redraw);
     $('#select-format').change(redraw);
     var years = {{ years|safe }};
-    initSlider("#year-selection", years, redraw, {{ starting_year }});
+    initSlider("#year-selection", years, {{ starting_year }});
 
     // Select income/expense based on location hash
     var state = $.deparam.fragment();
@@ -261,7 +261,7 @@
     map.onHover(onHover);
     map.onClick(onClick);
 
-    redraw();
+    setRedrawOnSliderChange("#year-selection", {{ starting_year }}, redraw);
   });
 </script>
 {% endblock %}
