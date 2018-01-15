@@ -1,0 +1,29 @@
+{% extends 'base-widget.html' %}
+
+{% block content %}
+
+<!-- Inversiones -->
+<section class="investments investment-breakdown" role="region">
+
+  <!-- Inversiones Content -->
+  <div class="investments-content">
+
+      <a href="{{ request.path|urlencode }}" target="_blank">
+        <h2 class="page-title">{{ area.description }}</h2>
+      </a>
+
+      {% include 'investments/investment-chart.html' %}
+
+      {% include 'shared/data_controllers.html' %}
+
+      {% include 'entities/totals.html' %}
+
+  </div>
+</section>
+
+{% include 'shared/policy_paths.html' %}
+{% include 'shared/budget_status_labels.html' %}
+
+{% include 'investments/show_script.html' %}
+
+{% endblock %}

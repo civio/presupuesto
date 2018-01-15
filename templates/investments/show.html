@@ -24,21 +24,7 @@
   <div class="investments-content">
     <div class="container">
 
-      <div class="policies-chart">
-        <div id="policy-chart-container" class="chart-container {{ 'treemap-chart' if show_treemap else 'stacked-area-chart' }}" aria-hidden="true">
-          <div class="popover top" role="tooltip">
-            <div class="arrow"></div>
-            <div class="popover-title"></div>
-            <div class="popover-content">
-              <p class="popover-content-year"></p>
-              <p class="popover-content-value"></p>
-              <p class="popover-content-variation">
-                <span class="label"></span> <span class="popover-content-variation-label">{{ _("respecto a <span class='popover-content-variation-year'></span>")|safe }}</span>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+      {% include 'investments/investment-chart.html' %}
 
        <!-- Data Controller -->
       {% include 'shared/data_controllers.html' %}
@@ -64,6 +50,7 @@
   </div>
 </section>
 
+{% include 'shared/modal_embed.html' %}
 {% include 'shared/policy_paths.html' %}
 {% include 'shared/budget_status_labels.html' %}
 {% include 'shared/data_sources.html' %}

@@ -43,17 +43,20 @@
           columnDef = getColumnDefinition(uiState),
           executionColumnDef = getExecutionColumnDefinition(uiState);
 
-      if ( myGrid !== undefined )  myGrid.destroy();
-      myGrid = createBudgetGrid("#myGrid", gridData,
-                        [
-                          {
-                            data: function(item) { return item.label || item.key; },
-                            title: '{{ _("Política.Inversiones") }}',
-                            render: rowNameFormatter
-                          },
-                          columnDef,
-                          executionColumnDef
-                        ], i18n.table);
+      // Setup myGrid if exist item #myGrid
+      if ($('#myGrid').length > 0) {
+        if ( myGrid !== undefined ) myGrid.destroy();
+        myGrid = createBudgetGrid("#myGrid", gridData,
+                          [
+                            {
+                              data: function(item) { return item.label || item.key; },
+                              title: '{{ _("Política.Inversiones") }}',
+                              render: rowNameFormatter
+                            },
+                            columnDef,
+                            executionColumnDef
+                          ], i18n.table);
+      }
 
       // Redraw chart
       var colorScale = {{ color_scale|safe }};
@@ -97,5 +100,13 @@
     initSlider("#year-selection", {{ years|safe }}, redraw, {{ starting_year }});
 
     redraw();
+
+    // Add click embed btn event
+    $('.data-controllers .chart-embed-btn').click(function(e){
+      e.preventDefault();
+      var url   = window.location.protocol+'//'+window.location.host+window.location.pathname+'?widget=1'+window.location.hash;
+      var code  = '<iframe src="'+url+'" width="100%" scrolling="no" marginheight="0" frameborder="0"></iframe><\script type="text/javascript" src="'+window.location.origin+'/static/javascripts/iframeResizer.min.js"\>\<\/script\>\<script type="text/javascript"\>iFrameResize();\<\/script\>';
+      $('#modal-embed .modal-body textarea').val( code );
+    });
   });
 </script>

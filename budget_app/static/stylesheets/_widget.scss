@@ -20,9 +20,12 @@ body.widget{
     }
   }
 
-  .policies-content{
+  .policies-content,
+  .investments-content{
     margin-right: $grid-gutter-width/2;
     margin-left: $grid-gutter-width/2;
+    padding-bottom: 1px;
+    text-align: center;
   }
 
   .page-title{
@@ -70,10 +73,6 @@ body.widget{
   .policies-chart{
     padding: 0;
     margin-top: 2*$grid-gutter-width/3;
-  }
-
-  .policies-content{
-    text-align: center;
   }
 
   .tab-content > a:hover{
@@ -134,7 +133,8 @@ body.widget{
   }
 }
 
-.body-policies.widget{
+.body-policies.widget,
+.body-investments.widget{
 
   .page-title{
     margin-bottom: $grid-gutter-width/6;

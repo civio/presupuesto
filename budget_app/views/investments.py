@@ -65,4 +65,7 @@ def investments_show(request, id, title, render_callback=None):
     # entity population, not the particular districts/neighborhoods/areas, so we hide it.
     c['hide_per_capita_format'] = True
 
-    return render(c, render_callback, 'investments/show.html')
+     # if parameter widget defined use policies/widget template instead of policies/show
+    template = 'investments/show_widget.html' if isWidget(request) else 'investments/show.html'
+
+    return render(c, render_callback, template)
