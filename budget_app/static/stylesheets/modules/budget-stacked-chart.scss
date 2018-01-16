@@ -113,7 +113,10 @@
     margin-bottom: -1 + $grid-gutter-width/6;
     line-height: 1.375em;
     cursor: pointer;
-    white-space: normal;
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     text-align: left;
 
     &:hover{

@@ -256,18 +256,20 @@ function StackedAreaChart() {
       .on('click', onAreaClick);
 
     // Setup Legend labels
-    _this.legend.selectAll('div')
-      .data( _this.stackData )
-      .enter().append('div')
-        .attr('class', 'label')
-        .attr('data-id', function(d){ return d.key; })
-        .text(function(d){ return _this.labels[d.key]; })
-        .on('mouseover',  onLegendLabelOver)
-        .on('mouseout',   onLegendLabelOut)
-        .on('click',      onLegendLabelClick)
-        .append('span')
-          .style('background-color', getColor)
-          .style('border-color', getColor);
+    if (_this.stackData.length < 50) {  // Avoid huge legends with more than 50 items
+      _this.legend.selectAll('div')
+        .data( _this.stackData )
+        .enter().append('div')
+          .attr('class', 'label')
+          .attr('data-id', function(d){ return d.key; })
+          .text(function(d){ return _this.labels[d.key]; })
+          .on('mouseover',  onLegendLabelOver)
+          .on('mouseout',   onLegendLabelOut)
+          .on('click',      onLegendLabelClick)
+          .append('span')
+            .style('background-color', getColor)
+            .style('border-color', getColor);
+    }
 
     return _this;
   };
