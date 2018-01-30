@@ -8,7 +8,7 @@
     font-weight: $font-weight-300;
     margin-bottom: $grid-gutter-width;
 
-    > a{
+    a{
       display: inline-block;
       vertical-align: middle;
       margin: 0 $grid-gutter-width/6;
@@ -23,19 +23,19 @@
         opacity: 0.7;
         text-decoration: none;
       }
+    } 
 
-       &.link-civio{
-        width: 107px;
-        height: 30px;
-        background-image: url(../assets/logo-civio.png);
-      }
+    .link-civio{
+      width: 107px;
+      height: 30px;
+      background-image: url(../assets/logo-civio.png);
+    }
 
-      &.link-aragon{
-        width: 163px;
-        height: 28px;
-        margin-top: -5px;
-        background-image: url(../assets/logoAragonOpenData.png);
-      }
+    .link-aragon{
+      width: 163px;
+      height: 28px;
+      margin-top: -5px;
+      background-image: url(../assets/logoAragonOpenData.png);
     }
   }
 
