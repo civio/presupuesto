@@ -558,6 +558,9 @@ msgstr ""
 msgid "Políticas y Programas"
 msgstr ""
 
+msgid "Artículos y conceptos"
+msgstr ""
+
 #: templates/search/index.html:88 templates/search/index.html.py:91
 msgid "Política / Programa"
 msgstr ""

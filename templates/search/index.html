@@ -275,7 +275,7 @@
 
                 <td class="col-2">
                   <p class="concept-value-heading">
-                    {{ 'Gastos' if item.expense else 'Ingresos' }}
+                    {{ _('Gastos') if item.expense else _('Ingresos') }}
                   </p>
                   <p class="concept-value">
                     {{ formatter(item.amount/100) }} €

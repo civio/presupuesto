@@ -16,5 +16,6 @@ def terms(request):
 
     results = Paginator(list(GlossaryTerm.objects.search(c['query'], c['LANGUAGE_CODE'])), PAGE_LENGTH, body=6, padding=2)
     c['terms'] = results.page(c['page'])
+    c['results_size'] = results.count
 
     return render_response('terms/index.html', c)
