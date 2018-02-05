@@ -51,13 +51,7 @@
         </div>
       </div>
 
-      <div class="data-controllers">
-        <p class="title">{{ _('Elige año') }}</p>
-        <div class="layout-slider">
-          <label for="year-selection">{{ _('Año') }}</label>
-          <input id="year-selection" type="text" />
-        </div>
-      </div>
+      {% include 'shared/data_controllers.html' %}
     </div>
   </div>
 </div>
@@ -83,7 +77,7 @@
   </div>
 </div>
 
-<!-- Data Sources Panel -->
+{% include 'shared/modal_embed.html' %}
 {% include 'shared/data_sources.html' %}
 
 <!-- Some extra Javascript, camouflaged as HTML files :/ -->
@@ -96,7 +90,9 @@
     function redraw() {
       var uiState = getUIState();
       if (years.indexOf(uiState.year) == -1) return;
-      sankey.update(uiState);
+
+      var adjustInflationFn = getInflationAdjustmentFunction(getUIState(), stats);
+      sankey.update(uiState, adjustInflationFn);
       updateBudgetTotals(chapterBreakdown, economicBreakdown, budgetStatuses, adjustInflationFn, uiState);
       $('.execution-status').html(getExecutionTotalLabel(budgetStatuses[uiState.year], i18n));
 {% if calculate_budget_indicators %}
@@ -106,16 +102,16 @@
 {% endif %}
     }
 
-    // Return a function to convert nominal amounts to inflation-adjusted ones.
-    // If needed, that is, because this behaviour can be configured at a theme-level:
-    // we can configure it to show nominal amounts.
-    function getInflationAdjustmentFunction(stats) {
+    // Return a function to convert nominal amounts to inflation-adjusted ones if needed.
+    // Historically this was configured at a theme-level, but is now user-selectable. (#602)
+    function getInflationAdjustmentFunction(uiState, stats) {
       return function(value, year) {
-{% if adjust_inflation_in_overview %}
-        return Formatter.adjustInflation(value, stats, year);
-{% else %}
-        return value;
-{% endif %}
+        switch (uiState.format) {
+          case "nominal":
+            return value;
+          case "real":
+            return Formatter.adjustInflation(value, stats, year);
+        }
       }
     }
 
@@ -125,6 +121,8 @@
           column,
           year,
           highest_this_year;
+      var adjustInflationFn = getInflationAdjustmentFunction(getUIState(), stats);
+
       for (column in breakdown.years) {
         year = breakdown.years[column].toString();
         highest_this_year = Math.max( 
@@ -140,7 +138,6 @@
     var stats = {{ stats|safe }};
     var years = {{ years|safe }};
     var budgetStatuses = {{ budget_statuses|safe }};
-    var adjustInflationFn = getInflationAdjustmentFunction(stats);
 
     var functionalBreakdown = {{ breakdowns['functional'].to_json( labels=descriptions['functional'] )|safe }};
     var economicBreakdown = {{ breakdowns['economic'].to_json( labels=descriptions['income'] )|safe }};
@@ -152,13 +149,10 @@
       'executed': '{{ _("Ejecutado") }}',
       'total_incomes': '{{ _("Total ingresos") }}',
       'total_expenses': '{{ _("Total gastos") }}',
-{% if adjust_inflation_in_overview %}
-      'amounts.are.real': '{{ _("(Cantidades actualizadas con la inflación)") }}',
-{% endif %}
       'n/d': 'No hay datos'
     });
 
-    var sankey = new BudgetSankey(functionalBreakdown, economicBreakdown, adjustInflationFn, budgetStatuses, i18n);
+    var sankey = new BudgetSankey(functionalBreakdown, economicBreakdown, budgetStatuses, i18n);
     sankey.incomeNodes({{ income_nodes|safe }});
     sankey.expenseNodes({{ expense_nodes|safe }});
     // Set a constant scale for the Sankey diagram across the years (otherwise each year would look
@@ -196,9 +190,13 @@
     sankey.forceOrder(true);
     {% endif %}
 
+    $('#select-format').change(redraw);
     initSlider("#year-selection", years, {{ starting_year }});
-    sankey.draw("#chart", getUIState());
+    sankey.draw("#chart", getUIState(), getInflationAdjustmentFunction(getUIState(), stats));
     setRedrawOnSliderChange("#year-selection", {{ starting_year }}, redraw);
+
+    // Add click embed btn event
+    setEmbedModal();
   });
 </script>
 
