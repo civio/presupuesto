@@ -90,6 +90,15 @@ function initSlider(selector, years, startValue) {
   }
 }
 
+function setEmbedModal() {
+  $('.data-controllers .chart-embed-btn').click(function(e){
+    e.preventDefault();
+    var url   = window.location.protocol+'//'+window.location.host+window.location.pathname+'?widget=1'+window.location.hash;
+    var code  = '<iframe src="'+url+'" width="100%" scrolling="no" marginheight="0" frameborder="0"></iframe><\script type="text/javascript" src="'+window.location.origin+'/static/javascripts/iframeResizer.min.js"\>\<\/script\>\<script type="text/javascript"\>iFrameResize();\<\/script\>';
+    $('#modal-embed .modal-body textarea').val( code );
+  });
+}
+
 function setRedrawOnSliderChange(selector, startValue, callback) {
 
   // Listen changes on url hash
