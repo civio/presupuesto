@@ -5,7 +5,7 @@ from budget_app.models import Budget, BudgetBreakdown, BudgetItem
 from helpers import *
 
 
-def budgets(request):
+def budgets(request, render_callback=None):
     # Get request context
     c = get_context(request, css_class='body-summary', title='')
 
@@ -65,4 +65,7 @@ def budgets(request):
     if hasattr(settings, 'CALCULATE_BUDGET_INDICATORS'):
         c['calculate_budget_indicators'] = settings.CALCULATE_BUDGET_INDICATORS
 
-    return render_response('budgets/index.html', c)
+     # if parameter widget defined use widget template instead of standard one
+    template = 'budgets/index_widget.html' if isWidget(request) else 'budgets/index.html'
+
+    return render(c, render_callback, template)

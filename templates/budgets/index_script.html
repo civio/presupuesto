@@ -1,0 +1,115 @@
+
+<script>
+  $(function() {
+    function redraw() {
+      var uiState = getUIState();
+      if (years.indexOf(uiState.year) == -1) return;
+
+      var adjustInflationFn = getInflationAdjustmentFunction(getUIState(), stats);
+      sankey.update(uiState, adjustInflationFn);
+      updateBudgetTotals(chapterBreakdown, economicBreakdown, budgetStatuses, adjustInflationFn, uiState);
+      $('.execution-status').html(getExecutionTotalLabel(budgetStatuses[uiState.year], i18n));
+{% if calculate_budget_indicators %}
+      calculateIndicators(chapterBreakdown, budgetStatuses, adjustInflationFn, uiState);
+{% else %}
+      showIndicators(uiState);
+{% endif %}
+    }
+
+    // Return a function to convert nominal amounts to inflation-adjusted ones if needed.
+    // Historically this was configured at a theme-level, but is now user-selectable. (#602)
+    function getInflationAdjustmentFunction(uiState, stats) {
+      return function(value, year) {
+        switch (uiState.format) {
+          case "nominal":
+            return value;
+          case "real":
+            return Formatter.adjustInflation(value, stats, year);
+        }
+      }
+    }
+
+    // Calculate maximum amount to display across all years, so we can set a global scale for the Sankey
+    function calculateMaximumSankeyAmount(breakdown) {
+      var highest_amount = 0,
+          column,
+          year,
+          highest_this_year;
+      var adjustInflationFn = getInflationAdjustmentFunction(getUIState(), stats);
+
+      for (column in breakdown.years) {
+        year = breakdown.years[column].toString();
+        highest_this_year = Math.max( 
+                              (breakdown.income[year]||0), 
+                              (breakdown.income['actual_'+year]||0),
+                              (breakdown.expense[year]||0), 
+                              (breakdown.expense['actual_'+year]||0) );
+        highest_amount = Math.max(highest_amount, adjustInflationFn(highest_this_year, breakdown.years[column]));
+      }
+      return highest_amount;
+    }
+
+    var stats = {{ stats|safe }};
+    var years = {{ years|safe }};
+    var budgetStatuses = {{ budget_statuses|safe }};
+
+    var functionalBreakdown = {{ breakdowns['functional'].to_json( labels=descriptions['functional'] )|safe }};
+    var economicBreakdown = {{ breakdowns['economic'].to_json( labels=descriptions['income'] )|safe }};
+    var chapterBreakdown = {{ breakdowns['chapter'].to_json()|safe }};  // Used for indicators
+    var i18n = $.extend({}, budgetStatusLabels, {
+      'other': '{{ _("Otros") }}',
+      'government': '{{ _("Gobierno de Aragón") }}',
+      'budgeted': '{{ _("Presupuestado") }}',
+      'executed': '{{ _("Ejecutado") }}',
+      'total_incomes': '{{ _("Total ingresos") }}',
+      'total_expenses': '{{ _("Total gastos") }}',
+      'n/d': 'No hay datos'
+    });
+
+    var sankey = new BudgetSankey(functionalBreakdown, economicBreakdown, budgetStatuses, i18n);
+    sankey.incomeNodes({{ income_nodes|safe }});
+    sankey.expenseNodes({{ expense_nodes|safe }});
+    // Set a constant scale for the Sankey diagram across the years (otherwise each year would look
+    // equally big).
+    sankey.maxAmountEver( calculateMaximumSankeyAmount(functionalBreakdown) );
+
+    {# If we have multiple languages, let the Sankey chart know which one to use #}
+    {% if LANGUAGES|length > 1 %}
+    sankey.language('{{ LANGUAGE_CODE }}');
+    {% endif %}
+
+    {# The padding of the Sankey layout algorithm can be customized for best results. #}
+    {% if overview_node_padding %}
+    sankey.nodePadding({{ overview_node_padding }});
+    {% endif %}
+
+    {# The aggressiveness of the Sankey layout algorithm can be customized for best results. #}
+    {% if not overview_use_new_vis and relax_factor %}
+    var relaxFactor = {{ relax_factor }};
+    sankey.relaxFactor(relaxFactor);
+    {% endif %}
+
+    {% if overview_labels_min_size %}
+    sankey.labelsMinSize({{ overview_labels_min_size }});
+    {% endif %}
+    {% if overview_labels_font_size_min %}
+    sankey.labelsFontSizeMin({{ overview_labels_font_size_min }});
+    {% endif %}
+    {% if toverview_labels_font_size_max %}
+    sankey.labelsFontSizeMax({{ overview_labels_font_size_max }});
+    {% endif %}
+
+    {# We can force nodes order to remain the same as nodes array #}
+    {% if overview_force_order %}
+    sankey.forceOrder(true);
+    {% endif %}
+
+    $('#select-format').change(redraw);
+    initSlider("#year-selection", years, {{ starting_year }});
+    sankey.draw("#chart", getUIState(), getInflationAdjustmentFunction(getUIState(), stats));
+    setRedrawOnSliderChange("#year-selection", {{ starting_year }}, redraw);
+
+    // Add click embed btn event
+    setEmbedModal();
+  });
+</script>

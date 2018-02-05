@@ -1,9 +1,6 @@
-{% extends 'base.html' %}
+{% extends 'base-widget.html' %}
 
 {% block content %}
-
-<!-- Budget Stream Intro -->
-{% include 'budgets/budgets_intro.html' %}
 
 <!-- Budget Sankey Viz -->
 <div class="budget-viz">
@@ -67,18 +64,9 @@
       <!-- Budget Totals -->
       {% include 'budgets/budgets_totals.html' %}
 
-      <!-- Budget Indicators -->
-      {% include 'budgets/budgets_indicators.html' %}
-
     </div>
-
-    <!-- Social Sharing Buttons -->
-    {% include 'shared/social_sharing.html' %}
   </div>
 </div>
-
-{% include 'shared/modal_embed.html' %}
-{% include 'shared/data_sources.html' %}
 
 <!-- Some extra Javascript, camouflaged as HTML files :/ -->
 {% include 'shared/policy_paths.html' %}
