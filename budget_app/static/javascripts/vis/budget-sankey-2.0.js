@@ -1,4 +1,4 @@
-function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationFn, _budgetStatuses, i18n) {
+function BudgetSankey(_functionalBreakdown, _economicBreakdown, _budgetStatuses, i18n) {
 
   var _this = this,
       functionalBreakdown = _functionalBreakdown,
@@ -97,7 +97,7 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
     return this;
   };
 
-  this.getFormattedData = function(year) {
+  this.getFormattedData = function(year, adjustInflationFn) {
 
     // Check current year actual_ value & update hasExecution variable
     hasExecution = ( functionalBreakdown.years['actual_'+year] ) ? true : false;
@@ -211,7 +211,7 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
   };
 
   // Visualize the data with D3
-  this.draw = function(_selector, _uiState) {
+  this.draw = function(_selector, _uiState, adjustInflationFn) {
 
     selector = _selector;
     uiState = _uiState;
@@ -250,7 +250,7 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
     textAux = svg.append('text').style('visibility', 'hidden');
 
     // Get budget data
-    budget = this.getFormattedData(uiState.year);
+    budget = this.getFormattedData(uiState.year, adjustInflationFn);
 
     // Calculate maxAmountEver if not setted
     if (maxAmountEver == 0){
@@ -272,12 +272,12 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
     d3.select(window).on('resize', _this.resize);
   };
 
-  this.update = function(newUIState) {
-    if ( uiState && uiState.year == newUIState.year )
-      return; // Do nothing if the year hasn't changed. We don't care about the other fields
+  this.update = function(newUIState, adjustInflationFn) {
+    if ( uiState && uiState.year == newUIState.year && uiState.format == newUIState.format )
+      return; // Do nothing if the year or format haven't changed. We don't care about the other fields
     uiState = newUIState;
 
-    budget = this.getFormattedData(uiState.year);
+    budget = this.getFormattedData(uiState.year, adjustInflationFn);
 
     updateChart();
   };

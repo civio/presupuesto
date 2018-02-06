@@ -1,4 +1,4 @@
-function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationFn, _budgetStatuses, i18n) {
+function BudgetSankey(_functionalBreakdown, _economicBreakdown, _budgetStatuses, i18n) {
 
   var _this = this;
   var functionalBreakdown = _functionalBreakdown;
@@ -16,6 +16,7 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
   var svg;
   var sankey;
   var uiState;
+  var adjustInflationFn;
   var $popup = $("#pop-up");
   var language = null;
 
@@ -60,7 +61,7 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
     return this;
   };
 
-  this.getSankeyData = function(year) {
+  this.getSankeyData = function(year, adjustInflationFn) {
 
     // Check current year actual_ value & update hasExecution variable
     hasExecution = ( functionalBreakdown.years['actual_'+year] ) ? true : false;
@@ -210,10 +211,11 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
   };
 
   // Visualize the data with D3
-  this.draw = function(theSelector, newUIState) {
+  this.draw = function(theSelector, newUIState, theAdjustInflationFn) {
 
     selector = theSelector;
     uiState = newUIState;
+    adjustInflationFn = theAdjustInflationFn;
 
     width = $(selector).width() - margin.left - margin.right;
     height = (16*Math.sqrt($(selector).width())) - margin.top - margin.bottom;
@@ -238,7 +240,7 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
 
     var path = sankey.link();
 
-    var budget = this.getSankeyData(uiState.year);
+    var budget = this.getSankeyData(uiState.year, adjustInflationFn);
 
     // draw links
     link = svg.append("g").selectAll(".link")
@@ -281,8 +283,6 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
     addLegendItem(legend, 0, i18n['budgeted'], 'legend-budget');
     addLegendItem(legend, 1, i18n['executed'], 'legend-execution');
     var note = svg.append('g').attr("transform", "translate(-10,"+(height+20)+")");
-    if ( i18n['amounts.are.real'] !== undefined )
-      addLegendItem(note, 0, i18n['amounts.are.real'], 'legend-note');
 
     updateExecution();
 
@@ -296,15 +296,16 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, adjustInflationF
 
     // Remove svg content & redraw svg
     d3.select(selector).select('svg').selectAll('*').remove();
-    _this.draw(selector, uiState);
+    _this.draw(selector, uiState, adjustInflationFn);
   };
 
-  this.update = function(newUIState) {
-    if ( uiState && uiState.year == newUIState.year )
-      return; // Do nothing if the year hasn't changed. We don't care about the other fields
+  this.update = function(newUIState, theAdjustInflationFn) {
+    if ( uiState && uiState.year == newUIState.year && uiState.format == newUIState.format )
+      return; // Do nothing if the year or format haven't changed. We don't care about the other fields
     uiState = newUIState;
+    adjustInflationFn = theAdjustInflationFn;
 
-    var newBudget = this.getSankeyData(uiState.year);
+    var newBudget = this.getSankeyData(uiState.year, adjustInflationFn);
 
     var nodes = svg.selectAll(".node")
       .data(newBudget.nodes);

@@ -1,0 +1,50 @@
+<!-- Budget Sankey Viz -->
+<div class="budget-viz">
+  <div class="container">
+    <h2 class="page-title">{{ _('Ingresos y gastos en el Gobierno de Aragón') }}</h2>
+
+    <div class="sankey-container{% if not overview_use_new_vis %} sankey-old{% endif %}">
+      <div class="sankey-labels">
+        {% if overview_use_new_vis %}
+        <div class="sankey-label-incomes">
+          <a href="{{ url('budget_app.views.policies') }}#view=income" title="{{ _('Ver detalle de ingresos') }}" aria-label="{{ _('Ver detalle de ingresos') }}">{{ _('Ingresos') }}</a>
+          <p class="sankey-label-executed"><span></span>{{ _('Ingresos ejecutados') }}</p>
+          <p class="sankey-label-budgeted"><span></span>{{ _('Ingresos presupuestados') }}</p>
+        </div>
+        <div class="sankey-label-expenses">
+          <a href="{{ url('budget_app.views.policies') }}" title="{{ _('Ver detalle de gastos') }}" aria-label="{{ _('Ver detalle de gastos') }}">{{ _('Gastos') }}</a>
+          <p class="sankey-label-executed">{{ _('Gastos ejecutados') }}<span></span></p>
+          <p class="sankey-label-budgeted">{{ _('Gastos presupuestados') }}<span></span></p>
+        </div>
+        {% else %}
+        <p class="sankey-label-incomes"><a href="{{ url('budget_app.views.policies') }}#view=income" title="{{ _('Ver detalle de ingresos') }}" aria-label="{{ _('Ver detalle de ingresos') }}">{{ _('Ingresos') }}</a></p>
+        <p class="sankey-label-expenses"><a href="{{ url('budget_app.views.policies') }}" title="{{ _('Ver detalle de gastos') }}" aria-label="{{ _('Ver detalle de gastos') }}">{{ _('Gastos') }}</a></p>
+        {% endif %}
+      </div>
+
+      <div class="sankey chart-container" id="chart">
+        <svg aria-hidden="true">
+          {% if overview_use_new_vis %}
+          <defs>
+            <pattern id="pattern-budget" class="pattern-stripe" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <rect width="4" height="4" />
+              <line x1="0" x2="0" y1="0" y2="4" />
+            </pattern>
+            <pattern id="pattern-executed" class="pattern-stripe" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <rect width="4" height="4" />
+              <line x1="0" x2="0" y1="0" y2="4" />
+            </pattern>
+          </defs>
+          {% endif %}
+        </svg>
+        <div id="pop-up" class="popover top" role="tooltip">
+          <div class="arrow"></div>
+          <div class="popover-title"></div>
+          <div class="popover-content"></div>
+        </div>
+      </div>
+
+      {% include 'shared/data_controllers.html' %}
+    </div>
+  </div>
+</div>
