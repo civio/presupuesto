@@ -140,3 +140,34 @@ body.widget{
     margin-bottom: $grid-gutter-width/6;
   }
 }
+
+.body-summary.widget{
+
+  .page-title{
+    display: none;
+  }
+
+  .budget-viz{
+    margin-top: 2*$grid-gutter-width/3;
+  }
+
+  .sankey-labels{
+    font-size: .875em;
+  }
+
+  #budgets-totals{
+    background: none;
+
+    .budget-totals{
+      margin-bottom: $grid-gutter-width;
+    }
+  }
+
+  .container{
+    width: 100%;
+  }
+
+  #totals-panel{
+    margin-bottom: 0;
+  }
+}
