@@ -19,6 +19,14 @@ class Command(BaseCommand):
     # XXX: This assumes subheadings are not used, i.e. the SimpleBudgetLoader was used. See #495.
     def _clean_unused_economic_categories(self):
         # Clean unused headings, i.e. those without related budget items
+        self._clean_unused_headings('true')
+        self._clean_unused_headings('false')
+
+        # Clean unused articles, i.e. those without children headings (after those were cleaned)
+        self._clean_unused_articles('true')
+        self._clean_unused_articles('false')
+
+    def _clean_unused_headings(self, is_expense):
         sql = "DELETE " \
               "FROM economic_categories " \
               "WHERE economic_categories.id in (" \
@@ -29,22 +37,26 @@ class Command(BaseCommand):
                   "on ec.id = bi.economic_category_id " \
                 "where " \
                   "heading is not null and " \
+                  "ec.expense="+is_expense+" and " \
                   "bi.id is null" \
                 ")"
-        print "Borrando conceptos no utilizadas..."
+        print "Borrando conceptos (expense="+is_expense+") no utilizados..."
         self._execute_transaction(sql)
 
-        # Clean unused articles, i.e. those without children headings (after those were cleaned)
+    def _clean_unused_articles(self, is_expense):
         sql = "DELETE " \
               "FROM economic_categories " \
               "WHERE " \
                 "heading is null and " \
+                "expense="+is_expense+" and " \
                 "economic_categories.article not in (" \
                   "select article " \
                   "from economic_categories " \
-                  "where heading is not null" \
+                  "where " \
+                    "heading is not null and " \
+                    "expense="+is_expense+ \
                   ")"
-        print "Borrando artículos no utilizadas..."
+        print "Borrando artículos (expense="+is_expense+") no utilizados..."
         self._execute_transaction(sql)
 
     # XXX: This may not work correctly when subprogrammes are enabled. See #495
