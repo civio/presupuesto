@@ -36,7 +36,7 @@ class BudgetItemManager(models.Manager):
 
     # Do a full-text search in the database. Note we ignore execution data, as it doesn't
     # add anything new to the budget descriptions.
-    def search(self, query, budget, page):
+    def search(self, query, year, language, page):
         sql = "select " \
             "b.year, " \
             "e.name, e.level, " \
@@ -59,10 +59,11 @@ class BudgetItemManager(models.Manager):
             "i.functional_category_id = fc.id and " \
             "i.institutional_category_id = ic.id and " \
             "i.economic_category_id = ec.id and " \
+            "e.language='"+language+"' and " \
             "to_tsvector('"+settings.SEARCH_CONFIG+"',i.description) @@ plainto_tsquery('"+settings.SEARCH_CONFIG+"',%s)"
 
-        if budget:
-            sql += " and b.id='%s'" % budget.id
+        if year:
+            sql += " and b.year='%s'" % year
 
         sql += " order by i.amount desc"
         return self.raw(sql, (query, ))

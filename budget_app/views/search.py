@@ -38,7 +38,7 @@ def search(request):
     if hasattr(settings, 'SHOW_SECTION_PAGES') and settings.SHOW_SECTION_PAGES:
         c['departments'] = list(InstitutionalCategory.objects.search_departments(c['query'], budget))
 
-    all_items = list(BudgetItem.objects.search(c['query'], budget, c['page']))
+    all_items = list(BudgetItem.objects.search(c['query'], year, c['LANGUAGE_CODE'], c['page']))
     try:
         c['items'] = Paginator(all_items, PAGE_LENGTH, body=6, padding=2).page(c['page'])
     except EmptyPage:
