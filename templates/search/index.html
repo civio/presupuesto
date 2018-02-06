@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% from 'shared/pagination.html' import render_pagination_controls as render_pagination_controls %}
+{% from 'search/render_articles.html' import render_articles as render_articles %}
+{% from 'search/render_headings.html' import render_headings as render_headings %}
 {% block content %}
 
 <section class="search" role="region">
@@ -136,7 +138,7 @@
       {% endif %}
 
 
-      {% if articles or headings %}
+      {% if income_articles_id or headings_per_income_article or expense_articles_ids or headings_per_expense_article %}
       <div class="results-policies panel">
         <div class="panel-heading">
           <h3>{{ _('Artículos y conceptos') }}</h3>
@@ -150,38 +152,11 @@
               </tr>
             </thead>
             <tbody>
-              {% for article in articles %}
-              <tr>
-                <td class="col-1">
-                {% if article.expense %}
-                  <a href="{% url 'budget_app.views.expense_articles_show' article.article, descriptions['expense'].get(article.article|slugify) %}">{{ descriptions['expense'].get(article.article) }}</a>
-                {% else %}
-                  <a href="{% url 'budget_app.views.income_articles_show' article.article, descriptions['income'].get(article.article|slugify) %}">{{ descriptions['income'].get(article.article) }}</a>
-                {% endif %}
-                </td>
-                <td class="col-2"></td>
-              </tr>
-              {% endfor %}
+              {{ render_articles(income_articles_id, 'income', descriptions) }}
+              {{ render_articles(expense_articles_id, 'expense', descriptions) }}
 
-              {% for heading in headings %}
-              <tr>
-                <td class="col-1">
-                {% if heading.expense %}
-                  <a href="{% url 'budget_app.views.expense_articles_show' heading.article, descriptions['expense'].get(heading.article|slugify) %}">{{ descriptions['expense'].get(heading.article) }}</a>
-                {% else %}
-                  <a href="{% url 'budget_app.views.income_articles_show' heading.article, descriptions['income'].get(heading.article|slugify) %}">{{ descriptions['income'].get(heading.article) }}</a>
-                {% endif %}
-                </td>
-
-                <td class="col-2">
-                {% if heading.expense %}
-                  <a href="{% url 'budget_app.views.expense_articles_show' heading.article, descriptions['expense'].get(heading.article|slugify) %}">{{ descriptions['expense'].get(heading.heading) }}</a>
-                {% else %}
-                  <a href="{% url 'budget_app.views.income_articles_show' heading.article, descriptions['income'].get(heading.article|slugify) %}">{{ descriptions['income'].get(heading.heading) }}</a>
-                  {% endif %}
-                </td>
-              </tr>
-              {% endfor %}
+              {{ render_headings(headings_per_income_article, 'income', descriptions) }}
+              {{ render_headings(headings_per_expense_article, 'expense', descriptions) }}
             </tbody>
           </table>
         </div>

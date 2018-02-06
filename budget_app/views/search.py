@@ -50,18 +50,25 @@ def search(request):
     except EmptyPage:
         pass
 
-    # Retrieve articles and headings.
-    # XXX: Do we need to do the same restructuring as with policies/programmes below?
-    # I can't remember why it was needed for policies at the time, so let's try the simple way.
-    c['articles'] = list(EconomicCategory.objects.search_articles(c['query'], budget))
-    c['headings'] = list(EconomicCategory.objects.search_headings(c['query'], budget))
+    # Consolidate articles and headings search results, to avoid duplicates.
+    articles = list(EconomicCategory.objects.search_articles(c['query'], budget))
+    headings = list(EconomicCategory.objects.search_headings(c['query'], budget))
+    c['income_articles_ids'] = list({ article.uid() for article in articles if not article.expense })
+    c['expense_articles_ids'] = list({ article.uid() for article in articles if article.expense })
+    c['headings_per_income_article'] = {}
+    c['headings_per_expense_article'] = {}
+    for heading in headings:
+        s = c['headings_per_expense_article'] if heading.expense else c['headings_per_income_article']
+        if not s.get(heading.article, None):
+            s[heading.article] = set()
+        s[heading.article].add(heading.heading)
 
     # Consolidate policies and programmes search results, to avoid duplicates
     # XXX: We're searching only in top-level entity, the other ones are spotty,
     # not sure it's worth the effort; plus the search results UX is complicated.
     policies = list(FunctionalCategory.objects.search_policies(c['query'], budget))
     programmes = list(FunctionalCategory.objects.search_programmes(c['query'], budget))
-    c['policies_ids'] = list(set([policy.uid() for policy in policies]))
+    c['policies_ids'] = list({ policy.uid() for policy in policies })
     c['programmes_per_policy'] = {}
     for programme in programmes:
         if not c['programmes_per_policy'].get(programme.policy, None):
@@ -78,10 +85,14 @@ def search(request):
                         (len(c['entities']) if 'entities' in c else 0) + \
                         (len(c['departments']) if 'departments' in c else 0) + \
                         len(c['policies_ids']) + \
-                        len(c['articles']) + \
-                        len(c['headings']) + \
+                        len(c['income_articles_ids']) + \
+                        len(c['expense_articles_ids']) + \
                         len(all_items) + \
                         len(all_payments)
+    for headings in c['headings_per_income_article'].values():
+        c['results_size'] += len(headings)
+    for headings in c['headings_per_expense_article'].values():
+        c['results_size'] += len(headings)
     for programmes in c['programmes_per_policy'].values():
         c['results_size'] += len(programmes)
 

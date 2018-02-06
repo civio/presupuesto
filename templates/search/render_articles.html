@@ -1,0 +1,10 @@
+{% macro render_articles(articles, expense_side, descriptions) %}
+{% for article_id in articles %}
+<tr>
+  <td class="col-1">
+    <a href="{% url 'budget_app.views.expense_articles_show' article_id, descriptions[expense_side].get(article_id)|slugify %}">{{ descriptions[expense_side].get(article_id) }}</a>
+  </td>
+  <td class="col-2"></td>
+</tr>
+{% endfor %}
+{% endmacro %}
