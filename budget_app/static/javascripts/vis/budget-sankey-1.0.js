@@ -16,6 +16,7 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, _budgetStatuses,
   var svg;
   var sankey;
   var uiState;
+  var adjustInflationFn;
   var $popup = $("#pop-up");
   var language = null;
 
@@ -210,10 +211,11 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, _budgetStatuses,
   };
 
   // Visualize the data with D3
-  this.draw = function(theSelector, newUIState, adjustInflationFn) {
+  this.draw = function(theSelector, newUIState, theAdjustInflationFn) {
 
     selector = theSelector;
     uiState = newUIState;
+    adjustInflationFn = theAdjustInflationFn;
 
     width = $(selector).width() - margin.left - margin.right;
     height = (16*Math.sqrt($(selector).width())) - margin.top - margin.bottom;
@@ -294,13 +296,14 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, _budgetStatuses,
 
     // Remove svg content & redraw svg
     d3.select(selector).select('svg').selectAll('*').remove();
-    _this.draw(selector, uiState);
+    _this.draw(selector, uiState, adjustInflationFn);
   };
 
-  this.update = function(newUIState, adjustInflationFn) {
+  this.update = function(newUIState, theAdjustInflationFn) {
     if ( uiState && uiState.year == newUIState.year && uiState.format == newUIState.format )
       return; // Do nothing if the year or format haven't changed. We don't care about the other fields
     uiState = newUIState;
+    adjustInflationFn = theAdjustInflationFn;
 
     var newBudget = this.getSankeyData(uiState.year, adjustInflationFn);
 
