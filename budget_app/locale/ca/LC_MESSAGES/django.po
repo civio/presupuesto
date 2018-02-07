@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-06 13:44+0200\n"
-"PO-Revision-Date: 2018-02-06 17:26+0100\n"
+"PO-Revision-Date: 2018-02-07 13:32+0100\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: ca\n"
@@ -1006,3 +1006,118 @@ msgstr ""
 
 msgid "Distrito"
 msgstr ""
+
+# CSV/XLS Headers
+msgid "Id Política"
+msgstr "Id Política"
+
+msgid "Nombre Política"
+msgstr "Nom Política"
+
+msgid "Id Programa"
+msgstr "Id Programa"
+
+msgid "Nombre Programa"
+msgstr "Nom Programa"
+
+msgid "Id Subprograma"
+msgstr "Id Subprograma"
+
+msgid "Nombre Subprograma"
+msgstr "Nom Subprograma"
+
+msgid "Id Capítulo"
+msgstr "Id Capítol"
+
+msgid "Nombre Capítulo"
+msgstr "Nom Capítol"
+
+msgid "Id Artículo"
+msgstr "Id Article"
+
+msgid "Nombre Artículo"
+msgstr "Nom Article"
+
+msgid "Id Concepto"
+msgstr "Id Concepte"
+
+msgid "Nombre Concepto"
+msgstr "Nom Concepte"
+
+msgid "Id Subconcepto"
+msgstr "Id Subconcepte"
+
+msgid "Nombre Subconcepto"
+msgstr "Nom Subconcepte"
+
+msgid "Id Área"
+msgstr "Id Àrea"
+
+msgid "Nombre Área"
+msgstr "Nom Àrea"
+
+msgid "Área/Política"
+msgstr "Àrea/Política"
+
+msgid "Id Línea"
+msgstr "Id Línia"
+
+msgid "Nombre Línea"
+msgstr "Nom Línia"
+
+msgid "Inversión"
+msgstr "Inversió"
+
+msgid "Id Fuente"
+msgstr "Id Font"
+
+msgid "Nombre Fuente"
+msgstr "Nom Font"
+
+msgid "Id Fondo"
+msgstr "Id Fons"
+
+msgid "Nombre Fondo"
+msgstr "Nom Fons"
+
+msgid "Id Institución"
+msgstr "Id Institució"
+
+msgid "Nombre Institución"
+msgstr "Nom Institució"
+
+msgid "Id Sección"
+msgstr "Id Secció"
+
+msgid "Nombre Sección"
+msgstr "Nom Secció"
+
+msgid "Id Organismo"
+msgstr "Id Organisme"
+
+msgid "Nombre Organismo"
+msgstr "Nom Organisme"
+
+msgid "Id Departamento"
+msgstr "Id Departament"
+
+msgid "Nombre Departamento"
+msgstr "Nom Departament"
+
+msgid "Presupuesto Gasto"
+msgstr "Pressupost Despesa"
+
+msgid "Gasto Real"
+msgstr "Despesa Real"
+
+msgid "Presupuesto Gastos"
+msgstr "Pressupost Despeses"
+
+msgid "Presupuesto Ingresos"
+msgstr "Pressupost Ingressos"
+
+msgid "Gastos Reales"
+msgstr "Despeses Reals"
+
+msgid "Ingresos Reales"
+msgstr "Ingressos Reals"

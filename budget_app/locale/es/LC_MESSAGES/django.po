@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-06 13:44+0200\n"
-"PO-Revision-Date: 2018-01-11 14:24+0100\n"
+"PO-Revision-Date: 2018-02-07 13:32+0100\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.5\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #: templates/base-widget.html:7 templates/base-widget.html.py:26
 #: templates/base.html:7 templates/shared/meta.html:9
@@ -948,4 +948,119 @@ msgid "Volver a Inversiones"
 msgstr ""
 
 msgid "Distrito"
+msgstr ""
+
+# CSV/XLS Headers
+msgid "Id Política"
+msgstr ""
+
+msgid "Nombre Política"
+msgstr ""
+
+msgid "Id Programa"
+msgstr ""
+
+msgid "Nombre Programa"
+msgstr ""
+
+msgid "Id Subprograma"
+msgstr ""
+
+msgid "Nombre Subprograma"
+msgstr ""
+
+msgid "Id Capítulo"
+msgstr ""
+
+msgid "Nombre Capítulo"
+msgstr ""
+
+msgid "Id Artículo"
+msgstr ""
+
+msgid "Nombre Artículo"
+msgstr ""
+
+msgid "Id Concepto"
+msgstr ""
+
+msgid "Nombre Concepto"
+msgstr ""
+
+msgid "Id Subconcepto"
+msgstr ""
+
+msgid "Nombre Subconcepto"
+msgstr ""
+
+msgid "Id Área"
+msgstr ""
+
+msgid "Nombre Área"
+msgstr ""
+
+msgid "Área/Política"
+msgstr ""
+
+msgid "Id Línea"
+msgstr ""
+
+msgid "Nombre Línea"
+msgstr ""
+
+msgid "Inversión"
+msgstr ""
+
+msgid "Id Fuente"
+msgstr ""
+
+msgid "Nombre Fuente"
+msgstr ""
+
+msgid "Id Fondo"
+msgstr ""
+
+msgid "Nombre Fondo"
+msgstr ""
+
+msgid "Id Institución"
+msgstr ""
+
+msgid "Nombre Institución"
+msgstr ""
+
+msgid "Id Sección"
+msgstr ""
+
+msgid "Nombre Sección"
+msgstr ""
+
+msgid "Id Organismo"
+msgstr ""
+
+msgid "Nombre Organismo"
+msgstr ""
+
+msgid "Id Departamento"
+msgstr ""
+
+msgid "Nombre Departamento"
+msgstr ""
+
+msgid "Presupuesto Gasto"
+msgstr ""
+
+msgid "Gasto Real"
+msgstr ""
+
+msgid "Presupuesto Gastos"
+msgstr ""
+
+msgid "Presupuesto Ingresos"
+msgstr ""
+
+msgid "Gastos Reales"
+msgstr ""
+
+msgid "Ingresos Reales"
 msgstr ""

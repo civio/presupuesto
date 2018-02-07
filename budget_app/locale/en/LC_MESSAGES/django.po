@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-06 13:44+0200\n"
-"PO-Revision-Date: 2018-01-11 14:24+0100\n"
+"PO-Revision-Date: 2018-02-07 13:32+0100\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.5\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #: templates/base-widget.html:7 templates/base-widget.html.py:26
 #: templates/base.html:7 templates/shared/meta.html:9
@@ -991,3 +991,118 @@ msgstr "Back to investments"
 
 msgid "Distrito"
 msgstr "District"
+
+# CSV/XLS Headers
+msgid "Id Política"
+msgstr "Policy Id"
+
+msgid "Nombre Política"
+msgstr "Policy Name"
+
+msgid "Id Programa"
+msgstr "Program Id"
+
+msgid "Nombre Programa"
+msgstr "Program Name"
+
+msgid "Id Subprograma"
+msgstr "Subprogram Id"
+
+msgid "Nombre Subprograma"
+msgstr "Subprogram Name"
+
+msgid "Id Capítulo"
+msgstr "Chapter Id"
+
+msgid "Nombre Capítulo"
+msgstr "Chapter Name"
+
+msgid "Id Artículo"
+msgstr "Article Id"
+
+msgid "Nombre Artículo"
+msgstr "Article Name"
+
+msgid "Id Concepto"
+msgstr "Item Id"
+
+msgid "Nombre Concepto"
+msgstr "Item Name"
+
+msgid "Id Subconcepto"
+msgstr "Subitem Id"
+
+msgid "Nombre Subconcepto"
+msgstr "Subitem Name"
+
+msgid "Id Área"
+msgstr "Area Id"
+
+msgid "Nombre Área"
+msgstr "Area Name"
+
+msgid "Área/Política"
+msgstr "Area/Policy"
+
+msgid "Id Línea"
+msgstr "Line Id"
+
+msgid "Nombre Línea"
+msgstr "Line Name"
+
+msgid "Inversión"
+msgstr "Investment"
+
+msgid "Id Fuente"
+msgstr "Source Id"
+
+msgid "Nombre Fuente"
+msgstr "Source Name"
+
+msgid "Id Fondo"
+msgstr "Fund Id"
+
+msgid "Nombre Fondo"
+msgstr "Fund Name"
+
+msgid "Id Institución"
+msgstr "Institution Id"
+
+msgid "Nombre Institución"
+msgstr "Institution Name"
+
+msgid "Id Sección"
+msgstr "Section Id"
+
+msgid "Nombre Sección"
+msgstr "Section Name"
+
+msgid "Id Organismo"
+msgstr "Entity Id"
+
+msgid "Nombre Organismo"
+msgstr "Entity Name"
+
+msgid "Id Departamento"
+msgstr "Department Id"
+
+msgid "Nombre Departamento"
+msgstr "Department Name"
+
+msgid "Presupuesto Gasto"
+msgstr "Budgeted Expense"
+
+msgid "Gasto Real"
+msgstr "Actual Expense"
+
+msgid "Presupuesto Gastos"
+msgstr "Budgeted Expenses"
+
+msgid "Presupuesto Ingresos"
+msgstr "Budgeted Revenues"
+
+msgid "Gastos Reales"
+msgstr "Actual Expenses"
+
+msgid "Ingresos Reales"
+msgstr "Actual Revenues"

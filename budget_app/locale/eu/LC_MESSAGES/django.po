@@ -957,3 +957,119 @@ msgstr ""
 
 msgid "Distrito"
 msgstr ""
+
+# CSV/XLS Headers
+
+msgid "Id Política"
+msgstr ""
+
+msgid "Nombre Política"
+msgstr ""
+
+msgid "Id Programa"
+msgstr ""
+
+msgid "Nombre Programa"
+msgstr ""
+
+msgid "Id Subprograma"
+msgstr ""
+
+msgid "Nombre Subprograma"
+msgstr ""
+
+msgid "Id Capítulo"
+msgstr ""
+
+msgid "Nombre Capítulo"
+msgstr ""
+
+msgid "Id Artículo"
+msgstr ""
+
+msgid "Nombre Artículo"
+msgstr ""
+
+msgid "Id Concepto"
+msgstr ""
+
+msgid "Nombre Concepto"
+msgstr ""
+
+msgid "Id Subconcepto"
+msgstr ""
+
+msgid "Nombre Subconcepto"
+msgstr ""
+
+msgid "Id Área"
+msgstr ""
+
+msgid "Nombre Área"
+msgstr ""
+
+msgid "Área/Política"
+msgstr ""
+
+msgid "Id Línea"
+msgstr ""
+
+msgid "Nombre Línea"
+msgstr ""
+
+msgid "Inversión"
+msgstr ""
+
+msgid "Id Fuente"
+msgstr ""
+
+msgid "Nombre Fuente"
+msgstr ""
+
+msgid "Id Fondo"
+msgstr ""
+
+msgid "Nombre Fondo"
+msgstr ""
+
+msgid "Id Institución"
+msgstr ""
+
+msgid "Nombre Institución"
+msgstr ""
+
+msgid "Id Sección"
+msgstr ""
+
+msgid "Nombre Sección"
+msgstr ""
+
+msgid "Id Organismo"
+msgstr ""
+
+msgid "Nombre Organismo"
+msgstr ""
+
+msgid "Id Departamento"
+msgstr ""
+
+msgid "Nombre Departamento"
+msgstr ""
+
+msgid "Presupuesto Gasto"
+msgstr ""
+
+msgid "Gasto Real"
+msgstr ""
+
+msgid "Presupuesto Gastos"
+msgstr ""
+
+msgid "Presupuesto Ingresos"
+msgstr ""
+
+msgid "Gastos Reales"
+msgstr ""
+
+msgid "Ingresos Reales"
+msgstr ""
