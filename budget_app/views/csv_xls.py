@@ -34,7 +34,7 @@ from openpyxl import Workbook
 # ENTITY BREAKDOWNS
 #
 def write_entity_functional_breakdown(c, writer):
-    write_header(writer, [u'Año', u'Id Política', u'Nombre Política', 'Id Programa', 'Nombre Programa', 'Presupuesto Gasto', 'Gasto Real'])
+    write_header(writer, [u'Año.csv', u'Id Política', u'Nombre Política', 'Id Programa', 'Nombre Programa', 'Presupuesto Gasto', 'Gasto Real'])
     for year in sorted(_unique(c['breakdowns']['functional'].years.values())):
         for policy_id, policy in c['breakdowns']['functional'].subtotals.iteritems():
             write_breakdown_item(writer, year, policy, 'expense', [policy_id, None], c['descriptions']['functional'])
@@ -42,7 +42,7 @@ def write_entity_functional_breakdown(c, writer):
                 write_breakdown_item(writer, year, programme, 'expense', [policy_id, programme_id], c['descriptions']['functional'])
 
 def write_entity_institutional_breakdown(c, writer):
-    write_header(writer, [u'Año', u'Id Institución', u'Nombre Institución', u'Id Sección', u'Nombre Sección', 'Presupuesto Gasto', 'Gasto Real'])
+    write_header(writer, [u'Año.csv', u'Id Institución', u'Nombre Institución', u'Id Sección', u'Nombre Sección', 'Presupuesto Gasto', 'Gasto Real'])
     for year in sorted(_unique(c['breakdowns']['institutional'].years.values())):
         for institution_id, institution in c['breakdowns']['institutional'].subtotals.iteritems():
             write_breakdown_item(writer, year, institution, 'expense', [institution_id, None], c['descriptions']['institutional'])
@@ -51,7 +51,7 @@ def write_entity_institutional_breakdown(c, writer):
 
 def write_entity_economic_breakdown(c, field, writer):
     field_username = 'Gastos' if field == 'expense' else 'Ingresos'
-    write_header(writer, [u'Año', u'Id Artículo', u'Nombre Artículo', 'Id Concepto', 'Nombre Concepto', 'Presupuesto '+field_username, field_username+' Reales'])
+    write_header(writer, [u'Año.csv', u'Id Artículo', u'Nombre Artículo', 'Id Concepto', 'Nombre Concepto', 'Presupuesto '+field_username, field_username+' Reales'])
     for year in sorted(_unique(c['breakdowns']['economic'].years.values())):
         for article_id, article in c['breakdowns']['economic'].subtotals.iteritems():
             write_breakdown_item(writer, year, article, field, [article_id, None], c['descriptions'][field])
@@ -89,7 +89,7 @@ def entity_income(request, level, slug, format):
 # PAYMENTS BREAKDOWN
 #
 def write_entity_payment_breakdown(c, writer):
-    write_header(writer, [u'Año', u'Área/Política', 'Beneficiario', 'Concepto', 'Cantidad'])
+    write_header(writer, [u'Año.csv', u'Área/Política', 'Beneficiario', 'Concepto', 'Cantidad'])
     for payment in c['payments']:
         writer.writerow([
             payment.year,
@@ -109,7 +109,7 @@ def entity_payments(request, slug, format):
 # INVESTMENTS BREAKDOWN
 #
 def write_entity_investments_breakdown(c, writer):
-    write_header(writer, [u'Año', u'Id Área', u'Nombre Área', 'Presupuesto Gasto', 'Gasto Real'])
+    write_header(writer, [u'Año.csv', u'Id Área', u'Nombre Área', 'Presupuesto Gasto', 'Gasto Real'])
     for year in sorted(_unique(c['area_breakdown'].years.values())):
         for area_id, area in c['area_breakdown'].subtotals.iteritems():
             write_breakdown_item(writer, year, area, 'expense', [area_id], c['descriptions']['geographic'])
@@ -117,7 +117,7 @@ def write_entity_investments_breakdown(c, writer):
             write_breakdown_item(writer, year, area, 'expense', [area_id], c['descriptions']['geographic'])
 
 def write_entity_investment_line_breakdown(c, writer):
-    write_header(writer, [u'Año', u'Id Línea', u'Nombre Línea', u'Inversión', u'Inversión', 'Presupuesto Gasto', 'Gasto Real'])
+    write_header(writer, [u'Año.csv', u'Id Línea', u'Nombre Línea', u'Inversión', u'Inversión', 'Presupuesto Gasto', 'Gasto Real'])
     for year in sorted(_unique(c['area_breakdown'].years.values())):
         for line_id, line in c['area_breakdown'].subtotals.iteritems():
             write_breakdown_item(writer, year, line, 'expense', [line_id, None], c['descriptions']['functional'])
@@ -137,7 +137,7 @@ def entity_investment_line_breakdown(request, slug, id, format):
 # FUNCTIONAL BREAKDOWN
 #
 def write_functional_breakdown(c, writer):
-    write_header(writer, [u'Año', u'Id Política', u'Nombre Política', 'Id Programa', 'Nombre Programa', 'Presupuesto Gastos', 'Gastos Reales'])
+    write_header(writer, [u'Año.csv', u'Id Política', u'Nombre Política', 'Id Programa', 'Nombre Programa', 'Presupuesto Gastos', 'Gastos Reales'])
     for year in sorted(_unique(c['breakdowns']['functional'].years.values())):
         for programme_id, programme in c['breakdowns']['functional'].subtotals.iteritems():
             write_breakdown_item(writer, year, programme, 'expense', [c['policy_uid'], programme_id], c['descriptions']['functional'])
@@ -146,7 +146,7 @@ def functional_policy_breakdown(request, id, format):
     return policies_show(request, id, '', _generator("%s.funcional" % id, format, write_functional_breakdown))
 
 def write_functional_programme_breakdown(c, writer):
-    write_header(writer, [u'Año', 'Id Programa', 'Nombre Programa', 'Id Subprograma', 'Nombre Subprograma', 'Presupuesto Gastos', 'Gastos Reales'])
+    write_header(writer, [u'Año.csv', 'Id Programa', 'Nombre Programa', 'Id Subprograma', 'Nombre Subprograma', 'Presupuesto Gastos', 'Gastos Reales'])
     for year in sorted(_unique(c['breakdowns']['functional'].years.values())):
         for subprogramme_id, subprogramme in c['breakdowns']['functional'].subtotals.iteritems():
             write_breakdown_item(writer, year, subprogramme, 'expense', [c['programme_id'], subprogramme_id], c['descriptions']['functional'])
@@ -170,7 +170,7 @@ def entity_article_functional(request, level, slug, id, format):
 # ECONOMIC BREAKDOWN
 #
 def write_economic_breakdown(c, writer):
-    write_header(writer, [u'Año', u'Id Capítulo', u'Nombre Capítulo', u'Id Artículo', u'Nombre Artículo', 'Id Concepto', 'Nombre Concepto', 'Presupuesto Gastos', 'Gastos Reales'])
+    write_header(writer, [u'Año.csv', u'Id Capítulo', u'Nombre Capítulo', u'Id Artículo', u'Nombre Artículo', 'Id Concepto', 'Nombre Concepto', 'Presupuesto Gastos', 'Gastos Reales'])
     for year in sorted(_unique(c['breakdowns']['economic'].years.values())):
         for chapter_id, chapter in c['breakdowns']['economic'].subtotals.iteritems():
             write_breakdown_item(writer, year, chapter, 'expense', [chapter_id, None, None], c['descriptions']['expense'])
@@ -183,7 +183,7 @@ def economic_policy_breakdown(request, id, format):
     return policies_show(request, id, '', _generator("%s.economica" % id, format, write_economic_breakdown))
 
 def write_detailed_economic_breakdown(c, writer):
-    write_header(writer, [u'Año', u'Id Capítulo', u'Nombre Capítulo', u'Id Artículo', u'Nombre Artículo', 'Id Subconcepto', 'Nombre Subconcepto', 'Presupuesto Gastos', 'Gastos Reales'])
+    write_header(writer, [u'Año.csv', u'Id Capítulo', u'Nombre Capítulo', u'Id Artículo', u'Nombre Artículo', 'Id Subconcepto', 'Nombre Subconcepto', 'Presupuesto Gastos', 'Gastos Reales'])
     for year in sorted(_unique(c['breakdowns']['economic'].years.values())):
         for chapter_id, chapter in c['breakdowns']['economic'].subtotals.iteritems():
             write_breakdown_item(writer, year, chapter, 'expense', [chapter_id, None, None], c['descriptions']['expense'])
@@ -208,7 +208,7 @@ def economic_section_breakdown(request, id, format):
 #
 def write_economic_article_breakdown(c, field, writer):
     field_username = 'Gastos' if field == 'expense' else 'Ingresos'
-    write_header(writer, [u'Año', u'Id Artículo', u'Nombre Artículo', 'Id Concepto', 'Nombre Concepto', 'Id Subconcepto', 'Nombre Subconcepto', 'Presupuesto '+field_username, field_username+' Reales'])
+    write_header(writer, [u'Año.csv', u'Id Artículo', u'Nombre Artículo', 'Id Concepto', 'Nombre Concepto', 'Id Subconcepto', 'Nombre Subconcepto', 'Presupuesto '+field_username, field_username+' Reales'])
     for year in sorted(_unique(c['breakdowns']['economic'].years.values())):
         write_breakdown_item(writer, year, c['breakdowns']['economic'], field, [c['article_id'], None, None], c['descriptions'][field])
         for heading_id, heading in c['breakdowns']['economic'].subtotals.iteritems():
@@ -244,7 +244,7 @@ def entity_article_income(request, level, slug, id, format):
 #
 def write_funding_breakdown(c, writer):
     field_username = 'Gastos' if c['show_side'] == 'expense' else 'Ingresos'
-    write_header(writer, [u'Año', 'Id Fuente', 'Nombre Fuente', 'Id Fondo', 'Nombre Fondo', 'Presupuesto '+field_username, field_username+' Reales'])
+    write_header(writer, [u'Año.csv', 'Id Fuente', 'Nombre Fuente', 'Id Fondo', 'Nombre Fondo', 'Presupuesto '+field_username, field_username+' Reales'])
     for year in sorted(_unique(c['breakdowns']['funding'].years.values())):
         for source_id, source in c['breakdowns']['funding'].subtotals.iteritems():
             write_breakdown_item(writer, year, source, c['show_side'], [source_id, None], c['descriptions']['funding'])
@@ -272,7 +272,7 @@ def funding_article_expenditures_breakdown(request, id, format):
 #
 def write_institutional_breakdown(c, writer):
     field_username = 'Gastos' if c['show_side'] == 'expense' else 'Ingresos'
-    write_header(writer, [u'Año', 'Id Organismo', 'Nombre Organismo', 'Id Departamento', 'Nombre Departamento', 'Presupuesto '+field_username, field_username+' Reales'])
+    write_header(writer, [u'Año.csv', 'Id Organismo', 'Nombre Organismo', 'Id Departamento', 'Nombre Departamento', 'Presupuesto '+field_username, field_username+' Reales'])
     for year in sorted(_unique(c['breakdowns']['institutional'].years.values())):
         for institution_id, institution in c['breakdowns']['institutional'].subtotals.iteritems():
             write_breakdown_item(writer, year, institution, c['show_side'], [institution_id, None], c['descriptions']['institutional'])
@@ -300,7 +300,7 @@ def institutional_article_expenditures_breakdown(request, id, format):
 #
 def write_entities_breakdown(c, field, writer):
     field_username = 'Gastos' if field == 'expense' else 'Ingresos'
-    write_header(writer, [u'Año', 'Entidad', 'Presupuesto '+field_username, field_username+' Reales'])
+    write_header(writer, [u'Año.csv', 'Entidad', 'Presupuesto '+field_username, field_username+' Reales'])
     for year in sorted(_unique(c['breakdowns']['economic'].years.values())):
         for entity_id, entity in c['breakdowns']['economic'].subtotals.iteritems():
             write_breakdown_item(writer, year, entity, field, [entity_id])
