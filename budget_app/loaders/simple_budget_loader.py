@@ -9,7 +9,7 @@ class SimpleBudgetLoader:
 
     def load(self, entity, year, path, status):
         # Parse the incoming data and keep in memory
-        budget_items = []        
+        budget_items = []
         self.parse_budget_data(budget_items, os.path.join(path, 'ingresos.csv'))
         self.parse_budget_data(budget_items, os.path.join(path, 'gastos.csv'))
         self.parse_budget_data(budget_items, os.path.join(path, 'ejecucion_ingresos.csv'))
@@ -63,7 +63,7 @@ class SimpleBudgetLoader:
 
     def load_budget_items(self, budget, budget_items):
         # Since the incoming data is not fully classified along the four dimensions we defined
-        # for the main budget (Aragón, the good one), we are forced to assign the items a 
+        # for the main budget (Aragón, the good one), we are forced to assign the items a
         # catch-all fake category. (Leaving the category blank would be another possibility,
         # but we'd have to modify the DB structure for that, and also our breakdown queries,
         # so I'm going this slightly hackier way first.)
@@ -158,9 +158,14 @@ class SimpleBudgetLoader:
             print "  Info: los ingresos y gastos del presupuesto no coinciden %0.2f <> %0.2f" % (budgeted_income/100.0, budgeted_expense/100.0)
 
 
+    # Determine the institutional classification file path
+    def get_institutional_classification_path(self, path):
+        return os.path.join(path, '..', '..', 'clasificacion_organica.csv')
+
     # Load the institutional categories
     def load_institutional_classification(self, path, budget):
-        reader = csv.reader(open(os.path.join(path, '..', '..', 'clasificacion_organica.csv'), 'rb'), delimiter=self._get_delimiter())
+        filename = self.get_institutional_classification_path(path)
+        reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
         for index, line in enumerate(reader):
             if re.match("^#", line[0]):  # Ignore comments
                 continue
@@ -178,9 +183,14 @@ class SimpleBudgetLoader:
             ic.save()
 
 
+    # Determine the economic classification file path
+    def get_economic_classification_path(self, path):
+        return os.path.join(path, '..', '..', 'clasificacion_economica.csv')
+
     # Load the economic categories
     def load_economic_classification(self, path, budget):
-        reader = csv.reader(open(os.path.join(path, '..', '..', 'clasificacion_economica.csv'), 'rb'), delimiter=self._get_delimiter())
+        filename = self.get_economic_classification_path(path)
+        reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
         for index, line in enumerate(reader):
             if re.match("^#", line[0]):  # Ignore comments
                 continue
@@ -199,10 +209,14 @@ class SimpleBudgetLoader:
                                     budget=budget)
             ec.save()
 
+    # Determine the functional classification file path
+    def get_functional_classification_path(self, path):
+        return os.path.join(path, '..', '..', 'areas_funcionales.csv')
 
     # Load the functional categories
     def load_functional_classification(self, path, budget):
-        reader = csv.reader(open(os.path.join(path, '..', '..', 'areas_funcionales.csv'), 'rb'), delimiter=self._get_delimiter())
+        filename = self.get_functional_classification_path(path)
+        reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
         for index, line in enumerate(reader):
             if len(line)==0:
                 continue
@@ -231,10 +245,13 @@ class SimpleBudgetLoader:
                                     budget=budget)
             fc.save()
 
+    # Determine the functional classification file path
+    def get_geographic_classification_path(self, path):
+        return os.path.join(path, '..', '..', 'clasificacion_geografica.csv')
 
     # Load the geographic categories (optional)
     def load_geographic_classification(self, path, budget):
-        filename = os.path.join(path, '..', '..', 'clasificacion_geografica.csv')
+        filename = self.get_geographic_classification_path(path)
         if os.path.isfile(filename):
             reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
             for index, line in enumerate(reader):
@@ -261,7 +278,7 @@ class SimpleBudgetLoader:
 
         return int(Decimal(s.replace(',', ''))*100)
 
-    # Get the amount for a budget line. 
+    # Get the amount for a budget line.
     # This method is here mostly to support easy overloading in child classes
     def _parse_amount(self, amount):
         return self._read_english_number(amount)
