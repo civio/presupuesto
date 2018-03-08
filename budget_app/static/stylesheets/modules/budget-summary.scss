@@ -6,7 +6,7 @@
   height: 2*$budget-summary-height;
   margin: 0 0 $grid-gutter-width/2;
   padding-top: $budget-summary-height;
-  overflow: hidden; 
+  // overflow: hidden; 
 }
 
 .budget-summary-item{
@@ -43,7 +43,10 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    visibility: visible;
+
+    &.disabled{
+      visibility: hidden;
+    }
   }
   
   &.active{
@@ -51,6 +54,12 @@
       overflow: visible;
       text-overflow: normal;
       width: auto;
+      
+      /* Use this if we want to show small items labels
+      &.disabled{
+        visibility: visible;
+      }
+      */
     }
   }
 

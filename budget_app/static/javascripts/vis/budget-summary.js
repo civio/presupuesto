@@ -108,6 +108,7 @@ function BudgetSummary(_selector) {
     // Set item label
     bar.selectAll('.budget-summary-label')
       .data(data)
+      .attr('class', setSummaryItemLabelClass)
       .html(setSummaryItemLabel);
   
     // Enter
@@ -131,7 +132,7 @@ function BudgetSummary(_selector) {
       .on('mouseout', onSummaryItemOut);
     // Set item label
     item.append('div')
-      .attr('class', 'budget-summary-label')
+      .attr('class', setSummaryItemLabelClass)
       .html(setSummaryItemLabel);
   }
 
@@ -159,8 +160,13 @@ function BudgetSummary(_selector) {
     return ( d.percentage >= 6 ) ? Formatter.decimal(d.percentage, .1)+'<small>%</small>' : '';
   }
 
+  function setSummaryItemLabelClass(d) {
+    return (d.percentage >= 6 ) ? 'budget-summary-label' : 'budget-summary-label disabled';
+  }
+
   function setSummaryItemLabel(d) {
-    return (d.percentage >= 6 ) ? areaNames[d.key] : '';
+    // return (d.percentage >= 6 ) ? areaNames[d.key] : '';
+    return areaNames[d.key];
   }
 
   // Set colors scale based on colors array
