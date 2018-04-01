@@ -1,8 +1,9 @@
 {% macro render_articles(articles, expense_side, descriptions) %}
+{% set view_name = 'expense_articles_show' if expense_side=='expense' else 'income_articles_show' %}
 {% for article_id in articles %}
 <tr>
   <td class="col-1">
-    <a href="{% url 'budget_app.views.expense_articles_show' article_id, descriptions[expense_side].get(article_id)|slugify %}">{{ descriptions[expense_side].get(article_id) }}</a>
+    <a href="{% url 'budget_app.views.'+view_name article_id, descriptions[expense_side].get(article_id)|slugify %}">{{ descriptions[expense_side].get(article_id) }}</a>
   </td>
   <td class="col-2"></td>
 </tr>
