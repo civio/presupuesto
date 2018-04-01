@@ -5,30 +5,26 @@
         myGrid,
         areaBreakdown   = {{ area_breakdown.to_json()|safe }},
         payeeBreakdown  = {{ payee_breakdown.to_json()|safe }},
-        query           = { description: '', area: '', payee: '', date: '' },
+        query           = { description: '', area: '', payee: '', date: '', amount: '' },
         years           = {{ years }},
         showingSummary  = {{ 'true' if is_summary else 'false' }},
         paymentsCount   = {{ payments_count }},
-        totalAmount     = {{ total_amount }};
+        totalAmount     = {{ total_amount }},
+        maxAmount       = {{ max_amount }},
         yearAsRange     = {{ 'true' if payments_year_range else 'false' }};
 
-    function sanitarize(string) {
-      var map = {
-        '&': '&amp;',
-        '<': '&lt;',
-        '>': '&gt;',
-        "/": '&#x2F;'
-      };
-      return string.replace(/[&<>/]/ig, function (match) { return map[match]; });
+    function sanitize(string) {
+      // See https://stackoverflow.com/a/22706073
+      return new Option(string).innerHTML;
     }
 
     // Grid rendering
     function getColumnDefinition(uiState) {
-      return { 
+      return {
         data: getBreakdownValueFunction('expense', 'pagos'),
         title: '{{ _("Pago") }}',
         render: Formatter.getFormatter('nominal', null, null)
-      }; 
+      };
     }
 
     // Render payee name with a link to search for that payee
@@ -46,6 +42,12 @@
       return from !== to ?
                 '<strong>'+from+'</strong> - <strong>'+to+'</strong>' :
                 '<strong>'+from+'</strong>';
+    }
+
+    // Display an amount range nicely
+    function formatAmountRange(from, to) {
+      return '{{ _("Importe") }} <strong>'+Formatter.amount(from)+
+                '</strong> - <strong>'+Formatter.amount(to)+'</strong>';
     }
 
     //Update Tab
@@ -118,17 +120,21 @@
       } else {
         var queryStr = [];
         if (query.description && query.description !== '')
-          queryStr.push('{{ _("Descripción") }} <strong>'+sanitarize(query.description)+'</strong>');
+          queryStr.push('{{ _("Descripción") }} <strong>'+sanitize(query.description)+'</strong>');
         if (query.area)
-          queryStr.push('{{ _("Área") }} <strong>'+sanitarize(query.area)+'</strong>');
+          queryStr.push('{{ _("Área") }} <strong>'+sanitize(query.area)+'</strong>');
         if (query.payee)
-          queryStr.push('{{ _("Proveedor") }} <strong>'+sanitarize(query.payee)+'</strong>');
+          queryStr.push('{{ _("Proveedor") }} <strong>'+sanitize(query.payee)+'</strong>');
+        if (query.amount) {
+          var queryAmounts = query.amount.split(',');
+          queryStr.push(formatAmountRange(sanitize(queryAmounts[0]), sanitize(queryAmounts[1])));
+        }
         if (query.date && years.length > 1) {
           if (yearAsRange) {
             var queryYears = query.date.split(',');
-            queryStr.push(formatYearRange(sanitarize(queryYears[0]), sanitarize(queryYears[1])));
+            queryStr.push(formatYearRange(sanitize(queryYears[0]), sanitize(queryYears[1])));
           } else {
-            queryStr.push('<strong>'+sanitarize(query.date)+'</strong>');
+            queryStr.push('<strong>'+sanitize(query.date)+'</strong>');
           }
         }
         $('#query-panel .payments-query').html( queryStr.join(' + ') );
@@ -167,6 +173,7 @@
           description:  query.description,
           payee:        query.payee,
           area:         query.area,
+          amount:       query.amount,
           date:         (yearAsRange || query.date=='') ? query.date : query.date+','+query.date
         },
         contentType:    'application/json; charset=utf-8',
@@ -205,6 +212,11 @@
       if (query.payee !== $('#input-payee').val()){
         $('#input-payee').val(query.payee).trigger('chosen:updated');
       }
+      if (query.amount && query.amount !== $('#input-amount').val()){
+        // Using $().val(value) didn't update the slider appearance
+        var queryAmounts = query.amount.split(',');
+        $('#input-amount').slider('setValue', [parseInt(queryAmounts[0]), parseInt(queryAmounts[1])]);
+      }
       if (query.date && query.date !== $('#input-date').val()){
         // Using $().val(value) didn't update the slider appearance
         if (yearAsRange) {
@@ -218,7 +230,11 @@
     }
 
     function isSameQuery(_query) {
-      return query.description === _query.description && query.payee === _query.payee && query.area === _query.area && query.date === _query.date;
+      return query.description === _query.description &&
+              query.payee === _query.payee &&
+              query.area === _query.area &&
+              query.amount === _query.amount &&
+              query.date === _query.date;
     }
 
     function getQueryHash(){
@@ -227,7 +243,8 @@
         description:  ( hash.description ) ? hash.description : '',
         date:         ( hash.date ) ? hash.date : '',
         payee:        ( hash.payee ) ? hash.payee : '',
-        area:         ( hash.area ) ? hash.area : ''
+        area:         ( hash.area ) ? hash.area : '',
+        amount:       ( hash.amount ) ? hash.amount : ''
       };
       return queryHash;
     }
@@ -255,6 +272,17 @@
       });
     }
 
+    // Setup amount slider
+    $('#input-amount').slider({
+      formatter: function(value) {
+        if (Array.isArray(value)) {
+          return Formatter.amount(value[0]) + ' : ' + Formatter.amount(value[1]);
+        } else {
+          return Formatter.amount(value);
+        }
+      }
+     });
+
     // Hide year slider if there's only one year
     if (years.length <= 1) {
       $('#payments-search .data-controllers').hide();
@@ -266,12 +294,13 @@
 
       // Show submit loader
       $(this).find('button[type="submit"]').attr('disabled', true).children('.glyphicon').removeClass('hide');
-    
+
       var state = {
         description:  $('#input-description').val().trim(),
         date:         $('#input-date').val(),
         payee:        $('#input-payee').val(),
-        area:         $('#input-area').val()
+        area:         $('#input-area').val(),
+        amount:       $('#input-amount').val()
       }
 
       // If submit the previous query we hide submit loader & do nothing

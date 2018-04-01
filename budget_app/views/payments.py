@@ -45,11 +45,12 @@ def payment_search_helper(request, c, entity, render_callback=None):
     area = request.GET.get('area', '')
     payee = request.GET.get('payee', '')
     description = request.GET.get('description', '')
+    amount = request.GET.get('amount', '')
     years = request.GET.get('date', '')
 
     # Get year range
     if ( years != '' ):
-        from_year, to_year = __parse_year_arguments(years)
+        from_year, to_year = __parse_range_argument(years)
     else:
         __set_year_range(c, entity)
         from_year, to_year = c['first_year'], c['last_year']
@@ -64,6 +65,12 @@ def payment_search_helper(request, c, entity, render_callback=None):
         query += " AND p.area = %s"
         query_arguments.append(area)
         active_filters.append('area')
+
+    if ( amount != '' ):
+        from_amount, to_amount = __parse_range_argument(amount)
+        query += " AND p.amount >= %s AND p.amount <= %s"
+        query_arguments.extend([from_amount, to_amount])
+        active_filters.append('amount')
 
     if ( payee != '' ):
         query += " AND p.payee = %s"
@@ -115,9 +122,7 @@ def __populate_summary_breakdowns(c, entity, from_year, to_year):
         payment = MockPayment()
         payment.payee = payee[0]
         payment.expense = True
-
-        amount = int(payee[2])
-        payment.amount = amount
+        payment.amount = int(payee[2])
 
         c['payee_breakdown'].add_item('pagos', payment)
 
@@ -128,20 +133,22 @@ def __populate_summary_breakdowns(c, entity, from_year, to_year):
         payment = MockPayment()
         payment.area = area[0]
         payment.expense = True
-
-        amount = int(area[2])
-        payment.amount = amount
+        payment.amount = int(area[2])
 
         # We calculate the overall stats using the area breakdown. The payee one
         # doesn't include anonymised data.
-        total_amount += amount
+        total_amount += payment.amount
         payments_count += int(area[1])
 
         c['area_breakdown'].add_item('pagos', payment)
 
+    # Get the biggest payment, used to set up the amount slider
+    biggest_payment = Payment.objects.find_biggest_payment(entity, from_year, to_year)[0]
+
     # Get basic stats for the overall dataset
     c['payments_count'] = payments_count
     c['total_amount'] = total_amount
+    c['max_amount'] = biggest_payment.amount
     c['is_summary'] = True
 
 
@@ -158,8 +165,10 @@ def __populate_detailed_breakdowns(c, active_filters):
     # But, before moving forward, remove from the search results those criteria
     # that are being used to filter, as they are redundant.
     for filter in active_filters:
-        breakdown_by_area_criteria.remove(filter)
-        breakdown_by_payee_criteria.remove(filter)
+        if filter in breakdown_by_area_criteria:
+            breakdown_by_area_criteria.remove(filter)
+        if filter in breakdown_by_payee_criteria:
+            breakdown_by_payee_criteria.remove(filter)
 
     # We're ready to create the breakdowns and move forward.
     c['payee_breakdown'] = BudgetBreakdown(breakdown_by_payee_criteria)
@@ -192,12 +201,12 @@ def __set_year_range(c, entity):
     c['last_year'] = c['years'][len(c['years'])-1]
     c['first_year'] = c['years'][0] if c['payments_year_range'] else c['last_year']
 
-def __parse_year_arguments(years):
-    if ( years != '' ):
-        from_year, to_year = years.split(',')
-        if from_year > to_year:     # Sometimes the slider turns around. Cope with it
-            to_year, from_year = from_year, to_year
-        return from_year, to_year
+def __parse_range_argument(range):
+    if ( range != '' ):
+        from_value, to_value = range.split(',')
+        if from_value > to_value:     # Sometimes the slider turns around. Cope with it
+            to_value, from_value = from_value, to_value
+        return from_value, to_value
 
     else:
         return '', ''

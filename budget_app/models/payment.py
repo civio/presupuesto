@@ -67,6 +67,26 @@ class PaymentManager(models.Manager):
         cursor.execute(sql, [str(entity.id), str(from_year), str(to_year)])
         return list(cursor.fetchall())
 
+    # Find the payment with the biggest amount.
+    # Trying to do `select max(amount)` runs into the issues above, but we can easily
+    # return the object with the biggest amount (see https://stackoverflow.com/a/27561348).
+    # As long as `amount` is indexed this query is trivial.
+    def find_biggest_payment(self, entity, from_year, to_year):
+        sql = \
+            "select " \
+                "p.id, p.amount " \
+            "from " \
+                "payments p " \
+                "left join budgets b on p.budget_id = b.id " \
+            "where " \
+                "b.entity_id = %s and " \
+                "b.year >= %s and " \
+                "b.year <= %s " \
+            "order by amount desc " \
+            "limit 1"
+
+        return self.raw(sql, [str(entity.id), str(from_year), str(to_year)])
+
     def each_denormalized(self, additional_constraints=None, additional_arguments=None):
         # XXX: Note that this left join syntax works well even when the economic_category_id is null,
         # as opposed to the way we query for Budget Items. I should probably adopt this all around,
@@ -118,7 +138,7 @@ class Payment(models.Model):
     anonymized = models.BooleanField(default=False)
     expense = models.BooleanField()
     description = models.CharField(max_length=300)
-    amount = models.BigIntegerField()
+    amount = models.BigIntegerField(db_index=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
