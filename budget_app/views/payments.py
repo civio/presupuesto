@@ -204,7 +204,7 @@ def __set_year_range(c, entity):
 def __parse_range_argument(range):
     if ( range != '' ):
         from_value, to_value = range.split(',')
-        if from_value > to_value:     # Sometimes the slider turns around. Cope with it
+        if int(from_value) > int(to_value):     # Sometimes the slider turns around. Cope with it
             to_value, from_value = from_value, to_value
         return from_value, to_value
 
