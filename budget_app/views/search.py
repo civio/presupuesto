@@ -53,8 +53,8 @@ def search(request):
     # Consolidate articles and headings search results, to avoid duplicates.
     articles = list(EconomicCategory.objects.search_articles(c['query'], budget))
     headings = list(EconomicCategory.objects.search_headings(c['query'], budget))
-    c['income_articles_ids'] = list({ article.uid() for article in articles if not article.expense })
-    c['expense_articles_ids'] = list({ article.uid() for article in articles if article.expense })
+    c['income_articles_ids'] = list(set( article.uid() for article in articles if not article.expense ))
+    c['expense_articles_ids'] = list(set( article.uid() for article in articles if article.expense ))
     c['headings_per_income_article'] = {}
     c['headings_per_expense_article'] = {}
     for heading in headings:
@@ -68,7 +68,7 @@ def search(request):
     # not sure it's worth the effort; plus the search results UX is complicated.
     policies = list(FunctionalCategory.objects.search_policies(c['query'], budget))
     programmes = list(FunctionalCategory.objects.search_programmes(c['query'], budget))
-    c['policies_ids'] = list({ policy.uid() for policy in policies })
+    c['policies_ids'] = list(set(policy.uid() for policy in policies))
     c['programmes_per_policy'] = {}
     for programme in programmes:
         if not c['programmes_per_policy'].get(programme.policy, None):
