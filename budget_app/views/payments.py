@@ -20,14 +20,17 @@ def payments(request, render_callback=None):
     return payments_helper(request, c, main_entity, render_callback)
 
 def payments_helper(request, c, entity, render_callback=None):
-    # Retrieve the information needed for the search form: years, areas and payees
+    # Retrieve the information needed for the search form: years, areas, departments and payees
     __set_year_range(c, entity)
     c['payees'] = Payment.objects.get_payees(entity)
     c['areas'] = Payment.objects.get_areas(entity)
+    c['departments'] = Payment.objects.get_departments(entity)
 
+    # Calculate overall stats and summary
     __populate_summary_breakdowns(c, entity, c['first_year'], c['last_year'])
 
-    # Needed for the footnote on inflation
+    # Additional information: to populate drop-downs and for the inflation footnote
+    populate_descriptions(c)
     populate_stats(c)
 
     return render_response('payments/index.html', c)
@@ -43,6 +46,7 @@ def payment_search_helper(request, c, entity, render_callback=None):
 
     # Get search parameters
     area = request.GET.get('area', '')
+    department = request.GET.get('department', '')
     payee = request.GET.get('payee', '')
     description = request.GET.get('description', '')
     amount = request.GET.get('amount', '')
@@ -65,6 +69,11 @@ def payment_search_helper(request, c, entity, render_callback=None):
         query += " AND p.area = %s"
         query_arguments.append(area)
         active_filters.append('area')
+
+    if ( department != '' ):
+        query += " AND department = %s"
+        query_arguments.append(department)
+        active_filters.append('department')
 
     if ( amount != '' ):
         from_amount, to_amount = __parse_range_argument(amount)

@@ -5,7 +5,7 @@
         myGrid,
         areaBreakdown   = {{ area_breakdown.to_json()|safe }},
         payeeBreakdown  = {{ payee_breakdown.to_json()|safe }},
-        query           = { description: '', area: '', payee: '', date: '', amount: '' },
+        query           = { description: '', area: '', payee: '', date: '', amount: '', department: '' },
         years           = {{ years }},
         showingSummary  = {{ 'true' if is_summary else 'false' }},
         paymentsCount   = {{ payments_count }},
@@ -123,6 +123,8 @@
           queryStr.push('{{ _("Descripción") }} <strong>'+sanitize(query.description)+'</strong>');
         if (query.area)
           queryStr.push('{{ _("Área") }} <strong>'+sanitize(query.area)+'</strong>');
+        if (query.department)
+          queryStr.push('{{ _("Sección") }} <strong>'+$('#input-department option:selected').text()+'</strong>');
         if (query.payee)
           queryStr.push('{{ _("Proveedor") }} <strong>'+sanitize(query.payee)+'</strong>');
         if (query.amount) {
@@ -173,6 +175,7 @@
           description:  query.description,
           payee:        query.payee,
           area:         query.area,
+          department:   query.department,
           amount:       query.amount,
           date:         (yearAsRange || query.date=='') ? query.date : query.date+','+query.date
         },
@@ -209,6 +212,9 @@
       if (query.area !== $('#input-area').val()){
         $('#input-area').val(query.area).trigger('chosen:updated');
       }
+      if (query.department !== $('#input-department').val()){
+        $('#input-department').val(query.department).trigger('chosen:updated');
+      }
       if (query.payee !== $('#input-payee').val()){
         $('#input-payee').val(query.payee).trigger('chosen:updated');
       }
@@ -233,6 +239,7 @@
       return query.description === _query.description &&
               query.payee === _query.payee &&
               query.area === _query.area &&
+              query.department === _query.department &&
               query.amount === _query.amount &&
               query.date === _query.date;
     }
@@ -244,6 +251,7 @@
         date:         ( hash.date ) ? hash.date : '',
         payee:        ( hash.payee ) ? hash.payee : '',
         area:         ( hash.area ) ? hash.area : '',
+        department:   ( hash.department ) ? hash.department : '',
         amount:       ( hash.amount ) ? hash.amount : ''
       };
       return queryHash;
@@ -253,9 +261,10 @@
     // SETUP
     //
 
-    // Setup area & payees selects
+    // Setup area, payees & department selects
     $('#input-area').chosen({width: '100%'});
     $('#input-payee').chosen({width: '100%'});
+    $('#input-department').chosen({width: '100%'});
 
     // Setup year slider
     if (yearAsRange) {
@@ -300,6 +309,7 @@
         date:         $('#input-date').val(),
         payee:        $('#input-payee').val(),
         area:         $('#input-area').val(),
+        department:   $('#input-department').val(),
         amount:       $('#input-amount').val()
       }
 

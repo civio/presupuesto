@@ -62,6 +62,7 @@ class PaymentsLoader:
             'area': line[0].strip(),
             'fc_code': line[1].strip(),
             'ec_code': line[2].strip(),
+            'ic_code': None,
             'payee': self._titlecase(line[6].strip()),
             'anonymized': False,
             'date': date,
@@ -83,7 +84,7 @@ class PaymentsLoader:
             if fields == None or fields['amount'] == 0:
                 continue
 
-            # Fetch economic category
+            # Fetch economic category, if available
             if fields['ec_code']!=None and fields['ec_code']!='':
                 ec = EconomicCategory.objects.filter(expense=True,
                                                     chapter=fields['ec_code'][0],
@@ -99,7 +100,7 @@ class PaymentsLoader:
             else:
                 ec = None
 
-            # Fetch functional category
+            # Fetch functional category, if available
             if fields['fc_code']!=None and fields['fc_code']!='':
                 fc = FunctionalCategory.objects.filter( area=fields['fc_code'][0:1],
                                                         policy=fields['fc_code'][0:2],
@@ -113,6 +114,21 @@ class PaymentsLoader:
                     fc = fc[0]
             else:
                 fc = None
+
+            # Fetch institutional category, if available
+            if fields['ic_code']!=None and fields['ic_code']!='':
+                ic = InstitutionalCategory.objects.filter(  institution=fields['ic_code'][0],
+                                                            section=fields['ic_code'][0:2],
+                                                            department=fields['ic_code'],
+                                                            budget=budget)
+
+                if not ic:
+                    print u"ALERTA: No se encuentra la categoría institutional '%s' para '%s': %s€" % (fields['ic_code'], fields['description'].decode("utf8"), fields['amount']/100)
+                    continue
+                else:
+                    ic = ic[0]
+            else:
+                ic = None
 
             # XXX: We've recently added a new field to payments: 'programme'
             # In order not to break existing loaders we're going to use null
@@ -129,6 +145,7 @@ class PaymentsLoader:
                     programme=programme,
                     functional_category = fc,
                     economic_category = ec,
+                    institutional_category = ic,
                     date=fields['date'],
                     payee=fields['payee'],
                     anonymized=anonymized,

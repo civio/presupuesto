@@ -1,6 +1,7 @@
 from django.db import models, connection
-
 from django.conf import settings
+
+from budget_app.models import InstitutionalCategory
 
 class PaymentManager(models.Manager):
     # Return the list of payees
@@ -23,6 +24,14 @@ class PaymentManager(models.Manager):
                     .filter(budget_id__entity=entity_id) \
                     .distinct() \
                     .order_by('budget__year')
+
+    # Return the list of departments _with payments associated to them_
+    def get_departments(self, entity_id):
+        return self.values_list('institutional_category_id__department', flat=True) \
+                    .filter(budget_id__entity=entity_id) \
+                    .filter(institutional_category_id__isnull=False) \
+                    .distinct() \
+                    .order_by('institutional_category__description')
 
     # Return the list of payees.
     # Unfortunately we couldn't find a way to bend the Django aggregate functions to do this,
@@ -95,11 +104,13 @@ class PaymentManager(models.Manager):
             "select " \
                 "p.id, p.area, p.programme, p.date, p.payee, p.expense, p.amount, p.description, " \
                 "coalesce(ec.description, 'Otros') as ec_description, " \
+                "ic.department, " \
                 "b.year " \
             "from " \
                 "payments p " \
                 "left join budgets b on p.budget_id = b.id " \
-                "left join economic_categories ec on p.economic_category_id = ec.id "
+                "left join economic_categories ec on p.economic_category_id = ec.id " \
+                "left join institutional_categories ic on p.institutional_category_id = ic.id " \
 
         if additional_constraints:
             sql += " where " + additional_constraints
@@ -133,6 +144,7 @@ class Payment(models.Model):
     programme = models.CharField(max_length=100, null=True)
     functional_category = models.ForeignKey('FunctionalCategory', db_column='functional_category_id', null=True)
     economic_category = models.ForeignKey('EconomicCategory', db_column='economic_category_id', null=True)
+    institutional_category = models.ForeignKey('InstitutionalCategory', db_column='institutional_category_id', null=True)
     date = models.DateField(null=True)
     payee = models.CharField(max_length=200, db_index=True)
     anonymized = models.BooleanField(default=False)
