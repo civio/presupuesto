@@ -349,7 +349,7 @@ class BudgetLoader:
                           actual=is_actual,
                           item_number=item['item_number'],
                           amount=item['amount'],
-                          description=item['description'],
+                          description=item['description'][0:512],
                           budget=budget).save()
 
     # Make input file delimiter configurable by children
