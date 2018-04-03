@@ -11,13 +11,8 @@
       <!-- Payments Search Form -->
       <form id="payments-search">
 
+        {% if show_institutional_tab %}
         <div class="row">
-          <div class="col-sm-6">
-            <div class="form-group">
-              <label for="input-description">{{ _('Descripción') }}</label>
-              <input type="text" id="input-description" class="form-control" placeholder="{{ _('Descripción') }}">
-            </div>
-          </div>
           <div class="col-sm-6">
             <div class="form-group">
               <label for="input-department">{{ _('Organismo') }}</label>
@@ -30,6 +25,12 @@
             </div>
           </div>
         </div>
+        {% else %}
+        <div class="form-group">
+          <label for="input-description">{{ _('Descripción') }}</label>
+          <input type="text" id="input-description" class="form-control" placeholder="{{ _('Descripción') }}">
+        </div>
+        {% endif %}
 
         <div class="row">
           <div class="col-sm-6">

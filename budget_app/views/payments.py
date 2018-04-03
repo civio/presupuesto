@@ -24,7 +24,8 @@ def payments_helper(request, c, entity, render_callback=None):
     __set_year_range(c, entity)
     c['payees'] = Payment.objects.get_payees(entity)
     c['areas'] = Payment.objects.get_areas(entity)
-    c['departments'] = Payment.objects.get_departments(entity)
+    if c['show_institutional_tab']:
+        c['departments'] = Payment.objects.get_departments(entity)
 
     # Calculate overall stats and summary
     __populate_summary_breakdowns(c, entity, c['first_year'], c['last_year'])
