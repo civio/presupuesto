@@ -73,8 +73,9 @@
       @else {
         @extend .col-sm-6;
       }
-
-      @if $dvmi-menu-length == 5 {
+  
+      // clear odd items
+      @if $dvmi-menu-length >= 4 {
         &:nth-child(odd){
           clear: both;
         }
