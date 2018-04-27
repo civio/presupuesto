@@ -494,6 +494,15 @@ msgstr "Search for payments to suppliers"
 msgid "Todas las áreas"
 msgstr "All the areas"
 
+#: templates/payments/payments_search.html:24
+#: templates/entities/show_script.html:119
+msgid "Organismo"
+msgstr "Entity"
+
+#: templates/payments/payments_search.html:26
+msgid "Todos los organismos"
+msgstr "All entities"
+
 #: templates/payments/payments_search.html:33
 msgid "Todos los proveedores"
 msgstr "All suppliers"
@@ -503,9 +512,15 @@ msgid "Fecha"
 msgstr "Year"
 
 #: templates/payments/payments_search.html:47
-#: templates/shared/form-search.html:8 templates/terms/index.html:23
+#: templates/shared/form-search.html:8
+#: templates/terms/index.html:23
 msgid "Buscar"
 msgstr "Search"
+
+#: templates/payments/payments_search.html:74
+#: templates/payments/payments_script.html:49
+msgid "Importe"
+msgstr "Amount"
 
 #: templates/policies/show.html:22
 msgid "Volver a Políticas"
@@ -545,7 +560,7 @@ msgstr "Entity"
 
 #: templates/policies/show_script.html:58
 msgid "Fondo"
-msgstr ""
+msgstr "Fund"
 
 #: templates/search/index.html:24 templates/terms/index.html:29
 msgid "Hemos encontrado <strong>%s resultados</strong> relacionados con <strong>%s</strong>."

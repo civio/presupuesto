@@ -493,6 +493,15 @@ msgstr "Procura pagos a provedores"
 msgid "Todas las áreas"
 msgstr "Todas as áreas"
 
+#: templates/payments/payments_search.html:24
+#: templates/entities/show_script.html:119
+msgid "Organismo"
+msgstr "Organismo"
+
+#: templates/payments/payments_search.html:26
+msgid "Todos los organismos"
+msgstr "Todos os organismos"
+
 #: templates/payments/payments_search.html:33
 msgid "Todos los proveedores"
 msgstr "Todos os provedores"
@@ -502,9 +511,15 @@ msgid "Fecha"
 msgstr "Data"
 
 #: templates/payments/payments_search.html:47
-#: templates/shared/form-search.html:8 templates/terms/index.html:23
+#: templates/shared/form-search.html:8
+#: templates/terms/index.html:23
 msgid "Buscar"
 msgstr "Procurar"
+
+#: templates/payments/payments_search.html:74
+#: templates/payments/payments_script.html:49
+msgid "Importe"
+msgstr "Importe"
 
 #: templates/policies/show.html:22
 msgid "Volver a Políticas"

@@ -493,6 +493,15 @@ msgstr "Bilatu hornitzaileentzako ordainketak"
 msgid "Todas las áreas"
 msgstr "Arlo guztiak"
 
+#: templates/payments/payments_search.html:24
+#: templates/entities/show_script.html:119
+msgid "Organismo"
+msgstr "Erakunde"
+
+#: templates/payments/payments_search.html:26
+msgid "Todos los organismos"
+msgstr "Erakunde guztiak"
+
 #: templates/payments/payments_search.html:33
 msgid "Todos los proveedores"
 msgstr "Hornitzaile guztiak"
@@ -502,9 +511,15 @@ msgid "Fecha"
 msgstr "Data"
 
 #: templates/payments/payments_search.html:47
-#: templates/shared/form-search.html:8 templates/terms/index.html:23
+#: templates/shared/form-search.html:8
+#: templates/terms/index.html:23
 msgid "Buscar"
 msgstr "Bilatu"
+
+#: templates/payments/payments_search.html:74
+#: templates/payments/payments_script.html:49
+msgid "Importe"
+msgstr "Zenbateko"
 
 #: templates/policies/show.html:22
 msgid "Volver a Políticas"
