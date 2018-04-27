@@ -6,6 +6,7 @@ import csv
 import os
 import re
 
+
 # Generic payments loader
 class PaymentsLoader:
 
@@ -27,9 +28,8 @@ class PaymentsLoader:
             print u"Cargando pagos para entidad '%s' año %s..." % (entity.name, year)
             self.load_items(budget, items)
 
-
     def parse_data(self, filename):
-        items = []        
+        items = []
         if os.path.isfile(filename):
             print "Leyendo datos de %s..." % filename
             reader = csv.reader(open(filename, 'rb'))
@@ -47,16 +47,15 @@ class PaymentsLoader:
 
         return items
 
-
     # Parse an input line into fields
-    # Note: we're ignoring some fields, not really relevant or not populated often enough to 
+    # Note: we're ignoring some fields, not really relevant or not populated often enough to
     # be useful: period, NIF and source filename.
     def parse_item(self, budget, line):
         # The date is not always available
         try:
-            date=datetime.datetime.strptime(line[4], "%Y-%m-%d")
+            date = datetime.datetime.strptime(line[4], "%Y-%m-%d")
         except ValueError:
-            date=None
+            date = None
 
         return {
             'area': line[0].strip(),
@@ -70,9 +69,8 @@ class PaymentsLoader:
             'amount': self._get_amount(line)
         }
 
-
     # Note that the payment data may not be fully classified along the functional or economic
-    # categories. When loading budget data for small entities we fill this up using dummy categories, 
+    # categories. When loading budget data for small entities we fill this up using dummy categories,
     # since we have complex queries in the application that expect a number of different tables
     # to match perfectly (and they were built when the data was always fine, for historical reasons).
     # But for payments we're going to leave the fields null in the database, should be cleaner.
@@ -81,19 +79,20 @@ class PaymentsLoader:
             fields = self.parse_item(budget, item)
 
             # Ignore null entries or entries with no amount
-            if fields == None or fields['amount'] == 0:
+            if fields is None or fields['amount'] == 0:
                 continue
 
             # Fetch economic category, if available
-            if fields['ec_code']!=None and fields['ec_code']!='':
+            ec_code = fields.get('ec_code', None)
+            if ec_code is not None and ec_code != '':
                 ec = EconomicCategory.objects.filter(expense=True,
-                                                    chapter=fields['ec_code'][0],
-                                                    article=fields['ec_code'][0:2] if len(fields['ec_code']) >= 2 else None,
-                                                    heading=fields['ec_code'][0:3] if len(fields['ec_code']) >= 3 else None,
-                                                    subheading = None,
-                                                    budget=budget)
+                                                     chapter=ec_code[0],
+                                                     article=ec_code[0:2] if len(ec_code) >= 2 else None,
+                                                     heading=ec_code[0:3] if len(ec_code) >= 3 else None,
+                                                     subheading=None,
+                                                     budget=budget)
                 if not ec:
-                    print u"ALERTA: No se encuentra la categoría económica '%s' para '%s': %s€" % (fields['ec_code'], fields['description'].decode("utf8"), fields['amount']/100)
+                    print u"ALERTA: No se encuentra la categoría económica '%s' para '%s': %s€" % (ec_code, fields['description'].decode("utf8"), fields['amount']/100)
                     continue
                 else:
                     ec = ec[0]
@@ -101,14 +100,15 @@ class PaymentsLoader:
                 ec = None
 
             # Fetch functional category, if available
-            if fields['fc_code']!=None and fields['fc_code']!='':
-                fc = FunctionalCategory.objects.filter( area=fields['fc_code'][0:1],
-                                                        policy=fields['fc_code'][0:2],
-                                                        function=fields['fc_code'][0:3],
-                                                        programme=fields['fc_code'],
-                                                        budget=budget)
+            fc_code = fields.get('fc_code', None)
+            if fc_code is not None and fc_code != '':
+                fc = FunctionalCategory.objects.filter(area=fc_code[0:1],
+                                                       policy=fc_code[0:2],
+                                                       function=fc_code[0:3],
+                                                       programme=fc_code,
+                                                       budget=budget)
                 if not fc:
-                    print u"ALERTA: No se encuentra la categoría funcional '%s' para '%s': %s€" % (fields['fc_code'], fields['description'].decode("utf8"), fields['amount']/100)
+                    print u"ALERTA: No se encuentra la categoría funcional '%s' para '%s': %s€" % (fc_code, fields['description'].decode("utf8"), fields['amount']/100)
                     continue
                 else:
                     fc = fc[0]
@@ -116,14 +116,15 @@ class PaymentsLoader:
                 fc = None
 
             # Fetch institutional category, if available
-            if fields['ic_code']!=None and fields['ic_code']!='':
-                ic = InstitutionalCategory.objects.filter(  institution=fields['ic_code'][0],
-                                                            section=fields['ic_code'][0:2],
-                                                            department=fields['ic_code'],
-                                                            budget=budget)
+            ic_code = fields.get('ic_code', None)
+            if ic_code is not None and ic_code != '':
+                ic = InstitutionalCategory.objects.filter(institution=ic_code[0],
+                                                          section=ic_code[0:2],
+                                                          department=ic_code,
+                                                          budget=budget)
 
                 if not ic:
-                    print u"ALERTA: No se encuentra la categoría institutional '%s' para '%s': %s€" % (fields['ic_code'], fields['description'].decode("utf8"), fields['amount']/100)
+                    print u"ALERTA: No se encuentra la categoría institutional '%s' para '%s': %s€" % (ic_code, fields['description'].decode("utf8"), fields['amount']/100)
                     continue
                 else:
                     ic = ic[0]
@@ -143,9 +144,9 @@ class PaymentsLoader:
             # Create the payment record
             Payment(area=fields['area'],
                     programme=programme,
-                    functional_category = fc,
-                    economic_category = ec,
-                    institutional_category = ic,
+                    functional_category=fc,
+                    economic_category=ec,
+                    institutional_category=ic,
                     date=fields['date'],
                     payee=fields['payee'],
                     anonymized=anonymized,
@@ -154,17 +155,16 @@ class PaymentsLoader:
                     description=fields['description'],
                     budget=budget).save()
 
-
     # Read number in Spanish format (123.456,78), and return as number of cents
     def _read_spanish_number(self, s):
-        if (s.strip()==""):
+        if (s.strip() == ""):
             return 0
 
         return int(Decimal(s.replace('.', '').replace(',', '.'))*100)
 
     # Read number in English format (123,456.78), and return as number of cents
     def _read_english_number(self, s):
-        if (s.strip()==""):
+        if (s.strip() == ""):
             return 0
 
         return int(Decimal(s.replace(',', ''))*100)
@@ -181,16 +181,16 @@ class PaymentsLoader:
     # If the given string is all uppercase, convert to titlecase
     def _titlecase(self, s):
         if s.isupper():
-          # We need to do the casing operation on an Unicode string so it handles accented characters correctly
-          return unicode(s, encoding='utf8').title()
+            # We need to do the casing operation on an Unicode string so it handles accented characters correctly
+            return unicode(s, encoding='utf8').title()
         else:
-          return s
+            return s
 
     # If the given string is all uppercase, convert to 'spanish titlecase', i.e. only first letter is upper
     def _spanish_titlecase(self, s):
         if s.isupper():
-          # We need to do the casing operation on an Unicode string so it handles accented characters correctly
-          s = unicode(s, encoding='utf8')
-          return s.capitalize()
+            # We need to do the casing operation on an Unicode string so it handles accented characters correctly
+            s = unicode(s, encoding='utf8')
+            return s.capitalize()
         else:
-          return s
+            return s
