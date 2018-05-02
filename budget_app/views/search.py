@@ -44,11 +44,12 @@ def search(request):
     except EmptyPage:
         pass
 
-    all_payments = list(Payment.objects.search(c['query'], year, c['LANGUAGE_CODE']))
-    try:
-        c['payments'] = Paginator(all_payments, PAGE_LENGTH, body=6, padding=2).page(c['page'])
-    except EmptyPage:
-        pass
+    if hasattr(settings, 'SHOW_PAYMENTS') and settings.SHOW_PAYMENTS:
+        all_payments = list(Payment.objects.search(c['query'], year, c['LANGUAGE_CODE']))
+        try:
+            c['payments'] = Paginator(all_payments, PAGE_LENGTH, body=6, padding=2).page(c['page'])
+        except EmptyPage:
+            pass
 
     # Consolidate articles and headings search results, to avoid duplicates.
     articles = list(EconomicCategory.objects.search_articles(c['query'], budget))
@@ -88,7 +89,7 @@ def search(request):
                         len(c['income_articles_ids']) + \
                         len(c['expense_articles_ids']) + \
                         len(all_items) + \
-                        len(all_payments)
+                        len(all_payments) if 'payments' in c else 0
     for headings in c['headings_per_income_article'].values():
         c['results_size'] += len(headings)
     for headings in c['headings_per_expense_article'].values():
