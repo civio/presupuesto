@@ -73,9 +73,9 @@
       @else {
         @extend .col-sm-6;
       }
-  
+
       // clear odd items
-      @if $dvmi-menu-length >= 4 {
+      @if $dvmi-menu-length >= 5 {
         &:nth-child(odd){
           clear: both;
         }
@@ -128,19 +128,19 @@
           .icon-plus:before {
             position: relative;
             top: 1px;
-            margin-right: $grid-gutter-width/3; 
+            margin-right: $grid-gutter-width/3;
           }
         }
       }
 
       .option-payments .icon{
         font-size: 0.875em;
-      }      
+      }
     }
   }
 
   @media (min-width: $screen-sm-min) {
-    
+
     .home-intro{
       padding-left: $grid-gutter-width;
     }
@@ -156,7 +156,7 @@
   }
 
   @media (min-width: $screen-md-min) {
-    
+
     text-align: left;
 
     .expense-examples li strong{
