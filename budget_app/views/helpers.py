@@ -132,8 +132,9 @@ def populate_years(c, breakdown):
     # We try to set it to the year of the latest non-draft budget, but we need to be
     # careful, as there's no guarantee there'll be data for that year. In those
     # cases revert to the safe fall-back: pick the latest year in the data.
+    # Note: if there's absolutely no data in the page, at least not crash, return latest year.
     latest_budget = populate_latest_budget(c)
-    c['starting_year'] = latest_budget.year if latest_budget.year in years else years[-1]
+    c['starting_year'] = latest_budget.year if (not years or latest_budget.year in years) else years[-1]
 
 def populate_comparison_years(c, breakdown_left, breakdown_right):
     years = sorted(list(set(breakdown_left.years.values() + breakdown_right.years.values())))

@@ -181,7 +181,7 @@ var Formatter = (function() {
   }
 
   that.adjustInflation = function (value, stats, year) {
-    if ( value === undefined )
+    if ( value === undefined || isNaN(year) )
       return undefined;
 
     // The inflation index in the stats refers to the last day of the year. We adjust the budget

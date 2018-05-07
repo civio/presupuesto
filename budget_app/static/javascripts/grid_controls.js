@@ -106,7 +106,7 @@ function setRedrawOnSliderChange(selector, startValue, callback) {
     // Get hash states    
     var state = $.deparam.fragment();
     // Change year
-    if (state.year) {
+    if (state.year && !isNaN(state.year)) {
       $(selector).slider('setValue', +state.year);
       callback();
     }
