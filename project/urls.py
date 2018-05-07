@@ -56,14 +56,14 @@ budget_app_urlpatterns += url_patterns('budget_app.views',
     url(r'^subprogramas/(?P<id>[0-9A-Z]+)/(?P<title>.+)$', 'subprogrammes_show', name="policies-subprogrammes-3"),
 
     # Expense pages (economic breakdown)
-    url(r'^articulos/g$', 'expense_articles_show', name="policies-articles"),
-    url(r'^articulos/g/(?P<id>[0-9]+)$', 'expense_articles_show', name="policies-articles-2"),
-    url(r'^articulos/g/(?P<id>[0-9]+)/(?P<title>.+)$', 'expense_articles_show', name="policies-articles-3"),
+    url(r'^articulos/g$', 'expense_articles_show', name="policies-expense-articles"),
+    url(r'^articulos/g/(?P<id>[0-9]+)$', 'expense_articles_show', name="policies-expense-articles-2"),
+    url(r'^articulos/g/(?P<id>[0-9]+)/(?P<title>.+)$', 'expense_articles_show', name="policies-expense-articles-3"),
 
     # Income pages
-    url(r'^articulos/i$', 'income_articles_show', name="policies-articles"),
-    url(r'^articulos/i/(?P<id>[0-9]+)$', 'income_articles_show', name="policies-articles"),
-    url(r'^articulos/i/(?P<id>[0-9]+)/(?P<title>.+)$', 'income_articles_show', name="policies-articles"),
+    url(r'^articulos/i$', 'income_articles_show', name="policies-income-articles"),
+    url(r'^articulos/i/(?P<id>[0-9]+)$', 'income_articles_show', name="policies-income-articles-2"),
+    url(r'^articulos/i/(?P<id>[0-9]+)/(?P<title>.+)$', 'income_articles_show', name="policies-income-articles-3"),
 
     # Sections
     url(r'^secciones$', 'sections_show', name="sections"),
@@ -160,6 +160,9 @@ budget_app_urlpatterns += url_patterns('budget_app.views',
 budget_app_urlpatterns += patterns('budget_app.views',
     # Runtime info
     url(r'^version.json$', 'version_api'),
+
+    # Sitemap
+    url(r'^sitemap\.xml$', 'sitemap'),
 
     # Robots
     url(r'^robots\.txt$', lambda request: render(request, 'robots.txt', content_type='text/plain')),

@@ -25,4 +25,5 @@ from csv_xls import entity_investments_breakdown, entity_investment_line_breakdo
 from csv_xls import economic_article_revenues_breakdown, funding_article_revenues_breakdown, institutional_article_revenues_breakdown
 from csv_xls import economic_article_expenditures_breakdown, funding_article_expenditures_breakdown, institutional_article_expenditures_breakdown, functional_article_expenditures_breakdown
 from csv_xls import entities_expenses, entities_income
+from sitemap import sitemap
 from version import version_api
