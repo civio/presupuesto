@@ -77,19 +77,17 @@ class PaymentManager(models.Manager):
         return list(cursor.fetchall())
 
     def each_denormalized(self, additional_constraints=None, additional_arguments=None):
-        # XXX: Note that this left join syntax works well even when the economic_category_id is null,
+        # XXX: Note that this left join syntax works well even when the institutional_category_id is null,
         # as opposed to the way we query for Budget Items. I should probably adopt this all around,
         # and potentially even stop using dummy categories on loaders.
         sql = \
             "select " \
                 "p.id, p.area, p.programme, p.date, p.payee, p.expense, p.amount, p.description, " \
-                "coalesce(ec.description, 'Otros') as ec_description, " \
                 "ic.department, " \
                 "b.year " \
             "from " \
                 "payments p " \
                 "left join budgets b on p.budget_id = b.id " \
-                "left join economic_categories ec on p.economic_category_id = ec.id " \
                 "left join institutional_categories ic on p.institutional_category_id = ic.id " \
 
         if additional_constraints:
@@ -102,13 +100,11 @@ class PaymentManager(models.Manager):
         sql = "select " \
             "b.year, " \
             "e.name, e.level, " \
-            "fc.programme, fc.description as fc_description, " \
             "p.id, p.area, p.date, p.description, p.amount, p.expense " \
           "from " \
             "payments p " \
                 "left join budgets b on p.budget_id = b.id " \
                 "left join entities e on b.entity_id = e.id " \
-                "left join functional_categories fc on p.functional_category_id = fc.id " \
           "where " \
             "e.language='"+language+"' and " \
             "to_tsvector('"+settings.SEARCH_CONFIG+"',p.payee||' '||p.description) @@ plainto_tsquery('"+settings.SEARCH_CONFIG+"',%s)"
