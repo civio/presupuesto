@@ -297,7 +297,7 @@
         date:         $('#input-date').val(),
         payee:        $('#input-payee').val(),
         area:         $('#input-area').val(),
-        department:   $('#input-department').val(),
+        department:   ($('#input-department').val() || ''), // Careful, the control is optional
         minAmount:    $('#input-amount-min').val(),
         maxAmount:    $('#input-amount-max').val(),
       }
