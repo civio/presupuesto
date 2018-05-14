@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-06 13:44+0200\n"
-"PO-Revision-Date: 2018-02-07 20:29+0100\n"
+"PO-Revision-Date: 2018-05-14 23:56+0200\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: gl\n"
@@ -511,8 +511,7 @@ msgid "Fecha"
 msgstr "Data"
 
 #: templates/payments/payments_search.html:47
-#: templates/shared/form-search.html:8
-#: templates/terms/index.html:23
+#: templates/shared/form-search.html:8 templates/terms/index.html:23
 msgid "Buscar"
 msgstr "Procurar"
 
@@ -1087,3 +1086,6 @@ msgstr ""
 
 msgid "Ingresos Reales"
 msgstr ""
+
+msgid "payment.query.join"
+msgstr " + "

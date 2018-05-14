@@ -121,7 +121,7 @@
             queryStr.push('{{ _("Año") }} <strong>'+sanitize(query.date)+'</strong>');
           }
         }
-        $('#query-panel .payments-query').html( queryStr.join(' + ') );
+        $('#query-panel .payments-query').html( queryStr.join("{{ _('payment.query.join')|safe }}") );
 
         $("#payments-info-detailed #payments-total").text( Formatter.amount(totalAmount) );
         $("#payments-info-detailed #payments-size").text( Formatter.number(paymentsCount) );
