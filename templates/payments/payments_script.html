@@ -116,9 +116,9 @@
         if (query.date && years.length > 1) {
           if (yearAsRange) {
             var queryYears = query.date.split(',');
-            queryStr.push(formatYearRange(sanitize(queryYears[0]), sanitize(queryYears[1])));
+            queryStr.push('{{ _("Años") }} ' + formatYearRange(sanitize(queryYears[0]), sanitize(queryYears[1])));
           } else {
-            queryStr.push('<strong>'+sanitize(query.date)+'</strong>');
+            queryStr.push('{{ _("Año") }} <strong>'+sanitize(query.date)+'</strong>');
           }
         }
         $('#query-panel .payments-query').html( queryStr.join(' + ') );
