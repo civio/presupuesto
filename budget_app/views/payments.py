@@ -50,7 +50,8 @@ def payment_search_helper(request, c, entity, render_callback=None):
     department = request.GET.get('department', '')
     payee = request.GET.get('payee', '')
     description = request.GET.get('description', '')
-    amount = request.GET.get('amount', '')
+    minAmount = __parse_amount(request.GET.get('minAmount', ''))
+    maxAmount = __parse_amount(request.GET.get('maxAmount', ''))
     years = request.GET.get('date', '')
 
     # Get year range
@@ -76,11 +77,15 @@ def payment_search_helper(request, c, entity, render_callback=None):
         query_arguments.append(department)
         active_filters.append('department')
 
-    if ( amount != '' ):
-        from_amount, to_amount = __parse_range_argument(amount)
-        query += " AND p.amount >= %s AND p.amount <= %s"
-        query_arguments.extend([from_amount, to_amount])
-        active_filters.append('amount')
+    if ( minAmount != '' ):
+        query += " AND p.amount >= %s"
+        query_arguments.append(minAmount)
+        active_filters.append('minAmount')
+
+    if ( maxAmount != '' ):
+        query += " AND p.amount <= %s"
+        query_arguments.append(maxAmount)
+        active_filters.append('maxAmount')
 
     if ( payee != '' ):
         query += " AND p.payee = %s"
@@ -152,13 +157,9 @@ def __populate_summary_breakdowns(c, entity, from_year, to_year):
 
         c['area_breakdown'].add_item('pagos', payment)
 
-    # Get the biggest payment, used to set up the amount slider
-    biggest_payment = Payment.objects.find_biggest_payment(entity, from_year, to_year)[0]
-
     # Get basic stats for the overall dataset
     c['payments_count'] = payments_count
     c['total_amount'] = total_amount
-    c['max_amount'] = biggest_payment.amount
     c['is_summary'] = True
 
 
@@ -220,3 +221,9 @@ def __parse_range_argument(range):
 
     else:
         return '', ''
+
+def __parse_amount(s):
+    if ( s != '' ):
+        return int(s)*100
+    else:
+        return ''

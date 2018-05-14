@@ -5,12 +5,11 @@
         myGrid,
         areaBreakdown   = {{ area_breakdown.to_json()|safe }},
         payeeBreakdown  = {{ payee_breakdown.to_json()|safe }},
-        query           = { description: '', area: '', payee: '', date: '', amount: '', department: '' },
+        query           = { description: '', area: '', payee: '', date: '', minAmount: '', maxAmount: '', department: '' },
         years           = {{ years }},
         showingSummary  = {{ 'true' if is_summary else 'false' }},
         paymentsCount   = {{ payments_count }},
         totalAmount     = {{ total_amount }},
-        maxAmount       = {{ max_amount }},
         yearAsRange     = {{ 'true' if payments_year_range else 'false' }};
 
     function sanitize(string) {
@@ -44,12 +43,6 @@
                 '<strong>'+from+'</strong>';
     }
 
-    // Display an amount range nicely
-    function formatAmountRange(from, to) {
-      return '{{ _("Importe") }} <strong>'+Formatter.amount(from)+
-                '</strong> - <strong>'+Formatter.amount(to)+'</strong>';
-    }
-
     //Update Tab
     function updateTab() {
       var queryHash = getQueryHash();
@@ -81,17 +74,6 @@
                         rowNameFormatter;
       var columnDef = getColumnDefinition(uiState);
       var title     = (uiState.view == 'area') ? '{{ _("Área") }}' : '{{ _("Beneficiario") }}';
-
-      if ( myGrid !== undefined )  myGrid.destroy();
-      myGrid = createBudgetGrid("#myGrid", breakdownToTable(data),
-                        [
-                          {
-                            data: "key",
-                            title: title,
-                            render: formatter
-                          },
-                          columnDef
-                        ]);
 
       // We don't have (yet) overall dataset statistics when displaying a summary, so we
       // hide the info box in those cases.
@@ -127,10 +109,10 @@
           queryStr.push('{{ _("Sección") }} <strong>'+$('#input-department option:selected').text()+'</strong>');
         if (query.payee)
           queryStr.push('{{ _("Proveedor") }} <strong>'+sanitize(query.payee)+'</strong>');
-        if (query.amount) {
-          var queryAmounts = query.amount.split(',');
-          queryStr.push(formatAmountRange(sanitize(queryAmounts[0]), sanitize(queryAmounts[1])));
-        }
+        if (query.minAmount)
+          queryStr.push('{{ _("Importe mínimo") }} <strong>'+sanitize(query.minAmount)+'</strong>');
+        if (query.maxAmount)
+          queryStr.push('{{ _("Importe máximo") }} <strong>'+sanitize(query.maxAmount)+'</strong>');
         if (query.date && years.length > 1) {
           if (yearAsRange) {
             var queryYears = query.date.split(',');
@@ -159,6 +141,19 @@
         $('#payee-tab').text("{{ _('Por beneficiario') }}");
       }
 
+      // Show available data as a table
+      if ( myGrid !== undefined )  myGrid.destroy();
+      var table = breakdownToTable(data);
+      myGrid = createBudgetGrid("#myGrid", table,
+                        [
+                          {
+                            data: "key",
+                            title: title,
+                            render: formatter
+                          },
+                          columnDef
+                        ]);
+
       // Update download links
       var queryString = window.location.hash.replace("#", "");
       $('.icon-file-excel').each(function() {
@@ -176,7 +171,8 @@
           payee:        query.payee,
           area:         query.area,
           department:   query.department,
-          amount:       query.amount,
+          minAmount:    query.minAmount,
+          maxAmount:    query.maxAmount,
           date:         (yearAsRange || query.date=='') ? query.date : query.date+','+query.date
         },
         contentType:    'application/json; charset=utf-8',
@@ -218,10 +214,11 @@
       if (query.payee !== $('#input-payee').val()){
         $('#input-payee').val(query.payee).trigger('chosen:updated');
       }
-      if (query.amount && query.amount !== $('#input-amount').val()){
-        // Using $().val(value) didn't update the slider appearance
-        var queryAmounts = query.amount.split(',');
-        $('#input-amount').slider('setValue', [parseInt(queryAmounts[0]), parseInt(queryAmounts[1])]);
+      if (query.minAmount && query.minAmount !== $('#input-amount-min').val()){
+        $('#input-amount-min').val(query.minAmount);
+      }
+      if (query.maxAmount && query.maxAmount !== $('#input-amount-max').val()){
+        $('#input-amount-min').val(query.maxAmount);
       }
       if (query.date && query.date !== $('#input-date').val()){
         // Using $().val(value) didn't update the slider appearance
@@ -240,7 +237,8 @@
               query.payee === _query.payee &&
               query.area === _query.area &&
               query.department === _query.department &&
-              query.amount === _query.amount &&
+              query.minAmount === _query.minAmount &&
+              query.maxAmount === _query.maxAmount &&
               query.date === _query.date;
     }
 
@@ -252,7 +250,8 @@
         payee:        ( hash.payee ) ? hash.payee : '',
         area:         ( hash.area ) ? hash.area : '',
         department:   ( hash.department ) ? hash.department : '',
-        amount:       ( hash.amount ) ? hash.amount : ''
+        minAmount:    ( hash.minAmount ) ? hash.minAmount : '',
+        maxAmount:    ( hash.maxAmount ) ? hash.maxAmount : ''
       };
       return queryHash;
     }
@@ -281,17 +280,6 @@
       });
     }
 
-    // Setup amount slider
-    $('#input-amount').slider({
-      formatter: function(value) {
-        if (Array.isArray(value)) {
-          return Formatter.amount(value[0]) + ' : ' + Formatter.amount(value[1]);
-        } else {
-          return Formatter.amount(value);
-        }
-      }
-     });
-
     // Hide year slider if there's only one year
     if (years.length <= 1) {
       $('#payments-search #data-controller-date').hide();
@@ -310,7 +298,8 @@
         payee:        $('#input-payee').val(),
         area:         $('#input-area').val(),
         department:   $('#input-department').val(),
-        amount:       $('#input-amount').val()
+        minAmount:    $('#input-amount-min').val(),
+        maxAmount:    $('#input-amount-max').val(),
       }
 
       // If submit the previous query we hide submit loader & do nothing
