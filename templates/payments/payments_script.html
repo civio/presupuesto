@@ -3,8 +3,7 @@
 
     var uiState,
         myGrid,
-        areaBreakdown   = {{ area_breakdown.to_json()|safe }},
-        payeeBreakdown  = {{ payee_breakdown.to_json()|safe }},
+        breakdowns      = {},
         query           = {
                             description: '',
                             area: '',
@@ -20,6 +19,24 @@
         paymentsCount   = {{ payments_count }},
         totalAmount     = {{ total_amount }},
         yearAsRange     = {{ 'true' if payments_year_range else 'false' }};
+
+    var breakdowns = {
+      'area': {{ area_breakdown.to_json()|safe }},
+      'payee': {{ payee_breakdown.to_json()|safe }},
+      'department': {{ department_breakdown.to_json()|safe }}
+    };
+    var titles = {
+      'area': '{{ _("Área") }}',
+      'payee': '{{ _("Beneficiario") }}',
+      'department': '{{ _("Departamento") }}'
+    };
+
+    var departmentDescriptions = {
+      {% for department in departments %}
+      "{{ department }}": '{{ descriptions['institutional'].get(department) }}',
+      {% endfor %}
+    };
+
 
     function sanitize(string) {
       // See https://stackoverflow.com/a/22706073
@@ -44,6 +61,23 @@
     function areaFormatter(value, type, item) {
       return "<a href='#view=payee&area="+value.replace("'", "&#39;")+"'>"+value+"</a>";
     }
+
+    // Render department name with a link to search for that department
+    function departmentFormatter(value, type, item) {
+      return "<a href='#view=payee&department="+value.replace("'", "&#39;")+"'>"+departmentDescriptions[value]+"</a>";
+    }
+
+    // Render department code as a name
+    function departmentRowNameFormatter(value, type, item) {
+      value = ( item.indent===0 ? departmentDescriptions[value] : value );
+      return rowNameFormatter(value, type, item);
+    }
+
+    var summaryFormatters = {
+      'area': areaFormatter,
+      'payee': mainPayeeFormatter,
+      'department': departmentFormatter
+    };
 
     // Display a year range nicely
     function formatYearRange(from, to) {
@@ -77,12 +111,12 @@
 
     // Do all the hard work of drawing the grids
     function redrawGrid() {
-      var data      = (uiState.view == 'area') ? areaBreakdown : payeeBreakdown;
+      var data      = breakdowns[uiState.view];
       var formatter = showingSummary ?
-                        ((uiState.view == 'area') ? areaFormatter : mainPayeeFormatter) :
-                        rowNameFormatter;
+                        summaryFormatters[uiState.view] :
+                        (uiState.view==='department' ? departmentRowNameFormatter : rowNameFormatter);
       var columnDef = getColumnDefinition(uiState);
-      var title     = (uiState.view == 'area') ? '{{ _("Área") }}' : '{{ _("Beneficiario") }}';
+      var title     = titles[uiState.view];
 
       // We don't have (yet) overall dataset statistics when displaying a summary, so we
       // hide the info box in those cases.
@@ -102,6 +136,7 @@
 
         $('#area-tab').text("{{ _('Desglose por área') }}");
         $('#payee-tab').text("{{ _('Principales proveedores') }}");
+        $('#department-tab').text("{{ _('Desglose por departamento') }}");
 
         $('#payments-info-summary').show();
         $('#payments-info-detailed').hide();
@@ -141,15 +176,15 @@
         $('#payments-info-detailed').show();
         $('.payments-query').show();
 
-        // Show the alternative area/payee tabs only if it makes sense, i.e. only if they show
+        // Show the alternative tabs only if it makes sense, i.e. only if they show
         // the data in a different way. Remember that active filters are removed from the output.
-        if ( query.area==='' && query.payee==='' )
-          $('#tabs').show();
-        else
-          $('#tabs').hide();
+        query.area==='' ? $('#area-tab').show() : $('#area-tab').hide();
+        query.payee==='' ? $('#payee-tab').show() : $('#payee-tab').hide();
+        query.department==='' ? $('#department-tab').show() : $('#department-tab').hide();
 
         $('#area-tab').text("{{ _('Por área') }}");
         $('#payee-tab').text("{{ _('Por beneficiario') }}");
+        $('#department-tab').text("{{ _('Por organismo') }}");
       }
 
       // Show available data as a table
@@ -195,11 +230,12 @@
 
     function onSearchSuccess(response) {
       // Setup values
-      paymentsCount   = response.totalResults;
-      totalAmount     = response.totalAmount;
-      areaBreakdown   = response.areaBreakdown;
-      payeeBreakdown  = response.payeeBreakdown;
-      showingSummary  = response.isSummary;
+      paymentsCount            = response.totalResults;
+      totalAmount              = response.totalAmount;
+      breakdowns['area']       = response.areaBreakdown;
+      breakdowns['payee']      = response.payeeBreakdown;
+      breakdowns['department'] = response.departmentBreakdown;
+      showingSummary           = response.isSummary;
 
       // Hide submit loader
       $('#payments-search button[type="submit"]').attr('disabled', false).children('.glyphicon').addClass('hide');
@@ -331,7 +367,7 @@
       }
 
       // Select tab based on query params
-      state.view = ( state.area && state.area !== '' ) ? 'payee' : 'area';
+      state.view = ( state.payee && state.payee !== '' ) ? 'area' : 'payee';
 
       // Setup hashes with search parameters
       $.bbq.pushState( state );

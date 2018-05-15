@@ -163,6 +163,17 @@ def __populate_summary_breakdowns(c, entity, from_year, to_year):
 
         c['area_breakdown'].add_item('pagos', payment)
 
+    # Get the department breakdown
+    c['department_breakdown'] = BudgetBreakdown(['department'])
+    for department in Payment.objects.get_department_breakdown(entity, from_year, to_year):
+        # Wrap the database result in an object, so it can be handled by BudgetBreakdown
+        payment = MockPayment()
+        payment.department = department[0]
+        payment.expense = True
+        payment.amount = int(department[2])
+
+        c['department_breakdown'].add_item('pagos', payment)
+
     # Get basic stats for the overall dataset
     c['payments_count'] = payments_count
     c['total_amount'] = total_amount
@@ -179,6 +190,8 @@ def __populate_detailed_breakdowns(c, active_filters):
     if hasattr(settings, 'PAYMENTS_BREAKDOWN_BY_AREA'):
         breakdown_by_area_criteria = settings.PAYMENTS_BREAKDOWN_BY_AREA
 
+    breakdown_by_department_criteria = ['department', 'payee', 'description']
+
     # But, before moving forward, remove from the search results those criteria
     # that are being used to filter, as they are redundant.
     for filter in active_filters:
@@ -186,10 +199,13 @@ def __populate_detailed_breakdowns(c, active_filters):
             breakdown_by_area_criteria.remove(filter)
         if filter in breakdown_by_payee_criteria:
             breakdown_by_payee_criteria.remove(filter)
+        if filter in breakdown_by_department_criteria:
+            breakdown_by_department_criteria.remove(filter)
 
     # We're ready to create the breakdowns and move forward.
     c['payee_breakdown'] = BudgetBreakdown(breakdown_by_payee_criteria)
     c['area_breakdown'] = BudgetBreakdown(breakdown_by_area_criteria)
+    c['department_breakdown'] = BudgetBreakdown(breakdown_by_department_criteria)
 
     payments_count = 0
     for item in c['payments']:
@@ -201,6 +217,7 @@ def __populate_detailed_breakdowns(c, active_filters):
 
         c['payee_breakdown'].add_item('pagos', item)
         c['area_breakdown'].add_item('pagos', item)
+        c['department_breakdown'].add_item('pagos', item)
         payments_count += 1
 
     # Get basic stats for the overall dataset

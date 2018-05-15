@@ -76,6 +76,25 @@ class PaymentManager(models.Manager):
         cursor.execute(sql, [str(entity.id), str(from_year), str(to_year)])
         return list(cursor.fetchall())
 
+    # Return the department breakdown. Same issues as above.
+    def get_department_breakdown(self, entity, from_year, to_year):
+        sql = \
+            "select " \
+                "ic.department, count(p.amount), sum(p.amount) " \
+            "from " \
+                "payments p " \
+                "left join budgets b on p.budget_id = b.id " \
+                "left join institutional_categories ic on p.institutional_category_id = ic.id " \
+            "where " \
+                "b.entity_id = %s and " \
+                "b.year >= %s and " \
+                "b.year <= %s " \
+            "group by department " \
+            "order by sum(amount) desc"
+        cursor = connection.cursor()
+        cursor.execute(sql, [str(entity.id), str(from_year), str(to_year)])
+        return list(cursor.fetchall())
+
     def each_denormalized(self, additional_constraints=None, additional_arguments=None):
         # XXX: Note that this left join syntax works well even when the institutional_category_id is null,
         # as opposed to the way we query for Budget Items. I should probably adopt this all around,
