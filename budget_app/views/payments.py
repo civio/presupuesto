@@ -52,6 +52,7 @@ def payment_search_helper(request, c, entity, render_callback=None):
     description = request.GET.get('description', '')
     minAmount = __parse_amount(request.GET.get('minAmount', ''))
     maxAmount = __parse_amount(request.GET.get('maxAmount', ''))
+    fiscalId = request.GET.get('fiscalId', '')
     years = request.GET.get('date', '')
 
     # Get year range
@@ -91,6 +92,11 @@ def payment_search_helper(request, c, entity, render_callback=None):
         query += " AND p.payee = %s"
         query_arguments.append(payee)
         active_filters.append('payee')
+
+    if ( fiscalId != '' ):
+        query += " AND p.payee_fiscal_id = %s"
+        query_arguments.append(fiscalId)
+        active_filters.append('fiscalId')
 
     if ( description != '' ):
         query += " AND to_tsvector('"+settings.SEARCH_CONFIG+"',p.description) @@ plainto_tsquery('"+settings.SEARCH_CONFIG+"',%s)"

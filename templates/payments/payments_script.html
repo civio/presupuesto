@@ -5,7 +5,16 @@
         myGrid,
         areaBreakdown   = {{ area_breakdown.to_json()|safe }},
         payeeBreakdown  = {{ payee_breakdown.to_json()|safe }},
-        query           = { description: '', area: '', payee: '', date: '', minAmount: '', maxAmount: '', department: '' },
+        query           = {
+                            description: '',
+                            area: '',
+                            payee: '',
+                            date: '',
+                            minAmount: '',
+                            maxAmount: '',
+                            department: '',
+                            fiscalId: ''
+                          },
         years           = {{ years }},
         showingSummary  = {{ 'true' if is_summary else 'false' }},
         paymentsCount   = {{ payments_count }},
@@ -113,6 +122,8 @@
           queryStr.push('{{ _("Importe mínimo") }} <strong>'+sanitize(query.minAmount)+'</strong>');
         if (query.maxAmount)
           queryStr.push('{{ _("Importe máximo") }} <strong>'+sanitize(query.maxAmount)+'</strong>');
+        if (query.fiscalId)
+          queryStr.push('{{ _("NIF") }} <strong>'+sanitize(query.fiscalId)+'</strong>');
         if (query.date && years.length > 1) {
           if (yearAsRange) {
             var queryYears = query.date.split(',');
@@ -173,6 +184,7 @@
           department:   query.department,
           minAmount:    query.minAmount,
           maxAmount:    query.maxAmount,
+          fiscalId:     query.fiscalId,
           date:         (yearAsRange || query.date=='') ? query.date : query.date+','+query.date
         },
         contentType:    'application/json; charset=utf-8',
@@ -220,6 +232,9 @@
       if (query.maxAmount && query.maxAmount !== $('#input-amount-max').val()){
         $('#input-amount-max').val(query.maxAmount);
       }
+      if (query.fiscalId && query.fiscalId !== $('#input-fiscal-id').val()){
+        $('#input-amount-max').val(query.fiscalId);
+      }
       if (query.date && query.date !== $('#input-date').val()){
         // Using $().val(value) didn't update the slider appearance
         if (yearAsRange) {
@@ -239,6 +254,7 @@
               query.department === _query.department &&
               query.minAmount === _query.minAmount &&
               query.maxAmount === _query.maxAmount &&
+              query.fiscalId === _query.fiscalId &&
               query.date === _query.date;
     }
 
@@ -251,7 +267,8 @@
         area:         ( hash.area ) ? hash.area : '',
         department:   ( hash.department ) ? hash.department : '',
         minAmount:    ( hash.minAmount ) ? hash.minAmount : '',
-        maxAmount:    ( hash.maxAmount ) ? hash.maxAmount : ''
+        maxAmount:    ( hash.maxAmount ) ? hash.maxAmount : '',
+        fiscalId:     ( hash.fiscalId ) ? hash.fiscalId : ''
       };
       return queryHash;
     }
@@ -304,6 +321,7 @@
         department:   ($('#input-department').val() || ''), // Careful, the control is optional
         minAmount:    $('#input-amount-min').val(),
         maxAmount:    $('#input-amount-max').val(),
+        fiscalId:     $('#input-fiscal-id').val(),
       }
 
       // If submit the previous query we hide submit loader & do nothing
