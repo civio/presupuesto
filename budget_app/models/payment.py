@@ -123,6 +123,7 @@ class Payment(models.Model):
     institutional_category = models.ForeignKey('InstitutionalCategory', db_column='institutional_category_id', null=True)
     date = models.DateField(null=True)
     payee = models.CharField(max_length=200, db_index=True)
+    payee_fiscal_id = models.CharField(max_length=15, db_index=True)
     anonymized = models.BooleanField(default=False)
     expense = models.BooleanField()
     description = models.CharField(max_length=300)

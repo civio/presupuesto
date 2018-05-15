@@ -138,8 +138,9 @@ class PaymentsLoader:
             # there's a certain value in forcing child loaders to explicitely set
             # fields to None if that's what they want.
             programme = fields.get('programme', None)
-            # Same with 'anonymized', added in a later stage
+            # Same with 'anonymized' and 'payee_fiscal_id', added in a later stage
             anonymized = fields.get('anonymized', False)
+            payee_fiscal_id = fields.get('payee_fiscal_id', '')
 
             # Create the payment record
             Payment(area=fields['area'],
@@ -149,6 +150,7 @@ class PaymentsLoader:
                     institutional_category=ic,
                     date=fields['date'],
                     payee=fields['payee'],
+                    payee_fiscal_id=payee_fiscal_id,
                     anonymized=anonymized,
                     expense=True,
                     amount=fields['amount'],
