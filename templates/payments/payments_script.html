@@ -54,17 +54,20 @@
 
     // Render payee name with a link to search for that payee
     function mainPayeeFormatter(value, type, item) {
-      return "<a href='#view=area&payee="+value.replace("'", "&#39;")+"'>"+value+"</a>";
+      var url = jQuery.param({ 'view': 'area', 'payee': value })
+      return '<a href="#' + url + '">' + value + '</a>';
     }
 
     // Render area name with a link to search for that area
     function areaFormatter(value, type, item) {
-      return "<a href='#view=payee&area="+value.replace("'", "&#39;")+"'>"+value+"</a>";
+      var url = jQuery.param({ 'view': 'payee', 'area': value })
+      return '<a href="#' + url + '">' + value + '</a>';
     }
 
     // Render department name with a link to search for that department
     function departmentFormatter(value, type, item) {
-      return "<a href='#view=payee&department="+value.replace("'", "&#39;")+"'>"+departmentDescriptions[value]+"</a>";
+      var url = jQuery.param({ 'view': 'payee', 'department': value })
+      return '<a href="#' + url + '">' + departmentDescriptions[value] + '</a>';
     }
 
     // Render department code as a name
