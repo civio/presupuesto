@@ -520,6 +520,20 @@ msgstr "Bilatu"
 msgid "Importe"
 msgstr "Zenbateko"
 
+#: templates/payments/payments_search.html:113
+#: templates/payments/payments_script.html:68
+msgid "Importe mínimo"
+msgstr "Zenbateko minimoa"
+
+#: templates/payments/payments_search.html:115
+#: templates/payments/payments_script.html:74
+msgid "Importe máximo"
+msgstr "Zenbateko maximoa"
+
+#: templates/payments/payments_script.html:139
+msgid "Desglose por departamento"
+msgstr "Sailaren araberako banaketa"
+
 #: templates/policies/show.html:22
 msgid "Volver a Políticas"
 msgstr "Itzuli politiketara"
