@@ -39,11 +39,13 @@
             <h3>{{ _('Principales proveedores') }}</h3>
           </a>
         </li>
+        {% if departments %}
         <li role="presentation">
           <a id="department-tab" href="#department" role="tab">
             <h3>{{ _('Desglose por organismo') }}</h3>
           </a>
         </li>
+        {% endif %}
       </ul>
 
       <table id="myGrid" class="table-grid" width="100%"></table>
