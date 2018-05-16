@@ -54,19 +54,19 @@
 
     // Render payee name with a link to search for that payee
     function mainPayeeFormatter(value, type, item) {
-      var url = jQuery.param({ 'view': 'area', 'payee': value })
+      var url = jQuery.param( jQuery.extend( getFormStatus(), { 'view': 'area', 'payee': value }) )
       return '<a href="#' + url + '">' + value + '</a>';
     }
 
     // Render area name with a link to search for that area
     function areaFormatter(value, type, item) {
-      var url = jQuery.param({ 'view': 'payee', 'area': value })
+      var url = jQuery.param( jQuery.extend( getFormStatus(), { 'view': 'payee', 'area': value }) )
       return '<a href="#' + url + '">' + value + '</a>';
     }
 
     // Render department name with a link to search for that department
     function departmentFormatter(value, type, item) {
-      var url = jQuery.param({ 'view': 'payee', 'department': value })
+      var url = jQuery.param( jQuery.extend( getFormStatus(), { 'view': 'payee', 'department': value }) )
       return '<a href="#' + url + '">' + departmentDescriptions[value] + '</a>';
     }
 
@@ -312,6 +312,19 @@
       return queryHash;
     }
 
+    function getFormStatus(){
+      return {
+        description:  $('#input-description').val().trim(),
+        date:         $('#input-date').val(),
+        payee:        $('#input-payee').val(),
+        area:         $('#input-area').val(),
+        department:   ($('#input-department').val() || ''), // Careful, the control is optional
+        minAmount:    $('#input-amount-min').val(),
+        maxAmount:    $('#input-amount-max').val(),
+        fiscalId:     $('#input-fiscal-id').val(),
+      }
+    }
+
     //
     // SETUP
     //
@@ -352,18 +365,8 @@
       // Show submit loader
       $(this).find('button[type="submit"]').attr('disabled', true).children('.glyphicon').removeClass('hide');
 
-      var state = {
-        description:  $('#input-description').val().trim(),
-        date:         $('#input-date').val(),
-        payee:        $('#input-payee').val(),
-        area:         $('#input-area').val(),
-        department:   ($('#input-department').val() || ''), // Careful, the control is optional
-        minAmount:    $('#input-amount-min').val(),
-        maxAmount:    $('#input-amount-max').val(),
-        fiscalId:     $('#input-fiscal-id').val(),
-      }
-
       // If submit the previous query we hide submit loader & do nothing
+      var state = getFormStatus();
       if (isSameQuery(state)) {
         $(this).find('button[type="submit"]').attr('disabled', false).children('.glyphicon').addClass('hide');
         return;
