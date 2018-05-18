@@ -345,11 +345,7 @@
     });
 
     // Setup area, payees & department selects.
-    // We allow search results for any part of the word in the payee name,
-    // as they sometimes have brackets, quotes and so on. This was especially
-    // useful for #710, but if it's an issue somewhere else we should make
-    // this configurable by theme somehow.
-    $('#input-payee').chosen({ width: '100%', search_contains: true });
+    $('#input-payee').chosen({ width: '100%' });
     $('#input-area').chosen({ width: '100%' });
     $('#input-department').chosen({ width: '100%' });
 
