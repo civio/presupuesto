@@ -235,15 +235,17 @@ def __set_year_range(c, entity):
     c['last_year'] = c['years'][len(c['years'])-1]
     c['first_year'] = c['years'][0] if c['payments_year_range'] else c['last_year']
 
+# Parse a ranged argument into a from-to pair of variables.
+# If the argument is not really a range, return the value as both from-to.
 def __parse_range_argument(range):
-    if ( range != '' ):
-        from_value, to_value = range.split(',')
-        if int(from_value) > int(to_value):     # Sometimes the slider turns around. Cope with it
-            to_value, from_value = from_value, to_value
-        return from_value, to_value
-
-    else:
+    if ( range == '' ):
         return '', ''
+
+    years = range.split(',')
+    from_value, to_value = (years[0], years[1]) if len(years)>1 else (years[0], years[0])
+    if int(from_value) > int(to_value):     # Sometimes the slider turns around. Cope with it
+        to_value, from_value = from_value, to_value
+    return from_value, to_value
 
 def __parse_amount(s):
     if ( s != '' ):
