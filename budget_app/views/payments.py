@@ -247,6 +247,7 @@ def __parse_range_argument(range):
 
 def __parse_amount(s):
     if ( s != '' ):
-        return int(s)*100
+        # Remove thousand separators (both in English and Spanish)
+        return int(s.replace(',', '').replace('.', ''))*100
     else:
         return ''
