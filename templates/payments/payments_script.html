@@ -4,16 +4,7 @@
     var uiState,
         myGrid,
         breakdowns      = {},
-        query           = {
-                            description: '',
-                            area: '',
-                            payee: '',
-                            date: '',
-                            minAmount: '',
-                            maxAmount: '',
-                            department: '',
-                            fiscalId: ''
-                          },
+        query           = getEmptyQuery(),
         years           = {{ years }},
         showingSummary  = {{ 'true' if is_summary else 'false' }},
         paymentsCount   = {{ payments_count }},
@@ -265,13 +256,13 @@
       if (query.payee !== $('#input-payee').val()){
         $('#input-payee').val(query.payee).trigger('chosen:updated');
       }
-      if (query.minAmount && query.minAmount !== $('#input-amount-min').val()){
+      if (query.minAmount !== $('#input-amount-min').val()){
         $('#input-amount-min').val(query.minAmount);
       }
-      if (query.maxAmount && query.maxAmount !== $('#input-amount-max').val()){
+      if (query.maxAmount !== $('#input-amount-max').val()){
         $('#input-amount-max').val(query.maxAmount);
       }
-      if (query.fiscalId && query.fiscalId !== $('#input-fiscal-id').val()){
+      if (query.fiscalId !== $('#input-fiscal-id').val()){
         $('#input-amount-max').val(query.fiscalId);
       }
       if (query.date && query.date !== $('#input-date').val()){
@@ -284,6 +275,19 @@
           $('#input-date').slider('setValue', parseInt(query.date));
         }
       }
+    }
+
+    function getEmptyQuery() {
+      return  {
+                description: '',
+                area: '',
+                payee: '',
+                date: (yearAsRange ? '' : '{{last_year}}'),
+                minAmount: '',
+                maxAmount: '',
+                department: '',
+                fiscalId: ''
+              };
     }
 
     function isSameQuery(_query) {
@@ -342,6 +346,12 @@
       if (value.match(/[^a-zA-Z0-9]/g)) {
         $(this).val(value.replace(/[^a-zA-Z0-9]/g, ''));
       }
+    });
+
+    // Set up button to reset form
+    $('#btn-reset-form').click(function(e){
+      // Reset the hash, which triggers the search and form refreshes automatically
+      $.bbq.pushState( getEmptyQuery() );
     });
 
     // Setup area, payees & department selects.

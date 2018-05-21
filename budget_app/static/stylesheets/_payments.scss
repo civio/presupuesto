@@ -86,6 +86,13 @@
     border-color: $brand-primary;
     background-color: $brand-primary;
   }
+
+  #btn-reset-form{
+    border-color: $brand-terciary;
+    background: $brand-terciary;
+    color: $text-color;
+    margin-left: 10px;
+  }
 }
 
 #query-panel{
