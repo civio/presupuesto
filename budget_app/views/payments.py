@@ -24,7 +24,9 @@ def payments_helper(request, c, entity, render_callback=None):
     __set_year_range(c, entity)
     c['payees'] = Payment.objects.get_payees(entity)
     c['areas'] = Payment.objects.get_areas(entity)
-    if c['show_institutional_tab']:
+    # For the department dropdown+tab to make sense, we need to have institutional codes,
+    # and we need them to be consistent along the years.
+    if c['show_institutional_tab'] and c['consistent_institutional_codes']:
         c['departments'] = Payment.objects.get_departments(entity)
 
     # Calculate overall stats and summary

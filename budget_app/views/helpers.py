@@ -42,6 +42,7 @@ def get_context(request, css_class='', title=''):
     c['use_subprogrammes'] = hasattr(settings, 'USE_SUBPROGRAMMES') and settings.USE_SUBPROGRAMMES
     c['include_financial_chapters'] = hasattr(settings, 'INCLUDE_FINANCIAL_CHAPTERS_IN_BREAKDOWNS') and settings.INCLUDE_FINANCIAL_CHAPTERS_IN_BREAKDOWNS
     c['add_economic_categories_prefix'] = hasattr(settings, 'ADD_ECONOMIC_CATEGORIES_PREFIX') and settings.ADD_ECONOMIC_CATEGORIES_PREFIX
+    c['consistent_institutional_codes'] = hasattr(settings, 'CONSISTENT_INSTITUTIONAL_CODES') and settings.CONSISTENT_INSTITUTIONAL_CODES
 
     c['color_scale'] = getattr(settings, 'COLOR_SCALE', [])
 
@@ -116,6 +117,7 @@ def populate_level_stats(c, level):
 # TODO: Don't like this method, should get rid of it
 def populate_descriptions(c):
     c['descriptions'] = Budget.objects.get_all_descriptions(get_main_entity(c))
+    print c['descriptions']['institutional']
 
 def populate_entity_descriptions(c, entity, show_side=None):
     c['descriptions'] = Budget.objects.get_all_descriptions(entity)
@@ -284,8 +286,7 @@ def _get_year_tagged_department(item):
     return getattr(item, 'department') + '/' + str(getattr(item, 'year'))
 
 def get_institutional_breakdown(c):
-    consistent_institutional_codes = hasattr(settings, 'CONSISTENT_INSTITUTIONAL_CODES') and settings.CONSISTENT_INSTITUTIONAL_CODES
-    if consistent_institutional_codes:
+    if c['consistent_institutional_codes']:
         return BudgetBreakdown(['institution', 'department'])
     else:
         return BudgetBreakdown([_get_year_tagged_institution, _get_year_tagged_department])
