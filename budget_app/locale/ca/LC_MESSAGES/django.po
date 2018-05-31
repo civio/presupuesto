@@ -518,6 +518,10 @@ msgstr "Cercar"
 msgid "Importe"
 msgstr "Import"
 
+#: templates/payments/payments_search.html:92
+msgid "Borrar filtros"
+msgstr "Esborrar filtres"
+
 #: templates/policies/show.html:22
 msgid "Volver a Políticas"
 msgstr "Tornar a Polítiques"
