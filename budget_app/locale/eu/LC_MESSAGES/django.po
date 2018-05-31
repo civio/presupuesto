@@ -520,6 +520,10 @@ msgstr "Bilatu"
 msgid "Importe"
 msgstr "Zenbateko"
 
+#: templates/payments/payments_search.html:92
+msgid "Borrar filtros"
+msgstr "Iragazkiak ezabatu"
+
 #: templates/payments/payments_search.html:113
 #: templates/payments/payments_script.html:68
 msgid "Importe mínimo"
