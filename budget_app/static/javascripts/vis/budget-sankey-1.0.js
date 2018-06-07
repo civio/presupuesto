@@ -344,7 +344,7 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, _budgetStatuses,
       if(budgetStatuses[uiState.year] && budgetStatuses[uiState.year] !== ''){
         txt += ' '+i18n[budgetStatuses[uiState.year]];
       }
-      d3.select('.legend-execution text').text( txt );
+      d3.select('.legend-execution text').html(txt);
     }
   }
 
@@ -358,7 +358,7 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, _budgetStatuses,
       .attr("text-anchor", "start")
       .attr("x", 10)
       .attr("dy", ".32em")
-      .text(text);
+      .html(text);
   }
 
   function setupLink(link) {
