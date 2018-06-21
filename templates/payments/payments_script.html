@@ -282,7 +282,7 @@
                 description: '',
                 area: '',
                 payee: '',
-                date: (yearAsRange ? '' : '{{last_year}}'),
+                date: (yearAsRange ? '{{first_year}},{{last_year}}' : '{{last_year}}'),
                 minAmount: '',
                 maxAmount: '',
                 department: '',
@@ -325,7 +325,7 @@
         department:   ($('#input-department').val() || ''), // Careful, the control is optional
         minAmount:    $('#input-amount-min').val(),
         maxAmount:    $('#input-amount-max').val(),
-        fiscalId:     $('#input-fiscal-id').val(),
+        fiscalId:     ($('#input-fiscal-id').val() || ''), // Careful, the control is optional
       }
     }
 
