@@ -352,6 +352,8 @@
     $('#btn-reset-form').click(function(e){
       // Reset the hash, which triggers the search and form refreshes automatically
       $.bbq.pushState( getEmptyQuery() );
+      // We don't want to submit the form, our work here is done
+      e.preventDefault();
     });
 
     // Setup area, payees & department selects.
