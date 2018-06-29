@@ -423,13 +423,13 @@ msgstr "Cookie policy"
 msgid "Inversiones y pagos"
 msgstr "Payments to suppliers"
 
-#: templates/payments/index.html:25
-msgid "Hay <strong id=\"payments-size\"></strong> pagos que suman un total de <strong id=\"payments-total\"></strong> para la búsqueda"
-msgstr "Found <strong id=\"payments-size\"></strong> payments totaling <strong id=\"payments-total\"></strong>"
+#: templates/payments/index.html:24
+msgid "Hay <strong id=\"payments-size\"></strong> pagos que suman un total de <strong id=\"payments-total\"></strong> en <span id=\"payments-years\"></span>."
+msgstr "Found <strong id=\"payments-size\"></strong> payments totaling <strong id=\"payments-total\"></strong> in <span id=\"payments-years\"></span>."
 
 #: templates/payments/index.html:25
-msgid "Hay <strong id=\"payments-size\"></strong> pagos que suman un total de <strong id=\"payments-total\"></strong> en <span id=\"payments-years\"></span>"
-msgstr "Found <strong id=\"payments-size\"></strong> payments totaling <strong id=\"payments-total\"></strong> in <span id=\"payments-years\"></span>"
+msgid "Hay <strong id=\"payments-size\"></strong> pagos que suman un total de <strong id=\"payments-total\"></strong> para la búsqueda:"
+msgstr "Found <strong id=\"payments-size\"></strong> payments totaling <strong id=\"payments-total\"></strong>:"
 
 #: templates/payments/index.html:32
 msgid "Desglose por área"
@@ -439,7 +439,6 @@ msgstr "Breakdown by area"
 msgid "Principales proveedores"
 msgstr "Main providers"
 
-#
 #: templates/payments/index.html:40
 msgid "Descarga la tabla de <strong>Pagos</strong>"
 msgstr "Download the <strong>Payments</strong> table"
@@ -485,6 +484,10 @@ msgstr "Description"
 msgid "Proveedor"
 msgstr "Payee"
 
+#: templates/payments/payments_script.html:159
+msgid "Años"
+msgstr "Years"
+
 #: templates/payments/payments_search.html:2
 #: templates/payments/payments_search.html:9
 msgid "Busca pagos a proveedores"
@@ -520,6 +523,14 @@ msgstr "Search"
 #: templates/payments/payments_script.html:49
 msgid "Importe"
 msgstr "Amount"
+
+#: templates/payments/payments_search.html:68
+msgid "Importe mínimo"
+msgstr "Minimum amount"
+
+#: templates/payments/payments_search.html:74
+msgid "Importe máximo"
+msgstr "Maximum amount"
 
 #: templates/policies/show.html:22
 msgid "Volver a Políticas"
@@ -1126,3 +1137,39 @@ msgstr "Actual Revenues"
 
 msgid "payment.query.join"
 msgstr " + "
+
+#: templates/payments/payments_script.html:143
+msgid "Descripción.payment.query"
+msgstr "Description"
+
+#: templates/payments/payments_script.html:145
+msgid "Área.payment.query"
+msgstr "Area"
+
+#: templates/payments/payments_script.html:147
+msgid "Sección.payment.query"
+msgstr "Section"
+
+#: templates/payments/payments_script.html:149
+msgid "Proveedor.payment.query"
+msgstr "Payee"
+
+#: templates/payments/payments_script.html:151
+msgid "Importe mínimo.payment.query"
+msgstr "Minimum amount"
+
+#: templates/payments/payments_script.html:153
+msgid "Importe máximo.payment.query"
+msgstr "Maximum amount"
+
+#: templates/payments/payments_script.html:155
+msgid "NIF.payment.query"
+msgstr "TIN"
+
+#: templates/payments/payments_script.html:159
+msgid "Años.payment.query"
+msgstr "Years"
+
+#: templates/payments/payments_script.html:161
+msgid "Año.payment.query"
+msgstr "Year"

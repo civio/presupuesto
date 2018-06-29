@@ -140,25 +140,25 @@
       } else {
         var queryStr = [];
         if (query.description && query.description !== '')
-          queryStr.push('{{ _("Descripción") }} <strong>'+sanitize(query.description)+'</strong>');
+          queryStr.push('{{ _("Descripción.payment.query") }} <strong>'+sanitize(query.description)+'</strong>');
         if (query.area)
-          queryStr.push('{{ _("Área") }} <strong>'+sanitize(query.area)+'</strong>');
+          queryStr.push('{{ _("Área.payment.query") }} <strong>'+sanitize(query.area)+'</strong>');
         if (query.department)
-          queryStr.push('{{ _("Sección") }} <strong>'+$('#input-department option:selected').text()+'</strong>');
+          queryStr.push('{{ _("Sección.payment.query") }} <strong>'+$('#input-department option:selected').text()+'</strong>');
         if (query.payee)
-          queryStr.push('{{ _("Proveedor") }} <strong>'+sanitize(query.payee)+'</strong>');
+          queryStr.push('{{ _("Proveedor.payment.query") }} <strong>'+sanitize(query.payee)+'</strong>');
         if (query.minAmount)
-          queryStr.push('{{ _("Importe mínimo") }} <strong>'+sanitize(query.minAmount)+'</strong>');
+          queryStr.push('{{ _("Importe mínimo.payment.query") }} <strong>'+sanitize(query.minAmount)+'</strong>');
         if (query.maxAmount)
-          queryStr.push('{{ _("Importe máximo") }} <strong>'+sanitize(query.maxAmount)+'</strong>');
+          queryStr.push('{{ _("Importe máximo.payment.query") }} <strong>'+sanitize(query.maxAmount)+'</strong>');
         if (query.fiscalId)
-          queryStr.push('{{ _("NIF") }} <strong>'+sanitize(query.fiscalId)+'</strong>');
+          queryStr.push('{{ _("NIF.payment.query") }} <strong>'+sanitize(query.fiscalId)+'</strong>');
         if (query.date && years.length > 1) {
           if (yearAsRange) {
             var queryYears = query.date.split(',');
-            queryStr.push('{{ _("Años") }} ' + formatYearRange(sanitize(queryYears[0]), sanitize(queryYears[1])));
+            queryStr.push('{{ _("Años.payment.query") }} ' + formatYearRange(sanitize(queryYears[0]), sanitize(queryYears[1])));
           } else {
-            queryStr.push('{{ _("Año") }} <strong>'+sanitize(query.date)+'</strong>');
+            queryStr.push('{{ _("Año.payment.query") }} <strong>'+sanitize(query.date)+'</strong>');
           }
         }
         $('#query-panel .payments-query').html( queryStr.join("{{ _('payment.query.join')|safe }}") );
