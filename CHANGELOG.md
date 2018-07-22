@@ -2,6 +2,8 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+
+## [4.2.2] - 2018-07-22
 ### Added
 - Investments: Add new investment section, controlled via `SHOW_INVESTMENTS`. #527 #581
 - Payments: Add institutional, fiscal ID and min/max amount filters. #673 #677 #710
