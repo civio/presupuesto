@@ -2,8 +2,45 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+### Added
+- Investments: Add new investment section, controlled via `SHOW_INVESTMENTS`. #527 #581
+- Payments: Add institutional, fiscal ID and min/max amount filters. #673 #677 #710
+- Payments: Add support for a third result tab, by department. #710
+- Payments: Add 'clear filters' button. #710 #755
+- Add sitemap, referenced from `robots.txt`. #138
+- Add format selector and embed support to Overview page. #602
+- Add active year as URL parameter, enabling linking into current year. #199
+- Add CSV/XLS support for subprogrammes, institutional breakdown and investments. #346 #527
+- Add support for `0M` budget status.
+
 ### Changed
 - Glossary: loader now supports multiple languages as parameter.
+- Overview: improved visibility of labels in new Overview chart.
+- Payments: keep active filters when clicking on a summary table element. #510
+- Payments: don't group search results by active filters. #572
+- Payments: Improved legilibility of payment query explanation. #710
+- Payments: Remove unused fields from Payment model. #667
+- Payments: Update Chosen to 1.8.5 to search correctly even when punctuation exists. #729
+- Search: Don't search for payments if the Payments tab is hidden. #700
+- Search: Empty searches not allowed anymore. #571
+- Summary bar chart now includes all text labels and hides them when the width is too small. #643
+- Remove data points that equal zero from stacked charts. #580
+- Remove legends with more than 50 elements from stacked charts and improve handling of long names. #450
+- Translate column names in CSV/XLS files. #287
+- Improve `clean_budgets` functionality to cover economic categories. #495
+- Replace elements incompatible with Django 1.5. Impacts how extra theme URLs were defined. #80
+
+### Fixed
+- Payments: handle single quotes in payee names correctly. #267 #561
+- Payments: sanitize query values to avoid XSS vulnerabilities. #457
+- Overview: Fixed IE issues with new Overview chart. #578
+- Overview: support HTML entities in old Sankey legend. #744
+- Search: Search parameters are preserved when switching languages. #570
+- Search: Show only items for the current language when searching across all years. #187
+- Search: Avoid duplicated headings and articles when searching across all years. #604
+- Search: Links to articles were always linking to the expense side, incorrectly. #671
+- Don't crash the app when accessing a programme/article page with no data. #495
+- Minor i18n clean-up and fixes. #740 #765
 
 ## [4.2.1] - 2017-12-09
 ### Changed
