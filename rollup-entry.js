@@ -24,19 +24,20 @@ export {
   // shuffle,
   sum,
   // ticks,
+  // tickIncrement,
   // tickStep,
   // transpose,
   // variance,
-  // zip
+  // zip,
 } from "d3-array";
 
 export {
-  entries,
+  nest,
+  //set,
+  //map,
   keys,
   values,
-  //map,
-  //set,
-  nest
+  entries,
 } from "d3-collection";
 
 /*
@@ -87,7 +88,7 @@ export {
   // easeElastic,
   // easeElasticIn,
   // easeElasticOut,
-  // easeElasticInOut
+  // easeElasticInOut,
 } from "d3-ease";
 
 /*
@@ -116,52 +117,46 @@ export {
   //arc,
   area,
   line,
-  /*
-  pie,
-  radialArea,
-  radialLine,
-  symbol,
-  symbols,
-  symbolCircle,
-  symbolCross,
-  symbolDiamond,
-  symbolSquare,
-  symbolStar,
-  symbolTriangle,
-  symbolWye,
-  curveBasisClosed,
-  curveBasisOpen,
-  curveBasis,
-  curveBundle,
-  curveCardinalClosed,
-  curveCardinalOpen,
-  curveCardinal,
-  curveCatmullRomClosed,
-  curveCatmullRomOpen,
-  curveCatmullRom,
-  curveLinearClosed,
-  curveLinear,
-  curveMonotoneX,
-  curveMonotoneY,
-  curveNatural,
-  curveStep,
-  curveStepAfter,
-  curveStepBefore,
-  */
+  // pie,
+  // radialArea,
+  // radialLine,
+  // symbol,
+  // symbols,
+  // symbolCircle,
+  // symbolCross,
+  // symbolDiamond,
+  // symbolSquare,
+  // symbolStar,
+  // symbolTriangle,
+  // symbolWye,
+  // curveBasisClosed,
+  // curveBasisOpen,
+  // curveBasis,
+  // curveBundle,
+  // curveCardinalClosed,
+  // curveCardinalOpen,
+  // curveCardinal,
+  // curveCatmullRomClosed,
+  // curveCatmullRomOpen,
+  // curveCatmullRom,
+  // curveLinearClosed,
+  // curveLinear,
+  // curveMonotoneX,
+  // curveMonotoneY,
+  // curveNatural,
+  // curveStep,
+  // curveStepAfter,
+  // curveStepBefore,
   stack,
-  /*
-  stackOffsetExpand,
-  stackOffsetNone,
-  stackOffsetSilhouette,
-  stackOffsetWiggle,
-  stackOrderAscending,
-  */
+  // stackOffsetExpand,
+  // stackOffsetNone,
+  // stackOffsetSilhouette,
+  // stackOffsetWiggle,
+  // stackOrderAscending,
   stackOrderDescending,
-  /*
-  stackOrderInsideOut,
-  stackOrderNone,
-  stackOrderReverse
-  */
+  // stackOrderInsideOut,
+  // stackOrderNone,
+  // stackOrderReverse,
 } from "d3-shape"
 
 /*
@@ -171,14 +166,20 @@ export {
   hsl,
   lab,
   hcl,
-  cubehelix
+  lch,
+  gray,
+  cubehelix,
 } from "d3-color";
 */
 
 export {
   // interpolate,
   // interpolateArray,
+  // interpolateBasis,
+  // interpolateBasisClosed,
   // interpolateDate,
+  // interpolateDiscrete,
+  // interpolateHue,
   interpolateNumber,
   // interpolateObject,
   // interpolateRound,
@@ -196,9 +197,8 @@ export {
   // interpolateHclLong,
   // interpolateCubehelix,
   // interpolateCubehelixLong,
-  // interpolateBasis,
-  // interpolateBasisClosed,
-  // quantize
+  // piecewise,
+  // quantize,
 } from "d3-interpolate";
 
 /*
@@ -215,7 +215,7 @@ export {
   tsvParse,
   tsvParseRows,
   tsvFormat,
-  tsvFormatRows
+  tsvFormatRows,
 } from "d3-dsv";
 
 export {
@@ -225,7 +225,7 @@ export {
   text,
   xml,
   csv,
-  tsv
+  tsv,
 } from "d3-request";
 
 export {
@@ -233,7 +233,7 @@ export {
   timer,
   timerFlush,
   timeout,
-  interval
+  interval,
 } from "d3-timer";
 
 export {
@@ -297,31 +297,31 @@ export {
   utcMonth,
   utcMonths,
   utcYear,
-  utcYears
+  utcYears,
 } from "d3-time";
 */
 
 export {
+  formatDefaultLocale,
   format,
   // formatPrefix,
   // formatLocale,
-  formatDefaultLocale,
   // formatSpecifier,
   precisionFixed,
   // precisionPrefix,
-  // precisionRound
+  // precisionRound,
 } from "d3-format";
 
 /*
 export {
+  timeFormatDefaultLocale,
   timeFormat,
   timeParse,
   utcFormat,
   utcParse,
+  timeFormatLocale,
   isoFormat,
   isoParse,
-  timeFormatLocale,
-  timeFormatDefaultLocale
 } from "d3-time-format";
 */
 
@@ -340,51 +340,118 @@ export {
   // scaleThreshold,
   // scaleTime,
   // scaleUtc,
-  schemeCategory10,
-  // schemeCategory20b,
-  // schemeCategory20c,
-  // schemeCategory20,
   // scaleSequential,
+  // scaleDiverging,
+} from "d3-scale";
+
+export {
+  schemeCategory10,
+  // schemeAccent,
+  // schemeDark2,
+  // schemePaired,
+  // schemePastel1,
+  // schemePastel2,
+  // schemeSet1,
+  // schemeSet2,
+  // schemeSet3
+  // interpolateBrBG,
+  // schemeBrBG
+  // interpolatePRGn,
+  // schemePRGn
+  // interpolatePiYG,
+  // schemePiYG,
+  // interpolatePuOr,
+  // schemePuOr,
+  // interpolateRdBu,
+  // schemeRdBu,
+  // interpolateRdGy,
+  // schemeRdGy,
+  // interpolateRdYlBu,
+  // schemeRdYlBu,
+  // interpolateRdYlGn,
+  // schemeRdYlGn,
+  // interpolateSpectral,
+  // schemeSpectral,
+  // interpolateBuGn,
+  // schemeBuGn,
+  // interpolateBuPu,
+  // schemeBuPu,
+  // interpolateGnBu,
+  // schemeGnBu,
+  // interpolateOrRd,
+  // schemeOrRd,
+  // interpolatePuBuGn,
+  // schemePuBuGn,
+  // interpolatePuBu,
+  // schemePuBu,
+  // interpolatePuRd,
+  // schemePuRd,
+  // interpolateRdPu,
+  // schemeRdPu,
+  // interpolateYlGnBu,
+  // schemeYlGnBu,
+  // interpolateYlGn,
+  // schemeYlGn,
+  // interpolateYlOrBr,
+  // schemeYlOrBr,
+  // interpolateYlOrRd,
+  // schemeYlOrRd,
+  // interpolateBlues,
+  // schemeBlues,
+  // interpolateGreens,
+  // schemeGreens,
+  // interpolateGreys,
+  // schemeGreys,
+  // interpolatePurples,
+  // schemePurples,
+  // interpolateReds,
+  // schemeReds,
+  // interpolateOranges,
+  // schemeOranges,
   // interpolateCubehelixDefault,
   // interpolateRainbow,
   // interpolateWarm,
   // interpolateCool,
+  // interpolateSinebow,
   // interpolateViridis,
   // interpolateMagma,
   // interpolateInferno,
-  // interpolatePlasma
-} from "d3-scale";
+  // interpolatePlasma,
+} from "d3-scale-chromatic";
 
 export {
-  //creator,
-  //customEvent,
-  event,
-  //local,
-  //matcher,
+  // create
+  // creator,
+  // local,
+  // matcher,
   mouse,
-  //namespace,
-  //namespaces,
+  // namespace,
+  // namespaces,
+  // clientPoint
   select,
   selectAll,
-  //selection,
-  //selector,
-  //selectorAll,
-  //touch,
-  //touches,
-  window
+  // selection,
+  // selector,
+  // selectorAll,
+  // style,
+  // touch,
+  // touches,
+  window,
+  event,
+  // customEvent,
 } from "d3-selection";
 
 export {
   active,
   interrupt,
-  transition
+  transition,
 } from "d3-transition";
 
 export {
   //axisTop,
   //axisRight,
   axisBottom,
-  axisLeft
+  axisLeft,
 } from "d3-axis";
 
 export {
@@ -402,19 +469,19 @@ export {
   treemapSlice,
   //treemapSliceDice,
   treemapSquarify,
-  //treemapResquarify
+  //treemapResquarify,
 } from "d3-hierarchy";
 
 /*
 export {
   drag,
   dragDisable,
-  dragEnable
+  dragEnable,
 } from "d3-drag";
 
 export {
   zoom,
+  zoomTransform,
   zoomIdentity,
-  zoomTransform
 } from "d3-zoom";
 */
