@@ -8,8 +8,10 @@ import django
 from django.http import HttpResponse
 
 from local_settings import ENV
-from budget_app.models import InflationStat, Budget
+from project.settings import LANGUAGES
+from budget_app.models import InflationStat, PopulationStat, Budget, Payment
 from helpers import *
+
 
 @contextmanager
 def fix_cwd():
@@ -17,6 +19,7 @@ def fix_cwd():
     os.chdir(ROOT_PATH)
     yield
     os.chdir(old_dir)
+
 
 def fix_version(version):
     return '.'.join(
@@ -26,26 +29,33 @@ def fix_version(version):
         )
     )
 
+
 def version_api(request):
     c = get_context(request)
 
     with fix_cwd():
-        git_commit = subprocess.check_output(['git', 'rev-parse','HEAD']).strip()
+        git_commit = subprocess.check_output(['git', 'rev-parse', 'HEAD']).strip()
         git_tag = subprocess.check_output(['git', 'describe', '--tags']).strip()
     python_version = fix_version(sys.version_info)
     django_version = fix_version(django.VERSION)
     last_inflation = InflationStat.objects.get_last_year()
-    years = list(Budget.objects.get_years(get_main_entity(c)))
+    last_population = PopulationStat.objects.get_last_year()
+    budget_years = list(Budget.objects.get_years(get_main_entity(c)))
+    payments_years = list(Payment.objects.get_years(get_main_entity(c)))
+    languages = [key for key, value in LANGUAGES]
 
     response = json.dumps(
         {
             'python_version': python_version,
             'django_version': django_version,
-            'commit': git_commit,
             'tag': git_tag,
-            'debug': ENV.get('DEBUG',False),
-            'years': years,
-            'last_inflation': last_inflation
+            'commit': git_commit,
+            'debug': ENV.get('DEBUG', False),
+            'budget_years': budget_years,
+            'payments_years': payments_years,
+            'last_inflation': last_inflation,
+            'last_population': last_population,
+            'languages': languages,
         }
     )
     return HttpResponse(response, content_type="text/json")
