@@ -1,0 +1,27 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django-appconf = "==1.0.1"
+django-jasmine = "==0.4.1"
+"psycopg2" = "==2.7.3.1"
+six = "==1.9.0"
+openpyxl = "==2.3.4"
+dj-static = "==0.0.6"
+python-dateutil = "==2.6.0"
+Coffin = "==0.4.0"
+Django = "==1.4.2"
+django_compressor = "==1.5"
+"Jinja2" = "==2.7.3"
+MarkupSafe = "==0.23"
+Pygments = "==2.0.2"
+South = "==1.0.2"
+
+[dev-packages]
+fabric = "*"
+csvkit = "*"
+
+[requires]
+python_version = "2.7"
