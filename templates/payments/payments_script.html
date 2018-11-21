@@ -9,8 +9,7 @@
         showingSummary  = {{ 'true' if is_summary else 'false' }},
         paymentsCount   = {{ payments_count }},
         totalAmount     = {{ total_amount }},
-        yearAsRange     = {{ 'true' if payments_year_range else 'false' }},
-        choicePayee, choiceArea, choiceDepartment;
+        yearAsRange     = {{ 'true' if payments_year_range else 'false' }};
 
     var breakdowns = {
       'area': {{ area_breakdown.to_json()|safe }},
@@ -248,14 +247,14 @@
       if (query.description !== $('#input-description').val().trim()){
         $('#input-description').val(query.description);
       }
-      if (choiceArea && query.area !== $('#input-area').val()){
-        choiceArea.setChoiceByValue(query.area);
+      if (query.area !== $('#input-area').val()){
+        $('#input-area').val(query.area).trigger('change');
       }
-      if (choicePayee && query.payee !== $('#input-payee').val()){
-        choicePayee.setChoiceByValue(query.payee);
+      if (query.payee !== $('#input-payee').val()){
+        $('#input-payee').val(query.payee).trigger('change');
       }
-      if (choiceDepartment && query.department !== $('#input-department').val()){
-        choiceDepartment.setChoiceByValue(query.department);
+      if (query.department !== $('#input-department').val()){
+        $('#input-department').val(query.department).trigger('change');
       }
       if (query.minAmount !== $('#input-amount-min').val()){
         $('#input-amount-min').val(query.minAmount);
@@ -357,16 +356,10 @@
       e.preventDefault();
     });
 
-    // Setup area, payees & department selects with choices.js
-    var choicesOptions = {
-      itemSelectText: '',
-      searchPlaceholderValue: 'Buscar',
-      shouldSort: false,
-      shouldSortItems: false
-    };
-    if ($('#input-payee').length) choicePayee = new Choices('#input-payee', choicesOptions);
-    if ($('#input-area').length) choiceArea = new Choices('#input-area', choicesOptions);
-    if ($('#input-department').length) choiceDepartment = new Choices('#input-department', choicesOptions);
+    // Setup area, payees & department selects with select2.js
+    $('#input-payee').select2({width: '100%'});
+    $('#input-area').select2({width: '100%'});
+    $('#input-department').select2({width: '100%'});
 
     // Setup year slider
     if (yearAsRange) {
