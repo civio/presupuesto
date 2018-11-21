@@ -1,6 +1,6 @@
 // Plugins
 @import "dist/bootstrap-slider";
-@import "dist/chosen";
+@import "dist/choices";
 //@import "dist/datatables"; // We use DataTable plugin but we don't need it's styles
 
 // Default variables
@@ -17,11 +17,11 @@
 
 // DVMI Modules Styles
 @import "modules/jquery-cookiebar";
+@import "modules/choices";
 @import "modules/budget-sankey";
 @import "modules/budget-summary";
 @import "modules/budget-treemap";
 @import "modules/budget-stacked-chart";
-@import "modules/chosen";
 @import "modules/data-controllers";
 @import "modules/data-panel";
 @import "modules/data-sources";
