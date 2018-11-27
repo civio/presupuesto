@@ -117,7 +117,6 @@ def populate_level_stats(c, level):
 # TODO: Don't like this method, should get rid of it
 def populate_descriptions(c):
     c['descriptions'] = Budget.objects.get_all_descriptions(get_main_entity(c))
-    print c['descriptions']['institutional']
 
 def populate_entity_descriptions(c, entity, show_side=None):
     c['descriptions'] = Budget.objects.get_all_descriptions(entity)
