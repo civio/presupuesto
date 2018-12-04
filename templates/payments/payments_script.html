@@ -22,10 +22,12 @@
       'department': '{{ _("Organismo") }}'
     };
 
+    var payees = [
+      {% for payee in payees %}'{{ payee }}',{% endfor %}
+    ];
+
     var departmentDescriptions = {
-      {% for department in departments %}
-      "{{ department }}": '{{ descriptions['institutional'].get(department) }}',
-      {% endfor %}
+      {% for department in departments %}"{{ department }}": '{{ descriptions['institutional'].get(department) }}',{% endfor %}
     };
 
 
@@ -329,7 +331,39 @@
       }
     }
 
-    //
+    function getSelectAreaData(){
+      var data = [];
+      if (breakdowns.area.sub) {
+        Object.keys(breakdowns.area.sub) // get areas names
+          .sort() 
+          .map(function(d){ 
+            return {id: d, text: d} 
+          });
+      } 
+      data.unshift({id: '', text: '{{ _("Todas las áreas") }}'}); // prepend placeholder
+      return data;
+    }
+
+    function getSelectPayeeData(){
+      var data = payees.sort() 
+        .map(function(d){ 
+          return {id: d, text: d} 
+        });
+      data.unshift({id: '', text: '{{ _("Todos los proveedores") }}'});
+      return data;
+    }
+
+    function getSelectDepartmenData(){
+      var data = d3.entries(departmentDescriptions) // get department ids & names
+        .sort(function(a, b){ return a.value.localeCompare(b.value); })
+        .map(function(d){ 
+          return {id: d.key, text: d.value}
+        });
+      data.unshift({id: '', text: '{{ _("Todos los organismos") }}'});
+      return data;
+    }
+
+
     // SETUP
     //
 
@@ -356,10 +390,47 @@
       e.preventDefault();
     });
 
+    console.log(breakdowns.area)
+
     // Setup area, payees & department selects with select2.js
-    $('#input-payee').select2({width: '100%'});
-    $('#input-area').select2({width: '100%'});
-    $('#input-department').select2({width: '100%'});
+    $('#input-payee').select2({
+      data: getSelectPayeeData(),
+      // query with pagination
+      query: function(q) { 
+        var pageSize = 100, // define pagesize
+          results = [],
+          that = this;
+        if (q.term && q.term !== '') {
+          results = _.filter(that.data, function(e) {
+            return e.text.toUpperCase().indexOf(q.term.toUpperCase()) >= 0;
+          });
+        } else {
+          results = that.data;
+        }
+        q.callback({
+          results: results.slice((q.page - 1) * pageSize, q.page * pageSize),
+          more: results.length >= q.page * pageSize
+        });
+      },
+      initSelection: function(el, callback) {
+        if (el.val() !== '') {
+          callback({id: el.val(), text: el.val()});
+        } else {
+          callback({id: '', text: '{{ _("Todos los proveedores") }}'}); // setup default value
+        }
+      },
+      width: '100%'
+    });
+    $('#input-area').select2({
+      data: getSelectAreaData(),
+      width: '100%'
+    });
+    {% if departments %}
+    $('#input-department').select2({
+      data: getSelectDepartmenData(),
+      width: '100%'
+    });
+    {% endif %}
 
     // Setup year slider
     if (yearAsRange) {

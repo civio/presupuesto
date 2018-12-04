@@ -22,12 +22,7 @@
           <div class="col-sm-6">
             <div class="form-group">
               <label for="input-department">{{ _('Organismo') }}</label>
-              <select id="input-department" class="form-control">
-                <option value="">{{ _('Todos los organismos') }}</option>
-                {% for department in departments %}
-                <option value="{{ department }}">{{ descriptions['institutional'].get(department) }}</option>
-                {% endfor %}
-              </select>
+              <input id="input-department" class="form-control" />
             </div>
           </div>
         </div>
@@ -42,23 +37,13 @@
           <div class="col-sm-6">
             <div class="form-group">
               <label for="input-area">{{ _('Área') }}</label>
-              <select id="input-area" class="form-control">
-                <option value="">{{ _('Todas las áreas') }}</option>
-                {% for area in areas %}
-                <option value="{{ area }}">{{ area }}</option>
-                {% endfor %}
-              </select>
+              <input id="input-area" class="form-control" />
             </div>
           </div>
           <div class="col-sm-6">
             <div class="form-group">
               <label for="input-payee">{{ _('Proveedor') }}</label>
-              <select id="input-payee" class="form-control">
-                <option value="">{{ _('Todos los proveedores') }}</option>
-                {% for payee in payees %}
-                <option value="{{ payee }}">{{ payee }}</option>
-                {% endfor %}
-              </select>
+              <input id="input-payee" class="form-control" />
             </div>
           </div>
         </div>
