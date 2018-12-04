@@ -146,7 +146,7 @@
         if (query.area)
           queryStr.push('{{ _("Área.payment.query") }} <strong>'+sanitize(query.area)+'</strong>');
         if (query.department)
-          queryStr.push('{{ _("Sección.payment.query") }} <strong>'+$('#input-department option:selected').text()+'</strong>');
+          queryStr.push('{{ _("Sección.payment.query") }} <strong>'+departmentDescriptions[$('#input-department').val()]+'</strong>');
         if (query.payee)
           queryStr.push('{{ _("Proveedor.payment.query") }} <strong>'+sanitize(query.payee)+'</strong>');
         if (query.minAmount)
