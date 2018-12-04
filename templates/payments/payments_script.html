@@ -334,7 +334,7 @@
     function getSelectAreaData(){
       var data = [];
       if (breakdowns.area.sub) {
-        Object.keys(breakdowns.area.sub) // get areas names
+        data = Object.keys(breakdowns.area.sub) // get areas names
           .sort() 
           .map(function(d){ 
             return {id: d, text: d} 
