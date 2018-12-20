@@ -1,5 +1,5 @@
 from django.db import models
-from budget_app.models import Entity, InflationStat
+from budget_app.models import Entity, Budget
 
 
 class PopulationStatManager(models.Manager):
@@ -11,9 +11,9 @@ class PopulationStatManager(models.Manager):
 
         # Now populate the returned table up to the latest year, filling in the gaps.
         # We need to do this because population data is often incomplete or not up to date.
-        last_year = InflationStat.objects.get_last_year()
+        last_year = Budget.objects.get_years(entity).order_by('-year')[0]
         last_valid_population = None
-        for year in range(stats[0].year, last_year+3):  # Some extra years to avoid breaking every year
+        for year in range(stats[0].year, last_year + 1):
             if year in table:
                 last_valid_population = table[year]
             table[year] = last_valid_population
