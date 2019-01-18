@@ -4,8 +4,9 @@ from paginator import DiggPaginator as Paginator
 from django.utils.translation import ugettext as _
 from budget_app.models import GlossaryTerm
 from helpers import *
+import project.settings as settings
 
-PAGE_LENGTH = 10
+PAGE_LENGTH = 10 if not hasattr(settings, 'TERMS_PAGE_LENGTH') else settings.TERMS_PAGE_LENGTH
 
 def terms(request):
     c = get_context(request, css_class='body-glossary', title=_(u'¿Qué significa?'))
