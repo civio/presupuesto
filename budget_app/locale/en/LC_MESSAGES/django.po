@@ -421,7 +421,7 @@ msgstr "Cookie policy"
 
 #: templates/payments/index.html:10
 msgid "Inversiones y pagos"
-msgstr "Payments to suppliers"
+msgstr "Third-party payments"
 
 #: templates/payments/index.html:24
 msgid "Hay <strong id=\"payments-size\"></strong> pagos que suman un total de <strong id=\"payments-total\"></strong> en <span id=\"payments-years\"></span>."
@@ -491,7 +491,7 @@ msgstr "Years"
 #: templates/payments/payments_search.html:2
 #: templates/payments/payments_search.html:9
 msgid "Busca pagos a proveedores"
-msgstr "Search for payments to suppliers"
+msgstr "Search for third-party payments"
 
 #: templates/payments/payments_search.html:22
 msgid "Todas las áreas"
@@ -973,7 +973,7 @@ msgid "Selecciona Proveedor"
 msgstr "Pick a third-party"
 
 msgid "Total de inversiones y pagos"
-msgstr "Total payments to suppliers"
+msgstr "Total third-party paytments"
 
 msgid "Total gastado"
 msgstr "Total expenditures"
