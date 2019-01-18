@@ -1,13 +1,14 @@
 # -*- coding: UTF-8 -*-
 
 from django.conf import settings
+from django.utils.translation import ugettext as _
 from budget_app.models import Budget, BudgetBreakdown, BudgetItem
 from helpers import *
 
 
 def budgets(request, render_callback=None):
     # Get request context
-    c = get_context(request, css_class='body-summary', title='')
+    c = get_context(request, css_class='body-summary', title=_(u'Visión global'))
 
     # Retrieve the entity to display
     main_entity = get_main_entity(c)

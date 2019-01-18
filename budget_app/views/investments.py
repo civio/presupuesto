@@ -6,7 +6,7 @@ from helpers import *
 
 
 def investments(request, render_callback=None):
-    c = get_context(request, css_class='body-investments', title=_(u'Inversiones por distrito'))
+    c = get_context(request, css_class='body-investments', title=_(u'Inversiones por distritos'))
     entity = get_main_entity(c)
     set_entity(c, entity)
 
