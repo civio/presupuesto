@@ -21,7 +21,7 @@ class GlossaryTermManager(models.Manager):
 
 class GlossaryTerm(models.Model):
     title = models.CharField(max_length=100)
-    description = models.CharField(max_length=2000)
+    description = models.CharField(max_length=4000)
     language = models.CharField(max_length=5)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
