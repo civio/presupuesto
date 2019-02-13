@@ -2,13 +2,14 @@
   $(function () {
 
     // Variable Definitions
-    var uiState         = null,
+    var uiState               = null,
         myGrid,
         currentChart,
-        areaBreakdown   = {{ area_breakdown.to_json( labels=descriptions['functional'] )|safe }},
-        gridData        = breakdownToTable(areaBreakdown),
-        stats           = {{ stats|safe }},
-        budgetStatuses  = {{ budget_statuses|safe }};
+        areaBreakdown         = {{ area_breakdown.to_json( labels=descriptions['functional'] )|safe }},
+        specialAreaBreakdown  = {{ special_investments_area_breakdown.to_json( labels=descriptions['functional'] )|safe }},
+        gridData              = breakdownToTable(areaBreakdown),
+        stats                 = {{ stats|safe }},
+        budgetStatuses        = {{ budget_statuses|safe }};
 
     // Translations
     var i18n = {
@@ -77,19 +78,19 @@
       // Set total labels
       var executedLabel = '{{ _("Invertido") }}',
           mainLabel = '{{ area.description }}',
+          specialInvestmentsLabel = "{{ _('Inversiones Financieramente Sostenibles (IFS)') }}",
           executionLabelPostfix = getExecutionTotalLabel(budgetStatuses[uiState.year], budgetStatusLabels),
           hasActualData = areaBreakdown[uiState.field]['actual_'+uiState.year];
 
-      TotalHelpers.setLabels(uiState.year+' '+executionLabelPostfix, executedLabel, mainLabel, true);
+      InvestmentTotalHelpers.setHeaderLabels(uiState.year+' '+executionLabelPostfix, executedLabel);
+      InvestmentTotalHelpers.setBodyLabels(mainLabel, null, specialInvestmentsLabel);
 
-      // Set total budgeted amounts
-      TotalHelpers.setEconomicTotals(areaBreakdown, columnDef, '.total-budgeted', true);
-
-      // Show total budgeted executed if hasActualData or clear otherwise
+      // Set total budgeted and executed amounts (if hasActualData)
+      InvestmentTotalHelpers.setTotals(areaBreakdown, specialAreaBreakdown, columnDef, '.total-budgeted');
       if (hasActualData) {
-        TotalHelpers.setEconomicTotals(areaBreakdown, executionColumnDef, '.total-executed');
+        InvestmentTotalHelpers.setTotals(areaBreakdown, specialAreaBreakdown, executionColumnDef, '.total-executed');
       } else {
-        TotalHelpers.clear('.total-executed');
+        InvestmentTotalHelpers.clear('.total-executed');
       }
     }
 
