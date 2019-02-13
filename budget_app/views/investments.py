@@ -17,7 +17,7 @@ def investments(request, render_callback=None):
     c['no_area_breakdown'] = BudgetBreakdown(['area'])
     for item in investments:
         column_name = year_column_name(item)
-        if item.area in ['NN', 'NA']:
+        if item.area == 'NA':
             c['no_area_breakdown'].add_item(column_name, item)
         else:
             c['area_breakdown'].add_item(column_name, item)
