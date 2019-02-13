@@ -9,6 +9,29 @@
   }
 }
 
+.investments-content #totals-panel{
+  #total{
+    padding-bottom: $grid-gutter-width/6;
+  }
+  #total.total-special{
+    font-size: 1em;
+    padding-top: $grid-gutter-width/3;
+  }
+  .total-special{
+    border-top: 1px solid mix( $panel-default-border, white, 20% );
+    border-bottom: 1px solid $panel-default-border;
+    padding-left: $grid-gutter-width/2;
+
+    &:last-child{
+      border-bottom: none;
+    }
+
+    > div, p{
+      font-weight: 400;
+    }
+  }
+}
+
 @media (min-width: $screen-sm-min) {
 
   .investments-header{
