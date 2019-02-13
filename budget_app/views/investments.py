@@ -14,13 +14,22 @@ def investments(request, render_callback=None):
     query = "e.id = %s"
     investments = Investment.objects.each_denormalized(query, [ entity.id ])
     c['area_breakdown'] = BudgetBreakdown(['area'])
+    c['special_investments_area_breakdown'] = BudgetBreakdown(['area'])
     c['no_area_breakdown'] = BudgetBreakdown(['area'])
+    c['special_investments_no_area_breakdown'] = BudgetBreakdown(['area'])
     for item in investments:
         column_name = year_column_name(item)
         if item.area == 'NA':
             c['no_area_breakdown'].add_item(column_name, item)
+            # XXX: This is hardcoded at the moment as the requirements are evolving.
+            # But it would make complete sense to add a flag to the database and set it
+            # in the loader. We'll do once things settle and/or we reuse it somewhere else.
+            if item.description[0:3] == 'IFS':
+                c['special_investments_no_area_breakdown'].add_item(column_name, item)
         else:
             c['area_breakdown'].add_item(column_name, item)
+            if item.description[0:3] == 'IFS':
+                c['special_investments_area_breakdown'].add_item(column_name, item)
 
     # Get list of investment areas
     c['areas'] = GeographicCategory.objects.categories(entity)

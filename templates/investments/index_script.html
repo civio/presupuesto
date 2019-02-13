@@ -2,13 +2,15 @@
   $(function () {
 
     // Variable Definitions
-    var uiState         = null,
+    var uiState                 = null,
         myGrid,
         myGridExtra,
-        areaBreakdown   = {{ area_breakdown.to_json( labels=descriptions['geographic'] )|safe }},
-        noAreaBreakdown = {{ no_area_breakdown.to_json( labels=descriptions['geographic'] )|safe }},
-        stats           = {{ stats|safe }},
-        budgetStatuses  = {{ budget_statuses|safe }};
+        areaBreakdown           = {{ area_breakdown.to_json( labels=descriptions['geographic'] )|safe }},
+        specialAreaBreakdown    = {{ special_investments_area_breakdown.to_json( labels=descriptions['geographic'] )|safe }},
+        noAreaBreakdown         = {{ no_area_breakdown.to_json( labels=descriptions['geographic'] )|safe }},
+        specialNoAreaBreakdown  = {{ special_investments_no_area_breakdown.to_json( labels=descriptions['geographic'] )|safe }},
+        stats                   = {{ stats|safe }},
+        budgetStatuses          = {{ budget_statuses|safe }};
 
     // Translations
     var i18n = {
@@ -84,18 +86,19 @@
       var executedLabel = '{{ _("Invertido") }}',
           mainLabel = "{{ _('Total inversiones por distritos') }}",
           notAttributableLabel = "{{ _('Total inversiones no distritizables') }}",
+          specialInvestmentsLabel = "{{ _('Inversiones Financieramente Sostenibles (IFS)') }}",
           executionLabelPostfix = getExecutionTotalLabel(budgetStatuses[uiState.year], budgetStatusLabels),
           hasActualData = areaBreakdown[uiState.field]['actual_'+uiState.year];
 
       InvestmentTotalHelpers.setHeaderLabels(uiState.year+' '+executionLabelPostfix, executedLabel);
-      InvestmentTotalHelpers.setBodyLabels(mainLabel, notAttributableLabel);
+      InvestmentTotalHelpers.setBodyLabels(mainLabel, notAttributableLabel, specialInvestmentsLabel);
 
       // Set total budgeted and executed amounts (if hasActualData)
-      InvestmentTotalHelpers.setTotals(areaBreakdown, columnDef, '.total-budgeted');
-      InvestmentTotalHelpers.setTotals(noAreaBreakdown, columnDef, '.total-not-attributable-budgeted');
+      InvestmentTotalHelpers.setTotals(areaBreakdown, specialAreaBreakdown, columnDef, '.total-budgeted');
+      InvestmentTotalHelpers.setTotals(noAreaBreakdown, specialNoAreaBreakdown, columnDef, '.total-not-attributable-budgeted');
       if ( hasActualData ) {
-        InvestmentTotalHelpers.setTotals(areaBreakdown, executionColumnDef, '.total-executed');
-        InvestmentTotalHelpers.setTotals(noAreaBreakdown, executionColumnDef, '.total-not-attributable-executed');
+        InvestmentTotalHelpers.setTotals(areaBreakdown, specialAreaBreakdown, executionColumnDef, '.total-executed');
+        InvestmentTotalHelpers.setTotals(noAreaBreakdown, specialNoAreaBreakdown, executionColumnDef, '.total-not-attributable-executed');
       } else {
         InvestmentTotalHelpers.clear('.total-executed');
         InvestmentTotalHelpers.clear('.total-not-attributable-executed');

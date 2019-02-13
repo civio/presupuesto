@@ -28,6 +28,23 @@
         </ul>
       </li>
       <li id="total">
+        <div class="main-special-label"></div>
+        <ul>
+          {% if show_actual %}
+          <li>
+            <p class="data-label">{{ _('Presupuestado') }}</p>
+            <p class="total-budgeted-special-amount"></p>
+          </li>
+          <li>
+            <p class="data-label data-label-executed">{{ _('Gastado') }}</p>
+            <p class="total-executed-special-amount"></p>
+          </li>
+          {% else %}
+          <div class="col-sm-6 text-right"><span class="data-label">{{ _('Presupuestado') }}</span><span class="total-budgeted-special-amount"></span></div>
+          {% endif %}
+        </ul>
+      </li>
+      <li id="total">
         <div class="not-attributable-label"></div>
         <ul>
           {% if show_actual %}
@@ -41,6 +58,23 @@
           </li>
           {% else %}
           <div class="col-sm-6 text-right"><span class="data-label">{{ _('Presupuestado') }}</span><span class="total-not-attributable-budgeted-amount"></span></div>
+          {% endif %}
+        </ul>
+      </li>
+      <li id="total">
+        <div class="not-attributable-special-label"></div>
+        <ul>
+          {% if show_actual %}
+          <li>
+            <p class="data-label">{{ _('Presupuestado') }}</p>
+            <p class="total-not-attributable-budgeted-special-amount"></p>
+          </li>
+          <li>
+            <p class="data-label data-label-executed">{{ _('Gastado') }}</p>
+            <p class="total-not-attributable-executed-special-amount"></p>
+          </li>
+          {% else %}
+          <div class="col-sm-6 text-right"><span class="data-label">{{ _('Presupuestado') }}</span><span class="total-not-attributable-budgeted-special-amount"></span></div>
           {% endif %}
         </ul>
       </li>
