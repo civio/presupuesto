@@ -1,0 +1,49 @@
+<div id="totals-panel" class="data-panel">
+  <div id="main-total" class="panel">
+    <div class="panel-title row">
+      <div class="col-sm-6"><span id="totals-year"></span></div>
+      {% if show_actual %}
+      <div class="col-sm-3 text-right" aria-hidden="true"><span class="total-budgeted-label">{{ _('Presupuestado') }}</span></div>
+      <div class="col-sm-3 text-right" aria-hidden="true"><span class="total-executed-label">{{ _('Gastado') }}</span></div>
+      {% else %}
+      <div class="col-sm-6 text-right" aria-hidden="true"><span class="total-budgeted-label">{{ _('Presupuestado') }}</span></div>
+      {% endif %}
+    </div>
+    <ul class="panel-content">
+      <li id="total">
+        <div class="main-label"></div>
+        <ul>
+          {% if show_actual %}
+          <li>
+            <p class="data-label">{{ _('Presupuestado') }}</p>
+            <p class="total-budgeted-amount"></p>
+          </li>
+          <li>
+            <p class="data-label data-label-executed">{{ _('Gastado') }}</p>
+            <p class="total-executed-amount"></p>
+          </li>
+          {% else %}
+          <div class="col-sm-6 text-right"><span class="data-label">{{ _('Presupuestado') }}</span><span class="total-budgeted-amount"></span></div>
+          {% endif %}
+        </ul>
+      </li>
+      <li id="total">
+        <div class="not-attributable-label"></div>
+        <ul>
+          {% if show_actual %}
+          <li>
+            <p class="data-label">{{ _('Presupuestado') }}</p>
+            <p class="total-not-attributable-budgeted-amount"></p>
+          </li>
+          <li>
+            <p class="data-label data-label-executed">{{ _('Gastado') }}</p>
+            <p class="total-not-attributable-executed-amount"></p>
+          </li>
+          {% else %}
+          <div class="col-sm-6 text-right"><span class="data-label">{{ _('Presupuestado') }}</span><span class="total-not-attributable-budgeted-amount"></span></div>
+          {% endif %}
+        </ul>
+      </li>
+    </ul>
+  </div>
+</div>

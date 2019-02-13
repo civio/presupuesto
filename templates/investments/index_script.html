@@ -82,20 +82,23 @@
 
       // Set total labels
       var executedLabel = '{{ _("Invertido") }}',
-          mainLabel = "{{ _('Inversiones por distritos') }}",
+          mainLabel = "{{ _('Total inversiones por distritos') }}",
+          notAttributableLabel = "{{ _('Total inversiones no distritizables') }}",
           executionLabelPostfix = getExecutionTotalLabel(budgetStatuses[uiState.year], budgetStatusLabels),
           hasActualData = areaBreakdown[uiState.field]['actual_'+uiState.year];
 
-      TotalHelpers.setLabels(uiState.year+' '+executionLabelPostfix, executedLabel, mainLabel, true);
+      InvestmentTotalHelpers.setHeaderLabels(uiState.year+' '+executionLabelPostfix, executedLabel);
+      InvestmentTotalHelpers.setBodyLabels(mainLabel, notAttributableLabel);
 
-      // Set total budgeted amounts
-      TotalHelpers.setEconomicTotals(areaBreakdown, columnDef, '.total-budgeted', true);
-
-      // Show total budgeted executed if hasActualData or clear otherwise
+      // Set total budgeted and executed amounts (if hasActualData)
+      InvestmentTotalHelpers.setTotals(areaBreakdown, columnDef, '.total-budgeted');
+      InvestmentTotalHelpers.setTotals(noAreaBreakdown, columnDef, '.total-not-attributable-budgeted');
       if ( hasActualData ) {
-        TotalHelpers.setEconomicTotals(areaBreakdown, executionColumnDef, '.total-executed');
+        InvestmentTotalHelpers.setTotals(areaBreakdown, executionColumnDef, '.total-executed');
+        InvestmentTotalHelpers.setTotals(noAreaBreakdown, executionColumnDef, '.total-not-attributable-executed');
       } else {
-        TotalHelpers.clear('.total-executed');
+        InvestmentTotalHelpers.clear('.total-executed');
+        InvestmentTotalHelpers.clear('.total-not-attributable-executed');
       }
     }
 
