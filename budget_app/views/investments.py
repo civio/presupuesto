@@ -21,14 +21,11 @@ def investments(request, render_callback=None):
         column_name = year_column_name(item)
         if item.area == 'NA':
             c['no_area_breakdown'].add_item(column_name, item)
-            # XXX: This is hardcoded at the moment as the requirements are evolving.
-            # But it would make complete sense to add a flag to the database and set it
-            # in the loader. We'll do once things settle and/or we reuse it somewhere else.
-            if item.description[0:3] == 'IFS':
+            if _is_special_investment(item):
                 c['special_investments_no_area_breakdown'].add_item(column_name, item)
         else:
             c['area_breakdown'].add_item(column_name, item)
-            if item.description[0:3] == 'IFS':
+            if _is_special_investment(item):
                 c['special_investments_area_breakdown'].add_item(column_name, item)
 
     # Get list of investment areas
@@ -60,9 +57,12 @@ def investments_show(request, id, title, render_callback=None):
     query = "gc.code = %s and e.id = %s"
     investments = Investment.objects.each_denormalized(query, [ id, entity.id ])
     c['area_breakdown'] = BudgetBreakdown(['policy', 'description'])
+    c['special_investments_area_breakdown'] = BudgetBreakdown(['policy', 'description'])
     for item in investments:
         column_name = year_column_name(item)
         c['area_breakdown'].add_item(column_name, item)
+        if _is_special_investment(item):
+            c['special_investments_area_breakdown'].add_item(column_name, item)
 
     # Get additional information
     populate_stats(c)
@@ -78,3 +78,9 @@ def investments_show(request, id, title, render_callback=None):
     template = 'investments/show_widget.html' if isWidget(request) else 'investments/show.html'
 
     return render(c, render_callback, template)
+
+# XXX: This is hardcoded at the moment as the requirements are evolving.
+# But it would make complete sense to add a flag to the database and set it
+# in the loader. We'll do once things settle and/or we reuse it somewhere else.
+def _is_special_investment(item):
+    return item.description[0:3] == 'IFS'
