@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-06 13:44+0200\n"
-"PO-Revision-Date: 2019-02-13 14:21+0200\n"
+"PO-Revision-Date: 2019-02-14 10:57+0100\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -1008,14 +1008,23 @@ msgstr ": Click to sort ascending"
 msgid ": Clicar para ordenar descendentemente"
 msgstr ": Click to sort descending"
 
+msgid "Inversiones por distritos"
+msgstr "Investment by district"
+
 msgid "Total inversiones por distritos"
 msgstr "Total investment by district"
 
 msgid "Total inversiones no distritizables"
 msgstr "Total not distributable investment"
 
+msgid "Inversiones adicionales"
+msgstr "Additional investments"
+
 msgid "Inversiones Financieramente Sostenibles (IFS)"
 msgstr "Financially Sustainable Investments (IFS)"
+
+msgid "Descarga la tabla de <strong>Inversiones</strong>"
+msgstr "Download the <strong>Investments</strong> table"
 
 msgid "Volver a Inversiones"
 msgstr "Back to investments"
