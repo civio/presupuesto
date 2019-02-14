@@ -10,7 +10,7 @@ var InvestmentTotalHelpers = (function() {
 
   // Get totals values
   function getTotals(breakdown, columnDef) {
-    var total = 0;
+    var total = 0, item;
     for (item in breakdown.sub) {
       total += columnDef.data(breakdown.sub[item]);
     }
