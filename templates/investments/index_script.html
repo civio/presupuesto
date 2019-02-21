@@ -20,6 +20,15 @@
       }
     };
 
+    // Return the value used for sorting: normally it's what you'd expect,
+    // but we return a special value that we use to stick not-attributable
+    // investments to the bottom of the table when sorting the area column.
+    // When sorting the numeric columns, this non-numeric value leaves
+    // the row in place: at the bottom, where it already was.
+    function pushNotAttributableLastWhenSorting(data, type, row, meta) {
+      return (row.key=='NN' ? 'N/A' : data);
+    }
+
     // Grid rendering
     // XXX: Some of the code may be duplicated in show_script
     function getColumnDefinition(uiState) {
@@ -27,10 +36,16 @@
       return {
         data: getBreakdownValue,
         title: '{{ _("Presupuestado") }}',
-        render: Formatter.getFormatter(uiState.format, stats, Number(uiState.year), getBreakdownValue),
+        render: {
+          display: Formatter.getFormatter(uiState.format, stats, Number(uiState.year), getBreakdownValue),
+          sort: pushNotAttributableLastWhenSorting
+        },
         // XXX: Normally we don't set the column width, but here we have two data tables on top of
         // each other, and we want them to be aligned. Also, see #185.
-        width: '20%'
+        width: '20%',
+        // Override column definition defaults used across the app
+        sType: '',
+        orderDataType: ''
       };
     }
 
@@ -39,15 +54,22 @@
       return {
         data: getBreakdownValue,
         title: getExecutionColumnName(budgetStatuses[uiState.year], '{{ _("Invertido") }}', budgetStatusLabels),
-        render: Formatter.getFormatter(uiState.format, stats, Number(uiState.year), getBreakdownValue),
-        width: '20%'  // XXX: See above
+        render: {
+          display: Formatter.getFormatter(uiState.format, stats, Number(uiState.year), getBreakdownValue),
+          sort: pushNotAttributableLastWhenSorting
+        },
+        width: '20%',  // XXX: See above
+        // Override column definition defaults used across the app
+        sType: '',
+        orderDataType: ''
       };
     }
 
     function redraw() {
       var uiState = getUIState(),
           columnDef = getColumnDefinition(uiState),
-          executionColumnDef = getExecutionColumnDefinition(uiState);
+          executionColumnDef = getExecutionColumnDefinition(uiState),
+          districtType = $.fn.dataTable.absoluteOrder( [{ value: 'N/A', position: 'bottom' }] );
 
       if ( myGrid !== undefined )  myGrid.destroy();
       myGrid = createBudgetGrid("#myGrid", breakdownToTable(areaBreakdown),
@@ -55,7 +77,18 @@
                           {
                             data: 'label',
                             title: '{{ _("Distrito") }}',
-                            render: investmentAreaLinkFormatter
+                            // We want the not-attributable investments to go last,
+                            // which requires some massaging of DataTables
+                            render: {
+                              sort: pushNotAttributableLastWhenSorting,
+                              _: investmentAreaLinkFormatter
+                            },
+                            type: districtType,
+                            // The following is just needed to overload the table
+                            // defaults we have for all the other tables. Which is
+                            // not the most elegant solution.
+                            sType: districtType,
+                            orderDataType: districtType
                           },
                           columnDef,
                           executionColumnDef

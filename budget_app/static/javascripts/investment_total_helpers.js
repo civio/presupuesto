@@ -44,7 +44,7 @@ var InvestmentTotalHelpers = (function() {
 
   // Set Total values
   function setTotals(breakdown, specialBreakdown, columnDef, classSelector) {
-    var format = function(amount) { return columnDef.render(amount, 'display', breakdown); },
+    var format = function(amount) { return columnDef.render['display'](amount, 'display', breakdown); },
         $main = $('#main-total');
 
     $main.find('#total '+classSelector+'-amount').html(format(getTotals(breakdown, columnDef)));
