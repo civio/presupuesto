@@ -21,11 +21,11 @@
     };
 
     // Return the value used for sorting: normally it's what you'd expect,
-    // but we return a special value that we use to stick not-attributable
+    // but we return a special value that we use to stick 'multiple area'
     // investments to the bottom of the table when sorting the area column.
     // When sorting the numeric columns, this non-numeric value leaves
     // the row in place: at the bottom, where it already was.
-    function pushNotAttributableLastWhenSorting(data, type, row, meta) {
+    function pushMultiAreaLastWhenSorting(data, type, row, meta) {
       return (row.key=='NN' ? 'N/A' : data);
     }
 
@@ -38,7 +38,7 @@
         title: '{{ _("Presupuestado") }}',
         render: {
           display: Formatter.getFormatter(uiState.format, stats, Number(uiState.year), getBreakdownValue),
-          sort: pushNotAttributableLastWhenSorting
+          sort: pushMultiAreaLastWhenSorting
         },
         // XXX: Normally we don't set the column width, but here we have two data tables on top of
         // each other, and we want them to be aligned. Also, see #185.
@@ -56,7 +56,7 @@
         title: getExecutionColumnName(budgetStatuses[uiState.year], '{{ _("Invertido") }}', budgetStatusLabels),
         render: {
           display: Formatter.getFormatter(uiState.format, stats, Number(uiState.year), getBreakdownValue),
-          sort: pushNotAttributableLastWhenSorting
+          sort: pushMultiAreaLastWhenSorting
         },
         width: '20%',  // XXX: See above
         // Override column definition defaults used across the app
@@ -77,10 +77,10 @@
                           {
                             data: 'label',
                             title: '{{ _("Distrito") }}',
-                            // We want the not-attributable investments to go last,
+                            // We want the multi-area investments to go last,
                             // which requires some massaging of DataTables
                             render: {
-                              sort: pushNotAttributableLastWhenSorting,
+                              sort: pushMultiAreaLastWhenSorting,
                               _: investmentAreaLinkFormatter
                             },
                             type: districtType,
