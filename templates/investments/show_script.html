@@ -26,7 +26,9 @@
       return {
         data: getBreakdownValue,
         title: '{{ _("Presupuestado") }}',
-        render: Formatter.getFormatter(uiState.format, stats, Number(uiState.year), getBreakdownValue)
+        render: {
+          display: Formatter.getFormatter(uiState.format, stats, Number(uiState.year), getBreakdownValue)
+        }
       };
     }
 
@@ -35,7 +37,9 @@
       return {
         data: getBreakdownValue,
         title: getExecutionColumnName(budgetStatuses[uiState.year], '{{ _("Invertido") }}', budgetStatusLabels),
-        render: Formatter.getFormatter(uiState.format, stats, Number(uiState.year), getBreakdownValue)
+        render: {
+          display: Formatter.getFormatter(uiState.format, stats, Number(uiState.year), getBreakdownValue)
+        }
       };
     }
 
@@ -53,7 +57,9 @@
                             {
                               data: function(item) { return item.label || item.key; },
                               title: '{{ _("Política.Inversiones") }}',
-                              render: rowNameFormatter
+                              render: {
+                                display: rowNameFormatter
+                              }
                             },
                             columnDef,
                             executionColumnDef
