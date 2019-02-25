@@ -34,6 +34,10 @@ else:
    print "Please set the environment variable THEME in your local_settings.py file."
    sys.exit(1)
 
+THEME_REPO = ENV.get('THEME_REPO')
+
+GITHUB_TOKEN = ENV.get('GITHUB_TOKEN')
+
 
 # DJANGO SETTINGS
 #
