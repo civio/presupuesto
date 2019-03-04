@@ -335,19 +335,19 @@
       var data = [];
       if (breakdowns.area.sub) {
         data = Object.keys(breakdowns.area.sub) // get areas names
-          .sort() 
-          .map(function(d){ 
-            return {id: d, text: d} 
+          .sort()
+          .map(function(d){
+            return {id: d, text: d}
           });
-      } 
+      }
       data.unshift({id: '', text: '{{ _("Todas las áreas") }}'}); // prepend placeholder
       return data;
     }
 
     function getSelectPayeeData(){
-      var data = payees.sort() 
-        .map(function(d){ 
-          return {id: d, text: d} 
+      var data = payees.sort()
+        .map(function(d){
+          return {id: d, text: d}
         });
       data.unshift({id: '', text: '{{ _("Todos los proveedores") }}'});
       return data;
@@ -356,7 +356,7 @@
     function getSelectDepartmenData(){
       var data = d3.entries(departmentDescriptions) // get department ids & names
         .sort(function(a, b){ return a.value.localeCompare(b.value); })
-        .map(function(d){ 
+        .map(function(d){
           return {id: d.key, text: d.value}
         });
       data.unshift({id: '', text: '{{ _("Todos los organismos") }}'});
@@ -396,7 +396,7 @@
     $('#input-payee').select2({
       data: getSelectPayeeData(),
       // query with pagination
-      query: function(q) { 
+      query: function(q) {
         var pageSize = 100, // define pagesize
           results = [],
           that = this;
@@ -418,6 +418,9 @@
         } else {
           callback({id: '', text: '{{ _("Todos los proveedores") }}'}); // setup default value
         }
+      },
+      escapeMarkup: function (text) {
+        return text;
       },
       width: '100%'
     });
