@@ -89,7 +89,7 @@ def search(request):
                         len(c['income_articles_ids']) + \
                         len(c['expense_articles_ids']) + \
                         len(all_items) + \
-                        len(all_payments) if 'payments' in c else 0
+                        (len(all_payments) if 'payments' in c else 0)
     for headings in c['headings_per_income_article'].values():
         c['results_size'] += len(headings)
     for headings in c['headings_per_expense_article'].values():
