@@ -6,7 +6,6 @@ import sys
 SETTINGS_PATH = os.path.dirname(os.path.abspath(__file__))
 ROOT_PATH = os.path.join(SETTINGS_PATH, '..')
 
-
 # ENVIRONMENT-SPECIFIC SETTINGS
 #
 # Load a non-versioned-controlled local file if it exists.
@@ -20,7 +19,6 @@ try:
 except IOError:
     pass
 
-
 # THEME-SPECIFIC SETTINGS
 # Note: After looking into ways of importing modules dynamically, I decided this was the simplest solution
 # Following http://igorsobreira.com/2010/09/12/customize-settingspy-locally-in-django.html
@@ -28,16 +26,15 @@ except IOError:
 # Pick a theme by setting the THEME variable in 'local_settings.py'.
 #
 if ENV.get('THEME'):
-    THEME=ENV.get('THEME')
-    execfile( os.path.join(ROOT_PATH, THEME, 'settings.py'), globals(), locals())
+    THEME = ENV.get('THEME')
+    execfile(os.path.join(ROOT_PATH, THEME, 'settings.py'), globals(), locals())
 else:
-   print "Please set the environment variable THEME in your local_settings.py file."
-   sys.exit(1)
+    print "Please set the environment variable THEME in your local_settings.py file."
+    sys.exit(1)
 
+THEME_PATH = os.path.join(ROOT_PATH, THEME)
 THEME_REPO = ENV.get('THEME_REPO')
-
 GITHUB_TOKEN = ENV.get('GITHUB_TOKEN')
-
 
 # DJANGO SETTINGS
 #
@@ -46,12 +43,12 @@ TEMPLATE_DEBUG = ENV.get('TEMPLATE_DEBUG', DEBUG)
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': ENV.get('DATABASE_NAME'),                   # Or path to database file if using sqlite3.
-        'USER': ENV.get('DATABASE_USER'),                   # Not used with sqlite3.
-        'PASSWORD': ENV.get('DATABASE_PASSWORD'),           # Not used with sqlite3.
-        'HOST': ENV.get('DATABASE_HOST', 'localhost'),      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': ENV.get('DATABASE_PORT', ''),               # Set to empty string for default. Not used with sqlite3.
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': ENV.get('DATABASE_NAME'),                    # Or path to database file if using sqlite3.
+        'USER': ENV.get('DATABASE_USER'),                    # Not used with sqlite3.
+        'PASSWORD': ENV.get('DATABASE_PASSWORD'),            # Not used with sqlite3.
+        'HOST': ENV.get('DATABASE_HOST', 'localhost'),       # Set to empty string for localhost. Not used with sqlite3.
+        'PORT': ENV.get('DATABASE_PORT', ''),                # Set to empty string for default. Not used with sqlite3.
     }
 }
 
@@ -75,7 +72,7 @@ LOCALE_PATHS = (
 
 # Ensure LANGUAGES is defined for LocaleMiddleware. Multilingual themes
 # will have defined this beforehand with their particular language list.
-if not 'LANGUAGES' in locals():
+if 'LANGUAGES' not in locals():
     # All choices can be found here: http://www.i18nguy.com/unicode/language-identifiers.html
     LANGUAGES = (
       ('es', 'Castellano'),
@@ -84,7 +81,6 @@ if not 'LANGUAGES' in locals():
 # Base language code for this installation. Selects the first from the list of available ones.
 # See https://docs.djangoproject.com/en/1.4//topics/i18n/translation/#how-django-discovers-language-preference
 LANGUAGE_CODE = locals()['LANGUAGES'][0][0]
-
 
 SITE_ID = 1
 
@@ -135,12 +131,12 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
-    'compressor.finders.CompressorFinder', # add Django Compressor's file finder
+    # 'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    'compressor.finders.CompressorFinder',  # add Django Compressor's file finder
 )
 
 #
-#Config to compile LESS files automatically
+# Config to compile LESS files automatically
 #
 
 COMPRESS_PRECOMPILERS = (
@@ -154,23 +150,23 @@ SECRET_KEY = ')e2qrwa6e$u30r0)w=52!0j1_&amp;$t+y3z!o-(7ej0=#i!c7pjuy'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+    # 'django.template.loaders.eggs.Loader',
 )
 
 if DEBUG:
     MIDDLEWARE_CLASSES = (
         'django.middleware.common.CommonMiddleware',
-        # 'django.contrib.sessions.middleware.SessionMiddleware', #
-        # 'django.middleware.csrf.CsrfViewMiddleware', #
-        'django.middleware.locale.LocaleMiddleware', #
+        # 'django.contrib.sessions.middleware.SessionMiddleware',
+        # 'django.middleware.csrf.CsrfViewMiddleware',
+        'django.middleware.locale.LocaleMiddleware',
     )
 else:
     MIDDLEWARE_CLASSES = (
         'project.middleware.SmartUpdateCacheMiddleware',
         'django.middleware.common.CommonMiddleware',
-        # 'django.contrib.sessions.middleware.SessionMiddleware', #
-        # 'django.middleware.csrf.CsrfViewMiddleware', #
-        'django.middleware.locale.LocaleMiddleware', #
+        # 'django.contrib.sessions.middleware.SessionMiddleware',
+        # 'django.middleware.csrf.CsrfViewMiddleware',
+        'django.middleware.locale.LocaleMiddleware',
         # 'django.contrib.auth.middleware.AuthenticationMiddleware',
         # 'django.contrib.messages.middleware.MessageMiddleware',
         'django.middleware.cache.FetchFromCacheMiddleware',
@@ -196,10 +192,10 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     # 'django.contrib.sites',
-    #'django.contrib.messages',
+    # 'django.contrib.messages',
     'django.contrib.staticfiles',
     # Uncomment the next line to enable the admin:
-    #'django.contrib.admin',
+    # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'django_jasmine',
@@ -217,10 +213,12 @@ JINJA2_EXTENSIONS = [
     'compressor.contrib.jinja2ext.CompressorExtension',
 ]
 
+
 # Needed by django_compressor. See http://django-compressor.readthedocs.org/en/latest/jinja2/#id1
 def COMPRESS_JINJA2_GET_ENVIRONMENT():
     from coffin.common import env
     return env
+
 
 # Setup Jasmine folder for js unit
 # test https://github.com/Aquasys/django-jasmine#installation
@@ -296,7 +294,6 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 SEARCH_CONFIG = ENV.get('SEARCH_CONFIG', 'pg_catalog.english')
 
-
 DEFAULT_CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
@@ -307,4 +304,3 @@ CACHES = ENV.get('CACHES', DEFAULT_CACHES)
 CACHE_MIDDLEWARE_ALIAS = 'default'
 CACHE_MIDDLEWARE_SECONDS = 60 * 60 * 24  # 1 Day: data doesn't actually change
 CACHE_MIDDLEWARE_KEY_PREFIX = 'budget_app'
-
