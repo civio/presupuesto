@@ -19,6 +19,9 @@ try:
 except IOError:
     pass
 
+HTTP_PROXY = ENV.get('HTTP_PROXY') or ENV.get('http_proxy')
+HTTPS_PROXY = ENV.get('HTTPS_PROXY') or ENV.get('https_proxy')
+
 # THEME-SPECIFIC SETTINGS
 # Note: After looking into ways of importing modules dynamically, I decided this was the simplest solution
 # Following http://igorsobreira.com/2010/09/12/customize-settingspy-locally-in-django.html
