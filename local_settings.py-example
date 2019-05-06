@@ -10,7 +10,7 @@ ENV = {
   'DATABASE_NAME': 'dvmi_example_dev',
   'DATABASE_USER': '',
   'DATABASE_PASSWORD': '',
-  #'SEARCH_CONFIG': 'unaccent_spa',
+  'SEARCH_CONFIG': 'unaccent_spa',
 
   # Caching
   'CACHES': {
