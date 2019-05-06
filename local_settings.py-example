@@ -17,9 +17,5 @@ ENV = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
     }
-  },
-
-  # GitHub
-  'THEME_REPO': 'civio/presupuesto-example',
-  'GITHUB_TOKEN': 'yourgithubsecrettokenwouldnormallygohere'
+  }
 }

@@ -33,8 +33,6 @@ else:
     sys.exit(1)
 
 THEME_PATH = os.path.join(ROOT_PATH, THEME)
-THEME_REPO = ENV.get('THEME_REPO')
-GITHUB_TOKEN = ENV.get('GITHUB_TOKEN')
 
 # DJANGO SETTINGS
 #
