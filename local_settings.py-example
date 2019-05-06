@@ -17,5 +17,9 @@ ENV = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
     }
-  }
+  },
+
+  # Proxy
+  'HTTP_PROXY': '',
+  'HTTPS_PROXY': ''
 }
