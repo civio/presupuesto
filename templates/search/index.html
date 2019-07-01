@@ -211,7 +211,9 @@
                     {# XXX: We could try to show this for small entities, but we only have descriptions for top-level one #}
                     {% if item.level==main_entity_level %}
                       {% if item.expense %}
-                        {% if item.programme %}
+                        {% if item.subprogramme %}
+                          | <a class="programme" href="{% url 'budget_app.views.subprogrammes_show' item.subprogramme, descriptions['functional'].get(item.subprogramme)|slugify %}">{{ descriptions['functional'].get(item.subprogramme) }}</a>
+                        {% else %}
                           | <a class="programme" href="{% url 'budget_app.views.programmes_show' item.programme, descriptions['functional'].get(item.programme)|slugify %}">{{ descriptions['functional'].get(item.programme) }}</a>
                         {% endif %}
                       {% else %}
@@ -227,7 +229,11 @@
                     {% set item_uid = item.uid() if breakdown_by_uid else item.economic_uid() %}
                     {% if item.level==main_entity_level %}
                       {% if item.expense %}
-                        <a href="{% url 'budget_app.views.programmes_show' item['programme'], descriptions['functional'].get(item['programme'])|slugify %}#item={{item_uid}}" id="policy-name-link">{{ item.description|safe }}</a>
+                        {% if item.subprogramme %}
+                          <a href="{% url 'budget_app.views.subprogrammes_show' item['subprogramme'], descriptions['functional'].get(item['subprogramme'])|slugify %}#item={{item_uid}}" id="policy-name-link">{{ item.description|safe }}</a>
+                        {% else %}
+                          <a href="{% url 'budget_app.views.programmes_show' item['programme'], descriptions['functional'].get(item['programme'])|slugify %}#item={{item_uid}}" id="policy-name-link">{{ item.description|safe }}</a>
+                        {% endif %}
                       {% else %}
                         <a href="{% url 'budget_app.views.income_articles_show' item['article'], descriptions['income'].get(item['article'])|slugify %}#item={{item_uid}}" id="policy-name-link">{{ item.description|safe }}</a>
                       {% endif %}
