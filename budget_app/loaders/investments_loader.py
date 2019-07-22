@@ -70,7 +70,7 @@ class InvestmentsLoader:
                                                     subprogramme=item.get('fc_subprogramme', None),
                                                     budget=budget)
             if not fc:
-                print u"ALERTA: No se encuentra la categoría funcional '%s' para '%s': %s€" % (item['fc_code'], item['description'], item['amount']/100)
+                print u"ALERTA: No se encuentra la categoría funcional '%s' para '%s': %s€" % (item['fc_code'], item['description'].decode("utf-8"), item['amount']/100)
                 continue
             else:
                 fc = fc[0]
@@ -79,7 +79,7 @@ class InvestmentsLoader:
             gc = GeographicCategory.objects.filter( code=item['gc_code'],
                                                     budget=budget)
             if not gc:
-                print u"ALERTA: No se encuentra la categoría geográfica '%s' para '%s': %s€" % (item['gc_code'], item['description'], item['amount']/100)
+                print u"ALERTA: No se encuentra la categoría geográfica '%s' para '%s': %s€" % (item['gc_code'], item['description'].decode("utf-8"), item['amount']/100)
                 continue
             else:
                 gc = gc[0]
