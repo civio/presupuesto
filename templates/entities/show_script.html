@@ -43,15 +43,19 @@
         title: '{{ _("Presupuestado") }}',
         data: getBreakdownValue,
         render: Formatter.getFormatter(uiState.format, stats, Number(uiState.year), getBreakdownValue)
-      }; 
+      };
     }
 
     function getExecutionColumnDefinition(uiState) {
-      var columnDef = getColumnDefinition(uiState);
+      var getBreakdownValue = getBreakdownValueFunction(uiState.field, "actual_" + uiState.year);
       var title = uiState.field == 'expense' ? '{{ _("Gastado") }}' : '{{ _("Ingresado") }}';
-      columnDef.title = getExecutionColumnName(budgetStatuses[uiState.year], title, budgetStatusLabels);
-      columnDef.data = getBreakdownValueFunction(uiState.field, "actual_" + uiState.year);
-      return columnDef;
+      return {
+        title: getExecutionColumnName(budgetStatuses[uiState.year], title, budgetStatusLabels),
+        data: getBreakdownValue,
+        // XXX: Careful with refactoring: this line looks the same as the one in getColumnDefinition,
+        // but the getBreakdownValue argument is different. See issue #1024 for a related error.
+        render: Formatter.getFormatter(uiState.format, stats, Number(uiState.year), getBreakdownValue)
+      };
     }
 
 {% if entities %}

@@ -33,11 +33,13 @@
     }
 
     function getExecutionColumnDefinition(uiState) {
-      var columnDef = getColumnDefinition(uiState);
+      var getBreakdownValue = getBreakdownValueFunction(uiState.field, "actual_" + uiState.year);
       var title = uiState.field == 'expense' ? '{{ _("Gastado") }}' : '{{ _("Ingresado") }}';
-      columnDef.title = getExecutionColumnName(budgetStatuses[uiState.year], title, budgetStatusLabels);
-      columnDef.data = getBreakdownValueFunction(uiState.field, "actual_" + uiState.year);
-      return columnDef;
+      return {
+        title: getExecutionColumnName(budgetStatuses[uiState.year], title, budgetStatusLabels),
+        data: getBreakdownValue,
+        render: Formatter.getFormatter(uiState.format, stats, Number(uiState.year), getBreakdownValue)
+      };
     }
 
     function getLabelColumnTitle(tab) {
