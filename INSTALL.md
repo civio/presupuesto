@@ -85,3 +85,24 @@ Pero para usarlo de manera regular debemos configurar la aplicación, vía `loca
 
 [4]: https://docs.djangoproject.com/en/1.7/internals/deprecation/#deprecation-removed-in-1-7
 [5]: https://docs.djangoproject.com/en/1.5/topics/python3/#philosophy
+
+### Docker
+
+Uso de la aplicación con docker:
+
+* Compilar imagen docker:
+```
+docker-compose build
+```
+
+* Levantar entorno en local usando docker:
+```
+docker-compose up
+```
+
+* Ejecutar terminal sh en contenedor
+```
+docker exec -it presupuesto_presupuesto_1 sh
+```
+
+* Conexión local usando: `http://127.0.0.1:8000`
