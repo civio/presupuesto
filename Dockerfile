@@ -53,7 +53,8 @@ ENV APPDIR=$APPDIR \
     APP_LISTEN=0.0.0.0:8000
 
 RUN addgroup -g ${GROUP_ID} presupuesto \
-    && adduser -D presupuesto -u ${USER_ID} -g presupuesto -G presupuesto -s /bin/sh -h ${APPDIR}
+    && adduser -D presupuesto -u ${USER_ID} \
+      -g presupuesto -G presupuesto -s /bin/sh -h ${APPDIR}
 
 ADD --chown=presupuesto . $APPDIR
 COPY --from=theme /presupuesto-theme $APPDIR/$THEME
