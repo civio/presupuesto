@@ -57,7 +57,7 @@ RUN addgroup -g ${GROUP_ID} presupuesto \
       -g presupuesto -G presupuesto -s /bin/sh -h ${APPDIR}
 
 ADD --chown=presupuesto . $APPDIR
-COPY --from=theme /presupuesto-theme $APPDIR/$THEME
+COPY --from=theme --chown=presupuesto /presupuesto-theme $APPDIR/$THEME
 
 RUN apk update \
     && apk add --no-cache \

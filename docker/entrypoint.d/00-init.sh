@@ -8,4 +8,4 @@ if [ "${DEBUG}" == "True" ]; then
     pip freeze
 fi
 
-cp docker/executable/python/local_settings.py .
+cp docker/executable/python/docker-local_settings.py ./local_settings.py
