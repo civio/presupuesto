@@ -27,6 +27,7 @@ RUN apk add \
     && npm run css-build
 
 FROM python:2.7-alpine
+LABEL maintainer="Guadaltech Soluciones Tecnologicas <devops@guadaltech.es>"
 
 ARG APPDIR=/app
 ARG USER_ID=1000
