@@ -9,6 +9,7 @@ from budget_app.models import Entity, Payment
 from budget_app.views import *
 from helpers import get_context
 
+from tempfile import NamedTemporaryFile
 from openpyxl import Workbook
 
 
@@ -381,15 +382,18 @@ class XLSXGenerator:
         self.content_generator = content_generator
 
     def generate_response(self, c):
-        response = HttpResponse(mimetype='application/ms-excel; charset=utf-8')
-        response['Content-Disposition'] = 'attachment; filename="%s"' % self.filename
-
         workbook = Workbook()
         worksheet = workbook.worksheets[0]
         self.content_generator(c, worksheetWrapper(worksheet))
-        workbook.save(response)
 
-        return response
+        # See https://stackoverflow.com/a/58351964
+        with NamedTemporaryFile() as tmp:
+            workbook.save(tmp.name)
+            tmp.seek(0)
+
+            response = HttpResponse(tmp.read(), mimetype='application/ms-excel; charset=utf-8')
+            response['Content-Disposition'] = 'attachment; filename="%s"' % self.filename
+            return response
 
 def _generator(filename, format, content_generator):
     try:
