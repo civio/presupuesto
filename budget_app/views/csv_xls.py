@@ -174,25 +174,26 @@ def write_economic_breakdown(c, writer):
     write_header(writer, [u'Año.csv', u'Id Capítulo', u'Nombre Capítulo', u'Id Artículo', u'Nombre Artículo', 'Id Concepto', 'Nombre Concepto', 'Presupuesto Gastos', 'Gastos Reales'])
     for year in sorted(_unique(c['breakdowns']['economic'].years.values())):
         for chapter_id, chapter in c['breakdowns']['economic'].subtotals.iteritems():
-            write_breakdown_item(writer, year, chapter, 'expense', [chapter_id, None, None], c['descriptions']['expense'])
+            write_breakdown_item(writer, year, chapter, 'expense', [chapter_id, None, None], c['descriptions']['economic'])
             for article_id, article in chapter.subtotals.iteritems():
-                write_breakdown_item(writer, year, article, 'expense', [chapter_id, article_id, None], c['descriptions']['expense'])
+                write_breakdown_item(writer, year, article, 'expense', [chapter_id, article_id, None], c['descriptions']['economic'])
                 for heading_id, heading in article.subtotals.iteritems():
-                    write_breakdown_item(writer, year, heading, 'expense', [chapter_id, article_id, heading_id], c['descriptions']['expense'])
+                    write_breakdown_item(writer, year, heading, 'expense', [chapter_id, article_id, heading_id], c['descriptions']['economic'])
 
 def economic_policy_breakdown(request, id, format):
     return policies_show(request, id, '', _generator("%s.economica" % id, format, write_economic_breakdown))
 
 def write_detailed_economic_breakdown(c, writer):
+    # print c['descriptions']['expense']
     write_header(writer, [u'Año.csv', u'Id Capítulo', u'Nombre Capítulo', u'Id Artículo', u'Nombre Artículo', 'Id Subconcepto', 'Nombre Subconcepto', 'Presupuesto Gastos', 'Gastos Reales'])
     for year in sorted(_unique(c['breakdowns']['economic'].years.values())):
         for chapter_id, chapter in c['breakdowns']['economic'].subtotals.iteritems():
-            write_breakdown_item(writer, year, chapter, 'expense', [chapter_id, None, None], c['descriptions']['expense'])
+            write_breakdown_item(writer, year, chapter, 'expense', [chapter_id, None, None], c['descriptions']['economic'])
             for article_id, article in chapter.subtotals.iteritems():
-                write_breakdown_item(writer, year, article, 'expense', [chapter_id, article_id, None], c['descriptions']['expense'])
+                write_breakdown_item(writer, year, article, 'expense', [chapter_id, article_id, None], c['descriptions']['economic'])
                 for heading_id, heading in article.subtotals.iteritems():
                     for subheading_id, subheading in heading.subtotals.iteritems():
-                        write_breakdown_item(writer, year, subheading, 'expense', [chapter_id, article_id, subheading_id], c['descriptions']['expense'])
+                        write_breakdown_item(writer, year, subheading, 'expense', [chapter_id, article_id, subheading_id], c['descriptions']['economic'])
 
 def economic_programme_breakdown(request, id, format):
     return programmes_show(request, id, '', _generator("%s.economica" % id, format, write_detailed_economic_breakdown))
@@ -211,11 +212,11 @@ def write_economic_article_breakdown(c, field, writer):
     field_username = 'Gastos' if field == 'expense' else 'Ingresos'
     write_header(writer, [u'Año.csv', u'Id Artículo', u'Nombre Artículo', 'Id Concepto', 'Nombre Concepto', 'Id Subconcepto', 'Nombre Subconcepto', 'Presupuesto '+field_username, field_username+' Reales'])
     for year in sorted(_unique(c['breakdowns']['economic'].years.values())):
-        write_breakdown_item(writer, year, c['breakdowns']['economic'], field, [c['article_id'], None, None], c['descriptions'][field])
+        write_breakdown_item(writer, year, c['breakdowns']['economic'], field, [c['article_id'], None, None], c['descriptions']['economic'])
         for heading_id, heading in c['breakdowns']['economic'].subtotals.iteritems():
-            write_breakdown_item(writer, year, heading, field, [c['article_id'], heading_id, None], c['descriptions'][field])
+            write_breakdown_item(writer, year, heading, field, [c['article_id'], heading_id, None], c['descriptions']['economic'])
             for item_uid, item in heading.subtotals.iteritems():
-                write_breakdown_item(writer, year, item, field, [c['article_id'], heading_id, item_uid], c['descriptions'][field])
+                write_breakdown_item(writer, year, item, field, [c['article_id'], heading_id, item_uid], c['descriptions']['economic'])
 
 def write_economic_article_expense_breakdown(c, writer):
     return write_economic_article_breakdown(c, 'expense', writer);
