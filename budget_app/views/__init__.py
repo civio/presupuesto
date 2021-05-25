@@ -6,6 +6,7 @@ from entities import entities_income_articles, entities_income_articles_show, en
 from entities import entities_payments, entities_payments_search
 from investments import investments, investments_show
 from sections import sections_show
+from guided_visit import guided_visit
 from tax_receipt import tax_receipt
 from terms import terms
 from welcome import welcome
