@@ -1,0 +1,26 @@
+version: '3.2'
+
+services:
+    postgres:
+        image: postgres:11
+        env_file: ./docker/env/docker-build.env
+        ports:
+            - "2345:5432"
+        volumes:
+            - ./db_data:/var/lib/postgresql/data:rw,z
+        
+    presupuesto:
+        image: presupuesto:latest
+        ports:
+            - "8000:8000"
+        build:
+            dockerfile: Dockerfile
+            context: .
+            args:
+                THEME_REPO: "https://github.com/civio/presupuesto-torrelodones"
+                APPDIR: "/app"
+                USER_ID: 1000
+                GROUP_ID: 1000
+        env_file: ./docker/env/docker-build.env
+        depends_on:
+            - postgres
