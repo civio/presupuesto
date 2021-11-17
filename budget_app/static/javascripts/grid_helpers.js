@@ -21,7 +21,8 @@ function rowNameFormatter(value, type, item) {
   if (item.sub && !$.isEmptyObject(item.sub)) {
     toggleStatus = item._expanded ? 'collapse' : 'expand';
     toggleValue = item._expanded ? '–' : '+';
-    return "<a class='toggle "+toggleStatus+"'>"+toggleValue+"</a>" + valuewrap;
+    //return "<a class='toggle "+toggleStatus+"'>"+toggleValue+"</a>" + valuewrap;
+    return ("<button class='toggle " + toggleStatus + "'>" + toggleValue + '</button>' + valuewrap);
   }
   return valuewrap;
 }
