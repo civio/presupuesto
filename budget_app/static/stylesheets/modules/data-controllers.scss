@@ -111,8 +111,7 @@
     }
   }
 
-  .chart-embed-btn span,
-  .chart-embed-btn a{
+  .chart-embed-btn span{
     display: block;
     position: absolute;
     top: 46px;
@@ -125,6 +124,12 @@
     &:hover{
       background-color: lighten( $panel-default-heading-bg, 5% );
     }
+  }
+
+  .chart-embed-btn {
+    display: inherit;
+    border: none;
+    padding: 0;
   }
   
   .chart-embed-btn:focus > span {   
