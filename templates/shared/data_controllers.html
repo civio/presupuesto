@@ -1,11 +1,11 @@
 <div class="data-controllers"> 
+  <button href="#modal-embed" class="chart-embed-btn" data-toggle="modal">
+    <span data-toggle="tooltip" data-placement="top" data-original-title="{{ _('Comparte este gráfico') }}"></span>
+  </button>
   <div class="quantity-selection">
     <label for="select-format" class="title">{{ _('Cantidades') }}</label>
     {% include 'shared/data_controllers_select.html' %}
   </div>
-  <a href="#modal-embed" class="chart-embed-btn" data-toggle="modal">
-    <span data-toggle="tooltip" data-placement="top" data-original-title="{{ _('Comparte este gráfico') }}"></span>
-  </a>
   <div class="layout-slider">
     <p class="title">{{ _('Año') }}</p>
     <label for="year-selection">{{ _('Año') }}</label>

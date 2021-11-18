@@ -40,6 +40,11 @@ header > .container{
 // Menu Lang
 #menu-lang{
   margin-top: $grid-gutter-width/3;
+  
+  & .dropdown .btn:focus {
+    box-shadow: 0px 0px 6px 2px rgba(0,61,246,0.27);
+    color: $brand-primary;
+  }
 
   ul{
     display: inline-block;  // We need it to center #menu-lang in screen-sm
