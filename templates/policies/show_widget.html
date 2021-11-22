@@ -47,7 +47,7 @@
             </div>
           </div>
           {% if not show_treemap %}
-          <button href="#modal-embed"class="chart-embed-btn" data-toggle="modal">
+          <button data-target="#modal-embed" class="chart-embed-btn" type="button" data-toggle="modal" aria-label="{{ _('Comparte este gráfico') }}"></button>
             <span data-toggle="tooltip" data-placement="left" data-original-title="{{ _('Comparte este gráfico') }}"></span>
           </button>
           {% endif %}
