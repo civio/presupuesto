@@ -43,7 +43,8 @@
   <div class="policies-content">
     <div class="container">
 
-      <h3 id="tab-title"></h3>
+      <!-- Adding a default/initial content here to avoid empty headers issues with a11y -->
+      <h3 id="tab-title">{{ _('¿En qué se gasta?') }}</h3> 
 
       <!-- Policies Chart -->
       {% include 'entities/policies-chart.html' %}
