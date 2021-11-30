@@ -119,6 +119,7 @@ table.table-grid {
         background-color: $gray;
         background-position: center center;
         background-repeat: no-repeat;
+        border: none; // Remove default button styles
         cursor: pointer;
         text-align: center;
         font-size: 26px;
