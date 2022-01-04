@@ -10,7 +10,6 @@
 
   .quantity-selection{
     margin-left: 55px;
-    margin-top: 30px;
   }
 
   .layout-slider{
@@ -115,7 +114,7 @@
   .chart-embed-btn span{
     display: block;
     position: absolute;
-    top: 80px;
+    bottom: 15px;
     left: 0;
     width: 34px;
     height: 34px;
@@ -147,7 +146,7 @@
     .quantity-selection{
       position: absolute;
       left: 0;
-      top: 0;
+      bottom: 15px;
       width: 190px;
     }
 
