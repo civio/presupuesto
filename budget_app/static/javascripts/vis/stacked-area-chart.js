@@ -296,7 +296,7 @@ function StackedAreaChart() {
 
       _this.overlays.append('text')
         .attr('x', function(d){ return _this.x(d.key-0.5); })
-        .attr('y', _this.height+10)
+        .attr('y', _this.height-10)
         .attr('dy', '0.71em')
         .text( function(d){ return (d.value === 'PR') ? _this.proposed : _this.budgeted; });
     }
