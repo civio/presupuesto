@@ -1,4 +1,5 @@
 # -*- coding: UTF-8 -*-
+from budget_app.loaders import BaseLoader
 from budget_app.models import *
 from decimal import *
 import datetime
@@ -8,7 +9,7 @@ import re
 
 
 # Generic payments loader
-class PaymentsLoader:
+class PaymentsLoader(BaseLoader):
 
     def load(self, entity, year, path):
         items = self.parse_data(os.path.join(path, 'pagos.csv'))
@@ -157,42 +158,6 @@ class PaymentsLoader:
                     description=fields['description'],
                     budget=budget).save()
 
-    # Read number in Spanish format (123.456,78), and return as number of cents
-    def _read_spanish_number(self, s):
-        if (s.strip() == ""):
-            return 0
-
-        return int(Decimal(s.replace('.', '').replace(',', '.'))*100)
-
-    # Read number in English format (123,456.78), and return as number of cents
-    def _read_english_number(self, s):
-        if (s.strip() == ""):
-            return 0
-
-        return int(Decimal(s.replace(',', ''))*100)
-
     # Get the amount for a budget line
     def _get_amount(self, item):
         return self._read_english_number(item[9])
-
-    # TODO: These below are probably useful enough to move to some base/utils class.
-    # They are needed sometimes by the SimpleBudgetLoader.
-    # (It may be worth checking also what other loaders are doing regarding Unicode, since it's always
-    # a tricky business.)
-
-    # If the given string is all uppercase, convert to titlecase
-    def _titlecase(self, s):
-        if s.isupper():
-            # We need to do the casing operation on an Unicode string so it handles accented characters correctly
-            return unicode(s, encoding='utf8').title()
-        else:
-            return s
-
-    # If the given string is all uppercase, convert to 'spanish titlecase', i.e. only first letter is upper
-    def _spanish_titlecase(self, s):
-        if s.isupper():
-            # We need to do the casing operation on an Unicode string so it handles accented characters correctly
-            s = unicode(s, encoding='utf8')
-            return s.capitalize()
-        else:
-            return s

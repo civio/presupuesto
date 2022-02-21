@@ -1,12 +1,13 @@
 # -*- coding: UTF-8 -*-
 
+from budget_app.loaders import BaseLoader
 from budget_app.models import *
 from decimal import *
 import csv
 import os.path
 
 
-class BudgetLoader:
+class BudgetLoader(BaseLoader):
     def load(self, entity, year, path, status):
         # Delete the existing budget if needed
         budget = Budget.objects.filter(entity=entity, year=year)
@@ -351,39 +352,6 @@ class BudgetLoader:
                           amount=item['amount'],
                           description=item['description'][0:512],
                           budget=budget).save()
-
-    # Make input file delimiter configurable by children
-    def _get_delimiter(self):
-        return ';'
-
-    # Read number in Spanish format (123.456,78), and return as number of cents
-    # Note: I used to convert to float and multiply by 100, but that would result in a few cents off
-    # (in a 5000 million € budgets). We now instead check for a comma and based on that multiply by 100
-    # or not, but always as integer. 
-    def _read_spanish_number(self, s):
-        if (s.strip()==""):
-            return 0
-
-        comma = s.find(',')
-
-        if (comma>0 and comma < len(s) - 3):  # More than two significant positions. Alert, shouldn't happen
-            print u"ALERTA: Demasiados decimales en '%s'. Ignorando..." % (s)
-            return 0
-
-        if (comma>0 and comma == len(s) - 3):
-            return int(s.replace('.', '').replace(',', ''))
-        else:
-            if (comma>0 and comma == len(s) - 2):
-                return int(s.replace('.', '').replace(',', '')) * 10
-            else:   # No comma, or trailing comma (yes, it happens)
-                return int(s.replace('.', '')) * 100
-
-    # Read number in English format (123,456.78), and return as number of cents
-    def _read_english_number(self, s):
-        if (s.strip()==""):
-            return 0
-
-        return int(Decimal(s.replace(',', ''))*100)
 
     # Do nothing here, but useful to be overriden in some loaders with input files not in UTF8
     def _escape_unicode(self, s):

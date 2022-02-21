@@ -1,11 +1,12 @@
 # -*- coding: UTF-8 -*-
+from budget_app.loaders import BaseLoader
 from budget_app.models import *
 from decimal import *
 import csv
 import os
 import re
 
-class SimpleBudgetLoader:
+class SimpleBudgetLoader(BaseLoader):
 
     def load(self, entity, year, path, status):
         # Parse the incoming data and keep in memory
@@ -266,31 +267,10 @@ class SimpleBudgetLoader:
                                         budget=budget)
                 gc.save()
 
-
-    # Make input file delimiter configurable by children
-    def _get_delimiter(self):
-        return ','
-
-    # Read number in English format (123,456.78), and return as number of cents
-    def _read_english_number(self, s):
-        if (s.strip()==""):
-            return 0
-
-        return int(Decimal(s.replace(',', ''))*100)
-
     # Get the amount for a budget line.
-    # This method is here mostly to support easy overloading in child classes
+    # This method is here mostly to support easy overloading in child classes
     def _parse_amount(self, amount):
         return self._read_english_number(amount)
-
-    # If the given string is all uppercase, convert to 'spanish titlecase', i.e. only first letter is upper
-    def _spanish_titlecase(self, s):
-        if s.isupper():
-          # We need to do the casing operation on an Unicode string so it handles accented characters correctly
-          s = unicode(s, encoding='utf8')
-          return s.capitalize()
-        else:
-          return s
 
     # Are we using subprogrammes? (Default: false)
     def _use_subprogrammes(self):
