@@ -1,3 +1,4 @@
+from base_loader import BaseLoader
 from aragon_bulk_budget_loader import AragonBulkBudgetLoader
 from budget_loader import BudgetLoader
 from simple_budget_loader import SimpleBudgetLoader
