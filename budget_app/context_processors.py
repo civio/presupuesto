@@ -16,6 +16,7 @@ def show_options_processor(request):
     'show_tax_receipt':         hasattr(settings, 'SHOW_TAX_RECEIPT') and settings.SHOW_TAX_RECEIPT,
     'show_guided_visit':        hasattr(settings, 'SHOW_GUIDED_VISIT') and settings.SHOW_GUIDED_VISIT,
     'show_investments':         hasattr(settings, 'SHOW_INVESTMENTS') and settings.SHOW_INVESTMENTS,
+    'show_main_investments':    hasattr(settings, 'SHOW_MAIN_INVESTMENTS') and settings.SHOW_MAIN_INVESTMENTS,
     'show_counties_and_towns':  hasattr(settings, 'SHOW_COUNTIES_AND_TOWNS') and settings.SHOW_COUNTIES_AND_TOWNS,
     'show_section_pages':       hasattr(settings, 'SHOW_SECTION_PAGES') and settings.SHOW_SECTION_PAGES,
     'breakdown_by_uid':         True if not hasattr(settings, 'BREAKDOWN_BY_UID') else settings.BREAKDOWN_BY_UID,
