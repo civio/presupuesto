@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="payments-breakdown" data-tab="area">
+
+  <div class="payments-header section-header">
+    <div class="container">
+      <h2 class="page-title">{{ _('Inversiones principales') }}</h2>
+    </div>
+  </div>
+
+  <div class="payments-content">
+    {% include 'main_investments/intro.html' %}
+
+    {% include 'main_investments/map.html' %}
+
+    <!-- FIXME: crappy layout code -->
+    <div class="container tab-content">
+      <br/>
+      <br/>
+
+      <ul id="tabs" class="nav nav-tabs nav-tabs-centered" role="tablist">
+        <li role="presentation">
+          <a id="area-tab" href="#area" role="tab">{{ _('Por distrito') }}</a>
+        </li>
+        <li role="presentation">
+          <a id="policy-tab" href="#policy" role="tab">{{ _('Por línea de inversión') }}</a>
+        </li>
+        <li role="presentation">
+          <a id="department-tab" href="#department" role="tab">{{ _('Por unidad de gestión') }}</a>
+        </li>
+      </ul>
+
+      <table id="myGrid" class="table-grid" width="100%"></table>
+
+      <!-- Panel Downloads -->
+      <!-- FIXME: should call macro -->
+      <div class="panel-downloads">
+        <p id="-downloads" class="downloads">
+          {{ _('Descarga la tabla de <strong>%s</strong> en ')|format(title)|safe }}
+          <a class="icon-file-excel" href="#" title="{{ _('Descarga la tabla en CSV') }}">
+          <span class="file-info">CSV</span>
+          </a>
+          {{ _('o') }}
+          <a class="icon-file-excel" href="#" title="{{ _('Descarga la tabla en Excel') }}">
+          Excel
+          </a>
+        </p>
+      </div>
+
+    </div>
+
+    {% include 'shared/social_sharing.html' %}
+  </div>
+</section>
+
+{% include 'shared/data_sources.html' %}
+
+{% include 'main_investments/show_script.html' %}
+
+{% endblock %}

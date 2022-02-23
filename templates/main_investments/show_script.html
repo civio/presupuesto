@@ -1,0 +1,86 @@
+<script>
+  $(function () {
+
+    // Variable Definitions
+    var stats = {},
+        areaBreakdown = {{ area_breakdown.to_json()|safe }},
+        policyBreakdown = {{ policy_breakdown.to_json()|safe }},
+        departmentBreakdown = {{ department_breakdown.to_json()|safe }},
+        myGrid;
+
+    var breakdowns = {
+      'area':       areaBreakdown,
+      'policy':     policyBreakdown,
+      'department': departmentBreakdown,
+    }
+    var columnNames = {
+      'area':       '{{ _("Distrito") }}',
+      'policy':     '{{ _("Línea de inversión") }}',
+      'department': '{{ _("Unidad de gestión") }}',
+    }
+
+    // Translations
+    var i18n = {
+    };
+
+    function getCurrentYearColumnDefinition(uiState) {
+      var getBreakdownValue = getBreakdownValueFunction(uiState.field, uiState.year);
+      return {
+        title: '{{ _("Presupuesto año en curso") }}',
+        data: getBreakdownValue,
+        render: Formatter.getFormatter('nominal', stats, Number(uiState.year), getBreakdownValue)
+      };
+    }
+
+    function getAllYearsColumnDefinition(uiState) {
+      var getBreakdownValue = getBreakdownValueFunction(uiState.field, "total_" + uiState.year);
+      return {
+        title: '{{ _("Presupuesto total") }}',
+        data: getBreakdownValue,
+        render: Formatter.getFormatter('nominal', stats, Number(uiState.year), getBreakdownValue)
+      };
+    }
+
+    function updateTab() {
+      // Update uiState
+      var uiState = getUIState();
+      uiState.year = 2021;  // FIXME: Only one year for now
+
+      // Update tab
+      $('#tabs .active').removeClass('active');
+      $('a[href="#'+uiState.view+'"]').blur().parent().addClass('active');
+
+      // Setup myGrid if exist item #myGrid
+      if ($('#myGrid').length > 0) {
+
+        if (myGrid !== undefined) {
+          myGrid.destroy();
+        }
+
+        myGrid = createBudgetGrid("#myGrid", breakdownToTable(breakdowns[uiState.view]), [
+          {
+            data: 'key',
+            title: columnNames[uiState.view],
+            render: rowNameFormatter
+          },
+          getCurrentYearColumnDefinition(uiState),
+          getAllYearsColumnDefinition(uiState)
+        ], i18n.table, [[0, 'asc']]);
+      }
+
+      // Show an alert if no data is available
+      if ( myGrid === undefined || myGrid.page.info().recordsDisplay != 0 ) {
+        $('.no-data-alert').hide();
+      } else {
+        $('.no-data-alert').show();
+      }
+    }
+
+    // XXX: we're using the Payments page styles, where the table is hidden by CSS,
+    // so we show it at the start. We should assign proper separate styles instead.
+    $('.payments-content .tab-content').show();
+
+    // Setup tabs navigation
+    setRedrawOnTabsChange('#tabs', updateTab);
+  });
+</script>
