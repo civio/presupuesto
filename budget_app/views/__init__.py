@@ -5,6 +5,7 @@ from entities import entities_policies, entities_show_helper, entities_policies_
 from entities import entities_income_articles, entities_income_articles_show, entities_expense_articles, entities_expense_articles_show
 from entities import entities_payments, entities_payments_search
 from investments import investments, investments_show
+from main_investments import main_investments
 from sections import sections_show
 from guided_visit import guided_visit
 from tax_receipt import tax_receipt
