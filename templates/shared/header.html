@@ -80,6 +80,12 @@
           </li>
           {% endif %}
 
+          {% if show_main_investments %}
+          <li class="page-investments {{ 'active' if active_tab == "main_investments"}}">
+            <a href="{{ url('budget_app.views.main_investments') }}" class="icon-investments">{{ _('Inversiones principales') }}</a>
+          </li>
+          {% endif %}
+
           {% if show_guided_visit %}
           <li class="page-institutions {{ 'active' if active_tab == "guided_visit"}}">
             <a href="{{ url('budget_app.views.guided_visit') }}" class="icon-payments">{{ _('Visita guiada') }}</a>
