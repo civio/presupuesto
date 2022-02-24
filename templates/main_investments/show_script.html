@@ -33,7 +33,7 @@
     }
 
     function getAllYearsColumnDefinition(uiState) {
-      var getBreakdownValue = getBreakdownValueFunction(uiState.field, "total_" + uiState.year);
+      var getBreakdownValue = getBreakdownValueFunction(uiState.field, "actual_" + uiState.year);
       return {
         title: '{{ _("Presupuesto total") }}',
         data: getBreakdownValue,

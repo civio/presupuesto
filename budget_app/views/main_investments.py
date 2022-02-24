@@ -29,8 +29,10 @@ def main_investments(request, render_callback=None):
     # All years
     main_investments = MainInvestment.objects.each_denormalized("total_expected_amount", query, [ entity.id ])
     for item in main_investments:
-        # data_point.amount = float(item[6])*100
-        column_name = "total_"+str(getattr(item, 'year'))
+        # I don't like calling the column "actual_", when "total_" or "all_years_" would be
+        # more appropriate, but the budget/actual two-column design is baked into other parts
+        # of the code. The CSV/XLS generation code, for example. So we do this.
+        column_name = "actual_"+str(getattr(item, 'year'))
         c['area_breakdown'].add_item(column_name, item)
         c['policy_breakdown'].add_item(column_name, item)
         c['department_breakdown'].add_item(column_name, item)
@@ -38,4 +40,4 @@ def main_investments(request, render_callback=None):
     # Get additional information
     populate_entity_descriptions(c, entity)
 
-    return render_response('main_investments/index.html', c)
+    return render(c, render_callback, 'main_investments/index.html')
