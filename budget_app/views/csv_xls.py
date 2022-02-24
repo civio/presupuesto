@@ -135,6 +135,22 @@ def entity_investment_line_breakdown(request, slug, id, format):
 
 
 #
+# MAIN INVESTMENTS BREAKDOWN
+#
+def write_entity_main_investments_breakdown(c, writer):
+    write_header(writer, [u'Año.csv', u'Nombre Área', u'Inversión', u'Presupuesto año en curso', 'Presupuesto total'])
+    for year in sorted(_unique(c['area_breakdown'].years.values())):
+        for area_id, area in c['area_breakdown'].subtotals.iteritems():
+            write_breakdown_item(writer, year, area, 'expense', [area_id, None], None)
+            for investment_id, investment in area.subtotals.iteritems():
+                write_breakdown_item(writer, year, investment, 'expense', [area_id, investment_id], None)
+
+def entity_main_investments_breakdown(request, slug, format):
+    c = get_context(request)
+    return main_investments(request, _generator('inversiones-principales-%s' % (slug), format, write_entity_main_investments_breakdown))
+
+
+#
 # FUNCTIONAL BREAKDOWN
 #
 def write_functional_breakdown(c, writer):
