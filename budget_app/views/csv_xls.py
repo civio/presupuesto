@@ -200,7 +200,6 @@ def economic_policy_breakdown(request, id, format):
     return policies_show(request, id, '', _generator("%s.economica" % id, format, write_economic_breakdown))
 
 def write_detailed_economic_breakdown(c, writer):
-    # print c['descriptions']['expense']
     write_header(writer, [u'Año.csv', u'Id Capítulo', u'Nombre Capítulo', u'Id Artículo', u'Nombre Artículo', 'Id Subconcepto', 'Nombre Subconcepto', 'Presupuesto Gastos', 'Gastos Reales'])
     for year in sorted(_unique(c['breakdowns']['economic'].years.values())):
         for chapter_id, chapter in c['breakdowns']['economic'].subtotals.iteritems():

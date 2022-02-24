@@ -9,9 +9,6 @@ def main_investments(request, render_callback=None):
     entity = get_main_entity(c)
     set_entity(c, entity)
 
-    # Setup active_tab for menu options
-    c['active_tab'] = 'main_investments'
-
     # Get the investments breakdown
     query = "e.id = %s"
     c['area_breakdown'] = BudgetBreakdown(['area_name', 'description'])
