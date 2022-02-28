@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-06 13:44+0200\n"
-"PO-Revision-Date: 2022-02-23 15:41+0100\n"
+"PO-Revision-Date: 2022-02-28 16:30+0100\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -1034,6 +1034,15 @@ msgstr "District"
 
 msgid "Inversiones principales"
 msgstr "Main investments"
+
+msgid "area.main_investments"
+msgstr "Area"
+
+msgid "policy.main_investments"
+msgstr "Policy"
+
+msgid "department.main_investments"
+msgstr "Entity"
 
 msgid "Presupuesto año en curso"
 msgstr "Current year budget"
