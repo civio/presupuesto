@@ -3,17 +3,16 @@ from django.db import models, connection
 from django.conf import settings
 
 class MainInvestmentManager(models.Manager):
-    def each_denormalized(self, column_name, additional_constraints=None, additional_arguments=None):
+    def each_denormalized(self, amount_column_name, additional_constraints=None, additional_arguments=None):
         sql = \
             "select " \
-                "mi.id, mi.description, TRUE as expense, "+column_name+" as amount, " \
-                "gc.code as area, " \
+                "mi.id, mi.description, mi." + amount_column_name + " as amount, TRUE as expense, " \
+                "mi.entity_name, mi.section_name, mi.area_name, " \
                 "fc.description as policy, " \
                 "b.year " \
             "from " \
                 "main_investments mi " \
                 "left join functional_categories fc on mi.functional_category_id = fc.id " \
-                "left join geographic_categories gc on mi.geographic_category_id = gc.id " \
                 "left join budgets b on mi.budget_id = b.id " \
                 "left join entities e on b.entity_id = e.id "
 
