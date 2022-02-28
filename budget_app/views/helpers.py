@@ -21,7 +21,10 @@ TABS = {
     'policies': r'^policies.*',
     'payments': r'^payments.*',
     'calculator': r'^tax-receipt.*',
-    'glossary': r'^glossary.*'
+    'glossary': r'^glossary.*',
+    'guided_visit': r'^guidedvisit.*',
+    'investments': r'^investments.*',
+    'main_investments': r'^main_investments.*',
 }
 
 #
