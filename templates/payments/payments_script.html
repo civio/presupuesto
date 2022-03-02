@@ -11,6 +11,14 @@
         totalAmount     = {{ total_amount }},
         yearAsRange     = {{ 'true' if payments_year_range else 'false' }};
 
+    // XXX: This is duplicated everywhere, should move to a shared file :/
+    var i18n = { 
+          'table': {
+            'sortAscending': '{{ _(": Clicar para ordenar ascendentemente") }}',
+            'sortDescending': '{{ _(": Clicar para ordenar descendentemente") }}'
+          }
+        };
+
     var breakdowns = {
       'area': {{ area_breakdown.to_json()|safe }},
       'payee': {{ payee_breakdown.to_json()|safe }},
@@ -117,8 +125,8 @@
       // We don't have (yet) overall dataset statistics when displaying a summary, so we
       // hide the info box in those cases.
       if (showingSummary) {
-        $("#payments-info-summary #payments-total").text( Formatter.amount(totalAmount) );
-        $("#payments-info-summary #payments-size").text( Formatter.number(paymentsCount) );
+        $("#payments-total-summary").text( Formatter.amount(totalAmount) );
+        $("#payments-size-summary").text( Formatter.number(paymentsCount) );
         if (yearAsRange) {
           if ( query.date ) {
             var queryYears = query.date.split(',');
@@ -165,8 +173,8 @@
         }
         $('#query-panel .payments-query').html( queryStr.join("{{ _('payment.query.join')|safe }}") );
 
-        $("#payments-info-detailed #payments-total").text( Formatter.amount(totalAmount) );
-        $("#payments-info-detailed #payments-size").text( Formatter.number(paymentsCount) );
+        $("#payments-total-detailed").text( Formatter.amount(totalAmount) );
+        $("#payments-size-detailed").text( Formatter.number(paymentsCount) );
 
         $('#payments-info-summary').hide();
         $('#payments-info-detailed').show();
@@ -194,7 +202,7 @@
                             render: formatter
                           },
                           columnDef
-                        ]);
+                        ], i18n.table);
 
       // Update download links
       var queryString = window.location.hash.replace("#", "");
