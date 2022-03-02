@@ -7,7 +7,7 @@ import csv
 import re
 
 
-class GlossaryLoader:
+class GlossaryLoader(object):
     def load(self, filename, language):
 
         print "Cargando glosario de %s..." % filename
