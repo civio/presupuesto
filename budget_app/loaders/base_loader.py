@@ -2,7 +2,7 @@
 from decimal import *
 
 # Generic utilities for loaders
-class BaseLoader:
+class BaseLoader(object):
 
     # Make input file delimiter configurable by children
     def _get_delimiter(self):
