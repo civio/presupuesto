@@ -4,7 +4,7 @@ import csv
 import re
 
 
-class EntityLoader:
+class EntityLoader(object):
     def load(self, filename):
         self._delete_all()
 

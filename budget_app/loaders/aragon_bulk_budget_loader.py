@@ -6,7 +6,7 @@ import csv
 import os
 import re
 
-class AragonBulkBudgetLoader:
+class AragonBulkBudgetLoader(object):
     BudgetId = namedtuple('BudgetId', 'entity_id year')
     Uid = namedtuple('Uid', 'dimension is_expense is_actual chapter article concept subconcept')
     Item = namedtuple('Item', 'description amount')
