@@ -5,7 +5,7 @@ import re
 import os.path
 
 
-class StatLoader:
+class StatLoader(object):
     def load(self, path):
         self._delete_all()
         self.load_inflation(os.path.join(path, 'inflacion.csv'))
