@@ -16,20 +16,20 @@
           <div class="col-sm-6">
             <div class="form-group">
               <label for="s2id_input-description">{{ _('Descripción') }}</label>
-              <input type="text" id="s2id_input-description" class="form-control" placeholder="{{ _('Descripción') }}">
+              <input type="text" id="input-description" class="form-control" placeholder="{{ _('Descripción') }}">
             </div>
           </div>
           <div class="col-sm-6">
             <div class="form-group">
               <label for="s2id_input-department">{{ _('Organismo') }}</label>
-              <input id="s2id_input-department" class="form-control" />
+              <input id="input-department" class="form-control" />
             </div>
           </div>
         </div>
         {% else %}
         <div class="form-group">
           <label for="s2id_input-description">{{ _('Descripción') }}</label>
-          <input type="text" id="s2id_input-description" class="form-control" placeholder="{{ _('Descripción') }}">
+          <input type="text" id="input-description" class="form-control" placeholder="{{ _('Descripción') }}">
         </div>
         {% endif %}
 
@@ -37,13 +37,13 @@
           <div class="col-sm-6">
             <div class="form-group">
               <label for="s2id_input-area">{{ _('Área') }}</label>
-              <input id="s2id_input-area" class="form-control" />
+              <input id="input-area" class="form-control" />
             </div>
           </div>
           <div class="col-sm-6">
             <div class="form-group">
               <label for="s2id_input-payee">{{ _('Proveedor') }}</label>
-              <input id="s2id_input-payee" class="form-control" />
+              <input id="input-payee" class="form-control" />
             </div>
           </div>
         </div>
@@ -51,22 +51,22 @@
           <div class="col-sm-6">
             <div class="form-group">
               <label for="s2id_input-amount-min">{{ _('Importe mínimo') }}</label>
-              <input  type="text" id="s2id_input-amount-min" class="form-control"/>
+              <input  type="text" id="input-amount-min" class="form-control"/>
             </div>
           </div>
           <div class="col-sm-6">
             <div class="form-group">
               <label for="s2id_input-amount-max">{{ _('Importe máximo') }}</label>
-              <input  type="text" id="s2id_input-amount-max" class="form-control"/>
+              <input  type="text" id="input-amount-max" class="form-control"/>
             </div>
           </div>
         </div>
         <div id="data-controller-date" class="form-group data-controllers">
-          <label for="s2id_input-date">{{ _('Fecha') }}</label>
+          <label for="input-date">{{ _('Fecha') }}</label>
           {% if payments_year_range %}
-          <input  type="text" id="s2id_input-date" class="form-control" data-slider-min="{{first_year}}" data-slider-max="{{last_year}}" data-slider-value="[{{first_year}}, {{last_year}}]" />
+          <input  type="text" id="input-date" class="form-control" data-slider-min="{{first_year}}" data-slider-max="{{last_year}}" data-slider-value="[{{first_year}}, {{last_year}}]" />
           {% else %}
-          <input  type="text" id="s2id_input-date" class="form-control" data-value="{{last_year}}" value="{{last_year}}" />
+          <input  type="text" id="input-date" class="form-control" data-value="{{last_year}}" value="{{last_year}}" />
           {% endif %}
         </div>
         <button type="submit" class="btn btn-default btn-primary">
