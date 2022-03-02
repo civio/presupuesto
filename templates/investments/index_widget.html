@@ -1,0 +1,40 @@
+{% extends 'base-widget.html' %}
+
+{% block content %}
+
+<!-- Inversiones -->
+<section class="investments" role="region">
+
+  <!-- Inversiones Content -->
+  <div class="investments-content" tabindex="-1">
+
+    <!-- Inversiones Header -->
+    <div class="tab-content">
+      <h2 class="page-title">{{ _('Inversiones por distritos') }}</h2>
+    </div>
+
+    <div class="container">
+
+      <!-- Districts select -->
+      <div class="areas-select">
+        <ul>
+        {% for area in areas %}
+          <li><a tabindex="-1" href="{% url 'budget_app.views.investments_show' area.code, area.slug() %}">{{ area.description|safe }}</a></li>
+        {% endfor %}
+        </ul>
+        {% include 'investments/areas_map.html' %}
+      </div>
+
+      {% include 'shared/data_controllers.html' %}
+
+      <!-- Totals Panel -->
+      {% include 'investments/totals.html' %}
+    </div>
+  </div>
+</section>
+
+{% include 'shared/policy_paths.html' %}
+{% include 'shared/budget_status_labels.html' %}
+{% include 'investments/index_script.html' %}
+
+{% endblock %}
