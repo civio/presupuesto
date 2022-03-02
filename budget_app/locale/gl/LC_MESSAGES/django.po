@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-06 13:44+0200\n"
-"PO-Revision-Date: 2018-05-14 23:56+0200\n"
+"PO-Revision-Date: 2022-03-02 12:56+0100\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 2.1.1\n"
 
 #: templates/base-widget.html:7 templates/base-widget.html.py:26
 #: templates/base.html:7 templates/shared/meta.html:9
@@ -424,12 +424,12 @@ msgid "Inversiones y pagos"
 msgstr "Investimentos e pagos"
 
 #: templates/payments/index.html:24
-msgid "Hay <strong id=\"payments-size\"></strong> pagos que suman un total de <strong id=\"payments-total\"></strong> en <span id=\"payments-years\"></span>."
-msgstr "Hai <strong id=\"payments-size\"></strong> pagos que suman un total de <strong id=\"payments-total\"></strong> en <span id=\"payments-years\"></span>."
+msgid "Hay <strong id=\"payments-size-summary\"></strong> pagos que suman un total de <strong id=\"payments-total-summary\"></strong> en <span id=\"payments-years\"></span>."
+msgstr "Hai <strong id=\"payments-size-summary\"></strong> pagos que suman un total de <strong id=\"payments-total-summary\"></strong> en <span id=\"payments-years\"></span>."
 
 #: templates/payments/index.html:25
-msgid "Hay <strong id=\"payments-size\"></strong> pagos que suman un total de <strong id=\"payments-total\"></strong> para la búsqueda:"
-msgstr "Hai <strong id=\"payments-size\"></strong> pagos que suman un total de <strong id=\"payments-total\"></strong> para a procura:"
+msgid "Hay <strong id=\"payments-size-detailed\"></strong> pagos que suman un total de <strong id=\"payments-total-detailed\"></strong> para la búsqueda:"
+msgstr "Hai <strong id=\"payments-size-detailed\"></strong> pagos que suman un total de <strong id=\"payments-total-detailed\"></strong> para a procura:"
 
 #: templates/payments/index.html:32
 msgid "Desglose por área"
