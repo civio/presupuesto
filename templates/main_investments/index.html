@@ -2,23 +2,21 @@
 
 {% block content %}
 
-<section class="payments-breakdown" data-tab="area">
+<section class="main-investments" data-tab="area">
 
-  <div class="payments-header section-header">
+  <div class="main-investments-header section-header">
     <div class="container">
       <h2 class="page-title">{{ _('Inversiones principales') }}</h2>
     </div>
   </div>
 
-  <div class="payments-content">
+  <div class="main-investments-content">
     {% include 'main_investments/intro.html' %}
 
     {% include 'main_investments/map.html' %}
 
-    <!-- FIXME: crappy layout code -->
     <div class="container tab-content">
-      <br/>
-      <br/>
+      {% include 'shared/data_controllers.html' %}
 
       <ul id="tabs" class="nav nav-tabs nav-tabs-centered" role="tablist">
         <li role="presentation">
@@ -43,12 +41,13 @@
         </p>
       </div>
 
-
     </div>
 
     {% include 'shared/social_sharing.html' %}
   </div>
 </section>
+
+{% include 'shared/modal_embed.html' %}
 
 {% include 'shared/data_sources.html' %}
 
