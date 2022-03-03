@@ -37,4 +37,7 @@ def main_investments(request, render_callback=None):
     # Get additional information
     populate_entity_descriptions(c, entity)
 
-    return render(c, render_callback, 'main_investments/index.html')
+    # if parameter widget defined use policies/widget template instead of policies/show
+    template = 'main_investments/index_widget.html' if isWidget(request) else 'main_investments/index.html'
+
+    return render(c, render_callback, template)

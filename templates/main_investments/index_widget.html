@@ -1,0 +1,21 @@
+{% extends 'base-widget.html' %}
+
+{% block content %}
+
+<section class="main-investments" data-tab="area">
+
+  <div class="investments-content" tabindex="-1">
+    <div class="tab-content">
+      <h2 class="page-title">{{ _('Inversiones principales') }}</h2>
+    </div>
+
+    <div class="main-investments-content">
+    {% include 'main_investments/map.html' %}
+    </div>
+  </div>
+</section>
+
+
+{% include 'main_investments/show_script.html' %}
+
+{% endblock %}
