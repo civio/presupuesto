@@ -3,6 +3,9 @@ from django.db import models, connection
 from django.conf import settings
 
 class MainInvestmentManager(models.Manager):
+    def all_main_investments(self, entity_id):
+        return self.filter(budget__entity=entity_id).all()
+
     def each_denormalized(self, amount_column_name, additional_constraints=None, additional_arguments=None):
         sql = \
             "select " \
