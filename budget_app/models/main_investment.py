@@ -28,6 +28,7 @@ class MainInvestment(models.Model):
     budget = models.ForeignKey('Budget')
     project_id = models.CharField(max_length=20)
     description = models.CharField(max_length=200)
+    image_URL = models.CharField(max_length=200, null=True)
     status = models.CharField(max_length=20)
     entity_name = models.CharField(max_length=100)
     section_name = models.CharField(max_length=100)

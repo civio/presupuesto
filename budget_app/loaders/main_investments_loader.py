@@ -92,6 +92,7 @@ class MainInvestmentsLoader(BaseLoader):
                             geographic_category=gc,
                             project_id=item['project_id'],
                             description=item['description'],
+                            image_URL=item['image_URL'],
                             status=item['status'],
                             entity_name=item['entity_name'],
                             section_name=item['section_name'],
