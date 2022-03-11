@@ -34,6 +34,9 @@ def main_investments(request, render_callback=None):
         c['policy_breakdown'].add_item(column_name, item)
         c['department_breakdown'].add_item(column_name, item)
 
+    # Retrieve the full table for the map
+    c['all_main_investments'] = MainInvestment.objects.all_main_investments(entity)
+
     # Get additional information
     populate_entity_descriptions(c, entity)
 
