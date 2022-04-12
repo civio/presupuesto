@@ -44,7 +44,6 @@
     function updateTab() {
       // Update uiState
       var uiState = getUIState();
-      uiState.year = 2021;  // FIXME: Only one year for now
 
       // Update tab
       $('#tabs .active').removeClass('active');
@@ -76,9 +75,17 @@
       }
     }
 
+    function redraw() {
+      updateTab();
+    }
+
     // XXX: we're using the Payments page styles, where the table is hidden by CSS,
     // so we show it at the start. We should assign proper separate styles instead.
     $('.payments-content .tab-content').show();
+
+    // Setup year navigation
+    initSlider("#year-selection", {{ years|safe }}, {{ starting_year }});
+    setRedrawOnSliderChange("#year-selection", {{ starting_year }}, redraw);
 
     // Setup tabs navigation
     setRedrawOnTabsChange('#tabs', updateTab);
