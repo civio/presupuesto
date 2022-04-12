@@ -75,7 +75,12 @@
       }
     }
 
-    function redraw() {
+    function onYearChange() {
+      updateTab();
+      $('#investments-viz').trigger('year-change', getUIState().year);
+    }
+
+    function onTabChange() {
       updateTab();
     }
 
@@ -85,10 +90,10 @@
 
     // Setup year navigation
     initSlider("#year-selection", {{ years|safe }}, {{ starting_year }});
-    setRedrawOnSliderChange("#year-selection", {{ starting_year }}, redraw);
+    setRedrawOnSliderChange("#year-selection", {{ starting_year }}, onYearChange);
 
     // Setup tabs navigation
-    setRedrawOnTabsChange('#tabs', updateTab);
+    setRedrawOnTabsChange('#tabs', onTabChange);
 
     // Add click embed btn event
     setEmbedModal();
