@@ -1,7 +1,5 @@
 Este repositorio contiene el código de la aplicación de visualización de [Dónde van mis impuestos][1], desarrollada originalmente como parte del proyecto [Aragón Open Data][3].
 
-<img src="http://presupuesto.aragon.es/static/assets/logo-gobierno-aragon.png" height="28px" /><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>![Logo Aragón Open Data](budget_app/static/assets/logoAragonOpenData.png)
-
 ### Introducción
 El objetivo del proyecto consiste en ofrecer una visualización de los Presupuestos Generales del Estado suficientemente intuitiva como para ser comprendida por personas sin experiencia previa en política presupuestaria, pero a la vez suficientemente detallada para permitir a aquellas personas interesadas y expertas en este asunto profundizar más de una manera ágil y efectiva. Así, se muestra la realidad del presupuesto en su conjunto, cubriendo tanto el lado de los ingresos como el de los gastos, y tanto las cantidades presupuestadas como las finalmente ejecutadas (cuando la información esté disponible).
 
@@ -26,7 +24,7 @@ El Gobierno de Aragón a través de Aragón Open Data pone a disposición de usu
 
 Que el código de esta aplicación esté publicado bajo la licencia abierta [EUPL 1.1][2] (European Union Public License 1.1), significa que puedes reutilizarlo, modificarlo y adaptarlo a tus necesidades de forma totalmente libre. Si utilizas el código, a modo de reconocimiento a Aragón Open Data incluye en tu proyecto nuestro logo en el cabecero o en el pie de página, te lo agradeceremos!
 
-![Logo Aragón Open Data](budget_app/static/assets/logoAragonOpenData.png)
+<img src="http://presupuesto.aragon.es/static/assets/logo-gobierno-aragon.png" height="28px" /><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>![Logo Aragón Open Data](budget_app/static/assets/logoAragonOpenData.png)
 
 [2]: https://joinup.ec.europa.eu/software/page/eupl
 
