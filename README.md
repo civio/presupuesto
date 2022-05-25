@@ -1,12 +1,9 @@
+Este repositorio contiene el código de la aplicación de visualización de [Dónde van mis impuestos][1], desarrollada originalmente como parte del proyecto [Aragón Open Data][3].
 
 <img src="http://presupuesto.aragon.es/static/assets/logo-gobierno-aragon.png" height="28px" /><span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>![Logo Aragón Open Data](budget_app/static/assets/logoAragonOpenData.png)
 
-## Presupuestos de Aragón
-
-Este repositorio contiene el código de la aplicación de visualización de [Presupuestos del Gobierno de Aragón][1], desarrollada como parte del proyecto [Aragón Open Data][3].
-
 ### Introducción
-El objetivo de la primera fase del proyecto consistió en ofrecer una visualización de los Presupuestos Generales de Aragón suficientemente intuitiva como para ser comprendida por personas sin experiencia previa en política presupuestaria, pero a la vez suficientemente detallada para permitir a aquellas personas interesadas y expertas en este asunto profundizar más de una manera ágil y efectiva. Así, esa primera fase muestra la realidad del presupuesto en su conjunto, cubriendo tanto el lado de los ingresos como el de los gastos, y tanto las cantidades presupuestadas como las finalmente ejecutadas (cuando la información esté disponible). El objetivo de la segunda fase ha sido extender la transparencia de los presupuestos de la comunidad autónoma a niveles inferiores: municipios y comarcas.
+El objetivo del proyecto consiste en ofrecer una visualización de los Presupuestos Generales del Estado suficientemente intuitiva como para ser comprendida por personas sin experiencia previa en política presupuestaria, pero a la vez suficientemente detallada para permitir a aquellas personas interesadas y expertas en este asunto profundizar más de una manera ágil y efectiva. Así, se muestra la realidad del presupuesto en su conjunto, cubriendo tanto el lado de los ingresos como el de los gastos, y tanto las cantidades presupuestadas como las finalmente ejecutadas (cuando la información esté disponible).
 
 Las principales funcionalidades de la aplicación son:
 
@@ -14,11 +11,11 @@ Las principales funcionalidades de la aplicación son:
 
  * Mostrar la información de los programas presupuestarios al máximo nivel de desglose existente, el nivel de partida.
 
- * Mostrar la evolución de los presupuestos desde 2006.
+ * Mostrar la evolución de los presupuestos a lo largo del tiempo.
 
  * Permitir la búsqueda de texto libre en el conjunto de los presupuestos para encontrar cualquier dato de forma sencilla
 
-Para más información, consulta las memorias del proyecto para las fases [uno](docs/Memoria Fase 1.pdf) y [dos](docs/Memoria Fase 2.pdf). Y las instrucciones de instalación en el fichero [`INSTALL.md`](INSTALL.md).
+Para más información, consulta la [memoria del proyecto](docs/Memoria%20Fase%201.pdf) y las instrucciones de instalación en el fichero [`INSTALL.md`](INSTALL.md).
 
 [1]: http://presupuesto.aragon.es
 [3]: http://opendata.aragon.es/
