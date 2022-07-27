@@ -112,7 +112,7 @@ class SimpleBudgetLoader(BaseLoader):
                                                 subheading = None,
                                                 budget=budget)
             if not ec:
-                print u"ALERTA: No se encuentra la categoría económica de %s '%s' para '%s': %s€" % ("gastos" if item['is_expense'] else "ingresos", item['ec_code'].decode("utf8"), item['description'].decode("utf8"), item['amount']/100)
+                print u"ALERTA: No se encuentra la categoría económica de %s '%s' para '%s': %s€" % ("gastos" if item['is_expense'] else "ingresos", item['ec_code'], self._remove_unicode(item['description']), item['amount']/100)
                 continue
             else:
                 ec = ec[0]
@@ -123,7 +123,7 @@ class SimpleBudgetLoader(BaseLoader):
                                                         department=item['ic_code'] if len(item['ic_code']) >= 3 else None,
                                                         budget=budget)
             if not ic:
-                print u"ALERTA: No se encuentra la categoría institucional '%s' para '%s': %s€" % (item['ic_code'].decode("utf8"), item['description'].decode("utf8"), item['amount']/100)
+                print u"ALERTA: No se encuentra la categoría institucional '%s' para '%s': %s€" % (item['ic_code'], self._remove_unicode(item['description']), item['amount']/100)
                 continue
             else:
                 ic = ic[0]
@@ -137,7 +137,7 @@ class SimpleBudgetLoader(BaseLoader):
                                                         subprogramme=item['fc_code'] if self._use_subprogrammes() else None,
                                                         budget=budget)
                 if not fc:
-                    print u"ALERTA: No se encuentra la categoría funcional '%s' para '%s': %s€" % (item['fc_code'].decode("utf8"), item['description'].decode("utf8"), item['amount']/100)
+                    print u"ALERTA: No se encuentra la categoría funcional '%s' para '%s': %s€" % (item['fc_code'], self._remove_unicode(item['description']), item['amount']/100)
                     continue
                 else:
                     fc = fc[0]
@@ -275,3 +275,10 @@ class SimpleBudgetLoader(BaseLoader):
     # Are we using subprogrammes? (Default: false)
     def _use_subprogrammes(self):
         return hasattr(settings, 'USE_SUBPROGRAMMES') and settings.USE_SUBPROGRAMMES
+
+    # Print safely, whatever the damn encoding
+    # See https://stackoverflow.com/a/46434294
+    def _remove_unicode(self, s):
+        try: return str(s)
+        except UnicodeEncodeError:
+            return s.encode('ascii', 'ignore').decode('ascii')
