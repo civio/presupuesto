@@ -67,7 +67,7 @@ def programmes_show_helper(request, c, entity, id, title, render_callback=None):
 
     # Get the budget breakdown
     # The functional breakdown may or may not exist, depending on whether we are at deepest level,
-    # i.e. depending on whether there are subprogrammes. The policy page will check whether
+    # i.e. depending on whether there are subprogrammes. The policy page will check whether
     # the breakdown exists and adapt accordingly.
     c['breakdowns'] = {
       'functional': BudgetBreakdown(['subprogramme']) if c['use_subprogrammes'] else None,
