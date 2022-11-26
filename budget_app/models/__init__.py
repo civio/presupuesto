@@ -7,6 +7,7 @@ from functional_category import *
 from funding_category import *
 from geographic_category import *
 from glossary_term import *
+from goal import *
 from institutional_category import *
 from inflation_stat import *
 from investment import *
