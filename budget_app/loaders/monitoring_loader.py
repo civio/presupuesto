@@ -9,5 +9,5 @@ import re
 # Generic Monitoring loader
 class MonitoringLoader(BaseLoader):
 
-    def load(self, entity, year, path):
+    def load(self, entity, year, path, status):
         print u"Cargando objetivos e indicadores para entidad '%s' año %s..." % (entity.name, year)
