@@ -96,6 +96,12 @@ def programmes_show_helper(request, c, entity, id, title, render_callback=None):
     if (c['show_monitoring_tab']):
         c['monitoring_goals'] = Goal.objects.get_programme_goals(entity, id)
 
+    # XXX: Get sections with monitoring data, to structure the template output.
+    # This is highly temporary, as we'll probably end up using Javascript to handle multiple years.
+    # There's a `select_related` in the model for this, could be removed.
+    get_section = lambda g: g.institutional_category
+    c['monitoring_sections'] = set(map(get_section, c['monitoring_goals']))
+
     # Additional data needed by the view
     show_side = 'expense'
     populate_stats(c)
