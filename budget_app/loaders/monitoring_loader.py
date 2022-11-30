@@ -103,4 +103,5 @@ class MonitoringLoader(BaseLoader):
                     institutional_category=ic,
                     goal_number=goal['goal_number'],
                     description=goal['description'],
+                    report=goal['report'],
                     budget=budget).save()
