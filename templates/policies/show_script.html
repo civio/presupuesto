@@ -155,7 +155,9 @@
     // Update Year
     function updateYear() {
       uiState = getUIState();
-      redrawGrid()
+      if ( uiState.view !== 'monitoring' ) {
+        redrawGrid();
+      }
     }
 
     // Redraw all
@@ -166,8 +168,24 @@
       $('.panel-downloads > p').hide();
       $('#'+uiState.view+'-downloads').show();
 
-      redrawChart();
-      redrawGrid();
+      // We skip chart setup in institutional and monitoring tabs
+      if (  uiState.view === 'institutional' ||
+            uiState.view === 'monitoring' ) {
+        $('.policies-chart').hide();
+      } else {
+        $('.policies-chart').show();
+        redrawChart();
+      }
+
+      // The monitoring tab doesn't follow the typical grid layout
+      if (  uiState.view === 'monitoring' ) {
+        $('#tab-grid-content').hide();
+        $('#tab-monitoring-content').show();
+      } else {
+        $('#tab-monitoring-content').hide();
+        $('#tab-grid-content').show();
+        redrawGrid();
+      }
     }
 
     // Do all the hard work of drawing the grids
@@ -239,16 +257,6 @@
 
     function redrawChart() {
       if (uiState === null) return;
-
-      // We skip chart setup in institutional tab
-      if (uiState.view === 'institutional'){
-        $('#policy-chart-container .stacked-area-chart').remove();
-        $('#policy-chart-container .stacked-area-chart-legend').remove();
-        $('.policies-chart').hide();
-        return;
-      } else {
-        $('.policies-chart').show();
-      }
 
       // Setup Graph
       var colorScale = {{ color_scale|safe }};
