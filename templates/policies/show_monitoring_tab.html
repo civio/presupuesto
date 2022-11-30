@@ -1,10 +1,16 @@
 <div id="tab-monitoring-content">
 
-Objetivos:
-<ul>
-{% for goal in monitoring_goals %}
-    <li>{{ goal.institutional_category }}: {{ goal.functional_category }} - {{ goal.goal_number }} {{ goal.description }}</li>
+{% for section in monitoring_sections %}
+    <h3>{{ section }}</h3>
+
+    <!-- XXX: This is very temporary code, it's clearly very inefficient. Moving to JS probably -->
+    <ul>
+    {% for goal in monitoring_goals %}
+        {% if section == goal.institutional_category %}
+        <li>{{ goal.goal_number }}: {{ goal.description }}</li>
+        {% endif %}
+    {% endfor %}
+    </ul>
 {% endfor %}
-</ul>
 
 </div>
