@@ -12,10 +12,11 @@ class Migration(SchemaMigration):
         db.create_table('goals', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('budget', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['budget_app.Budget'])),
-            ('institutional_category', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['budget_app.InstitutionalCategory'], null=True, db_column='institutional_category_id')),
-            ('functional_category', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['budget_app.FunctionalCategory'], null=True, db_column='functional_category_id')),
+            ('institutional_category', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['budget_app.InstitutionalCategory'], db_column='institutional_category_id')),
+            ('functional_category', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['budget_app.FunctionalCategory'], db_column='functional_category_id')),
             ('goal_number', self.gf('django.db.models.fields.CharField')(max_length=2)),
-            ('description', self.gf('django.db.models.fields.CharField')(max_length=200)),
+            ('description', self.gf('django.db.models.fields.TextField')()),
+            ('report', self.gf('django.db.models.fields.TextField')()),
             ('updated_at', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
             ('created_at', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
         ))
@@ -124,11 +125,12 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Goal', 'db_table': "'goals'"},
             'budget': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['budget_app.Budget']"}),
             'created_at': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            'description': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
-            'functional_category': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['budget_app.FunctionalCategory']", 'null': 'True', 'db_column': "'functional_category_id'"}),
+            'description': ('django.db.models.fields.TextField', [], {}),
+            'functional_category': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['budget_app.FunctionalCategory']", 'db_column': "'functional_category_id'"}),
             'goal_number': ('django.db.models.fields.CharField', [], {'max_length': '2'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'institutional_category': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['budget_app.InstitutionalCategory']", 'null': 'True', 'db_column': "'institutional_category_id'"}),
+            'institutional_category': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['budget_app.InstitutionalCategory']", 'db_column': "'institutional_category_id'"}),
+            'report': ('django.db.models.fields.TextField', [], {}),
             'updated_at': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'})
         },
         'budget_app.inflationstat': {

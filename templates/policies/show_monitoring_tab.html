@@ -4,13 +4,18 @@
     <h3>{{ section }}</h3>
 
     <!-- XXX: This is very temporary code, it's clearly very inefficient. Moving to JS probably -->
-    <ul>
+    <div>
     {% for goal in monitoring_goals %}
         {% if section == goal.institutional_category %}
-        <li>{{ goal.goal_number }}: {{ goal.description }}</li>
+        <p style="padding-left: 20px">
+            <strong>{{ goal.goal_number }}: {{ goal.description }}</strong>
+            <p style="padding-left: 40px">
+                {{ goal.report|safe }}
+            </p>
+        </p>
         {% endif %}
     {% endfor %}
-    </ul>
+    </div>
 {% endfor %}
 
 </div>
