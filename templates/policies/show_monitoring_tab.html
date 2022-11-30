@@ -1,3 +1,10 @@
 <div id="tab-monitoring-content">
-Hello world
+
+Objetivos:
+<ul>
+{% for goal in monitoring_goals %}
+    <li>{{ goal }}</li>
+{% endfor %}
+</ul>
+
 </div>

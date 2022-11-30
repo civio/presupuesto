@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 
 from django.core.urlresolvers import reverse
-from budget_app.models import Budget, BudgetBreakdown, FunctionalCategory, EconomicCategory
+from budget_app.models import Budget, BudgetBreakdown, FunctionalCategory, EconomicCategory, Goal
 from helpers import *
 import json
 
@@ -91,6 +91,10 @@ def programmes_show_helper(request, c, entity, id, title, render_callback=None):
     c['descriptions']['economic'] = programme_descriptions
     c['name'] = c['descriptions']['functional'].get(c['programme_id'])
     c['title_prefix'] = c['name']
+
+    # Add monitoring information, if needed
+    if (c['show_monitoring_tab']):
+        c['monitoring_goals'] = Goal.objects.get_programme_goals(entity, id)
 
     # Additional data needed by the view
     show_side = 'expense'

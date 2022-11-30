@@ -4,6 +4,8 @@ from django.conf import settings
 
 
 class GoalsManager(models.Manager):
+    def get_programme_goals(self, entity, programme_id):
+        return self.filter(budget__entity=entity.id, functional_category__programme=programme_id).all()
     None
 
 
