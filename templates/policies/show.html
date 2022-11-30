@@ -33,6 +33,11 @@
       </li>
       {% endif %}
     {% endfor %}
+      {% if show_monitoring_tab %}
+      <li role="presentation">
+        <a href="#monitoring" role="tab">{{ _(tab_titles['monitoring']) }}</a>
+      </li>
+      {% endif %}
     </ul>
   </div>
 
@@ -58,19 +63,20 @@
         </div>
       </div>
 
-       <!-- Data Controller -->
-      {% include 'shared/data_controllers.html' %}
+      <div id="tab-grid-content">
+         <!-- Data Controller -->
+        {% include 'shared/data_controllers.html' %}
 
-      <!-- Totals Panel -->
-      {% include 'entities/totals.html' %}
+        <!-- Totals Panel -->
+        {% include 'entities/totals.html' %}
 
-      <!-- Table Grid -->
-      <table id="myGrid" class="table-grid" width="100%"></table>
+        <!-- Table Grid -->
+        <table id="myGrid" class="table-grid" width="100%"></table>
 
-      <!-- Panel Downloads -->
+        <!-- Panel Downloads -->
 {# XXX: Disable CSV downloads for entities. See #105 #}
 {% if not is_secondary_entity %}
-      <div class="panel-downloads">
+        <div class="panel-downloads">
     {% if full_breakdown %}
       {% for tab in ['functional', 'economic', 'funding', 'institutional'] %}
         {% if breakdowns[tab] %}
@@ -98,9 +104,15 @@
                       xls_link=url(download_view_name, level, entity.slug, csv_id, 'xlsx') ) }} 
       {% endif %}
     {% endif %}
-      </div>
+        </div>
 {% endif %}
-    </div>
+      </div>  <!-- tab-grid-content -->
+
+      {% if show_monitoring_tab %}
+      {% include 'policies/show_monitoring_tab.html' %}
+      {% endif %}
+
+    </div> <!-- container -->
 
     {% include 'shared/social_sharing.html' %}
   </div>
