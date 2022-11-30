@@ -58,12 +58,21 @@ class MonitoringLoader(BaseLoader):
 
 
     def load_goals(self, budget, goals):
+        loaded_goals_uids = set()
         for goal in goals:
-            # Ignore null entries
-            if goal == None:
+            if goal == None:    # Ignore null entries
                 continue
 
-            # TODO: check for duplicates!
+            # Check for duplicates.
+            # The Madrid data (the original implementation) comes in a denormalized file, together with the
+            # indicators, so there are plenty of duplicates. It's easier to get rid of them at this point.
+            # (An alternative would be to modify the line parser to return an UID also, and move the
+            # deduplication to `parse_items`.)
+            goal_uid = "%s/%s/%s" % (goal['ic_code'], goal['fc_code'], goal['goal_number'])
+            if goal_uid in loaded_goals_uids:
+                continue
+            else:
+                loaded_goals_uids.add(goal_uid)
 
             # Fetch functional category (required)
             fc = FunctionalCategory.objects.filter(area=goal['fc_code'][0:1],

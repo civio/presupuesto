@@ -3,7 +3,7 @@
 Objetivos:
 <ul>
 {% for goal in monitoring_goals %}
-    <li>{{ goal }}</li>
+    <li>{{ goal.institutional_category }}: {{ goal.functional_category }} - {{ goal.goal_number }} {{ goal.description }}</li>
 {% endfor %}
 </ul>
 
