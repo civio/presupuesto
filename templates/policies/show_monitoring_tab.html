@@ -3,13 +3,38 @@
 {% for section in monitoring_sections %}
     <h3>{{ section }}</h3>
 
-    <!-- XXX: This is very temporary code, it's clearly very inefficient. Moving to JS probably -->
+    <!-- XXX: This is VERY temporary code, it's clearly VERY inefficient. Moving to JS probably -->
     <div>
     {% for goal in monitoring_goals %}
         {% if section == goal.institutional_category %}
-        <p style="padding-left: 20px">
+        <p style="margin-left: 20px">
             <strong>{{ goal.goal_number }}: {{ goal.description }}</strong>
-            <p style="padding-left: 40px">
+
+            <p style="margin-left: 40px">
+                <ul>
+                {% for activity in monitoring_activities %}
+                    {% if activity.goal.uid == goal.uid %}
+                    <li>{{ activity }}</li>
+                    {% endif %}
+                {% endfor %}
+                </ul>
+            </p>
+
+            <p>
+                <table style="margin-left: 90px">
+                {% for indicator in monitoring_indicators %}
+                    {% if indicator.goal.uid == goal.uid %}
+                    <tr>
+                        <td>{{ indicator.description }}</td>
+                        <td style="width: 30px"></td>
+                        <td style="text-align: right">{{ indicator.actual }} / {{ indicator.target }} ({{ indicator.unit }})</td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+                </table>
+            </p>
+
+            <p style="margin-left: 40px; background-color: #EEE">
                 {{ goal.report|safe }}
             </p>
         </p>
