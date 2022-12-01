@@ -1,7 +1,4 @@
-from django.template.defaultfilters import slugify
 from django.db import models
-from django.conf import settings
-
 
 class GoalsManager(models.Manager):
     def get_programme_goals(self, entity, programme_id):
@@ -13,6 +10,7 @@ class GoalsManager(models.Manager):
 
 class Goal(models.Model):
     budget = models.ForeignKey('Budget')
+    uid = models.CharField(max_length=20, db_index=True)   # Unique inside a given budget
     institutional_category = models.ForeignKey('InstitutionalCategory', db_column='institutional_category_id')
     functional_category = models.ForeignKey('FunctionalCategory', db_column='functional_category_id')
     goal_number = models.CharField(max_length=2)

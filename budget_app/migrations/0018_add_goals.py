@@ -8,10 +8,26 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
+        # Adding model 'GoalIndicator'
+        db.create_table('goal_indicators', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('goal', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['budget_app.Goal'])),
+            ('indicator_number', self.gf('django.db.models.fields.CharField')(max_length=2)),
+            ('description', self.gf('django.db.models.fields.CharField')(max_length=800)),
+            ('unit', self.gf('django.db.models.fields.CharField')(max_length=20)),
+            ('target', self.gf('django.db.models.fields.BigIntegerField')()),
+            ('actual', self.gf('django.db.models.fields.BigIntegerField')()),
+            ('score', self.gf('django.db.models.fields.FloatField')()),
+            ('updated_at', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
+            ('created_at', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+        ))
+        db.send_create_signal('budget_app', ['GoalIndicator'])
+
         # Adding model 'Goal'
         db.create_table('goals', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('budget', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['budget_app.Budget'])),
+            ('uid', self.gf('django.db.models.fields.CharField')(max_length=20, db_index=True)),
             ('institutional_category', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['budget_app.InstitutionalCategory'], db_column='institutional_category_id')),
             ('functional_category', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['budget_app.FunctionalCategory'], db_column='functional_category_id')),
             ('goal_number', self.gf('django.db.models.fields.CharField')(max_length=2)),
@@ -22,10 +38,27 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('budget_app', ['Goal'])
 
+        # Adding model 'GoalActivity'
+        db.create_table('goal_activities', (
+            ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('goal', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['budget_app.Goal'])),
+            ('activity_number', self.gf('django.db.models.fields.CharField')(max_length=2)),
+            ('description', self.gf('django.db.models.fields.CharField')(max_length=200)),
+            ('updated_at', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
+            ('created_at', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
+        ))
+        db.send_create_signal('budget_app', ['GoalActivity'])
+
 
     def backwards(self, orm):
+        # Deleting model 'GoalIndicator'
+        db.delete_table('goal_indicators')
+
         # Deleting model 'Goal'
         db.delete_table('goals')
+
+        # Deleting model 'GoalActivity'
+        db.delete_table('goal_activities')
 
 
     models = {
@@ -131,6 +164,29 @@ class Migration(SchemaMigration):
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'institutional_category': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['budget_app.InstitutionalCategory']", 'db_column': "'institutional_category_id'"}),
             'report': ('django.db.models.fields.TextField', [], {}),
+            'uid': ('django.db.models.fields.CharField', [], {'max_length': '20', 'db_index': 'True'}),
+            'updated_at': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'})
+        },
+        'budget_app.goalactivity': {
+            'Meta': {'object_name': 'GoalActivity', 'db_table': "'goal_activities'"},
+            'activity_number': ('django.db.models.fields.CharField', [], {'max_length': '2'}),
+            'created_at': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'description': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
+            'goal': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['budget_app.Goal']"}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'updated_at': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'})
+        },
+        'budget_app.goalindicator': {
+            'Meta': {'object_name': 'GoalIndicator', 'db_table': "'goal_indicators'"},
+            'actual': ('django.db.models.fields.BigIntegerField', [], {}),
+            'created_at': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
+            'description': ('django.db.models.fields.CharField', [], {'max_length': '800'}),
+            'goal': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['budget_app.Goal']"}),
+            'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'indicator_number': ('django.db.models.fields.CharField', [], {'max_length': '2'}),
+            'score': ('django.db.models.fields.FloatField', [], {}),
+            'target': ('django.db.models.fields.BigIntegerField', [], {}),
+            'unit': ('django.db.models.fields.CharField', [], {'max_length': '20'}),
             'updated_at': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'})
         },
         'budget_app.inflationstat': {

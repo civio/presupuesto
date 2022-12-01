@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 
 from django.core.urlresolvers import reverse
-from budget_app.models import Budget, BudgetBreakdown, FunctionalCategory, EconomicCategory, Goal
+from budget_app.models import Budget, BudgetBreakdown, FunctionalCategory, EconomicCategory, Goal, GoalActivity, GoalIndicator
 from helpers import *
 import json
 
@@ -95,6 +95,8 @@ def programmes_show_helper(request, c, entity, id, title, render_callback=None):
     # Add monitoring information, if needed
     if (c['show_monitoring_tab']):
         c['monitoring_goals'] = Goal.objects.get_programme_goals(entity, id)
+        c['monitoring_activities'] = GoalActivity.objects.get_programme_activities(entity, id)
+        c['monitoring_indicators'] = GoalIndicator.objects.get_programme_indicators(entity, id)
 
     # XXX: Get sections with monitoring data, to structure the template output.
     # This is highly temporary, as we'll probably end up using Javascript to handle multiple years.
