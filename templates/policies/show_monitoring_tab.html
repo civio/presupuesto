@@ -1,4 +1,141 @@
-<div id="tab-monitoring-content">
+<section class="policies-breakdown" id="tab-monitoring-content">
+  <h3 class="policies-title">Desglose por secciones</h3>
+
+  <!-- Collapsable -->
+  <ul class="sections-list">
+
+    <li>
+      <a class="section-block" data-toggle="collapse" href="#section-01" role="button" aria-expanded="false" aria-controls="section-01"><h4 class="section-title">Medio Ambiente y Movilidad</h4><div data-result="71.1" class="bar-chart"></div></a>
+
+
+
+      <div class="collapse in" id="section-01">
+
+        <h5>Objetivos</h5>
+        
+        <ol class="objectives-list">
+          <li>
+            <div>
+              <!-- Objective title -->
+              <h6 class="objective-title">CONSERVACIÓN Y MANTENIMIENTO DE ZONAS VERDES EXCEPTO PARQUES HISTÓRICOS, SINGULARES Y FORESTALES Y VIVEROS MUNICIPALES</h6>
+        
+              <!-- Objective description -->
+              <div class="resume-objective">
+                <p class="collapse" id="collapseSummary-01">El objetivo 1 de este Programa indica la superficie en m2 de las zonas verdes y parques (no catalogados como históricos, singulares y forestales, que están claramente definidos por sus nombres) de Madrid. Cada año se incorporan nuevas zonas verdes por las obras realizadas a través del presupueso municipal.
+
+                <a class="collapsed" data-toggle="collapse" href="#collapseSummary-01" aria-expanded="false" aria-controls="collapseSummary-01"></a>
+                </p>
+              </div>
+        
+              <!-- Activities table -->
+              <table class="table-activities">
+                <tr>
+                  <th>Actividades</th>
+                </tr>
+                <tr>
+                  <td>Conservación integral de las zonas verdes de la ciudad</td>
+                </tr>
+                <tr>
+                  <td>Conservación y mantenimiento del arbolado viario</td>
+                </tr>
+              </table>
+        
+              <!-- Indicators table -->
+              <table  class="table-indicators">
+                <tr>
+                  <th>Indicadores</th>
+                  <th>Presupuestado</th>
+                  <th>Realizado</th>
+                  <th class="opacity-0">Cobertura</th>
+                </tr>
+                <tr>
+                  <td>Superficie de zonas verdes <span class="indicator-unit">(M2)</span></td>
+                  <td>32.780.000</td>
+                  <td>294.500</td>
+                  <td><span class="coverage-icon level-3"><title>71.56%</title></span></td>
+                </tr>
+                <tr>
+                  <td>Actuaciones de arboricultura sostenible <span class="indicator-unit">(M2)</span></td>
+                  <td>34.137.000</td>
+                  <td>34.137.000</td>
+                  <td><span class="coverage-icon level-4"><title>100%</title></span></td>
+                </tr>
+              </table>
+        
+            </div>
+          </li>
+        
+          <li>
+            <div>
+              <!-- Objective title -->
+              ALCANZAR UNOS ESTÁNDARES MÍNIMOS DE CALIDAD EN LA CONSERVACIÓN DE ZONAS VERDES</h6>
+      
+              <!-- Objective description -->
+              <div class="resume-objective">
+                <p id="collapseSummary-02">El standard de calidad en la conservación de las zonas verdes se mide a través de unos indicadores definidos previamente en el contrato integral y que en este caso es en un número total de 24 indicadores. El contrato integral de limpieza y zonas verdes finalizó el 31 de octubre y, a partir del 1 de noviembre no se aplican estos indicadores en el nuevo contrato de conservación de zonas verdes que se ha adjudicado por 4 años.
+                <a class="collapsed" data-toggle="collapse" href="#collapseSummary-02" aria-expanded="false" aria-controls="collapseSummary-02"></a>  
+                </p>
+              </div>
+      
+              <!-- Activities table -->
+              <table class="table-activities">
+                <tr>
+                  <th>Actividades</th>
+                </tr>
+                <tr>
+                  <td>Determinar la cantidad y contenido de los controles de calidad que se efectúan sobre los servicios prestados
+                  </td>
+                </tr>
+                <tr>
+                  <td>Comparar los datos obtenidos con los estándares de calidad establecidos y realizar propuesta de mejora de los servicios</td>
+                </tr>
+              </table>
+      
+              <!-- Indicators table -->
+              <table  class="table-indicators">
+                <tr>
+                  <th>Indicadores</th>
+                  <th>Presupuestado</th>
+                  <th>Realizado</th>
+                  <th class="opacity-0">Cobertura</th>
+                </tr>
+                <tr>
+                  <td>Indicadores de calidad a calcular en zonas verdes <span class="indicator-unit">(NÚMERO)</span></td>
+                  <td>24</td>
+                  <td>24</td>
+                  <td><span class="coverage-icon level-4"><title>100%</title></span></td>
+
+                </tr>
+                <tr>
+                  <td>Índices conservación de zonas verdes <span class="indicator-unit">(NÚMERO)</span></td>
+                  <td>101.700</td>
+                  <td>93.225</td>
+                  <td><span class="coverage-icon level-3"><title>91.67%</title></span></td>
+                </tr>
+              </table>
+        
+            </div>
+          </li>
+        </ol>
+      </div>    
+    </li>
+
+    <li>
+      <a class="section-block" data-toggle="collapse" href="#section-02" role="button" aria-expanded="false" aria-controls="section-02"><h4 class="section-title">Distrito de Centro</h4></a>
+      
+      <div class="collapse" id="section-02">
+        <h5>Objetivos</h5>
+
+        <ol class="objectives-list">
+          <li>bla</li>
+          <li>bla</li>
+          <li>bla</li>
+        </ol>
+      </div>
+    </li>
+  </ul>
+
+
 
 {% for section in monitoring_sections %}
     <h3>{{ section }}</h3>
@@ -43,4 +180,53 @@
     </div>
 {% endfor %}
 
-</div>
+
+</section>
+
+<!-- Temporary solution: accessing d3 via npm -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script>
+  const barEl = d3.select(".bar-chart");
+  const datum = barEl.attr("data-result");
+
+  const brandPrimary = "#003DF6"; // not able to access CSS variables from here
+  
+  const elementWidth = 250;
+  const textWidth = 70;
+  const barWidth = elementWidth-textWidth;
+  const barHeight = 20;
+  const fillWidth = datum * barWidth / 100;
+
+  barEl
+    .style("width", `${elementWidth}px`)
+    .style("display", "flex")
+    .style("direction", "row")
+
+  const divEls = barEl.append("div").style("position", "relative")
+  divEls
+    .append("div")
+    .attr("class", "bar-outline")
+    .style("width", `${barWidth}px`)
+    .style("height", `${barHeight}px`)
+    .style("border", `2px solid ${brandPrimary}`)
+    .style("position", "absolute")
+  divEls
+    .append("div")
+    .attr("class", "bar-fill")
+    .style("width", `${fillWidth}px`)
+    .style("height", `${barHeight}px`)
+    .style("background-color", brandPrimary)
+    .style("position", "absolute")
+
+  barEl.append("span")
+    .style("color", brandPrimary)
+    .style("margin-left", "10px")
+    .style("vertical-align", "top")
+    .style("width", "100%")
+    .style("font-weight", 800)
+    .style("text-align", "right")
+    .text(`${datum} %`)
+
+
+
+</script>
