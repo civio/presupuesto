@@ -64,7 +64,11 @@
                         <td>{{ indicator.target }}</td>
                         <td>{{ indicator.actual }}</td>
                         <!-- XXX: Percentage and icon are hardcoded -->
-                        <td><span class="coverage-icon level-3"><title>71.56%</title></span></td>
+                        <td>
+                          <span
+                            class="coverage-icon level-{{ '%.0f'|format((indicator.score)*4) }}"
+                            title="{{ '{0:0.1f}'.format(indicator.score*100) }}%"/>
+                        </td>
                       </tr>
                     {% endif %}
                   {% endfor %}
