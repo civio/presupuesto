@@ -308,4 +308,4 @@ CACHE_MIDDLEWARE_KEY_PREFIX = 'budget_app'
 
 
 # XXX: Temporary hack, during development of #1216. Remove once deployed
-SHOW_MONITORING_TAB = ENV['SHOW_MONITORING_TAB']
+SHOW_MONITORING_TAB = ENV.get('SHOW_MONITORING_TAB', False)
