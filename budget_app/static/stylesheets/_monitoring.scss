@@ -40,27 +40,27 @@ $padding-table: 0.05em;
     margin-right: 0.2em;
     vertical-align: $toggle-icon-size - 0.1em;
     // Default state: Arrow to the right →
-    border-top: $toggle-icon-size solid transparent;
-    border-right: 0;
-    border-bottom: $toggle-icon-size solid transparent;
-    border-left: $toggle-icon-size solid;
-  }
-  & .section-block.collapsed .section-title:before {
-    vertical-align: 0;
-    // Activated state: Arrow down ↓
     border-top: $toggle-icon-size solid;
     border-right: $toggle-icon-size solid transparent;
     border-bottom: 0;
     border-left: $toggle-icon-size solid transparent;
   }
-  & .resume-objective {
+  & .section-block.collapsed .section-title:before {
+    vertical-align: 0;
+    // Activated state: Arrow down ↓
+    border-top: $toggle-icon-size solid transparent;
+    border-right: 0;
+    border-bottom: $toggle-icon-size solid transparent;
+    border-left: $toggle-icon-size solid;
+  }
+  & .goal-report {
     border-color: $brand-secondary;
     background: $brand-secondary;
     border: none;
     padding: 10px;
     margin-bottom: $margin-elements;
   }
-  & .resume-objective p {
+  & .goal-report p {
     margin-bottom: 0!important;
   }
   & li {
@@ -134,22 +134,24 @@ $padding-table: 0.05em;
 
 // Read more functionlity 
 // WIP (not working well)
+// XXX: Carmen, te he cambiado `not(.show)` por `not(.in)`, debe de ser cosa de la versión de Bootstrap.
+// Puedes borrar este comentario cuando lo leas.
 // https://codepen.io/joserick/details/ooVPwR
-.resume-objective p.collapse:not(.show) {
+.goal-report p.collapse:not(.in) {
   height: 42px !important;
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;  
 }
-.resume-objective p.collapsing {
+.goal-report p.collapsing {
   min-height: 42px !important;
 }
-.resume-objective a.collapsed:after  {
+.goal-report a.collapsed:after  {
   // margin-top: 1rem;
   color: $brand-primary;
   content: '[+ Seguir leyendo]';
 }
-.resume-objective a:not(.collapsed):after {
+.goal-report a:not(.collapsed):after {
   content: '- Read Less';
 }
