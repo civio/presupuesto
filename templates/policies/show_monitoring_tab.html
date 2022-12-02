@@ -4,34 +4,32 @@
   <!-- Collapsable -->
   <ul class="sections-list">
 
-    <!-- XXX: The little triangles on the section name seem to be wrong -->
     {% for section in monitoring_sections %}
     <li>
-      <a class="section-block" data-toggle="collapse" href="#section-{{ loop.index }}" role="button" aria-expanded="false" aria-controls="section-{{ loop.index }}">
+      <a class="section-block collapsed" data-toggle="collapse" href="#section-{{ loop.index }}" role="button" aria-expanded="false" aria-controls="section-{{ loop.index }}">
         <h4 class="section-title">{{ section }}</h4>
-        <!-- XXX: Progress percentage hardcoded. And only visible for first section?! -->
+        <!-- XXX: Progress percentage hardcoded. -->
+        <!-- XXX: And only visible for first section?! -->
         <div data-result="71.1" class="bar-chart"></div>
       </a>
 
       <div class="collapse" id="section-{{ loop.index }}">
 
         <h5>Objetivos</h5>
-        <ol class="objectives-list">
-          <!-- XXX: This is VERY temporary code, it's clearly VERY inefficient. Moving to JS probably -->
+        <ol class="goals-list">
+          <!-- XXX: This is VERY temporary code, it's clearly VERY inefficient. Moving to Javascript probably -->
           {% for goal in monitoring_goals %}
             {% if section == goal.institutional_category %}
             <li>
               <div>
                 <!-- Objective title -->
                 <!-- XXX: Goals are probably not ordered correctly right now, so I'm printing the number myself to check -->
-                <h6 class="objective-title">{{ goal.goal_number }} {{ goal.description }}</h6>
+                <h6 class="goal-title">{{ goal.goal_number }} {{ goal.description }}</h6>
 
                 <!-- Objective description -->
-                <div class="resume-objective">
-                  <!-- XXX: Not sure how to create a unique ID for the collapse link. loop.index will not be unique across goals. -->
-                  <!-- XXX: I've put the "Read more" first to test the fold/unfold bit. -->
-                  <p class="collapse" id="collapseSummary-{{ loop.index }}">{{ goal.report|safe }}
-                  </p>
+                <div class="goal-report">
+                  <!-- XXX: Don't create this if there is no text -->
+                  <p class="collapse" id="collapseSummary-{{ loop.index }}">{{ goal.report|safe }}</p>
                   <a class="collapsed" data-toggle="collapse" href="#collapseSummary-{{ loop.index }}" aria-expanded="false" aria-controls="collapseSummary-{{ loop.index }}"></a>
                 </div>
 
