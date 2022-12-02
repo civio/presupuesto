@@ -23,7 +23,7 @@ class MonitoringLoader(BaseLoader):
         # Read the goals data
         goals = self.parse_items(os.path.join(path, 'indicadores.csv'), self.parse_goal)
         activities = self.parse_items(os.path.join(path, 'actividades.csv'), self.parse_activity)
-        indicators = self.parse_items(os.path.join(path, 'indicadores.csv'), self.parse_indicator)   # XXX: Should be separate file
+        indicators = self.parse_items(os.path.join(path, 'indicadores.csv'), self.parse_indicator)   # FIXME: Should be separate file
 
         # Store the data in the database
         if len(goals) > 0:

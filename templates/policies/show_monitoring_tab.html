@@ -8,8 +8,8 @@
     <li>
       <a class="section-block collapsed" data-toggle="collapse" href="#section-{{ loop.index }}" role="button" aria-expanded="false" aria-controls="section-{{ loop.index }}">
         <h4 class="section-title">{{ section }}</h4>
-        <!-- XXX: Progress percentage hardcoded. -->
-        <!-- XXX: And only visible for first section?! -->
+        <!-- FIXME: Progress percentage hardcoded. -->
+        <!-- FIXME: And only visible for first section?! -->
         <div data-result="71.1" class="bar-chart"></div>
       </a>
 
@@ -17,18 +17,18 @@
 
         <h5>Objetivos</h5>
         <ol class="goals-list">
-          <!-- XXX: This is VERY temporary code, it's clearly VERY inefficient. Moving to Javascript probably -->
+          <!-- FIXME: This is VERY temporary code, it's clearly VERY inefficient. Moving to Javascript probably -->
           {% for goal in monitoring_goals %}
             {% if section == goal.institutional_category %}
             <li>
               <div>
                 <!-- Objective title -->
-                <!-- XXX: Goals are probably not ordered correctly right now, so I'm printing the number myself to check -->
+                <!-- FIXME: Goals are probably not ordered correctly right now, so I'm printing the number myself to check -->
                 <h6 class="goal-title">{{ goal.goal_number }} {{ goal.description }}</h6>
 
                 <!-- Objective description -->
                 <div class="goal-report">
-                  <!-- XXX: Don't create this if there is no text -->
+                  <!-- FIXME: Don't create this if there is no text -->
                   <p class="collapse" id="collapseSummary-{{ loop.index }}">{{ goal.report|safe }}</p>
                   <a class="collapsed" data-toggle="collapse" href="#collapseSummary-{{ loop.index }}" aria-expanded="false" aria-controls="collapseSummary-{{ loop.index }}"></a>
                 </div>
@@ -60,10 +60,9 @@
                     {% if indicator.goal.uid == goal.uid %}
                       <tr>
                         <td>{{ indicator.description }} <span class="indicator-unit">({{ indicator.unit }})</span></td>
-                        <!-- XXX: Should format these numbers -->
+                        <!-- FIXME: Should format these numbers -->
                         <td>{{ indicator.target }}</td>
                         <td>{{ indicator.actual }}</td>
-                        <!-- XXX: Percentage and icon are hardcoded -->
                         <td>
                           <span
                             class="coverage-icon level-{{ '%.0f'|format((indicator.score)*4) }}"
@@ -85,7 +84,7 @@
   </ul>
 </section>
 
-<!-- XXX: Temporary solution: accessing d3 via npm -->
+<!-- FIXME: Temporary solution: accessing d3 via npm -->
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 <script>
   const barEl = d3.select(".bar-chart");

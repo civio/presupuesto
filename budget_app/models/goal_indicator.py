@@ -1,7 +1,7 @@
 from django.db import models
 
 class GoalIndicatorsManager(models.Manager):
-    # XXX Temporary
+    # FIXME Temporary
     def get_programme_indicators(self, entity, programme_id):
         return self \
             .select_related('goal') \
