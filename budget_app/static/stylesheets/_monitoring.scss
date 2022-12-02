@@ -1,0 +1,155 @@
+// Some variables
+$toggle-icon-size: 0.4em;
+$accomplish-icon-size: 1.5em; // around 20px
+$margin-elements: 2rem; // inside the same objective
+$margin-blocks: 3rem; // between blocks
+$padding-table: 0.05em;
+
+
+.policies-breakdown {
+  & .policies-title {
+    color: $text-color;
+    font-size: 2rem;
+    margin-bottom: $margin-elements;
+  }
+  // Toogle transition
+  .collapse {
+    transition: all 1s ease; 
+  }
+}
+
+.sections-list {
+  list-style-type: none;
+
+  & .section-block {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+  }
+  & .section-block .section-title {
+    margin-bottom: 1rem;
+  }
+  // Toggle icon behaviour
+  & .section-block .section-title:before {
+    content: "";
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-right: 0.2em;
+    vertical-align: $toggle-icon-size - 0.1em;
+    // Default state: Arrow to the right →
+    border-top: $toggle-icon-size solid transparent;
+    border-right: 0;
+    border-bottom: $toggle-icon-size solid transparent;
+    border-left: $toggle-icon-size solid;
+  }
+  & .section-block.collapsed .section-title:before {
+    vertical-align: 0;
+    // Activated state: Arrow down ↓
+    border-top: $toggle-icon-size solid;
+    border-right: $toggle-icon-size solid transparent;
+    border-bottom: 0;
+    border-left: $toggle-icon-size solid transparent;
+  }
+  & .resume-objective {
+    border-color: $brand-secondary;
+    background: $brand-secondary;
+    border: none;
+    padding: 10px;
+    margin-bottom: $margin-elements;
+  }
+  & .resume-objective p {
+    margin-bottom: 0!important;
+  }
+  & li {
+    margin-bottom: $margin-elements;
+  }
+}
+
+.table-activities {
+  width: 100%;
+  margin-bottom: $margin-elements;
+  & th {
+    border-bottom: 1px solid $text-color;
+  }
+  & td {
+    padding-left: $padding-table;
+  }
+  & td::before {
+    content: "-";
+    display: inline-block;
+    width: 7px;
+    height: auto;
+  }
+}
+
+.table-indicators {
+  width: 100%;
+  margin-bottom: $margin-blocks;
+  & td, & th {
+    border-bottom: 1px solid $text-color;;
+  }
+  & .opacity-0 {
+    opacity: 0;
+  }
+  & tr th:not(:first-child), tr td:not(:first-child) {
+    text-align: right;
+  }
+  & td {
+    padding-left: $padding-table;
+  }
+}
+
+.coverage-icon {
+  cursor: pointer;
+  display: inline-block;
+  margin-right: 10px;
+  position: relative;
+  top: 2px;
+  background-size: cover;
+  background-position: center center;
+  height: $accomplish-icon-size;
+  width: $accomplish-icon-size;
+
+  // 100% accomplished
+  &.level-4 {
+    background-image: url(/static/assets/accomplishment-4.png);
+  }
+  &.level-3 {
+    background-image: url(/static/assets/accomplishment-3.png);
+  }
+  &.level-2 {
+    background-image: url(/static/assets/accomplishment-2.png);
+  }
+  &.level-1 {
+    background-image: url(/static/assets/accomplishment-1.png);
+  }
+  // 0% accomplished
+  &.level-0 {
+    background-image: url(/static/assets/accomplishment-0.png);
+  }
+}
+
+// Read more functionlity 
+// WIP (not working well)
+// https://codepen.io/joserick/details/ooVPwR
+.resume-objective p.collapse:not(.show) {
+  height: 42px !important;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;  
+}
+.resume-objective p.collapsing {
+  min-height: 42px !important;
+}
+.resume-objective a.collapsed:after  {
+  // margin-top: 1rem;
+  color: $brand-primary;
+  content: '[+ Seguir leyendo]';
+}
+.resume-objective a:not(.collapsed):after {
+  content: '- Read Less';
+}
