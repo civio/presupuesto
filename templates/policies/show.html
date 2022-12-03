@@ -108,9 +108,13 @@
 {% endif %}
       </div>  <!-- tab-grid-content -->
 
-      {% if show_monitoring_tab %}
-      {% include 'policies/show_monitoring_tab.html' %}
+{% if show_monitoring_tab %}
+      {% if programme_id %}
+        {% include 'policies/show_programme_monitoring_tab.html' %}
+      {% else %}
+        {% include 'policies/show_policy_monitoring_tab.html' %}
       {% endif %}
+{% endif %}
 
     </div> <!-- container -->
 
