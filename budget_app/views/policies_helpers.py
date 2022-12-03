@@ -93,7 +93,7 @@ def programmes_show_helper(request, c, entity, id, title, render_callback=None):
     c['title_prefix'] = c['name']
 
     # Add monitoring information, if needed
-    if (c['show_monitoring_tab']):
+    if (c['show_monitoring']):
         c['monitoring_goals'] = Goal.objects.get_programme_goals(entity, id)
         c['monitoring_activities'] = GoalActivity.objects.get_programme_activities(entity, id)
         c['monitoring_indicators'] = GoalIndicator.objects.get_programme_indicators(entity, id)

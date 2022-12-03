@@ -308,4 +308,4 @@ CACHE_MIDDLEWARE_KEY_PREFIX = 'budget_app'
 
 
 # FIXME: Temporary hack, during development of #1216. Remove once deployed
-SHOW_MONITORING_TAB = ENV.get('SHOW_MONITORING_TAB', False)
+SHOW_MONITORING = ENV.get('SHOW_MONITORING', False)
