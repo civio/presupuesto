@@ -45,6 +45,9 @@ budget_app_urlpatterns += url_patterns('budget_app.views',
     # Main investments
     url(r"^inversiones-principales$", "main_investments", name="main_investments"),
 
+    # Monitoring
+    url(r"^objetivos$", "monitoring", name="monitoring"),
+
     # Policies (top)
     url(r'^politicas$', 'policies', name="policies"),
     url(r'^politicas/(?P<id>[0-9]+)$', 'policies_show', name="policies-show"),
