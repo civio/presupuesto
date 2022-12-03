@@ -2,7 +2,6 @@
 
 <header>
 	<div class="container">
-
 		<!-- Lang Selector -->
 		{% if LANGUAGES|length > 1 %}
     <div id="menu-lang">
@@ -20,19 +19,17 @@
     </div>
     {% endif %}
 
-		<!-- Ayuntamiento Logo & Web Link -->
-    <!-- Your logo must be located in "theme-folder/static/assets/logo.png" -->
+		<!-- Logo & Web Link -->
 		<div class="main-entity-logo">
 			<a href="{{ main_entity_web_url }}" target="_blank">{{ _('Gobierno de Aragón') }}</a>
 		</div>
 
-		<!-- DVMI Title & Home Link -->
+		<!-- Title & Home Link -->
 		<h1 class="navbar-brand">
       <a href="{{ url('budget_app.views.welcome') }}" title="{{ _('Ir a la home de Presupuestos') }}">
         {{ _('Presupuestos') | safe }}
       </a>
     </h1>
-
 	</div>
 		
 	<!-- Main Navigation -->
@@ -43,61 +40,9 @@
 			</div>
 	    <div id="navbar" class="collapse navbar-collapse">
 	      <ul class="nav navbar-nav">
-          <li class="page-budgets {{ 'active' if active_tab == "general"}}">
-	      		<a href="{{ url('budget_app.views.budgets') }}" class="icon-budget">{{ _('Visión global') }}</a>
-	      	</li>
-	      	
-          {% if show_counties_and_towns %}
-          <li class="page-policies dropdown">
-						<a href="{{ url('budget_app.views.policies') }}" class="icon-policy dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ _('Políticas') }} <span class="caret"></span></a>
-						<ul class="dropdown-menu">
-							<li><a href="{{ url('budget_app.views.policies') }}">{{ _('Gobierno de Aragón') }}</a></li>
-							<li><a href="{{ url('budget_app.views.counties') }}">{{ _('Comarcas') }}</a></li>
-							<li><a href="{{ url('budget_app.views.towns') }}">{{ _('Municipios') }}</a></li>
-						</ul>
-					</li>
-          {% else %}
-          <li class="page-policies {{ 'active' if active_tab == "policies"}}">
-            <a href="{{ url('budget_app.views.policies') }}" class="icon-policy">{{ _('Políticas') }}</a>
-          </li>
-          {% endif %}
-					
-          {% if show_payments %}
-          <li class="page-payments {{ 'active' if active_tab == "payments"}}">
-            <a href="{{ url('budget_app.views.payments') }}" class="icon-payments">{{ _('Pagos e inversiones') }}</a>
-          </li>
-					{% endif %}
-
-          {% if show_tax_receipt %}
-          <li class="page-tax-receipt {{ 'active' if active_tab == "calculator"}}">
-						<a href="{{ url('budget_app.views.tax_receipt') }}" class="icon-aportacion">{{ _('Lo que tú aportas') }}</a>
-					</li>
-					{% endif %}
-
-          {% if show_investments %}
-          <li class="page-investments {{ 'active' if active_tab == "investments"}}">
-            <a href="{{ url('budget_app.views.investments') }}" class="icon-investments">{{ _('Inversiones por distritos') }}</a>
-          </li>
-          {% endif %}
-
-          {% if show_main_investments %}
-          <li class="page-investments {{ 'active' if active_tab == "main_investments"}}">
-            <a href="{{ url('budget_app.views.main_investments') }}" class="icon-investments">{{ _('Inversiones principales') }}</a>
-          </li>
-          {% endif %}
-
-          {% if show_guided_visit %}
-          <li class="page-institutions {{ 'active' if active_tab == "guided_visit"}}">
-            <a href="{{ url('budget_app.views.guided_visit') }}" class="icon-payments">{{ _('Visita guiada') }}</a>
-          </li>
-          {% endif %}
-          
-          <li class="page-glossary {{ 'active' if active_tab == "glossary"}}">
-						<a href="{{ url('budget_app.views.terms') }}" class="icon-glossary">{{ _('¿Qué significa...?') }}</a>
-					</li>
+          {% include 'shared/header_links.html' %}
 	      </ul>
 	    </div>
 	  </div>
 	</nav>
-
 </header>
