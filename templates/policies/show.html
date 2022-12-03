@@ -33,7 +33,7 @@
       </li>
       {% endif %}
     {% endfor %}
-      {% if show_monitoring_tab %}
+      {% if show_monitoring %}
       <li role="presentation">
         <a href="#monitoring" role="tab">{{ _(tab_titles['monitoring']) }}</a>
       </li>
@@ -108,7 +108,7 @@
 {% endif %}
       </div>  <!-- tab-grid-content -->
 
-{% if show_monitoring_tab %}
+{% if show_monitoring %}
       {% if programme_id %}
         {% include 'policies/show_programme_monitoring_tab.html' %}
       {% else %}
