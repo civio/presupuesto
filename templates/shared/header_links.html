@@ -1,10 +1,10 @@
 <li class="page-budgets {{ 'active' if active_tab == 'general' }}">
-    <a href="{{ url('budget_app.views.budgets') }}" class="icon-budget">{{ _('Visión global') }}</a>
+  <a href="{{ url('budget_app.views.budgets') }}" class="icon-budget">{{ _('Visión global') }}</a>
 </li>
 
 {% if show_counties_and_towns %}
 <li class="page-policies dropdown">
-  <a href="{{ url('budget_app.views.policies') }}" class="icon-policy dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ _('Políticas') }} <span class="caret"></span></a>
+  <a class="icon-policy dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ _('Políticas') }} <span class="caret"></span></a>
   <ul class="dropdown-menu">
     <li><a href="{{ url('budget_app.views.policies') }}">{{ _('Gobierno de Aragón') }}</a></li>
     <li><a href="{{ url('budget_app.views.counties') }}">{{ _('Comarcas') }}</a></li>
@@ -38,6 +38,12 @@
 {% if show_main_investments %}
 <li class="page-investments {{ 'active' if active_tab == 'main_investments' }}">
   <a href="{{ url('budget_app.views.main_investments') }}" class="icon-investments">{{ _('Inversiones principales') }}</a>
+</li>
+{% endif %}
+
+{% if show_monitoring_tab %}
+<li class="page-monitoring {{ 'active' if active_tab == 'monitoring' }}">
+  <a href="{{ url('budget_app.views.monitoring') }}" class="icon-monitoring">{{ _('Objetivos') }}</a>
 </li>
 {% endif %}
 
