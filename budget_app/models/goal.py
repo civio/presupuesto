@@ -1,12 +1,16 @@
 from django.db import models
 
 class GoalsManager(models.Manager):
+    def get_policy_goals(self, entity, policy_id):
+        return self \
+            .filter(budget__entity=entity.id, functional_category__policy=policy_id) \
+            .all()
+
     def get_programme_goals(self, entity, programme_id):
         return self \
             .select_related('institutional_category') \
             .filter(budget__entity=entity.id, functional_category__programme=programme_id) \
             .all()
-
 
 class Goal(models.Model):
     budget = models.ForeignKey('Budget')
