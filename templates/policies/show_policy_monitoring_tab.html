@@ -1,1 +1,19 @@
-Hello world
+<section class="policies-breakdown" id="tab-monitoring-content">
+  <h3 class="policies-title">Desglose por programa</h3>
+
+  <!-- Collapsable -->
+  <ul class="monitoring-list">
+
+    {% for programme in monitoring_programmes %}
+    <li>
+      <a class="monitoring-block collapsed" href="#programme-{{ loop.index }}">
+        <h4 class="monitoring-title">{{ programme }}</h4>
+        <!-- FIXME: Progress percentage hardcoded. -->
+        <!-- FIXME: And only visible for first section?! -->
+        <div data-result="71.1" class="bar-chart"></div>
+      </a>
+    </li>
+    {% endfor %}
+
+  </ul>
+</section>

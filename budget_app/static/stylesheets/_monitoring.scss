@@ -18,21 +18,21 @@ $padding-table: 0.05em;
   }
 }
 
-.sections-list {
+.monitoring-list {
   list-style-type: none;
 
-  & .section-block {
+  & .monitoring-block {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
   }
-  & .section-block .section-title {
+  & .monitoring-block .monitoring-title {
     margin-bottom: 1rem;
   }
   // Toggle icon behaviour
-  & .section-block .section-title:before {
+  & .monitoring-block .monitoring-title:before {
     content: "";
     display: inline-block;
     width: 0;
@@ -45,7 +45,7 @@ $padding-table: 0.05em;
     border-bottom: 0;
     border-left: $toggle-icon-size solid transparent;
   }
-  & .section-block.collapsed .section-title:before {
+  & .monitoring-block.collapsed .monitoring-title:before {
     vertical-align: 0;
     // Activated state: Arrow down ↓
     border-top: $toggle-icon-size solid transparent;

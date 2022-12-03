@@ -2,12 +2,12 @@
   <h3 class="policies-title">Desglose por secciones</h3>
 
   <!-- Collapsable -->
-  <ul class="sections-list">
+  <ul class="monitoring-list">
 
     {% for section in monitoring_sections %}
     <li>
-      <a class="section-block collapsed" data-toggle="collapse" href="#section-{{ loop.index }}" role="button" aria-expanded="false" aria-controls="section-{{ loop.index }}">
-        <h4 class="section-title">{{ section }}</h4>
+      <a class="monitoring-block collapsed" data-toggle="collapse" href="#section-{{ loop.index }}" role="button" aria-expanded="false" aria-controls="section-{{ loop.index }}">
+        <h4 class="monitoring-title">{{ section }}</h4>
         <!-- FIXME: Progress percentage hardcoded. -->
         <!-- FIXME: And only visible for first section?! -->
         <div data-result="71.1" class="bar-chart"></div>

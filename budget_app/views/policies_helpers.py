@@ -24,6 +24,17 @@ def policies_show_helper(request, c, entity, id, title, render_callback=None):
                                 c['breakdowns']['institutional']
                             ])
 
+    # Add monitoring information, if needed
+    if (c['show_monitoring']):
+        # FIXME: We don't really need the goals, just a summary
+        c['monitoring_goals'] = Goal.objects.get_policy_goals(entity, id)
+
+        # FIXME: Get sections with monitoring data, to structure the template output.
+        # This is highly temporary, as we'll probably end up using Javascript to handle multiple years.
+        # There's a `select_related` in the model for this, could be removed.
+        get_policy = lambda g: g.functional_category.description
+        c['monitoring_programmes'] = set(map(get_policy, c['monitoring_goals']))
+
     # Additional data needed by the view
     show_side = 'expense'
     populate_stats(c)
@@ -98,11 +109,11 @@ def programmes_show_helper(request, c, entity, id, title, render_callback=None):
         c['monitoring_activities'] = GoalActivity.objects.get_programme_activities(entity, id)
         c['monitoring_indicators'] = GoalIndicator.objects.get_programme_indicators(entity, id)
 
-    # XXX: Get sections with monitoring data, to structure the template output.
-    # This is highly temporary, as we'll probably end up using Javascript to handle multiple years.
-    # There's a `select_related` in the model for this, could be removed.
-    get_section = lambda g: g.institutional_category
-    c['monitoring_sections'] = set(map(get_section, c['monitoring_goals']))
+        # FIXME: Get sections with monitoring data, to structure the template output.
+        # This is highly temporary, as we'll probably end up using Javascript to handle multiple years.
+        # There's a `select_related` in the model for this, could be removed.
+        get_section = lambda g: g.institutional_category
+        c['monitoring_sections'] = set(map(get_section, c['monitoring_goals']))
 
     # Additional data needed by the view
     show_side = 'expense'
