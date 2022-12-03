@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<section class="monitoring" data-tab="area">
+
+  <div class="monitoring-header section-header">
+    <div class="container">
+      <h2 class="page-title">{{ _('Objetivos') }}</h2>
+    </div>
+  </div>
+
+  <div class="monitoring-content">
+    {% include 'monitoring/visualization.html' %}
+
+    {% include 'shared/social_sharing.html' %}
+  </div>
+</section>
+
+{% include 'shared/modal_embed.html' %}
+
+{% include 'shared/data_sources.html' %}
+
+{% endblock %}
