@@ -64,6 +64,7 @@
                         <td>{{ indicator.target }}</td>
                         <td>{{ indicator.actual }}</td>
                         <td>
+                          <!-- FIXME: The percentage is capped at 100%, because the score is. Isn't it confusing? -->
                           <span
                             class="coverage-icon level-{{ '{0:.0f}'.format((indicator.score)*4) }}"
                             title="{{ '{0:0.1f}'.format(indicator.score*100) }}%"/>
