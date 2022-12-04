@@ -98,7 +98,6 @@ var _setup = function ( values ) {
 
   // Ascending ordering method
   o.asc = function ( a, b, isNumber ) {
-    console.log("asc");
     if ( o.alwaysTop[ a ] && o.alwaysTop[ b ] ) {
       return 0;
     }
