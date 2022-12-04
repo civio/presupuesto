@@ -15,7 +15,7 @@
           aria-expanded="false"
           aria-controls="section-{{ loop.index }}">
 
-        <h4 class="monitoring-title">{{ section[2] }} ({{ section[0] }})</h4>
+        <h4 class="monitoring-title">{{ section[2] }}</h4>
         {% set progress = '{0:0.1f}'.format(section[3]/section[4]*100) %}
         {{ draw_monitoring_progress_bar(progress) }}
       </a>
