@@ -1,13 +1,11 @@
 {% from 'policies/show_monitoring_progress_bar.html' import draw_monitoring_progress_bar %}
 
-{% include 'policies/show_monitoring_summary.html' %}
-
 <section class="policies-breakdown" id="tab-monitoring-content">
+  {% include 'policies/show_monitoring_summary.html' %}
+
   <h3 class="policies-title">Desglose por programa</h3>
 
-  <!-- Collapsable -->
   <ul class="monitoring-list">
-
     {% for programme in monitoring_programmes %}
     <li>
       <a
@@ -20,6 +18,5 @@
       </a>
     </li>
     {% endfor %}
-
   </ul>
 </section>

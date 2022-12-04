@@ -157,7 +157,15 @@
       uiState = getUIState();
       if ( uiState.view !== 'monitoring' ) {
         redrawGrid();
+      } else {
+        redrawMonitoring();
       }
+    }
+
+    // Redraw monitoring tab
+    function redrawMonitoring() {
+      uiState = getUIState();
+      console.log("Redrawing monitoring:"+uiState.year);
     }
 
     // Redraw all
@@ -168,20 +176,22 @@
       $('.panel-downloads > p').hide();
       $('#'+uiState.view+'-downloads').show();
 
-      // We skip chart setup in institutional and monitoring tabs
-      if (  uiState.view === 'institutional' ||
-            uiState.view === 'monitoring' ) {
-        $('.policies-chart').hide();
-      } else {
-        $('.policies-chart').show();
-        redrawChart();
-      }
-
       // The monitoring tab doesn't follow the typical grid layout
-      if (  uiState.view === 'monitoring' ) {
+      if ( uiState.view === 'monitoring' ) {
+        $('.policies-chart').hide();
         $('#tab-grid-content').hide();
         $('#tab-monitoring-content').show();
+        redrawMonitoring();
+
       } else {
+        // We skip chart setup in institutional tab
+        if ( uiState.view === 'institutional' ) {
+          $('.policies-chart').hide();
+        } else {
+          $('.policies-chart').show();
+          redrawChart();
+        }
+
         $('#tab-monitoring-content').hide();
         $('#tab-grid-content').show();
         redrawGrid();
@@ -190,7 +200,6 @@
 
     // Do all the hard work of drawing the grids
     function redrawGrid() {
-
       // Do work
       var columnDef = getColumnDefinition(uiState);
       var executionColumnDef = getExecutionColumnDefinition(uiState);
