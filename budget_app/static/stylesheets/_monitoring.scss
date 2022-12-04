@@ -4,7 +4,7 @@ $accomplish-icon-size: 1.5em; // around 20px
 $margin-elements: 2rem; // inside the same objective
 $margin-blocks: 3rem; // between blocks
 $padding-table: 0.05em;
-
+$monitoring-bar-color: rgb(0, 61, 246);
 
 .policies-breakdown {
   & .policies-title {
@@ -65,6 +65,32 @@ $padding-table: 0.05em;
   }
   & li {
     margin-bottom: $margin-elements;
+  }
+}
+
+.monitoring-bar-chart {
+  width: 250px;
+  display: flex;
+  position: relative;
+
+  .bar-outline {
+    width: 180px;
+    height: 20px;
+    border: 2px solid $monitoring-bar-color;
+    position: absolute;
+  }
+  .bar-fill {
+    height: 16px;
+    background-color: $monitoring-bar-color;
+    position: absolute;
+  }
+  span {
+    color: $monitoring-bar-color;
+    margin-left: 10px;
+    vertical-align: top;
+    width: 100%;
+    font-weight: 800;
+    text-align: right;
   }
 }
 
