@@ -102,11 +102,7 @@ def programmes_show_helper(request, c, entity, id, title, render_callback=None):
         c['monitoring_activities'] = GoalActivity.objects.get_programme_activities(entity, id)
         c['monitoring_indicators'] = GoalIndicator.objects.get_programme_indicators(entity, id)
 
-        # FIXME: Get sections with monitoring data, to structure the template output.
-        # This is highly temporary, as we'll probably end up using Javascript to handle multiple years.
-        # There's a `select_related` in the model for this, could be removed.
-        get_section = lambda g: g.institutional_category
-        c['monitoring_sections'] = set(map(get_section, c['monitoring_goals']))
+        c['monitoring_sections'] = GoalIndicator.objects.get_programme_indicators_summary_by_section(entity.id, id)
 
     # Additional data needed by the view
     show_side = 'expense'
