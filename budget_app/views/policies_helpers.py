@@ -26,14 +26,7 @@ def policies_show_helper(request, c, entity, id, title, render_callback=None):
 
     # Add monitoring information, if needed
     if (c['show_monitoring']):
-        # FIXME: We don't really need the goals, just a summary
-        c['monitoring_goals'] = Goal.objects.get_policy_goals(entity, id)
-
-        # FIXME: Get sections with monitoring data, to structure the template output.
-        # This is highly temporary, as we'll probably end up using Javascript to handle multiple years.
-        # There's a `select_related` in the model for this, could be removed.
-        get_policy = lambda g: g.functional_category.description
-        c['monitoring_programmes'] = set(map(get_policy, c['monitoring_goals']))
+        c['monitoring_programmes'] = GoalIndicator.objects.get_policy_indicators_summary_by_programme(entity.id, id)
 
     # Additional data needed by the view
     show_side = 'expense'
