@@ -7,7 +7,7 @@
 
   <ul class="monitoring-list">
     {% for programme in monitoring_programmes %}
-    <li>
+    <li class="monitoring-year-{{ programme[0] }}">
       <a
         class="monitoring-block collapsed"
         href="{% url 'budget_app.views.programmes_show' programme[1], programme[2]|slug %}#view=monitoring">

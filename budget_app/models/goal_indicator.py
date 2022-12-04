@@ -23,6 +23,26 @@ class GoalIndicatorsManager(models.Manager):
         cursor.execute(sql, [policy_id, entity_id])
         return list(cursor.fetchall())
 
+    # Get a summary of indicators and scores for a given programme.
+    def get_programme_indicators_summary_by_section(self, entity_id, programme_id):
+        sql = \
+            "select " \
+                "b.year, ic.id, ic.description, sum(gi.score), count(*) " \
+            "from " \
+                "goal_indicators gi " \
+                "left join goals g on gi.goal_id = g.id " \
+                "left join budgets b on g.budget_id = b.id " \
+                "left join functional_categories fc on g.functional_category_id = fc.id " \
+                "left join institutional_categories ic ON g.institutional_category_id = ic.id " \
+            "where " \
+                "fc.programme = %s and " \
+                "b.entity_id = %s " \
+            "group by b.year, ic.id, ic.description " \
+            "order by ic.description asc"
+        cursor = connection.cursor()
+        cursor.execute(sql, [programme_id, entity_id])
+        return list(cursor.fetchall())
+
     # FIXME Temporary
     def get_programme_indicators(self, entity, programme_id):
         return self \

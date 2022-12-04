@@ -165,7 +165,8 @@
     // Redraw monitoring tab
     function redrawMonitoring() {
       uiState = getUIState();
-      console.log("Redrawing monitoring:"+uiState.year);
+      $('.monitoring-list > li:not(.monitoring-year-'+uiState.year+')').hide();
+      $('.monitoring-list > li.monitoring-year-'+uiState.year).show();
     }
 
     // Redraw all

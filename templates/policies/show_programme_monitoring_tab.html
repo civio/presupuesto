@@ -5,24 +5,28 @@
 
   <h3 class="policies-title">Desglose por secciones</h3>
 
-  <!-- Collapsable -->
   <ul class="monitoring-list">
-
     {% for section in monitoring_sections %}
-    <li>
-      <a class="monitoring-block collapsed" data-toggle="collapse" href="#section-{{ loop.index }}" role="button" aria-expanded="false" aria-controls="section-{{ loop.index }}">
-        <h4 class="monitoring-title">{{ section }}</h4>
-        <!-- FIXME: Progress percentage hardcoded. -->
-        {{ draw_monitoring_progress_bar(12.3) }}
+    <li class="monitoring-year-{{ section[0] }}">
+      <a class="monitoring-block collapsed"
+          data-toggle="collapse"
+          href="#section-{{ loop.index }}"
+          role="button"
+          aria-expanded="false"
+          aria-controls="section-{{ loop.index }}">
+
+        <h4 class="monitoring-title">{{ section[2] }} ({{ section[0] }})</h4>
+        {% set progress = '{0:0.1f}'.format(section[3]/section[4]*100) %}
+        {{ draw_monitoring_progress_bar(progress) }}
       </a>
 
       <div class="collapse" id="section-{{ loop.index }}">
-
         <h5>Objetivos</h5>
+
         <ol class="goals-list">
           <!-- FIXME: This is VERY temporary code, it's clearly VERY inefficient. Moving to Javascript probably -->
           {% for goal in monitoring_goals %}
-            {% if section == goal.institutional_category %}
+            {% if section[1] == goal.institutional_category_id %}
             <li>
               <div>
                 <!-- Objective title -->
@@ -33,7 +37,11 @@
                 <div class="goal-report">
                   <!-- FIXME: Don't create this if there is no text -->
                   <p class="collapse" id="collapseSummary-{{ loop.index }}">{{ goal.report|safe }}</p>
-                  <a class="collapsed" data-toggle="collapse" href="#collapseSummary-{{ loop.index }}" aria-expanded="false" aria-controls="collapseSummary-{{ loop.index }}"></a>
+                  <a class="collapsed"
+                    data-toggle="collapse"
+                    href="#collapseSummary-{{ loop.index }}"
+                    aria-expanded="false"
+                    aria-controls="collapseSummary-{{ loop.index }}"></a>
                 </div>
 
                 <!-- Activities table -->
@@ -42,7 +50,7 @@
                     <th>Actividades</th>
                   </tr>
                   {% for activity in monitoring_activities %}
-                    {% if activity.goal.uid == goal.uid %}
+                    {% if activity.goal.id == goal.id %}
                     <tr>
                       <td>{{ activity }}</td>
                     </tr>
@@ -60,7 +68,7 @@
                   </tr>
 
                   {% for indicator in monitoring_indicators %}
-                    {% if indicator.goal.uid == goal.uid %}
+                    {% if indicator.goal.id == goal.id %}
                       <tr>
                         <td>{{ indicator.description }} <span class="indicator-unit">({{ indicator.unit }})</span></td>
                         <!-- FIXME: Should format these numbers -->
@@ -76,12 +84,12 @@
                     {% endif %}
                   {% endfor %}
                 </table>
-
               </div>
             </li>
             {% endif %}
           {% endfor %}
         </ol>
+
       </div>
     </li>
     {% endfor %}
