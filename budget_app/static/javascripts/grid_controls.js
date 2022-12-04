@@ -6,8 +6,9 @@ function setRedrawOnTabsChange(container, callback) {
     // Get hash states    
     var state = $.deparam.fragment();
 
-    // Change tab
-    if (state.view) {
+    // Change tab, but only if really needed!
+    // Note, for example, that a year change will update the hash. We don't want to react then.
+    if (state.view && state.view!==getDataTab()) {
       setDataTab(state.view);
       callback();
     }
@@ -31,6 +32,10 @@ function setRedrawOnTabsChange(container, callback) {
     state.view = $('section').data('tab');
     $.bbq.pushState(state);
   }
+}
+
+function getDataTab() {
+  return $('section').data('tab');
 }
 
 function setDataTab(view) {
