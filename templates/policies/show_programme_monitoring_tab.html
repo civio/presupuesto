@@ -1,3 +1,5 @@
+{% from 'policies/show_monitoring_progress_bar.html' import draw_monitoring_progress_bar %}
+
 <section class="policies-breakdown" id="tab-monitoring-content">
   <h3 class="policies-title">Desglose por secciones</h3>
 
@@ -9,8 +11,7 @@
       <a class="monitoring-block collapsed" data-toggle="collapse" href="#section-{{ loop.index }}" role="button" aria-expanded="false" aria-controls="section-{{ loop.index }}">
         <h4 class="monitoring-title">{{ section }}</h4>
         <!-- FIXME: Progress percentage hardcoded. -->
-        <!-- FIXME: And only visible for first section?! -->
-        <div data-result="71.1" class="bar-chart"></div>
+        {{ draw_monitoring_progress_bar(12.3) }}
       </a>
 
       <div class="collapse" id="section-{{ loop.index }}">
@@ -84,48 +85,3 @@
     {% endfor %}
   </ul>
 </section>
-
-<!-- FIXME: Temporary solution: accessing d3 via npm -->
-<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-<script>
-  const barEl = d3.select(".bar-chart");
-  const datum = barEl.attr("data-result");
-
-  const brandPrimary = "#003DF6"; // not able to access CSS variables from here
-  
-  const elementWidth = 250;
-  const textWidth = 70;
-  const barWidth = elementWidth-textWidth;
-  const barHeight = 20;
-  const fillWidth = datum * barWidth / 100;
-
-  barEl
-    .style("width", `${elementWidth}px`)
-    .style("display", "flex")
-    .style("direction", "row")
-
-  const divEls = barEl.append("div").style("position", "relative")
-  divEls
-    .append("div")
-    .attr("class", "bar-outline")
-    .style("width", `${barWidth}px`)
-    .style("height", `${barHeight}px`)
-    .style("border", `2px solid ${brandPrimary}`)
-    .style("position", "absolute")
-  divEls
-    .append("div")
-    .attr("class", "bar-fill")
-    .style("width", `${fillWidth}px`)
-    .style("height", `${barHeight}px`)
-    .style("background-color", brandPrimary)
-    .style("position", "absolute")
-
-  barEl.append("span")
-    .style("color", brandPrimary)
-    .style("margin-left", "10px")
-    .style("vertical-align", "top")
-    .style("width", "100%")
-    .style("font-weight", 800)
-    .style("text-align", "right")
-    .text(`${datum} %`)
-</script>

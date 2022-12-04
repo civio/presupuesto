@@ -1,3 +1,5 @@
+{% from 'policies/show_monitoring_progress_bar.html' import draw_monitoring_progress_bar %}
+
 <section class="policies-breakdown" id="tab-monitoring-content">
   <h3 class="policies-title">Desglose por programa</h3>
 
@@ -10,15 +12,9 @@
         class="monitoring-block collapsed"
         href="{% url 'budget_app.views.programmes_show' programme[1], programme[2]|slug %}#view=monitoring">
 
-        <h4 class="monitoring-title">
-          {{ programme[2] }}
-          ({{ '{0:0.1f}'.format(programme[3]) }} / {{ programme[4] }})
-          => {{ '{0:0.1f}'.format(programme[3]/programme[4]*100) }}%
-        </h4>
-
-        <!-- FIXME: Progress percentage hardcoded. -->
-        <!-- FIXME: And only visible for first section?! -->
-        <div data-result="71.1" class="bar-chart"></div>
+        <h4 class="monitoring-title">{{ programme[2] }}</h4>
+        {% set progress = '{0:0.1f}'.format(programme[3]/programme[4]*100) %}
+        {{ draw_monitoring_progress_bar(progress) }}
       </a>
     </li>
     {% endfor %}
