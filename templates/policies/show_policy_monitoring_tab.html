@@ -6,8 +6,16 @@
 
     {% for programme in monitoring_programmes %}
     <li>
-      <a class="monitoring-block collapsed" href="#programme-{{ loop.index }}">
-        <h4 class="monitoring-title">{{ programme }}</h4>
+      <a
+        class="monitoring-block collapsed"
+        href="{% url 'budget_app.views.programmes_show' programme[1], programme[2]|slug %}#view=monitoring">
+
+        <h4 class="monitoring-title">
+          {{ programme[2] }}
+          ({{ '{0:0.1f}'.format(programme[3]) }} / {{ programme[4] }})
+          => {{ '{0:0.1f}'.format(programme[3]/programme[4]*100) }}%
+        </h4>
+
         <!-- FIXME: Progress percentage hardcoded. -->
         <!-- FIXME: And only visible for first section?! -->
         <div data-result="71.1" class="bar-chart"></div>

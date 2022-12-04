@@ -65,7 +65,7 @@
                         <td>{{ indicator.actual }}</td>
                         <td>
                           <span
-                            class="coverage-icon level-{{ '%.0f'|format((indicator.score)*4) }}"
+                            class="coverage-icon level-{{ '{0:.0f}'.format((indicator.score)*4) }}"
                             title="{{ '{0:0.1f}'.format(indicator.score*100) }}%"/>
                         </td>
                       </tr>

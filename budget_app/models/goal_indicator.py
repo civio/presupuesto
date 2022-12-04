@@ -1,6 +1,28 @@
-from django.db import models
+from django.db import models, connection
 
 class GoalIndicatorsManager(models.Manager):
+
+    # Get a summary of indicators and scores for a given policy.
+    # Easy to do through SQL, but raw() needs the primary key to be in the result list,
+    # so we end up having to access the DB connection directly. :/
+    def get_policy_indicators_summary_by_programme(self, entity_id, policy_id):
+        sql = \
+            "select " \
+                "b.year, fc.programme, fc.description, sum(gi.score), count(*) " \
+            "from " \
+                "goal_indicators gi " \
+                "left join goals g on gi.goal_id = g.id " \
+                "left join budgets b on g.budget_id = b.id " \
+                "left join functional_categories fc on g.functional_category_id = fc.id " \
+            "where " \
+                "fc.policy = %s and " \
+                "b.entity_id = %s " \
+            "group by b.year, fc.programme, fc.description " \
+            "order by fc.description asc"
+        cursor = connection.cursor()
+        cursor.execute(sql, [policy_id, entity_id])
+        return list(cursor.fetchall())
+
     # FIXME Temporary
     def get_programme_indicators(self, entity, programme_id):
         return self \

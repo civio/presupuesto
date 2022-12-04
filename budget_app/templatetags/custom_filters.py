@@ -3,9 +3,9 @@ import urlparse
 from urllib import urlencode
 
 from django import template
+from django.template.defaultfilters import slugify
 
 register = template.Library()
-
 
 @register.filter()
 def redirect_url(value, lang):
@@ -22,3 +22,6 @@ def paginate(url, page):
     url_parts[4] = urlencode(query)
     return urlparse.urlunparse(url_parts)
 
+@register.filter()
+def slug(s):
+    return slugify(s)
