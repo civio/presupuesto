@@ -36,7 +36,7 @@
                 <!-- Objective description -->
                 <div class="goal-report">
                   <!-- FIXME: Don't create this if there is no text -->
-                  <p class="collapse" id="collapseSummary-{{ loop.index }}">{{ goal.report|safe }}</p>
+                  <div class="collapse" id="collapseSummary-{{ loop.index }}">{{ goal.report|safe }}</div>
                   <a class="collapsed"
                     data-toggle="collapse"
                     href="#collapseSummary-{{ loop.index }}"

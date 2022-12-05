@@ -79,10 +79,6 @@ $monitoring-bar-color: $brand-primary;
     padding: 10px;
     margin-bottom: $margin-elements;
   }
-  & .goal-report p {
-    margin-bottom: 0!important;
-  }
-
 }
 
 .monitoring-bar-chart {
@@ -185,14 +181,14 @@ $monitoring-bar-color: $brand-primary;
 
 // Read more functionlity 
 // https://codepen.io/joserick/details/ooVPwR
-.goal-report p.collapse:not(.in) {
+.goal-report div.collapse:not(.in) {
   height: 42px !important;
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;  
 }
-.goal-report p.collapsing {
+.goal-report div.collapsing {
   min-height: 42px !important;
 }
 .goal-report a.collapsed:after  {
