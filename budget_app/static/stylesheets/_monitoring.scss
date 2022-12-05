@@ -2,9 +2,9 @@
 $toggle-icon-size: 0.4em;
 $accomplish-icon-size: 1.5em; // around 20px
 $margin-elements: 2rem; // inside the same objective
-$margin-blocks: 3rem; // between blocks
+$margin-blocks: 4rem; // between blocks
 $padding-table: 0.05em;
-$monitoring-bar-color: rgb(0, 61, 246);
+$monitoring-bar-color: $brand-primary;
 
 .policies-breakdown {
   & .policies-title {
@@ -13,7 +13,7 @@ $monitoring-bar-color: rgb(0, 61, 246);
     margin-bottom: $margin-elements;
   }
   // Toogle transition
-  .collapse {
+  .monitoring-block.collapse {
     transition: all 1s ease; 
   }
 }
@@ -38,7 +38,7 @@ $monitoring-bar-color: rgb(0, 61, 246);
     width: 0;
     height: 0;
     margin-right: 0.2em;
-    vertical-align: $toggle-icon-size - 0.1em;
+    vertical-align: 0.1em;
     // Default state: Arrow to the right →
     border-top: $toggle-icon-size solid;
     border-right: $toggle-icon-size solid transparent;
@@ -53,6 +53,25 @@ $monitoring-bar-color: rgb(0, 61, 246);
     border-bottom: $toggle-icon-size solid transparent;
     border-left: $toggle-icon-size solid;
   }
+  & li {
+    margin-bottom: $margin-elements;
+  }
+  & .objectives-title {
+    font-size: 16px;
+    color: $text-color;
+  }
+
+}
+
+.goals-list {
+  & .goal-title {
+    font-size: 14px;
+  }
+  & ::marker {
+    color: $brand-primary;
+    font-size: 14px;
+    font-weight: 900;
+  }
   & .goal-report {
     border-color: $brand-secondary;
     background: $brand-secondary;
@@ -63,9 +82,7 @@ $monitoring-bar-color: rgb(0, 61, 246);
   & .goal-report p {
     margin-bottom: 0!important;
   }
-  & li {
-    margin-bottom: $margin-elements;
-  }
+
 }
 
 .monitoring-bar-chart {
@@ -99,6 +116,7 @@ $monitoring-bar-color: rgb(0, 61, 246);
   margin-bottom: $margin-elements;
   & th {
     border-bottom: 1px solid $text-color;
+    padding-bottom: 3px;
   }
   & td {
     padding-left: $padding-table;
@@ -114,17 +132,24 @@ $monitoring-bar-color: rgb(0, 61, 246);
 .table-indicators {
   width: 100%;
   margin-bottom: $margin-blocks;
-  & td, & th {
-    border-bottom: 1px solid $text-color;;
+  & th {
+    padding-bottom: 3px;
   }
-  & .opacity-0 {
-    opacity: 0;
+  & td, & th {
+    border-bottom: 1px solid $text-color;
   }
   & tr th:not(:first-child), tr td:not(:first-child) {
     text-align: right;
   }
   & td {
     padding-left: $padding-table;
+  }
+  & th.opacity-0 {
+    opacity: 0;
+    max-width: 40px;
+  }
+  & th.done {
+    min-width: 100px;
   }
 }
 
@@ -159,9 +184,6 @@ $monitoring-bar-color: rgb(0, 61, 246);
 }
 
 // Read more functionlity 
-// WIP (not working well)
-// XXX: Carmen, te he cambiado `not(.show)` por `not(.in)`, debe de ser cosa de la versión de Bootstrap.
-// Puedes borrar este comentario cuando lo leas.
 // https://codepen.io/joserick/details/ooVPwR
 .goal-report p.collapse:not(.in) {
   height: 42px !important;
@@ -179,5 +201,5 @@ $monitoring-bar-color: rgb(0, 61, 246);
   content: '[+ Seguir leyendo]';
 }
 .goal-report a:not(.collapsed):after {
-  content: '- Read Less';
+  content: '[- Leer menos]';
 }
