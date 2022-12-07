@@ -45,45 +45,50 @@
                 </div>
 
                 <!-- Activities table -->
-                <table class="table-activities">
-                  <tr>
-                    <th>Actividades</th>
-                  </tr>
-                  {% for activity in monitoring_activities %}
-                    {% if activity.goal.id == goal.id %}
+                <div class="table-wrapper">
+                  <table class="table-activities">
                     <tr>
-                      <td>{{ activity }}</td>
+                      <th>Actividades</th>
                     </tr>
-                    {% endif %}
-                  {% endfor %}
-                </table>
+                    {% for activity in monitoring_activities %}
+                      {% if activity.goal.id == goal.id %}
+                      <tr>
+                        <td>{{ activity }}</td>
+                      </tr>
+                      {% endif %}
+                    {% endfor %}
+                  </table>
+                </div>
 
                 <!-- Indicators table -->
-                <table  class="table-indicators">
-                  <tr>
-                    <th>Indicadores</th>
-                    <th class="budgeted">Presupuestado</th>
-                    <th class="done">Realizado</th>
-                    <th class="opacity-0">Cobertura</th>
-                  </tr>
+                <div class="table-wrapper">
+                  <table  class="table-indicators">
+                    <tr>
+                      <th>Indicadores</th>
+                      <th class="budgeted">Presupuestado</th>
+                      <th class="done">Realizado</th>
+                      <th class="opacity-0">Cobertura</th>
+                    </tr>
 
-                  {% for indicator in monitoring_indicators %}
-                    {% if indicator.goal.id == goal.id %}
-                      <tr>
-                        <td>{{ indicator.description }} <span class="indicator-unit">({{ indicator.unit }})</span></td>
-                        <!-- FIXME: Should format these numbers -->
-                        <td>{{ indicator.target }}</td>
-                        <td>{{ indicator.actual }}</td>
-                        <td>
-                          <!-- FIXME: The percentage is capped at 100%, because the score is. Isn't it confusing? -->
-                          <span
-                            class="coverage-icon level-{{ '{0:.0f}'.format((indicator.score)*4) }}"
-                            title="{{ '{0:0.1f}'.format(indicator.score*100) }}%"/>
-                        </td>
-                      </tr>
-                    {% endif %}
-                  {% endfor %}
-                </table>
+                    {% for indicator in monitoring_indicators %}
+                      {% if indicator.goal.id == goal.id %}
+                        <tr>
+                          <td>{{ indicator.description }} <span class="indicator-unit">({{ indicator.unit }})</span></td>
+                          <!-- FIXME: Should format these numbers -->
+                          <td>{{ indicator.target }}</td>
+                          <td>{{ indicator.actual }}</td>
+                          <td>
+                            <!-- FIXME: The percentage is capped at 100%, because the score is. Isn't it confusing? -->
+                            <span
+                              class="coverage-icon level-{{ '{0:.0f}'.format((indicator.score)*4) }}"
+                              title="{{ '{0:0.1f}'.format(indicator.score*100) }}%"/>
+                          </td>
+                        </tr>
+                      {% endif %}
+                    {% endfor %}
+                  </table>
+                </div>
+                
               </div>
             </li>
             {% endif %}

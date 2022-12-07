@@ -20,6 +20,11 @@ $monitoring-bar-color: $brand-primary;
 
 .monitoring-list {
   list-style-type: none;
+  padding-inline-start: 5px;
+
+  @media (min-width: $screen-sm) {
+    padding-inline-start: 40px;
+  }
 
   & .monitoring-block {
     display: flex;
@@ -64,6 +69,12 @@ $monitoring-bar-color: $brand-primary;
 }
 
 .goals-list {
+  padding-inline-start: 5px;
+
+  @media (min-width: $screen-sm) {
+    padding-inline-start: 40px;
+  }
+
   & .goal-title {
     font-size: 14px;
   }
@@ -105,6 +116,11 @@ $monitoring-bar-color: $brand-primary;
     font-weight: 800;
     text-align: right;
   }
+}
+
+// Get scroll bar on tables on small devices
+.table-wrapper {
+  overflow: auto;
 }
 
 .table-activities {
