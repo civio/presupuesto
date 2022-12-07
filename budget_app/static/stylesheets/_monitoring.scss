@@ -36,7 +36,18 @@ $monitoring-bar-color: $brand-primary;
   & .monitoring-block .monitoring-title {
     margin-bottom: 1rem;
   }
-  // Toggle icon behaviour
+  & li {
+    margin-bottom: $margin-elements;
+  }
+  & .objectives-title {
+    font-size: 16px;
+    color: $text-color;
+  }
+}
+
+// Toggle icons just on sections pages, not policies pages:
+.body-programmes .monitoring-list {
+   // Toggle icon behaviour
   & .monitoring-block .monitoring-title:before {
     content: "";
     display: inline-block;
@@ -58,14 +69,6 @@ $monitoring-bar-color: $brand-primary;
     border-bottom: $toggle-icon-size solid transparent;
     border-left: $toggle-icon-size solid;
   }
-  & li {
-    margin-bottom: $margin-elements;
-  }
-  & .objectives-title {
-    font-size: 16px;
-    color: $text-color;
-  }
-
 }
 
 .goals-list {
