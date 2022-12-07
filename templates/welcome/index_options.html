@@ -29,6 +29,18 @@
       </div>
     </div>
 
+    <!-- Section Pagos -->
+   {% if show_payments %}
+    <div class="option">
+      <div class="option-payments">
+        <div data-icon="&#xe604;" aria-hidden="true" class="icon mega"></div>
+        <a href="{{ url('budget_app.views.payments') }}" class="option-title"><h3>{{ _('Pagos e inversiones') }}</h3></a>
+        <p class="desc">{{ _('Te mostramos en detalle todos las facturas y pagos efectuados por el Ayuntamiento') }}.</p>
+        <a href="{{ url('budget_app.views.payments') }}" class="btn btn-default btn-primary green icon-plus">{{ _('Pagos e inversiones') }}</a>
+      </div>
+    </div>
+    {% endif %}
+
     <!-- Section Calculadora -->
     {% if show_tax_receipt %}
     <div class="option">
@@ -52,30 +64,5 @@
       </div>
     </div>
     {% endif %}
-
-    <!-- Section Objetivos -->
-    {% if show_monitoring %}
-    <div class="option">
-      <div class="option-monitoring">
-        <div data-icon="&#x63;" aria-hidden="true" class="icon mega"></div>
-        <a href="{{ url('budget_app.views.monitoring') }}" class="option-title"><h3>{{ _('Objetivos') }}</h3></a>
-        <p class="desc">{{ _('Blabla') }}</p>
-        <a href="{{ url('budget_app.views.monitoring') }}" class="btn btn-default btn-primary green icon-plus">{{ _('Objetivos') }}</a>
-      </div>
-    </div>
-    {% endif %}
-
-    <!-- Section Pagos -->
-    {% if show_payments %}
-    <div class="option">
-      <div class="option-payments">
-        <div data-icon="&#xe604;" aria-hidden="true" class="icon mega"></div>
-        <a href="{{ url('budget_app.views.payments') }}" class="option-title"><h3>{{ _('Pagos e inversiones') }}</h3></a>
-        <p class="desc">{{ _('Te mostramos en detalle todos las facturas y pagos efectuados por el Ayuntamiento') }}.</p>
-        <a href="{{ url('budget_app.views.payments') }}" class="btn btn-default btn-primary green icon-plus">{{ _('Pagos e inversiones') }}</a>
-      </div>
-    </div>
-    {% endif %}
-
   </div>
 </div>
