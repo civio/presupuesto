@@ -1,7 +1,7 @@
 -r base.txt
 backports-abc==0.4
 backports.ssl-match-hostname==3.5.0.1
-certifi==2015.11.20.1
+certifi==2022.12.7
 csvkit==1.0.5
 dbf==0.94.3
 formic==0.9beta8
