@@ -2,23 +2,23 @@
 
 <center>
 
-<div id="observablehq-viewof-yearSelector-0c28eab6"></div>
-<div id="observablehq-chart-0c28eab6"></div>
+  <div id="observablehq-chart-0c28eab6"></div>
+  <div id="observablehq-viewof-yearSelector-0c28eab6"></div>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@observablehq/inspector@5/dist/inspector.css">
-<script type="module">
-import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@5/dist/runtime.js";
-import define from "https://api.observablehq.com/@carmen-tm/objetivos-madrid_v01.js?v=3";
-const main = new Runtime().module(define, name => {
-  if (name === "viewof yearSelector") return new Inspector(document.querySelector("#observablehq-viewof-yearSelector-0c28eab6"));
-  if (name === "chart") return new Inspector(document.querySelector("#observablehq-chart-0c28eab6"));
-  return ["watcher","arc","arc2","auxArcFactor","auxArcPixels","colorPrimary","onMouseOver"].includes(name);
-});
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@observablehq/inspector@5/dist/inspector.css">
+  <script type="module">
+    import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@5/dist/runtime.js";
+    import define from "https://api.observablehq.com/@carmen-tm/objetivos-madrid_v01.js?v=3";
+    const main = new Runtime().module(define, name => {
+      if (name === "viewof yearSelector") return new Inspector(document.querySelector("#observablehq-viewof-yearSelector-0c28eab6"));
+      if (name === "chart") return new Inspector(document.querySelector("#observablehq-chart-0c28eab6"));
+      return ["watcher","arc","arc2","auxArcFactor","auxArcPixels","colorPrimary","onMouseOver"].includes(name);
+    });
 
-// Temporary way of changing the viz year, 
-// just need to redefine the year selector cell as follow:
-// main.redefine("yearSelector", "2020");
+    // Temporary way of changing the viz year, 
+    // just need to redefine the year selector cell as follow:
+    // main.redefine("yearSelector", "2020");
 
-</script>
+  </script>
 
 </center>
