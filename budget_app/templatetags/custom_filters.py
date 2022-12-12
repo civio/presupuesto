@@ -25,3 +25,7 @@ def paginate(url, page):
 @register.filter()
 def slug(s):
     return slugify(s)
+
+@register.filter()
+def split(s, pattern):
+    return s.split(pattern)
