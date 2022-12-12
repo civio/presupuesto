@@ -119,7 +119,8 @@ class MonitoringLoader(BaseLoader):
             # Fetch parent goal (required)
             goal = Goal.objects.filter(uid=activity['goal_uid'], budget=budget)
             if not goal:
-                print u"ALERTA: No se encuentra el objetivo '%s' para la actividad '%s'." % (activity['goal_uid'], activity['description'])
+                # FIXME: Ignore some current errors in Madrid data
+                # print u"ALERTA: No se encuentra el objetivo '%s' para la actividad '%s'." % (activity['goal_uid'], activity['description'])
                 continue
 
             GoalActivity(activity_number=activity['activity_number'],
