@@ -6,6 +6,16 @@ $margin-blocks: 4rem; // between blocks
 $padding-table: 0.05em;
 $monitoring-bar-color: $brand-primary;
 
+// Main monitoring page
+.monitoring-content .quantity-selection{
+  display: none;
+}
+
+.monitoring-content .layout-slider{
+  margin-left: 80px;
+}
+
+//
 .policies-breakdown {
   & .policies-title {
     color: $text-color;
@@ -200,7 +210,7 @@ $monitoring-bar-color: $brand-primary;
   }
 }
 
-// Read more functionlity 
+// Read more functionality 
 // https://codepen.io/joserick/details/ooVPwR
 .goal-report div.collapse:not(.in) {
   height: 42px !important;
