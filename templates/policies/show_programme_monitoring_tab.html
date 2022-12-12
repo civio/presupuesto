@@ -34,8 +34,8 @@
                 <h6 class="goal-title">{{ goal.goal_number }} {{ goal.description }}</h6>
 
                 <!-- Objective description -->
+                {% if goal.report != "" %}
                 <div class="goal-report">
-                  <!-- FIXME: Don't create this if there is no text -->
                   <div class="collapse" id="collapseSummary-{{ loop.index }}">
                     {% set report_paragraphs = goal.report|split('  ') %}
                     {% for p in report_paragraphs %}
@@ -48,6 +48,7 @@
                     aria-expanded="false"
                     aria-controls="collapseSummary-{{ loop.index }}"></a>
                 </div>
+                {% endif %}
 
                 <!-- Activities table -->
                 <div class="table-wrapper">
