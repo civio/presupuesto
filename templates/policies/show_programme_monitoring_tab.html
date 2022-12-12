@@ -36,7 +36,12 @@
                 <!-- Objective description -->
                 <div class="goal-report">
                   <!-- FIXME: Don't create this if there is no text -->
-                  <div class="collapse" id="collapseSummary-{{ loop.index }}">{{ goal.report|safe }}</div>
+                  <div class="collapse" id="collapseSummary-{{ loop.index }}">
+                    {% set report_paragraphs = goal.report|split('  ') %}
+                    {% for p in report_paragraphs %}
+                      <p>{{ p|safe }}</p>
+                    {% endfor %}
+                  </div>
                   <a class="collapsed"
                     data-toggle="collapse"
                     href="#collapseSummary-{{ loop.index }}"
