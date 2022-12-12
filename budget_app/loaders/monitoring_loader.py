@@ -21,9 +21,9 @@ class MonitoringLoader(BaseLoader):
         Goal.objects.filter(budget=budget).delete()
 
         # Read the goals data
-        goals = self.parse_items(os.path.join(path, 'objetivos.csv'), self.parse_goal)
-        activities = self.parse_items(os.path.join(path, 'actividades.csv'), self.parse_activity)
-        indicators = self.parse_items(os.path.join(path, 'indicadores.csv'), self.parse_indicator)
+        goals = self.parse_items(os.path.join(path, 'objetivos.csv'), self.parse_goal, year)
+        activities = self.parse_items(os.path.join(path, 'actividades.csv'), self.parse_activity, year)
+        indicators = self.parse_items(os.path.join(path, 'indicadores.csv'), self.parse_indicator, year)
 
         # Store the data in the database
         if len(goals) > 0:
@@ -33,7 +33,7 @@ class MonitoringLoader(BaseLoader):
             self.load_indicators(budget, indicators)
 
 
-    def parse_items(self, filename, line_parser):
+    def parse_items(self, filename, line_parser, year):
         items = []
         if os.path.isfile(filename):
             print "Leyendo datos de %s..." % filename
@@ -46,7 +46,7 @@ class MonitoringLoader(BaseLoader):
                     continue
 
                 # Finally, we have useful data
-                items.append(line_parser(filename, line))
+                items.append(line_parser(filename, line, year))
         else:
             print "No se encontró el fichero %s" % filename
 
