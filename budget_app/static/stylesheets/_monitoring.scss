@@ -121,10 +121,12 @@ $monitoring-bar-color: $brand-primary;
   }
 }
 
-// Get scroll bar on tables on small devices
-.table-wrapper {
-  overflow: auto;
+@media (max-width: $screen-xs-max) {
+  .table-wrapper {
+    overflow: auto;
+  }
 }
+// Get scroll bar on tables on small devices
 
 .table-activities {
   width: 100%;
