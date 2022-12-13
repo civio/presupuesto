@@ -2,9 +2,11 @@ from django.db import models, connection
 
 class GoalIndicatorsManager(models.Manager):
 
-    # Get a summary of indicators and scores for a given policy.
+    # Get different summaries of indicators' scores.
     # Easy to do through SQL, but raw() needs the primary key to be in the result list,
     # so we end up having to access the DB connection directly. :/
+
+    # Get a summary of indicators and scores for a whole entity (for the main viz).
     def get_budget_indicators_summary_by_policy(self, entity_id):
         sql = \
             "select " \
@@ -22,6 +24,7 @@ class GoalIndicatorsManager(models.Manager):
         cursor.execute(sql, [entity_id])
         return list(cursor.fetchall())
 
+    # Get a summary of indicators and scores for a given policy.
     def get_policy_indicators_summary_by_programme(self, entity_id, policy_id):
         sql = \
             "select " \
