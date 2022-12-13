@@ -6,13 +6,15 @@
   <h3 class="policies-title">Desglose por secciones</h3>
 
   <ul class="monitoring-list">
+    <!-- FIXME: Set this flag automatically based on data. Just a placeholder for now -->
+    {% set only_one_section = false %}
     {% for section in monitoring_sections %}
     <li class="monitoring-year-{{ section[0] }}">
-      <a class="monitoring-block collapsed"
+      <a class="monitoring-block {{ 'collapsed' if not only_one_section }}"
           data-toggle="collapse"
           href="#section-{{ loop.index }}"
           role="button"
-          aria-expanded="false"
+          aria-expanded="{{ 'false' if not only_one_section }}"
           aria-controls="section-{{ loop.index }}">
 
         <h4 class="monitoring-title">{{ section[2] }}</h4>
@@ -20,7 +22,7 @@
         {{ draw_monitoring_progress_bar(progress) }}
       </a>
 
-      <div class="collapse" id="section-{{ loop.index }}">
+      <div class="collapse {{ 'in' if only_one_section }}" id="section-{{ loop.index }}">
         <h5 class="objectives-title">Objetivos</h5>
 
         <ol class="goals-list">
