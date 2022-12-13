@@ -5,6 +5,23 @@ class GoalIndicatorsManager(models.Manager):
     # Get a summary of indicators and scores for a given policy.
     # Easy to do through SQL, but raw() needs the primary key to be in the result list,
     # so we end up having to access the DB connection directly. :/
+    def get_budget_indicators_summary_by_policy(self, entity_id):
+        sql = \
+            "select " \
+                "b.year, fc.policy, sum(gi.score), count(*) " \
+            "from " \
+                "goal_indicators gi " \
+                "left join goals g on gi.goal_id = g.id " \
+                "left join budgets b on g.budget_id = b.id " \
+                "left join functional_categories fc on g.functional_category_id = fc.id " \
+            "where " \
+                "b.entity_id = %s " \
+            "group by b.year, fc.policy " \
+            "order by b.year asc, fc.policy asc"
+        cursor = connection.cursor()
+        cursor.execute(sql, [entity_id])
+        return list(cursor.fetchall())
+
     def get_policy_indicators_summary_by_programme(self, entity_id, policy_id):
         sql = \
             "select " \
