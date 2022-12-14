@@ -26,7 +26,10 @@ def policies_show_helper(request, c, entity, id, title, render_callback=None):
 
     # Add monitoring information, if needed
     if (c['show_monitoring']):
-        c['monitoring_programmes'] = GoalIndicator.objects.get_policy_indicators_summary_by_programme(entity.id, id)
+        c['monitoring_programmes'] = GoalIndicator.objects.get_indicators_summary_by_programme(entity.id, "policy", id)
+
+        totals = GoalIndicator.objects.get_indicators_summary_by_policy(entity.id, id)
+        c['monitoring_totals'] = dict((total[0], total[2]/total[3]) for total in totals)
 
     # Additional data needed by the view
     show_side = 'expense'
@@ -102,7 +105,10 @@ def programmes_show_helper(request, c, entity, id, title, render_callback=None):
         c['monitoring_activities'] = GoalActivity.objects.get_programme_activities(entity, id)
         c['monitoring_indicators'] = GoalIndicator.objects.get_programme_indicators(entity, id)
 
-        c['monitoring_sections'] = GoalIndicator.objects.get_programme_indicators_summary_by_section(entity.id, id)
+        c['monitoring_sections'] = GoalIndicator.objects.get_indicators_summary_by_section(entity.id, id)
+
+        totals = GoalIndicator.objects.get_indicators_summary_by_programme(entity.id, "programme", id)
+        c['monitoring_totals'] = dict((total[0], total[3]/total[4]) for total in totals)
 
     # Additional data needed by the view
     show_side = 'expense'
