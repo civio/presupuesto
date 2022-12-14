@@ -9,7 +9,7 @@ def monitoring(request, render_callback=None):
     set_entity(c, entity)
 
     # Add monitoring information
-    c['monitoring_policies'] = GoalIndicator.objects.get_budget_indicators_summary_by_policy(entity.id)
+    c['monitoring_policies'] = GoalIndicator.objects.get_indicators_summary_by_policy(entity.id)
 
     # FIXME: We're dumping the info as CSV here temporarily
     populate_entity_descriptions(c, entity)

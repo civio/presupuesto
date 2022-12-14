@@ -120,6 +120,14 @@
     };
     
 
+{% if show_monitoring %}
+    //
+    // MONITORING DATA
+    //
+    var monitoringTotals = {{ monitoring_totals|safe }};
+{% endif %}
+
+
     //
     // SETTING ELEMENTS
     //
@@ -165,8 +173,21 @@
     // Redraw monitoring tab
     function redrawMonitoring() {
       uiState = getUIState();
+
+      // Hide/show the relevant blocks
       $('.monitoring-list > li:not(.monitoring-year-'+uiState.year+')').hide();
       $('.monitoring-list > li.monitoring-year-'+uiState.year).show();
+
+      // Update the summary
+      $('#tab-monitoring-content #totals-year').html(uiState.year);
+      totalProgress = 100.0*monitoringTotals[uiState.year];
+      if ( totalProgress ) {
+        $('#tab-monitoring-content #totals-panel .monitoring-bar-chart span').html(totalProgress.toFixed(1)+" %");
+        $('#tab-monitoring-content #totals-panel .monitoring-bar-chart .bar-fill').css("width", totalProgress.toFixed(1)+"%");
+        $('#tab-monitoring-content #totals-panel .monitoring-bar-chart').show();
+      } else {
+        $('#tab-monitoring-content #totals-panel .monitoring-bar-chart').hide();
+      }
     }
 
     // Redraw all
