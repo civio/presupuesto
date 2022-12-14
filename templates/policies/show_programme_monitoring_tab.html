@@ -54,12 +54,10 @@
                     <tr>
                       <th>Actividades</th>
                     </tr>
-                    {% for activity in monitoring_activities %}
-                      {% if activity.goal.id == goal.id %}
-                      <tr>
-                        <td>{{ activity }}</td>
-                      </tr>
-                      {% endif %}
+                    {% for activity in monitoring_activities[goal.uid] %}
+                    <tr>
+                      <td>{{ activity }}</td>
+                    </tr>
                     {% endfor %}
                   </table>
                 </div>
@@ -74,23 +72,21 @@
                       <th class="opacity-0">Cobertura</th>
                     </tr>
 
-                    {% for indicator in monitoring_indicators %}
-                      {% if indicator.goal.id == goal.id %}
-                        <tr>
-                          <td>{{ indicator.description }} <span class="indicator-unit">({{ indicator.unit }})</span></td>
-                          <td>{{ indicator.target }}</td>
-                          <td>{{ indicator.actual }}</td>
-                          <td>
-                            <span
-                              class="coverage-icon level-{{ '{0:.0f}'.format((indicator.score)*4) }}"
-                              title="{{ '{0:0.1f}'.format(indicator.score*100) }}%"/>
-                          </td>
-                        </tr>
-                      {% endif %}
+                    {% for indicator in monitoring_indicators[goal.uid] %}
+                    <tr>
+                      <td>{{ indicator.description }} <span class="indicator-unit">({{ indicator.unit }})</span></td>
+                      <td>{{ indicator.target }}</td>
+                      <td>{{ indicator.actual }}</td>
+                      <td>
+                        <span
+                          class="coverage-icon level-{{ '{0:.0f}'.format((indicator.score)*4) }}"
+                          title="{{ '{0:0.1f}'.format(indicator.score*100) }}%"/>
+                      </td>
+                    </tr>
                     {% endfor %}
                   </table>
                 </div>
-                
+
               </div>
             </li>
             {% endif %}
