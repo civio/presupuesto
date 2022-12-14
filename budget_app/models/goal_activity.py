@@ -1,7 +1,6 @@
 from django.db import models
 
 class GoalActivitiesManager(models.Manager):
-    # FIXME Temporary
     def get_programme_activities(self, entity, programme_id):
         return self \
             .select_related('goal') \

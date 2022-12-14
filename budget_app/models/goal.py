@@ -8,7 +8,7 @@ class GoalsManager(models.Manager):
 
 class Goal(models.Model):
     budget = models.ForeignKey('Budget')
-    uid = models.CharField(max_length=20, db_index=True)   # Unique inside a given budget
+    uid = models.CharField(max_length=20, db_index=True)   # Unique across a whole entity
     institutional_category = models.ForeignKey('InstitutionalCategory', db_column='institutional_category_id')
     functional_category = models.ForeignKey('FunctionalCategory', db_column='functional_category_id')
     goal_number = models.CharField(max_length=2)
