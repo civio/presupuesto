@@ -24,7 +24,7 @@
         <h5 class="objectives-title">Objetivos</h5>
 
         <ol class="goals-list">
-          {% for goal in monitoring_goals[section[1]] %}
+          {% for goal in monitoring_goals[section[1]]|sort(attribute='goal_number') %}
           <li>
             <div>
               <!-- Objective title -->
