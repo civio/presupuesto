@@ -16,7 +16,8 @@ def monitoring(request, render_callback=None):
     for p in c['monitoring_policies']:
         print('%s,%s,"%s",%s,%s' % (p[0], p[1], c['descriptions']['functional'][p[1]], p[2], p[3]))
 
-    # if parameter widget defined use policies/widget template instead of policies/show
+    populate_latest_budget(c)
+
     template = 'monitoring/index_widget.html' if isWidget(request) else 'monitoring/index.html'
 
     return render(c, render_callback, template)
