@@ -1,10 +1,10 @@
 # -*- coding: UTF-8 -*-
-
-from django.core.urlresolvers import reverse
-from budget_app.models import Budget, BudgetBreakdown, FunctionalCategory, EconomicCategory, Goal, GoalActivity, GoalIndicator
-from helpers import *
 import json
 
+from django.core.urlresolvers import reverse
+
+from budget_app.models import Budget, BudgetBreakdown, FunctionalCategory, EconomicCategory, Goal, GoalActivity, GoalIndicator
+from helpers import *
 
 def policies_show_helper(request, c, entity, id, title, render_callback=None):
     c['policy_uid'] = id
@@ -102,8 +102,8 @@ def programmes_show_helper(request, c, entity, id, title, render_callback=None):
     # Add monitoring information, if needed
     if (c['show_monitoring']):
         c['monitoring_goals'] = Goal.objects.get_programme_goals(entity, id)
-        c['monitoring_activities'] = GoalActivity.objects.get_programme_activities(entity, id)
-        c['monitoring_indicators'] = GoalIndicator.objects.get_programme_indicators(entity, id)
+        c['monitoring_activities'] = _group_by_goal_uid(GoalActivity.objects.get_programme_activities(entity, id))
+        c['monitoring_indicators'] = _group_by_goal_uid(GoalIndicator.objects.get_programme_indicators(entity, id))
 
         totals = GoalIndicator.objects.get_indicators_summary_by_programme(entity.id, "programme", id)
         c['monitoring_totals'] = dict((total[0], total[3]/total[4]) for total in totals)
@@ -197,3 +197,17 @@ def articles_show_helper(request, c, entity, id, title, show_side, render_callba
     template = 'policies/show_widget.html' if isWidget(request) else 'policies/show.html'
 
     return render(c, render_callback, template )
+
+
+# Poor man's D3js' group method. Python's groupby is -confusingly- something else,
+# more like an iterator, can't be accessed randomly, which is what we need in the template.
+# See https://docs.python.org/3/library/itertools.html#itertools.groupby
+# This method could be generalized, but I don't need it right now.
+def _group_by_goal_uid(items):
+    groups = {}
+    for item in items:
+        key = item.goal.uid
+        values = groups.get(key, [])
+        values.append(item)
+        groups[key] = values
+    return groups
