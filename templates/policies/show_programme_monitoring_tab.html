@@ -33,7 +33,7 @@
               <!-- Objective description -->
               {% if goal.report != "" %}
               <div class="goal-report">
-                <div class="collapse" id="collapseSummary-{{ loop.index }}">
+                <div class="collapse" id="collapseSummary-{{ goal.uid }}">
                   {% set report_paragraphs = goal.report|split('  ') %}
                   {% for p in report_paragraphs %}
                     <p>{{ p|safe }}</p>
@@ -41,9 +41,9 @@
                 </div>
                 <a class="collapsed"
                   data-toggle="collapse"
-                  href="#collapseSummary-{{ loop.index }}"
+                  href="#collapseSummary-{{ goal.uid }}"
                   aria-expanded="false"
-                  aria-controls="collapseSummary-{{ loop.index }}"></a>
+                  aria-controls="collapseSummary-{{ goal.uid }}"></a>
               </div>
               {% endif %}
 
