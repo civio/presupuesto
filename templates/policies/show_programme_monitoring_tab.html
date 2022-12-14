@@ -24,13 +24,11 @@
         <h5 class="objectives-title">Objetivos</h5>
 
         <ol class="goals-list">
-          <!-- FIXME: This is VERY temporary code, it's clearly VERY inefficient. Moving to Javascript probably -->
           {% for goal in monitoring_goals %}
             {% if section[1] == goal.institutional_category_id %}
             <li>
               <div>
                 <!-- Objective title -->
-                <!-- FIXME: Goals are probably not ordered correctly right now, so I'm printing the number myself to check -->
                 <h6 class="goal-title">{{ goal.goal_number }} {{ goal.description }}</h6>
 
                 <!-- Objective description -->
@@ -80,11 +78,9 @@
                       {% if indicator.goal.id == goal.id %}
                         <tr>
                           <td>{{ indicator.description }} <span class="indicator-unit">({{ indicator.unit }})</span></td>
-                          <!-- FIXME: Should format these numbers -->
                           <td>{{ indicator.target }}</td>
                           <td>{{ indicator.actual }}</td>
                           <td>
-                            <!-- FIXME: The percentage is capped at 100%, because the score is. Isn't it confusing? -->
                             <span
                               class="coverage-icon level-{{ '{0:.0f}'.format((indicator.score)*4) }}"
                               title="{{ '{0:0.1f}'.format(indicator.score*100) }}%"/>
