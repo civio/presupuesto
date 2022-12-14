@@ -101,9 +101,9 @@ def programmes_show_helper(request, c, entity, id, title, render_callback=None):
 
     # Add monitoring information, if needed
     if (c['show_monitoring']):
-        c['monitoring_goals'] = Goal.objects.get_programme_goals(entity, id)
-        c['monitoring_activities'] = _group_by_goal_uid(GoalActivity.objects.get_programme_activities(entity, id))
-        c['monitoring_indicators'] = _group_by_goal_uid(GoalIndicator.objects.get_programme_indicators(entity, id))
+        c['monitoring_goals'] = _group_by(Goal.objects.get_programme_goals(entity, id), lambda g: g.institutional_category_id)
+        c['monitoring_activities'] = _group_by(GoalActivity.objects.get_programme_activities(entity, id), lambda a: a.goal.uid)
+        c['monitoring_indicators'] = _group_by(GoalIndicator.objects.get_programme_indicators(entity, id), lambda i: i.goal.uid)
 
         totals = GoalIndicator.objects.get_indicators_summary_by_programme(entity.id, "programme", id)
         c['monitoring_totals'] = dict((total[0], total[3]/total[4]) for total in totals)
@@ -202,12 +202,10 @@ def articles_show_helper(request, c, entity, id, title, show_side, render_callba
 # Poor man's D3js' group method. Python's groupby is -confusingly- something else,
 # more like an iterator, can't be accessed randomly, which is what we need in the template.
 # See https://docs.python.org/3/library/itertools.html#itertools.groupby
-# This method could be generalized, but I don't need it right now.
-def _group_by_goal_uid(items):
+def _group_by(items, key):
     groups = {}
     for item in items:
-        key = item.goal.uid
-        values = groups.get(key, [])
+        values = groups.get(key(item), [])
         values.append(item)
-        groups[key] = values
+        groups[key(item)] = values
     return groups
