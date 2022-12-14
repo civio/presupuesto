@@ -24,72 +24,72 @@
         <h5 class="objectives-title">Objetivos</h5>
 
         <ol class="goals-list">
-          {% for goal in monitoring_goals %}
-            {% if section[1] == goal.institutional_category_id %}
-            <li>
-              <div>
-                <!-- Objective title -->
-                <h6 class="goal-title">{{ goal.goal_number }} {{ goal.description }}</h6>
+          {% for goal in monitoring_goals[section[1]] %}
+          <li>
+            <div>
+              <!-- Objective title -->
+              <h6 class="goal-title">{{ goal.goal_number }} {{ goal.description }}</h6>
 
-                <!-- Objective description -->
-                {% if goal.report != "" %}
-                <div class="goal-report">
-                  <div class="collapse" id="collapseSummary-{{ loop.index }}">
-                    {% set report_paragraphs = goal.report|split('  ') %}
-                    {% for p in report_paragraphs %}
-                      <p>{{ p|safe }}</p>
-                    {% endfor %}
-                  </div>
-                  <a class="collapsed"
-                    data-toggle="collapse"
-                    href="#collapseSummary-{{ loop.index }}"
-                    aria-expanded="false"
-                    aria-controls="collapseSummary-{{ loop.index }}"></a>
+              <!-- Objective description -->
+              {% if goal.report != "" %}
+              <div class="goal-report">
+                <div class="collapse" id="collapseSummary-{{ loop.index }}">
+                  {% set report_paragraphs = goal.report|split('  ') %}
+                  {% for p in report_paragraphs %}
+                    <p>{{ p|safe }}</p>
+                  {% endfor %}
                 </div>
-                {% endif %}
-
-                <!-- Activities table -->
-                <div class="table-wrapper">
-                  <table class="table-activities">
-                    <tr>
-                      <th>Actividades</th>
-                    </tr>
-                    {% for activity in monitoring_activities[goal.uid] %}
-                    <tr>
-                      <td>{{ activity }}</td>
-                    </tr>
-                    {% endfor %}
-                  </table>
-                </div>
-
-                <!-- Indicators table -->
-                <div class="table-wrapper">
-                  <table  class="table-indicators">
-                    <tr>
-                      <th>Indicadores</th>
-                      <th class="budgeted">Presupuestado</th>
-                      <th class="done">Realizado</th>
-                      <th class="opacity-0">Cobertura</th>
-                    </tr>
-
-                    {% for indicator in monitoring_indicators[goal.uid] %}
-                    <tr>
-                      <td>{{ indicator.description }} <span class="indicator-unit">({{ indicator.unit }})</span></td>
-                      <td>{{ indicator.target }}</td>
-                      <td>{{ indicator.actual }}</td>
-                      <td>
-                        <span
-                          class="coverage-icon level-{{ '{0:.0f}'.format((indicator.score)*4) }}"
-                          title="{{ '{0:0.1f}'.format(indicator.score*100) }}%"/>
-                      </td>
-                    </tr>
-                    {% endfor %}
-                  </table>
-                </div>
-
+                <a class="collapsed"
+                  data-toggle="collapse"
+                  href="#collapseSummary-{{ loop.index }}"
+                  aria-expanded="false"
+                  aria-controls="collapseSummary-{{ loop.index }}"></a>
               </div>
-            </li>
-            {% endif %}
+              {% endif %}
+
+              <!-- Activities table -->
+              {% if monitoring_activities[goal.uid] %}
+              <div class="table-wrapper">
+                <table class="table-activities">
+                  <tr>
+                    <th>Actividades</th>
+                  </tr>
+                  {% for activity in monitoring_activities[goal.uid] %}
+                  <tr>
+                    <td>{{ activity }}</td>
+                  </tr>
+                  {% endfor %}
+                </table>
+              </div>
+              {% endif %}
+
+              <!-- Indicators table -->
+              <div class="table-wrapper">
+                <table  class="table-indicators">
+                  <tr>
+                    <th>Indicadores</th>
+                    <th class="budgeted">Presupuestado</th>
+                    <th class="done">Realizado</th>
+                    <th class="opacity-0">Cobertura</th>
+                  </tr>
+
+                  {% for indicator in monitoring_indicators[goal.uid] %}
+                  <tr>
+                    <td>{{ indicator.description }} <span class="indicator-unit">({{ indicator.unit }})</span></td>
+                    <td>{{ indicator.target }}</td>
+                    <td>{{ indicator.actual }}</td>
+                    <td>
+                      <span
+                        class="coverage-icon level-{{ '{0:.0f}'.format((indicator.score)*4) }}"
+                        title="{{ '{0:0.1f}'.format(indicator.score*100) }}%"/>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </table>
+              </div>
+
+            </div>
+          </li>
           {% endfor %}
         </ol>
 
