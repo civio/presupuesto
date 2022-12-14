@@ -75,7 +75,6 @@ class GoalIndicatorsManager(models.Manager):
         cursor.execute(sql, [programme_id, entity_id])
         return list(cursor.fetchall())
 
-    # FIXME Temporary
     def get_programme_indicators(self, entity, programme_id):
         return self \
             .select_related('goal') \
