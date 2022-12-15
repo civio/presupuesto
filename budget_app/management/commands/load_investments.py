@@ -8,4 +8,4 @@ class Command(BaseLoadingCommand):
     help = u"Carga las inversiones correspondientes al presupuesto del año"
 
     def handle(self, *args, **options):
-        super(Command, self).handle(settings.MAIN_INVESTMENTS_LOADER, args, options)
+        super(Command, self).handle(settings.INVESTMENTS_LOADER, args, options)
