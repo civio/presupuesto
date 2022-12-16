@@ -478,8 +478,11 @@
       // Select tab based on query params
       state.view = ( state.payee && state.payee !== '' ) ? 'area' : 'payee';
 
-      // Setup hashes with search parameters
+      // Setup hashes with search parameters...
       $.bbq.pushState( state );
+
+      // ...and redraw
+      updateTab();
     });
 
     // Setup tabs navigation
