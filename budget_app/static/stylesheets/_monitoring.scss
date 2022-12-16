@@ -109,6 +109,7 @@ $monitoring-bar-color: $brand-primary;
   width: 250px;
   display: flex;
   position: relative;
+  float: right;
 
   .bar-outline {
     width: 180px;
