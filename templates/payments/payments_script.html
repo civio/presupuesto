@@ -392,8 +392,12 @@
 
     // Set up button to reset form
     $('#btn-reset-form').click(function(e){
-      // Reset the hash, which triggers the search and form refreshes automatically
+      // Reset the hash
       $.bbq.pushState( getEmptyQuery() );
+
+      // And refresh the form
+      updateTab();
+
       // We don't want to submit the form, our work here is done
       e.preventDefault();
     });
