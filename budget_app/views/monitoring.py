@@ -13,8 +13,8 @@ def monitoring(request, render_callback=None):
 
     # FIXME: We're dumping the info as CSV here temporarily
     populate_entity_descriptions(c, entity)
-    for p in c['monitoring_policies']:
-        print('%s,%s,"%s",%s,%s' % (p[0], p[1], c['descriptions']['functional'][p[1]], p[2], p[3]))
+    # for p in c['monitoring_policies']:
+    #     print('%s,%s,"%s",%s,%s' % (p[0], p[1], c['descriptions']['functional'][p[1]], p[2], p[3]))
 
     populate_latest_budget(c)
 
