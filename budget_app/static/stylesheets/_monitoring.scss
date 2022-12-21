@@ -226,8 +226,18 @@ $monitoring-bar-color: $brand-primary;
 .goal-report a.collapsed:after  {
   // margin-top: 1rem;
   color: $brand-primary;
+}
+
+.goal-report.es a.collapsed:after  {
   content: '[+ Seguir leyendo]';
 }
-.goal-report a:not(.collapsed):after {
+.goal-report.en a.collapsed:after  {
+  content: '[+ Keep reading]';
+}
+
+.goal-report.es a:not(.collapsed):after {
   content: '[- Leer menos]';
+}
+.goal-report.en a:not(.collapsed):after {
+  content: '[- Read less]';
 }
