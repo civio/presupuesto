@@ -16,8 +16,11 @@
           aria-controls="section-{{ loop.index }}">
 
         <h4 class="monitoring-title">{{ section[2] }}</h4>
-        {% set progress = '{0:0.1f}'.format(section[3]/section[4]*100) %}
-        {{ draw_monitoring_progress_bar(progress) }}
+        {% set have_data_for_year = monitoring_totals[section[0]]!=0 %}
+        {% if have_data_for_year %}
+          {% set progress = '{0:0.1f}'.format(section[3]/section[4]*100) %}
+          {{ draw_monitoring_progress_bar(progress) }}
+        {% endif %}
       </a>
 
       <div class="collapse {{ 'in' if expand_monitoring_sections }}" id="section-{{ loop.index }}">
@@ -69,20 +72,24 @@
                   <tr>
                     <th>{{ _('Indicadores') }}</th>
                     <th class="budgeted">{{ _('Presupuestado') }}</th>
+                    {% if have_data_for_year %}
                     <th class="done">{{ _('Realizado') }}</th>
                     <th class="opacity-0"></th>
+                    {% endif %}
                   </tr>
 
                   {% for indicator in monitoring_indicators[goal.uid] %}
                   <tr>
                     <td>{{ indicator.description }} <span class="indicator-unit">({{ indicator.unit }})</span></td>
                     <td>{{ indicator.target }}</td>
+                    {% if have_data_for_year %}
                     <td>{{ indicator.actual }}</td>
                     <td>
                       <span
                         class="coverage-icon level-{{ '{0:.0f}'.format((indicator.score)*4) }}"
                         title="{{ '{0:0.1f}'.format(indicator.score*100) }}%"/>
                     </td>
+                    {% endif %}
                   </tr>
                   {% endfor %}
                 </table>

@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-06 13:44+0200\n"
-"PO-Revision-Date: 2022-12-22 00:15+0100\n"
+"PO-Revision-Date: 2022-12-22 00:40+0100\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -143,6 +143,9 @@ msgstr "Total revenue"
 #: templates/budgets/index.html:143
 msgid "Total gastos"
 msgstr "Total expenditure"
+
+msgid "No hay datos"
+msgstr "No data"
 
 #: templates/budgets/budgets_totals.html:12
 msgid "Total Ejecutado"
