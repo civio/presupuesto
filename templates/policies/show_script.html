@@ -184,9 +184,10 @@
       if ( totalProgress ) {
         $('#tab-monitoring-content #totals-panel .monitoring-bar-chart span').html(totalProgress.toFixed(1)+" %");
         $('#tab-monitoring-content #totals-panel .monitoring-bar-chart .bar-fill').css("width", totalProgress.toFixed(1)+"%");
-        $('#tab-monitoring-content #totals-panel .monitoring-bar-chart').show();
+        $('#tab-monitoring-content #totals-panel .bar-outline').show();
       } else {
-        $('#tab-monitoring-content #totals-panel .monitoring-bar-chart').hide();
+        $('#tab-monitoring-content #totals-panel .monitoring-bar-chart span').html("{{ _('No hay datos') }}");
+        $('#tab-monitoring-content #totals-panel .bar-outline').hide();
       }
     }
 

@@ -13,8 +13,11 @@
         href="{% url 'budget_app.views.programmes_show' programme[1], programme[2]|slug %}#view=monitoring">
 
         <h4 class="monitoring-title">{{ programme[2] }}</h4>
-        {% set progress = '{0:0.1f}'.format(programme[3]/programme[4]*100) %}
-        {{ draw_monitoring_progress_bar(progress) }}
+        {% set have_data_for_year = monitoring_totals[programme[0]]!=0 %}
+        {% if have_data_for_year %}
+          {% set progress = '{0:0.1f}'.format(programme[3]/programme[4]*100) %}
+          {{ draw_monitoring_progress_bar(progress) }}
+        {% endif %}
       </a>
     </li>
     {% endfor %}
