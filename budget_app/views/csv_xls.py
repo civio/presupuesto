@@ -151,6 +151,24 @@ def entity_main_investments_breakdown(request, slug, format):
 
 
 #
+# MONITORING BREAKDOWN
+#
+def write_programme_monitoring_breakdown(c, writer):
+    write_header(writer, [u'Año.csv', u'Id Política', u'Nombre Política'])
+    # FIXME: Add content
+
+def programme_monitoring_breakdown(request, id, format):
+    return programmes_show(request, id, '', _generator("%s.objetivos" % id, format, write_programme_monitoring_breakdown))
+
+def write_policy_monitoring_breakdown(c, writer):
+    write_header(writer, [u'Año.csv', u'Id Política', u'Nombre Política'])
+    # FIXME: Add content
+
+def policy_monitoring_breakdown(request, id, format):
+    return policies_show(request, id, '', _generator("%s.objetivos" % id, format, write_policy_monitoring_breakdown))
+
+
+#
 # FUNCTIONAL BREAKDOWN
 #
 def write_functional_breakdown(c, writer):

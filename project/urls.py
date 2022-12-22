@@ -149,6 +149,10 @@ budget_app_urlpatterns += url_patterns('budget_app.views',
     # Main investments
     url(r'^inversiones-principales/(?P<slug>.+)_inversiones\.(?P<format>.+)$', 'entity_main_investments_breakdown'),
 
+    # Monitoring
+    url(r'^politicas/(?P<id>.+)_objetivos\.(?P<format>.+)$', 'policy_monitoring_breakdown'),
+    url(r'^programas/(?P<id>.+)_objetivos\.(?P<format>.+)$', 'programme_monitoring_breakdown'),
+
     # Entities lists
     url(r'^gastos_entidades_(?P<level>.+)\.(?P<format>.+)$', 'entities_expenses'),
     url(r'^ingresos_entidades_(?P<level>.+)\.(?P<format>.+)$', 'entities_income'),
