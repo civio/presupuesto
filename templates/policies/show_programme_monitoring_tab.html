@@ -104,4 +104,13 @@
     </li>
     {% endfor %}
   </ul>
+
+  <div class="panel-downloads">
+    <p class="downloads">
+      {{ _('Descarga la tabla de <strong>%s</strong> en ')|format(_('Objetivos'))|safe }}
+      <a class="icon-file-excel" href="#" title="{{ _('Descarga la tabla en CSV') }}"><span class="file-info">CSV</span></a>
+      o
+      <a class="icon-file-excel" href="#" title="{{ _('Descarga la tabla en Excel') }}"><span class="file-info">Excel</span></a>
+    </p>
+  </div>
 </section>
