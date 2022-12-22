@@ -26,9 +26,9 @@
   <div class="panel-downloads">
     <p class="downloads">
       {{ _('Descarga la tabla de <strong>%s</strong> en ')|format(_('Objetivos'))|safe }}
-      <a class="icon-file-excel" href="#" title="{{ _('Descarga la tabla en CSV') }}"><span class="file-info">CSV</span></a>
+      <a class="icon-file-excel" href="{{ url('budget_app.views.policy_monitoring_breakdown', policy_uid, 'csv') }}" title="{{ _('Descarga la tabla en CSV') }}"><span class="file-info">CSV</span></a>
       o
-      <a class="icon-file-excel" href="#" title="{{ _('Descarga la tabla en Excel') }}"><span class="file-info">Excel</span></a>
+      <a class="icon-file-excel" href="{{ url('budget_app.views.policy_monitoring_breakdown', policy_uid, 'xlsx') }}" title="{{ _('Descarga la tabla en Excel') }}"><span class="file-info">Excel</span></a>
     </p>
   </div>
 </section>
