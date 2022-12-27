@@ -33,7 +33,8 @@
       </li>
       {% endif %}
     {% endfor %}
-      {% if show_monitoring %}
+      {# Monitoring tab doesn't apply to sections right now. It could! #}
+      {% if show_monitoring and not section_id %}
       <li role="presentation">
         <a href="#monitoring" role="tab">{{ _(tab_titles['monitoring']) }}</a>
       </li>
@@ -109,7 +110,7 @@
 {% endif %}
       </div>  <!-- tab-grid-content -->
 
-{% if show_monitoring %}
+{% if show_monitoring and not section_id %}
       {% if programme_id %}
         {% include 'policies/show_programme_monitoring_tab.html' %}
       {% else %}
