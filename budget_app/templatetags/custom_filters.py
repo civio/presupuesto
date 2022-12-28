@@ -32,7 +32,7 @@ def split(s, pattern):
 
 @register.filter()
 def add_thousands_separator(value, language):
-    formatted = '{:,d}'.format(value)
+    formatted = format(value, ',d')
     # After more than an hour fighting with this, I couldn't set the locale to get Python
     # to use the right thousands separator, so I'm doing this. :/
     if language!='en':
