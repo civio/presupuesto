@@ -108,9 +108,9 @@ def programmes_show_helper(request, c, entity, id, title, render_callback=None):
         totals = GoalIndicator.objects.get_indicators_summary_by_programme(entity.id, "programme", id)
         c['monitoring_totals'] = dict((total[0], total[3]/total[4]) for total in totals)
 
-        c['monitoring_sections'] = GoalIndicator.objects.get_indicators_summary_by_section(entity.id, id)
+        c['monitoring_totals_per_section'] = GoalIndicator.objects.get_indicators_summary_by_section(entity.id, id)
         # If there's only one section per year, display it extended
-        c['expand_monitoring_sections'] = (len(c['monitoring_totals'])==len(c['monitoring_sections']))
+        c['expand_monitoring_sections'] = (len(c['monitoring_totals'])==len(c['monitoring_totals_per_section']))
 
     # Additional data needed by the view
     show_side = 'expense'
