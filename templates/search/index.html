@@ -126,7 +126,7 @@
                     <a href="{% url 'budget_app.views.policies_show' policy_id, descriptions['functional'].get(policy_id)|slugify %}" id="policy-name-link">{{ descriptions['functional'].get(policy_id) }}</a>
                   </td>
                   <td class="col-2">
-                    <a href="{% url 'budget_app.views.programmes_show' programme_id, descriptions['functional'].get(programme_id|slugify) %}">{{ descriptions['functional'].get(programme_id) }}</a>
+                    <a href="{% url 'budget_app.views.programmes_show' programme_id, descriptions['functional'].get(programme_id)|slugify %}">{{ descriptions['functional'].get(programme_id) }}</a>
                   </td>
                 </tr>
                 {% endfor %}
