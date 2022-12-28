@@ -81,9 +81,9 @@
                   {% for indicator in monitoring_indicators[goal.uid] %}
                   <tr>
                     <td>{{ indicator.description }} <span class="indicator-unit">({{ indicator.unit }})</span></td>
-                    <td>{{ indicator.target }}</td>
+                    <td>{{ indicator.target|add_thousands_separator(LANGUAGE_CODE) }}</td>
                     {% if have_data_for_year %}
-                    <td>{{ indicator.actual }}</td>
+                    <td>{{ indicator.actual|add_thousands_separator(LANGUAGE_CODE) }}</td>
                     <td>
                       <span
                         class="coverage-icon level-{{ '{0:.0f}'.format((indicator.score)*4) }}"
