@@ -153,19 +153,39 @@ def entity_main_investments_breakdown(request, slug, format):
 #
 # MONITORING BREAKDOWN
 #
+def write_policy_monitoring_breakdown(c, writer):
+    policy_name = c['descriptions']['functional'][c['policy_uid']].encode("utf-8")
+
+    write_header(writer, [u'Año.csv', u'Id Política', u'Nombre Política', u'Id Programa', u'Nombre Programa', u'Cumplimiento %'])
+
+    # Write policy-level results
+    for year, score in sorted(c['monitoring_totals'].items()):
+        if score != 0:
+            writer.writerow([year, c['policy_uid'], policy_name, '', '', score*100.0])
+
+    # Write programme-level results
+    for programme_summary in sorted(c['monitoring_programmes']):
+        year = programme_summary[0]
+        if c['monitoring_totals'][year] != 0:
+            score = programme_summary[3]/programme_summary[4]*100.0
+            writer.writerow([
+                year,
+                c['policy_uid'],
+                policy_name,
+                programme_summary[1],
+                programme_summary[2].encode("utf-8"),
+                score
+            ])
+
+def policy_monitoring_breakdown(request, id, format):
+    return policies_show(request, id, '', _generator("%s.objetivos" % id, format, write_policy_monitoring_breakdown))
+
 def write_programme_monitoring_breakdown(c, writer):
     write_header(writer, [u'Año.csv', u'Id Política', u'Nombre Política'])
     # FIXME: Add content
 
 def programme_monitoring_breakdown(request, id, format):
     return programmes_show(request, id, '', _generator("%s.objetivos" % id, format, write_programme_monitoring_breakdown))
-
-def write_policy_monitoring_breakdown(c, writer):
-    write_header(writer, [u'Año.csv', u'Id Política', u'Nombre Política'])
-    # FIXME: Add content
-
-def policy_monitoring_breakdown(request, id, format):
-    return policies_show(request, id, '', _generator("%s.objetivos" % id, format, write_policy_monitoring_breakdown))
 
 
 #
