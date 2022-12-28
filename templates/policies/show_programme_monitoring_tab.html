@@ -6,7 +6,7 @@
   <h3 class="policies-title">{{ _('Desglose por secciones')|safe }}</h3>
 
   <ul class="monitoring-list">
-    {% for section in monitoring_sections %}
+    {% for section in monitoring_totals_per_section %}
     <li class="monitoring-year-{{ section[0] }}">
       <a class="monitoring-block {{ 'collapsed' if not expand_monitoring_sections }}"
           data-toggle="collapse"
