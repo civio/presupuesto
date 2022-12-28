@@ -29,3 +29,12 @@ def slug(s):
 @register.filter()
 def split(s, pattern):
     return s.split(pattern)
+
+@register.filter()
+def add_thousands_separator(value, language):
+    formatted = '{:,d}'.format(value)
+    # After more than an hour fighting with this, I couldn't set the locale to get Python
+    # to use the right thousands separator, so I'm doing this. :/
+    if language!='en':
+        formatted = formatted.replace(',', '.')
+    return formatted
