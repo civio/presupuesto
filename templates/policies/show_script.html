@@ -199,11 +199,19 @@
       $('#tab-grid-content .panel-downloads > p').hide();
       $('#'+uiState.view+'-downloads').show();
 
-      // The monitoring tab doesn't follow the typical grid layout
+      // The monitoring tab doesn't follow the typical grid layout...
       if ( uiState.view === 'monitoring' ) {
         $('.policies-chart').hide();
         $('#tab-grid-content').hide();
         $('#tab-monitoring-content').show();
+
+        // ...and some data controllers don't apply, so we hide them
+        $('.data-controllers button').hide();
+        $('.data-controllers .quantity-selection').hide();
+        // FIXME: There must be a better way!
+        $('.data-controllers .layout-slider').css('margin-left', '10px');
+        $('#year-selection').slider('resize');  // Force a redraw
+
         redrawMonitoring();
 
       } else {
@@ -214,6 +222,12 @@
           $('.policies-chart').show();
           redrawChart();
         }
+
+        // And undo the changes introduced by the monitoring tab
+        $('.data-controllers button').show();
+        $('.data-controllers .quantity-selection').show();
+        $('.data-controllers .layout-slider').css('margin-left', '275px');
+        $('#year-selection').slider('resize');
 
         $('#tab-monitoring-content').hide();
         $('#tab-grid-content').show();
