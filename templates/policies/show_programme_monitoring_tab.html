@@ -16,8 +16,10 @@
           aria-controls="section-{{ loop.index }}">
 
         <h4 class="monitoring-title">{{ section[2] }}</h4>
+        {% set has_actual_data = (monitoring_totals[section[0]]!=0) %}
         {% set section_data = monitoring_totals_per_section[section[1]] %}
-        {% if section_data %}
+        {# Note that `section_data` only exists when there are indicators for the goals #}
+        {% if has_actual_data and section_data %}
           {% set progress = '{0:0.1f}'.format(section_data[1]/section_data[2]*100) %}
           {{ draw_monitoring_progress_bar(progress) }}
         {% endif %}
@@ -73,7 +75,7 @@
                   <tr>
                     <th>{{ _('Indicadores') }}</th>
                     <th class="budgeted">{{ _('Presupuestado') }}</th>
-                    {% if section_data %}
+                    {% if has_actual_data %}
                     <th class="done">{{ _('Realizado') }}</th>
                     <th class="opacity-0"></th>
                     {% endif %}
@@ -83,7 +85,7 @@
                   <tr>
                     <td>{{ indicator.description }} <span class="indicator-unit">({{ indicator.unit }})</span></td>
                     <td>{{ indicator.target|add_thousands_separator(LANGUAGE_CODE) }}</td>
-                    {% if section_data %}
+                    {% if has_actual_data %}
                     <td>{{ indicator.actual|add_thousands_separator(LANGUAGE_CODE) }}</td>
                     <td>
                       <span
