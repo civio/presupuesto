@@ -6,7 +6,7 @@
   <h3 class="policies-title">{{ _('Desglose por secciones')|safe }}</h3>
 
   <ul class="monitoring-list">
-    {% for section in monitoring_totals_per_section %}
+    {% for section in monitoring_sections %}
     <li class="monitoring-year-{{ section[0] }}">
       <a class="monitoring-block {{ 'collapsed' if not expand_monitoring_sections }}"
           data-toggle="collapse"
@@ -16,9 +16,9 @@
           aria-controls="section-{{ loop.index }}">
 
         <h4 class="monitoring-title">{{ section[2] }}</h4>
-        {% set have_data_for_year = monitoring_totals[section[0]]!=0 %}
-        {% if have_data_for_year %}
-          {% set progress = '{0:0.1f}'.format(section[3]/section[4]*100) %}
+        {% set section_data = monitoring_totals_per_section[section[1]] %}
+        {% if section_data %}
+          {% set progress = '{0:0.1f}'.format(section_data[1]/section_data[2]*100) %}
           {{ draw_monitoring_progress_bar(progress) }}
         {% endif %}
       </a>
@@ -67,12 +67,13 @@
               {% endif %}
 
               <!-- Indicators table -->
+              {% if monitoring_indicators[goal.uid] %}
               <div class="table-wrapper">
                 <table  class="table-indicators">
                   <tr>
                     <th>{{ _('Indicadores') }}</th>
                     <th class="budgeted">{{ _('Presupuestado') }}</th>
-                    {% if have_data_for_year %}
+                    {% if section_data %}
                     <th class="done">{{ _('Realizado') }}</th>
                     <th class="opacity-0"></th>
                     {% endif %}
@@ -82,7 +83,7 @@
                   <tr>
                     <td>{{ indicator.description }} <span class="indicator-unit">({{ indicator.unit }})</span></td>
                     <td>{{ indicator.target|add_thousands_separator(LANGUAGE_CODE) }}</td>
-                    {% if have_data_for_year %}
+                    {% if section_data %}
                     <td>{{ indicator.actual|add_thousands_separator(LANGUAGE_CODE) }}</td>
                     <td>
                       <span
@@ -94,6 +95,7 @@
                   {% endfor %}
                 </table>
               </div>
+              {% endif %}
 
             </div>
           </li>
