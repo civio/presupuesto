@@ -112,7 +112,8 @@ function setRedrawOnSliderChange(selector, startValue, callback) {
     callback();
   });
 
-  // Initially trigger hashchange   
+  // Initially trigger hashchange.
+  // XXX: Handling the initial hash handling here is quite confusing once you forget, tbh.
   var state = $.deparam.fragment();
   if (state.year && state.year != startValue) {
     $(selector).slider('setValue', +state.year);
