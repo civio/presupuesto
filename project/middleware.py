@@ -20,3 +20,12 @@ class SmartUpdateCacheMiddleware(UpdateCacheMiddleware):
         # Copied from https://djangosnippets.org/snippets/218/ (although different goal)
         if request.META.has_key('HTTP_ACCEPT_LANGUAGE'):
             del request.META['HTTP_ACCEPT_LANGUAGE']
+
+        # Remove tracking parameters added by Mailchimp, as they break the cache, i.e.
+        # effectively every user gets her own cache, which totally defeats the purpose.
+        # We similarly remove FB's or Google Analytics' ones too, just in case.
+        # See civio/presupuesto-management#313
+        q = request.GET.copy()
+        for arg in ['mc_cid', 'mc_eid', 'fbclid', 'fbaid', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content']:
+            q.pop(arg, None)
+        request.META['QUERY_STRING'] = q.urlencode()
