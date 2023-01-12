@@ -2,40 +2,77 @@
 
 <center>
 
-  <div id="observablehq-chart-0c28eab6"></div>
-
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@observablehq/inspector@5/dist/inspector.css">
-  <script type="module">
-    import {Runtime, Inspector} from "https://cdn.jsdelivr.net/npm/@observablehq/runtime@5/dist/runtime.js";
-    import define from "https://api.observablehq.com/@carmen-tm/objetivos-madrid_v01.js?v=3";
-    const main = new Runtime().module(define, name => {
-      if (name === "chart") return new Inspector(document.querySelector("#observablehq-chart-0c28eab6"));
-      return ["watcher","arc","arc2","auxArcFactor","auxArcPixels","colorPrimary","onMouseOver"].includes(name);
-    });
-
-    // index_script.html START
-
-    function onYearChange() {
-      // $('#investments-viz').trigger('year-change', getUIState().year);
-      // console.log("Año cambiado: "+getUIState().year);
-      main.redefine("yearSelector", +getUIState().year);
-    }
-
-    // Setup year navigation
-    // FIXME: hardcoded years
-    var years = ["2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022"];
-    initSlider("#year-selection", years, 2021);
-    setRedrawOnSliderChange("#year-selection", 2021, onYearChange);
-
-    // Add click embed btn event
-    setEmbedModal();
-
-    // index_script.html END
-
-    // Temporary way of changing the viz year, 
-    // just need to redefine the year selector cell as follow:
-    main.redefine("yearSelector", +getUIState().year);
-    
-  </script>
+  <div id="policy-radial-viz"></div>
+  <p>holi</p>
 
 </center>
+
+<script type="text/javascript">
+  $(function () {
+    /*
+    var data = [
+    {% for main_investment in all_main_investments %}
+      {
+        "project_id": '{{ main_investment.project_id }}',
+        "year": '{{ main_investment.budget.year }}',
+        "description": '{{ main_investment.description }}',
+        "start_year": '{{ main_investment.start_year }}',
+        "expected_end_year": '{{ main_investment.expected_end_year }}',
+        "actual_end_year": '{{ "" if main_investment.actual_end_year==None else main_investment.actual_end_year }}',
+        "area_name": '{{ main_investment.area_name }}',
+        "address": '{{ main_investment.address }}',
+        "latitude": '{{ main_investment.latitude }}',
+        "longitude": '{{ main_investment.longitude }}',
+        "functional_category": '{{ main_investment.functional_category }}',
+        "already_spent_amount": '{{ main_investment.already_spent_amount/100 }}',
+        "current_year_amount": '{{ main_investment.current_year_amount/100 }}',
+        "total_expected_amount": '{{ main_investment.total_expected_amount/100 }}',
+        "status": '{{ main_investment.status }}',
+        "image_URL": '{{ main_investment.image_URL }}',
+      },
+    {% endfor %}
+    ];
+    */
+
+    // function PolicyRadialViz(_selector,_data) {
+
+    //   var selector      = _selector,
+    //       areaNames     = null,
+    //       colors        = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#e7969c', '#bcbd22', '#17becf'],
+    //       colorScale,
+    //       data          = _data,
+    //       view          = null,
+    //       year          = null,
+    //       bar,
+    //       barItems;
+
+    //   // Setup
+    //   this.setup = function() {
+    //     console.log(selector, data)
+    //     console.log("this.setup");
+        
+    //     // Insert bar element
+    //     bar = d3.select(selector)
+    //       // .append('div')
+    //       // .attr('class','budget-summary');
+    //       .append("p")
+    //       .text("I'm a viz")
+
+    //     // Setup color scale
+    //     // setColorScale();
+
+    //     return this;
+    //   };
+    // }
+
+    // Create Policiy RadialViz
+    var policyRadialViz = new PolicyRadialViz('#policy-radial-viz', "")
+      // .colors(colorScale)
+      .setup();
+
+    // function onYearChange(e, year) {
+    //   investmentsMap.selectYear(year);
+    // }
+    // $('#investments-viz').bind('year-change', onYearChange);
+  });
+</script>
