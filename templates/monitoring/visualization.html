@@ -2,77 +2,36 @@
 
 <center>
 
-  <div id="policy-radial-viz"></div>
-  <p>holi</p>
+  <div id="policy-radial-viz">
+    <svg></svg>
+  </div>
 
 </center>
 
+<!-- Temporal: Last d3 versionv07 -->
+<script src="https://d3js.org/d3.v7.min.js"></script>
+
 <script type="text/javascript">
   $(function () {
-    /*
-    var data = [
-    {% for main_investment in all_main_investments %}
-      {
-        "project_id": '{{ main_investment.project_id }}',
-        "year": '{{ main_investment.budget.year }}',
-        "description": '{{ main_investment.description }}',
-        "start_year": '{{ main_investment.start_year }}',
-        "expected_end_year": '{{ main_investment.expected_end_year }}',
-        "actual_end_year": '{{ "" if main_investment.actual_end_year==None else main_investment.actual_end_year }}',
-        "area_name": '{{ main_investment.area_name }}',
-        "address": '{{ main_investment.address }}',
-        "latitude": '{{ main_investment.latitude }}',
-        "longitude": '{{ main_investment.longitude }}',
-        "functional_category": '{{ main_investment.functional_category }}',
-        "already_spent_amount": '{{ main_investment.already_spent_amount/100 }}',
-        "current_year_amount": '{{ main_investment.current_year_amount/100 }}',
-        "total_expected_amount": '{{ main_investment.total_expected_amount/100 }}',
-        "status": '{{ main_investment.status }}',
-        "image_URL": '{{ main_investment.image_URL }}',
-      },
-    {% endfor %}
-    ];
-    */
-
-    // function PolicyRadialViz(_selector,_data) {
-
-    //   var selector      = _selector,
-    //       areaNames     = null,
-    //       colors        = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#e7969c', '#bcbd22', '#17becf'],
-    //       colorScale,
-    //       data          = _data,
-    //       view          = null,
-    //       year          = null,
-    //       bar,
-    //       barItems;
-
-    //   // Setup
-    //   this.setup = function() {
-    //     console.log(selector, data)
-    //     console.log("this.setup");
-        
-    //     // Insert bar element
-    //     bar = d3.select(selector)
-    //       // .append('div')
-    //       // .attr('class','budget-summary');
-    //       .append("p")
-    //       .text("I'm a viz")
-
-    //     // Setup color scale
-    //     // setColorScale();
-
-    //     return this;
-    //   };
-    // }
+  
+    var policyData = POLICYDATA;
+    // console.log(policyData);
 
     // Create Policiy RadialViz
-    var policyRadialViz = new PolicyRadialViz('#policy-radial-viz', "")
-      // .colors(colorScale)
-      .setup();
+    var policyRadialViz = new PolicyRadialViz('#policy-radial-viz', policyData)
+      .setup()
+      .update(2021);
 
-    // function onYearChange(e, year) {
-    //   investmentsMap.selectYear(year);
-    // }
-    // $('#investments-viz').bind('year-change', onYearChange);
   });
+
 </script>
+
+<!-- <script>
+  // TEST: WORKING!
+  d3.select("#policy-radial-viz")
+    .append("g")
+    .selectAll("text")
+    .data([0,30,60])
+    .join("text")
+    .text(d => d)
+</script> -->

@@ -1,182 +1,610 @@
 function PolicyRadialViz(_selector,_data) {
+  // console.log(d3.version); // 7.8.1
+  // console.log(d3.selection())
+  // console.log(d3.selection().join())
 
-  var selector      = _selector,
-      areaNames     = null,
-      colors        = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#e7969c', '#bcbd22', '#17becf'],
-      colorScale,
-      data          = [],
-      view          = null,
-      year          = null,
-      bar,
-      barItems;
-  
+  // // TEST: NOW WORKING :(
+  // d3.select("#policy-radial-viz")
+  //   .append("g")
+  //   .selectAll("text")
+  //   .data([0,30,60])
+  //   // .join("text") //?
+  //   .enter()
+  //   .append()
+  //   .text(d => d)
 
-  // // Getters/Setters
-  // this.colors = function(_) {
-  //   if (!arguments.length) return colors;
-  //   if (_.length > 0){
-  //     colors = _;
-  //     setColorScale();
-  //   }
-  //   return this;
-  // };
+  var selector          = _selector,
+      data              = _data,
+      year              = null,
+      // year              = 2021,
+      languageSelector  = "es",
+      
+      // Colors
+      colorPrimary      = "#003DF6",
+      colorSecondary    = "#cce3f9",
+      colorLight        = "#E7F2FC",
+      colorNoData       = "rgb(224, 224, 224)",
+      textFillNoData    = "rgb(204, 204, 204)",
+      
+      baseOpacityIcons  = 0.9,
+      baseOpacityPetals = 0.7,
+      baseOpacityTexts  = 0.9,
+      hidingOpacityPetals = 0.05,
+      hidingOpacityTexts  = 0.08,
+      finalOpacityPetals  = 1,
+      
+      // Dimensions
+      myWidth,
+      height,
+      maxWidth          = 900,
+      mediaQueryLimit   = 600,  // Width size to use mobile layout (mobileBreakpoint)
+      isMobile,
+      
+      outerRadius       = 300,
+      innerRadius       = 90,
+      padding           = 0.09,
+      margin            = 150,
+      
+      imgSize           = 175,
+      iconOffset        = 25,
+      iconSize          = 25,
 
+      svg,
+      vizGroup,
+      centralLegend,
+      petals,
+      icons,
+      auxEl,
+      auxNodeGroup,
+      radialChart,
+      nodeGroup,
+      percentageGroup,
+      titleGroup,
+
+      xScale,
+      yScale,
+      yScaleAux,
+      radialAxis,
+
+      imgURL            = "https://static.observableusercontent.com/files/46700676dabb57e8a456eeb06a3cfd18ac69c7637140295e06deed890c1b7810bfa46456b2d91f043c148c1448c614629333ad7d21dd6b467b206e9ca86015d0"
+      isMobile          = false,
+      percentSteps      = [0, 25, 50, 75, 100], // Visible steps on chart when interacting
+
+      // arc,
+      // auxArcPixels,
+      // auxArcFactor,
+      // auxArcInteractions;
+
+      // enterDuration     = 900;
+      updateDuration    = 600;
 
   // Setup
   this.setup = function() {
-    console.log("this.setup");
 
-    // Insert bar element
-    bar = d3.select(selector)
-      // .append('div')
-      // .attr('class','budget-summary');
-      .append("p")
-      .text("I'm a viz")
+    ///////////////
+    // Set SVG
+    svg = d3.select(selector).select("svg")
 
-    // Setup color scale
-    // setColorScale();
+    // Set dimensions and center viz group
+    setVizDimensions();
+    centerViz();
+
+    //  Create central legend
+    centralLegend = vizGroup.append("g").attr("id", "central-legend").call(createLegend);
+
+    ///////////////
+    // Set scales
+    setXScale();
+    setYScale();
+    setYScaleAux();
+
+    ///////////////
+    // Set radial axis
+    vizGroup.append("g").attr("id", "radial-axis")
+      .call(radialAxis);
+
+    ///////////////
+    // Create aux elements for interactions
+    auxEl = vizGroup.append("g").attr("id", "aux-el");
+    auxNodeGroup = auxEl
+      .selectAll("g")
+      .data(data)
+      // .join("g")
+      .enter()
+      .append("g")
+      .append("a")
+      .attr("target", "_self")
+      .attr("href", isMobile ? null : (d) => d.url)
+      .append("path")
+      .attr("d", auxArcInteractions)
+      .style("fill", "transparent")
+      .style("cursor", "pointer")
+      .on("mouseover", onMouseOver)
+      .on("mouseleave", onMouseOut);
+    // Add URL links
+    auxNodeGroup.append("title").text((d) => d.url);
+
+  // Prepare Radial chart
+  radialChart = vizGroup
+    .append("g")
+    .attr("id", "node-el")
+    .style("pointer-events", "none");
+  
+    // Here?
+  nodeGroup = radialChart.selectAll("g").data(data)
+    .enter()
+    .append("g");
+  // .join("g");
+
+  // Create petals from 0,0
+  petals = nodeGroup
+      .append("path")
+      .attr("class", "petal")
+      .attr("data-code", (d) => d.code)
+      .attr("d", arc)
+      .style("fill", colorPrimary)
+      .style("opacity", baseOpacityPetals);
+
+  // Prepare icons
+  icons = nodeGroup
+   .append("image")
+   .attr("class", "icon")
+   .attr("width", iconSize)
+   .attr("height", iconSize)
+  //  .attr("href", (d, i) => (isMobile ? d.iconMobile : d.iconDesktop))
+  //  .attr("href", (d, i) => d.iconDesktop)
+   .attr("href", `/static/assets/monitoring_02-siren-on_${isMobile ? "color" : "white"}.svg`)
+  //  .attr("href", d => `/static/assets/${d.icon}_${isMobile ? "color" : "white"}.svg`)
+   .style("opacity", baseOpacityIcons);
+
+  // Prepare titles
+  titleGroup = nodeGroup
+    .append("g")
+    .attr("class", "policy-group")
+    .style("font-weight", 800)
+    .style("dominant-baseline", "middle");
+
+  // Create invisible title texts
+  titleGroup.each(function (a) {
+    const el = d3.select(this);
+    // console.log(el)
+    const offset = 15;
+    const labelLines = a.labelSplitted;
+    const labelLinesLenght = labelLines.length;
+    const offsetBtwnLines = isMobile ? 12 : 10;
+
+    // TO BE IMPROVED
+    const scaleOffset = d3
+      .scaleLinear()
+      .domain([0, labelLinesLenght - 1]) // Max number of splits
+      .range([
+        -offsetBtwnLines * (labelLinesLenght / 2),
+        offsetBtwnLines * (labelLinesLenght / 2)
+      ]);
+
+    // TODO: CHECK THIS
+    if (isMobile) {
+      const rectWidth = outerRadius * 2;
+      const rectHeight = labelLinesLenght * 20;
+      titleGroup
+        .selectAll("rect")
+        .data([1])
+        // .join("rect")
+        .enter()
+        .append("rect")
+        .attr("x", -rectWidth / 2)
+        .attr("y", -rectHeight / 2)
+        .attr("width", rectWidth)
+        .attr("height", rectHeight)
+        .style("fill", colorPrimary);
+    }
+
+    el.selectAll("text")
+      .data(labelLines)
+      // .join("text")
+      .enter()
+      .append("text")
+      // Attr. "x" later on the update function
+      .attr("y", 0)
+      .attr("dy", (d, i) => scaleOffset(i))
+      .text((d) => `${d}`)
+      .attr("transform", (d) =>
+        a.isLefttHalf && !isMobile ? "rotate(180)" : "rotate(0)"
+      )
+      .style("opacity", baseOpacityTexts)
+      .style("opacity", 0.1) // Temporal
+      // On mobile, I don't want to pass any function, but "" or null options are not working, so passing d => d
+      // Passing an argument to a call function
+      // .call(
+      //   isMobile ? (d) => d : cloneToImproveReadability,
+      //   5,
+      //   colorNeutral(900)
+      // );
+  });
+
+  // Prepare percentages %
+  percentageGroup = nodeGroup
+    .append("g")
+    .attr("class", "percentage-group")
+    // // When no data
+    // .attr("visibility", (d) =>
+    //   isMobile || d[`value_${yearSelector}`] === "NA" ? "hidden" : "visible"
+    // )
+    .style("transform", (d) =>
+      isMobile ? "" : `rotate(${xScale(d.code) + xScale.bandwidth() / 2}rad)`
+    );
+
+    if (!isMobile) {
+      // Titles
+      titleGroup
+        .style("font-size", "14px")
+        .attr("transform", function (d) {
+          const angleToRotate =
+            ((xScale(d.code) + xScale.bandwidth() / 2) * 180) / Math.PI - 90;
+          return `rotate(${angleToRotate})`;
+        })
+        .style("text-anchor", function (d) {
+          const myAngleDeg = radiansToDeg(
+            (xScale(d.code) + xScale.bandwidth() / 2 + Math.PI) % (2 * Math.PI)
+          );
+          // Adding a new flag key to the data
+          d["isLefttHalf"] = myAngleDeg > 0 && myAngleDeg < 180;
+          return d.isLefttHalf ? "end" : "start";
+        });
+    } else {
+      const offsetTitleMobile = height / 2 - 180;
+      titleGroup
+        .style("font-size", "16px")
+        .style("text-anchor", "middle")
+        .attr("transform", `translate(0,${offsetTitleMobile})`);
+    }
+
+  // Create empty texts for percents
+  percents = percentageGroup
+    .append("text")
+    .attr("font-size", isMobile ? "14px" : "15px")
+    .style("dominant-baseline", "middle")
+    .attr("font-weight", 800)
+    .attr("text-anchor", "middle")
+    // // With no data
+    // .style("opacity", (d) => (d[`value_${_year}`] === "NA" ? 0 : 1))
+    // Attr. "text" later on the update function
+    .attr("transform", function (d) {
+      const myAngleDeg = radiansToDeg(
+        (xScale(d.code) + xScale.bandwidth() / 2 + Math.PI) % (2 * Math.PI)
+      );
+      // Adding a new flag key to the data
+      d["isUpperHalf"] = myAngleDeg > 90 && myAngleDeg < 270;
+      if (isMobile) return "";
+      else {
+        return d.isUpperHalf ? "rotate(0)" : "rotate(180)";
+      }
+    })
+  // .call(cloneToImproveReadability, 4, colorPrimary);
 
     return this;
   };
 
+  // Update
+  this.update = function(_year) {
+    // console.log(this)
+    console.log("this.update function", "Year", _year)
 
-  // // Update
-  // this.update = function( _breakdown, _areaNames, _field, _view, _year ) {
-  //   // Avoid redundancy
-  //   if (view == _view && year == _year)
-  //     return;
-
-  //   // Clear bar items if view changes
-  //   if (view != _view && barItems) {
-  //     bar.selectAll('.budget-summary-item').remove();
-  //   }
-
-  //   areaNames = _areaNames;
-  //   setupData( _breakdown, _field, _year );
-  //   updateItems();
-
-  //   year = _year;
-  //   view = _view;
-
-  //   return this;
-  // };
-
-
-  // // Setup Data
-  // function setupData( _breakdown, _field, _year ) {
-  //   // Reset variables holding the data.
-  //   // Note that a BudgetSummary object can be setup a number of times, so this is needed.
-  //   var area,
-  //       areaAmounts = {},
-  //       i,
-  //       policyAmount,
-  //       totalAmount = 0;
-
-  //   // Group breakdown by area
-  //   for (i in _breakdown.sub) {
-  //     policyAmount = _breakdown.sub[i][_field][_year];
-  //     // Avoid undefined or negative values
-  //     if (policyAmount !== undefined && policyAmount >= 0) {
-  //       area = i[0];
-  //       areaAmounts[area] = (areaAmounts[area]||0) + policyAmount;
-  //       totalAmount = totalAmount + policyAmount;
-  //     }
-  //   }
-
-  //   // Setup existings areas
-  //   data = d3.entries(areaAmounts);
-  //   data.forEach(function(d){
-  //     d.percentage = 100*d.value/totalAmount;
-  //   });
-  //   data.sort(function(a, b) { return b.value - a.value; });
-  // }
-
-  // // Update Items
-  // function updateItems() {
-  //   // Data Join
-  //   barItems = bar.selectAll('.budget-summary-item')
-  //     .data(data);
-
-  //   // Exit
-  //   barItems.exit().remove();
-
-  //   // Update
-  //   barItems
-  //     .attr('class', setSummaryItemClass)
-  //     .style('width', setSummaryItemWidth);
-  //   // Set bar color & percentage
-  //   bar.selectAll('.budget-summary-bar')
-  //     .data(data)
-  //     .style('background-color', function(d) { return colorScale(d.key); })
-  //     .html(setSummaryItemPercentage);
-  //   // Set item label
-  //   bar.selectAll('.budget-summary-label')
-  //     .data(data)
-  //     .attr('class', setSummaryItemLabelClass)
-  //     .html(setSummaryItemLabel);
+    //////////
+    // Draw petals
+    // const nodeGroup = radialChart.selectAll("g").data(data)
+    // // .join("g");
+    // .enter()
+    // .append("g")
   
-  //   // Enter
-  //   barItems.enter()
-  //     .call(setSummaryItem);
-  // }
+    
+    // Set petals transition
+    arc.outerRadius((d) => yScale(d[`value_${_year}`]))
+    petals.transition("unbreak").duration(updateDuration).attr("d", arc);
 
-  // // Enter Summary Items
-  // function setSummaryItem(selection){
-  //   // Set item
-  //   var item = selection
-  //     .append('div')
-  //       .attr('class', setSummaryItemClass)
-  //       .style('width', setSummaryItemWidth);
-  //   // Set item bar
-  //   item.append('div')
-  //     .attr('class', 'budget-summary-bar')
-  //     .style('background-color', function(d) { return colorScale(d.key); })
-  //     .html(setSummaryItemPercentage)
-  //     .on('mouseover', onSummaryItemOver)
-  //     .on('mouseout', onSummaryItemOut);
-  //   // Set item label
-  //   item.append('div')
-  //     .attr('class', setSummaryItemLabelClass)
-  //     .html(setSummaryItemLabel);
-  // }
+    ////////
+    // 2.Update icons position
+    auxArcPixels
+      .innerRadius((d) =>
+        d[`value_${_year}`] !== "NA"
+          ? yScale(d[`value_${_year}`]) - yScale(0) + yScale(0) - iconOffset
+          : yScale(100) - yScale(0) + yScale(0) - iconOffset
+      )
+      .outerRadius((d) =>
+        d[`value_${_year}`] !== "NA"
+          ? yScale(d[`value_${_year}`]) - yScale(0) + yScale(0) - iconOffset
+          : yScale(100) - yScale(0) + yScale(0) - iconOffset
+      );
+    icons
+      .transition("unbreak")
+      .duration(updateDuration)
+      .attr("x", (d) => auxArcPixels.centroid(d)[0] - iconSize / 2)
+      .attr("y", (d) => auxArcPixels.centroid(d)[1] - iconSize / 2);
+      
+    ////////
+    // 3.Update titles position
+    if (!isMobile) {
+      // d3.selectAll(titleGroup).each(function (a) {
+      titleGroup.each(function (a) {
+        const el = d3.select(this);
+        el.selectAll("text") // Selecting both the visible text and the white clone
+          .transition("unbreak")
+          .duration(updateDuration)
+          .style("opacity", baseOpacityTexts)
+          .attr("fill", (d) =>
+            a[`value_${_year}`] !== "NA" ? colorNeutral(1000) : textFillNoData
+          )
+          .attr("x", function (d) {
+            const offset = a[`value_${_year}`] === "NA" ? 10 : 20;
+            if (a[`value_${_year}`] !== "NA") {
+              return a.isLefttHalf
+                ? -yScale(a[`value_${_year}`] + offset)
+                : yScale(a[`value_${_year}`] + offset);
+              // When no data
+            } else {
+              return a.isLefttHalf
+                ? -yScale(100 + offset)
+                : yScale(100 + offset);
+            }
+          });
+      });
+    }
 
-  // function onSummaryItemOver(e){
-  //   bar.selectAll('.budget-summary-item')
-  //     .classed('inactive', function(d) { return d.key !== e.key; })
-  //     .classed('active', function(d) { return d.key === e.key; });
-  //   $(selector).trigger('budget-summary-over', {id: e.key});
-  // }
+    ////////
+    // 4.Update %% content & position
 
-  // function onSummaryItemOut(e){
-  //   bar.selectAll('.budget-summary-item').classed('inactive', false).classed('active', false);
-  //   $(selector).trigger('budget-summary-out');
-  // }
+    // Update their position
+    if (!isMobile) {
+      percentageGroup
+        .selectAll("text") // Selecting both the visible text and the white clone
+        .style("opacity", 0)
+        .transition()
+        .duration(updateDuration + 300)
+        // With no data
+        .style("opacity", (d) => (d[`value_${_year}`] === "NA" ? 0 : 1))
+        .attr("x", 0)
+        .attr("y", function (d) {
+          const offset = 14;
+          return d.isUpperHalf
+            ? -yScale(d[`value_${_year}`]) - offset
+            : yScale(d[`value_${_year}`]) + offset;
+        })
+        // Adding no data possiblity
+        .text((d) =>
+          d[`value_${_year}`] ? formatDecimal(d[`value_${_year}`]) + "%" : ""
+        )
+    }
+    
+    return this;
+  }
+
+  // Set scales
+  function setXScale() {
+    xScale = d3
+    .scaleBand()
+    .domain(data.map((d) => d.code))
+    .range([0, 2 * Math.PI]) // [0, 360º]
+    .align(0);
+  }
+  function setYScale() {
+    yScale = d3
+    .scaleRadial()
+    .domain([0, 100]) // Values are percents 0-100%
+    .range([innerRadius, outerRadius])
+  }
+  function setYScaleAux() {
+    yScaleAux = d3
+    .scaleRadial()
+    .domain([0, 100]) // Values are percents 0-100%
+    .range([innerRadius, myWidth / 2])
+  }
+
+  // Set main element dimensions
+  function setVizDimensions() {
+    width = $(selector).width();
+    isMobile = width < mediaQueryLimit;
+    // console.log("isMobile?", isMobile);
+
+    myWidth = Math.min(maxWidth, width);
+    height = isMobile ? myWidth + 400 : myWidth;
+
+    // Set main element height
+    // $(selector)
+    svg
+    .attr("height", height )
+    .attr("width", myWidth )
+    .style("font", "10px sans-serif");
+    // // Update font-size scale domain
+    // fontSizeScale.domain([1, Math.sqrt(width*height) * 0.5]);
+  }
+  // Center the whole group
+  function centerViz() {
+    vizGroup = svg
+      .append("g")
+      .attr("transform", `translate(${myWidth / 2}, ${height / 2})`); // Middle point
+  }
+
+
+  // Interactions
+  function onMouseOver(event, d, i) {
+    // console.log(event, d, i)
+  }
+  function onMouseOut(event, d, i) {
+    // console.log(event, d, i)
+  }
+
+
+  // Generators
+  const createLegend = (g) =>
+    g
+    .append("image")
+    .attr("transform", `translate(${-imgSize / 2}, ${-imgSize / 2})`)
+    .attr("href", imgURL)
+    .attr("x", 0)
+    .attr("y", 0)
+    .attr("width", imgSize)
+    .attr("height", imgSize)
+
+  const cloneToImproveReadability = (selection, strokeWidth, color) => {
+    selection
+      // To improve readability
+      // White background
+      .attr("stroke", colorNeutral(0))
+      .attr("stroke-width", strokeWidth)
+      // Black visible text
+      .clone(true) // Not wokring :(
+      .attr("fill", color)
+      .attr("stroke", "none");
+  }
+
+  const arc = d3
+    .arc()
+    .innerRadius((d) => yScale(0))
+    .outerRadius((d) => yScale(0.001))
+    .startAngle((d) => xScale(d.code))
+    .endAngle((d) => xScale(d.code) + xScale.bandwidth())
+    .padAngle(padding)
+    .padRadius(innerRadius);
   
-  // function setSummaryItemClass(d) {
-  //   return 'budget-summary-item budget-summary-item-'+d.key;
-  // }
+  // To place labels inside our chart, along each petal, in a specific % position
+  const auxArcFactor = (factor) =>
+    d3
+      .arc()
+      // Attr. "innerRadius" later on the update function
+      // Attr. "outerRadius" later on the update function
+      .startAngle((d) => xScale(d.code))
+      .endAngle((d) => xScale(d.code) + xScale.bandwidth())
+      .padAngle(padding)
+      .padRadius(innerRadius) 
+  
+  // To place labels inside our chart, along each petal, in a specific px position
+  const auxArcPixels = d3
+    .arc()
+    // Attr. "innerRadius" later on the update function
+    .innerRadius(
+      (d) =>
+        yScale(d[`value_${year}`]) - yScale(0) + yScale(0) - iconOffset
+    )
+    // Attr. "outerRadius" later on the update function
+    .outerRadius(
+      (d) =>
+        yScale(d[`value_${year}`]) - yScale(0) + yScale(0) - iconOffset
+    )
 
-  // function setSummaryItemWidth(d) {
-  //   return d.percentage+'%';
-  // }
+    .startAngle((d) => xScale(d.code))
+    .endAngle((d) => xScale(d.code) + xScale.bandwidth())
+    .padAngle(padding)
+    .padRadius(innerRadius);
 
-  // function setSummaryItemPercentage(d) {
-  //   return ( d.percentage >= 6 ) ? Formatter.decimal(d.percentage, .1)+'<small>%</small>' : '';
-  // }
+  // Creating invisible arcs 100% big for interactions
+  const auxArcInteractions = d3
+    .arc()
+    .innerRadius((d) => yScaleAux(0))
+    .outerRadius((d) => yScaleAux(100))
+    .startAngle((d) => xScale(d.code))
+    .endAngle((d) => xScale(d.code) + xScale.bandwidth())
+    .padAngle(0)
+    .padRadius(innerRadius);
 
-  // function setSummaryItemLabelClass(d) {
-  //   return (d.percentage >= 6 ) ? 'budget-summary-label' : 'budget-summary-label disabled';
-  // }
+  // Axis
+  radialAxis = (g) =>
+    g.attr("text-anchor", "middle").call((g) =>
+      g
+        .selectAll("g")
+        .data(percentSteps)
+        // .join("g") // d3js version problem here ??
+        .enter()
+        .append("g")
+        .attr("fill", "none")
+        .call((g) =>
+          g
+            .append("circle")
+            .attr("stroke", colorNeutral(900))
+            .attr("stroke-opacity", 0.3)
+            .attr("stroke-dasharray", "4 6")
+            .attr("r", yScale)
+        )
+        .call((g) =>
+          g
+            .append("text")
+            .attr("data-figure", (d) => d)
+            // .attr("class", (d) =>
+            //   hiddenLabels.includes(d) ? "hidden-tick" : "visible-tick"
+            // )
+            // Hidden all labels by default
+            .attr("class", "hidden-tick")
+            .attr("y", (d) => -yScale(d))
+            .attr("dy", "0.35em")
+            .style("opacity", 0.7)
+            .style("fill", colorPrimary) // TEMPORAL fill
+            .text((d) => `${d}%`)
+            // .text(d => d + "%" )
+            // .call(cloneToImproveReadability, 2, colorNeutral(900))
+        )
+    )
 
-  // function setSummaryItemLabel(d) {
-  //   // return (d.percentage >= 6 ) ? areaNames[d.key] : '';
-  //   return areaNames[d.key];
-  // }
 
-  // // Set colors scale based on colors array
-  // function setColorScale() {
-  //   colorScale = d3.scaleOrdinal()
-  //     .range(colors)
-  //     .domain([0,1,2,3,4,5,6,7,8,9]);
-  // }
+  // Translations and formatting
+  const dataLocale = ({
+    es: {
+      titleViz: "18 POLÍTICAS DE GASTO",
+      nodeDetails: ["Se han obtenido", " puntos", "de un total de "],
+      interactionNote: isMobile
+        ? [
+            "↓ Haz click en cada una ",
+            "de las 18 políticas de gasto",
+            "para ver información en detalle"
+          ]
+        : [
+            "↑ Pasa por encima de cada una de las 18 políticas de gasto para ver información en detalle ",
+            "o haz click para ir a su página."
+          ],
+      linkInfo: "Más información"
+    },
+    en: {
+      titleViz: "18 SPENDING POLICIES",
+      nodeDetails: ["out of", " objectives ", " have been met"],
+      interactionNote: isMobile
+        ? ["↓ Click on each of", "the 18 policies to", "see detailed information"]
+        : [
+            "↑ Hover over each of the 18 policies to see information in detail ",
+            "or click on it to go to its page."
+          ],
+      linkInfo: "More information"
+    }
+  })
+  
+  // en-US format
+  const en_US = ({
+    decimal: ".",
+    thousands: ",",
+    grouping: [3],
+    currency: ["€", ""]
+  })
+  // es-ES format
+  const es_ES = ({
+    decimal: ",",
+    thousands: ".",
+    //thousands: "\u00a0", // space
+    grouping: [3],
+    currency: ["", "\u00a0€"]
+  })
+
+  const locale = languageSelector === "en" ? en_US : es_ES;
+
+  function formatDecimal(value) {
+    // return d3.formatLocale(locale).format(",.1f")
+    const f = d3.format(",.1f");
+    return f(value);
+  }
+
+  // Other useful functions
+  function radiansToDeg(d) {
+    return d * (180 / Math.PI)
+  }
+
+  const colorNeutral = d3
+    .scaleLinear()
+    .range(['white', 'black'])
+    .domain([0, 1000])
 }
