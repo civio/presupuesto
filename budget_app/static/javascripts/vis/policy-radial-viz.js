@@ -2,16 +2,7 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
   // console.log(d3.version); // 7.8.1
   // console.log(d3.selection())
   // console.log(d3.selection().join())
-
-  // // TEST: NOW WORKING :(
-  // d3.select("#policy-radial-viz")
-  //   .append("g")
-  //   .selectAll("text")
-  //   .data([0,30,60])
-  //   // .join("text") //?
-  //   .enter()
-  //   .append()
-  //   .text(d => d)
+  // console.log(d3.arc)
 
   var selector          = _selector,
       data              = _data,
@@ -105,7 +96,7 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
       .call(radialAxis);
 
     ///////////////
-    // Create aux elements for interactions
+    // 0. Create aux elements for interactions
     auxEl = vizGroup.append("g").attr("id", "aux-el");
     auxNodeGroup = auxEl
       .selectAll("g")
@@ -126,6 +117,7 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
     auxNodeGroup.append("title").text((d) => `${d.url}&year=${year}`)
     .append("path")
 
+  // 1. Petals
   // Prepare Radial chart
   radialChart = vizGroup
     .append("g")
@@ -134,9 +126,9 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
   
     // Here?
   nodeGroup = radialChart.selectAll("g").data(data)
+  // .join("g");
     .enter()
     .append("g");
-  // .join("g");
 
   // Create petals from 0,0
   petals = nodeGroup
@@ -147,15 +139,55 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
       .style("fill", colorPrimary)
       .style("opacity", baseOpacityPetals);
 
-  // Prepare icons
+  // 2. Icons
+  // Prepare icons. We locate x,y coordinates later
   icons = nodeGroup
    .append("image")
    .attr("class", "icon")
    .attr("width", iconSize)
    .attr("height", iconSize)
-   .attr("href", d => `/static/assets/${findIcon(d.code, policyDetails)}_${isMobile ? "color" : "white"}.svg`)
+   .attr("href", d => `/static/assets/${findPolicyDetail("icon",d.code, policyDetails)}_${isMobile ? "color" : "white"}.svg`)
    .style("opacity", baseOpacityIcons);
 
+  //  3. Percents %
+  // Prepare percentages %
+  percentageGroup = nodeGroup
+  .append("g")
+  .attr("class", "percentage-group")
+  // // When no data
+  // .attr("visibility", (d) =>
+  //   isMobile || d[`value_${year}`] === "NA" ? "hidden" : "visible"
+  // )
+  .style("transform", (d) =>
+    isMobile ? "" : `rotate(${xScale(d.code) + xScale.bandwidth() / 2}rad)`
+  );
+
+  // Create empty texts for percents
+  percents = percentageGroup
+  .append("text")
+  .attr("font-size", isMobile ? "14px" : "15px")
+  .style("dominant-baseline", "middle")
+  .attr("font-weight", 800)
+  .attr("text-anchor", "middle")
+  // // With no data
+  // .style("opacity", (d) => (d[`value_${year}`] === "NA" ? 0 : 1))
+  // Attr. "text" later on the update function
+  .attr("transform", function (d) {
+    const myAngleDeg = radiansToDeg(
+      (xScale(d.code) + xScale.bandwidth() / 2 + Math.PI) % (2 * Math.PI)
+    );
+    // Adding a new flag key to the data
+    d["isUpperHalf"] = myAngleDeg > 90 && myAngleDeg < 270;
+    if (isMobile) return "";
+    else {
+      return d.isUpperHalf ? "rotate(0)" : "rotate(180)";
+    }
+  })
+  // .call(cloneToImproveReadability, 4, colorPrimary);
+
+
+
+  //  4. Titles
   // Prepare titles
   titleGroup = nodeGroup
     .append("g")
@@ -168,7 +200,8 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
     const el = d3.select(this);
     // console.log(el)
     const offset = 15;
-    const labelLines = a.labelSplitted;
+    // const labelLines = a.labelSplitted;
+    const labelLines = findPolicyDetail("labelSplitted",a.code, policyDetails);
     const labelLinesLenght = labelLines.length;
     const offsetBtwnLines = isMobile ? 12 : 10;
 
@@ -197,42 +230,6 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
         .attr("height", rectHeight)
         .style("fill", colorPrimary);
     }
-
-    el.selectAll("text")
-      .data(labelLines)
-      // .join("text")
-      .enter()
-      .append("text")
-      // Attr. "x" later on the update function
-      .attr("y", 0)
-      .attr("dy", (d, i) => scaleOffset(i))
-      .text((d) => `${d}`)
-      .attr("transform", (d) =>
-        a.isLefttHalf && !isMobile ? "rotate(180)" : "rotate(0)"
-      )
-      .style("opacity", baseOpacityTexts)
-      .style("opacity", 0.1) // Temporal
-      // On mobile, I don't want to pass any function, but "" or null options are not working, so passing d => d
-      // Passing an argument to a call function
-      // .call(
-      //   isMobile ? (d) => d : cloneToImproveReadability,
-      //   5,
-      //   colorNeutral(900)
-      // );
-  });
-
-  // Prepare percentages %
-  percentageGroup = nodeGroup
-    .append("g")
-    .attr("class", "percentage-group")
-    // // When no data
-    // .attr("visibility", (d) =>
-    //   isMobile || d[`value_${yearSelector}`] === "NA" ? "hidden" : "visible"
-    // )
-    .style("transform", (d) =>
-      isMobile ? "" : `rotate(${xScale(d.code) + xScale.bandwidth() / 2}rad)`
-    );
-
     if (!isMobile) {
       // Titles
       titleGroup
@@ -257,29 +254,31 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
         .style("text-anchor", "middle")
         .attr("transform", `translate(0,${offsetTitleMobile})`);
     }
+    el.selectAll("text")
+      .data(labelLines)
+      // .join("text")
+      .enter()
+      .append("text")
+      // Attr. "x" later on the update function
+      .attr("y", 0)
+      .attr("dy", (d, i) => scaleOffset(i))
+      .text((d) => `${d}`)
+      .attr("transform", (d) =>
+        a.isLefttHalf && !isMobile ? "rotate(180)" : "rotate(0)"
+      )
+      .style("opacity", baseOpacityTexts)
+      .style("opacity", 0.1) // Temporal
+      // On mobile, I don't want to pass any function, but "" or null options are not working, so passing d => d
+      // Passing an argument to a call function
+      // .call(
+      //   isMobile ? (d) => d : cloneToImproveReadability,
+      //   5,
+      //   colorNeutral(900)
+      // );
+    });
 
-  // Create empty texts for percents
-  percents = percentageGroup
-    .append("text")
-    .attr("font-size", isMobile ? "14px" : "15px")
-    .style("dominant-baseline", "middle")
-    .attr("font-weight", 800)
-    .attr("text-anchor", "middle")
-    // // With no data
-    // .style("opacity", (d) => (d[`value_${year}`] === "NA" ? 0 : 1))
-    // Attr. "text" later on the update function
-    .attr("transform", function (d) {
-      const myAngleDeg = radiansToDeg(
-        (xScale(d.code) + xScale.bandwidth() / 2 + Math.PI) % (2 * Math.PI)
-      );
-      // Adding a new flag key to the data
-      d["isUpperHalf"] = myAngleDeg > 90 && myAngleDeg < 270;
-      if (isMobile) return "";
-      else {
-        return d.isUpperHalf ? "rotate(0)" : "rotate(180)";
-      }
-    })
-  // .call(cloneToImproveReadability, 4, colorPrimary);
+
+  
 
     return this;
   };
@@ -289,6 +288,9 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
     // console.log(this)
     console.log("this.update function", "Year", year)
 
+    ////////
+    // 1.Update Petals
+
     //////////
     // Draw petals
     // const nodeGroup = radialChart.selectAll("g").data(data)
@@ -296,7 +298,6 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
     // .enter()
     // .append("g")
   
-    
     // Set petals transition
     arc.outerRadius((d) => yScale(d[`value_${year}`]))
     petals.transition("unbreak").duration(updateDuration).attr("d", arc);
@@ -319,9 +320,33 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
       .duration(updateDuration)
       .attr("x", (d) => auxArcPixels.centroid(d)[0] - iconSize / 2)
       .attr("y", (d) => auxArcPixels.centroid(d)[1] - iconSize / 2);
-      
+
+
     ////////
-    // 3.Update titles position
+    // 3.Update %% content & position
+    if (!isMobile) {
+      percentageGroup
+        .selectAll("text") // Selecting both the visible text and the white clone
+        .style("opacity", 0)
+        .transition()
+        .duration(updateDuration + 300)
+        // With no data
+        .style("opacity", (d) => (d[`value_${year}`] === "NA" ? 0 : 1))
+        .attr("x", 0)
+        .attr("y", function (d) {
+          const offset = 14;
+          return d.isUpperHalf
+            ? -yScale(d[`value_${year}`]) - offset
+            : yScale(d[`value_${year}`]) + offset;
+        })
+        // Adding no data possiblity
+        .text((d) =>
+          d[`value_${year}`] ? formatDecimal(d[`value_${year}`]) + "%" : ""
+        )
+    }
+
+    ////////
+    // 4.Update titles position
     if (!isMobile) {
       // d3.selectAll(titleGroup).each(function (a) {
       titleGroup.each(function (a) {
@@ -349,30 +374,7 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
       });
     }
 
-    ////////
-    // 4.Update %% content & position
 
-    // Update their position
-    if (!isMobile) {
-      percentageGroup
-        .selectAll("text") // Selecting both the visible text and the white clone
-        .style("opacity", 0)
-        .transition()
-        .duration(updateDuration + 300)
-        // With no data
-        .style("opacity", (d) => (d[`value_${year}`] === "NA" ? 0 : 1))
-        .attr("x", 0)
-        .attr("y", function (d) {
-          const offset = 14;
-          return d.isUpperHalf
-            ? -yScale(d[`value_${year}`]) - offset
-            : yScale(d[`value_${year}`]) + offset;
-        })
-        // Adding no data possiblity
-        .text((d) =>
-          d[`value_${year}`] ? formatDecimal(d[`value_${year}`]) + "%" : ""
-        )
-    }
     
     return this;
   }
@@ -425,11 +427,124 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
 
 
   // Interactions
-  function onMouseOver(event, d, i) {
+  // https://github.com/d3/d3-selection/blob/v3.0.0/README.md#selection_on
+  // function onMouseOver(event, d, i) {
     // console.log(event, d, i)
+  function onMouseOver(d) {
+    // console.log(d)
+    const thisCode = d.code;
+    const thisUrl = d.url;
+    const myItem = data.find((e) => e.code === thisCode);
+    // console.log(myItem)
+    const petalWithData = myItem[`value_${year}`] !== "NA";
+  
+    // Higlight current node
+    d3.selectAll(`#node-el > g > *`)
+      .transition()
+      .duration(100)
+      .style("opacity", function (e, f, selection) {
+        let hideOpacity = "";
+        // https://stackoverflow.com/questions/50698083/find-tag-name-of-svg-element-using-d3
+        const tagName = this.tagName;
+        if (tagName === "text" || tagName === "g")
+          hideOpacity = hidingOpacityTexts;
+        else if (tagName === "path") hideOpacity = hidingOpacityPetals;
+        else if (tagName === "image" && isMobile) hideOpacity = 0;
+  
+        return e.code == thisCode ? finalOpacityPetals : hideOpacity;
+      });
+
+    // Hide center legend (just on desktop)
+    if (!isMobile) d3.select("#central-legend").style("opacity", 0);
+
+    if (isMobile) d3.select(".titleVizGroup").style("opacity", 0);
+
+    // Show all hidden ticks
+    d3.selectAll(".hidden-tick").style("visibility", "visible");
+
+    // Hide % legend when hovering on first/last items and avoy overlay
+    const isFirstOrLastEl = extremeCodes().includes(thisCode);
+    if (isFirstOrLastEl)
+      d3.selectAll("[data-figure]").style("visibility", "hidden");
+
+    // Show %%
+    d3.selectAll(".percentage-group").style("visibility", "visible");
+
+    // Show node details
+    const detailedInfo = d3
+      .select(".node-details")
+      .style("opacity", petalWithData ? 1 : 0);
+
+    detailedInfo
+      .select(".data-partialValue")
+      .style("fill", colorPrimary)
+      .style("font-size", isMobile ? "18px" : "16px")
+      .style("font-weight", 800)
+      .text(
+        languageSelector === "es"
+          ? formatDecimal(myItem[`partial_${year}`]) +
+              dataLocale[languageSelector].nodeDetails[1]
+          : formatDecimal(myItem[`partial_${year}`])
+      );
+
+    detailedInfo.select(".data-fromTotal").text(
+      languageSelector === "es"
+        ? dataLocale[languageSelector].nodeDetails[2]
+        : dataLocale[languageSelector].nodeDetails[0] //out of
+    ); // de un total de
+
+    detailedInfo
+      .select(".data-totalValue")
+      .style("fill", colorPrimary)
+      .style("font-size", isMobile ? "18px" : "16px")
+      .style("font-weight", 800)
+      .text(
+        languageSelector === "es"
+          ? myItem[`total_${year}`]
+          : myItem[`total_${year}`] +
+              dataLocale[languageSelector].nodeDetails[1]
+      );
   }
-  function onMouseOut(event, d, i) {
+  // function onMouseOut(event, d, i) {
     // console.log(event, d, i)
+  function onMouseOut(d) {
+    // console.log(d)
+    // Back to "normal" state
+    d3.selectAll(`#node-el > g > *`)
+    .transition()
+    .duration(100)
+    .style("opacity", function () {
+      // https://stackoverflow.com/questions/50698083/find-tag-name-of-svg-element-using-d3
+      const tagName = this.tagName;
+      const classAttr = d3.select(this).attr("class");
+
+      // Hide policy titles in mobile
+      if (classAttr === "policy-group" && isMobile) return 0;
+      // Manage the rest of elemnts based on tags
+      else if (tagName === "text" || tagName === "g") return baseOpacityTexts;
+      else if (tagName === "path") return baseOpacityPetals;
+      else if (tagName === "image") return baseOpacityIcons;
+    });
+
+    // Hide first ticks
+    d3.selectAll("[data-figure]").style("visibility", function(d) {
+      const isHiddenClass = (d3.select(this).attr("class")) === "hidden-tick";
+      return isHiddenClass ? "hidden" : "visible"
+    });
+    
+    // Hide %%
+    if(isMobile) d3.selectAll(".percentage-group").style("visibility", "hidden");
+    
+    // Show center legend
+    d3.select("#central-legend").style("opacity", 1);
+    //if (isMobile) d3.select(".title-text").style("opacity", 1);
+    if (isMobile) d3.select(".titleVizGroup").style("opacity", 1);
+
+    // Hide node details
+    d3.select(".node-details")
+      .style("opacity", 0)
+      .select(".data-objectives")
+      .html("");
   }
 
 
@@ -606,8 +721,13 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
     .scaleLinear()
     .range(['white', 'black'])
     .domain([0, 1000])
-}
-function findIcon(code, arrayDetails) {
-  // console.log(arrayDetails.find(d => d.code === code))
-  return arrayDetails.find(d => d.code === code).icon;
+
+  function findPolicyDetail(detail, code, arrayDetails) {
+    return arrayDetails.find(d => d.code === code)[detail];
+  }
+
+  function extremeCodes() {
+    const codes = data.map((d) => d.code);
+    return [codes[0], codes[codes.length - 1]];
+  }
 }
