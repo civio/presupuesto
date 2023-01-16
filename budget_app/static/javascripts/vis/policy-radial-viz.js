@@ -7,7 +7,8 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
   var selector          = _selector,
       data              = _data,
       policyDetails     = _policyDetails,
-      year              = null,
+      // year              = null,
+      year,
       // year              = 2021,
       languageSelector  = "es",
       
@@ -184,6 +185,7 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
     }
   })
   // .call(cloneToImproveReadability, 4, colorPrimary);
+  .style("fill", colorPrimary)
 
 
 
@@ -277,15 +279,138 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
       // );
     });
 
-
+    // 5. Others
+    // Title
+    if (isMobile) {
+      const titleVizGroup = vizGroup
+        .append("g")
+        .attr("class", "titleVizGroup")
+        .attr("transform", `translate(0,${outerRadius + 50})`);
+      const rectWidth = outerRadius * 2;
+      const rectHeight = 40;
+      titleVizGroup
+        .append("rect")
+        .attr("class", "title-rect")
+        .attr("x", -rectWidth / 2)
+        .attr("y", -rectHeight / 2)
+        .attr("width", rectWidth)
+        .attr("height", rectHeight)
+        .style("opacity", baseOpacityPetals + 0.1)
+        .style("fill", colorPrimary);
+      titleVizGroup
+        .append("text")
+        .attr("class", "title-text")
+        .style("font-weight", 800)
+        .style("text-anchor", "middle")
+        .style("dominant-baseline", "middle")
+        .style("font-size", "16px")
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("width", rectWidth)
+        .attr("height", rectHeight)
+        .text(dataLocale[languageSelector].titleViz)
+        .style("fill", colorNeutral(0));
+    }
+    // Interaction note
+    const interactionNote = vizGroup
+      .append("g")
+      .attr("class", "interaction-note")
+      .append("text")
+      .attr("x", 0)
+      .attr("y", isMobile ? -height / 2 + 140 : height / 2 - 60)
+      .attr("fill", colorNeutral(500))
+      .style("text-anchor", "middle")
+      .style("font-size", isMobile ? "15px" : "14px");
+    interactionNote
+      .selectAll("tspan")
+      .data(dataLocale[languageSelector].interactionNote)
+      // .join("tspan")
+      .enter()
+      .append()
+      .text((d) => d)
+      .attr("x", 0)
+      .attr("dy", (d, i) => (isMobile ? 20 : 18));
   
+    // Node details
+    const detailsOffsetMobile = height / 2 - 100;
+    const nodeDetails = vizGroup
+      .append("g")
+      .attr("class", "node-details")
+      .attr("transform", `translate(0,${isMobile ? detailsOffsetMobile : -10})`)
+      .style("opacity", 0)
+      .style("font-size", isMobile ? "15px" : "17px");
+    const textOffsetDesktop = languageSelector === "es" ? -10 : -40;
+    const textGroup = nodeDetails
+      .append("text")
+      .attr("x", 0)
+      .attr("y", isMobile ? -20 : textOffsetDesktop)
+      .attr("fill", colorNeutral(900))
+      //.style("opacity", yearWithNoData ? 0 : 1) // Hidding details when there is no data
+      .style("text-anchor", "middle");
+
+    if (languageSelector === "es") {
+      textGroup.append("tspan").text(dataLocale[languageSelector].nodeDetails[0]); // Se han obtenido ...
+      textGroup
+        .append("tspan")
+        .attr("class", "data-partialValue") // ... x puntos ...
+        .attr("x", 0)
+        .attr("dy", 20);
+      textGroup
+        .append("tspan")
+        .attr("class", "data-fromTotal") // ... de un total de ....
+        .attr("x", 0)
+        .attr("dy", 20);
+      textGroup
+        .append("tspan")
+        .attr("class", "data-totalValue") // ... x
+        .attr("x", 0)
+        .attr("dy", 20);
+    } else {
+      textGroup
+        .append("tspan")
+        .attr("class", "data-partialValue") // x ...
+        .attr("x", 0)
+        .attr("dy", 20);
+      textGroup
+        .append("tspan")
+        .attr("class", "data-fromTotal") // ... out of ...
+        .attr("x", 0)
+        .attr("dy", 20);
+      textGroup
+        .append("tspan")
+        .attr("class", "data-totalValue") // ... x ...
+        .attr("x", 0)
+        .attr("dy", 20);
+      textGroup
+        .append("tspan")
+        .attr("x", 0)
+        .attr("dy", 20)
+        .text(dataLocale[languageSelector].nodeDetails[2]); // ...have been meet
+    }
+
+    if (isMobile) {
+      const anchor = nodeDetails
+        .append("a")
+        .attr("class", "data-link")
+        .attr("target", "_self")
+        .style("text-decoration", "underline")
+        .style("font-weight", 600)
+        .style("fill", colorPrimary);
+      anchor
+        .append("text")
+        .style("text-anchor", "middle")
+        .attr("dy", 70)
+        .style("fill", colorPrimary)
+        .text(dataLocale[languageSelector].linkInfo); // More info
+    }
+
 
     return this;
   };
 
   // Update
-  this.update = function(year) {
-    // console.log(this)
+  this.update = function(_year) {
+    year = _year;
     console.log("this.update function", "Year", year)
 
     ////////
@@ -433,9 +558,7 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
   function onMouseOver(d) {
     // console.log(d)
     const thisCode = d.code;
-    const thisUrl = d.url;
     const myItem = data.find((e) => e.code === thisCode);
-    // console.log(myItem)
     const petalWithData = myItem[`value_${year}`] !== "NA";
   
     // Higlight current node
