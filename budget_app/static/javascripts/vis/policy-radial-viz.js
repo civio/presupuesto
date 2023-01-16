@@ -1,4 +1,4 @@
-function PolicyRadialViz(_selector,_data) {
+function PolicyRadialViz(_selector,_data,_policyDetails) {
   // console.log(d3.version); // 7.8.1
   // console.log(d3.selection())
   // console.log(d3.selection().join())
@@ -15,6 +15,7 @@ function PolicyRadialViz(_selector,_data) {
 
   var selector          = _selector,
       data              = _data,
+      policyDetails     = _policyDetails,
       year              = null,
       // year              = 2021,
       languageSelector  = "es",
@@ -114,7 +115,7 @@ function PolicyRadialViz(_selector,_data) {
       .append("g")
       .append("a")
       .attr("target", "_self")
-      .attr("href", isMobile ? null : (d) => d.url)
+      .attr("href", isMobile ? null : (d) => `${d.url}&year=${year}`)
       .append("path")
       .attr("d", auxArcInteractions)
       .style("fill", "transparent")
@@ -122,7 +123,8 @@ function PolicyRadialViz(_selector,_data) {
       .on("mouseover", onMouseOver)
       .on("mouseleave", onMouseOut);
     // Add URL links
-    auxNodeGroup.append("title").text((d) => d.url);
+    auxNodeGroup.append("title").text((d) => `${d.url}&year=${year}`)
+    .append("path")
 
   // Prepare Radial chart
   radialChart = vizGroup
@@ -151,10 +153,7 @@ function PolicyRadialViz(_selector,_data) {
    .attr("class", "icon")
    .attr("width", iconSize)
    .attr("height", iconSize)
-  //  .attr("href", (d, i) => (isMobile ? d.iconMobile : d.iconDesktop))
-  //  .attr("href", (d, i) => d.iconDesktop)
-   .attr("href", `/static/assets/monitoring_02-siren-on_${isMobile ? "color" : "white"}.svg`)
-  //  .attr("href", d => `/static/assets/${d.icon}_${isMobile ? "color" : "white"}.svg`)
+   .attr("href", d => `/static/assets/${findIcon(d.code, policyDetails)}_${isMobile ? "color" : "white"}.svg`)
    .style("opacity", baseOpacityIcons);
 
   // Prepare titles
@@ -267,7 +266,7 @@ function PolicyRadialViz(_selector,_data) {
     .attr("font-weight", 800)
     .attr("text-anchor", "middle")
     // // With no data
-    // .style("opacity", (d) => (d[`value_${_year}`] === "NA" ? 0 : 1))
+    // .style("opacity", (d) => (d[`value_${year}`] === "NA" ? 0 : 1))
     // Attr. "text" later on the update function
     .attr("transform", function (d) {
       const myAngleDeg = radiansToDeg(
@@ -286,9 +285,9 @@ function PolicyRadialViz(_selector,_data) {
   };
 
   // Update
-  this.update = function(_year) {
+  this.update = function(year) {
     // console.log(this)
-    console.log("this.update function", "Year", _year)
+    console.log("this.update function", "Year", year)
 
     //////////
     // Draw petals
@@ -299,20 +298,20 @@ function PolicyRadialViz(_selector,_data) {
   
     
     // Set petals transition
-    arc.outerRadius((d) => yScale(d[`value_${_year}`]))
+    arc.outerRadius((d) => yScale(d[`value_${year}`]))
     petals.transition("unbreak").duration(updateDuration).attr("d", arc);
 
     ////////
     // 2.Update icons position
     auxArcPixels
       .innerRadius((d) =>
-        d[`value_${_year}`] !== "NA"
-          ? yScale(d[`value_${_year}`]) - yScale(0) + yScale(0) - iconOffset
+        d[`value_${year}`] !== "NA"
+          ? yScale(d[`value_${year}`]) - yScale(0) + yScale(0) - iconOffset
           : yScale(100) - yScale(0) + yScale(0) - iconOffset
       )
       .outerRadius((d) =>
-        d[`value_${_year}`] !== "NA"
-          ? yScale(d[`value_${_year}`]) - yScale(0) + yScale(0) - iconOffset
+        d[`value_${year}`] !== "NA"
+          ? yScale(d[`value_${year}`]) - yScale(0) + yScale(0) - iconOffset
           : yScale(100) - yScale(0) + yScale(0) - iconOffset
       );
     icons
@@ -332,14 +331,14 @@ function PolicyRadialViz(_selector,_data) {
           .duration(updateDuration)
           .style("opacity", baseOpacityTexts)
           .attr("fill", (d) =>
-            a[`value_${_year}`] !== "NA" ? colorNeutral(1000) : textFillNoData
+            a[`value_${year}`] !== "NA" ? colorNeutral(1000) : textFillNoData
           )
           .attr("x", function (d) {
-            const offset = a[`value_${_year}`] === "NA" ? 10 : 20;
-            if (a[`value_${_year}`] !== "NA") {
+            const offset = a[`value_${year}`] === "NA" ? 10 : 20;
+            if (a[`value_${year}`] !== "NA") {
               return a.isLefttHalf
-                ? -yScale(a[`value_${_year}`] + offset)
-                : yScale(a[`value_${_year}`] + offset);
+                ? -yScale(a[`value_${year}`] + offset)
+                : yScale(a[`value_${year}`] + offset);
               // When no data
             } else {
               return a.isLefttHalf
@@ -361,17 +360,17 @@ function PolicyRadialViz(_selector,_data) {
         .transition()
         .duration(updateDuration + 300)
         // With no data
-        .style("opacity", (d) => (d[`value_${_year}`] === "NA" ? 0 : 1))
+        .style("opacity", (d) => (d[`value_${year}`] === "NA" ? 0 : 1))
         .attr("x", 0)
         .attr("y", function (d) {
           const offset = 14;
           return d.isUpperHalf
-            ? -yScale(d[`value_${_year}`]) - offset
-            : yScale(d[`value_${_year}`]) + offset;
+            ? -yScale(d[`value_${year}`]) - offset
+            : yScale(d[`value_${year}`]) + offset;
         })
         // Adding no data possiblity
         .text((d) =>
-          d[`value_${_year}`] ? formatDecimal(d[`value_${_year}`]) + "%" : ""
+          d[`value_${year}`] ? formatDecimal(d[`value_${year}`]) + "%" : ""
         )
     }
     
@@ -607,4 +606,8 @@ function PolicyRadialViz(_selector,_data) {
     .scaleLinear()
     .range(['white', 'black'])
     .domain([0, 1000])
+}
+function findIcon(code, arrayDetails) {
+  // console.log(arrayDetails.find(d => d.code === code))
+  return arrayDetails.find(d => d.code === code).icon;
 }
