@@ -114,7 +114,7 @@ export {
 */
 
 export {
-  //arc,
+  arc,
   area,
   line,
   // pie,
