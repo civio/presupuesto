@@ -15,10 +15,12 @@
   $(function () {
   
     var policyData = POLICYDATA;
+    var policyDetails = POLICYDETAILS;
     // console.log(policyData);
+    // console.log(policyDetails);
 
     // Create Policiy RadialViz
-    var policyRadialViz = new PolicyRadialViz('#policy-radial-viz', policyData)
+    var policyRadialViz = new PolicyRadialViz('#policy-radial-viz', policyData, policyDetails)
       .setup()
       .update(2021);
 
