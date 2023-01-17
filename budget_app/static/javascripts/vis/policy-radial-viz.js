@@ -2,7 +2,7 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
   // console.log(d3.version); // 7.8.1
   // console.log(d3.selection())
   // console.log(d3.selection().join())
-  // console.log(d3.arc)
+  console.log(d3.arc)
 
   var selector          = _selector,
       data              = _data,
@@ -429,7 +429,7 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
     ////////
     // 0. Aux elements
     // Update url with current year
-    console.log(auxNodeLinks)
+    // console.log(auxNodeLinks)
     auxNodeLinks
       .attr("href", isMobile ? null : (d) => `${findPolicyDetail("url",d.code, policyDetails)}&year=${year}`)
     auxNodeGroup.selectAll("title")
@@ -537,17 +537,22 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
   }
   function setYScale() {
     innerRadius = isMobile ? 20 : 90;
-    margin = isMobile ? 30 : 150;
+    margin = isMobile ? 30 : 160;
     outerRadius = myWidth / 2 - margin;
+    console.log("innerRadius", innerRadius);
+    console.log("margin", margin);
+    console.log("outerRadius", outerRadius);
 
     yScale = d3
-    .scaleRadial()
+    // .scaleRadial()
+    .scaleLinear()
     .domain([0, 100]) // Values are percents 0-100%
     .range([innerRadius, outerRadius])
   }
   function setYScaleAux() {
     yScaleAux = d3
-    .scaleRadial()
+    // .scaleRadial()
+    .scaleLinear()
     .domain([0, 100]) // Values are percents 0-100%
     .range([innerRadius, myWidth / 2])
   }
@@ -555,21 +560,20 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
   // Set main element dimensions
   function setDimensions() {
     width = $(selector).width();
-    console.log("setDimensions -> width", width);
+    // console.log("setDimensions -> width", width);
     isMobile = width < mediaQueryLimit;
     // console.log("isMobile?", isMobile);
 
     myWidth = Math.min(maxWidth, width);
     height = isMobile ? myWidth + 400 : myWidth;
-    console.log("myWidth", myWidth)
-    console.log("height", height)
+    // console.log("myWidth", myWidth)
+    // console.log("height", height)
 
     // Set main element height
     // $(selector)
     svg
     .attr("height", height )
     .attr("width", myWidth )
-    .attr("data-test", "test")
     .style("font", "10px sans-serif");
     // // Update font-size scale domain
     // fontSizeScale.domain([1, Math.sqrt(width*height) * 0.5]);
@@ -583,10 +587,42 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
     setDimensions();
     centerViz();
 
+    // Update scales
+    setXScale();
+    setYScale();
+    setYScaleAux();
+
     // Update axis
+    // svg.select('#radial-axis')
+    //   // .attr('transform', 'translate(0,' + _this.height + ')')
+    //   .call(radialAxis);
 
     // ...
+    // 1. Redraw peatals
+    arc.outerRadius((d) => yScale(d[`value_${year}`]))
+    petals.attr("d", arc);
+
+    // 2.Update icons position
+    auxArcPixels
+    .innerRadius((d) =>
+      d[`value_${year}`] !== "NA"
+        ? yScale(d[`value_${year}`]) - yScale(0) + yScale(0) - iconOffset
+        : yScale(100) - yScale(0) + yScale(0) - iconOffset
+    )
+    .outerRadius((d) =>
+      d[`value_${year}`] !== "NA"
+        ? yScale(d[`value_${year}`]) - yScale(0) + yScale(0) - iconOffset
+        : yScale(100) - yScale(0) + yScale(0) - iconOffset
+    );
+  icons
+    // .transition("unbreak")
+    // .duration(updateDuration)
+    .attr("x", (d) => auxArcPixels.centroid(d)[0] - iconSize / 2)
+    .attr("y", (d) => auxArcPixels.centroid(d)[1] - iconSize / 2);
+  
+
   }
+
   // Center the whole group
   function centerViz() {
     vizGroup
@@ -873,7 +909,6 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
   const locale = languageSelector === "en" ? en_US : es_ES;
 
   function formatDecimal(value) {
-    // return d3.formatLocale(locale).format(",.1f")
     const f = d3.format(",.1f");
     return f(value);
   }
@@ -887,6 +922,11 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
     .scaleLinear()
     .range(['white', 'black'])
     .domain([0, 1000])
+
+  // const colorNeutral = () => d3
+  //   .scaleLinear()
+  //   .range(['white', 'black'])
+  //   .domain([0, 1000])
 
   function findPolicyDetail(detail, code, arrayDetails) {
     return arrayDetails.find(d => d.code === code)[detail];
