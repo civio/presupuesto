@@ -33,11 +33,15 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
       mediaQueryLimit   = 600,  // Width size to use mobile layout (mobileBreakpoint)
       isMobile,
       
-      outerRadius       = 300,
-      innerRadius       = 90,
-      padding           = 0.09,
-      margin            = 150,
-      
+      // outerRadius       = 300,
+      // innerRadius       = 90,
+      // margin            = 150,
+      innerRadius,
+      outerRadius,
+      margin,
+      // padding           = 0.09,
+      padding           = 0.02,
+
       imgSize           = 175,
       iconOffset        = 25,
       iconSize          = 25,
@@ -49,6 +53,7 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
       icons,
       auxEl,
       auxNodeGroup,
+      auxNodeLinks,
       radialChart,
       nodeGroup,
       percentageGroup,
@@ -78,8 +83,11 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
     // Set SVG
     svg = d3.select(selector).select("svg")
 
-    // Set dimensions and center viz group
-    setVizDimensions();
+    // Set dimensions, add resize event & center viz group
+    setDimensions();
+    d3.select(window).on('resize', this.resize);
+
+    vizGroup = svg.append("g")
     centerViz();
 
     //  Create central legend
@@ -104,18 +112,23 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
       .data(data)
       // .join("g")
       .enter()
-      .append("g")
+      .append("g");
+    
+    auxNodeLinks = auxNodeGroup 
       .append("a")
       .attr("target", "_self")
-      .attr("href", isMobile ? null : (d) => `${d.url}&year=${year}`)
+
+    auxNodeLinks
       .append("path")
       .attr("d", auxArcInteractions)
       .style("fill", "transparent")
       .style("cursor", "pointer")
       .on("mouseover", onMouseOver)
       .on("mouseleave", onMouseOut);
-    // Add URL links
-    auxNodeGroup.append("title").text((d) => `${d.url}&year=${year}`)
+
+    // Add URL links as svg titles
+    auxNodeGroup
+    .append("title")
     .append("path")
 
   // 1. Petals
@@ -414,7 +427,16 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
     console.log("this.update function", "Year", year)
 
     ////////
-    // 1.Update Petals
+    // 0. Aux elements
+    // Update url with current year
+    console.log(auxNodeLinks)
+    auxNodeLinks
+      .attr("href", isMobile ? null : (d) => `${findPolicyDetail("url",d.code, policyDetails)}&year=${year}`)
+    auxNodeGroup.selectAll("title")
+      .text((d) => `${findPolicyDetail("url",d.code, policyDetails)}&year=${year}`)
+
+    ////////
+    // 1. Update Petals
 
     //////////
     // Draw petals
@@ -504,6 +526,7 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
     return this;
   }
 
+
   // Set scales
   function setXScale() {
     xScale = d3
@@ -513,6 +536,10 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
     .align(0);
   }
   function setYScale() {
+    innerRadius = isMobile ? 20 : 90;
+    margin = isMobile ? 30 : 150;
+    outerRadius = myWidth / 2 - margin;
+
     yScale = d3
     .scaleRadial()
     .domain([0, 100]) // Values are percents 0-100%
@@ -526,27 +553,43 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
   }
 
   // Set main element dimensions
-  function setVizDimensions() {
+  function setDimensions() {
     width = $(selector).width();
+    console.log("setDimensions -> width", width);
     isMobile = width < mediaQueryLimit;
     // console.log("isMobile?", isMobile);
 
     myWidth = Math.min(maxWidth, width);
     height = isMobile ? myWidth + 400 : myWidth;
+    console.log("myWidth", myWidth)
+    console.log("height", height)
 
     // Set main element height
     // $(selector)
     svg
     .attr("height", height )
     .attr("width", myWidth )
+    .attr("data-test", "test")
     .style("font", "10px sans-serif");
     // // Update font-size scale domain
     // fontSizeScale.domain([1, Math.sqrt(width*height) * 0.5]);
   }
+
+  // Resize event handler
+  this.resize = function() {
+    if (parseInt(svg.attr('width')) === $(selector).width())
+      return;
+
+    setDimensions();
+    centerViz();
+
+    // Update axis
+
+    // ...
+  }
   // Center the whole group
   function centerViz() {
-    vizGroup = svg
-      .append("g")
+    vizGroup
       .attr("transform", `translate(${myWidth / 2}, ${height / 2})`); // Middle point
   }
 
