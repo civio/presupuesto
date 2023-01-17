@@ -326,7 +326,7 @@ export {
 */
 
 export {
-  // scaleBand,
+  scaleBand,
   // scalePoint,
   // scaleIdentity,
   scaleLinear,

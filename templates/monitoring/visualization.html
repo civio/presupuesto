@@ -1,21 +1,24 @@
 <!-- FIXME: Temporary solution until we bring in the viz code from Observable -->
 
-<center>
-
-  <div id="policy-radial-viz">
-    <svg></svg>
+  <div class="container" style="border:1px solid lightgrey;">
+    <div id="policy-radial-viz" style="border:1px solid lightgrey;">
+      <svg></svg>
+    </div>
   </div>
 
-</center>
-
 <style>
+  #policy-radial-viz > svg {
+    display: block;
+    margin: 0 auto;
+    border: 1px solid pink;
+  }
   .hidden-tick {
     visibility: hidden;
   }
 </style>
 
 <!-- Temporal: Last d3 versionv07 -->
-<script src="https://d3js.org/d3.v7.min.js"></script>
+<!-- <script src="https://d3js.org/d3.v7.min.js"></script> -->
 
 <script type="text/javascript">
   $(function () {
