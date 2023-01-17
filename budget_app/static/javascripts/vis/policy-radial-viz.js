@@ -2,7 +2,7 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
   // console.log(d3.version); // 7.8.1
   // console.log(d3.selection())
   // console.log(d3.selection().join())
-  console.log(d3.arc)
+  // console.log(d3.arc)
 
   var selector          = _selector,
       data              = _data,
@@ -49,6 +49,7 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
       svg,
       vizGroup,
       centralLegend,
+      // imageOffsetMobile,
       petals,
       icons,
       auxEl,
@@ -64,7 +65,12 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
       yScaleAux,
       radialAxis,
 
-      imgURL            = "https://static.observableusercontent.com/files/46700676dabb57e8a456eeb06a3cfd18ac69c7637140295e06deed890c1b7810bfa46456b2d91f043c148c1448c614629333ad7d21dd6b467b206e9ca86015d0"
+      // imgURL            = "https://static.observableusercontent.com/files/46700676dabb57e8a456eeb06a3cfd18ac69c7637140295e06deed890c1b7810bfa46456b2d91f043c148c1448c614629333ad7d21dd6b467b206e9ca86015d0"
+      imgURL,
+      imgTitleMobileURL_ES = "/static/assets/radialViz_title_mobile_ES.jpg",
+      imgTitleDesktopURL_ES = "/static/assets/radialViz_title_desktop_ES.png"
+      imgTitleMobileURL_EN = "/static/assets/radialViz_title_mobile_EN.jpg"
+      imgTitleDesktopURL_EN = "/static/assets/radialViz_title_desktop_EN.png"
       isMobile          = false,
       percentSteps      = [0, 25, 50, 75, 100], // Visible steps on chart when interacting
 
@@ -90,8 +96,18 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
     vizGroup = svg.append("g")
     centerViz();
 
-    //  Create central legend
-    centralLegend = vizGroup.append("g").attr("id", "central-legend").call(createLegend);
+    // Create central legend
+    centralLegend = vizGroup.append("g").attr("id", "central-legend")
+
+    // placeLegend()
+    if (!isMobile) {
+      centralLegend.call(createLegend);
+    } else {
+      centralLegend
+        .attr("transform", `translate(0, ${-height / 2 + 80})`)
+        .call(createLegend);
+    }
+
 
     ///////////////
     // Set scales
@@ -526,6 +542,56 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
     return this;
   }
 
+    // Resize event handler
+    this.resize = function() {
+      if (parseInt(svg.attr('width')) === $(selector).width())
+        return;
+  
+      // 0. 
+      setDimensions();
+      centerViz();
+      placeLegend();
+
+      d3.select("#central-legend").select("image").attr("href", isMobile ? imgTitleMobileURL_ES : imgTitleDesktopURL_ES)
+
+
+      // Update scales
+      setXScale();
+      setYScale();
+      setYScaleAux();
+  
+      // Update axis
+      // svg.select('#radial-axis')
+      //   // .attr('transform', 'translate(0,' + _this.height + ')')
+      //   .call(radialAxis);
+  
+      // ...
+      // 1. Redraw peatals
+      arc.outerRadius((d) => yScale(d[`value_${year}`]))
+      petals.attr("d", arc);
+  
+      // 2.Update icons position
+      auxArcPixels
+      .innerRadius((d) =>
+        d[`value_${year}`] !== "NA"
+          ? yScale(d[`value_${year}`]) - yScale(0) + yScale(0) - iconOffset
+          : yScale(100) - yScale(0) + yScale(0) - iconOffset
+      )
+      .outerRadius((d) =>
+        d[`value_${year}`] !== "NA"
+          ? yScale(d[`value_${year}`]) - yScale(0) + yScale(0) - iconOffset
+          : yScale(100) - yScale(0) + yScale(0) - iconOffset
+      );
+      icons
+      // .transition("unbreak")
+      // .duration(updateDuration)
+        .attr("x", (d) => auxArcPixels.centroid(d)[0] - iconSize / 2)
+        .attr("y", (d) => auxArcPixels.centroid(d)[1] - iconSize / 2)
+        // Change icon color depending on size
+        .attr("href", d => `/static/assets/${findPolicyDetail("icon",d.code, policyDetails)}_${isMobile ? "color" : "white"}.svg`)
+    }
+
+
 
   // Set scales
   function setXScale() {
@@ -579,54 +645,24 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
     // fontSizeScale.domain([1, Math.sqrt(width*height) * 0.5]);
   }
 
-  // Resize event handler
-  this.resize = function() {
-    if (parseInt(svg.attr('width')) === $(selector).width())
-      return;
 
-    setDimensions();
-    centerViz();
-
-    // Update scales
-    setXScale();
-    setYScale();
-    setYScaleAux();
-
-    // Update axis
-    // svg.select('#radial-axis')
-    //   // .attr('transform', 'translate(0,' + _this.height + ')')
-    //   .call(radialAxis);
-
-    // ...
-    // 1. Redraw peatals
-    arc.outerRadius((d) => yScale(d[`value_${year}`]))
-    petals.attr("d", arc);
-
-    // 2.Update icons position
-    auxArcPixels
-    .innerRadius((d) =>
-      d[`value_${year}`] !== "NA"
-        ? yScale(d[`value_${year}`]) - yScale(0) + yScale(0) - iconOffset
-        : yScale(100) - yScale(0) + yScale(0) - iconOffset
-    )
-    .outerRadius((d) =>
-      d[`value_${year}`] !== "NA"
-        ? yScale(d[`value_${year}`]) - yScale(0) + yScale(0) - iconOffset
-        : yScale(100) - yScale(0) + yScale(0) - iconOffset
-    );
-  icons
-    // .transition("unbreak")
-    // .duration(updateDuration)
-    .attr("x", (d) => auxArcPixels.centroid(d)[0] - iconSize / 2)
-    .attr("y", (d) => auxArcPixels.centroid(d)[1] - iconSize / 2);
-  
-
-  }
 
   // Center the whole group
   function centerViz() {
     vizGroup
       .attr("transform", `translate(${myWidth / 2}, ${height / 2})`); // Middle point
+  }
+
+  function placeLegend() {
+    const imageOffsetMobile = -height / 2 + 80;
+
+    if (!isMobile) {
+      // centralLegend.call(createLegend);
+    } else {
+      centralLegend
+        .attr("transform", `translate(0, ${-height / 2 + 80})`)
+        // .call(createLegend);
+    }
   }
 
 
@@ -755,11 +791,15 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
     g
     .append("image")
     .attr("transform", `translate(${-imgSize / 2}, ${-imgSize / 2})`)
-    .attr("href", imgURL)
+    .attr("href", isMobile ? imgTitleMobileURL_ES : imgTitleDesktopURL_ES)
     .attr("x", 0)
     .attr("y", 0)
     .attr("width", imgSize)
     .attr("height", imgSize)
+
+  function setLegendImg() {
+
+  } 
 
   const cloneToImproveReadability = (selection, strokeWidth, color) => {
     selection
