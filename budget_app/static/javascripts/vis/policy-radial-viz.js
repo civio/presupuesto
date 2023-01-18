@@ -51,6 +51,7 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
       vizGroup,
       centralLegend,
       // imageOffsetMobile,
+      interactionNote,
       petals,
       icons,
       auxEl,
@@ -231,6 +232,31 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
     .style("font-weight", 800)
     .style("dominant-baseline", "middle");
 
+  if (!isMobile) {
+    // Titles
+    titleGroup
+      .style("font-size", "14px")
+      .attr("transform", function (d) {
+        const angleToRotate =
+          ((xScale(d.code) + xScale.bandwidth() / 2) * 180) / Math.PI - 90;
+        return `rotate(${angleToRotate})`;
+      })
+      .style("text-anchor", function (d) {
+        const myAngleDeg = radiansToDeg(
+          (xScale(d.code) + xScale.bandwidth() / 2 + Math.PI) % (2 * Math.PI)
+        );
+        // Adding a new flag key to the data
+        d["isLefttHalf"] = myAngleDeg > 0 && myAngleDeg < 180;
+        return d.isLefttHalf ? "end" : "start";
+      });
+  } else {
+    const offsetTitleMobile = height / 2 - 180;
+    titleGroup
+      .style("font-size", "16px")
+      .style("text-anchor", "middle")
+      .attr("transform", `translate(0,${offsetTitleMobile})`);
+  }
+
   // Create invisible title texts
   titleGroup.each(function (a) {
     const el = d3.select(this);
@@ -266,30 +292,7 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
         .attr("height", rectHeight)
         .style("fill", colorPrimary);
     }
-    if (!isMobile) {
-      // Titles
-      titleGroup
-        .style("font-size", "14px")
-        .attr("transform", function (d) {
-          const angleToRotate =
-            ((xScale(d.code) + xScale.bandwidth() / 2) * 180) / Math.PI - 90;
-          return `rotate(${angleToRotate})`;
-        })
-        .style("text-anchor", function (d) {
-          const myAngleDeg = radiansToDeg(
-            (xScale(d.code) + xScale.bandwidth() / 2 + Math.PI) % (2 * Math.PI)
-          );
-          // Adding a new flag key to the data
-          d["isLefttHalf"] = myAngleDeg > 0 && myAngleDeg < 180;
-          return d.isLefttHalf ? "end" : "start";
-        });
-    } else {
-      const offsetTitleMobile = height / 2 - 180;
-      titleGroup
-        .style("font-size", "16px")
-        .style("text-anchor", "middle")
-        .attr("transform", `translate(0,${offsetTitleMobile})`);
-    }
+   
     el.selectAll("text")
       .data(labelLines)
       // .join("text")
@@ -312,6 +315,13 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
       //   colorNeutral(900)
       // );
     });
+
+
+    // if (!isMobile) {
+    //   titleGroup.call(transition, baseOpacityTexts);
+    // } else {
+    //   titleGroup.style("fill", "white").style("opacity", 0);
+    // }
 
     // 5. Others
     // Title
@@ -346,24 +356,16 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
         .style("fill", colorNeutral(0));
     }
     // Interaction note
-    const interactionNote = vizGroup
+   interactionNote = vizGroup
       .append("g")
       .attr("class", "interaction-note")
       .append("text")
       .attr("x", 0)
-      .attr("y", isMobile ? -height / 2 + 140 : height / 2 - 60)
       .attr("fill", colorNeutral(500))
       .style("text-anchor", "middle")
-      .style("font-size", isMobile ? "15px" : "14px");
-    interactionNote
-      .selectAll("tspan")
-      .data(dataLocale[languageSelector].interactionNote)
-      // .join("tspan")
-      .enter()
-      .append()
-      .text((d) => d)
-      .attr("x", 0)
-      .attr("dy", (d, i) => (isMobile ? 20 : 18));
+      
+ 
+  
   
     // Node details
     const detailsOffsetMobile = height / 2 - 100;
@@ -546,7 +548,17 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
       });
     }
 
+    // TODO: Organize this
+    if (isMobile) {
+      titleGroup.style("fill", "white").style("opacity", 0);
+      // titleGroup.call(transition, baseOpacityTexts);
+    } else {
+      titleGroup.style("fill", "unset").style("opacity", baseOpacityTexts);
+    }
 
+
+    // 5. Update other elements position
+    setInteractionNotePosition()
     
     return this;
   }
@@ -612,6 +624,10 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
       el.selectAll("text") 
         .call(setTitlesPosition, a)
     })
+
+    // 5. Other elements position
+    setInteractionNotePosition()
+
   }
   
 
@@ -707,6 +723,28 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
             : yScale(100 + offset);
         }
       })
+  }
+
+  function setInteractionNotePosition() {
+    console.log("?")
+    interactionNote
+    // .select("text")
+    .attr("y", isMobile ? -height / 2 + 140 : height / 2 - 60)
+    .style("font-size", isMobile ? "15px" : "14px");
+    
+    interactionNote
+    .selectAll("tspan")
+    .remove()
+
+    interactionNote
+    .selectAll("tspan")
+    .data(dataLocale[languageSelector][`${isMobile ? "interactionNote_mobile" : "interactionNote_desktop"}`])
+    // .join("tspan")
+    .enter()
+    .append("tspan")
+    .text((d) => d)
+    .attr("x", 0)
+    .attr("dy", (d, i) => (isMobile ? 20 : 18));
   }
 
   // Interactions
@@ -974,16 +1012,15 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
     es: {
       titleViz: "18 POLÍTICAS DE GASTO",
       nodeDetails: ["Se han obtenido", " puntos", "de un total de "],
-      interactionNote: isMobile
-        ? [
+      interactionNote_mobile:  [
             "↓ Haz click en cada una ",
             "de las 18 políticas de gasto",
             "para ver información en detalle"
-          ]
-        : [
+          ],
+        interactionNote_desktop:  [
             "↑ Pasa por encima de cada una de las 18 políticas de gasto para ver información en detalle ",
             "o haz click para ir a su página."
-          ],
+        ],
       linkInfo: "Más información"
     },
     en: {
