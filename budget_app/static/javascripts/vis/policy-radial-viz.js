@@ -63,6 +63,8 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
       nodeGroup,
       percentageGroup,
       titleGroup,
+      nodeDetails,
+      textGroup,
 
       xScale,
       yScale,
@@ -363,25 +365,21 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
       .attr("fill", colorNeutral(500))
       .style("text-anchor", "middle")
       
- 
-  
-  
+
     // Node details
-    const detailsOffsetMobile = height / 2 - 100;
-    const nodeDetails = vizGroup
+    nodeDetails = vizGroup
       .append("g")
       .attr("class", "node-details")
-      .attr("transform", `translate(0,${isMobile ? detailsOffsetMobile : -10})`)
-      .style("opacity", 0)
-      .style("font-size", isMobile ? "15px" : "17px");
-    const textOffsetDesktop = languageSelector === "es" ? -10 : -40;
-    const textGroup = nodeDetails
+      .style("opacity", 0);
+      
+      textGroup = nodeDetails
       .append("text")
       .attr("x", 0)
-      .attr("y", isMobile ? -20 : textOffsetDesktop)
       .attr("fill", colorNeutral(900))
       //.style("opacity", yearWithNoData ? 0 : 1) // Hidding details when there is no data
       .style("text-anchor", "middle");
+
+    setNodeDetails();
 
     if (languageSelector === "es") {
       textGroup.append("tspan").text(dataLocale[languageSelector].nodeDetails[0]); // Se han obtenido ...
@@ -636,7 +634,13 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
     })
 
     // 5. Other elements position
+
+    // Interaction note
     setInteractionNotePosition()
+
+
+    // Node Details
+    setNodeDetails();
 
   }
   
@@ -913,6 +917,19 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
       
   } 
 
+   
+  function setNodeDetails() {
+    const detailsOffsetMobile = height / 2 - 100;
+    nodeDetails
+      .attr("transform", `translate(0,${isMobile ? detailsOffsetMobile : -10})`)
+      .style("font-size", isMobile ? "15px" : "17px");
+  
+    const textOffsetDesktop = languageSelector === "es" ? -10 : -40;
+      textGroup
+      .attr("y", isMobile ? -20 : textOffsetDesktop)
+    }
+  
+    
   const cloneToImproveReadability = (selection, strokeWidth, color) => {
     selection
       // To improve readability
