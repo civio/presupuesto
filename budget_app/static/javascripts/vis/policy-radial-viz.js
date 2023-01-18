@@ -43,9 +43,11 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
       padding           = 0.02,
 
       // imgSize           = 175,
+      // iconOffset        = 25,
+      // iconSize          = 25,
       imgSize,
-      iconOffset        = 25,
-      iconSize          = 25,
+      iconOffset,
+      iconSize,
 
       svg,
       vizGroup,
@@ -180,9 +182,6 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
   icons = nodeGroup
    .append("image")
    .attr("class", "icon")
-   .attr("width", iconSize)
-   .attr("height", iconSize)
-   .attr("href", d => `/static/assets/${findPolicyDetail("icon",d.code, policyDetails)}_${isMobile ? "color" : "white"}.svg`)
    .style("opacity", baseOpacityIcons);
 
   //  3. Percents %
@@ -472,20 +471,26 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
     arc.outerRadius((d) => yScale(d[`value_${year}`]))
     petals.transition("unbreak").duration(updateDuration).attr("d", arc);
 
+
+    
     ////////
     // 2.Update icons position
     auxArcPixels
-      .innerRadius((d) =>
-        d[`value_${year}`] !== "NA"
-          ? yScale(d[`value_${year}`]) - yScale(0) + yScale(0) - iconOffset
-          : yScale(100) - yScale(0) + yScale(0) - iconOffset
-      )
-      .outerRadius((d) =>
-        d[`value_${year}`] !== "NA"
-          ? yScale(d[`value_${year}`]) - yScale(0) + yScale(0) - iconOffset
-          : yScale(100) - yScale(0) + yScale(0) - iconOffset
-      );
+    .innerRadius((d) =>
+    d[`value_${year}`] !== "NA"
+    ? yScale(d[`value_${year}`]) - yScale(0) + yScale(0) - iconOffset
+    : yScale(100) - yScale(0) + yScale(0) - iconOffset
+    )
+    .outerRadius((d) =>
+    d[`value_${year}`] !== "NA"
+    ? yScale(d[`value_${year}`]) - yScale(0) + yScale(0) - iconOffset
+    : yScale(100) - yScale(0) + yScale(0) - iconOffset
+    );
+    setIconParameters()
     icons
+      .attr("width", iconSize)
+      .attr("height", iconSize)
+      .attr("href", d => `/static/assets/${findPolicyDetail("icon",d.code, policyDetails)}_${isMobile ? "color" : "white"}.svg`)
       .transition("unbreak")
       .duration(updateDuration)
       .attr("x", (d) => auxArcPixels.centroid(d)[0] - iconSize / 2)
@@ -588,18 +593,23 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
     petals.attr("d", arc);
 
     // 2.Update icons position
+    
     auxArcPixels
     .innerRadius((d) =>
-      d[`value_${year}`] !== "NA"
-        ? yScale(d[`value_${year}`]) - yScale(0) + yScale(0) - iconOffset
-        : yScale(100) - yScale(0) + yScale(0) - iconOffset
+    d[`value_${year}`] !== "NA"
+    ? yScale(d[`value_${year}`]) - yScale(0) + yScale(0) - iconOffset
+    : yScale(100) - yScale(0) + yScale(0) - iconOffset
     )
     .outerRadius((d) =>
-      d[`value_${year}`] !== "NA"
-        ? yScale(d[`value_${year}`]) - yScale(0) + yScale(0) - iconOffset
-        : yScale(100) - yScale(0) + yScale(0) - iconOffset
+    d[`value_${year}`] !== "NA"
+    ? yScale(d[`value_${year}`]) - yScale(0) + yScale(0) - iconOffset
+    : yScale(100) - yScale(0) + yScale(0) - iconOffset
     );
+    setIconParameters()
     icons
+    .attr("width", iconSize)
+    .attr("height", iconSize)
+    .attr("href", d => `/static/assets/${findPolicyDetail("icon",d.code, policyDetails)}_${isMobile ? "color" : "white"}.svg`)
     // .transition("unbreak")
     // .duration(updateDuration)
       .attr("x", (d) => auxArcPixels.centroid(d)[0] - iconSize / 2)
@@ -747,6 +757,11 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
     .attr("dy", (d, i) => (isMobile ? 20 : 18));
   }
 
+  function setIconParameters() {
+    iconOffset = isMobile ? -15 : 25;
+    iconSize = isMobile ? 20 : 25;
+
+  }
   // Interactions
   // https://github.com/d3/d3-selection/blob/v3.0.0/README.md#selection_on
   // function onMouseOver(event, d, i) {
