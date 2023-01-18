@@ -42,7 +42,8 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
       // padding           = 0.09,
       padding           = 0.02,
 
-      imgSize           = 175,
+      // imgSize           = 175,
+      imgSize,
       iconOffset        = 25,
       iconSize          = 25,
 
@@ -96,17 +97,13 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
     vizGroup = svg.append("g")
     centerViz();
 
-    // Create central legend
-    centralLegend = vizGroup.append("g").attr("id", "central-legend")
-
-    // placeLegend()
-    if (!isMobile) {
-      centralLegend.call(createLegend);
-    } else {
-      centralLegend
-        .attr("transform", `translate(0, ${-height / 2 + 80})`)
-        .call(createLegend);
-    }
+    // if (!isMobile) {
+    //   centralLegend.call(createLegend);
+    // } else {
+    //   centralLegend
+    //     .attr("transform", `translate(0, ${-height / 2 + 80})`)
+    //     .call(createLegend);
+    // }
 
 
     ///////////////
@@ -114,6 +111,14 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
     setXScale();
     setYScale();
     setYScaleAux();
+
+    // Create central legend
+    // const imageOffsetMobile = -height / 2 + 80;
+
+    centralLegend = vizGroup.append("g").attr("id", "central-legend")
+      // .attr("transform", isMobile ? `translate(0, ${imageOffsetMobile})` : "")
+    centralLegend.call(createLegend)
+    setLegendContentAndPosition()
 
     ///////////////
     // Set radial axis
@@ -496,12 +501,13 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
         // With no data
         .style("opacity", (d) => (d[`value_${year}`] === "NA" ? 0 : 1))
         .attr("x", 0)
-        .attr("y", function (d) {
-          const offset = 14;
-          return d.isUpperHalf
-            ? -yScale(d[`value_${year}`]) - offset
-            : yScale(d[`value_${year}`]) + offset;
-        })
+        .call(setPercentsPosition)
+        // .attr("y", function (d) {
+        //   const offset = 14;
+        //   return d.isUpperHalf
+        //     ? -yScale(d[`value_${year}`]) - offset
+        //     : yScale(d[`value_${year}`]) + offset;
+        // })
         // Adding no data possiblity
         .text((d) =>
           d[`value_${year}`] ? formatDecimal(d[`value_${year}`]) + "%" : ""
@@ -521,19 +527,22 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
           .attr("fill", (d) =>
             a[`value_${year}`] !== "NA" ? colorNeutral(1000) : textFillNoData
           )
-          .attr("x", function (d) {
-            const offset = a[`value_${year}`] === "NA" ? 10 : 20;
-            if (a[`value_${year}`] !== "NA") {
-              return a.isLefttHalf
-                ? -yScale(a[`value_${year}`] + offset)
-                : yScale(a[`value_${year}`] + offset);
-              // When no data
-            } else {
-              return a.isLefttHalf
-                ? -yScale(100 + offset)
-                : yScale(100 + offset);
-            }
-          });
+          // Passing an argument to a call function
+          .call(setTitlesPosition, a)
+
+          // .attr("x", function (d) {
+          //   const offset = a[`value_${year}`] === "NA" ? 10 : 20;
+          //   if (a[`value_${year}`] !== "NA") {
+          //     return a.isLefttHalf
+          //       ? -yScale(a[`value_${year}`] + offset)
+          //       : yScale(a[`value_${year}`] + offset);
+          //     // When no data
+          //   } else {
+          //     return a.isLefttHalf
+          //       ? -yScale(100 + offset)
+          //       : yScale(100 + offset);
+          //   }
+          // });
       });
     }
 
@@ -542,56 +551,69 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
     return this;
   }
 
-    // Resize event handler
-    this.resize = function() {
-      if (parseInt(svg.attr('width')) === $(selector).width())
-        return;
+  // Resize event handler
+  this.resize = function() {
+    if (parseInt(svg.attr('width')) === $(selector).width())
+      return;
+
+    // 0. 
+    setDimensions();
+    centerViz();
+
+    // Update legend img if necessary and place it well
+    setLegendContentAndPosition()
+
+    // Update scales
+    setXScale();
+    setYScale();
+    setYScaleAux();
+
+    // Update axis
+    updateRadialAxis()
+
+    // 1.Redraw petals
+    arc.outerRadius((d) => yScale(d[`value_${year}`]))
+    petals.attr("d", arc);
+
+    // 2.Update icons position
+    auxArcPixels
+    .innerRadius((d) =>
+      d[`value_${year}`] !== "NA"
+        ? yScale(d[`value_${year}`]) - yScale(0) + yScale(0) - iconOffset
+        : yScale(100) - yScale(0) + yScale(0) - iconOffset
+    )
+    .outerRadius((d) =>
+      d[`value_${year}`] !== "NA"
+        ? yScale(d[`value_${year}`]) - yScale(0) + yScale(0) - iconOffset
+        : yScale(100) - yScale(0) + yScale(0) - iconOffset
+    );
+    icons
+    // .transition("unbreak")
+    // .duration(updateDuration)
+      .attr("x", (d) => auxArcPixels.centroid(d)[0] - iconSize / 2)
+      .attr("y", (d) => auxArcPixels.centroid(d)[1] - iconSize / 2)
+      // Change icon color depending on size
+      .attr("href", d => `/static/assets/${findPolicyDetail("icon",d.code, policyDetails)}_${isMobile ? "color" : "white"}.svg`)
+
+    // 3.Update % position
+    percentageGroup
+      .selectAll("text") 
+      .call(setPercentsPosition)
+      // .attr("y", function (d) {
+      //   const offset = 14;
+      //   return d.isUpperHalf
+      //     ? -yScale(d[`value_${year}`]) - offset
+      //     : yScale(d[`value_${year}`]) + offset;
+      // })
+
+    // 4.Update titles position
+    titleGroup.each(function (a) {
+      const el = d3.select(this);
+      el.selectAll("text") 
+        .call(setTitlesPosition, a)
+    })
+  }
   
-      // 0. 
-      setDimensions();
-      centerViz();
-      placeLegend();
-
-      d3.select("#central-legend").select("image").attr("href", isMobile ? imgTitleMobileURL_ES : imgTitleDesktopURL_ES)
-
-
-      // Update scales
-      setXScale();
-      setYScale();
-      setYScaleAux();
-  
-      // Update axis
-      // svg.select('#radial-axis')
-      //   // .attr('transform', 'translate(0,' + _this.height + ')')
-      //   .call(radialAxis);
-  
-      // ...
-      // 1. Redraw peatals
-      arc.outerRadius((d) => yScale(d[`value_${year}`]))
-      petals.attr("d", arc);
-  
-      // 2.Update icons position
-      auxArcPixels
-      .innerRadius((d) =>
-        d[`value_${year}`] !== "NA"
-          ? yScale(d[`value_${year}`]) - yScale(0) + yScale(0) - iconOffset
-          : yScale(100) - yScale(0) + yScale(0) - iconOffset
-      )
-      .outerRadius((d) =>
-        d[`value_${year}`] !== "NA"
-          ? yScale(d[`value_${year}`]) - yScale(0) + yScale(0) - iconOffset
-          : yScale(100) - yScale(0) + yScale(0) - iconOffset
-      );
-      icons
-      // .transition("unbreak")
-      // .duration(updateDuration)
-        .attr("x", (d) => auxArcPixels.centroid(d)[0] - iconSize / 2)
-        .attr("y", (d) => auxArcPixels.centroid(d)[1] - iconSize / 2)
-        // Change icon color depending on size
-        .attr("href", d => `/static/assets/${findPolicyDetail("icon",d.code, policyDetails)}_${isMobile ? "color" : "white"}.svg`)
-    }
-
-
 
   // Set scales
   function setXScale() {
@@ -605,9 +627,9 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
     innerRadius = isMobile ? 20 : 90;
     margin = isMobile ? 30 : 160;
     outerRadius = myWidth / 2 - margin;
-    console.log("innerRadius", innerRadius);
-    console.log("margin", margin);
-    console.log("outerRadius", outerRadius);
+    // console.log("innerRadius", innerRadius);
+    // console.log("margin", margin);
+    // console.log("outerRadius", outerRadius);
 
     yScale = d3
     // .scaleRadial()
@@ -644,27 +666,48 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
     // // Update font-size scale domain
     // fontSizeScale.domain([1, Math.sqrt(width*height) * 0.5]);
   }
-
-
-
   // Center the whole group
   function centerViz() {
     vizGroup
       .attr("transform", `translate(${myWidth / 2}, ${height / 2})`); // Middle point
   }
+  // function placeLegend() {
+  //   const imageOffsetMobile = -height / 2 + 80;
 
-  function placeLegend() {
-    const imageOffsetMobile = -height / 2 + 80;
+  //   if (!isMobile) {
+  //     // centralLegend.call(createLegend);
+  //   } else {
+  //     centralLegend
+  //       .attr("transform", `translate(0, ${-height / 2 + 80})`)
+  //       // .call(createLegend);
+  //   }
+  // }
 
-    if (!isMobile) {
-      // centralLegend.call(createLegend);
-    } else {
-      centralLegend
-        .attr("transform", `translate(0, ${-height / 2 + 80})`)
-        // .call(createLegend);
-    }
+  function setPercentsPosition(selection) {
+    selection
+      .attr("y", function (d) {
+        const offset = 14;
+        return d.isUpperHalf
+          ? -yScale(d[`value_${year}`]) - offset
+          : yScale(d[`value_${year}`]) + offset;
+      })
   }
-
+  function setTitlesPosition(selection, a) {
+    selection
+      .attr("x", function (d) {
+        const offset = a[`value_${year}`] === "NA" ? 10 : 20;
+        if (a[`value_${year}`] !== "NA") {
+          return a.isLefttHalf
+            ? -yScale(a[`value_${year}`] + offset)
+            : yScale(a[`value_${year}`] + offset);
+          // When no data
+        } else {
+          return a.isLefttHalf
+            ? -yScale(100 + offset)
+            : yScale(100 + offset);
+        }
+      })
+  }
 
   // Interactions
   // https://github.com/d3/d3-selection/blob/v3.0.0/README.md#selection_on
@@ -787,18 +830,34 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
 
 
   // Generators
-  const createLegend = (g) =>
-    g
-    .append("image")
-    .attr("transform", `translate(${-imgSize / 2}, ${-imgSize / 2})`)
-    .attr("href", isMobile ? imgTitleMobileURL_ES : imgTitleDesktopURL_ES)
-    .attr("x", 0)
-    .attr("y", 0)
-    .attr("width", imgSize)
-    .attr("height", imgSize)
+  function createLegend (selection) {
+    // imgSize = isMobile ? 280 : innerRadius * 2 - 5;
 
-  function setLegendImg() {
+    selection
+      .append("image")
+      // .attr("transform", `translate(${-imgSize / 2}, ${-imgSize / 2})`)
+      // .attr("href", isMobile ? imgTitleMobileURL_ES : imgTitleDesktopURL_ES)
+      .attr("x", 0)
+      .attr("y", 0)
+      // .attr("width", imgSize)
+      // .attr("height", imgSize)
+  }
 
+  function setLegendContentAndPosition() {
+    imgSize = isMobile ? 280 : innerRadius * 2 - 5;
+    const imageOffsetMobile = -height / 2 + 80;
+
+    centralLegend
+      .attr("transform", isMobile ? `translate(0, ${imageOffsetMobile})` : "")
+
+    centralLegend
+      .select("image")
+      .attr("width", imgSize)
+      .attr("height", imgSize)
+      .attr("transform", `translate(${-imgSize / 2}, ${-imgSize / 2})`)
+      .attr("href", isMobile ? imgTitleMobileURL_ES : imgTitleDesktopURL_ES)
+      // .attr("transform", isMobile ? `translate(${-imgSize / 2}, ${-height / 2 })` : `translate(${-imgSize / 2}, ${-imgSize / 2})`)
+      
   } 
 
   const cloneToImproveReadability = (selection, strokeWidth, color) => {
@@ -898,6 +957,16 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
             // .call(cloneToImproveReadability, 2, colorNeutral(900))
         )
     )
+
+  function updateRadialAxis() {
+    svg.select("#radial-axis")
+      .selectAll("circle")
+      .attr("r", yScale)
+
+    svg.select("#radial-axis")
+      .selectAll("text")
+      .attr("y", (d) => -yScale(d))
+  }
 
 
   // Translations and formatting
