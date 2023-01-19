@@ -19,11 +19,14 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
       colorNoData       = "rgb(224, 224, 224)",
       textFillNoData    = "rgb(204, 204, 204)",
       
-      baseOpacityIcons  = 0.9,
+      // baseOpacityIcons  = 0.9,
+      baseOpacityIcons,
       baseOpacityPetals = 0.7,
       baseOpacityTexts  = 0.9,
-      hidingOpacityPetals = 0.05,
-      hidingOpacityTexts  = 0.08,
+      // hidingOpacityPetals = 0.05,
+      // hidingOpacityTexts  = 0.08,
+      hidingOpacityPetals,
+      hidingOpacityTexts,
       finalOpacityPetals  = 1,
       
       // Dimensions
@@ -307,7 +310,7 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
         a.isLefttHalf && !isMobile ? "rotate(180)" : "rotate(0)"
       )
       .style("opacity", baseOpacityTexts)
-      .style("opacity", 0.1) // Temporal
+      // .style("opacity", 0.1) // Temporal
       // On mobile, I don't want to pass any function, but "" or null options are not working, so passing d => d
       // Passing an argument to a call function
       // .call(
@@ -740,9 +743,7 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
   }
 
   function setInteractionNotePosition() {
-    console.log("?")
     interactionNote
-    // .select("text")
     .attr("y", isMobile ? -height / 2 + 140 : height / 2 - 60)
     .style("font-size", isMobile ? "15px" : "14px");
     
@@ -771,6 +772,10 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
   // function onMouseOver(event, d, i) {
     // console.log(event, d, i)
   function onMouseOver(d) {
+    hidingOpacityPetals = isMobile ? 0.1 : 0.05;
+    hidingOpacityTexts = isMobile ? 0 : 0.08;
+    baseOpacityIcons =  isMobile ? baseOpacityPetals + 0.1 : 0.9
+
     // console.log(d)
     const thisCode = d.code;
     const myItem = data.find((e) => e.code === thisCode);
@@ -929,7 +934,7 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
       .attr("y", isMobile ? -20 : textOffsetDesktop)
     }
   
-    
+
   const cloneToImproveReadability = (selection, strokeWidth, color) => {
     selection
       // To improve readability
