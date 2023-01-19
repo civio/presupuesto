@@ -237,32 +237,9 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
     .attr("class", "policy-group")
     .style("font-weight", 800)
     .style("dominant-baseline", "middle");
-
-  if (!isMobile) {
-    // Titles
-    titleGroup
-      .style("font-size", "14px")
-      .attr("transform", function (d) {
-        const angleToRotate =
-          ((xScale(d.code) + xScale.bandwidth() / 2) * 180) / Math.PI - 90;
-        return `rotate(${angleToRotate})`;
-      })
-      .style("text-anchor", function (d) {
-        const myAngleDeg = radiansToDeg(
-          (xScale(d.code) + xScale.bandwidth() / 2 + Math.PI) % (2 * Math.PI)
-        );
-        // Adding a new flag key to the data
-        d["isLefttHalf"] = myAngleDeg > 0 && myAngleDeg < 180;
-        return d.isLefttHalf ? "end" : "start";
-      });
-  } else {
-    const offsetTitleMobile = height / 2 - 180;
-    titleGroup
-      .style("font-size", "16px")
-      .style("text-anchor", "middle")
-      .attr("transform", `translate(0,${offsetTitleMobile})`);
-  }
-
+ 
+  setTitleGroupTransforms()
+  
   // Create invisible title texts
   titleGroup.each(function (a) {
     const el = d3.select(this);
@@ -548,6 +525,8 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
 
     ////////
     // 4.Update titles position
+    setTitleGroupTransforms()
+
     if (!isMobile) {
       // d3.selectAll(titleGroup).each(function (a) {
       titleGroup.each(function (a) {
@@ -658,6 +637,8 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
       // })
 
     // 4.Update titles position
+    setTitleGroupTransforms()
+
     titleGroup.each(function (a) {
       const el = d3.select(this);
       el.selectAll("text") 
@@ -770,6 +751,33 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
             : yScale(100 + offset);
         }
       })
+  }
+
+  function setTitleGroupTransforms() {
+    if (!isMobile) {
+      // Titles
+      titleGroup
+        .style("font-size", "14px")
+        .attr("transform", function (d) {
+          const angleToRotate =
+            ((xScale(d.code) + xScale.bandwidth() / 2) * 180) / Math.PI - 90;
+          return `rotate(${angleToRotate})`;
+        })
+        .style("text-anchor", function (d) {
+          const myAngleDeg = radiansToDeg(
+            (xScale(d.code) + xScale.bandwidth() / 2 + Math.PI) % (2 * Math.PI)
+          );
+          // Adding a new flag key to the data
+          d["isLefttHalf"] = myAngleDeg > 0 && myAngleDeg < 180;
+          return d.isLefttHalf ? "end" : "start";
+        });
+    } else {
+      const offsetTitleMobile = height / 2 - 180;
+      titleGroup
+        .style("font-size", "16px")
+        .style("text-anchor", "middle")
+        .attr("transform", `translate(0,${offsetTitleMobile})`);
+    }
   }
 
   function setInteractionNotePosition() {
