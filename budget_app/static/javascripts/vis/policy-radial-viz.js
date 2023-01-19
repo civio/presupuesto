@@ -198,31 +198,32 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
   // .attr("visibility", (d) =>
   //   isMobile || d[`value_${year}`] === "NA" ? "hidden" : "visible"
   // )
-  .style("transform", (d) =>
-    isMobile ? "" : `rotate(${xScale(d.code) + xScale.bandwidth() / 2}rad)`
-  );
+  // .style("transform", (d) =>
+  //   isMobile ? "" : `rotate(${xScale(d.code) + xScale.bandwidth() / 2}rad)`
+  // );
 
   // Create empty texts for percents
   percents = percentageGroup
   .append("text")
-  .attr("font-size", isMobile ? "14px" : "15px")
+  // .attr("font-size", isMobile ? "14px" : "15px")
   .style("dominant-baseline", "middle")
   .attr("font-weight", 800)
   .attr("text-anchor", "middle")
   // // With no data
   // .style("opacity", (d) => (d[`value_${year}`] === "NA" ? 0 : 1))
   // Attr. "text" later on the update function
-  .attr("transform", function (d) {
-    const myAngleDeg = radiansToDeg(
-      (xScale(d.code) + xScale.bandwidth() / 2 + Math.PI) % (2 * Math.PI)
-    );
-    // Adding a new flag key to the data
-    d["isUpperHalf"] = myAngleDeg > 90 && myAngleDeg < 270;
-    if (isMobile) return "";
-    else {
-      return d.isUpperHalf ? "rotate(0)" : "rotate(180)";
-    }
-  })
+  // .attr("transform", function (d) {
+  //   const myAngleDeg = radiansToDeg(
+  //     (xScale(d.code) + xScale.bandwidth() / 2 + Math.PI) % (2 * Math.PI)
+  //   );
+  //   // Adding a new flag key to the data
+  //   d["isUpperHalf"] = myAngleDeg > 90 && myAngleDeg < 270;
+  //   if (isMobile) return "";
+  //   else {
+  //     return d.isUpperHalf ? "rotate(0)" : "rotate(180)";
+  //   }
+  // })
+
   // .call(cloneToImproveReadability, 4, colorPrimary);
   .style("fill", colorPrimary)
 
@@ -500,6 +501,35 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
 
     ////////
     // 3.Update %% content & position
+    percentageGroup
+      .style("transform", (d) =>
+        isMobile ? "" : `rotate(${xScale(d.code) + xScale.bandwidth() / 2}rad)`
+      )
+      // Hide central % on mobile devices
+      .attr("visibility", (d) =>
+        isMobile ? "hidden" : "unset"
+      )
+
+    percentageGroup
+      .selectAll("text") // Selecting both the visible text and the white clone
+      .attr("transform", function (d) {
+        const myAngleDeg = radiansToDeg(
+          (xScale(d.code) + xScale.bandwidth() / 2 + Math.PI) % (2 * Math.PI)
+        );
+        // Adding a new flag key to the data
+        d["isUpperHalf"] = myAngleDeg > 90 && myAngleDeg < 270;
+        if (isMobile) return "";
+        else {
+          return d.isUpperHalf ? "rotate(0)" : "rotate(180)";
+        }
+      })
+      .attr("font-size", isMobile ? "14px" : "15px")
+      .text((d) =>
+        d[`value_${year}`] ? formatDecimal(d[`value_${year}`]) + "%" : ""
+      )
+ 
+      // .style("opacity", isMobile ? 0 : "unset")
+
     if (!isMobile) {
       percentageGroup
         .selectAll("text") // Selecting both the visible text and the white clone
@@ -517,9 +547,10 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
         //     : yScale(d[`value_${year}`]) + offset;
         // })
         // Adding no data possiblity
-        .text((d) =>
-          d[`value_${year}`] ? formatDecimal(d[`value_${year}`]) + "%" : ""
-        )
+        // .text((d) =>
+        //   d[`value_${year}`] ? formatDecimal(d[`value_${year}`]) + "%" : ""
+        // )
+       
     }
 
     ////////
