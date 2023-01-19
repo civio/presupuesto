@@ -68,6 +68,7 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
       titleGroup,
       nodeDetails,
       textGroup,
+      titleVizGroup,
 
       xScale,
       yScale,
@@ -329,23 +330,19 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
     // }
 
     // 5. Others
-    // Title
+    // Prepare title
     if (isMobile) {
-      const titleVizGroup = vizGroup
+      titleVizGroup = vizGroup
         .append("g")
         .attr("class", "titleVizGroup")
         .attr("transform", `translate(0,${outerRadius + 50})`);
-      const rectWidth = outerRadius * 2;
-      const rectHeight = 40;
+
       titleVizGroup
         .append("rect")
         .attr("class", "title-rect")
-        .attr("x", -rectWidth / 2)
-        .attr("y", -rectHeight / 2)
-        .attr("width", rectWidth)
-        .attr("height", rectHeight)
         .style("opacity", baseOpacityPetals + 0.1)
         .style("fill", colorPrimary);
+
       titleVizGroup
         .append("text")
         .attr("class", "title-text")
@@ -355,11 +352,14 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
         .style("font-size", "16px")
         .attr("x", 0)
         .attr("y", 0)
-        .attr("width", rectWidth)
-        .attr("height", rectHeight)
         .text(dataLocale[languageSelector].titleViz)
         .style("fill", colorNeutral(0));
+
+      setMobileTitlePosition();
+      
+      
     }
+
     // Interaction note
    interactionNote = vizGroup
       .append("g")
@@ -597,6 +597,10 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
     // 5. Update other elements position
     setInteractionNotePosition()
     
+ 
+    setMobileTitlePosition();
+
+
     return this;
   }
 
@@ -672,9 +676,11 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
     // Interaction note
     setInteractionNotePosition()
 
-
     // Node Details
     setNodeDetails();
+
+
+    setMobileTitlePosition();
 
   }
   
@@ -793,10 +799,32 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
     .attr("dy", (d, i) => (isMobile ? 20 : 18));
   }
 
+  function setMobileTitlePosition() {
+    if(isMobile) {
+      const rectWidth = outerRadius * 2;
+      const rectHeight = 40;
+      
+      titleVizGroup
+        .style("visibility", "visible")
+        .select("rect")
+        .attr("x", -rectWidth / 2)
+        .attr("y", -rectHeight / 2)
+        .attr("width", rectWidth)
+        .attr("height", rectHeight)
+      
+        titleVizGroup
+        .select("text")
+        .attr("width", rectWidth)
+        .attr("height", rectHeight)
+    }
+    else titleVizGroup
+      .style("visibility", "hidden")
+
+  }
+
   function setIconParameters() {
     iconOffset = isMobile ? -15 : 25;
     iconSize = isMobile ? 20 : 25;
-
   }
   // Interactions
   // https://github.com/d3/d3-selection/blob/v3.0.0/README.md#selection_on
