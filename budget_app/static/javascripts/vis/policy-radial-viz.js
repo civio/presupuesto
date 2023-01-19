@@ -331,34 +331,27 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
 
     // 5. Others
     // Prepare title
-    if (isMobile) {
-      titleVizGroup = vizGroup
-        .append("g")
-        .attr("class", "titleVizGroup")
-        .attr("transform", `translate(0,${outerRadius + 50})`);
+    titleVizGroup = vizGroup
+    .append("g")
+    .attr("class", "titleVizGroup")
+    
+    titleVizGroup
+      .append("rect")
+      .attr("class", "title-rect")
+      .style("opacity", baseOpacityPetals + 0.1)
+      .style("fill", colorPrimary);
 
-      titleVizGroup
-        .append("rect")
-        .attr("class", "title-rect")
-        .style("opacity", baseOpacityPetals + 0.1)
-        .style("fill", colorPrimary);
-
-      titleVizGroup
-        .append("text")
-        .attr("class", "title-text")
-        .style("font-weight", 800)
-        .style("text-anchor", "middle")
-        .style("dominant-baseline", "middle")
-        .style("font-size", "16px")
-        .attr("x", 0)
-        .attr("y", 0)
-        .text(dataLocale[languageSelector].titleViz)
-        .style("fill", colorNeutral(0));
-
-      setMobileTitlePosition();
-      
-      
-    }
+    titleVizGroup
+      .append("text")
+      .attr("class", "title-text")
+      .style("font-weight", 800)
+      .style("text-anchor", "middle")
+      .style("dominant-baseline", "middle")
+      .style("font-size", "16px")
+      .attr("x", 0)
+      .attr("y", 0)
+      .text(dataLocale[languageSelector].titleViz)
+      .style("fill", colorNeutral(0));
 
     // Interaction note
    interactionNote = vizGroup
@@ -800,6 +793,9 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
   }
 
   function setMobileTitlePosition() {
+    titleVizGroup
+      .attr("transform", `translate(0,${outerRadius + 50})`);
+
     if(isMobile) {
       const rectWidth = outerRadius * 2;
       const rectHeight = 40;
@@ -817,8 +813,10 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
         .attr("width", rectWidth)
         .attr("height", rectHeight)
     }
-    else titleVizGroup
+    else {
+      titleVizGroup
       .style("visibility", "hidden")
+    }
 
   }
 
