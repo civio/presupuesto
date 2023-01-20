@@ -28,10 +28,11 @@
   $(function () {
   
     var policyData = POLICYDATA;
-    var policyDetails = POLICYDETAILS;
+    var policyi18nES = POLICYi18nES;
+    var policyi18nEN = POLICYi18nEN;
 
     // Create Policiy RadialViz
-    var policyRadialViz = new PolicyRadialViz('#policy-radial-viz', policyData, policyDetails)
+    var policyRadialViz = new PolicyRadialViz('#policy-radial-viz', policyData, policyi18nES)
       .setup()
       .update(2021);
 

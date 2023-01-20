@@ -1,4 +1,4 @@
-function PolicyRadialViz(_selector,_data,_policyDetails) {
+function PolicyRadialViz(_selector, _data, i18n) {
   // console.log(d3.version); // 7.8.1
   // console.log(d3.selection())
   // console.log(d3.selection().join())
@@ -6,11 +6,11 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
 
   var selector          = _selector,
       data              = _data,
-      policyDetails     = _policyDetails,
       // year              = null,
       year,
-      // year              = 2021,
-      languageSelector  = "es",
+
+      policyDetails     = i18n.policyDetails,
+      languageSelector  = i18n.lang,
       
       // Colors
       colorPrimary      = "#003DF6",
@@ -239,7 +239,7 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
     .style("dominant-baseline", "middle");
  
   setTitleGroupTransforms()
-  
+
   // Create invisible title texts
   titleGroup.each(function (a) {
     const el = d3.select(this);
@@ -327,7 +327,7 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
       .style("font-size", "16px")
       .attr("x", 0)
       .attr("y", 0)
-      .text(dataLocale[languageSelector].titleViz)
+      .text(i18n.titleViz)
       .style("fill", colorNeutral(0));
 
     // Interaction note
@@ -356,7 +356,7 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
     setNodeDetails();
 
     if (languageSelector === "es") {
-      textGroup.append("tspan").text(dataLocale[languageSelector].nodeDetails[0]); // Se han obtenido ...
+      textGroup.append("tspan").text(i18n.nodeDetails[0]); // Se han obtenido ...
       textGroup
         .append("tspan")
         .attr("class", "data-partialValue") // ... x puntos ...
@@ -392,7 +392,7 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
         .append("tspan")
         .attr("x", 0)
         .attr("dy", 20)
-        .text(dataLocale[languageSelector].nodeDetails[2]); // ...have been meet
+        .text(i18n.nodeDetails[2]); // ...have been meet
     }
 
     if (isMobile) {
@@ -408,7 +408,7 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
         .style("text-anchor", "middle")
         .attr("dy", 70)
         .style("fill", colorPrimary)
-        .text(dataLocale[languageSelector].linkInfo); // More info
+        .text(i18n.linkInfo); // More info
     }
 
 
@@ -791,7 +791,7 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
 
     interactionNote
     .selectAll("tspan")
-    .data(dataLocale[languageSelector][`${isMobile ? "interactionNote_mobile" : "interactionNote_desktop"}`])
+    .data(i18n[`${isMobile ? "interactionNote_mobile" : "interactionNote_desktop"}`])
     // .join("tspan")
     .enter()
     .append("tspan")
@@ -891,14 +891,14 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
       .text(
         languageSelector === "es"
           ? formatDecimal(myItem[`partial_${year}`]) +
-              dataLocale[languageSelector].nodeDetails[1]
+          i18n.nodeDetails[1]
           : formatDecimal(myItem[`partial_${year}`])
       );
 
     detailedInfo.select(".data-fromTotal").text(
       languageSelector === "es"
-        ? dataLocale[languageSelector].nodeDetails[2]
-        : dataLocale[languageSelector].nodeDetails[0] //out of
+        ? i18n.nodeDetails[2]
+        : i18n.nodeDetails[0] //out of
     ); // de un total de
 
     detailedInfo
@@ -910,7 +910,7 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
         languageSelector === "es"
           ? myItem[`total_${year}`]
           : myItem[`total_${year}`] +
-              dataLocale[languageSelector].nodeDetails[1]
+          i18n.nodeDetails[1]
       );
   }
   // function onMouseOut(event, d, i) {
@@ -1109,34 +1109,62 @@ function PolicyRadialViz(_selector,_data,_policyDetails) {
   }
 
 
+  // dataLocale_ES = {
+  //   titleViz: "18 POLÍTICAS DE GASTO",
+  //   nodeDetails: ["Se han obtenido", " puntos", "de un total de "],
+  //   interactionNote_mobile:  [
+  //         "↓ Haz click en cada una ",
+  //         "de las 18 políticas de gasto",
+  //         "para ver información en detalle"
+  //       ],
+  //     interactionNote_desktop:  [
+  //         "↑ Pasa por encima de cada una de las 18 políticas de gasto para ver información en detalle ",
+  //         "o haz click para ir a su página."
+  //     ],
+  //   linkInfo: "Más información"
+  // };
+
+  // dataLocale_EN = {
+  //   titleViz: "18 SPENDING POLICIES",
+  //   nodeDetails: ["out of", " objectives ", " have been met"],
+  //   interactionNote: isMobile
+  //     ? ["↓ Click on each of", "the 18 policies to", "see detailed information"]
+  //     : [
+  //         "↑ Hover over each of the 18 policies to see information in detail ",
+  //         "or click on it to go to its page."
+  //       ],
+  //   linkInfo: "More information"
+  // };
+
+
   // Translations and formatting
-  const dataLocale = ({
-    es: {
-      titleViz: "18 POLÍTICAS DE GASTO",
-      nodeDetails: ["Se han obtenido", " puntos", "de un total de "],
-      interactionNote_mobile:  [
-            "↓ Haz click en cada una ",
-            "de las 18 políticas de gasto",
-            "para ver información en detalle"
-          ],
-        interactionNote_desktop:  [
-            "↑ Pasa por encima de cada una de las 18 políticas de gasto para ver información en detalle ",
-            "o haz click para ir a su página."
-        ],
-      linkInfo: "Más información"
-    },
-    en: {
-      titleViz: "18 SPENDING POLICIES",
-      nodeDetails: ["out of", " objectives ", " have been met"],
-      interactionNote: isMobile
-        ? ["↓ Click on each of", "the 18 policies to", "see detailed information"]
-        : [
-            "↑ Hover over each of the 18 policies to see information in detail ",
-            "or click on it to go to its page."
-          ],
-      linkInfo: "More information"
-    }
-  })
+  // const dataLocale = ({
+  //   es: {
+  //     titleViz: "18 POLÍTICAS DE GASTO",
+  //     nodeDetails: ["Se han obtenido", " puntos", "de un total de "],
+  //     interactionNote_mobile:  [
+  //           "↓ Haz click en cada una ",
+  //           "de las 18 políticas de gasto",
+  //           "para ver información en detalle"
+  //         ],
+  //       interactionNote_desktop:  [
+  //           "↑ Pasa por encima de cada una de las 18 políticas de gasto para ver información en detalle ",
+  //           "o haz click para ir a su página."
+  //       ],
+  //     linkInfo: "Más información"
+  //   },
+  //   en: {
+  //     titleViz: "18 SPENDING POLICIES",
+  //     nodeDetails: ["out of", " objectives ", " have been met"],
+  //     interactionNote: isMobile
+  //       ? ["↓ Click on each of", "the 18 policies to", "see detailed information"]
+  //       : [
+  //           "↑ Hover over each of the 18 policies to see information in detail ",
+  //           "or click on it to go to its page."
+  //         ],
+  //     linkInfo: "More information"
+  //   }
+  // })
   
   // en-US format
   const en_US = ({
