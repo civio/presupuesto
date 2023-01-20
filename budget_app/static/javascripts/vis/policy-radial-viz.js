@@ -509,8 +509,6 @@ function PolicyRadialViz(_selector, _data, i18n) {
       .text((d) =>
         d[`value_${year}`] !== "NA" ? formatDecimal(d[`value_${year}`]) + "%" : ""
       )
- 
-      // .style("opacity", isMobile ? 0 : "unset")
 
     if (!isMobile) {
       percentageGroup
