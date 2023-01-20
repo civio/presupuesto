@@ -84,7 +84,7 @@ function PolicyRadialViz(_selector, _data, i18n) {
       percentSteps      = [0, 25, 50, 75, 100], // Visible steps on chart when interacting
 
       // arc,
-      // auxArcPixels,
+      // modifArc_pixels,
       // auxArcFactor,
       // auxArcInteractions;
 
@@ -446,7 +446,7 @@ function PolicyRadialViz(_selector, _data, i18n) {
     
     ////////
     // 2.Update icons position
-    auxArcPixels
+    modifArc_pixels
     .innerRadius((d) =>
     d[`value_${year}`] !== "NA"
     ? yScale(d[`value_${year}`]) - yScale(0) + yScale(0) - iconOffset
@@ -464,8 +464,8 @@ function PolicyRadialViz(_selector, _data, i18n) {
       .attr("href", d => `/static/assets/${findPolicyDetail("icon",d.code, policyDetails)}_${isMobile ? "color" : "white"}.svg`)
       .transition("unbreak")
       .duration(updateDuration)
-      .attr("x", (d) => auxArcPixels.centroid(d)[0] - iconSize / 2)
-      .attr("y", (d) => auxArcPixels.centroid(d)[1] - iconSize / 2);
+      .attr("x", (d) => modifArc_pixels.centroid(d)[0] - iconSize / 2)
+      .attr("y", (d) => modifArc_pixels.centroid(d)[1] - iconSize / 2);
 
 
     ////////
@@ -601,7 +601,7 @@ function PolicyRadialViz(_selector, _data, i18n) {
 
     // 2.Update icons position
     
-    auxArcPixels
+    modifArc_pixels
     .innerRadius((d) =>
     d[`value_${year}`] !== "NA"
     ? yScale(d[`value_${year}`]) - yScale(0) + yScale(0) - iconOffset
@@ -619,8 +619,8 @@ function PolicyRadialViz(_selector, _data, i18n) {
     .attr("href", d => `/static/assets/${findPolicyDetail("icon",d.code, policyDetails)}_${isMobile ? "color" : "white"}.svg`)
     // .transition("unbreak")
     // .duration(updateDuration)
-      .attr("x", (d) => auxArcPixels.centroid(d)[0] - iconSize / 2)
-      .attr("y", (d) => auxArcPixels.centroid(d)[1] - iconSize / 2)
+      .attr("x", (d) => modifArc_pixels.centroid(d)[0] - iconSize / 2)
+      .attr("y", (d) => modifArc_pixels.centroid(d)[1] - iconSize / 2)
       // Change icon color depending on size
       .attr("href", d => `/static/assets/${findPolicyDetail("icon",d.code, policyDetails)}_${isMobile ? "color" : "white"}.svg`)
 
@@ -957,27 +957,20 @@ function PolicyRadialViz(_selector, _data, i18n) {
 
   // Generators
   function createLegend (selection) {
-    // imgSize = isMobile ? 280 : innerRadius * 2 - 5;
-
     selection
       .append("image")
-      // .attr("transform", `translate(${-imgSize / 2}, ${-imgSize / 2})`)
-      // .attr("href", isMobile ? imgTitleMobileURL_ES : imgTitleDesktopURL_ES)
       .attr("x", 0)
       .attr("y", 0)
-      // .attr("width", imgSize)
-      // .attr("height", imgSize)
   }
 
   function setLegendContentAndPosition() {
     imgSize = isMobile ? 280 : innerRadius * 2 - 5;
-    // Img depending language and size
+    // Img depending both on language and size
     if(languageSelector === "es") { 
       imgURL = isMobile ? imgTitleMobileURL_ES : imgTitleDesktopURL_ES 
     } else {
       imgURL =  isMobile ? imgTitleMobileURL_EN : imgTitleDesktopURL_EN
     }
-
     const imageOffsetMobile = -height / 2 + 80;
 
     centralLegend
@@ -988,9 +981,7 @@ function PolicyRadialViz(_selector, _data, i18n) {
       .attr("width", imgSize)
       .attr("height", imgSize)
       .attr("transform", `translate(${-imgSize / 2}, ${-imgSize / 2})`)
-      .attr("href", imgURL)
-      // .attr("transform", isMobile ? `translate(${-imgSize / 2}, ${-height / 2 })` : `translate(${-imgSize / 2}, ${-imgSize / 2})`)
-      
+      .attr("href", imgURL)      
   } 
 
    
@@ -1027,19 +1018,8 @@ function PolicyRadialViz(_selector, _data, i18n) {
     .padAngle(padding)
     .padRadius(innerRadius);
   
-  // To place labels inside our chart, along each petal, in a specific % position
-  const auxArcFactor = (factor) =>
-    d3
-      .arc()
-      // Attr. "innerRadius" later on the update function
-      // Attr. "outerRadius" later on the update function
-      .startAngle((d) => xScale(d.code))
-      .endAngle((d) => xScale(d.code) + xScale.bandwidth())
-      .padAngle(padding)
-      .padRadius(innerRadius) 
-  
   // To place labels inside our chart, along each petal, in a specific px position
-  const auxArcPixels = d3
+  const modifArc_pixels = d3
     .arc()
     // Attr. "innerRadius" later on the update function
     .innerRadius(
