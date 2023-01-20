@@ -179,7 +179,7 @@ function PolicyRadialViz(_selector, _data, i18n) {
       .attr("class", "petal")
       .attr("data-code", (d) => d.code)
       .attr("d", arc)
-      .style("fill", colorPrimary)
+      // .style("fill", colorPrimary)
       .style("opacity", baseOpacityPetals);
 
   // 2. Icons
@@ -439,8 +439,21 @@ function PolicyRadialViz(_selector, _data, i18n) {
     // .append("g")
   
     // Set petals transition
-    arc.outerRadius((d) => yScale(d[`value_${year}`]))
-    petals.transition("unbreak").duration(updateDuration).attr("d", arc);
+    // arc.outerRadius((d) => yScale(d[`value_${year}`]))
+    arc.outerRadius(function (d) {
+      if (d[`value_${year}`] !== "NA") {
+        return yScale(d[`value_${year}`]);
+        // When no data
+      } else {
+        return yScale(100);
+      }
+    });
+    petals
+    // Petals with no data
+    .style("fill", (d) =>
+      d[`value_${year}`] !== "NA" ? colorPrimary : colorNoData
+    )
+    .transition("unbreak").duration(updateDuration).attr("d", arc);
 
 
     
