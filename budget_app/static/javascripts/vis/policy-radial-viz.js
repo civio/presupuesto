@@ -1,61 +1,48 @@
 function PolicyRadialViz(_selector, _data, i18n) {
-  // console.log(d3.version); // 7.8.1
-  // console.log(d3.selection())
-  // console.log(d3.selection().join())
-  // console.log(d3.arc)
 
-  var selector          = _selector,
-      data              = _data,
-      // year              = null,
+  var selector                = _selector,
+      data                    = _data,
       year,
 
-      policyDetails     = i18n.policyDetails,
-      languageSelector  = i18n.lang,
+      policyDetails           = i18n.policyDetails,
+      languageSelector        = i18n.lang,
       
       // Colors
-      colorPrimary      = "#003DF6",
-      colorSecondary    = "#cce3f9",
-      colorLight        = "#E7F2FC",
-      colorNoData       = "rgb(224, 224, 224)",
-      textFillNoData    = "rgb(204, 204, 204)",
+      colorPrimary            = "#003DF6",
+      colorNoData             = "rgb(224, 224, 224)",
+      textFillNoData          = "rgb(204, 204, 204)",
       
-      // baseOpacityIcons  = 0.9,
       baseOpacityIcons,
-      baseOpacityPetals = 0.7,
-      baseOpacityTexts  = 0.9,
-      // hidingOpacityPetals = 0.05,
-      // hidingOpacityTexts  = 0.08,
+      baseOpacityPetals       = 0.7,
+      baseOpacityTexts        = 0.9,
       hidingOpacityPetals,
       hidingOpacityTexts,
-      finalOpacityPetals  = 1,
       
       // Dimensions
       myWidth,
       height,
-      maxWidth          = 900,
-      mediaQueryLimit   = 600,  // Width size to use mobile layout (mobileBreakpoint)
+      maxWidth               = 900,
+      mediaQueryLimit        = 600,  // Width size to use mobile layout
       isMobile,
       
-      // outerRadius       = 300,
-      // innerRadius       = 90,
-      // margin            = 150,
       innerRadius,
       outerRadius,
       margin,
-      // padding           = 0.09,
-      padding           = 0.02,
+      padding                 = 0.02,
 
-      // imgSize           = 175,
-      // iconOffset        = 25,
-      // iconSize          = 25,
-      imgSize,
+      // Images settings
+      titleImgSize,
+      titleImgMobileURL_ES    = "/static/assets/radialViz_title_mobile_ES.jpg",
+      titleImgDesktopURL_ES   = "/static/assets/radialViz_title_desktop_ES.png",
+      ititleImgMobileURL_EN   = "/static/assets/radialViz_title_mobile_EN.jpg",
+      titleImgDesktopURL_EN   = "/static/assets/radialViz_title_desktop_EN.png",
+      imgURL,
       iconOffset,
       iconSize,
 
       svg,
       vizGroup,
       centralLegend,
-      // imageOffsetMobile,
       interactionNote,
       petals,
       icons,
@@ -72,24 +59,11 @@ function PolicyRadialViz(_selector, _data, i18n) {
 
       xScale,
       yScale,
-      yScaleAux,
+      yScaleWider,
       radialAxis,
+      percentSteps            = [0, 25, 50, 75, 100], // Visible steps on chart when interacting
 
-      imgURL,
-      imgTitleMobileURL_ES = "/static/assets/radialViz_title_mobile_ES.jpg",
-      imgTitleDesktopURL_ES = "/static/assets/radialViz_title_desktop_ES.png"
-      imgTitleMobileURL_EN = "/static/assets/radialViz_title_mobile_EN.jpg"
-      imgTitleDesktopURL_EN = "/static/assets/radialViz_title_desktop_EN.png"
-
-      percentSteps      = [0, 25, 50, 75, 100], // Visible steps on chart when interacting
-
-      // arc,
-      // modifArc_pixels,
-      // auxArcFactor,
-      // auxArcInteractions;
-
-      // enterDuration     = 900;
-      updateDuration    = 600;
+      updateDuration          = 600;
 
   // Setup
   this.setup = function() {
@@ -101,31 +75,17 @@ function PolicyRadialViz(_selector, _data, i18n) {
     // Set dimensions, add resize event & center viz group
     setDimensions();
     d3.select(window).on('resize', this.resize);
-
     vizGroup = svg.append("g")
     centerViz();
-
-    // if (!isMobile) {
-    //   centralLegend.call(createLegend);
-    // } else {
-    //   centralLegend
-    //     .attr("transform", `translate(0, ${-height / 2 + 80})`)
-    //     .call(createLegend);
-    // }
-
 
     ///////////////
     // Set scales
     setXScale();
     setYScale();
-    setYScaleAux();
+    setyScaleWider();
 
     // Create central legend
-    // const imageOffsetMobile = -height / 2 + 80;
-
-    centralLegend = vizGroup.append("g").attr("id", "central-legend")
-      // .attr("transform", isMobile ? `translate(0, ${imageOffsetMobile})` : "")
-    centralLegend.call(createLegend)
+    centralLegend = vizGroup.append("g").attr("id", "central-legend").call(createLegend);
     setLegendContentAndPosition()
 
     ///////////////
@@ -139,7 +99,6 @@ function PolicyRadialViz(_selector, _data, i18n) {
     auxNodeGroup = auxEl
       .selectAll("g")
       .data(data)
-      // .join("g")
       .enter()
       .append("g");
     
@@ -167,67 +126,39 @@ function PolicyRadialViz(_selector, _data, i18n) {
     .attr("id", "node-el")
     .style("pointer-events", "none");
   
-    // Here?
+  // Data binding to the node-group
   nodeGroup = radialChart.selectAll("g").data(data)
-  // .join("g");
     .enter()
     .append("g");
 
   // Create petals from 0,0
   petals = nodeGroup
-      .append("path")
-      .attr("class", "petal")
-      .attr("data-code", (d) => d.code)
-      .attr("d", arc)
-      // .style("fill", colorPrimary)
-      .style("opacity", baseOpacityPetals);
+    .append("path")
+    .attr("class", "petal")
+    .attr("data-code", (d) => d.code)
+    .attr("d", arc)
+    .style("opacity", baseOpacityPetals);
 
   // 2. Icons
   // Prepare icons. We locate x,y coordinates later
   icons = nodeGroup
-   .append("image")
-   .attr("class", "icon")
-   .style("opacity", baseOpacityIcons);
+    .append("image")
+    .attr("class", "icon")
+    .style("opacity", baseOpacityIcons);
 
   //  3. Percents %
   // Prepare percentages %
   percentageGroup = nodeGroup
-  .append("g")
-  .attr("class", "percentage-group")
-  // // When no data
-  // .attr("visibility", (d) =>
-  //   isMobile || d[`value_${year}`] === "NA" ? "hidden" : "visible"
-  // )
-  // .style("transform", (d) =>
-  //   isMobile ? "" : `rotate(${xScale(d.code) + xScale.bandwidth() / 2}rad)`
-  // );
+    .append("g")
+    .attr("class", "percentage-group")
 
   // Create empty texts for percents
   percents = percentageGroup
-  .append("text")
-  // .attr("font-size", isMobile ? "14px" : "15px")
-  .style("dominant-baseline", "middle")
-  .attr("font-weight", 800)
-  .attr("text-anchor", "middle")
-  // // With no data
-  // .style("opacity", (d) => (d[`value_${year}`] === "NA" ? 0 : 1))
-  // Attr. "text" later on the update function
-  // .attr("transform", function (d) {
-  //   const myAngleDeg = radiansToDeg(
-  //     (xScale(d.code) + xScale.bandwidth() / 2 + Math.PI) % (2 * Math.PI)
-  //   );
-  //   // Adding a new flag key to the data
-  //   d["isUpperHalf"] = myAngleDeg > 90 && myAngleDeg < 270;
-  //   if (isMobile) return "";
-  //   else {
-  //     return d.isUpperHalf ? "rotate(0)" : "rotate(180)";
-  //   }
-  // })
-
-  // .call(cloneToImproveReadability, 4, colorPrimary);
-  .style("fill", colorPrimary)
-
-
+    .append("text")
+    .style("dominant-baseline", "middle")
+    .attr("font-weight", 800)
+    .attr("text-anchor", "middle")
+    .style("fill", colorPrimary)
 
   //  4. Titles
   // Prepare titles
@@ -242,14 +173,11 @@ function PolicyRadialViz(_selector, _data, i18n) {
   // Create invisible title texts
   titleGroup.each(function (a) {
     const el = d3.select(this);
-    // console.log(el)
-    const offset = 15;
-    // const labelLines = a.labelSplitted;
     const labelLines = findPolicyDetail("labelSplitted",a.code, policyDetails);
     const labelLinesLenght = labelLines.length;
     const offsetBtwnLines = isMobile ? 12 : 10;
 
-    // TO BE IMPROVED
+    // Simple scale to get text offsets
     const scaleOffset = d3
       .scaleLinear()
       .domain([0, labelLinesLenght - 1]) // Max number of splits
@@ -265,7 +193,6 @@ function PolicyRadialViz(_selector, _data, i18n) {
       titleGroup
         .selectAll("rect")
         .data([1])
-        // .join("rect")
         .enter()
         .append("rect")
         .attr("x", -rectWidth / 2)
@@ -277,7 +204,6 @@ function PolicyRadialViz(_selector, _data, i18n) {
    
     el.selectAll("text")
       .data(labelLines)
-      // .join("text")
       .enter()
       .append("text")
       // Attr. "x" later on the update function
@@ -288,25 +214,11 @@ function PolicyRadialViz(_selector, _data, i18n) {
         a.isLefttHalf && !isMobile ? "rotate(180)" : "rotate(0)"
       )
       .style("opacity", baseOpacityTexts)
-      // .style("opacity", 0.1) // Temporal
-      // On mobile, I don't want to pass any function, but "" or null options are not working, so passing d => d
-      // Passing an argument to a call function
-      // .call(
-      //   isMobile ? (d) => d : cloneToImproveReadability,
-      //   5,
-      //   colorNeutral(900)
-      // );
     });
 
 
-    // if (!isMobile) {
-    //   titleGroup.call(transition, baseOpacityTexts);
-    // } else {
-    //   titleGroup.style("fill", "white").style("opacity", 0);
-    // }
-
-    // 5. Others
-    // Prepare title
+    // 5. Others elements
+    // Prepare title (mobile)
     titleVizGroup = vizGroup
     .append("g")
     .attr("class", "titleVizGroup")
@@ -338,14 +250,13 @@ function PolicyRadialViz(_selector, _data, i18n) {
       .attr("fill", colorNeutral(500))
       .style("text-anchor", "middle")
       
-
     // Node details
     nodeDetails = vizGroup
       .append("g")
       .attr("class", "node-details")
       .style("opacity", 0);
       
-      textGroup = nodeDetails
+    textGroup = nodeDetails
       .append("text")
       .attr("x", 0)
       .attr("fill", colorNeutral(900))
@@ -354,6 +265,7 @@ function PolicyRadialViz(_selector, _data, i18n) {
 
     setNodeDetails();
 
+    // TODO: Refactor this
     if (languageSelector === "es") {
       textGroup.append("tspan").text(i18n.nodeDetails[0]); // Se han obtenido ...
       textGroup
@@ -410,7 +322,6 @@ function PolicyRadialViz(_selector, _data, i18n) {
         .text(i18n.linkInfo); // More info
     }
 
-
     return this;
   };
 
@@ -429,16 +340,8 @@ function PolicyRadialViz(_selector, _data, i18n) {
 
     ////////
     // 1. Update Petals
-
-    //////////
-    // Draw petals
-    // const nodeGroup = radialChart.selectAll("g").data(data)
-    // // .join("g");
-    // .enter()
-    // .append("g")
   
     // Set petals transition
-    // arc.outerRadius((d) => yScale(d[`value_${year}`]))
     arc.outerRadius(function (d) {
       if (d[`value_${year}`] !== "NA") {
         return yScale(d[`value_${year}`]);
@@ -455,20 +358,19 @@ function PolicyRadialViz(_selector, _data, i18n) {
     .transition("unbreak").duration(updateDuration).attr("d", arc);
 
 
-    
     ////////
     // 2.Update icons position
-    modifArc_pixels
-    .innerRadius((d) =>
-    d[`value_${year}`] !== "NA"
-    ? yScale(d[`value_${year}`]) - yScale(0) + yScale(0) - iconOffset
-    : yScale(100) - yScale(0) + yScale(0) - iconOffset
-    )
-    .outerRadius((d) =>
-    d[`value_${year}`] !== "NA"
-    ? yScale(d[`value_${year}`]) - yScale(0) + yScale(0) - iconOffset
-    : yScale(100) - yScale(0) + yScale(0) - iconOffset
-    );
+    arc_modifPixelsOffset
+      .innerRadius((d) =>
+      d[`value_${year}`] !== "NA"
+      ? yScale(d[`value_${year}`]) - yScale(0) + yScale(0) - iconOffset
+      : yScale(100) - yScale(0) + yScale(0) - iconOffset
+      )
+      .outerRadius((d) =>
+      d[`value_${year}`] !== "NA"
+      ? yScale(d[`value_${year}`]) - yScale(0) + yScale(0) - iconOffset
+      : yScale(100) - yScale(0) + yScale(0) - iconOffset
+      );
     setIconParameters()
     icons
       .attr("width", iconSize)
@@ -476,8 +378,8 @@ function PolicyRadialViz(_selector, _data, i18n) {
       .attr("href", d => `/static/assets/${findPolicyDetail("icon",d.code, policyDetails)}_${isMobile ? "color" : "white"}.svg`)
       .transition("unbreak")
       .duration(updateDuration)
-      .attr("x", (d) => modifArc_pixels.centroid(d)[0] - iconSize / 2)
-      .attr("y", (d) => modifArc_pixels.centroid(d)[1] - iconSize / 2);
+      .attr("x", (d) => arc_modifPixelsOffset.centroid(d)[0] - iconSize / 2)
+      .attr("y", (d) => arc_modifPixelsOffset.centroid(d)[1] - iconSize / 2);
 
 
     ////////
@@ -512,32 +414,20 @@ function PolicyRadialViz(_selector, _data, i18n) {
     if (!isMobile) {
       percentageGroup
         .selectAll("text") // Selecting both the visible text and the white clone
-        // .style("opacity", 0)
         .transition()
         .duration(updateDuration + 300)
         // With no data
         .style("opacity", (d) => (d[`value_${year}`] === "NA" ? 0 : 1))
         .attr("x", 0)
         .call(setPercentsPosition)
-        // .attr("y", function (d) {
-        //   const offset = 14;
-        //   return d.isUpperHalf
-        //     ? -yScale(d[`value_${year}`]) - offset
-        //     : yScale(d[`value_${year}`]) + offset;
-        // })
-        // Adding no data possiblity
-        // .text((d) =>
-        //   d[`value_${year}`] ? formatDecimal(d[`value_${year}`]) + "%" : ""
-        // )
-       
     }
+
 
     ////////
     // 4.Update titles position
     setTitleGroupTransforms()
 
     if (!isMobile) {
-      // d3.selectAll(titleGroup).each(function (a) {
       titleGroup.each(function (a) {
         const el = d3.select(this);
         el.selectAll("text") // Selecting both the visible text and the white clone
@@ -549,27 +439,12 @@ function PolicyRadialViz(_selector, _data, i18n) {
           )
           // Passing an argument to a call function
           .call(setTitlesPosition, a)
-
-          // .attr("x", function (d) {
-          //   const offset = a[`value_${year}`] === "NA" ? 10 : 20;
-          //   if (a[`value_${year}`] !== "NA") {
-          //     return a.isLefttHalf
-          //       ? -yScale(a[`value_${year}`] + offset)
-          //       : yScale(a[`value_${year}`] + offset);
-          //     // When no data
-          //   } else {
-          //     return a.isLefttHalf
-          //       ? -yScale(100 + offset)
-          //       : yScale(100 + offset);
-          //   }
-          // });
       });
     }
 
-    // TODO: Organize this
+    // TODO: Organize this better
     if (isMobile) {
       titleGroup.style("fill", "white").style("opacity", 0);
-      // titleGroup.call(transition, baseOpacityTexts);
     } else {
       titleGroup.style("fill", "unset").style("opacity", baseOpacityTexts);
     }
@@ -577,10 +452,7 @@ function PolicyRadialViz(_selector, _data, i18n) {
 
     // 5. Update other elements position
     setInteractionNotePosition()
-    
- 
     setMobileTitlePosition();
-
 
     return this;
   }
@@ -600,7 +472,7 @@ function PolicyRadialViz(_selector, _data, i18n) {
     // Update scales
     setXScale();
     setYScale();
-    setYScaleAux();
+    setyScaleWider();
 
     // Update axis
     updateRadialAxis()
@@ -610,27 +482,26 @@ function PolicyRadialViz(_selector, _data, i18n) {
     petals.attr("d", arc);
 
     // 2.Update icons position
-    
-    modifArc_pixels
-    .innerRadius((d) =>
-    d[`value_${year}`] !== "NA"
-    ? yScale(d[`value_${year}`]) - yScale(0) + yScale(0) - iconOffset
-    : yScale(100) - yScale(0) + yScale(0) - iconOffset
-    )
-    .outerRadius((d) =>
-    d[`value_${year}`] !== "NA"
-    ? yScale(d[`value_${year}`]) - yScale(0) + yScale(0) - iconOffset
-    : yScale(100) - yScale(0) + yScale(0) - iconOffset
-    );
+    arc_modifPixelsOffset
+      .innerRadius((d) =>
+      d[`value_${year}`] !== "NA"
+      ? yScale(d[`value_${year}`]) - yScale(0) + yScale(0) - iconOffset
+      : yScale(100) - yScale(0) + yScale(0) - iconOffset
+      )
+      .outerRadius((d) =>
+      d[`value_${year}`] !== "NA"
+      ? yScale(d[`value_${year}`]) - yScale(0) + yScale(0) - iconOffset
+      : yScale(100) - yScale(0) + yScale(0) - iconOffset
+      );
     setIconParameters()
     icons
-    .attr("width", iconSize)
-    .attr("height", iconSize)
-    .attr("href", d => `/static/assets/${findPolicyDetail("icon",d.code, policyDetails)}_${isMobile ? "color" : "white"}.svg`)
+      .attr("width", iconSize)
+      .attr("height", iconSize)
+      .attr("href", d => `/static/assets/${findPolicyDetail("icon",d.code, policyDetails)}_${isMobile ? "color" : "white"}.svg`)
     // .transition("unbreak")
     // .duration(updateDuration)
-      .attr("x", (d) => modifArc_pixels.centroid(d)[0] - iconSize / 2)
-      .attr("y", (d) => modifArc_pixels.centroid(d)[1] - iconSize / 2)
+      .attr("x", (d) => arc_modifPixelsOffset.centroid(d)[0] - iconSize / 2)
+      .attr("y", (d) => arc_modifPixelsOffset.centroid(d)[1] - iconSize / 2)
       // Change icon color depending on size
       .attr("href", d => `/static/assets/${findPolicyDetail("icon",d.code, policyDetails)}_${isMobile ? "color" : "white"}.svg`)
 
@@ -638,12 +509,6 @@ function PolicyRadialViz(_selector, _data, i18n) {
     percentageGroup
       .selectAll("text") 
       .call(setPercentsPosition)
-      // .attr("y", function (d) {
-      //   const offset = 14;
-      //   return d.isUpperHalf
-      //     ? -yScale(d[`value_${year}`]) - offset
-      //     : yScale(d[`value_${year}`]) + offset;
-      // })
 
     // 4.Update titles position
     setTitleGroupTransforms()
@@ -655,16 +520,12 @@ function PolicyRadialViz(_selector, _data, i18n) {
     })
 
     // 5. Other elements position
-
     // Interaction note
     setInteractionNotePosition()
 
     // Node Details
     setNodeDetails();
-
-
     setMobileTitlePosition();
-
   }
   
 
@@ -680,61 +541,40 @@ function PolicyRadialViz(_selector, _data, i18n) {
     innerRadius = isMobile ? 20 : 90;
     margin = isMobile ? 30 : 160;
     outerRadius = myWidth / 2 - margin;
-    // console.log("innerRadius", innerRadius);
-    // console.log("margin", margin);
-    // console.log("outerRadius", outerRadius);
 
     yScale = d3
-    // .scaleRadial()
-    .scaleLinear()
-    .domain([0, 100]) // Values are percents 0-100%
-    .range([innerRadius, outerRadius])
+      // .scaleRadial()
+      .scaleLinear()
+      .domain([0, 100]) // Values are percents 0-100%
+      .range([innerRadius, outerRadius])
   }
-  function setYScaleAux() {
-    yScaleAux = d3
-    // .scaleRadial()
-    .scaleLinear()
-    .domain([0, 100]) // Values are percents 0-100%
-    .range([innerRadius, myWidth / 2])
+  function setyScaleWider() {
+    yScaleWider = d3
+      // .scaleRadial()
+      .scaleLinear()
+      .domain([0, 100]) // Values are percents 0-100%
+      .range([innerRadius, myWidth / 2])
   }
 
   // Set main element dimensions
   function setDimensions() {
     width = $(selector).width();
-    // console.log("setDimensions -> width", width);
     isMobile = width < mediaQueryLimit;
-    // console.log("isMobile?", isMobile);
 
     myWidth = Math.min(maxWidth, width);
     height = isMobile ? myWidth + 400 : myWidth;
-    // console.log("myWidth", myWidth)
-    // console.log("height", height)
 
     // Set main element height
-    // $(selector)
     svg
     .attr("height", height )
     .attr("width", myWidth )
     .style("font", "10px sans-serif");
-    // // Update font-size scale domain
-    // fontSizeScale.domain([1, Math.sqrt(width*height) * 0.5]);
   }
   // Center the whole group
   function centerViz() {
     vizGroup
       .attr("transform", `translate(${myWidth / 2}, ${height / 2})`); // Middle point
   }
-  // function placeLegend() {
-  //   const imageOffsetMobile = -height / 2 + 80;
-
-  //   if (!isMobile) {
-  //     // centralLegend.call(createLegend);
-  //   } else {
-  //     centralLegend
-  //       .attr("transform", `translate(0, ${-height / 2 + 80})`)
-  //       // .call(createLegend);
-  //   }
-  // }
 
   function setPercentsPosition(selection) {
     selection
@@ -793,22 +633,21 @@ function PolicyRadialViz(_selector, _data, i18n) {
 
   function setInteractionNotePosition() {
     interactionNote
-    .attr("y", isMobile ? -height / 2 + 140 : height / 2 - 60)
-    .style("font-size", isMobile ? "15px" : "14px");
+      .attr("y", isMobile ? -height / 2 + 140 : height / 2 - 60)
+      .style("font-size", isMobile ? "15px" : "14px");
     
     interactionNote
-    .selectAll("tspan")
-    .remove()
+      .selectAll("tspan")
+      .remove()
 
     interactionNote
-    .selectAll("tspan")
-    .data(i18n[`${isMobile ? "interactionNote_mobile" : "interactionNote_desktop"}`])
-    // .join("tspan")
-    .enter()
-    .append("tspan")
-    .text((d) => d)
-    .attr("x", 0)
-    .attr("dy", (d, i) => (isMobile ? 20 : 18));
+      .selectAll("tspan")
+      .data(i18n[`${isMobile ? "interactionNote_mobile" : "interactionNote_desktop"}`])
+      .enter()
+      .append("tspan")
+      .text((d) => d)
+      .attr("x", 0)
+      .attr("dy", (d, i) => (isMobile ? 20 : 18));
   }
 
   function setMobileTitlePosition() {
@@ -827,14 +666,14 @@ function PolicyRadialViz(_selector, _data, i18n) {
         .attr("width", rectWidth)
         .attr("height", rectHeight)
       
-        titleVizGroup
+      titleVizGroup
         .select("text")
         .attr("width", rectWidth)
         .attr("height", rectHeight)
     }
     else {
       titleVizGroup
-      .style("visibility", "hidden")
+        .style("visibility", "hidden")
     }
 
   }
@@ -845,8 +684,6 @@ function PolicyRadialViz(_selector, _data, i18n) {
   }
   // Interactions
   // https://github.com/d3/d3-selection/blob/v3.0.0/README.md#selection_on
-  // function onMouseOver(event, d, i) {
-    // console.log(event, d, i)
   function onMouseOver(d) {
     hidingOpacityPetals = isMobile ? 0.1 : 0.05;
     hidingOpacityTexts = isMobile ? 0 : 0.08;
@@ -870,12 +707,12 @@ function PolicyRadialViz(_selector, _data, i18n) {
         else if (tagName === "path") hideOpacity = hidingOpacityPetals;
         else if (tagName === "image" && isMobile) hideOpacity = 0;
   
-        return e.code == thisCode ? finalOpacityPetals : hideOpacity;
+        return e.code == thisCode ? 1 : hideOpacity;
       });
 
     // Hide center legend (just on desktop)
     if (!isMobile) d3.select("#central-legend").style("opacity", 0);
-
+    // Hide mobile title legend (just on mobile)
     if (isMobile) d3.select(".titleVizGroup").style("opacity", 0);
 
     // Show all hidden ticks
@@ -924,25 +761,23 @@ function PolicyRadialViz(_selector, _data, i18n) {
           i18n.nodeDetails[1]
       );
   }
-  // function onMouseOut(event, d, i) {
-    // console.log(event, d, i)
+
   function onMouseOut(d) {
-    // console.log(d)
     // Back to "normal" state
     d3.selectAll(`#node-el > g > *`)
-    .transition()
-    .duration(100)
-    .style("opacity", function () {
-      // https://stackoverflow.com/questions/50698083/find-tag-name-of-svg-element-using-d3
-      const tagName = this.tagName;
-      const classAttr = d3.select(this).attr("class");
+      .transition()
+      .duration(100)
+      .style("opacity", function () {
+        // https://stackoverflow.com/questions/50698083/find-tag-name-of-svg-element-using-d3
+        const tagName = this.tagName;
+        const classAttr = d3.select(this).attr("class");
 
-      // Hide policy titles in mobile
-      if (classAttr === "policy-group" && isMobile) return 0;
-      // Manage the rest of elemnts based on tags
-      else if (tagName === "text" || tagName === "g") return baseOpacityTexts;
-      else if (tagName === "path") return baseOpacityPetals;
-      else if (tagName === "image") return baseOpacityIcons;
+        // Hide policy titles in mobile
+        if (classAttr === "policy-group" && isMobile) return 0;
+        // Manage the rest of elemnts based on tags
+        else if (tagName === "text" || tagName === "g") return baseOpacityTexts;
+        else if (tagName === "path") return baseOpacityPetals;
+        else if (tagName === "image") return baseOpacityIcons;
     });
 
     // Hide first ticks
@@ -956,7 +791,6 @@ function PolicyRadialViz(_selector, _data, i18n) {
     
     // Show center legend
     d3.select("#central-legend").style("opacity", 1);
-    //if (isMobile) d3.select(".title-text").style("opacity", 1);
     if (isMobile) d3.select(".titleVizGroup").style("opacity", 1);
 
     // Hide node details
@@ -976,12 +810,12 @@ function PolicyRadialViz(_selector, _data, i18n) {
   }
 
   function setLegendContentAndPosition() {
-    imgSize = isMobile ? 280 : innerRadius * 2 - 5;
+    titleImgSize = isMobile ? 280 : innerRadius * 2 - 5;
     // Img depending both on language and size
     if(languageSelector === "es") { 
-      imgURL = isMobile ? imgTitleMobileURL_ES : imgTitleDesktopURL_ES 
+      titleImgURL = isMobile ? titleImgMobileURL_ES : titleImgDesktopURL_ES 
     } else {
-      imgURL =  isMobile ? imgTitleMobileURL_EN : imgTitleDesktopURL_EN
+      titleImgURL =  isMobile ? titleImgMobileURL_EN : titleImgDesktopURL_EN
     }
     const imageOffsetMobile = -height / 2 + 80;
 
@@ -990,10 +824,10 @@ function PolicyRadialViz(_selector, _data, i18n) {
 
     centralLegend
       .select("image")
-      .attr("width", imgSize)
-      .attr("height", imgSize)
-      .attr("transform", `translate(${-imgSize / 2}, ${-imgSize / 2})`)
-      .attr("href", imgURL)      
+      .attr("width", titleImgSize)
+      .attr("height", titleImgSize)
+      .attr("transform", `translate(${-titleImgSize / 2}, ${-titleImgSize / 2})`)
+      .attr("href", titleImgURL)      
   } 
 
    
@@ -1031,7 +865,7 @@ function PolicyRadialViz(_selector, _data, i18n) {
     .padRadius(innerRadius);
   
   // To place labels inside our chart, along each petal, in a specific px position
-  const modifArc_pixels = d3
+  const arc_modifPixelsOffset = d3
     .arc()
     // Attr. "innerRadius" later on the update function
     .innerRadius(
@@ -1052,8 +886,8 @@ function PolicyRadialViz(_selector, _data, i18n) {
   // Creating invisible arcs 100% big for interactions
   const auxArcInteractions = d3
     .arc()
-    .innerRadius((d) => yScaleAux(0))
-    .outerRadius((d) => yScaleAux(100))
+    .innerRadius((d) => yScaleWider(0))
+    .outerRadius((d) => yScaleWider(100))
     .startAngle((d) => xScale(d.code))
     .endAngle((d) => xScale(d.code) + xScale.bandwidth())
     .padAngle(0)
@@ -1134,6 +968,7 @@ function PolicyRadialViz(_selector, _data, i18n) {
     return d * (180 / Math.PI)
   }
 
+  // TODO: Review this
   const colorNeutral = d3
     .scaleLinear()
     .range(['white', 'black'])
