@@ -507,7 +507,7 @@ function PolicyRadialViz(_selector, _data, i18n) {
       })
       .attr("font-size", isMobile ? "14px" : "15px")
       .text((d) =>
-        d[`value_${year}`] ? formatDecimal(d[`value_${year}`]) + "%" : ""
+        d[`value_${year}`] !== "NA" ? formatDecimal(d[`value_${year}`]) + "%" : ""
       )
  
       // .style("opacity", isMobile ? 0 : "unset")
@@ -515,7 +515,7 @@ function PolicyRadialViz(_selector, _data, i18n) {
     if (!isMobile) {
       percentageGroup
         .selectAll("text") // Selecting both the visible text and the white clone
-        .style("opacity", 0)
+        // .style("opacity", 0)
         .transition()
         .duration(updateDuration + 300)
         // With no data
@@ -742,10 +742,13 @@ function PolicyRadialViz(_selector, _data, i18n) {
   function setPercentsPosition(selection) {
     selection
       .attr("y", function (d) {
-        const offset = 14;
-        return d.isUpperHalf
-          ? -yScale(d[`value_${year}`]) - offset
-          : yScale(d[`value_${year}`]) + offset;
+        console.log("ja")
+        if (d[`value_${year}`] !== "NA") { 
+          const offset = 14;
+          return d.isUpperHalf
+            ? -yScale(d[`value_${year}`]) - offset
+            : yScale(d[`value_${year}`]) + offset;
+        } else return 100
       })
   }
   function setTitlesPosition(selection, a) {
