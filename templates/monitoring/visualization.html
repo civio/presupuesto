@@ -31,11 +31,27 @@
     var policyi18nES = POLICYi18nES;
     var policyi18nEN = POLICYi18nEN;
 
+    // FIXME: hardcoded years
+    var years = [2017, 2018, 2019, 2020, 2021, 2022];
+    var starting_year = 2021;
+
     // Create Policiy RadialViz
     var policyRadialViz = new PolicyRadialViz('#policy-radial-viz', policyData, policyi18nES)
       .setup()
-      .update(2021);
+      .update(starting_year);
 
+    // Setup year navigation
+    initSlider("#year-selection", years, starting_year);
+    setRedrawOnSliderChange("#year-selection", starting_year, onYearChange);
+
+    // Add click embed btn event
+    setEmbedModal();
+
+    function onYearChange() {
+      // console.log("Año: "+getUIState().year);
+      policyRadialViz
+        .update(getUIState().year)
+    }
   });
 
 </script>
