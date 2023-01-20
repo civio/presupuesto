@@ -417,12 +417,11 @@ function PolicyRadialViz(_selector, _data, i18n) {
   // Update
   this.update = function(_year) {
     year = _year;
-    console.log("this.update function", "Year", year)
+    // console.log("this.update function", "Year", year)
 
     ////////
     // 0. Aux elements
     // Update url with current year
-    // console.log(auxNodeLinks)
     auxNodeLinks
       .attr("href", isMobile ? null : (d) => `${findPolicyDetail("url",d.code, policyDetails)}&year=${year}`)
     auxNodeGroup.selectAll("title")
@@ -740,7 +739,6 @@ function PolicyRadialViz(_selector, _data, i18n) {
   function setPercentsPosition(selection) {
     selection
       .attr("y", function (d) {
-        console.log("ja")
         if (d[`value_${year}`] !== "NA") { 
           const offset = 14;
           return d.isUpperHalf
