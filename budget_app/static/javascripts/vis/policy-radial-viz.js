@@ -75,13 +75,12 @@ function PolicyRadialViz(_selector, _data, i18n) {
       yScaleAux,
       radialAxis,
 
-      // imgURL            = "https://static.observableusercontent.com/files/46700676dabb57e8a456eeb06a3cfd18ac69c7637140295e06deed890c1b7810bfa46456b2d91f043c148c1448c614629333ad7d21dd6b467b206e9ca86015d0"
       imgURL,
       imgTitleMobileURL_ES = "/static/assets/radialViz_title_mobile_ES.jpg",
       imgTitleDesktopURL_ES = "/static/assets/radialViz_title_desktop_ES.png"
       imgTitleMobileURL_EN = "/static/assets/radialViz_title_mobile_EN.jpg"
       imgTitleDesktopURL_EN = "/static/assets/radialViz_title_desktop_EN.png"
-      isMobile          = false,
+
       percentSteps      = [0, 25, 50, 75, 100], // Visible steps on chart when interacting
 
       // arc,
@@ -972,6 +971,13 @@ function PolicyRadialViz(_selector, _data, i18n) {
 
   function setLegendContentAndPosition() {
     imgSize = isMobile ? 280 : innerRadius * 2 - 5;
+    // Img depending language and size
+    if(languageSelector === "es") { 
+      imgURL = isMobile ? imgTitleMobileURL_ES : imgTitleDesktopURL_ES 
+    } else {
+      imgURL =  isMobile ? imgTitleMobileURL_EN : imgTitleDesktopURL_EN
+    }
+
     const imageOffsetMobile = -height / 2 + 80;
 
     centralLegend
@@ -982,7 +988,7 @@ function PolicyRadialViz(_selector, _data, i18n) {
       .attr("width", imgSize)
       .attr("height", imgSize)
       .attr("transform", `translate(${-imgSize / 2}, ${-imgSize / 2})`)
-      .attr("href", isMobile ? imgTitleMobileURL_ES : imgTitleDesktopURL_ES)
+      .attr("href", imgURL)
       // .attr("transform", isMobile ? `translate(${-imgSize / 2}, ${-height / 2 })` : `translate(${-imgSize / 2}, ${-imgSize / 2})`)
       
   } 
@@ -1108,64 +1114,6 @@ function PolicyRadialViz(_selector, _data, i18n) {
       .attr("y", (d) => -yScale(d))
   }
 
-
-  // dataLocale_ES = {
-  //   titleViz: "18 POLÍTICAS DE GASTO",
-  //   nodeDetails: ["Se han obtenido", " puntos", "de un total de "],
-  //   interactionNote_mobile:  [
-  //         "↓ Haz click en cada una ",
-  //         "de las 18 políticas de gasto",
-  //         "para ver información en detalle"
-  //       ],
-  //     interactionNote_desktop:  [
-  //         "↑ Pasa por encima de cada una de las 18 políticas de gasto para ver información en detalle ",
-  //         "o haz click para ir a su página."
-  //     ],
-  //   linkInfo: "Más información"
-  // };
-
-  // dataLocale_EN = {
-  //   titleViz: "18 SPENDING POLICIES",
-  //   nodeDetails: ["out of", " objectives ", " have been met"],
-  //   interactionNote: isMobile
-  //     ? ["↓ Click on each of", "the 18 policies to", "see detailed information"]
-  //     : [
-  //         "↑ Hover over each of the 18 policies to see information in detail ",
-  //         "or click on it to go to its page."
-  //       ],
-  //   linkInfo: "More information"
-  // };
-
-
-  // Translations and formatting
-  // const dataLocale = ({
-  //   es: {
-  //     titleViz: "18 POLÍTICAS DE GASTO",
-  //     nodeDetails: ["Se han obtenido", " puntos", "de un total de "],
-  //     interactionNote_mobile:  [
-  //           "↓ Haz click en cada una ",
-  //           "de las 18 políticas de gasto",
-  //           "para ver información en detalle"
-  //         ],
-  //       interactionNote_desktop:  [
-  //           "↑ Pasa por encima de cada una de las 18 políticas de gasto para ver información en detalle ",
-  //           "o haz click para ir a su página."
-  //       ],
-  //     linkInfo: "Más información"
-  //   },
-  //   en: {
-  //     titleViz: "18 SPENDING POLICIES",
-  //     nodeDetails: ["out of", " objectives ", " have been met"],
-  //     interactionNote: isMobile
-  //       ? ["↓ Click on each of", "the 18 policies to", "see detailed information"]
-  //       : [
-  //           "↑ Hover over each of the 18 policies to see information in detail ",
-  //           "or click on it to go to its page."
-  //         ],
-  //     linkInfo: "More information"
-  //   }
-  // })
-  
   // en-US format
   const en_US = ({
     decimal: ".",

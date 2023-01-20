@@ -27,16 +27,18 @@
 <script type="text/javascript">
   $(function () {
   
+    // FIXME: Temporal Data and translations for Policy RadialViz
     var policyData = POLICYDATA;
     var policyi18nES = POLICYi18nES;
     var policyi18nEN = POLICYi18nEN;
+    var policyi18 = "{{ request.LANGUAGE_CODE }}" === "es" ? POLICYi18nES : POLICYi18nEN;
 
     // FIXME: hardcoded years
     var years = [2017, 2018, 2019, 2020, 2021, 2022];
     var starting_year = 2021;
 
     // Create Policiy RadialViz
-    var policyRadialViz = new PolicyRadialViz('#policy-radial-viz', policyData, policyi18nES)
+    var policyRadialViz = new PolicyRadialViz('#policy-radial-viz', policyData, policyi18)
       .setup()
       .update(starting_year);
 
@@ -48,7 +50,6 @@
     setEmbedModal();
 
     function onYearChange() {
-      // console.log("Año: "+getUIState().year);
       policyRadialViz
         .update(getUIState().year)
     }
