@@ -385,33 +385,12 @@ function PolicyRadialViz(_selector, _data, i18n) {
     ////////
     // 3.Update %% content & position
     percentageGroup
-      .style("transform", (d) =>
-        isMobile ? "" : `rotate(${xScale(d.code) + xScale.bandwidth() / 2}rad)`
-      )
-      // Hide central % on mobile devices
-      .attr("visibility", (d) =>
-        isMobile ? "hidden" : "unset"
-      )
-
+      .call(transformPercentGroup)
     percentageGroup
-      .selectAll("text") // Selecting both the visible text and the white clone
-      .attr("transform", function (d) {
-        const myAngleDeg = radiansToDeg(
-          (xScale(d.code) + xScale.bandwidth() / 2 + Math.PI) % (2 * Math.PI)
-        );
-        // Adding a new flag key to the data
-        d["isUpperHalf"] = myAngleDeg > 90 && myAngleDeg < 270;
-        if (isMobile) return "";
-        else {
-          return d.isUpperHalf ? "rotate(0)" : "rotate(180)";
-        }
-      })
-      .attr("font-size", isMobile ? "14px" : "15px")
-      .text((d) =>
-        d[`value_${year}`] !== "NA" ? formatDecimal(d[`value_${year}`]) + "%" : ""
-      )
+      .selectAll("text")
+      .call(transformPercentTexts)
 
-    if (!isMobile) {
+    // if (!isMobile) {
       percentageGroup
         .selectAll("text") // Selecting both the visible text and the white clone
         .transition()
@@ -420,7 +399,7 @@ function PolicyRadialViz(_selector, _data, i18n) {
         .style("opacity", (d) => (d[`value_${year}`] === "NA" ? 0 : 1))
         .attr("x", 0)
         .call(setPercentsPosition)
-    }
+    // }
 
 
     ////////
@@ -505,7 +484,12 @@ function PolicyRadialViz(_selector, _data, i18n) {
       // Change icon color depending on size
       .attr("href", d => `/static/assets/${findPolicyDetail("icon",d.code, policyDetails)}_${isMobile ? "color" : "white"}.svg`)
 
-    // 3.Update % position
+    // 3.Update % transformations and position
+    percentageGroup
+      .call(transformPercentGroup)
+    percentageGroup
+      .selectAll("text")
+      .call(transformPercentTexts)
     percentageGroup
       .selectAll("text") 
       .call(setPercentsPosition)
@@ -579,12 +563,14 @@ function PolicyRadialViz(_selector, _data, i18n) {
   function setPercentsPosition(selection) {
     selection
       .attr("y", function (d) {
-        if (d[`value_${year}`] !== "NA") { 
-          const offset = 14;
-          return d.isUpperHalf
-            ? -yScale(d[`value_${year}`]) - offset
-            : yScale(d[`value_${year}`]) + offset;
-        } else return 100
+        if(!isMobile) {
+          if (d[`value_${year}`] !== "NA") { 
+            const offset = 14;
+            return d.isUpperHalf
+              ? -yScale(d[`value_${year}`]) - offset
+              : yScale(d[`value_${year}`]) + offset;
+          } else return 100
+        } else return 0
       })
   }
   function setTitlesPosition(selection, a) {
@@ -603,6 +589,36 @@ function PolicyRadialViz(_selector, _data, i18n) {
         }
       })
   }
+
+  function transformPercentGroup(selection) {
+    selection
+      .style("transform", (d) =>
+        isMobile ? "" : `rotate(${xScale(d.code) + xScale.bandwidth() / 2}rad)`
+      )
+      // Hide central % on mobile devices
+      .attr("visibility", (d) =>
+        isMobile ? "hidden" : "unset"
+      )
+  }
+
+  function transformPercentTexts(selection) { 
+    selection
+      .attr("transform", function (d) {
+        const myAngleDeg = radiansToDeg(
+          (xScale(d.code) + xScale.bandwidth() / 2 + Math.PI) % (2 * Math.PI)
+        );
+        // Adding a new flag key to the data
+        d["isUpperHalf"] = myAngleDeg > 90 && myAngleDeg < 270;
+        if (isMobile) return "";
+        else {
+          return d.isUpperHalf ? "rotate(0)" : "rotate(180)";
+        }
+      })
+      .attr("font-size", isMobile ? "14px" : "15px")
+      .text((d) =>
+        d[`value_${year}`] !== "NA" ? formatDecimal(d[`value_${year}`]) + "%" : ""
+      )
+}
 
   function setTitleGroupTransforms() {
     if (!isMobile) {
@@ -899,7 +915,6 @@ function PolicyRadialViz(_selector, _data, i18n) {
       g
         .selectAll("g")
         .data(percentSteps)
-        // .join("g") // d3js version problem here ??
         .enter()
         .append("g")
         .attr("fill", "none")
@@ -915,18 +930,13 @@ function PolicyRadialViz(_selector, _data, i18n) {
           g
             .append("text")
             .attr("data-figure", (d) => d)
-            // .attr("class", (d) =>
-            //   hiddenLabels.includes(d) ? "hidden-tick" : "visible-tick"
-            // )
             // Hidden all labels by default
             .attr("class", "hidden-tick")
             .attr("y", (d) => -yScale(d))
             .attr("dy", "0.35em")
             .style("opacity", 0.7)
-            .style("fill", colorPrimary) // TEMPORAL fill
+            .style("fill", colorPrimary)
             .text((d) => `${d}%`)
-            // .text(d => d + "%" )
-            // .call(cloneToImproveReadability, 2, colorNeutral(900))
         )
     )
 
@@ -988,3 +998,9 @@ function PolicyRadialViz(_selector, _data, i18n) {
     return [codes[0], codes[codes.length - 1]];
   }
 }
+
+
+// FIXME: Resize problems on
+// - Percents
+// - Titles
+//  - title viz??
