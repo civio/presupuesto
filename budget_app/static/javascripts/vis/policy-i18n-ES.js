@@ -1,4 +1,19 @@
-const POLICYDETAILS = [
+const POLICYi18nES = {
+  lang: "es",
+  titleViz: "18 POLÍTICAS DE GASTO",
+  nodeDetails: ["Se han obtenido", " puntos", "de un total de "],
+  interactionNote_mobile:  [
+        "↓ Haz click en cada una ",
+        "de las 18 políticas de gasto",
+        "para ver información en detalle"
+      ],
+    interactionNote_desktop:  [
+        "↑ Pasa por encima de cada una de las 18 políticas de gasto para ver información en detalle ",
+        "o haz click para ir a su página."
+    ],
+  linkInfo: "Más información",
+
+  policyDetails: [
     {
       code: "x",
       label: "Deuda pública",
@@ -10,7 +25,6 @@ const POLICYDETAILS = [
       code: "13",
       label: "Seguridad y movilidad ciudadana",
       labelSplitted: ["Seguridad", "y movilidad", "ciudadana"],
-      // url: `https://presupuestosabiertospre.madrid.es/es/politicas/13/seguridad-y-movilidad-ciudadana#view=monitoring&year=${yearSelector}`,
       url: "https://presupuestosabiertospre.madrid.es/es/politicas/13/seguridad-y-movilidad-ciudadana#view=monitoring",
       icon: "monitoring_02-siren-on",
     },
@@ -173,3 +187,4 @@ const POLICYDETAILS = [
       icon: "monitoring_24-money-bill-trend-up",
     }
   ]
+};
