@@ -303,7 +303,8 @@ function PolicyRadialViz(_selector, _data, i18n) {
         .text(i18n.nodeDetails[2]); // ...have been meet
     }
 
-    if (isMobile) {
+    // if (isMobile) {
+      // Read more info
       const anchor = nodeDetails
         .append("a")
         .attr("class", "data-link")
@@ -316,8 +317,6 @@ function PolicyRadialViz(_selector, _data, i18n) {
         .style("text-anchor", "middle")
         .attr("dy", 70)
         .style("fill", colorPrimary)
-        .text(i18n.linkInfo); // More info
-    }
 
     return this;
   };
@@ -424,7 +423,9 @@ function PolicyRadialViz(_selector, _data, i18n) {
 
     // 5. Update other elements position
     setInteractionNotePosition()
-
+    nodeDetails
+      .select("a > text")
+      .call(addMoreInfoContent)
     setMobileTitlePosition();
 
     return this;
@@ -507,6 +508,9 @@ function PolicyRadialViz(_selector, _data, i18n) {
 
     // Node Details
     setNodeDetails();
+    nodeDetails
+      .select("a > text")
+      .call(addMoreInfoContent)
     setMobileTitlePosition();
   }
   
@@ -603,6 +607,14 @@ function PolicyRadialViz(_selector, _data, i18n) {
       .attr("visibility", (d) =>
         isMobile ? "hidden" : "unset"
       )
+  }
+
+
+  // .text(i18n.linkInfo); // More info
+// }
+  function addMoreInfoContent(selection) {
+    selection
+    .text(isMobile ? i18n.linkInfo : ""); // More info
   }
 
   function transformPercentTexts(selection) { 
