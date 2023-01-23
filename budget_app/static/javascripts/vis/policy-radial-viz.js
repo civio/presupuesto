@@ -42,25 +42,27 @@ function PolicyRadialViz(_selector, _data, i18n) {
 
       svg,
       vizGroup,
-      centralLegend,
-      interactionNote,
-      petals,
-      icons,
-      auxEl,
+      centralLegendGroup,
+      auxElGroup,
       auxNodeGroup,
-      auxNodeLinks,
-      radialChart,
-      nodeGroup,
+
       percentageGroup,
       titleGroup,
+      interactionNote,
+      titleVizGroup,
+      
+      petals,
+      icons,
+      radialChart,
+      nodeGroup,
       nodeDetails,
       textGroup,
-      titleVizGroup,
 
       xScale,
       yScale,
       yScaleWider,
       radialAxis,
+
       percentSteps            = [0, 25, 50, 75, 100], // Visible steps on chart when interacting
 
       updateDuration          = 600;
@@ -70,13 +72,14 @@ function PolicyRadialViz(_selector, _data, i18n) {
 
     ///////////////
     // Set SVG
-    svg = d3.select(selector).select("svg")
-
+    svg = d3.select(selector)
+    .select("svg")
     // Set dimensions, add resize event & center viz group
-    setDimensions();
+    .call(setDimensions)
+
     d3.select(window).on('resize', this.resize);
     vizGroup = svg.append("g")
-    centerViz();
+      .call(centerViz)
 
     ///////////////
     // Set scales
@@ -85,12 +88,11 @@ function PolicyRadialViz(_selector, _data, i18n) {
     setyScaleWider();
 
     // Create central legend
-    centralLegend = vizGroup
+    centralLegendGroup = vizGroup
       .append("g")
       .attr("id", "central-legend")
       .call(createLegend)
       .call(setLegendContentAndPosition)
-    // setLegendContentAndPosition()
 
     ///////////////
     // Set radial axis
@@ -101,18 +103,17 @@ function PolicyRadialViz(_selector, _data, i18n) {
 
     ///////////////
     // 0. Create aux elements for interactions
-    auxEl = vizGroup.append("g").attr("id", "aux-el");
-    auxNodeGroup = auxEl
+    auxElGroup = vizGroup.append("g").attr("id", "aux-el");
+    auxNodeGroup = auxElGroup
       .selectAll("g")
       .data(data)
       .enter()
       .append("g");
     
-    auxNodeLinks = auxNodeGroup 
+    auxNodeGroup
       .append("a")
       .attr("target", "_self")
-
-    auxNodeLinks
+      // The whole invisible path behaves as link
       .append("path")
       .attr("d", auxArcInteractions)
       .style("fill", "transparent")
@@ -122,8 +123,8 @@ function PolicyRadialViz(_selector, _data, i18n) {
 
     // Add URL links as svg titles
     auxNodeGroup
-    .append("title")
-    .append("path")
+      .append("title")
+      .append("path")
 
   // 1. Petals
   // Prepare Radial chart
@@ -335,7 +336,7 @@ function PolicyRadialViz(_selector, _data, i18n) {
     ////////
     // 0. Aux elements
     // Update url with current year
-    auxNodeLinks
+    auxNodeGroup.select("a")
       .attr("href", isMobile ? null : (d) => `${findPolicyDetail("url",d.code, policyDetails)}&year=${year}`)
     auxNodeGroup.selectAll("title")
       .text((d) => `${findPolicyDetail("url",d.code, policyDetails)}&year=${year}`)
@@ -443,11 +444,11 @@ function PolicyRadialViz(_selector, _data, i18n) {
       return;
 
     // 0. 
-    setDimensions();
-    centerViz();
+    svg.call(setDimensions);
+    vizGroup.call(centerViz)
 
     // Update legend img if necessary and place it well
-    centralLegend
+    centralLegendGroup
       .call(setLegendContentAndPosition)
 
     // Update scales
@@ -536,7 +537,6 @@ function PolicyRadialViz(_selector, _data, i18n) {
     outerRadius = myWidth / 2 - margin;
 
     yScale = d3
-      // .scaleRadial()
       .scaleLinear()
       .domain([0, 100]) // Values are percents 0-100%
       .range([innerRadius, outerRadius])
@@ -550,7 +550,7 @@ function PolicyRadialViz(_selector, _data, i18n) {
   }
 
   // Set main element dimensions
-  function setDimensions() {
+  function setDimensions(selection) {
     width = $(selector).width();
     isMobile = width < mediaQueryLimit;
 
@@ -558,14 +558,14 @@ function PolicyRadialViz(_selector, _data, i18n) {
     height = isMobile ? myWidth + 400 : myWidth;
 
     // Set main element height
-    svg
+    selection
     .attr("height", height )
     .attr("width", myWidth )
     .style("font", "10px sans-serif");
   }
   // Center the whole group
-  function centerViz() {
-    vizGroup
+  function centerViz(selection) {
+    selection
       .attr("transform", `translate(${myWidth / 2}, ${height / 2})`); // Middle point
   }
 
