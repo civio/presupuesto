@@ -12,11 +12,11 @@ function PolicyRadialViz(_selector, _data, i18n) {
       colorNoData             = "rgb(224, 224, 224)",
       textFillNoData          = "rgb(204, 204, 204)",
       
-      baseOpacityIcons,
-      baseOpacityPetals       = 0.7,
-      baseOpacityTexts        = 0.9,
-      hidingOpacityPetals,
-      hidingOpacityTexts,
+      // Scales and axis
+      xScale,
+      yScale,
+      yScaleWider,
+      radialAxis,
       
       // Dimensions
       myWidth,
@@ -25,6 +25,7 @@ function PolicyRadialViz(_selector, _data, i18n) {
       mediaQueryLimit        = 600,  // Width size to use mobile layout
       isMobile,
       
+      // Viz related dimensions
       innerRadius,
       outerRadius,
       margin,
@@ -48,23 +49,24 @@ function PolicyRadialViz(_selector, _data, i18n) {
       auxNodeGroup,
       radialChartGroup,
       nodeGroup,
-
+      interactionNoteGroup,
       percentageGroup,
       titleGroup,
-      interactionNoteGroup,
       titleVizGroup,
-      
-      nodeDetails,
+      nodeDetailsGroup,
       textGroup,
 
-      xScale,
-      yScale,
-      yScaleWider,
-      radialAxis,
-
-      percentSteps            = [0, 25, 50, 75, 100], // Visible steps on chart when interacting
-
+      // Interactions opacities
+      baseOpacityIcons,
+      baseOpacityPetals       = 0.7,
+      baseOpacityTexts        = 0.9,
+      hidingOpacityPetals,
+      hidingOpacityTexts,
+      
+      // Other settings
+      percentSteps            = [0, 25, 50, 75, 100], // Visible % on interaction
       updateDuration          = 600;
+
 
   // Setup
   this.setup = function() {
@@ -254,16 +256,15 @@ function PolicyRadialViz(_selector, _data, i18n) {
       .style("text-anchor", "middle")
       
     // Node details
-    nodeDetails = vizGroup
+    nodeDetailsGroup = vizGroup
       .append("g")
       .attr("class", "node-details")
       .style("opacity", 0);
       
-    textGroup = nodeDetails
+    textGroup = nodeDetailsGroup
       .append("text")
       .attr("x", 0)
       .attr("fill", colorNeutral(900))
-      //.style("opacity", yearWithNoData ? 0 : 1) // Hidding details when there is no data
       .style("text-anchor", "middle");
 
     setNodeDetails();
@@ -311,7 +312,7 @@ function PolicyRadialViz(_selector, _data, i18n) {
 
     // if (isMobile) {
       // Read more info
-      const anchor = nodeDetails
+      const anchor = nodeDetailsGroup
         .append("a")
         .attr("class", "data-link")
         .attr("target", "_self")
@@ -431,7 +432,7 @@ function PolicyRadialViz(_selector, _data, i18n) {
     // 5. Update other elements position
     interactionNoteGroup
       .call(setInteractionNotePosition)
-    nodeDetails
+    nodeDetailsGroup
       .select("a > text")
       .call(addMoreInfoContent)
     titleVizGroup.call(setMobileTitlePosition);
@@ -519,7 +520,7 @@ function PolicyRadialViz(_selector, _data, i18n) {
       .call(setInteractionNotePosition)
     // Node Details
     setNodeDetails();
-    nodeDetails
+    nodeDetailsGroup
       .select("a > text")
       .call(addMoreInfoContent)
     // Title viz on mobile
@@ -553,6 +554,8 @@ function PolicyRadialViz(_selector, _data, i18n) {
       .range([innerRadius, myWidth / 2])
   }
 
+
+
   // Set main element dimensions
   function setDimensions(selection) {
     width = $(selector).width();
@@ -573,6 +576,41 @@ function PolicyRadialViz(_selector, _data, i18n) {
       .attr("transform", `translate(${myWidth / 2}, ${height / 2})`); // Middle point
   }
 
+  function createLegend (selection) {
+    selection
+      .append("image")
+      .attr("x", 0)
+      .attr("y", 0)
+  }
+  function setLegendContentAndPosition(selection) {
+    titleImgSize = isMobile ? 280 : innerRadius * 2 - 5;
+    // Img depending both on language and size
+    if(languageSelector === "es") { 
+      titleImgURL = isMobile ? titleImgMobileURL_ES : titleImgDesktopURL_ES 
+    } else {
+      titleImgURL =  isMobile ? titleImgMobileURL_EN : titleImgDesktopURL_EN
+    }
+    const imageOffsetMobile = -height / 2 + 80;
+
+    selection
+      .attr("transform", isMobile ? `translate(0, ${imageOffsetMobile})` : "")
+      .select("image")
+      .attr("width", titleImgSize)
+      .attr("height", titleImgSize)
+      .attr("transform", `translate(${-titleImgSize / 2}, ${-titleImgSize / 2})`)
+      .attr("href", titleImgURL)      
+  } 
+
+  function transformPercentGroup(selection) {
+    selection
+      .style("transform", (d) =>
+        isMobile ? "" : `rotate(${xScale(d.code) + xScale.bandwidth() / 2}rad)`
+      )
+      // Hide central % on mobile devices
+      .attr("visibility", (d) =>
+        isMobile ? "hidden" : "unset"
+      )
+  }
   function setPercentsPosition(selection) {
     selection
       .attr("y", function (d) {
@@ -586,48 +624,6 @@ function PolicyRadialViz(_selector, _data, i18n) {
         } else return 0
       })
   }
-  function setTitlesPosition(selection, a) {
-    selection
-      .attr("transform", (d) =>
-        a.isLefttHalf && !isMobile ? "rotate(180)" : "rotate(0)"
-      )
-      .attr("x", function (d) {
-        if(isMobile) return 0
-        else {
-          const offset = a[`value_${year}`] === "NA" ? 10 : 20;
-          if (a[`value_${year}`] !== "NA") {
-            return a.isLefttHalf
-              ? -yScale(a[`value_${year}`] + offset)
-              : yScale(a[`value_${year}`] + offset);
-            // When no data
-          } else {
-            return a.isLefttHalf
-              ? -yScale(100 + offset)
-              : yScale(100 + offset);
-          }
-        }
-      })
-  }
-
-  function transformPercentGroup(selection) {
-    selection
-      .style("transform", (d) =>
-        isMobile ? "" : `rotate(${xScale(d.code) + xScale.bandwidth() / 2}rad)`
-      )
-      // Hide central % on mobile devices
-      .attr("visibility", (d) =>
-        isMobile ? "hidden" : "unset"
-      )
-  }
-
-
-  // .text(i18n.linkInfo); // More info
-// }
-  function addMoreInfoContent(selection) {
-    selection
-    .text(isMobile ? i18n.linkInfo : ""); // More info
-  }
-
   function transformPercentTexts(selection) { 
     selection
       .attr("transform", function (d) {
@@ -645,7 +641,7 @@ function PolicyRadialViz(_selector, _data, i18n) {
       .text((d) =>
         d[`value_${year}`] !== "NA" ? formatDecimal(d[`value_${year}`]) + "%" : ""
       )
-}
+  }
 
   function setTitleGroupTransforms(selection) {
     if (!isMobile) {
@@ -673,6 +669,50 @@ function PolicyRadialViz(_selector, _data, i18n) {
         .attr("transform", `translate(0,${offsetTitleMobile})`);
     }
   }
+  function setTitlesPosition(selection, a) {
+    selection
+      .attr("transform", (d) =>
+        a.isLefttHalf && !isMobile ? "rotate(180)" : "rotate(0)"
+      )
+      .attr("x", function (d) {
+        if(isMobile) return 0
+        else {
+          const offset = a[`value_${year}`] === "NA" ? 10 : 20;
+          if (a[`value_${year}`] !== "NA") {
+            return a.isLefttHalf
+              ? -yScale(a[`value_${year}`] + offset)
+              : yScale(a[`value_${year}`] + offset);
+            // When no data
+          } else {
+            return a.isLefttHalf
+              ? -yScale(100 + offset)
+              : yScale(100 + offset);
+          }
+        }
+      })
+  }
+  function setTitlesStyling(selection) {
+    selection
+      .style("fill", isMobile ? "white" : "unset")
+      .style("opacity", isMobile ? 0 : baseOpacityTexts);
+  }
+
+  function setNodeDetails() {
+    const detailsOffsetMobile = height / 2 - 100;
+    nodeDetailsGroup
+      .attr("transform", `translate(0,${isMobile ? detailsOffsetMobile : -10})`)
+      .style("font-size", isMobile ? "15px" : "17px");
+  
+    const textOffsetDesktop = languageSelector === "es" ? -10 : -40;
+      textGroup
+      .attr("y", isMobile ? -20 : textOffsetDesktop)
+  }
+
+  function addMoreInfoContent(selection) {
+    selection
+    .text(isMobile ? i18n.linkInfo : ""); // More info
+  }
+
 
   function setInteractionNotePosition(selection) {
     selection
@@ -721,16 +761,15 @@ function PolicyRadialViz(_selector, _data, i18n) {
 
   }
 
-  function setTitlesStyling(selection) {
-    selection
-      .style("fill", isMobile ? "white" : "unset")
-      .style("opacity", isMobile ? 0 : baseOpacityTexts);
-  }
 
   function setIconParameters() {
     iconOffset = isMobile ? -15 : 25;
     iconSize = isMobile ? 20 : 25;
   }
+
+
+
+
   // Interactions
   // https://github.com/d3/d3-selection/blob/v3.0.0/README.md#selection_on
   function onMouseOver(d) {
@@ -810,7 +849,6 @@ function PolicyRadialViz(_selector, _data, i18n) {
           i18n.nodeDetails[1]
       );
   }
-
   function onMouseOut(d) {
     // Back to "normal" state
     d3.selectAll(`#node-el > g > *`)
@@ -850,58 +888,8 @@ function PolicyRadialViz(_selector, _data, i18n) {
   }
 
 
+
   // Generators
-  function createLegend (selection) {
-    selection
-      .append("image")
-      .attr("x", 0)
-      .attr("y", 0)
-  }
-
-  function setLegendContentAndPosition(selection) {
-    titleImgSize = isMobile ? 280 : innerRadius * 2 - 5;
-    // Img depending both on language and size
-    if(languageSelector === "es") { 
-      titleImgURL = isMobile ? titleImgMobileURL_ES : titleImgDesktopURL_ES 
-    } else {
-      titleImgURL =  isMobile ? titleImgMobileURL_EN : titleImgDesktopURL_EN
-    }
-    const imageOffsetMobile = -height / 2 + 80;
-
-    selection
-      .attr("transform", isMobile ? `translate(0, ${imageOffsetMobile})` : "")
-      .select("image")
-      .attr("width", titleImgSize)
-      .attr("height", titleImgSize)
-      .attr("transform", `translate(${-titleImgSize / 2}, ${-titleImgSize / 2})`)
-      .attr("href", titleImgURL)      
-  } 
-
-   
-  function setNodeDetails() {
-    const detailsOffsetMobile = height / 2 - 100;
-    nodeDetails
-      .attr("transform", `translate(0,${isMobile ? detailsOffsetMobile : -10})`)
-      .style("font-size", isMobile ? "15px" : "17px");
-  
-    const textOffsetDesktop = languageSelector === "es" ? -10 : -40;
-      textGroup
-      .attr("y", isMobile ? -20 : textOffsetDesktop)
-    }
-  
-
-  const cloneToImproveReadability = (selection, strokeWidth, color) => {
-    selection
-      // To improve readability
-      // White background
-      .attr("stroke", colorNeutral(0))
-      .attr("stroke-width", strokeWidth)
-      // Black visible text
-      .clone(true) // Not wokring :(
-      .attr("fill", color)
-      .attr("stroke", "none");
-  }
-
   const arc = d3
     .arc()
     .innerRadius((d) => yScale(0))
@@ -970,7 +958,6 @@ function PolicyRadialViz(_selector, _data, i18n) {
             .text((d) => `${d}%`)
         )
     )
-
   function updateRadialAxis() {
     svg.select("#radial-axis")
       .selectAll("circle")
@@ -1009,16 +996,10 @@ function PolicyRadialViz(_selector, _data, i18n) {
     return d * (180 / Math.PI)
   }
 
-  // TODO: Review this
   const colorNeutral = d3
     .scaleLinear()
     .range(['white', 'black'])
     .domain([0, 1000])
-
-  // const colorNeutral = () => d3
-  //   .scaleLinear()
-  //   .range(['white', 'black'])
-  //   .domain([0, 1000])
 
   function findPolicyDetail(detail, code, arrayDetails) {
     return arrayDetails.find(d => d.code === code)[detail];
@@ -1029,9 +1010,3 @@ function PolicyRadialViz(_selector, _data, i18n) {
     return [codes[0], codes[codes.length - 1]];
   }
 }
-
-
-// FIXME: Resize problems on
-// - Percents
-// - Titles
-//  - title viz??
