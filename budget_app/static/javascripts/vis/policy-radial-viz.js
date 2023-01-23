@@ -40,21 +40,20 @@ function PolicyRadialViz(_selector, _data, i18n) {
       iconOffset,
       iconSize,
 
+      // Viz dom structure
       svg,
       vizGroup,
       centralLegendGroup,
       auxElGroup,
       auxNodeGroup,
+      radialChartGroup,
+      nodeGroup,
 
       percentageGroup,
       titleGroup,
-      interactionNote,
+      interactionNoteGroup,
       titleVizGroup,
       
-      petals,
-      icons,
-      radialChart,
-      nodeGroup,
       nodeDetails,
       textGroup,
 
@@ -128,18 +127,18 @@ function PolicyRadialViz(_selector, _data, i18n) {
 
   // 1. Petals
   // Prepare Radial chart
-  radialChart = vizGroup
+  radialChartGroup = vizGroup
     .append("g")
     .attr("id", "node-el")
     .style("pointer-events", "none");
   
   // Data binding to the node-group
-  nodeGroup = radialChart.selectAll("g").data(data)
+  nodeGroup = radialChartGroup.selectAll("g").data(data)
     .enter()
     .append("g");
 
   // Create petals from 0,0
-  petals = nodeGroup
+  nodeGroup
     .append("path")
     .attr("class", "petal")
     .attr("data-code", (d) => d.code)
@@ -148,7 +147,7 @@ function PolicyRadialViz(_selector, _data, i18n) {
 
   // 2. Icons
   // Prepare icons. We locate x,y coordinates later
-  icons = nodeGroup
+  nodeGroup
     .append("image")
     .attr("class", "icon")
     .style("opacity", baseOpacityIcons);
@@ -246,7 +245,7 @@ function PolicyRadialViz(_selector, _data, i18n) {
       .style("fill", colorNeutral(0));
 
     // Interaction note
-   interactionNote = vizGroup
+   interactionNoteGroup = vizGroup
       .append("g")
       .attr("class", "interaction-note")
       .append("text")
@@ -353,8 +352,8 @@ function PolicyRadialViz(_selector, _data, i18n) {
         return yScale(100);
       }
     });
-    petals
-    // Petals with no data
+    // Petals
+    nodeGroup.select("path") // Petals
     .style("fill", (d) =>
       d[`value_${year}`] !== "NA" ? colorPrimary : colorNoData
     )
@@ -375,7 +374,8 @@ function PolicyRadialViz(_selector, _data, i18n) {
       : yScale(100) - yScale(0) + yScale(0) - iconOffset
       );
     setIconParameters()
-    icons
+    nodeGroup
+      .selectAll(".icon")
       .attr("width", iconSize)
       .attr("height", iconSize)
       .attr("href", d => `/static/assets/${findPolicyDetail("icon",d.code, policyDetails)}_${isMobile ? "color" : "white"}.svg`)
@@ -429,11 +429,12 @@ function PolicyRadialViz(_selector, _data, i18n) {
     }
 
     // 5. Update other elements position
-    setInteractionNotePosition()
+    interactionNoteGroup
+      .call(setInteractionNotePosition)
     nodeDetails
       .select("a > text")
       .call(addMoreInfoContent)
-    setMobileTitlePosition();
+    titleVizGroup.call(setMobileTitlePosition);
 
     return this;
   }
@@ -461,7 +462,8 @@ function PolicyRadialViz(_selector, _data, i18n) {
 
     // 1.Redraw petals
     arc.outerRadius((d) => yScale(d[`value_${year}`]))
-    petals.attr("d", arc);
+    nodeGroup.select("path") // Petals
+      .attr("d", arc);
 
     // 2.Update icons position
     arc_modifPixelsOffset
@@ -476,7 +478,8 @@ function PolicyRadialViz(_selector, _data, i18n) {
       : yScale(100) - yScale(0) + yScale(0) - iconOffset
       );
     setIconParameters()
-    icons
+    nodeGroup
+      .selectAll(".icon")
       .attr("width", iconSize)
       .attr("height", iconSize)
       .attr("href", d => `/static/assets/${findPolicyDetail("icon",d.code, policyDetails)}_${isMobile ? "color" : "white"}.svg`)
@@ -512,15 +515,16 @@ function PolicyRadialViz(_selector, _data, i18n) {
 
     // 5. Other elements position
     // Interaction note
-    setInteractionNotePosition()
-
+    interactionNoteGroup
+      .call(setInteractionNotePosition)
     // Node Details
     setNodeDetails();
     nodeDetails
       .select("a > text")
       .call(addMoreInfoContent)
-    setMobileTitlePosition();
-  }
+    // Title viz on mobile
+    titleVizGroup.call(setMobileTitlePosition);
+    }
   
 
   // Set scales
@@ -670,16 +674,16 @@ function PolicyRadialViz(_selector, _data, i18n) {
     }
   }
 
-  function setInteractionNotePosition() {
-    interactionNote
+  function setInteractionNotePosition(selection) {
+    selection
       .attr("y", isMobile ? -height / 2 + 140 : height / 2 - 60)
       .style("font-size", isMobile ? "15px" : "14px");
     
-    interactionNote
+      selection
       .selectAll("tspan")
       .remove()
 
-    interactionNote
+      selection
       .selectAll("tspan")
       .data(i18n[`${isMobile ? "interactionNote_mobile" : "interactionNote_desktop"}`])
       .enter()
@@ -689,8 +693,8 @@ function PolicyRadialViz(_selector, _data, i18n) {
       .attr("dy", (d, i) => (isMobile ? 20 : 18));
   }
 
-  function setMobileTitlePosition() {
-    titleVizGroup
+  function setMobileTitlePosition(selection) {
+    selection
       .attr("transform", `translate(0,${outerRadius + 50})`);
 
     if(isMobile) {
