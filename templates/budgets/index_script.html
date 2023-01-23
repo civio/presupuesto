@@ -63,7 +63,7 @@
       'executed': '{{ _("Ejecutado") }}',
       'total_incomes': '{{ _("Total ingresos") }}',
       'total_expenses': '{{ _("Total gastos") }}',
-      'n/d': 'No hay datos'
+      'n/d': '{{ _("No hay datos") }}'
     });
 
     var sankey = new BudgetSankey(functionalBreakdown, economicBreakdown, budgetStatuses, i18n);
@@ -104,12 +104,19 @@
     sankey.forceOrder(true);
     {% endif %}
 
+    // Set UI controllers
     $('#select-format').change(redraw);
     initSlider("#year-selection", years, {{ starting_year }});
+    setEmbedModal();    // Add click embed btn event
+
+    // Create the Sankey object (once the year selector is in place)...
     sankey.draw("#chart", getUIState(), getInflationAdjustmentFunction(getUIState(), stats));
+
+    // And set up year change update.
+    // This needs the Sankey to exist, because it handles the initial hash in the URL
+    // and may trigger an update, which is quite confusing to be honest.
     setRedrawOnSliderChange("#year-selection", {{ starting_year }}, redraw);
 
-    // Add click embed btn event
-    setEmbedModal();
+    redraw();
   });
 </script>

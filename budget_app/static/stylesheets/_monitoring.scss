@@ -1,0 +1,243 @@
+// Some variables
+$toggle-icon-size: 0.4em;
+$accomplish-icon-size: 1.5em; // around 20px
+$margin-elements: 2rem; // inside the same objective
+$margin-blocks: 4rem; // between blocks
+$padding-table: 0.05em;
+$monitoring-bar-color: $brand-primary;
+
+// Main monitoring page
+.monitoring-content .quantity-selection{
+  display: none;
+}
+
+.monitoring-content .layout-slider{
+  margin-left: 80px;
+}
+
+//
+.policies-breakdown {
+  & .policies-title {
+    color: $text-color;
+    font-size: 2rem;
+    margin-bottom: $margin-elements;
+  }
+  // Toogle transition
+  .monitoring-block.collapse {
+    transition: all 1s ease; 
+  }
+}
+
+.monitoring-list {
+  list-style-type: none;
+  padding-inline-start: 5px;
+
+  @media (min-width: $screen-sm) {
+    padding-inline-start: 40px;
+  }
+
+  & .monitoring-block {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+  }
+  & .monitoring-block .monitoring-title {
+    margin-bottom: 1rem;
+  }
+  & li {
+    margin-bottom: $margin-elements;
+  }
+  & .objectives-title {
+    font-size: 16px;
+    color: $text-color;
+  }
+}
+
+// Toggle icons just on sections pages, not policies pages:
+.body-programmes .monitoring-list {
+   // Toggle icon behaviour
+  & .monitoring-block .monitoring-title:before {
+    content: "";
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-right: 0.2em;
+    vertical-align: 0.1em;
+    // Default state: Arrow to the right →
+    border-top: $toggle-icon-size solid;
+    border-right: $toggle-icon-size solid transparent;
+    border-bottom: 0;
+    border-left: $toggle-icon-size solid transparent;
+  }
+  & .monitoring-block.collapsed .monitoring-title:before {
+    vertical-align: 0;
+    // Activated state: Arrow down ↓
+    border-top: $toggle-icon-size solid transparent;
+    border-right: 0;
+    border-bottom: $toggle-icon-size solid transparent;
+    border-left: $toggle-icon-size solid;
+  }
+}
+
+.goals-list {
+  padding-inline-start: 5px;
+
+  @media (min-width: $screen-sm) {
+    padding-inline-start: 40px;
+  }
+
+  & .goal-title {
+    font-size: 14px;
+  }
+  & ::marker {
+    color: $brand-primary;
+    font-size: 14px;
+    font-weight: 900;
+  }
+  & .goal-report {
+    border-color: $brand-secondary;
+    background: $brand-secondary;
+    border: none;
+    padding: 10px;
+    margin-bottom: $margin-elements;
+  }
+}
+
+.monitoring-bar-chart {
+  width: 250px;
+  display: flex;
+  position: relative;
+  float: right;
+
+  .bar-outline {
+    width: 180px;
+    height: 20px;
+    border: 2px solid $monitoring-bar-color;
+    position: absolute;
+  }
+  .bar-fill {
+    height: 16px;
+    background-color: $monitoring-bar-color;
+    position: absolute;
+  }
+  span {
+    color: $monitoring-bar-color;
+    margin-left: 10px;
+    vertical-align: top;
+    width: 100%;
+    font-weight: 800;
+    text-align: right;
+  }
+}
+
+@media (max-width: $screen-xs-max) {
+  .table-wrapper {
+    overflow: auto;
+  }
+}
+// Get scroll bar on tables on small devices
+
+.table-activities {
+  width: 100%;
+  margin-bottom: $margin-elements;
+  & th {
+    border-bottom: 1px solid $text-color;
+    padding-bottom: 3px;
+  }
+  & td {
+    padding-left: $padding-table;
+  }
+  & td::before {
+    content: "-";
+    display: inline-block;
+    width: 7px;
+    height: auto;
+  }
+}
+
+.table-indicators {
+  width: 100%;
+  margin-bottom: $margin-blocks;
+  & th {
+    padding-bottom: 3px;
+  }
+  & td, & th {
+    border-bottom: 1px solid $text-color;
+  }
+  & tr th:not(:first-child), tr td:not(:first-child) {
+    text-align: right;
+  }
+  & td {
+    padding-left: $padding-table;
+  }
+  & th.opacity-0 {
+    opacity: 0;
+    max-width: 40px;
+  }
+  & th.done {
+    min-width: 100px;
+  }
+}
+
+.coverage-icon {
+  cursor: pointer;
+  display: inline-block;
+  margin-right: 10px;
+  position: relative;
+  top: 2px;
+  background-size: cover;
+  background-position: center center;
+  height: $accomplish-icon-size;
+  width: $accomplish-icon-size;
+
+  // 100% accomplished
+  &.level-4 {
+    background-image: url(/static/assets/accomplishment-4.png);
+  }
+  &.level-3 {
+    background-image: url(/static/assets/accomplishment-3.png);
+  }
+  &.level-2 {
+    background-image: url(/static/assets/accomplishment-2.png);
+  }
+  &.level-1 {
+    background-image: url(/static/assets/accomplishment-1.png);
+  }
+  // 0% accomplished
+  &.level-0 {
+    background-image: url(/static/assets/accomplishment-0.png);
+  }
+}
+
+// Read more functionality 
+// https://codepen.io/joserick/details/ooVPwR
+.goal-report div.collapse:not(.in) {
+  height: 42px !important;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;  
+}
+.goal-report div.collapsing {
+  min-height: 42px !important;
+}
+.goal-report a.collapsed:after  {
+  // margin-top: 1rem;
+  color: $brand-primary;
+}
+
+.goal-report.es a.collapsed:after  {
+  content: '[+ Seguir leyendo]';
+}
+.goal-report.en a.collapsed:after  {
+  content: '[+ Keep reading]';
+}
+
+.goal-report.es a:not(.collapsed):after {
+  content: '[- Leer menos]';
+}
+.goal-report.en a:not(.collapsed):after {
+  content: '[- Read less]';
+}

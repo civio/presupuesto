@@ -151,6 +151,69 @@ def entity_main_investments_breakdown(request, slug, format):
 
 
 #
+# MONITORING BREAKDOWN
+#
+def format_progress(score):
+    return format(score*100.0, ".2f")
+
+def write_policy_monitoring_breakdown(c, writer):
+    write_header(writer, [u'Año.csv', u'Id Programa', u'Nombre Programa', u'Cumplimiento %'])
+
+    # Write policy-level results
+    for year, score in sorted(c['monitoring_totals'].items()):
+        if score != 0:
+            writer.writerow([
+                year,
+                '',
+                '',
+                format_progress(score)
+            ])
+
+    # Write programme-level results
+    for programme_summary in sorted(c['monitoring_programmes']):
+        year = programme_summary[0]
+        if c['monitoring_totals'][year] != 0:
+            score = programme_summary[3]/programme_summary[4]
+            writer.writerow([
+                year,
+                programme_summary[1],
+                programme_summary[2].encode("utf-8"),
+                format_progress(score)
+            ])
+
+def policy_monitoring_breakdown(request, id, format):
+    return policies_show(request, id, '', _generator("%s_objetivos" % id, format, write_policy_monitoring_breakdown))
+
+def write_programme_monitoring_breakdown(c, writer):
+    write_header(writer, [u'Año.csv', u'Sección', u'Cumplimiento %'])
+
+    # Write programme-level results
+    for year, score in sorted(c['monitoring_totals'].items()):
+        if score != 0:
+            writer.writerow([
+                year,
+                '',
+                format_progress(score)
+            ])
+
+    # Write section-level results
+    for section in sorted(c['monitoring_sections']):
+        year = section[0]
+        if c['monitoring_totals'][year] != 0:
+            section_summary = c['monitoring_totals_per_section'].get(section[1])
+            if section_summary:
+                score = section_summary[1]/section_summary[2]
+                writer.writerow([
+                    section[0],
+                    section[2].encode("utf-8"),
+                    format_progress(score)
+                ])
+
+def programme_monitoring_breakdown(request, id, format):
+    return programmes_show(request, id, '', _generator("%s_objetivos" % id, format, write_programme_monitoring_breakdown))
+
+
+#
 # FUNCTIONAL BREAKDOWN
 #
 def write_functional_breakdown(c, writer):

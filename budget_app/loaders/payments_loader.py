@@ -11,7 +11,7 @@ import re
 # Generic payments loader
 class PaymentsLoader(BaseLoader):
 
-    def load(self, entity, year, path):
+    def load(self, entity, year, path, status):
         items = self.parse_data(os.path.join(path, 'pagos.csv'))
 
         # Find the budget the payments relates to

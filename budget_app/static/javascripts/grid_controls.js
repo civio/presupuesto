@@ -6,8 +6,9 @@ function setRedrawOnTabsChange(container, callback) {
     // Get hash states    
     var state = $.deparam.fragment();
 
-    // Change tab
-    if (state.view) {
+    // Change tab, but only if really needed!
+    // Note, for example, that a year change will update the hash. We don't want to react then.
+    if (state.view && state.view!==getDataTab()) {
       setDataTab(state.view);
       callback();
     }
@@ -23,14 +24,19 @@ function setRedrawOnTabsChange(container, callback) {
     $.bbq.pushState( {'view': $(this).attr('href').substring(1)} );
   });
 
-  // Initially trigger hashchange   
+  // Initially trigger redraw
   var state = $.deparam.fragment();
   if (state.view) {
-    $(window).trigger('hashchange');
+    setDataTab(state.view);
   } else {
-    state.view = $('section').data('tab');
+    state.view = getDataTab();
     $.bbq.pushState(state);
   }
+  callback();
+}
+
+function getDataTab() {
+  return $('section').data('tab');
 }
 
 function setDataTab(view) {
@@ -100,27 +106,18 @@ function setEmbedModal() {
 }
 
 function setRedrawOnSliderChange(selector, startValue, callback) {
-
-  // Listen changes on url hash
-  $(window).bind('hashchange', function(e) {
-    // Get hash states    
-    var state = $.deparam.fragment();
-    // Change year
-    if (state.year && !isNaN(state.year)) {
-      $(selector).slider('setValue', +state.year);
-      callback();
-    }
-  });
-
   // Handle change on year slider with pushState
   $(selector).on('change', function(e) {
     $.bbq.pushState({'year': e.value.newValue});
+    callback();
   });
 
-  // Initially trigger hashchange   
+  // Initially trigger hashchange.
+  // XXX: Handling the initial hash handling here is quite confusing once you forget, tbh.
   var state = $.deparam.fragment();
   if (state.year && state.year != startValue) {
-    $(window).trigger('hashchange');
+    $(selector).slider('setValue', +state.year);
+    callback();
   } else {
     state.year = $(selector).val();
     $.bbq.pushState(state);
@@ -143,7 +140,7 @@ var fillGapsInYears = function( _years ){
 function getUIState() {
   var state = $.deparam.fragment();
   var field = $('section').data('field'),
-      view = $('section').data('tab'),
+      view = getDataTab(),
       year = (state.year && state.year !== '') ? state.year : $('#year-selection').val();
 
   return {

@@ -1,10 +1,10 @@
 # -*- coding: UTF-8 -*-
-
-from django.core.urlresolvers import reverse
-from budget_app.models import Budget, BudgetBreakdown, FunctionalCategory, EconomicCategory
-from helpers import *
 import json
 
+from django.core.urlresolvers import reverse
+
+from budget_app.models import Budget, BudgetBreakdown, FunctionalCategory, EconomicCategory, Goal, GoalActivity, GoalIndicator
+from helpers import *
 
 def policies_show_helper(request, c, entity, id, title, render_callback=None):
     c['policy_uid'] = id
@@ -23,6 +23,13 @@ def policies_show_helper(request, c, entity, id, title, render_callback=None):
                                 c['breakdowns']['funding'],
                                 c['breakdowns']['institutional']
                             ])
+
+    # Add monitoring information, if needed
+    if (c['show_monitoring']):
+        c['monitoring_programmes'] = GoalIndicator.objects.get_indicators_summary_by_programme(entity.id, "policy", id)
+
+        totals = GoalIndicator.objects.get_indicators_summary_by_policy(entity.id, id)
+        c['monitoring_totals'] = dict((total[0], total[2]/total[3]) for total in totals)
 
     # Additional data needed by the view
     show_side = 'expense'
@@ -67,7 +74,7 @@ def programmes_show_helper(request, c, entity, id, title, render_callback=None):
 
     # Get the budget breakdown
     # The functional breakdown may or may not exist, depending on whether we are at deepest level,
-    # i.e. depending on whether there are subprogrammes. The policy page will check whether
+    # i.e. depending on whether there are subprogrammes. The policy page will check whether
     # the breakdown exists and adapt accordingly.
     c['breakdowns'] = {
       'functional': BudgetBreakdown(['subprogramme']) if c['use_subprogrammes'] else None,
@@ -91,6 +98,25 @@ def programmes_show_helper(request, c, entity, id, title, render_callback=None):
     c['descriptions']['economic'] = programme_descriptions
     c['name'] = c['descriptions']['functional'].get(c['programme_id'])
     c['title_prefix'] = c['name']
+
+    # Add monitoring information, if needed
+    if (c['show_monitoring']):
+        # Get raw monitoring data
+        c['monitoring_goals'] = _group_by(Goal.objects.get_programme_goals(entity, id), lambda g: g.institutional_category_id)
+        c['monitoring_activities'] = _group_by(GoalActivity.objects.get_programme_activities(entity, id), lambda a: a.goal.uid)
+        c['monitoring_indicators'] = _group_by(GoalIndicator.objects.get_programme_indicators(entity, id), lambda i: i.goal.uid)
+
+        # Get full list of sections with goals in the programme
+        c['monitoring_sections'] = GoalIndicator.objects.get_monitoring_sections(entity.id, id)
+
+        # Get progress totals. We can do it easily with SQL, instead of calculating it here.
+        totals = GoalIndicator.objects.get_indicators_summary_by_programme(entity.id, "programme", id)
+        c['monitoring_totals'] = dict((total[0], total[3]/total[4]) for total in totals)
+        monitoring_totals_per_section = GoalIndicator.objects.get_indicators_summary_by_section(entity.id, id)
+        c['monitoring_totals_per_section'] = dict((total[0], total) for total in monitoring_totals_per_section)
+
+        # If there's only one section per year, display it extended
+        c['expand_monitoring_sections'] = (len(c['monitoring_totals'])==len(c['monitoring_totals_per_section']))
 
     # Additional data needed by the view
     show_side = 'expense'
@@ -177,3 +203,15 @@ def articles_show_helper(request, c, entity, id, title, show_side, render_callba
     template = 'policies/show_widget.html' if isWidget(request) else 'policies/show.html'
 
     return render(c, render_callback, template )
+
+
+# Poor man's D3js' group method. Python's `groupby` is -confusingly- something else,
+# more like an iterator, can't be accessed randomly, which is what we need in the template.
+# See https://docs.python.org/3/library/itertools.html#itertools.groupby
+def _group_by(items, key):
+    groups = {}
+    for item in items:
+        values = groups.get(key(item), [])
+        values.append(item)
+        groups[key(item)] = values
+    return groups

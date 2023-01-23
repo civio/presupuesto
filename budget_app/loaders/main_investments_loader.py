@@ -9,7 +9,7 @@ import re
 # Generic Main investments loader
 class MainInvestmentsLoader(BaseLoader):
 
-    def load(self, entity, year, path):
+    def load(self, entity, year, path, status):
         items = []
         self.parse_data(items, os.path.join(path, 'inversiones_principales.csv'))
 

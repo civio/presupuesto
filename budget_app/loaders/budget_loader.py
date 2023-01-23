@@ -26,16 +26,6 @@ class BudgetLoader(BaseLoader):
         print "Cargando ejecución presupuestaria de %s..." % path
         self.load_execution_data_files(budget, path)
 
-    def load_execution(self, entity, year, path):
-        budget = Budget.objects.filter(entity=entity, year=year)[0]
-
-        print "Borrando ejecución presupuestaria previa..."
-        BudgetItem.objects.filter(budget_id=budget, actual=True).delete()
-
-        print "Cargando ejecución presupuestaria de %s..." % path
-        self.load_execution_data_files(budget, path)
-
-
     def get_default_institutional_categories(self):
         return []
 

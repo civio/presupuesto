@@ -5,7 +5,7 @@ from budget_app.management.commands import BaseLoadingCommand
 
 class Command(BaseLoadingCommand):
 
-    help = u"Carga los pagos correspondientes al presupuesto del año"
+    help = u"Carga los objetivos, indicadores y actividades del año"
 
     def handle(self, *args, **options):
-        super(Command, self).handle(settings.PAYMENTS_LOADER, args, options)
+        super(Command, self).handle(settings.MONITORING_LOADER, args, options)
