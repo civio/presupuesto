@@ -85,12 +85,18 @@ function PolicyRadialViz(_selector, _data, i18n) {
     setyScaleWider();
 
     // Create central legend
-    centralLegend = vizGroup.append("g").attr("id", "central-legend").call(createLegend);
-    setLegendContentAndPosition()
+    centralLegend = vizGroup
+      .append("g")
+      .attr("id", "central-legend")
+      .call(createLegend)
+      .call(setLegendContentAndPosition)
+    // setLegendContentAndPosition()
 
     ///////////////
     // Set radial axis
-    vizGroup.append("g").attr("id", "radial-axis")
+    vizGroup
+      .append("g")
+      .attr("id", "radial-axis")
       .call(radialAxis);
 
     ///////////////
@@ -441,7 +447,8 @@ function PolicyRadialViz(_selector, _data, i18n) {
     centerViz();
 
     // Update legend img if necessary and place it well
-    setLegendContentAndPosition()
+    centralLegend
+      .call(setLegendContentAndPosition)
 
     // Update scales
     setXScale();
@@ -847,7 +854,7 @@ function PolicyRadialViz(_selector, _data, i18n) {
       .attr("y", 0)
   }
 
-  function setLegendContentAndPosition() {
+  function setLegendContentAndPosition(selection) {
     titleImgSize = isMobile ? 280 : innerRadius * 2 - 5;
     // Img depending both on language and size
     if(languageSelector === "es") { 
@@ -857,10 +864,8 @@ function PolicyRadialViz(_selector, _data, i18n) {
     }
     const imageOffsetMobile = -height / 2 + 80;
 
-    centralLegend
+    selection
       .attr("transform", isMobile ? `translate(0, ${imageOffsetMobile})` : "")
-
-    centralLegend
       .select("image")
       .attr("width", titleImgSize)
       .attr("height", titleImgSize)
