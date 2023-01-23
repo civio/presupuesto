@@ -167,8 +167,8 @@ function PolicyRadialViz(_selector, _data, i18n) {
     .attr("class", "policy-group")
     .style("font-weight", 800)
     .style("dominant-baseline", "middle");
- 
-  setTitleGroupTransforms()
+  titleGroup.call(setTitleGroupTransforms)
+
 
   // Create invisible title texts
   titleGroup.each(function (a) {
@@ -404,12 +404,16 @@ function PolicyRadialViz(_selector, _data, i18n) {
 
     ////////
     // 4.Update titles position
-    setTitleGroupTransforms()
+    titleGroup
+    .call(setTitleGroupTransforms)
+    // Set fill and opacity attributes depending on responsive
+    .call(setTitlesStyling)
+
 
     if (!isMobile) {
       titleGroup.each(function (a) {
         const el = d3.select(this);
-        el.selectAll("text") // Selecting both the visible text and the white clone
+        el.selectAll("text") 
           .transition("unbreak")
           .duration(updateDuration)
           .style("opacity", baseOpacityTexts)
@@ -420,9 +424,6 @@ function PolicyRadialViz(_selector, _data, i18n) {
           .call(setTitlesPosition, a)
       });
     }
-    // Set fill and opacity attributes depending on responsive
-    titleGroup
-      .call(setTitlesStyling)
 
     // 5. Update other elements position
     setInteractionNotePosition()
@@ -491,16 +492,16 @@ function PolicyRadialViz(_selector, _data, i18n) {
       .call(setPercentsPosition)
 
     // 4.Update titles position
-    setTitleGroupTransforms()
+    titleGroup
+    .call(setTitleGroupTransforms)
+    // Set fill and opacity attributes depending on responsive
+    .call(setTitlesStyling)
 
     titleGroup.each(function (a) {
       const el = d3.select(this);
       el.selectAll("text") 
         .call(setTitlesPosition, a)
     })
-    // Set fill and opacity attributes depending on responsive
-    titleGroup
-      .call(setTitlesStyling)
 
 
     // 5. Other elements position
@@ -623,10 +624,10 @@ function PolicyRadialViz(_selector, _data, i18n) {
       )
 }
 
-  function setTitleGroupTransforms() {
+  function setTitleGroupTransforms(selection) {
     if (!isMobile) {
       // Titles
-      titleGroup
+      selection
         .style("font-size", "14px")
         .attr("transform", function (d) {
           const angleToRotate =
@@ -643,7 +644,7 @@ function PolicyRadialViz(_selector, _data, i18n) {
         });
     } else {
       const offsetTitleMobile = height / 2 - 180;
-      titleGroup
+      selection
         .style("font-size", "16px")
         .style("text-anchor", "middle")
         .attr("transform", `translate(0,${offsetTitleMobile})`);
