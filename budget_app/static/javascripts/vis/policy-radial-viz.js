@@ -34,9 +34,9 @@ function PolicyRadialViz(_selector, _data, i18n) {
       titleImgSize,
       titleImgMobileURL_ES    = "/static/assets/radialViz_title_mobile_ES.jpg",
       titleImgDesktopURL_ES   = "/static/assets/radialViz_title_desktop_ES.png",
-      ititleImgMobileURL_EN   = "/static/assets/radialViz_title_mobile_EN.jpg",
+      titleImgMobileURL_EN   = "/static/assets/radialViz_title_mobile_EN.jpg",
       titleImgDesktopURL_EN   = "/static/assets/radialViz_title_desktop_EN.png",
-      imgURL,
+      titleImgURL,
       iconOffset,
       iconSize,
 
@@ -220,8 +220,8 @@ function PolicyRadialViz(_selector, _data, i18n) {
     // 5. Others elements
     // Prepare title (mobile)
     titleVizGroup = vizGroup
-    .append("g")
-    .attr("class", "titleVizGroup")
+      .append("g")
+      .attr("class", "titleVizGroup")
     
     titleVizGroup
       .append("rect")
@@ -420,17 +420,13 @@ function PolicyRadialViz(_selector, _data, i18n) {
           .call(setTitlesPosition, a)
       });
     }
-
-    // TODO: Organize this better
-    if (isMobile) {
-      titleGroup.style("fill", "white").style("opacity", 0);
-    } else {
-      titleGroup.style("fill", "unset").style("opacity", baseOpacityTexts);
-    }
-
+    // Set fill and opacity attributes depending on responsive
+    titleGroup
+      .call(setTitlesStyling)
 
     // 5. Update other elements position
     setInteractionNotePosition()
+
     setMobileTitlePosition();
 
     return this;
@@ -502,6 +498,10 @@ function PolicyRadialViz(_selector, _data, i18n) {
       el.selectAll("text") 
         .call(setTitlesPosition, a)
     })
+    // Set fill and opacity attributes depending on responsive
+    titleGroup
+      .call(setTitlesStyling)
+
 
     // 5. Other elements position
     // Interaction note
@@ -576,16 +576,19 @@ function PolicyRadialViz(_selector, _data, i18n) {
   function setTitlesPosition(selection, a) {
     selection
       .attr("x", function (d) {
-        const offset = a[`value_${year}`] === "NA" ? 10 : 20;
-        if (a[`value_${year}`] !== "NA") {
-          return a.isLefttHalf
-            ? -yScale(a[`value_${year}`] + offset)
-            : yScale(a[`value_${year}`] + offset);
-          // When no data
-        } else {
-          return a.isLefttHalf
-            ? -yScale(100 + offset)
-            : yScale(100 + offset);
+        if(isMobile) return 0
+        else {
+          const offset = a[`value_${year}`] === "NA" ? 10 : 20;
+          if (a[`value_${year}`] !== "NA") {
+            return a.isLefttHalf
+              ? -yScale(a[`value_${year}`] + offset)
+              : yScale(a[`value_${year}`] + offset);
+            // When no data
+          } else {
+            return a.isLefttHalf
+              ? -yScale(100 + offset)
+              : yScale(100 + offset);
+          }
         }
       })
   }
@@ -692,6 +695,12 @@ function PolicyRadialViz(_selector, _data, i18n) {
         .style("visibility", "hidden")
     }
 
+  }
+
+  function setTitlesStyling(selection) {
+    selection
+      .style("fill", isMobile ? "white" : "unset")
+      .style("opacity", isMobile ? 0 : baseOpacityTexts);
   }
 
   function setIconParameters() {
