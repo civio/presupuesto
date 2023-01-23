@@ -210,9 +210,6 @@ function PolicyRadialViz(_selector, _data, i18n) {
       .attr("y", 0)
       .attr("dy", (d, i) => scaleOffset(i))
       .text((d) => `${d}`)
-      .attr("transform", (d) =>
-        a.isLefttHalf && !isMobile ? "rotate(180)" : "rotate(0)"
-      )
       .style("opacity", baseOpacityTexts)
     });
 
@@ -405,9 +402,9 @@ function PolicyRadialViz(_selector, _data, i18n) {
     ////////
     // 4.Update titles position
     titleGroup
-    .call(setTitleGroupTransforms)
-    // Set fill and opacity attributes depending on responsive
-    .call(setTitlesStyling)
+      .call(setTitleGroupTransforms)
+      // Set fill and opacity attributes depending on responsive
+      .call(setTitlesStyling)
 
 
     if (!isMobile) {
@@ -576,6 +573,9 @@ function PolicyRadialViz(_selector, _data, i18n) {
   }
   function setTitlesPosition(selection, a) {
     selection
+      .attr("transform", (d) =>
+        a.isLefttHalf && !isMobile ? "rotate(180)" : "rotate(0)"
+      )
       .attr("x", function (d) {
         if(isMobile) return 0
         else {
