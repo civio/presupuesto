@@ -1,0 +1,120 @@
+{% from 'policies/show_monitoring_progress_bar.html' import draw_monitoring_progress_bar %}
+
+<section class="policies-breakdown" id="tab-monitoring-content">
+  {% include 'policies/show_monitoring_summary.html' %}
+
+  <h3 class="policies-title">{{ _('Desglose por secciones')|safe }}</h3>
+
+  <ul class="monitoring-list">
+    {% for section in monitoring_sections %}
+    <li class="monitoring-year-{{ section[0] }}">
+      <a class="monitoring-block {{ 'collapsed' if not expand_monitoring_sections }}"
+          data-toggle="collapse"
+          href="#section-{{ loop.index }}"
+          role="button"
+          aria-expanded="{{ 'false' if not expand_monitoring_sections }}"
+          aria-controls="section-{{ loop.index }}">
+
+        <h4 class="monitoring-title">{{ section[2] }}</h4>
+        {% set has_actual_data = (monitoring_totals[section[0]]!=0) %}
+        {% set section_data = monitoring_totals_per_section[section[1]] %}
+        {# Note that `section_data` only exists when there are indicators for the goals #}
+        {% if has_actual_data and section_data %}
+          {% set progress = '{0:0.1f}'.format(section_data[1]/section_data[2]*100) %}
+          {{ draw_monitoring_progress_bar(progress) }}
+        {% endif %}
+      </a>
+
+      <div class="collapse {{ 'in' if expand_monitoring_sections }}" id="section-{{ loop.index }}">
+        <h5 class="objectives-title">{{ _('Objetivos') }}</h5>
+
+        <ol class="goals-list">
+          {% for goal in monitoring_goals[section[1]]|sort(attribute='goal_number') %}
+          <li>
+            <div>
+              <!-- Objective title -->
+              <h6 class="goal-title">{{ goal.description }}</h6>
+
+              <!-- Objective description -->
+              {% if goal.report != "" %}
+              <div class="goal-report {{ request.LANGUAGE_CODE }}">
+                <div class="collapse" id="collapseSummary-{{ goal.uid }}">
+                  {% set report_paragraphs = goal.report|split('  ') %}
+                  {% for p in report_paragraphs %}
+                    <p>{{ p|safe }}</p>
+                  {% endfor %}
+                </div>
+                <a class="collapsed"
+                  data-toggle="collapse"
+                  href="#collapseSummary-{{ goal.uid }}"
+                  aria-expanded="false"
+                  aria-controls="collapseSummary-{{ goal.uid }}"></a>
+              </div>
+              {% endif %}
+
+              <!-- Activities table -->
+              {% if monitoring_activities[goal.uid] %}
+              <div class="table-wrapper">
+                <table class="table-activities">
+                  <tr>
+                    <th>{{ _('Actividades') }}</th>
+                  </tr>
+                  {% for activity in monitoring_activities[goal.uid] %}
+                  <tr>
+                    <td>{{ activity }}</td>
+                  </tr>
+                  {% endfor %}
+                </table>
+              </div>
+              {% endif %}
+
+              <!-- Indicators table -->
+              {% if monitoring_indicators[goal.uid] %}
+              <div class="table-wrapper">
+                <table  class="table-indicators">
+                  <tr>
+                    <th>{{ _('Indicadores') }}</th>
+                    <th class="budgeted">{{ _('Presupuestado') }}</th>
+                    {% if has_actual_data %}
+                    <th class="done">{{ _('Realizado') }}</th>
+                    <th class="opacity-0"></th>
+                    {% endif %}
+                  </tr>
+
+                  {% for indicator in monitoring_indicators[goal.uid] %}
+                  <tr>
+                    <td>{{ indicator.description }} <span class="indicator-unit">({{ indicator.unit }})</span></td>
+                    <td>{{ indicator.target|add_thousands_separator(LANGUAGE_CODE) }}</td>
+                    {% if has_actual_data %}
+                    <td>{{ indicator.actual|add_thousands_separator(LANGUAGE_CODE) }}</td>
+                    <td>
+                      <span
+                        class="coverage-icon level-{{ '{0:.0f}'.format((indicator.score)*4) }}"
+                        title="{{ '{0:0.1f}'.format(indicator.score*100) }}%"/>
+                    </td>
+                    {% endif %}
+                  </tr>
+                  {% endfor %}
+                </table>
+              </div>
+              {% endif %}
+
+            </div>
+          </li>
+          {% endfor %}
+        </ol>
+
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+
+  <div class="panel-downloads">
+    <p class="downloads">
+      {{ _('Descarga la tabla de <strong>%s</strong> en ')|format(_('Objetivos'))|safe }}
+      <a class="icon-file-excel" href="{{ url('budget_app.views.programme_monitoring_breakdown', programme_id, 'csv') }}" title="{{ _('Descarga la tabla en CSV') }}"><span class="file-info">CSV</span></a>
+      o
+      <a class="icon-file-excel" href="{{ url('budget_app.views.programme_monitoring_breakdown', programme_id, 'xlsx') }}" title="{{ _('Descarga la tabla en Excel') }}"><span class="file-info">Excel</span></a>
+    </p>
+  </div>
+</section>

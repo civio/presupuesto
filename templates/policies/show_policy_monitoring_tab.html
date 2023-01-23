@@ -1,0 +1,34 @@
+{% from 'policies/show_monitoring_progress_bar.html' import draw_monitoring_progress_bar %}
+
+<section class="policies-breakdown" id="tab-monitoring-content">
+  {% include 'policies/show_monitoring_summary.html' %}
+
+  <h3 class="policies-title">{{ _('Desglose por programa') }}</h3>
+
+  <ul class="monitoring-list">
+    {% for programme in monitoring_programmes %}
+    <li class="monitoring-year-{{ programme[0] }}">
+      <a
+        class="monitoring-block collapsed"
+        href="{% url 'budget_app.views.programmes_show' programme[1], programme[2]|slug %}#view=monitoring&year={{ programme[0] }}">
+
+        <h4 class="monitoring-title">{{ programme[2] }}</h4>
+        {% set have_data_for_year = monitoring_totals[programme[0]]!=0 %}
+        {% if have_data_for_year %}
+          {% set progress = '{0:0.1f}'.format(programme[3]/programme[4]*100) %}
+          {{ draw_monitoring_progress_bar(progress) }}
+        {% endif %}
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+
+  <div class="panel-downloads">
+    <p class="downloads">
+      {{ _('Descarga la tabla de <strong>%s</strong> en ')|format(_('Objetivos'))|safe }}
+      <a class="icon-file-excel" href="{{ url('budget_app.views.policy_monitoring_breakdown', policy_uid, 'csv') }}" title="{{ _('Descarga la tabla en CSV') }}"><span class="file-info">CSV</span></a>
+      o
+      <a class="icon-file-excel" href="{{ url('budget_app.views.policy_monitoring_breakdown', policy_uid, 'xlsx') }}" title="{{ _('Descarga la tabla en Excel') }}"><span class="file-info">Excel</span></a>
+    </p>
+  </div>
+</section>

@@ -1,0 +1,8 @@
+{% macro draw_monitoring_progress_bar(progress) %}
+<div class="monitoring-bar-chart">
+  <div class="bar-outline">
+    <div class="bar-fill" style="width: {{ progress }}%;"></div>
+  </div>
+  <span>{{ progress }} %</span>
+</div>
+{% endmacro %}

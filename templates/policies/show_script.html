@@ -120,6 +120,14 @@
     };
     
 
+{% if monitoring_totals is defined %}
+    //
+    // MONITORING DATA
+    //
+    var monitoringTotals = {{ monitoring_totals|safe }};
+{% endif %}
+
+
     //
     // SETTING ELEMENTS
     //
@@ -155,7 +163,32 @@
     // Update Year
     function updateYear() {
       uiState = getUIState();
-      redrawGrid()
+      if ( uiState.view !== 'monitoring' ) {
+        redrawGrid();
+      } else {
+        redrawMonitoring();
+      }
+    }
+
+    // Redraw monitoring tab
+    function redrawMonitoring() {
+      uiState = getUIState();
+
+      // Hide/show the relevant blocks
+      $('.monitoring-list > li:not(.monitoring-year-'+uiState.year+')').hide();
+      $('.monitoring-list > li.monitoring-year-'+uiState.year).show();
+
+      // Update the summary
+      $('#tab-monitoring-content #totals-year').html(uiState.year);
+      totalProgress = 100.0*monitoringTotals[uiState.year];
+      if ( totalProgress ) {
+        $('#tab-monitoring-content #totals-panel .monitoring-bar-chart span').html(totalProgress.toFixed(1)+" %");
+        $('#tab-monitoring-content #totals-panel .monitoring-bar-chart .bar-fill').css("width", totalProgress.toFixed(1)+"%");
+        $('#tab-monitoring-content #totals-panel .bar-outline').show();
+      } else {
+        $('#tab-monitoring-content #totals-panel .monitoring-bar-chart span').html("{{ _('No hay datos') }}");
+        $('#tab-monitoring-content #totals-panel .bar-outline').hide();
+      }
     }
 
     // Redraw all
@@ -163,16 +196,47 @@
       uiState = getUIState();
     
       // Show/hide panel downloads
-      $('.panel-downloads > p').hide();
+      $('#tab-grid-content .panel-downloads > p').hide();
       $('#'+uiState.view+'-downloads').show();
 
-      redrawChart();
-      redrawGrid();
+      // The monitoring tab doesn't follow the typical grid layout...
+      if ( uiState.view === 'monitoring' ) {
+        $('.policies-chart').hide();
+        $('#tab-grid-content').hide();
+        $('#tab-monitoring-content').show();
+
+        // ...and some data controllers don't apply, so we hide them
+        $('.data-controllers button').hide();
+        $('.data-controllers .quantity-selection').hide();
+        // FIXME: There must be a better way!
+        $('.data-controllers .layout-slider').css('margin-left', '10px');
+        $('#year-selection').slider('resize');  // Force a redraw
+
+        redrawMonitoring();
+
+      } else {
+        // We skip chart setup in institutional tab
+        if ( uiState.view === 'institutional' ) {
+          $('.policies-chart').hide();
+        } else {
+          $('.policies-chart').show();
+          redrawChart();
+        }
+
+        // And undo the changes introduced by the monitoring tab
+        $('.data-controllers button').show();
+        $('.data-controllers .quantity-selection').show();
+        $('.data-controllers .layout-slider').css('margin-left', '275px');
+        $('#year-selection').slider('resize');
+
+        $('#tab-monitoring-content').hide();
+        $('#tab-grid-content').show();
+        redrawGrid();
+      }
     }
 
     // Do all the hard work of drawing the grids
     function redrawGrid() {
-
       // Do work
       var columnDef = getColumnDefinition(uiState);
       var executionColumnDef = getExecutionColumnDefinition(uiState);
@@ -239,16 +303,6 @@
 
     function redrawChart() {
       if (uiState === null) return;
-
-      // We skip chart setup in institutional tab
-      if (uiState.view === 'institutional'){
-        $('#policy-chart-container .stacked-area-chart').remove();
-        $('#policy-chart-container .stacked-area-chart-legend').remove();
-        $('.policies-chart').hide();
-        return;
-      } else {
-        $('.policies-chart').show();
-      }
 
       // Setup Graph
       var colorScale = {{ color_scale|safe }};

@@ -1,0 +1,17 @@
+<script>
+  $(function () {
+    function onYearChange() {
+      // $('#investments-viz').trigger('year-change', getUIState().year);
+      console.log("Año cambiado: "+getUIState().year);
+    }
+
+    // Setup year navigation
+    // FIXME: hardcoded years
+    var years = ["2017", "2018", "2019", "2020", "2021", "2022"];
+    initSlider("#year-selection", years, 2021);
+    setRedrawOnSliderChange("#year-selection", 2021, onYearChange);
+
+    // Add click embed btn event
+    setEmbedModal();
+  });
+</script>

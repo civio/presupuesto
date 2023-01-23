@@ -1,0 +1,17 @@
+{% extends 'base-widget.html' %}
+
+{% block content %}
+
+<section class="monitoring" data-tab="area">
+  <div class="monitoring-content">
+    {% include 'monitoring/visualization.html' %}
+
+    <div class="container tab-content">
+      {% include 'shared/data_controllers.html' %}
+    </div>
+  </div>
+</section>
+
+<!-- {% include 'monitoring/index_script.html' %} -->
+
+{% endblock %}

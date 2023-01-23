@@ -1,0 +1,22 @@
+{% from 'policies/show_monitoring_progress_bar.html' import draw_monitoring_progress_bar %}
+
+<div id="totals-panel" class="data-panel">
+  <div id="main-total" class="panel">
+    <div class="panel-title row">
+      <div class="col-sm-6">
+        <span id="totals-year"></span>
+      </div>
+      <div class="col-sm-6 text-right">
+        <span>{{ _('Resultados objetivos') }}</span>
+      </div>
+    </div>
+    <ul class="panel-content">
+      <li id="total">
+        <div class="main-label">{{ name }}</div>
+        <div class="col-sm-6 text-right">
+          {{ draw_monitoring_progress_bar(0) }}
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

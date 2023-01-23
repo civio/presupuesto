@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-06 13:44+0200\n"
-"PO-Revision-Date: 2022-03-02 13:04+0100\n"
+"PO-Revision-Date: 2022-12-22 00:40+0100\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.1.1\n"
+"X-Generator: Poedit 3.2.2\n"
 
 #: templates/base-widget.html:7 templates/base-widget.html.py:26
 #: templates/base.html:7 templates/shared/meta.html:9
@@ -143,6 +143,9 @@ msgstr "Total revenue"
 #: templates/budgets/index.html:143
 msgid "Total gastos"
 msgstr "Total expenditure"
+
+msgid "No hay datos"
+msgstr "No data"
 
 #: templates/budgets/budgets_totals.html:12
 msgid "Total Ejecutado"
@@ -572,6 +575,25 @@ msgstr "Entity"
 msgid "Fondo"
 msgstr "Fund"
 
+# Monitoring
+msgid "Resultados objetivos"
+msgstr "Goals achieved"
+
+msgid "Desglose por secciones"
+msgstr "Entity breakdown"
+
+msgid "Desglose por programa"
+msgstr "Programme breakdown"
+
+msgid "Actividades"
+msgstr "Activities"
+
+msgid "Indicadores"
+msgstr "Indicators"
+
+msgid "Realizado"
+msgstr "Actual"
+
 #: templates/search/index.html:24 templates/terms/index.html:29
 msgid "Hemos encontrado <strong>%s resultados</strong> relacionados con <strong>%s</strong>."
 msgstr "We've found <strong>%s results</strong> related to <strong>%s</strong>."
@@ -732,6 +754,12 @@ msgstr "Main menu"
 #: templates/welcome/index.html.py:43
 msgid "Visión global"
 msgstr "Overview"
+
+msgid "Inversiones"
+msgstr "Investments"
+
+msgid "Objetivos"
+msgstr "Goals"
 
 #: templates/shared/header.html:74 templates/tax_receipt/index.html:11
 #: templates/welcome/index.html:84

@@ -392,13 +392,15 @@
 
     // Set up button to reset form
     $('#btn-reset-form').click(function(e){
-      // Reset the hash, which triggers the search and form refreshes automatically
+      // Reset the hash
       $.bbq.pushState( getEmptyQuery() );
+
+      // And refresh the form
+      updateTab();
+
       // We don't want to submit the form, our work here is done
       e.preventDefault();
     });
-
-    console.log(breakdowns.area)
 
     // Setup area, payees & department selects with select2.js
     $('#input-payee').select2({
@@ -480,8 +482,11 @@
       // Select tab based on query params
       state.view = ( state.payee && state.payee !== '' ) ? 'area' : 'payee';
 
-      // Setup hashes with search parameters
+      // Setup hashes with search parameters...
       $.bbq.pushState( state );
+
+      // ...and redraw
+      updateTab();
     });
 
     // Setup tabs navigation
