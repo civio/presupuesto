@@ -20,6 +20,7 @@ const POLICYi18nES = {
       labelSplitted: ["Deuda", "pública"],
       url: "",
       icon: "monitoring_01-messages-dollar",
+
     },
     {
       code: "13",
@@ -27,6 +28,8 @@ const POLICYi18nES = {
       labelSplitted: ["Seguridad", "y movilidad", "ciudadana"],
       url: "https://presupuestosabiertospre.madrid.es/es/politicas/13/seguridad-y-movilidad-ciudadana#view=monitoring",
       icon: "monitoring_02-siren-on",
+      icon2: "monitoring_02-siren-on",
+
     },
     {
       code: "15",

@@ -193,9 +193,6 @@ function PolicyRadialViz(_selector, _data, i18n) {
         offsetBtwnLines * (labelLinesLenght / 2)
       ]);
 
-    // TODO: CHECK THIS
-    // if (isMobile) {
-      // const rectWidth = outerRadius * 2;
     const rectHeight = labelLinesLenght * 20;
       titleGroup
         .selectAll("rect")
@@ -203,12 +200,9 @@ function PolicyRadialViz(_selector, _data, i18n) {
         .enter()
         .append("rect")
         .attr("visibility", "hidden")
-        // .attr("x", -rectWidth / 2)
         .attr("y", -rectHeight / 2)
-        // .attr("width", rectWidth)
         .attr("height", rectHeight)
         .style("fill", colorPrimary);
-    // }
 
     el.selectAll("text")
       .data(labelLines)
@@ -269,7 +263,6 @@ function PolicyRadialViz(_selector, _data, i18n) {
 
     setNodeDetails();
 
-    // TODO: Refactor this
     if (languageSelector === "es") {
       textGroup.append("tspan").text(i18n.nodeDetails[0]); // Se han obtenido ...
       textGroup
@@ -310,20 +303,19 @@ function PolicyRadialViz(_selector, _data, i18n) {
         .text(i18n.nodeDetails[2]); // ...have been meet
     }
 
-    // if (isMobile) {
-      // Read more info
-      const anchor = nodeDetailsGroup
-        .append("a")
-        .attr("class", "data-link")
-        .attr("target", "_self")
-        .style("text-decoration", "underline")
-        .style("font-weight", 600)
-        .style("fill", colorPrimary);
-      anchor
-        .append("text")
-        .style("text-anchor", "middle")
-        .attr("dy", 70)
-        .style("fill", colorPrimary)
+    // Prepare read more info (just mobile)
+    const anchor = nodeDetailsGroup
+      .append("a")
+      .attr("class", "data-link")
+      .attr("target", "_self")
+      .style("text-decoration", "underline")
+      .style("font-weight", 600)
+      .style("fill", colorPrimary);
+    anchor
+      .append("text")
+      .style("text-anchor", "middle")
+      .attr("dy", 70)
+      .style("fill", colorPrimary)
 
     return this;
   };
@@ -379,7 +371,16 @@ function PolicyRadialViz(_selector, _data, i18n) {
       .selectAll(".icon")
       .attr("width", iconSize)
       .attr("height", iconSize)
-      .attr("href", d => `/static/assets/${findPolicyDetail("icon",d.code, policyDetails)}_${isMobile ? "color" : "white"}.svg`)
+      .attr("href", function(d) {
+        let colorIcon;
+          if(isMobile) {
+            colorIcon = d[`value_${year}`] === "NA" ? "grey" : "color"
+          } else {
+            colorIcon = "white"
+          }
+        return `/static/assets/${findPolicyDetail("icon",d.code, policyDetails)}_${colorIcon}.svg`
+        
+      })
       .transition("unbreak")
       .duration(updateDuration)
       .attr("x", (d) => arc_modifPixelsOffset.centroid(d)[0] - iconSize / 2)
