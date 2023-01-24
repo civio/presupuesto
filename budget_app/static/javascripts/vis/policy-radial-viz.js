@@ -177,7 +177,6 @@ function PolicyRadialViz(_selector, _data, i18n) {
     .style("dominant-baseline", "middle");
   titleGroup.call(setTitleGroupTransforms)
 
-
   // Create invisible title texts
   titleGroup.each(function (a) {
     const el = d3.select(this);
@@ -195,21 +194,22 @@ function PolicyRadialViz(_selector, _data, i18n) {
       ]);
 
     // TODO: CHECK THIS
-    if (isMobile) {
-      const rectWidth = outerRadius * 2;
-      const rectHeight = labelLinesLenght * 20;
+    // if (isMobile) {
+      // const rectWidth = outerRadius * 2;
+    const rectHeight = labelLinesLenght * 20;
       titleGroup
         .selectAll("rect")
         .data([1])
         .enter()
         .append("rect")
-        .attr("x", -rectWidth / 2)
+        .attr("visibility", "hidden")
+        // .attr("x", -rectWidth / 2)
         .attr("y", -rectHeight / 2)
-        .attr("width", rectWidth)
+        // .attr("width", rectWidth)
         .attr("height", rectHeight)
         .style("fill", colorPrimary);
-    }
-   
+    // }
+
     el.selectAll("text")
       .data(labelLines)
       .enter()
@@ -413,7 +413,6 @@ function PolicyRadialViz(_selector, _data, i18n) {
       // Set fill and opacity attributes depending on responsive
       .call(setTitlesStyling)
 
-
     if (!isMobile) {
       titleGroup.each(function (a) {
         const el = d3.select(this);
@@ -422,12 +421,14 @@ function PolicyRadialViz(_selector, _data, i18n) {
           .duration(updateDuration)
           .style("opacity", baseOpacityTexts)
           .attr("fill", (d) =>
-            a[`value_${year}`] !== "NA" ? colorNeutral(1000) : textFillNoData
+            a[`value_${year}`] !== "NA" ? "unset" : textFillNoData
           )
           // Passing an argument to a call function
           .call(setTitlesPosition, a)
       });
     }
+    titleGroup
+      .call(setRectOnMobileLabels)
 
     // 5. Update other elements position
     interactionNoteGroup
@@ -512,6 +513,8 @@ function PolicyRadialViz(_selector, _data, i18n) {
       el.selectAll("text") 
         .call(setTitlesPosition, a)
     })
+    titleGroup
+    .call(setRectOnMobileLabels)
 
 
     // 5. Other elements position
@@ -693,8 +696,16 @@ function PolicyRadialViz(_selector, _data, i18n) {
   }
   function setTitlesStyling(selection) {
     selection
-      .style("fill", isMobile ? "white" : "unset")
+      .style("fill", isMobile ? colorNeutral(0) : "unset")
       .style("opacity", isMobile ? 0 : baseOpacityTexts);
+  }
+  function setRectOnMobileLabels(selection) {
+    const rectWidth = outerRadius * 2;
+    selection
+      .selectAll("rect")
+      .attr("visibility", isMobile ? "visible" : "hidden")
+      .attr("x", -rectWidth / 2)
+      .attr("width", rectWidth)
   }
 
   function setNodeDetails() {
