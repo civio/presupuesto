@@ -1,7 +1,13 @@
 const POLICYi18nES = {
   lang: "es",
   titleViz: "18 POLÍTICAS DE GASTO",
-  nodeDetails: ["Se han obtenido", " puntos", "de un total de "],
+  // nodeDetails: ["Se han obtenido", " puntos", "de un total de "],
+  nodeDetails: {
+    objectives: " objetivos",
+    evaluated: "que se evalúan",
+    by: "mediante",
+    indicators: " indicadores"
+  },
   interactionNote_mobile:  [
         "↓ Haz click en cada una ",
         "de las 18 políticas de gasto",
