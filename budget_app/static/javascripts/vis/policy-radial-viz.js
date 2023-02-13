@@ -263,45 +263,25 @@ function PolicyRadialViz(_selector, _data, i18n) {
 
     setNodeDetails();
 
-    if (languageSelector === "es") {
-      textGroup.append("tspan").text(i18n.nodeDetails[0]); // Se han obtenido ...
-      textGroup
-        .append("tspan")
-        .attr("class", "data-partialValue") // ... x puntos ...
-        .attr("x", 0)
-        .attr("dy", 20);
-      textGroup
-        .append("tspan")
-        .attr("class", "data-fromTotal") // ... de un total de ....
-        .attr("x", 0)
-        .attr("dy", 20);
-      textGroup
-        .append("tspan")
-        .attr("class", "data-totalValue") // ... x
-        .attr("x", 0)
-        .attr("dy", 20);
-    } else {
-      textGroup
-        .append("tspan")
-        .attr("class", "data-partialValue") // x ...
-        .attr("x", 0)
-        .attr("dy", 20);
-      textGroup
-        .append("tspan")
-        .attr("class", "data-fromTotal") // ... out of ...
-        .attr("x", 0)
-        .attr("dy", 20);
-      textGroup
-        .append("tspan")
-        .attr("class", "data-totalValue") // ... x ...
-        .attr("x", 0)
-        .attr("dy", 20);
-      textGroup
-        .append("tspan")
-        .attr("x", 0)
-        .attr("dy", 20)
-        .text(i18n.nodeDetails[2]); // ...have been meet
-    }
+    textGroup.append("tspan").attr("class", "data-objectives");
+    //.text(i18n.nodeDetails.objectives); // 55 objetivos
+    textGroup
+      .append("tspan")
+      .attr("x", 0)
+      .attr("dy", 20)
+      .text(i18n.nodeDetails.evaluated); // que se evalúan
+    textGroup
+      .append("tspan")
+      .attr("x", 0)
+      .attr("dy", 20)
+      .text(i18n.nodeDetails.by); // mediante
+    textGroup
+      .append("tspan")
+      .attr("class", "data-indicators")
+      .attr("x", 0)
+      .attr("dy", 20);
+    //.text(i18n.nodeDetails.indicators); // 157 indicators
+
 
     // Prepare read more info (just mobile)
     const anchor = nodeDetailsGroup
@@ -832,34 +812,22 @@ function PolicyRadialViz(_selector, _data, i18n) {
       .style("opacity", petalWithData ? 1 : 0);
 
     detailedInfo
-      .select(".data-partialValue")
+      .select(".data-objectives")
       .style("fill", colorPrimary)
       .style("font-size", isMobile ? "18px" : "16px")
       .style("font-weight", 800)
-      .text(
-        languageSelector === "es"
-          ? formatDecimal(myItem[`partial_${year}`]) +
-          i18n.nodeDetails[1]
-          : formatDecimal(myItem[`partial_${year}`])
-      );
-
-    detailedInfo.select(".data-fromTotal").text(
-      languageSelector === "es"
-        ? i18n.nodeDetails[2]
-        : i18n.nodeDetails[0] //out of
-    ); // de un total de
+      .text(`${myItem[`objectives_${year}`]} ${
+        i18n.nodeDetails.objectives
+      }`);
 
     detailedInfo
-      .select(".data-totalValue")
+      .select(".data-indicators")
       .style("fill", colorPrimary)
       .style("font-size", isMobile ? "18px" : "16px")
       .style("font-weight", 800)
-      .text(
-        languageSelector === "es"
-          ? myItem[`total_${year}`]
-          : myItem[`total_${year}`] +
-          i18n.nodeDetails[1]
-      );
+      .text(`${myItem[`total_${year}`]} ${
+        i18n.nodeDetails.indicators
+      }`);
   }
   function onMouseOut(d) {
     // Back to "normal" state
