@@ -124,11 +124,7 @@ const POLICYi18nEN = {
     {
       code: "43",
       label: "Commerce, tourism and small and medium-sized enterprises",
-      labelSplitted: [
-        "Commerce, tourism",
-        " and small and",
-        "medium-sized enterprises"
-      ],
+      labelSplitted: ["Commerce, tourism", " and small and", "medium-sized enterprises"],
       url: 'https://presupuestosabiertospre.madrid.es/en/politicas/43/comercio,-turismo-y-peque%C3%B1as-y-medianas-empresas#view=monitoring',
       icon: "monitoring_16-shop",
     },

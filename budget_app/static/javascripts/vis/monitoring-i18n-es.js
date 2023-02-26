@@ -34,8 +34,6 @@ const POLICYi18nES = {
       labelSplitted: ["Seguridad", "y movilidad", "ciudadana"],
       url: "https://presupuestosabiertospre.madrid.es/es/politicas/13/seguridad-y-movilidad-ciudadana#view=monitoring",
       icon: "monitoring_02-siren-on",
-      icon2: "monitoring_02-siren-on",
-
     },
     {
       code: "15",
@@ -68,11 +66,7 @@ const POLICYi18nES = {
     {
       code: "22",
       label: "Otras prestaciones económicas a favor de empleados",
-      labelSplitted: [
-        "Otras prestaciones",
-        "económicas a favor",
-        "de empleados"
-      ],
+      labelSplitted: ["Otras prestaciones", "económicas a favor", "de empleados"],
       url: 'https://presupuestosabiertospre.madrid.es/es/politicas/22/otras-prestaciones-economicas-a-favor-de-empleados#view=monitoring',
       icon: "monitoring_07-briefcase-arrow-right",
     },
