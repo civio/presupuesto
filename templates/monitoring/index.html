@@ -1,5 +1,11 @@
 {% extends 'base.html' %}
 
+{% block extra_javascript %}
+<script src="{{ STATIC_URL }}javascripts/vis/monitoring-policy-data.js"></script>
+<script src="{{ STATIC_URL }}javascripts/vis/monitoring-i18n-es.js"></script>
+<script src="{{ STATIC_URL }}javascripts/vis/monitoring-i18n-en.js"></script>
+{% endblock %}
+
 {% block content %}
 
 <section class="monitoring" data-tab="area">
