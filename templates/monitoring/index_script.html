@@ -1,9 +1,6 @@
 <script type="text/javascript">
   $(function () {
-    // FIXME: Temporal Data and translations for Policy RadialViz
-    var policyData = POLICYDATA;
-    var policyi18nES = POLICYi18nES;
-    var policyi18nEN = POLICYi18nEN;
+    var policyData = {{ monitoring_data|safe }};
     var policyi18n = "{{ request.LANGUAGE_CODE }}" === "es" ? POLICYi18nES : POLICYi18nEN;
 
     // FIXME: hardcoded years
