@@ -40,7 +40,7 @@ class GoalIndicatorsManager(models.Manager):
     def get_indicators_summary_by_programme(self, entity_id, field_name, field_id):
         sql = \
             "select " \
-                "b.year, fc.programme, fc.description, sum(gi.score), count(*) " \
+                "b.year, fc.id, fc.description, sum(gi.score), count(*) " \
             "from " \
                 "goal_indicators gi " \
                 "left join goals g on gi.goal_id = g.id " \
@@ -49,7 +49,7 @@ class GoalIndicatorsManager(models.Manager):
             "where " \
                 "fc."+field_name+" = %s and " \
                 "b.entity_id = %s " \
-            "group by b.year, fc.programme, fc.description " \
+            "group by b.year, fc.id, fc.description " \
             "order by fc.description asc"
         cursor = connection.cursor()
         cursor.execute(sql, [field_id, entity_id])
@@ -72,6 +72,26 @@ class GoalIndicatorsManager(models.Manager):
             "order by year asc, fc.policy asc"
         cursor = connection.cursor()
         cursor.execute(sql, [entity_id])
+        return list(cursor.fetchall())
+
+    # Get the list of programmes with goals for a given policy.
+    # Note that some goals don't have indicators, so `get_indicators_summary_by_programme`
+    # will miss some.
+    def get_monitoring_programmes(self, entity_id, policy_id):
+        sql = \
+            "select " \
+                "b.year, fc.id, fc.programme, fc.description " \
+            "from " \
+                "goals g " \
+                "left join budgets b on g.budget_id = b.id " \
+                "left join functional_categories fc on g.functional_category_id = fc.id " \
+            "where " \
+                "fc.policy = %s and " \
+                "b.entity_id = %s " \
+            "group by b.year, fc.id " \
+            "order by fc.description asc"
+        cursor = connection.cursor()
+        cursor.execute(sql, [policy_id, entity_id])
         return list(cursor.fetchall())
 
     # Get the list of sections with goals for a given programme.

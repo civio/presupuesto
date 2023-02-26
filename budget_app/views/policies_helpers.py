@@ -26,7 +26,10 @@ def policies_show_helper(request, c, entity, id, title, render_callback=None):
 
     # Add monitoring information, if needed
     if (c['show_monitoring']):
-        c['monitoring_programmes'] = GoalIndicator.objects.get_indicators_summary_by_programme(entity.id, "policy", id)
+        c['monitoring_programmes'] = GoalIndicator.objects.get_monitoring_programmes(entity.id, id)
+
+        monitoring_totals_per_programme = GoalIndicator.objects.get_indicators_summary_by_programme(entity.id, "policy", id)
+        c['monitoring_totals_per_programme'] = dict((total[1], total) for total in monitoring_totals_per_programme)
 
         totals = GoalIndicator.objects.get_indicators_summary_by_policy(entity.id, id)
         c['monitoring_totals'] = dict((total[0], total[2]/total[3] if total[2]!=None else '') for total in totals)
