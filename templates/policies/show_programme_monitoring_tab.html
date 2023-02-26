@@ -16,7 +16,7 @@
           aria-controls="section-{{ loop.index }}">
 
         <h4 class="monitoring-title">{{ section[2] }}</h4>
-        {% set has_actual_data = (monitoring_totals[section[0]]!=0) %}
+        {% set has_actual_data = (monitoring_totals[section[0]]!='') %}
         {% set section_data = monitoring_totals_per_section[section[1]] %}
         {# Note that `section_data` only exists when there are indicators for the goals #}
         {% if has_actual_data and section_data %}

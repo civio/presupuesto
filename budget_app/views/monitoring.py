@@ -21,7 +21,7 @@ def monitoring(request, render_callback=None):
         year = str(summary[0])
         policy_id = summary[1]
         indicators = summary[3]
-        progress = summary[2] / indicators * 100.0
+        progress = (summary[2] / indicators * 100.0) if summary[2]!=None else None
 
         if not policy_id in monitoring_data:
             monitoring_data[policy_id] = {
