@@ -114,7 +114,7 @@ export {
 */
 
 export {
-  //arc,
+  arc,
   area,
   line,
   // pie,
@@ -326,7 +326,7 @@ export {
 */
 
 export {
-  // scaleBand,
+  scaleBand,
   // scalePoint,
   // scaleIdentity,
   scaleLinear,
