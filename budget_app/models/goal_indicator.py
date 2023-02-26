@@ -55,6 +55,25 @@ class GoalIndicatorsManager(models.Manager):
         cursor.execute(sql, [field_id, entity_id])
         return list(cursor.fetchall())
 
+    # Get the number of goals per policy (for the main visualization).
+    # Note that some goals don't have indicators, so adding this functionality to
+    # `get_indicators_summary_by_policy` would miss some.
+    def get_monitoring_goals_count_by_policy(self, entity_id):
+        sql = \
+            "select " \
+                "b.year, fc.policy, count(*) " \
+            "from " \
+                "goals g " \
+                "left join budgets b on g.budget_id = b.id " \
+                "left join functional_categories fc on g.functional_category_id = fc.id " \
+            "where " \
+                "b.entity_id = %s " \
+            "group by b.year, fc.policy " \
+            "order by year asc, fc.policy asc"
+        cursor = connection.cursor()
+        cursor.execute(sql, [entity_id])
+        return list(cursor.fetchall())
+
     # Get the list of sections with goals for a given programme.
     # Note that some goals don't have indicators, so `get_indicators_summary_by_section`
     # will miss some.
