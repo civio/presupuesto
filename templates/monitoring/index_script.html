@@ -5,6 +5,11 @@
     var starting_year = {{ last_monitoring_year }};
     var policyi18n = "{{ request.LANGUAGE_CODE }}" === "es" ? POLICYi18nES : POLICYi18nEN;
 
+    // Generate URLs for each policy
+    policyData.forEach(function(policy) {
+      policy.url = getPolicyLink(policy.code, policy.label)+"#view=monitoring";
+    });
+
     // Create Policy RadialViz
     var policyRadialViz = new PolicyRadialViz('#policy-radial-viz', policyData, policyi18n)
       .setup()
