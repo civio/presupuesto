@@ -180,8 +180,9 @@
 
       // Update the summary
       $('#tab-monitoring-content #totals-year').html(uiState.year);
-      totalProgress = 100.0*monitoringTotals[uiState.year];
-      if ( totalProgress ) {
+      let total = monitoringTotals[uiState.year];
+      if ( total!==undefined && total !== '' ) {
+        totalProgress = 100.0*monitoringTotals[uiState.year];
         $('#tab-monitoring-content #totals-panel .monitoring-bar-chart span').html(totalProgress.toFixed(1)+" %");
         $('#tab-monitoring-content #totals-panel .monitoring-bar-chart .bar-fill').css("width", totalProgress.toFixed(1)+"%");
         $('#tab-monitoring-content #totals-panel .bar-outline').show();
