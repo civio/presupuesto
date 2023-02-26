@@ -303,7 +303,6 @@ function PolicyRadialViz(_selector, _data, i18n) {
   // Update
   this.update = function(_year) {
     year = _year;
-    // console.log("this.update function", "Year", year)
 
     ////////
     // 0. Aux elements
@@ -318,7 +317,7 @@ function PolicyRadialViz(_selector, _data, i18n) {
   
     // Set petals transition
     arc.outerRadius(function (d) {
-      if (d[`value_${year}`] !== "NA") {
+      if (d[`value_${year}`]) {
         return yScale(d[`value_${year}`]);
         // When no data
       } else {
@@ -328,7 +327,7 @@ function PolicyRadialViz(_selector, _data, i18n) {
     // Petals
     nodeGroup.select("path") // Petals
     .style("fill", (d) =>
-      d[`value_${year}`] !== "NA" ? colorPrimary : colorNoData
+      d[`value_${year}`] ? colorPrimary : colorNoData
     )
     .transition("unbreak").duration(updateDuration).attr("d", arc);
 
@@ -337,12 +336,12 @@ function PolicyRadialViz(_selector, _data, i18n) {
     // 2.Update icons position
     arc_modifPixelsOffset
       .innerRadius((d) =>
-      d[`value_${year}`] !== "NA"
+      d[`value_${year}`]
       ? yScale(d[`value_${year}`]) - yScale(0) + yScale(0) - iconOffset
       : yScale(100) - yScale(0) + yScale(0) - iconOffset
       )
       .outerRadius((d) =>
-      d[`value_${year}`] !== "NA"
+      d[`value_${year}`]
       ? yScale(d[`value_${year}`]) - yScale(0) + yScale(0) - iconOffset
       : yScale(100) - yScale(0) + yScale(0) - iconOffset
       );
@@ -354,7 +353,7 @@ function PolicyRadialViz(_selector, _data, i18n) {
       .attr("href", function(d) {
         let colorIcon;
           if(isMobile) {
-            colorIcon = d[`value_${year}`] === "NA" ? "grey" : "color"
+            colorIcon = d[`value_${year}`] ? "color" : "grey"
           } else {
             colorIcon = "white"
           }
@@ -402,7 +401,7 @@ function PolicyRadialViz(_selector, _data, i18n) {
           .duration(updateDuration)
           .style("opacity", baseOpacityTexts)
           .attr("fill", (d) =>
-            a[`value_${year}`] !== "NA" ? "unset" : textFillNoData
+            a[`value_${year}`] ? "unset" : textFillNoData
           )
           // Passing an argument to a call function
           .call(setTitlesPosition, a)
@@ -451,12 +450,12 @@ function PolicyRadialViz(_selector, _data, i18n) {
     // 2.Update icons position
     arc_modifPixelsOffset
       .innerRadius((d) =>
-      d[`value_${year}`] !== "NA"
+      d[`value_${year}`]
       ? yScale(d[`value_${year}`]) - yScale(0) + yScale(0) - iconOffset
       : yScale(100) - yScale(0) + yScale(0) - iconOffset
       )
       .outerRadius((d) =>
-      d[`value_${year}`] !== "NA"
+      d[`value_${year}`]
       ? yScale(d[`value_${year}`]) - yScale(0) + yScale(0) - iconOffset
       : yScale(100) - yScale(0) + yScale(0) - iconOffset
       );
@@ -599,7 +598,7 @@ function PolicyRadialViz(_selector, _data, i18n) {
     selection
       .attr("y", function (d) {
         if(!isMobile) {
-          if (d[`value_${year}`] !== "NA") { 
+          if (d[`value_${year}`]) { 
             const offset = 14;
             return d.isUpperHalf
               ? -yScale(d[`value_${year}`]) - offset
@@ -623,7 +622,7 @@ function PolicyRadialViz(_selector, _data, i18n) {
       })
       .attr("font-size", isMobile ? "14px" : "15px")
       .text((d) =>
-        d[`value_${year}`] !== "NA" ? formatDecimal(d[`value_${year}`]) + "%" : ""
+        d[`value_${year}`] ? formatDecimal(d[`value_${year}`]) + "%" : ""
       )
   }
 
@@ -662,7 +661,7 @@ function PolicyRadialViz(_selector, _data, i18n) {
         if(isMobile) return 0
         else {
           const offset = a[`value_${year}`] === "NA" ? 10 : 20;
-          if (a[`value_${year}`] !== "NA") {
+          if (a[`value_${year}`]) {
             return a.isLefttHalf
               ? -yScale(a[`value_${year}`] + offset)
               : yScale(a[`value_${year}`] + offset);
@@ -769,10 +768,9 @@ function PolicyRadialViz(_selector, _data, i18n) {
     hidingOpacityTexts = isMobile ? 0 : 0.08;
     baseOpacityIcons =  isMobile ? baseOpacityPetals + 0.1 : 0.9
 
-    // console.log(d)
     const thisCode = d.code;
     const myItem = data.find((e) => e.code === thisCode);
-    const petalWithData = myItem[`value_${year}`] !== "NA";
+    const petalWithData = myItem[`value_${year}`];
   
     // Higlight current node
     d3.selectAll(`#node-el > g > *`)
