@@ -308,9 +308,9 @@ function PolicyRadialViz(_selector, _data, i18n) {
     // 0. Aux elements
     // Update url with current year
     auxNodeGroup.select("a")
-      .attr("href", isMobile ? null : (d) => `${findPolicyDetail("url",d.code, policyDetails)}&year=${year}`)
+      .attr("href", isMobile ? null : (d) => `${d.url}&year=${year}`)
     auxNodeGroup.selectAll("title")
-      .text((d) => `${findPolicyDetail("url",d.code, policyDetails)}&year=${year}`)
+      .text((d) => `${d.url}&year=${year}`)
 
     ////////
     // 1. Update Petals
