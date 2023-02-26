@@ -4,7 +4,11 @@
 
 <section class="monitoring" data-tab="area">
   <div class="monitoring-content">
-    {% include 'monitoring/visualization.html' %}
+    <div class="container">
+      <div id="policy-radial-viz">
+        <svg></svg>
+      </div>
+    </div>
 
     <div class="container tab-content">
       {% include 'shared/data_controllers.html' %}
@@ -12,6 +16,6 @@
   </div>
 </section>
 
-<!-- {% include 'monitoring/index_script.html' %} -->
+{% include 'monitoring/index_script.html' %}
 
 {% endblock %}
