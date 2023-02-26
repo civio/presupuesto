@@ -32,7 +32,7 @@ def monitoring(request, render_callback=None):
         monitoring_data[policy_id]['total_'+year] = indicators
 
     # Output data as JSON to print it in the template's Javascript
-    c['monitoring_data'] = json.dumps(monitoring_data.values())
+    c['monitoring_data'] = json.dumps(sorted(monitoring_data.values()))
 
     template = 'monitoring/index_widget.html' if isWidget(request) else 'monitoring/index.html'
 
