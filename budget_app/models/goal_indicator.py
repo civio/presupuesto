@@ -127,8 +127,8 @@ class GoalIndicator(models.Model):
     description = models.CharField(max_length=800)
     unit = models.CharField(max_length=20)
     target = models.BigIntegerField()
-    actual = models.BigIntegerField()
-    score = models.FloatField()
+    actual = models.BigIntegerField(null=True)
+    score = models.FloatField(null=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
 

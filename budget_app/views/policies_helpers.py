@@ -29,7 +29,7 @@ def policies_show_helper(request, c, entity, id, title, render_callback=None):
         c['monitoring_programmes'] = GoalIndicator.objects.get_indicators_summary_by_programme(entity.id, "policy", id)
 
         totals = GoalIndicator.objects.get_indicators_summary_by_policy(entity.id, id)
-        c['monitoring_totals'] = dict((total[0], total[2]/total[3]) for total in totals)
+        c['monitoring_totals'] = dict((total[0], total[2]/total[3] if total[2]!=None else '') for total in totals)
 
     # Additional data needed by the view
     show_side = 'expense'
@@ -111,7 +111,7 @@ def programmes_show_helper(request, c, entity, id, title, render_callback=None):
 
         # Get progress totals. We can do it easily with SQL, instead of calculating it here.
         totals = GoalIndicator.objects.get_indicators_summary_by_programme(entity.id, "programme", id)
-        c['monitoring_totals'] = dict((total[0], total[3]/total[4]) for total in totals)
+        c['monitoring_totals'] = dict((total[0], total[3]/total[4] if total[3]!=None else '') for total in totals)
         monitoring_totals_per_section = GoalIndicator.objects.get_indicators_summary_by_section(entity.id, id)
         c['monitoring_totals_per_section'] = dict((total[0], total) for total in monitoring_totals_per_section)
 
