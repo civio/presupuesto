@@ -241,3 +241,13 @@ $monitoring-bar-color: $brand-primary;
 .goal-report.en a:not(.collapsed):after {
   content: '[- Read less]';
 }
+
+
+// Visualization
+#policy-radial-viz > svg {
+  display: block;
+  margin: 0 auto;
+}
+.hidden-tick {
+  visibility: hidden;
+}
