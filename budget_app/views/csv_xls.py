@@ -161,7 +161,7 @@ def write_policy_monitoring_breakdown(c, writer):
 
     # Write policy-level results
     for year, score in sorted(c['monitoring_totals'].items()):
-        if score != 0:
+        if score != '':
             writer.writerow([
                 year,
                 '',
@@ -170,16 +170,17 @@ def write_policy_monitoring_breakdown(c, writer):
             ])
 
     # Write programme-level results
-    for programme_summary in sorted(c['monitoring_programmes']):
-        year = programme_summary[0]
-        if c['monitoring_totals'][year] != 0:
-            score = programme_summary[3]/programme_summary[4]
-            writer.writerow([
-                year,
-                programme_summary[1],
-                programme_summary[2].encode("utf-8"),
-                format_progress(score)
-            ])
+    for year, programme_id, programme_number, programme_description in sorted(c['monitoring_programmes']):
+        if c['monitoring_totals'].get(year, '') != '':
+            if programme_id in c['monitoring_totals_per_programme']:
+                programme_data = c['monitoring_totals_per_programme'][programme_id]
+                score = programme_data[3]/programme_data[4]
+                writer.writerow([
+                    year,
+                    programme_number,
+                    programme_description.encode("utf-8"),
+                    format_progress(score)
+                ])
 
 def policy_monitoring_breakdown(request, id, format):
     return policies_show(request, id, '', _generator("%s_objetivos" % id, format, write_policy_monitoring_breakdown))
@@ -189,7 +190,7 @@ def write_programme_monitoring_breakdown(c, writer):
 
     # Write programme-level results
     for year, score in sorted(c['monitoring_totals'].items()):
-        if score != 0:
+        if score != '':
             writer.writerow([
                 year,
                 '',
@@ -197,15 +198,14 @@ def write_programme_monitoring_breakdown(c, writer):
             ])
 
     # Write section-level results
-    for section in sorted(c['monitoring_sections']):
-        year = section[0]
-        if c['monitoring_totals'][year] != 0:
-            section_summary = c['monitoring_totals_per_section'].get(section[1])
-            if section_summary:
-                score = section_summary[1]/section_summary[2]
+    for year, section_id, section_description in sorted(c['monitoring_sections']):
+        if c['monitoring_totals'].get(year, '') != '':
+            if section_id in c['monitoring_totals_per_section']:
+                section_data = c['monitoring_totals_per_section'][section_id]
+                score = section_data[1]/section_data[2]
                 writer.writerow([
-                    section[0],
-                    section[2].encode("utf-8"),
+                    year,
+                    section_description.encode("utf-8"),
                     format_progress(score)
                 ])
 
