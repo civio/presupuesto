@@ -91,6 +91,7 @@
     // Setup year navigation
     initSlider("#year-selection", {{ years|safe }}, {{ starting_year }});
     setRedrawOnSliderChange("#year-selection", {{ starting_year }}, onYearChange);
+    onYearChange();
 
     // Setup tabs navigation
     setRedrawOnTabsChange('#tabs', onTabChange);
