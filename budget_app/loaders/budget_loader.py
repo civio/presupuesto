@@ -227,7 +227,7 @@ class BudgetLoader(BaseLoader):
     # TODO: Actually, not used anymore, it's been overloaded by both children. Is it worth
     # leaving it here as a default-ish implementation?
     def add_data_item(self, items, line, is_expense, is_actual):
-        # Get the amount. For execution data, pick "Obligaciones/Créditos reconocidas/os"
+        # Get the amount. For execution data, pick "Obligaciones/Créditos reconocidas/os"
         if is_actual:
             amount = line[10 if is_expense else 9]
         else:
