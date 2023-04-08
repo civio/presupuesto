@@ -117,10 +117,18 @@ class SimpleBudgetLoader(BaseLoader):
             else:
                 ec = ec[0]
 
-            # Fetch economic category
-            ic = InstitutionalCategory.objects.filter(  institution=item['ic_code'][0],
-                                                        section=item['ic_code'][0:2] if len(item['ic_code']) >= 2 else None,
-                                                        department=item['ic_code'] if len(item['ic_code']) >= 3 else None,
+            # Fetch institutional category.
+            # This category is the trickiest to match, the less standard, so we allow the children
+            # to specify the institution/section/department triad explicitly. If not, we default
+            # to the original breakdown, one character per level.
+            if not 'ic_institution' in item:
+                item['ic_institution'] = item['ic_code'][0]
+                item['ic_section'] = item['ic_code'][0:2] if len(item['ic_code']) >= 2 else None
+                item['ic_department'] = item['ic_code'] if len(item['ic_code']) >= 3 else None
+
+            ic = InstitutionalCategory.objects.filter(  institution=item['ic_institution'],
+                                                        section=item['ic_section'],
+                                                        department=item['ic_department'],
                                                         budget=budget)
             if not ic:
                 print u"ALERTA: No se encuentra la categoría institucional '%s' para '%s': %s€" % (item['ic_code'], self._remove_unicode(item['description']), item['amount']/100)
