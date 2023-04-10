@@ -2,11 +2,11 @@
   <p class="title">{{ _('Compártelo') }}</p>
   <ul class="social-sharing-toolbox">
       <li>
-        <a class="twitter" onClick='window.open("https://twitter.com/intent/tweet?text={{ meta_tweet_text }}&url={{ request.build_absolute_uri() }}","sharer","toolbar=0,status=0,width=548,height=500");return false;' href="https://twitter.com/intent/tweet?text={{ meta_tweet_text }}&url={{ request.build_absolute_uri() }}">{{ _('Comparte esta página en Twitter') }}</a>
+        <a class="twitter" onClick='window.open("https://twitter.com/intent/tweet?text={{ meta_tweet_text }}&url={{ request.build_absolute_uri() }}","sharer","toolbar=0,status=0,width=548,height=500")' href="javascript: void(0)">{{ _('Comparte esta página en Twitter') }}</a>
       </li>
 
       <li>
-        <a class="facebook" onClick="window.open('https://www.facebook.com/sharer/sharer.php?display=popup&u={{ request.build_absolute_uri() }}&redirect_uri={{ request.build_absolute_uri() }}','sharer','toolbar=0,status=0,width=548,height=325');return false;" href="https://www.facebook.com/sharer/sharer.php?display=popup&u={{ request.build_absolute_uri() }}&redirect_uri={{ request.build_absolute_uri() }}">{{ _('Comparte esta página en Facebook') }}</a>
+        <a class="facebook" onClick="window.open('https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri()|urlencode }}','pop','toolbar=0,status=0,width=548,height=500,scrollbars=no')" href="javascript: void(0)">{{ _('Comparte esta página en Facebook') }}</a>
       </li>
   </ul>
 </div>
