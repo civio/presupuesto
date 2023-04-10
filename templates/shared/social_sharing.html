@@ -6,7 +6,7 @@
       </li>
 
       <li>
-        <a class="facebook" onClick="window.open('https://www.facebook.com/dialog/share?app_id={{ facebook_id }}&display=popup&href={{ request.build_absolute_uri() }}&redirect_uri={{ request.build_absolute_uri() }}','sharer','toolbar=0,status=0,width=548,height=325');return false;" href="https://www.facebook.com/dialog/share?app_id={{ facebook_id }}&display=popup&href={{ request.build_absolute_uri() }}&redirect_uri={{ request.build_absolute_uri() }}">{{ _('Comparte esta página en Facebook') }}</a>
+        <a class="facebook" onClick="window.open('https://www.facebook.com/sharer/sharer.php?display=popup&u={{ request.build_absolute_uri() }}&redirect_uri={{ request.build_absolute_uri() }}','sharer','toolbar=0,status=0,width=548,height=325');return false;" href="https://www.facebook.com/sharer/sharer.php?display=popup&u={{ request.build_absolute_uri() }}&redirect_uri={{ request.build_absolute_uri() }}">{{ _('Comparte esta página en Facebook') }}</a>
       </li>
   </ul>
 </div>
