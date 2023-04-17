@@ -110,7 +110,7 @@
 {% endif %}
       </div>  <!-- tab-grid-content -->
 
-{% if show_monitoring and not section_id %}
+{% if show_monitoring and not (section_id or article_id) %}
       {% if programme_id %}
         {% include 'policies/show_programme_monitoring_tab.html' %}
       {% else %}
