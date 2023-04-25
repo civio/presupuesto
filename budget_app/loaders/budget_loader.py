@@ -285,7 +285,7 @@ class BudgetLoader(BaseLoader):
                                             section=item['ic_section'],
                                             department=item['ic_department'])
             if not ic:
-                print u"ALERTA: No se encuentra la institución '%s' para '%s': %s€" % (item['ic_code'], item['description'], item['amount'])
+                print u"ALERTA: No se encuentra la institución '%s' para '%s': %s€" % (item['ic_code'], self._remove_unicode(item['description']), item['amount'])
                 continue
             else:
                 ic = ic[0]
@@ -298,7 +298,7 @@ class BudgetLoader(BaseLoader):
                                                 subprogramme=item['fc_subprogramme'] if self._use_subprogrammes() else None)
             if not fc:
                 code = item['fc_subprogramme'] if self._use_subprogrammes() else item['fc_programme']
-                print u"ALERTA: No se encuentra la categoría funcional '%s' para '%s': %s€" % (code, item['description'], item['amount'])
+                print u"ALERTA: No se encuentra la categoría funcional '%s' para '%s': %s€" % (code, self._remove_unicode(item['description']), item['amount'])
                 continue
             else:
                 fc = fc[0]
@@ -310,7 +310,7 @@ class BudgetLoader(BaseLoader):
                                                 heading=item['ec_heading'],
                                                 subheading=item['ec_subheading'])
             if not ec:
-                print u"ALERTA: No se encuentra la categoría económica '%s' para '%s': %s€" % (item['ec_code'], item['description'], item['amount'])
+                print u"ALERTA: No se encuentra la categoría económica '%s' para '%s': %s€" % (item['ec_code'], self._remove_unicode(item['description']), item['amount'])
                 continue
             else:
                 ec = ec[0]
@@ -321,7 +321,7 @@ class BudgetLoader(BaseLoader):
                                                 fund_class=item['fdc_code'][0:2],
                                                 fund=item['fdc_code'])
             if not fdc:
-                print u"ALERTA: No se encuentra la categoría de financiación '%s' para '%s': %s€" % (item['fdc_code'], item['description'], item['amount'])
+                print u"ALERTA: No se encuentra la categoría de financiación '%s' para '%s': %s€" % (item['fdc_code'], self._remove_unicode(item['description']), item['amount'])
                 continue
             else:
                 fdc = fdc[0]

@@ -283,10 +283,3 @@ class SimpleBudgetLoader(BaseLoader):
     # Are we using subprogrammes? (Default: false)
     def _use_subprogrammes(self):
         return hasattr(settings, 'USE_SUBPROGRAMMES') and settings.USE_SUBPROGRAMMES
-
-    # Print safely, whatever the damn encoding
-    # See https://stackoverflow.com/a/46434294
-    def _remove_unicode(self, s):
-        try: return str(s)
-        except UnicodeEncodeError:
-            return s.encode('ascii', 'ignore').decode('ascii')
