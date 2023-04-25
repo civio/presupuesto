@@ -38,3 +38,10 @@ class BaseLoader(object):
           return s.capitalize()
         else:
           return s
+
+    # Print safely, whatever the damn encoding
+    # See https://stackoverflow.com/a/46434294
+    def _remove_unicode(self, s):
+        try: return str(s)
+        except UnicodeEncodeError:
+            return s.encode('ascii', 'ignore').decode('ascii')
