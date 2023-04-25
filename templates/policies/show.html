@@ -34,7 +34,7 @@
       {% endif %}
     {% endfor %}
       {# Monitoring tab doesn't apply to sections right now. It could! #}
-      {% if show_monitoring and not section_id %}
+      {% if show_monitoring and not (section_id or article_id) %}
       <li role="presentation">
         <a href="#monitoring" role="tab">{{ _(tab_titles['monitoring']) }}</a>
       </li>
