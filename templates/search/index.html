@@ -230,12 +230,12 @@
                     {% if item.level==main_entity_level %}
                       {% if item.expense %}
                         {% if item.subprogramme %}
-                          <a href="{% url 'budget_app.views.subprogrammes_show' item['subprogramme'], descriptions['functional'].get(item['subprogramme'])|slugify %}#item={{item_uid}}" id="policy-name-link">{{ item.description|safe }}</a>
+                          <a href="{% url 'budget_app.views.subprogrammes_show' item['subprogramme'], descriptions['functional'].get(item['subprogramme'])|slugify %}#item={{item_uid}}&year={{item.year}}" id="policy-name-link">{{ item.description|safe }}</a>
                         {% else %}
-                          <a href="{% url 'budget_app.views.programmes_show' item['programme'], descriptions['functional'].get(item['programme'])|slugify %}#item={{item_uid}}" id="policy-name-link">{{ item.description|safe }}</a>
+                          <a href="{% url 'budget_app.views.programmes_show' item['programme'], descriptions['functional'].get(item['programme'])|slugify %}#item={{item_uid}}&year={{item.year}}" id="policy-name-link">{{ item.description|safe }}</a>
                         {% endif %}
                       {% else %}
-                        <a href="{% url 'budget_app.views.income_articles_show' item['article'], descriptions['income'].get(item['article'])|slugify %}#item={{item_uid}}" id="policy-name-link">{{ item.description|safe }}</a>
+                        <a href="{% url 'budget_app.views.income_articles_show' item['article'], descriptions['income'].get(item['article'])|slugify %}#item={{item_uid}}&year={{item.year}}" id="policy-name-link">{{ item.description|safe }}</a>
                       {% endif %}
                     {% else %}
                       {% set view_name_prefix = 'budget_app.views.counties_show_' if item.level=='comarca' else 'budget_app.views.towns_show_' %}
@@ -249,7 +249,7 @@
                         {% set item_id = item.article %}
                         {% set item_anchor = item_uid %}
                       {% endif %}
-                      <a href="{{ url(view_name, item.name|slugify, item_id) }}#item={{item_anchor}}" id="policy-name-link">{{ item.description|safe }}</a>
+                      <a href="{{ url(view_name, item.name|slugify, item_id) }}?year={{item.year}}#item={{item_anchor}}" id="policy-name-link">{{ item.description|safe }}</a>
                     {% endif %}
                   </p>
                 </td>
