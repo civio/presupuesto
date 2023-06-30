@@ -4,6 +4,7 @@ from django.conf import settings
 def accounts_id_processor(request):
   return {
     'analytics_id': '' if not hasattr(settings, 'ANALYTICS_ID') else settings.ANALYTICS_ID,
+    'plausible_domain': '' if not hasattr(settings, 'PLAUSIBLE_DOMAIN') else settings.PLAUSIBLE_DOMAIN,
   }
 
 def cookies_url_processor(request):
