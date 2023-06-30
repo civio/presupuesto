@@ -19,6 +19,8 @@
   <script src="{{ STATIC_URL }}javascripts/jquery-migrate-1.4.1.js"></script>
   <script src="{{ STATIC_URL }}javascripts/modernizr-2.6.3.min.js"></script>
   {% endcompress %}
+
+  {% include 'shared/analytics.html' %}
 </head>
 <body class="{{ page_css_class }} widget">
   <!--[if lt IE 9]>
@@ -63,8 +65,6 @@
   <script src="{{ STATIC_URL }}javascripts/vis/budget-stacked-chart.js"></script>
   <script src="{{ STATIC_URL }}javascripts/vis/monitoring-radial-viz.js"></script>
   {% endcompress %}
-
-  {% include 'shared/analytics.html' %}
 
   {% block extra_javascript %}{% endblock %} 
 </body>
