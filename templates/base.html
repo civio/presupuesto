@@ -21,6 +21,8 @@
   <script src="{{ STATIC_URL }}javascripts/jquery-migrate-1.4.1.js"></script>
   <script src="{{ STATIC_URL }}javascripts/modernizr-2.6.3.min.js"></script>
   {% endcompress %}
+
+  {% include 'shared/analytics.html' %}
 </head>
 <body class="{{ page_css_class }}">
   <!--[if lt IE 9]>
@@ -85,8 +87,6 @@
   {% endif %}
 
   {% include 'shared/cookiebar.html' %}
-
-  {% include 'shared/analytics.html' %}
 
   {% block extra_javascript %}{% endblock %} 
 </body>
