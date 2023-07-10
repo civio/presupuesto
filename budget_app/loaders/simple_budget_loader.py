@@ -112,7 +112,7 @@ class SimpleBudgetLoader(BaseLoader):
                                                 subheading = None,
                                                 budget=budget)
             if not ec:
-                print u"ALERTA: No se encuentra la categoría económica de %s '%s' para '%s': %s€" % ("gastos" if item['is_expense'] else "ingresos", item['ec_code'], self._remove_unicode(item['description']), item['amount']/100)
+                print u"ALERTA: No se encuentra la categoría económica de %s '%s'." % ("gastos" if item['is_expense'] else "ingresos", item['ec_code'], )
                 continue
             else:
                 ec = ec[0]
@@ -131,7 +131,7 @@ class SimpleBudgetLoader(BaseLoader):
                                                         department=item['ic_department'],
                                                         budget=budget)
             if not ic:
-                print u"ALERTA: No se encuentra la categoría institucional '%s' para '%s': %s€" % (item['ic_code'], self._remove_unicode(item['description']), item['amount']/100)
+                print u"ALERTA: No se encuentra la categoría institucional '%s'." % (item['ic_code'], )
                 continue
             else:
                 ic = ic[0]
@@ -145,7 +145,7 @@ class SimpleBudgetLoader(BaseLoader):
                                                         subprogramme=item['fc_code'] if self._use_subprogrammes() else None,
                                                         budget=budget)
                 if not fc:
-                    print u"ALERTA: No se encuentra la categoría funcional '%s' para '%s': %s€" % (item['fc_code'], self._remove_unicode(item['description']), item['amount']/100)
+                    print u"ALERTA: No se encuentra la categoría funcional '%s'." % (item['fc_code'], )
                     continue
                 else:
                     fc = fc[0]
