@@ -3,6 +3,40 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [5.0] - 2023-08-23
+### Added
+- Monitoring: Add new Monitoring section (goals, activities and indicators), controlled via `SHOW_MONITORING_TAB`. #1216 #1213 #1203
+- Main investments: Add new Main Investments section, controlled via `SHOW_MAIN_INVESTMENTS`. #1109 #1163 #1176 #1253
+- Guided visit: Add new guided visit section. #1085
+- Investment: Add support for special investments (IFS). #858
+- Add support for Plausible analytics. #1269
+- Add TERMS_PAGE_LENGTH settings variable. #846
+- Add management command to remove entities budget.
+
+### Changed
+- Add BeautifulSoup4 dependency.
+- Update Javascript and Python dependencies. #1061 #1182
+- Ignore Mailchimp query parameters when caching. #313
+- Link to particular year for items in search results. #1268
+- Make SimpleBudgetLoader more flexible for institutional categories.
+- Share in Facebook without an application ID. Remove `FACEBOOK_ID` setting. #1257
+- Google Analytics IDs must refer now to GA4. #1269
+- Increase programme description length, to acommodate PGE 2022 data. #1124
+- Increase description length in glossary terms. #846
+- Remove unused `load_execution` command.
+- Remove Google+ sharing button. #1203
+
+### Fixed
+- Fix accessibility compliance issues. #834 #1126
+- Fix payee names including XHTML-encoded characters in payments page. #871
+- Avoid overlapping labels in year axis for stacked charts. #1158
+- Improve compatibility of XLSX generation. #1063
+- Fix encoding errors on loading error messages. #1203 #1217 #1259
+- Fix error in percentage over total in the execution column. #1024
+- Fix search results count when no payments are found. #876
+- Fix search results link when subprogrammes are active. #597
+- Fix population retrieval for missing years. #829
+
 ## [4.3.2] - 2018-12-04
 ### Changed
 - Updated Civio logo.
@@ -273,7 +307,8 @@ All notable changes to this project will be documented in this file.
 ### Forked from [aragonopendata/presupuesto](https://github.com/aragonopendata/presupuesto) - 2016-01-28
 
 
-[Unreleased]: https://github.com/civio/presupuesto/compare/v4.3.2...HEAD
+[Unreleased]: https://github.com/civio/presupuesto/compare/v5.0...HEAD
+[5.0]: https://github.com/civio/presupuesto/releases/tag/v5.0
 [4.3.2]: https://github.com/civio/presupuesto/releases/tag/v4.3.2
 [4.3.1]: https://github.com/civio/presupuesto/releases/tag/v4.3.1
 [4.3]: https://github.com/civio/presupuesto/releases/tag/v4.3
