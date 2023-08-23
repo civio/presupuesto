@@ -288,7 +288,7 @@ class BudgetLoader(BaseLoader):
                 print u"ALERTA: No se encuentra la institución '%s' para '%s': %s€" % (item['ic_code'], self._remove_unicode(item['description']), item['amount'])
                 continue
             else:
-                ic = ic[0]
+                ic = ic.first()
 
             fc = FunctionalCategory.objects.filter(budget=budget,
                                                 area=item['fc_area'],
@@ -301,7 +301,7 @@ class BudgetLoader(BaseLoader):
                 print u"ALERTA: No se encuentra la categoría funcional '%s' para '%s': %s€" % (code, self._remove_unicode(item['description']), item['amount'])
                 continue
             else:
-                fc = fc[0]
+                fc = fc.first()
 
             ec = EconomicCategory.objects.filter(budget=budget,
                                                 expense=is_expense,
@@ -313,7 +313,7 @@ class BudgetLoader(BaseLoader):
                 print u"ALERTA: No se encuentra la categoría económica '%s' para '%s': %s€" % (item['ec_code'], self._remove_unicode(item['description']), item['amount'])
                 continue
             else:
-                ec = ec[0]
+                ec = ec.first()
 
             fdc = FundingCategory.objects.filter(budget=budget,
                                                 expense=is_expense,
@@ -324,7 +324,7 @@ class BudgetLoader(BaseLoader):
                 print u"ALERTA: No se encuentra la categoría de financiación '%s' para '%s': %s€" % (item['fdc_code'], self._remove_unicode(item['description']), item['amount'])
                 continue
             else:
-                fdc = fdc[0]
+                fdc = fdc.first()
 
             # When there is no description for the budget_item take the one from the parent economic category
             if item['description'] == None or item['description'] == "":

@@ -19,7 +19,7 @@ class PaymentsLoader(BaseLoader):
         if not budget:
             raise Exception("Budget (%s/%s) not found" % (entity.name, year))
         else:
-            budget = budget[0]
+            budget = budget.first()
 
         # Delete previous payments for the given budget if they exist
         Payment.objects.filter(budget=budget).delete()
@@ -96,7 +96,7 @@ class PaymentsLoader(BaseLoader):
                     print u"ALERTA: No se encuentra la categoría económica '%s' para '%s': %s€" % (ec_code, fields['description'].decode("utf8"), fields['amount']/100)
                     continue
                 else:
-                    ec = ec[0]
+                    ec = ec.first()
             else:
                 ec = None
 
@@ -112,7 +112,7 @@ class PaymentsLoader(BaseLoader):
                     print u"ALERTA: No se encuentra la categoría funcional '%s' para '%s': %s€" % (fc_code, fields['description'].decode("utf8"), fields['amount']/100)
                     continue
                 else:
-                    fc = fc[0]
+                    fc = fc.first()
             else:
                 fc = None
 
@@ -128,7 +128,7 @@ class PaymentsLoader(BaseLoader):
                     print u"ALERTA: No se encuentra la categoría institutional '%s' para '%s': %s€" % (ic_code, fields['description'].decode("utf8"), fields['amount']/100)
                     continue
                 else:
-                    ic = ic[0]
+                    ic = ic.first()
             else:
                 ic = None
 

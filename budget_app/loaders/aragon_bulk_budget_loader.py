@@ -169,7 +169,7 @@ class AragonBulkBudgetLoader(object):
         if not entity:
             raise Exception("Entity (%s/%s) not found" % (level, entity_id))
         else:
-            entity = entity[0]
+            entity = entity.first()
         print u"Cargando presupuesto para entidad '%s' año %s..." % (entity.name, year)
 
         # Check whether the budget exists already
@@ -185,7 +185,7 @@ class AragonBulkBudgetLoader(object):
             self.load_functional_classification(path, budget)
 
         else:
-            budget = budget[0]
+            budget = budget.first()
 
             # Delete previous budget for the given entity/year if it exists
             budget_id = AragonBulkBudgetLoader.BudgetId(entity_id, year)
@@ -294,7 +294,7 @@ class AragonBulkBudgetLoader(object):
                     print u"ALERTA: No se encuentra la categoría económica '%s' para '%s': %s€" % (uid, item.description.decode("utf8"), item.amount)
                     continue
                 else:
-                    ec = ec[0]
+                    ec = ec.first()
 
                 # Replace the ugly input descriptions with the manually-curated ones.
                 # (This makes sense because each line in the input is a different economic category,
@@ -310,7 +310,7 @@ class AragonBulkBudgetLoader(object):
                     print u"ALERTA: No se encuentra la categoría económica '%s' para '%s': %s€" % (uid, item.description.decode("utf8"), item.amount)
                     continue
                 else:
-                    fc = fc[0]
+                    fc = fc.first()
 
                 # Replace the ugly input descriptions with the manually-curated ones.
                 # (This makes sense because each line in the input is a different functional category,

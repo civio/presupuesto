@@ -96,4 +96,4 @@ class BaseLoadingCommand(BaseCommand):
         entity = Entity.objects.filter(level=level, name=name, language=language)
         if not entity:
             raise Exception("Entity (%s/%s) not found" % (level, name))
-        return entity[0]
+        return entity.first()
