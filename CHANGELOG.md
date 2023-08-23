@@ -21,14 +21,14 @@ All notable changes to this project will be documented in this file.
 
 ## [4.3] - 2018-07-22
 ### Added
-- Investments: Add new investment section, controlled via `SHOW_INVESTMENTS`. #527 #581
+- Investments: Add new investment section, controlled via `SHOW_INVESTMENTS`. #527 #581
 - Payments: Add institutional, fiscal ID and min/max amount filters. #673 #677 #710
 - Payments: Add support for a third result tab, by department. #710
 - Payments: Add 'clear filters' button. #710 #755
 - Add sitemap, referenced from `robots.txt`. #138
 - Add format selector and embed support to Overview page. #602
-- Add active year as URL parameter, enabling linking into current year. #199
-- Add CSV/XLS support for subprogrammes, institutional breakdown and investments. #346 #527
+- Add active year as URL parameter, enabling linking into current year. #199
+- Add CSV/XLS support for subprogrammes, institutional breakdown and investments. #346 #527
 - Add support for `0M` budget status.
 
 ### Changed
@@ -46,7 +46,7 @@ All notable changes to this project will be documented in this file.
 - Remove legends with more than 50 elements from stacked charts and improve handling of long names. #450
 - Translate column names in CSV/XLS files. #287
 - Improve `clean_budgets` functionality to cover economic categories. #495
-- Replace elements incompatible with Django 1.5. Impacts how extra theme URLs were defined. #80
+- Replace elements incompatible with Django 1.5. Impacts how extra theme URLs were defined. #80
 
 ### Fixed
 - Payments: handle single quotes in payee names correctly. #267 #561
