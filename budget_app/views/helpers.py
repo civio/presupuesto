@@ -98,7 +98,7 @@ def is_secondary_entity(c):
 def get_main_entity(c):
     return Entity.objects.filter(level=settings.MAIN_ENTITY_LEVEL,
                                     name=settings.MAIN_ENTITY_NAME,
-                                    language=c['LANGUAGE_CODE'])[0]
+                                    language=c['LANGUAGE_CODE']).first()
 
 def populate_stats(c):  # Convenience: assume it's top level entity
     populate_entity_stats(c, get_main_entity(c))

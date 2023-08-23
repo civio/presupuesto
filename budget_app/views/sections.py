@@ -16,7 +16,7 @@ def sections_show(request, id, title, render_callback=None):
     # Extra request context info
     c['section_id'] = id
     c['section'] = InstitutionalCategory.objects.filter(  budget__entity=main_entity, 
-                                                          department=id)[0]
+                                                          department=id).first()
 
     # Ignore if possible the descriptions for execution data, they are truncated and ugly
     programme_descriptions = {}
