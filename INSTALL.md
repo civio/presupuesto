@@ -4,6 +4,12 @@ Para instalar la aplicación en local es necesario seguir los siguientes pasos:
 
 * Instalar Python. La aplicación debería funcionar con Python 2.6, pero el desarrollo y los despliegues actuales usan 2.7.x, que es la versión recomendada.
 
+* Opcionalmente, crear un entorno separado para la aplicación:
+
+        $ pip install virtualenv
+        $ python -m virtualenv env
+        $ source env/bin/activate
+
 * Instalar los componentes utilizados por la aplicación. Actualmente, la aplicación requiere coffin 0.4.0, así como django 1.4.2:
     
         $ pip install -r requirements/local.txt
