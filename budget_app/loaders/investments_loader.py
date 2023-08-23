@@ -19,7 +19,7 @@ class InvestmentsLoader(BaseLoader):
         if not budget:
             raise Exception("Budget (%s/%s) not found" % (entity.name, year))
         else:
-            budget = budget[0]
+            budget = budget.first()
 
         # Delete previous investments for the given budget if they exist
         Investment.objects.filter(budget=budget).delete()
@@ -74,7 +74,7 @@ class InvestmentsLoader(BaseLoader):
                 print u"ALERTA: No se encuentra la categoría funcional '%s' para '%s': %s€" % (item['fc_code'], item['description'].decode("utf-8"), item['amount']/100)
                 continue
             else:
-                fc = fc[0]
+                fc = fc.first()
 
             # Fetch geographic category
             gc = GeographicCategory.objects.filter( code=item['gc_code'],
@@ -83,7 +83,7 @@ class InvestmentsLoader(BaseLoader):
                 print u"ALERTA: No se encuentra la categoría geográfica '%s' para '%s': %s€" % (item['gc_code'], item['description'].decode("utf-8"), item['amount']/100)
                 continue
             else:
-                gc = gc[0]
+                gc = gc.first()
 
             # Create the payment record
             Investment( functional_category=fc,

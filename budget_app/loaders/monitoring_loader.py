@@ -15,7 +15,7 @@ class MonitoringLoader(BaseLoader):
         if not budget:
             raise Exception("Budget (%s/%s) not found" % (entity.name, year))
         else:
-            budget = budget[0]
+            budget = budget.first()
 
         # Delete previous monitoring data for the given budget if it exists
         Goal.objects.filter(budget=budget).delete()
@@ -103,8 +103,8 @@ class MonitoringLoader(BaseLoader):
 
             # Create the main investment record
             Goal(uid=goal['uid'],
-                    functional_category=fc[0],
-                    institutional_category=ic[0],
+                    functional_category=fc.first(),
+                    institutional_category=ic.first(),
                     goal_number=goal['goal_number'],
                     description=goal['description'],
                     report=goal['report'],
@@ -124,7 +124,7 @@ class MonitoringLoader(BaseLoader):
 
             GoalActivity(activity_number=activity['activity_number'],
                             description=activity['description'],
-                            goal=goal[0]).save()
+                            goal=goal.first()).save()
 
 
     def load_indicators(self, budget, indicators):
@@ -144,4 +144,4 @@ class MonitoringLoader(BaseLoader):
                             target=indicator['target'],
                             actual=indicator['actual'],
                             score=indicator['score'],
-                            goal=goal[0]).save()
+                            goal=goal.first()).save()

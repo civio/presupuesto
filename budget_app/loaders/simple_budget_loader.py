@@ -115,7 +115,7 @@ class SimpleBudgetLoader(BaseLoader):
                 print u"ALERTA: No se encuentra la categoría económica de %s '%s'." % ("gastos" if item['is_expense'] else "ingresos", item['ec_code'], )
                 continue
             else:
-                ec = ec[0]
+                ec = ec.first()
 
             # Fetch institutional category.
             # This category is the trickiest to match, the less standard, so we allow the children
@@ -134,7 +134,7 @@ class SimpleBudgetLoader(BaseLoader):
                 print u"ALERTA: No se encuentra la categoría institucional '%s'." % (item['ic_code'], )
                 continue
             else:
-                ic = ic[0]
+                ic = ic.first()
 
             # Fetch functional category, only for expense items
             if item['is_expense']:
@@ -148,7 +148,7 @@ class SimpleBudgetLoader(BaseLoader):
                     print u"ALERTA: No se encuentra la categoría funcional '%s'." % (item['fc_code'], )
                     continue
                 else:
-                    fc = fc[0]
+                    fc = fc.first()
             else:
                 fc = dummy_fc
 
