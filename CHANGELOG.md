@@ -3,7 +3,23 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-## [4.3.1] - 2018-07-22
+## [4.3.2] - 2018-12-04
+### Changed
+- Updated Civio logo.
+- Improved select elements performance in payments section.
+
+### Fixed
+- Removed dangling print sentence.
+
+## [4.3.1] - 2018-09-03
+### Added
+- Pipenv support.
+
+### Changed
+- Updated Javascript dependencies.
+- Added additional data on `version.json` API response.
+
+## [4.3] - 2018-07-22
 ### Added
 - Investments: Add new investment section, controlled via `SHOW_INVESTMENTS`. #527 #581
 - Payments: Add institutional, fiscal ID and min/max amount filters. #673 #677 #710
@@ -257,7 +273,10 @@ All notable changes to this project will be documented in this file.
 ### Forked from [aragonopendata/presupuesto](https://github.com/aragonopendata/presupuesto) - 2016-01-28
 
 
-[Unreleased]: https://github.com/civio/presupuesto/compare/v4.2.1...HEAD
+[Unreleased]: https://github.com/civio/presupuesto/compare/v4.3.2...HEAD
+[4.3.2]: https://github.com/civio/presupuesto/releases/tag/v4.3.2
+[4.3.1]: https://github.com/civio/presupuesto/releases/tag/v4.3.1
+[4.3]: https://github.com/civio/presupuesto/releases/tag/v4.3
 [4.2.1]: https://github.com/civio/presupuesto/releases/tag/v4.2.1
 [4.2]: https://github.com/civio/presupuesto/releases/tag/v4.2
 [4.1]: https://github.com/civio/presupuesto/releases/tag/v4.1
