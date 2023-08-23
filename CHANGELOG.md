@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-## [5.0] - 2023-08-23
+## [4.4] - 2023-08-23
 ### Added
 - Monitoring: Add new Monitoring section (goals, activities and indicators), controlled via `SHOW_MONITORING_TAB`. #1216 #1213 #1203
 - Main investments: Add new Main Investments section, controlled via `SHOW_MAIN_INVESTMENTS`. #1109 #1163 #1176 #1253
@@ -307,8 +307,8 @@ All notable changes to this project will be documented in this file.
 ### Forked from [aragonopendata/presupuesto](https://github.com/aragonopendata/presupuesto) - 2016-01-28
 
 
-[Unreleased]: https://github.com/civio/presupuesto/compare/v5.0...HEAD
-[5.0]: https://github.com/civio/presupuesto/releases/tag/v5.0
+[Unreleased]: https://github.com/civio/presupuesto/compare/v4.4...HEAD
+[4.4]: https://github.com/civio/presupuesto/releases/tag/v5.0
 [4.3.2]: https://github.com/civio/presupuesto/releases/tag/v4.3.2
 [4.3.1]: https://github.com/civio/presupuesto/releases/tag/v4.3.1
 [4.3]: https://github.com/civio/presupuesto/releases/tag/v4.3
