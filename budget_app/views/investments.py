@@ -54,7 +54,7 @@ def investments_show(request, id, title, render_callback=None):
 
     # Get area name
     c['area'] = GeographicCategory.objects.filter(  budget__entity=entity,
-                                                    code=id)[0]
+                                                    code=id).first()
 
     # Get the investments breakdown
     query = "gc.code = %s and e.id = %s"

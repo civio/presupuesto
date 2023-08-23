@@ -17,7 +17,8 @@ class BudgetManager(models.Manager):
     def latest(self, entity_id):
         return self.filter(entity_id=entity_id) \
                     .exclude(status='PR') \
-                    .order_by('-year')[0]
+                    .order_by('-year') \
+                    .first()
 
     # Return a list of years for which we have a budget
     # TODO: I don't think we should we using this, without filtering for entity.

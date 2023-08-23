@@ -202,11 +202,11 @@ def entities_show_article(request, c, entity, id, title, show_side, render_callb
     if c['is_chapter']:
         c['article'] = EconomicCategory.objects.filter( budget__entity=entity,
                                                         chapter=id, 
-                                                        expense=(show_side=='expense'))[0]
+                                                        expense=(show_side=='expense')).first()
     else:
         c['article'] = EconomicCategory.objects.filter( budget__entity=entity,
                                                         article=id, 
-                                                        expense=(show_side=='expense'))[0]
+                                                        expense=(show_side=='expense')).first()
 
     # Ignore if possible the descriptions for execution data, they are truncated and ugly
     article_descriptions = {}

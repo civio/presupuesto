@@ -18,7 +18,7 @@ class MainInvestmentsLoader(BaseLoader):
         if not budget:
             raise Exception("Budget (%s/%s) not found" % (entity.name, year))
         else:
-            budget = budget[0]
+            budget = budget.first()
 
         # Delete previous investments for the given budget if they exist
         MainInvestment.objects.filter(budget=budget).delete()
@@ -73,7 +73,7 @@ class MainInvestmentsLoader(BaseLoader):
                 print u"ALERTA: No se encuentra la categoría funcional '%s' para '%s'" % (item['fc_code'], item['project_id'])
                 continue
             else:
-                fc = fc[0]
+                fc = fc.first()
 
             # Fetch geographic category
             if item['gc_code'] is not None and item['gc_code'] != '':
@@ -83,7 +83,7 @@ class MainInvestmentsLoader(BaseLoader):
                     print u"ALERTA: No se encuentra la categoría geográfica '%s' para '%s'" % (item['gc_code'], item['project_id'])
                     continue
                 else:
-                    gc = gc[0]
+                    gc = gc.first()
             else:
                 gc = None
 

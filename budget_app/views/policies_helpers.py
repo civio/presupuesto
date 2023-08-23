@@ -63,10 +63,10 @@ def programmes_show_helper(request, c, entity, id, title, render_callback=None):
     c['programme_id'] = id
     programme = FunctionalCategory.objects.filter(budget__entity=entity,
                                                     programme=id,
-                                                    subprogramme__isnull=True)[0]
+                                                    subprogramme__isnull=True).first()
     c['policy'] = FunctionalCategory.objects.filter(budget__entity=entity,
                                                     policy=programme.policy,
-                                                    function__isnull=True)[0]
+                                                    function__isnull=True).first()
 
     # Ignore if possible the descriptions for execution data, they are truncated and ugly
     programme_descriptions = {}
@@ -154,7 +154,7 @@ def articles_show_helper(request, c, entity, id, title, show_side, render_callba
     c['article_id'] = id
     c['article'] = EconomicCategory.objects.filter( budget__entity=entity,
                                                     article=id, 
-                                                    expense=(show_side=='expense'))[0]
+                                                    expense=(show_side=='expense')).first()
 
     # Ignore if possible the descriptions for execution data, they are truncated and ugly
     article_descriptions = {}
