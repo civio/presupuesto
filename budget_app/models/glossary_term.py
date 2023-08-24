@@ -29,7 +29,6 @@ class GlossaryTerm(models.Model):
     objects = GlossaryTermManager()
 
     class Meta:
-        app_label = "budget_app"
         db_table = "glossary_terms"
 
     def __unicode__(self):
