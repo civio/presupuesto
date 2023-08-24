@@ -21,7 +21,7 @@
       <div class="areas-select">
         <ul>
         {% for area in areas %}
-          <li><a tabindex="-1" href="{% url 'budget_app.views.investments_show' area.code, area.slug() %}">{{ area.description|safe }}</a></li>
+          <li><a tabindex="-1" href="{{ url('budget_app.views.investments_show', area.code, area.slug()) }}">{{ area.description|safe }}</a></li>
         {% endfor %}
         </ul>
         {% include 'investments/areas_map.html' %}
