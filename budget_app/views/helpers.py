@@ -6,10 +6,11 @@ import os
 import re
 
 from contextlib import contextmanager
-from coffin.shortcuts import render_to_response
 from django.template import RequestContext
+from django.shortcuts import render as django_render
 from django.conf import settings
 from django.core import urlresolvers
+from django.utils import translation
 from django.utils.translation import ugettext as _
 
 from project.settings import ROOT_PATH
@@ -59,6 +60,12 @@ def get_context(request, css_class='', title=''):
         c['treemap_labels_font_size_min'] = settings.TREEMAP_LABELS_FONT_SIZE_MIN
 
     c['treemap_global_max_value'] = not hasattr(settings, 'TREEMAP_GLOBAL_MAX_VALUE') or settings.TREEMAP_GLOBAL_MAX_VALUE
+
+    # Starting in Django 1.8, using django-jinja, context processors are run AFAIK **after** the view is done,
+    # so we need to populate those values that we're going to use in the views themselves.
+    # So this is basically a copy of django.template.context_processors.i18n.
+    # See https://docs.djangoproject.com/en/1.8/_modules/django/template/context_processors/
+    c['LANGUAGE_CODE'] = translation.get_language()
 
     try:
         c['active_tab'] = filter(
@@ -324,7 +331,7 @@ def _set_meta_fields(c):
 def render_response(template_name, c):
     _set_meta_fields(c)
 
-    return render_to_response(template_name, c)
+    return django_render(c.request, template_name, context=c)
 
 # Check whether a callback is provided and, based on that, render HTML or call back.
 def render(c, render_callback, template_name):

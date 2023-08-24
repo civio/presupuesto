@@ -1,7 +1,6 @@
 # -*- coding: UTF-8 -*-
-from coffin.shortcuts import render_to_response
-from budget_app.views.helpers import *
 
+from budget_app.views.helpers import *
 
 def guided_visit(request, render_callback=None):
     # Get request context
