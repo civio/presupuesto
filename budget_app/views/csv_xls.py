@@ -436,7 +436,7 @@ class CSVGenerator:
 
     def generate_response(self, c):
         # Create the HttpResponse object with the appropriate CSV header
-        response = HttpResponse(mimetype='text/csv; charset=utf-8')
+        response = HttpResponse(content_type='text/csv; charset=utf-8')
         response['Content-Disposition'] = 'attachment; filename="%s"' % self.filename
 
         writer = csv.writer(response)
@@ -470,7 +470,7 @@ class XLSXGenerator:
             workbook.save(tmp.name)
             tmp.seek(0)
 
-            response = HttpResponse(tmp.read(), mimetype='application/ms-excel; charset=utf-8')
+            response = HttpResponse(tmp.read(), content_type='application/ms-excel; charset=utf-8')
             response['Content-Disposition'] = 'attachment; filename="%s"' % self.filename
             return response
 
