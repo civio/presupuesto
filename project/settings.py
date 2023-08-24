@@ -200,7 +200,6 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'django_jasmine',
-    'south',
     'compressor',
     THEME,
     'budget_app'
