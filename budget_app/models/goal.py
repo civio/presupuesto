@@ -20,7 +20,6 @@ class Goal(models.Model):
     objects = GoalsManager()
 
     class Meta:
-        app_label = "budget_app"
         db_table = "goals"
 
     def __unicode__(self):

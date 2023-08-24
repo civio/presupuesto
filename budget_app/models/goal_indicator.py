@@ -155,7 +155,6 @@ class GoalIndicator(models.Model):
     objects = GoalIndicatorsManager()
 
     class Meta:
-        app_label = "budget_app"
         db_table = "goal_indicators"
 
     def __unicode__(self):

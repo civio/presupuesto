@@ -153,7 +153,6 @@ class Payment(models.Model):
     objects = PaymentManager()
 
     class Meta:
-        app_label = "budget_app"
         db_table = "payments"
 
     def __unicode__(self):

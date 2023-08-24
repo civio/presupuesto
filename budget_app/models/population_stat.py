@@ -39,7 +39,6 @@ class PopulationStat(models.Model):
     objects = PopulationStatManager()
 
     class Meta:
-        app_label = "budget_app"
         db_table = "population_stats"
 
     def __unicode__(self):

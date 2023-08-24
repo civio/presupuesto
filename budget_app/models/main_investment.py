@@ -55,7 +55,6 @@ class MainInvestment(models.Model):
     objects = MainInvestmentManager()
 
     class Meta:
-        app_label = "budget_app"
         db_table = "main_investments"
 
     def __unicode__(self):
