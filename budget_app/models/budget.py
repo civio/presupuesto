@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 
 from django.db import models
-from django.core.cache import get_cache
+from django.core.cache import caches
 from django.utils.translation import ugettext as _
 from django.conf import settings
 
@@ -79,7 +79,7 @@ class BudgetManager(models.Manager):
 
     # Get all descriptions available
     def get_all_descriptions(self, entity):
-        cache = get_cache('default')
+        cache = caches['default']
         key = "entity_"+entity.code
         if cache.get(key) == None:
             descriptions = {
