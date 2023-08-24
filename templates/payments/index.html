@@ -6,7 +6,7 @@
   <!-- Payments Header -->
   <div class="payments-header section-header">
     <div class="container">
-      <h2 class="page-title">{{ entity.name+': ' if is_secondary_entity }}{{ _('Inversiones y pagos') }}</h2>
+      <h2 class="page-title">{{ entity.name+': ' if is_secondary_entity else '' }}{{ _('Inversiones y pagos') }}</h2>
     </div>
   </div>
 

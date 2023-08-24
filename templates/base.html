@@ -1,4 +1,3 @@
-{% load i18n %}
 <!DOCTYPE html>
 <html lang="{{ request.LANGUAGE_CODE }}">
 <head>
@@ -10,17 +9,11 @@
 
   {% include 'shared/fonts.html' %}
 
-  {% load compress %}
-
-  {% compress css %}
   <link href="{{ STATIC_URL }}stylesheets/main.css" media="all" rel="stylesheet" type="text/css" />
-  {% endcompress %}
   
-  {% compress js %}
   <script src="{{ STATIC_URL }}javascripts/jquery-2.2.4.js"></script>
   <script src="{{ STATIC_URL }}javascripts/jquery-migrate-1.4.1.js"></script>
   <script src="{{ STATIC_URL }}javascripts/modernizr-2.6.3.min.js"></script>
-  {% endcompress %}
 
   {% include 'shared/analytics.html' %}
 </head>
@@ -36,7 +29,6 @@
   </div>
   {% include 'shared/footer.html' %}
 
-  {% compress js %}
   <!-- Jquery plugins -->
   <script src="{{ STATIC_URL }}javascripts/jquery.ba-bbq.js"></script>
   <script src="{{ STATIC_URL }}javascripts/jquery.cookie.min.js"></script>
@@ -79,8 +71,6 @@
   <script src="{{ STATIC_URL }}javascripts/vis/stacked-area-chart.js"></script>
   <script src="{{ STATIC_URL }}javascripts/vis/budget-stacked-chart.js"></script>
   <script src="{{ STATIC_URL }}javascripts/vis/monitoring-radial-viz.js"></script>
-
-  {% endcompress %}
 
   {% if debug %}
   <script src="{{ STATIC_URL }}javascripts/count-css-rules.js"></script>
