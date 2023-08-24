@@ -2,17 +2,16 @@ import re
 import urlparse
 from urllib import urlencode
 
-from django import template
 from django.template.defaultfilters import slugify
 
-register = template.Library()
+from django_jinja import library
 
-@register.filter()
+@library.filter
 def redirect_url(value, lang):
     result = re.sub(r'^/[^/]+(/.*)$', r'/%s\1' % lang, value)
     return result
 
-@register.filter
+@library.filter
 def paginate(url, page):
     url_parts = list(urlparse.urlparse(url))
     # Why the ASCII encoding? See http://stackoverflow.com/a/16614758
@@ -22,15 +21,15 @@ def paginate(url, page):
     url_parts[4] = urlencode(query)
     return urlparse.urlunparse(url_parts)
 
-@register.filter()
+@library.filter
 def slug(s):
     return slugify(s)
 
-@register.filter()
+@library.filter
 def split(s, pattern):
     return s.split(pattern)
 
-@register.filter()
+@library.filter
 # After more than an hour fighting with this, I couldn't set the locale to get Python
 # to use the right thousands separator, so I'm doing this. :/
 # Oh, and then found out that Madrid is running under Python 2.6, so the `{,d}`

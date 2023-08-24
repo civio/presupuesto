@@ -40,7 +40,6 @@ THEME_PATH = os.path.join(ROOT_PATH, THEME)
 # DJANGO SETTINGS
 #
 DEBUG = ENV.get('DEBUG', False)
-TEMPLATE_DEBUG = ENV.get('TEMPLATE_DEBUG', DEBUG)
 
 DATABASES = {
     'default': {
@@ -180,14 +179,6 @@ ROOT_URLCONF = 'project.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'project.wsgi.application'
 
-TEMPLATE_DIRS = (
-    os.path.join(os.path.dirname(__file__), '..', THEME, 'templates'),
-    os.path.join(os.path.dirname(__file__), '..', 'templates')
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-)
-
 INSTALLED_APPS = (
     # 'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -199,25 +190,76 @@ INSTALLED_APPS = (
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    'django_jinja',
     'django_jasmine',
     'compressor',
     THEME,
     'budget_app'
 )
 
-# Uncomment next line to force JS compression in development (Debug=True)
-# COMPRESS_ENABLED = True
 
-# Configure Compressor for Jinja2
-JINJA2_EXTENSIONS = [
-    'compressor.contrib.jinja2ext.CompressorExtension',
+# Template engine configuration
+TEMPLATES = [
+    {
+        'BACKEND': 'django_jinja.backend.Jinja2',
+        'DIRS': [
+            os.path.join(THEME_PATH, 'templates'),
+            os.path.join(ROOT_PATH, 'templates')
+        ],
+        'APP_DIRS': False,
+        'OPTIONS': {
+            'match_extension': '.html',
+            'match_regex': '',
+            'undefined': None,
+            'newstyle_gettext': False,
+            'tests': {
+            },
+            'filters': {
+            },
+            'globals': {
+            },
+            'constants': {
+            },
+            'context_processors': [
+                'django.core.context_processors.debug',
+                'django.core.context_processors.i18n',
+                'django.core.context_processors.media',
+                'django.core.context_processors.static',
+                'django.core.context_processors.tz',
+                'django.core.context_processors.request',
+                'django.contrib.messages.context_processors.messages',
+                'budget_app.context_processors.accounts_id_processor',
+                'budget_app.context_processors.cookies_url_processor',
+                'budget_app.context_processors.show_options_processor',
+                'budget_app.context_processors.main_entity_processor',
+                'budget_app.context_processors.data_sources_processor',
+                'budget_app.context_processors.search_entities_processor',
+                'budget_app.context_processors.overview_use_new_vis',
+                'budget_app.context_processors.debug'
+            ],
+            'extensions': [
+                'jinja2.ext.do',
+                'jinja2.ext.loopcontrols',
+                'jinja2.ext.i18n',
+                'django_jinja.builtins.extensions.CsrfExtension',
+                'django_jinja.builtins.extensions.CacheExtension',
+                'django_jinja.builtins.extensions.TimezoneExtension',
+                'django_jinja.builtins.extensions.UrlsExtension',
+                'django_jinja.builtins.extensions.StaticFilesExtension',
+                'django_jinja.builtins.extensions.DjangoFiltersExtension',
+                'compressor.contrib.jinja2ext.CompressorExtension',
+            ],
+            'bytecode_cache': {
+                'name': 'default',
+                'backend': 'django_jinja.cache.BytecodeCache',
+                'enabled': False,
+            },
+            'autoescape': True,
+            'auto_reload': DEBUG,
+            'translation_engine': 'django.utils.translation',
+        }
+    },
 ]
-
-
-# Needed by django_compressor. See http://django-compressor.readthedocs.org/en/latest/jinja2/#id1
-def COMPRESS_JINJA2_GET_ENVIRONMENT():
-    from coffin.common import env
-    return env
 
 
 # Setup Jasmine folder for js unit
@@ -272,25 +314,6 @@ else:
             },
         }
     }
-
-TEMPLATE_CONTEXT_PROCESSORS = (
-    # "django.contrib.auth.context_processors.auth",
-    "django.core.context_processors.debug",
-    "django.core.context_processors.i18n",
-    "django.core.context_processors.media",
-    "django.core.context_processors.static",
-    "django.core.context_processors.tz",
-    "django.core.context_processors.request",
-    "django.contrib.messages.context_processors.messages",
-    "budget_app.context_processors.accounts_id_processor",
-    "budget_app.context_processors.cookies_url_processor",
-    "budget_app.context_processors.show_options_processor",
-    "budget_app.context_processors.main_entity_processor",
-    "budget_app.context_processors.data_sources_processor",
-    "budget_app.context_processors.search_entities_processor",
-    "budget_app.context_processors.overview_use_new_vis",
-    "budget_app.context_processors.debug"
-)
 
 SEARCH_CONFIG = ENV.get('SEARCH_CONFIG', 'pg_catalog.english')
 
