@@ -34,7 +34,6 @@ class InflationStat(models.Model):
     objects = InflationStatManager()
 
     class Meta:
-        app_label = "budget_app"
         db_table = "inflation_stats"
 
     def __unicode__(self):

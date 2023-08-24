@@ -38,7 +38,6 @@ class FunctionalCategory(models.Model):
     objects = FunctionalCategoriesManager()
 
     class Meta:
-        app_label = "budget_app"
         db_table = "functional_categories"
 
     # Returns the 'budget domain' id, used to uniquely identify a category in

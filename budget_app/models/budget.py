@@ -112,7 +112,6 @@ class Budget(models.Model):
     objects = BudgetManager()
 
     class Meta:
-        app_label = "budget_app"
         db_table = "budgets"
 
     def __unicode__(self):

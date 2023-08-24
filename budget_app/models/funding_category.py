@@ -18,7 +18,6 @@ class FundingCategory(models.Model):
     objects = FundingCategoriesManager()
 
     class Meta:
-        app_label = "budget_app"
         db_table = "funding_categories"
 
     # Return the 'budget domain' id, used to uniquely identify a category
