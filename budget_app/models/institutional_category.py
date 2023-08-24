@@ -27,7 +27,6 @@ class InstitutionalCategory(models.Model):
     objects = InstitutionalCategoriesManager()
 
     class Meta:
-        app_label = "budget_app"
         db_table = "institutional_categories"
 
     # Return the 'budget domain' id, used to uniquely identify a category

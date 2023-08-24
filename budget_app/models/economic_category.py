@@ -42,7 +42,6 @@ class EconomicCategory(models.Model):
     objects = EconomicCategoriesManager()
 
     class Meta:
-        app_label = "budget_app"
         db_table = "economic_categories"
 
     # Return the 'budget domain' id, used to uniquely identify a category

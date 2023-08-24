@@ -86,7 +86,6 @@ class BudgetItem(models.Model):
     objects = BudgetItemManager()
 
     class Meta:
-        app_label = "budget_app"
         db_table = "budget_items"
 
     # Return a budget id unique across all years, so we can match them later
