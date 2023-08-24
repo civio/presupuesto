@@ -10,13 +10,9 @@ Para instalar la aplicación en local es necesario seguir los siguientes pasos:
         $ python -m virtualenv env
         $ source env/bin/activate
 
-* Instalar los componentes utilizados por la aplicación. Actualmente, la aplicación requiere coffin 0.4.0, así como Django 1.7.x:
+* Instalar los componentes utilizados por la aplicación. Actualmente, la aplicación requiere Django 1.7.x:
     
         $ pip install -r requirements/local.txt
-
-    Incompatibilidad con otras versiones de coffin y django:
-    * En coffin > 0.4.0 desaparece `coffin.common.env`.
-    * En django > 1.6 desaparece el argumento [deprecado][4] `mimetype`.
 
 * Borrar base de datos:
 
@@ -39,7 +35,7 @@ Para instalar la aplicación en local es necesario seguir los siguientes pasos:
 
 ### Adaptando el aspecto visual
 
-La aplicación soporta el concepto de 'themes' capaces de modificar el aspecto visual de la web: tanto recursos estáticos (imágenes, hojas de estilo...) como las plantillas que generan el contenido de la web. El repositorio [`presupuesto-dvmi`](https://github.com/civio/presupuesto-dvmi) de Civio -una adaptación del software de Aragón Open Data a los Presupuestos Generales del Estado- es un buen ejemplo de cómo puede organizarse el contenido de un theme. Si su proyecto tiene ámbito municipal puede basarse en el repositorio de [`presupuesto-torrelodones`](https://github.com/civio/presupuesto-torrelodones)
+La aplicación soporta el concepto de 'themes' capaces de modificar el aspecto visual de la web: tanto recursos estáticos (imágenes, hojas de estilo...) como las plantillas que generan el contenido de la web. El repositorio [`presupuesto-dvmi`](https://github.com/civio/presupuesto-dvmi) de Civio -una adaptación del software de Aragón Open Data a los Presupuestos Generales del Estado- es un buen ejemplo de cómo puede organizarse el contenido de un theme. Si su proyecto tiene ámbito municipal puede basarse en el repositorio de [`presupuesto-polinya`](https://github.com/civio/presupuesto-polinya)
 
 El theme a usar se configura mediante la variable `THEME` en local_settings.py. Es referenciada en diversos puntos de `settings.py` para instalar los directorios del theme (plantillas y recursos estáticos) justo antes de los de la aplicación principal.
 
@@ -85,6 +81,3 @@ Pero para usarlo de manera regular debemos configurar la aplicación, vía `loca
 * Arrancar el servidor en modo livereload:
 
         $ python manage.py livereload
-
-[4]: https://docs.djangoproject.com/en/1.7/internals/deprecation/#deprecation-removed-in-1-7
-[5]: https://docs.djangoproject.com/en/1.5/topics/python3/#philosophy
