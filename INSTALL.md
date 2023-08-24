@@ -10,7 +10,7 @@ Para instalar la aplicación en local es necesario seguir los siguientes pasos:
         $ python -m virtualenv env
         $ source env/bin/activate
 
-* Instalar los componentes utilizados por la aplicación. Actualmente, la aplicación requiere coffin 0.4.0, así como Django 1.5.x:
+* Instalar los componentes utilizados por la aplicación. Actualmente, la aplicación requiere coffin 0.4.0, así como Django 1.7.x:
     
         $ pip install -r requirements/local.txt
 
@@ -30,7 +30,6 @@ Para instalar la aplicación en local es necesario seguir los siguientes pasos:
 
 * Crear el esquema de la base de datos y cargar los datos básicos:
 
-        $ python manage.py syncdb
         $ python manage.py migrate
 
         $ python manage.py load_glossary
