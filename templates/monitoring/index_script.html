@@ -7,7 +7,8 @@
 
     // Generate URLs for each policy
     policyData.forEach(function(policy) {
-      policy.url = getPolicyLink(policy.code, policy.label)+"#view=monitoring";
+      // When embedding the chart, 'petals' are not clickable, so the URL is '#'.
+      policy.url = $('body').hasClass('widget') ? '#' : getPolicyLink(policy.code, policy.label)+"#view=monitoring";
     });
 
     // Create Policy RadialViz
