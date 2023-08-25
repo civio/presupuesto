@@ -134,12 +134,6 @@ COMPRESS_PRECOMPILERS = (
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = ')e2qrwa6e$u30r0)w=52!0j1_&amp;$t+y3z!o-(7ej0=#i!c7pjuy'
 
-# List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-)
-
 if DEBUG:
     MIDDLEWARE_CLASSES = (
         'django.middleware.common.CommonMiddleware',
@@ -189,17 +183,8 @@ TEMPLATES = [
         'APP_DIRS': False,
         'OPTIONS': {
             'match_extension': '.html',
-            'match_regex': '',
             'undefined': None,
             'newstyle_gettext': False,
-            'tests': {
-            },
-            'filters': {
-            },
-            'globals': {
-            },
-            'constants': {
-            },
             'context_processors': [
                 'django.core.context_processors.debug',
                 'django.core.context_processors.i18n',
@@ -229,12 +214,6 @@ TEMPLATES = [
                 'django_jinja.builtins.extensions.DjangoFiltersExtension',
                 'compressor.contrib.jinja2ext.CompressorExtension',
             ],
-            'bytecode_cache': {
-                'name': 'default',
-                'backend': 'django_jinja.cache.BytecodeCache',
-                'enabled': False,
-            },
-            'autoescape': True,
             'auto_reload': DEBUG,
             'translation_engine': 'django.utils.translation',
         }
