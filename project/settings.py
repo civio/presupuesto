@@ -182,7 +182,7 @@ TEMPLATES = [
         ],
         'APP_DIRS': False,
         'OPTIONS': {
-            'match_extension': '.html',
+            'match_extension': '',
             'undefined': None,
             'newstyle_gettext': False,
             'context_processors': [
