@@ -3,7 +3,7 @@
 <head>
   {% include 'shared/meta.html' %}
 
-  <title>{{ meta_title|safe }}</title>
+  <title>{{ meta_title|safe }}</title>
   
   <link href="{{ static('assets/favicon.png') }}" rel="icon" type="image/x-icon" />
 
@@ -15,7 +15,9 @@
   <script src="{{ static('javascripts/jquery-migrate-1.4.1.js') }}"></script>
   <script src="{{ static('javascripts/modernizr-2.6.3.min.js') }}"></script>
 
+  {% if not debug %}
   {% include 'shared/analytics.html' %}
+  {% endif %}
 </head>
 <body class="{{ page_css_class }}">
   <!--[if lt IE 9]>

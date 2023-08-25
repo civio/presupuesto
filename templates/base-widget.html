@@ -19,7 +19,9 @@
   <script src="{{ static('javascripts/modernizr-2.6.3.min.js') }}"></script>
   {% endcompress %}
 
+  {% if not debug %}
   {% include 'shared/analytics.html' %}
+  {% endif %}
 </head>
 <body class="{{ page_css_class }} widget">
   <!--[if lt IE 9]>
