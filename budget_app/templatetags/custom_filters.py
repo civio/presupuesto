@@ -1,9 +1,7 @@
 import re
 import urlparse
+
 from urllib import urlencode
-
-from django.template.defaultfilters import slugify
-
 from django_jinja import library
 
 @library.filter
@@ -20,10 +18,6 @@ def paginate(url, page):
     query.update({'page': page})
     url_parts[4] = urlencode(query)
     return urlparse.urlunparse(url_parts)
-
-@library.filter
-def slug(s):
-    return slugify(s)
 
 @library.filter
 def split(s, pattern):

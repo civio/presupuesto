@@ -10,7 +10,7 @@
     <li class="monitoring-year-{{ programme[0] }}">
       <a
         class="monitoring-block collapsed"
-        href="{{ url('budget_app.views.programmes_show', programme[2], programme[3]|slug) }}#view=monitoring&year={{ programme[0] }}">
+        href="{{ url('budget_app.views.programmes_show', programme[2], programme[3]|slugify) }}#view=monitoring&year={{ programme[0] }}">
 
         <h4 class="monitoring-title">{{ programme[3] }}</h4>
         {% set has_actual_data = monitoring_totals[programme[0]]!='' %}
