@@ -165,7 +165,6 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.staticfiles',
     'django_jinja',
-    'django_jasmine',
     'compressor',
     THEME,
     'budget_app'
@@ -211,12 +210,6 @@ TEMPLATES = [
     },
 ]
 
-
-# Setup Jasmine folder for js unit test.
-# See https://github.com/Aquasys/django-jasmine#installation
-JASMINE_TEST_DIRECTORY = (
-    os.path.join(os.path.dirname(__file__), '..', 'tests')
-)
 
 # Logging configuration
 if DEBUG:

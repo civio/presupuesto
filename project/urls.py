@@ -173,21 +173,10 @@ budget_app_urlpatterns += url_patterns('budget_app.views',
 
 # Add extra application paths, not i18n
 budget_app_urlpatterns += patterns('budget_app.views',
-    # Runtime info
     url(r'^version.json$', 'version_api'),
-
-    # Sitemap
     url(r'^sitemap\.xml$', 'sitemap'),
-
-    # Robots
     url(r'^robots\.txt$', lambda request: render(request, 'robots.txt', content_type='text/plain')),
 )
-
-# Include Jasmine urls fot JS Unit Tests only in development
-if settings.DEBUG:
-    budget_app_urlpatterns += patterns('',
-        url(r'^tests/', include('django_jasmine.urls'))
-    )
 
 # Add the theme URL patterns, if they exist, in front of the default app ones
 if hasattr(settings, 'EXTRA_URLS'):
