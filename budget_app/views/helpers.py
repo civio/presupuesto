@@ -328,14 +328,14 @@ def _set_meta_fields(c):
 #
 
 # Wrapper around render_to_response, useful to hold code to be called for all responses
-def render_response(template_name, c):
+def render_response(template_name, c, content_type=None):
     _set_meta_fields(c)
 
-    return django_render(c.request, template_name, context=c)
+    return django_render(c.request, template_name, context=c, content_type=content_type)
 
 # Check whether a callback is provided and, based on that, render HTML or call back.
-def render(c, render_callback, template_name):
+def render(c, render_callback, template_name, content_type=None):
     if not render_callback:
-        return render_response(template_name, c)
+        return render_response(template_name, c, content_type=content_type)
     else:
         return render_callback.generate_response(c)
