@@ -5,6 +5,8 @@ import sys
 
 SETTINGS_PATH = os.path.dirname(os.path.abspath(__file__))
 ROOT_PATH = os.path.join(SETTINGS_PATH, '..')
+APP_PATH = os.path.join(ROOT_PATH, 'budget_app')
+
 
 # ENVIRONMENT-SPECIFIC SETTINGS
 #
@@ -22,6 +24,7 @@ except IOError:
 HTTP_PROXY = ENV.get('HTTP_PROXY') or ENV.get('http_proxy')
 HTTPS_PROXY = ENV.get('HTTPS_PROXY') or ENV.get('https_proxy')
 
+
 # THEME-SPECIFIC SETTINGS
 # Note: After looking into ways of importing modules dynamically, I decided this was the simplest solution
 # Following http://igorsobreira.com/2010/09/12/customize-settingspy-locally-in-django.html
@@ -30,12 +33,12 @@ HTTPS_PROXY = ENV.get('HTTPS_PROXY') or ENV.get('https_proxy')
 #
 if ENV.get('THEME'):
     THEME = ENV.get('THEME')
+    THEME_PATH = os.path.join(ROOT_PATH, THEME)
     execfile(os.path.join(ROOT_PATH, THEME, 'settings.py'), globals(), locals())
 else:
     print "Please set the environment variable THEME in your local_settings.py file."
     sys.exit(1)
 
-THEME_PATH = os.path.join(ROOT_PATH, THEME)
 
 # DJANGO SETTINGS
 #
@@ -55,19 +58,16 @@ DATABASES = {
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
-
 MANAGERS = ADMINS
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
-# although not all choices may be available on all operating systems.
-# In a Windows environment this must be set to your system time zone.
 TIME_ZONE = 'Europe/Madrid'
 
 # Location of translation files (used by themes to override certain strings)
 LOCALE_PATHS = (
-    os.path.join(os.path.dirname(__file__), '..', THEME, 'locale'),
-    os.path.join(ROOT_PATH, 'budget_app', 'locale'),
+    os.path.join(THEME_PATH, 'locale'),
+    os.path.join(APP_PATH, 'locale'),
 )
 
 # Ensure LANGUAGES is defined for LocaleMiddleware. Multilingual themes
@@ -96,18 +96,14 @@ USE_L10N = False
 USE_TZ = False
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
-# Example: "/home/media/media.lawrence.com/media/"
 MEDIA_ROOT = ''
 
-# URL that handles the media served from MEDIA_ROOT. Make sure to use a
-# trailing slash.
-# Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
+# URL that handles the media served from MEDIA_ROOT. Make sure to use a trailing slash.
 MEDIA_URL = ''
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
-# Example: "/home/media/media.lawrence.com/static/"
 STATIC_ROOT = os.path.join(ROOT_PATH, 'static')
 
 # URL prefix for static files.
@@ -119,26 +115,18 @@ else:
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    # Put strings here, like "/home/html/static" or "C:/www/django/static".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
-    os.path.join(ROOT_PATH, THEME, 'static'),
-    os.path.join(ROOT_PATH, 'budget_app', 'static')
+    os.path.join(THEME_PATH, 'static'),
+    os.path.join(APP_PATH, 'static')
 )
 
-# List of finder classes that know how to find static files in
-# various locations.
+# List of finder classes that know how to find static files in various locations.
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    # 'django.contrib.staticfiles.finders.DefaultStorageFinder',
     'compressor.finders.CompressorFinder',  # add Django Compressor's file finder
 )
 
-#
 # Config to compile LESS files automatically
-#
-
 COMPRESS_PRECOMPILERS = (
     ('text/less', 'lessc {infile} {outfile}'),
 )
@@ -150,7 +138,6 @@ SECRET_KEY = ')e2qrwa6e$u30r0)w=52!0j1_&amp;$t+y3z!o-(7ej0=#i!c7pjuy'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-    # 'django.template.loaders.eggs.Loader',
 )
 
 if DEBUG:
@@ -180,16 +167,9 @@ ROOT_URLCONF = 'project.urls'
 WSGI_APPLICATION = 'project.wsgi.application'
 
 INSTALLED_APPS = (
-    # 'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    # 'django.contrib.sites',
-    # 'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
     'django_jinja',
     'django_jasmine',
     'compressor',
@@ -261,13 +241,13 @@ TEMPLATES = [
     },
 ]
 
-
-# Setup Jasmine folder for js unit
-# test https://github.com/Aquasys/django-jasmine#installation
+# Setup Jasmine folder for js unit test.
+# See https://github.com/Aquasys/django-jasmine#installation
 JASMINE_TEST_DIRECTORY = (
     os.path.join(os.path.dirname(__file__), '..', 'tests')
 )
 
+# Logging configuration
 if DEBUG:
     LOGGING = {
         'version': 1,
@@ -317,13 +297,13 @@ else:
 
 SEARCH_CONFIG = ENV.get('SEARCH_CONFIG', 'pg_catalog.english')
 
+# Cache configuration
 DEFAULT_CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
     }
 }
 CACHES = ENV.get('CACHES', DEFAULT_CACHES)
-
 CACHE_MIDDLEWARE_ALIAS = 'default'
 CACHE_MIDDLEWARE_SECONDS = 60 * 60 * 24  # 1 Day: data doesn't actually change
 CACHE_MIDDLEWARE_KEY_PREFIX = 'budget_app'
