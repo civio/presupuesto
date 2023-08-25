@@ -100,7 +100,7 @@ def subprogrammes_show(request, id, title, render_callback=None):
     # if parameter widget defined use policies/widget template instead of policies/show
     template = 'policies/show_widget.html' if isWidget(request) else 'policies/show.html'
 
-    return render(c, render_callback, template )
+    return render(c, render_callback, template)
 
 
 def income_articles_show(request, id, title, render_callback=None):

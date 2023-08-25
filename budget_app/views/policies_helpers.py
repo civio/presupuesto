@@ -55,7 +55,7 @@ def policies_show_helper(request, c, entity, id, title, render_callback=None):
     # if parameter widget defined use policies/widget template instead of policies/show
     template = 'policies/show_widget.html' if isWidget(request) else 'policies/show.html'
 
-    return render(c, render_callback, template )
+    return render(c, render_callback, template)
 
 
 def programmes_show_helper(request, c, entity, id, title, render_callback=None):
@@ -146,7 +146,7 @@ def programmes_show_helper(request, c, entity, id, title, render_callback=None):
     # if parameter widget defined use policies/widget template instead of policies/show
     template = 'policies/show_widget.html' if isWidget(request) else 'policies/show.html'
 
-    return render(c, render_callback, template )
+    return render(c, render_callback, template)
 
 
 def articles_show_helper(request, c, entity, id, title, show_side, render_callback=None):
@@ -205,7 +205,7 @@ def articles_show_helper(request, c, entity, id, title, show_side, render_callba
     # if parameter widget defined use policies/widget template instead of policies/show
     template = 'policies/show_widget.html' if isWidget(request) else 'policies/show.html'
 
-    return render(c, render_callback, template )
+    return render(c, render_callback, template)
 
 
 # Poor man's D3js' group method. Python's `groupby` is -confusingly- something else,
