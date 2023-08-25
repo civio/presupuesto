@@ -188,11 +188,7 @@ TEMPLATES = [
             'context_processors': [
                 'django.core.context_processors.debug',
                 'django.core.context_processors.i18n',
-                'django.core.context_processors.media',
-                'django.core.context_processors.static',
-                'django.core.context_processors.tz',
                 'django.core.context_processors.request',
-                'django.contrib.messages.context_processors.messages',
                 'budget_app.context_processors.accounts_id_processor',
                 'budget_app.context_processors.cookies_url_processor',
                 'budget_app.context_processors.show_options_processor',
@@ -203,12 +199,7 @@ TEMPLATES = [
                 'budget_app.context_processors.debug'
             ],
             'extensions': [
-                'jinja2.ext.do',
-                'jinja2.ext.loopcontrols',
                 'jinja2.ext.i18n',
-                'django_jinja.builtins.extensions.CsrfExtension',
-                'django_jinja.builtins.extensions.CacheExtension',
-                'django_jinja.builtins.extensions.TimezoneExtension',
                 'django_jinja.builtins.extensions.UrlsExtension',
                 'django_jinja.builtins.extensions.StaticFilesExtension',
                 'django_jinja.builtins.extensions.DjangoFiltersExtension',
@@ -219,6 +210,7 @@ TEMPLATES = [
         }
     },
 ]
+
 
 # Setup Jasmine folder for js unit test.
 # See https://github.com/Aquasys/django-jasmine#installation
