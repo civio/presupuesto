@@ -35,9 +35,9 @@
       <div class="panel-downloads">
         <p class="downloads">
           {{ _('Descarga la tabla de <strong>Principales inversiones</strong>')|safe }}
-          <a class="icon-file-excel" href="{{ url('budget_app.views.entity_main_investments_breakdown', entity.slug, 'csv') }}" title="{{ _('Descarga la tabla en CSV') }}"><span class="file-info">CSV</span></a>
+          <a class="icon-file-excel" href="{{ url('entity_main_investments_breakdown', entity.slug, 'csv') }}" title="{{ _('Descarga la tabla en CSV') }}"><span class="file-info">CSV</span></a>
           o
-          <a class="icon-file-excel" href="{{ url('budget_app.views.entity_main_investments_breakdown', entity.slug, 'xlsx') }}" title="{{ _('Descarga la tabla en Excel') }}"><span class="file-info">Excel</span></a>
+          <a class="icon-file-excel" href="{{ url('entity_main_investments_breakdown', entity.slug, 'xlsx') }}" title="{{ _('Descarga la tabla en Excel') }}"><span class="file-info">Excel</span></a>
         </p>
       </div>
 

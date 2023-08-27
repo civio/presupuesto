@@ -55,9 +55,9 @@
       <div class="panel-downloads">
         <p class="downloads" id="income-downloads">
           {{ _('Descarga la tabla de <strong>Pagos</strong>')|safe }}
-          <a class="icon-file-excel" data-base-url="{{ url('budget_app.views.entity_payments', entity.slug, 'csv') }}" title="{{ _('Descarga la tabla en CSV') }}"><span class="file-info">CSV</span></a>
+          <a class="icon-file-excel" data-base-url="{{ url('entity_payments', entity.slug, 'csv') }}" title="{{ _('Descarga la tabla en CSV') }}"><span class="file-info">CSV</span></a>
           {{ _('o') }}
-          <a class="icon-file-excel" data-base-url="{{ url('budget_app.views.entity_payments', entity.slug, 'xlsx') }}" title="{{ _('Descarga la tabla en Excel') }}"><span class="file-info">Excel</span></a>
+          <a class="icon-file-excel" data-base-url="{{ url('entity_payments', entity.slug, 'xlsx') }}" title="{{ _('Descarga la tabla en Excel') }}"><span class="file-info">Excel</span></a>
         </p>
       </div>
 {% endif %}

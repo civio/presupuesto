@@ -21,7 +21,7 @@
       <div class="areas-select">
         <ul>
         {% for area in areas %}
-          <li><a tabindex="-1" href="{{ url('budget_app.views.investments_show', area.code, area.slug()) }}">{{ area.description|safe }}</a></li>
+          <li><a tabindex="-1" href="{{ url('investments_show', area.code, area.slug()) }}">{{ area.description|safe }}</a></li>
         {% endfor %}
         </ul>
         {% include 'investments/areas_map.html' %}
@@ -40,9 +40,9 @@
       <div class="panel-downloads">
         <p class="downloads">
           {{ _('Descarga la tabla de <strong>Inversiones</strong>')|safe }}
-          <a class="icon-file-excel" href="{{ url('budget_app.views.entity_investments_breakdown', entity.slug, 'csv') }}" title="{{ _('Descarga la tabla en CSV') }}"><span class="file-info">CSV</span></a>
+          <a class="icon-file-excel" href="{{ url('entity_investments_breakdown', entity.slug, 'csv') }}" title="{{ _('Descarga la tabla en CSV') }}"><span class="file-info">CSV</span></a>
           o
-          <a class="icon-file-excel" href="{{ url('budget_app.views.entity_investments_breakdown', entity.slug, 'xlsx') }}" title="{{ _('Descarga la tabla en Excel') }}"><span class="file-info">Excel</span></a>
+          <a class="icon-file-excel" href="{{ url('entity_investments_breakdown', entity.slug, 'xlsx') }}" title="{{ _('Descarga la tabla en Excel') }}"><span class="file-info">Excel</span></a>
         </p>
       </div>
 

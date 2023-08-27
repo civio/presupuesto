@@ -39,15 +39,15 @@
 
 <p class="downloads" id="income-downloads">
   {{ _('Descarga la tabla de <strong>Ingresos</strong>')|safe }}
-  <a class="icon-file-excel" href="{{ url('budget_app.views.entities_income', level, 'csv') }}" title="{{ _('Descarga la tabla en CSV') }}"><span class="file-info">CSV</span></a>
+  <a class="icon-file-excel" href="{{ url('entities_income', level, 'csv') }}" title="{{ _('Descarga la tabla en CSV') }}"><span class="file-info">CSV</span></a>
   o
-  <a class="icon-file-excel" href="{{ url('budget_app.views.entities_income', level, 'xlsx') }}" title="{{ _('Descarga la tabla en Excel') }}"><span class="file-info">Excel</span></a>
+  <a class="icon-file-excel" href="{{ url('entities_income', level, 'xlsx') }}" title="{{ _('Descarga la tabla en Excel') }}"><span class="file-info">Excel</span></a>
 </p>
 <p class="downloads" id="expense-downloads">
   {{ _('Descarga la tabla de <strong>Gastos</strong>')|safe }}
-  <a class="icon-file-excel" href="{{ url('budget_app.views.entities_expenses', level, 'csv') }}" title="{{ _('Descarga la tabla en CSV') }}"><span class="file-info">CSV</span></a>
+  <a class="icon-file-excel" href="{{ url('entities_expenses', level, 'csv') }}" title="{{ _('Descarga la tabla en CSV') }}"><span class="file-info">CSV</span></a>
   o
-  <a class="icon-file-excel" href="{{ url('budget_app.views.entities_expenses', level, 'xlsx') }}" title="{{ _('Descarga la tabla en Excel') }}"><span class="file-info">Excel</span></a>
+  <a class="icon-file-excel" href="{{ url('entities_expenses', level, 'xlsx') }}" title="{{ _('Descarga la tabla en Excel') }}"><span class="file-info">Excel</span></a>
 </p>
 
 {% include 'shared/social_sharing.html' %}

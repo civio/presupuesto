@@ -3,7 +3,7 @@
 {% for article_id in articles %}
 <tr>
   <td class="col-1">
-    <a href="{{ url('budget_app.views.'+view_name, article_id, descriptions[expense_side].get(article_id)|slugify) }}">{{ descriptions[expense_side].get(article_id) }}</a>
+    <a href="{{ url(view_name, article_id, descriptions[expense_side].get(article_id)|slugify) }}">{{ descriptions[expense_side].get(article_id) }}</a>
   </td>
   <td class="col-2"></td>
 </tr>
