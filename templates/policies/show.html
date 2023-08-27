@@ -18,7 +18,7 @@
           <a href="{{ back_button['url'] }}">&larr; {{ back_button['description'] }}</a>
         {% else %}
           {# Default behaviour: back to main page. Try to go back to the tab we came from. #}
-          <a href="{{ url('budget_app.views.entities_policies', entity.code) if is_secondary_entity else url('budget_app.views.policies') }}#view={{ back_to_tab }}">&larr; {{ _('Volver a Políticas') }}</a>
+          <a href="{{ url('entities_policies', entity.code) if is_secondary_entity else url('policies') }}#view={{ back_to_tab }}">&larr; {{ _('Volver a Políticas') }}</a>
         {% endif %}
       </p>
       {% endif %}
@@ -88,7 +88,7 @@
     {% else %}
         {# The download links for small entities are too cumbersome to calculate in the macro #}
       {% if policy_uid %}
-        {% set download_view_name = 'budget_app.views.entity_article_functional' %}
+        {% set download_view_name = 'entity_article_functional' %}
         {{ panel_downloads(_(tab_titles['functional']), 
                       'functional',
                       csv_type, 
@@ -96,8 +96,8 @@
                       csv_link=url(download_view_name, level, entity.slug, csv_id, 'csv'),
                       xls_link=url(download_view_name, level, entity.slug, csv_id, 'xlsx') ) }} 
       {% else %}
-        {% set download_view_name = 'budget_app.views.entity_article_expenses' if show_side=='expense' 
-                                    else 'budget_app.views.entity_article_income'%}
+        {% set download_view_name = 'entity_article_expenses' if show_side=='expense' 
+                                    else 'entity_article_income'%}
         {{ panel_downloads(_(tab_titles['economic']), 
                       'economic',
                       csv_type, 

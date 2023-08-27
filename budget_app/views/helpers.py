@@ -163,7 +163,7 @@ def populate_latest_budget(c):
 def populate_level(c, level):
     c['level'] = level
     c['is_county'] = (level=='comarca')
-    c['show_entity_url'] = 'budget_app.views.counties_show' if (level=='comarca') else 'budget_app.views.towns_show'
+    c['show_entity_url'] = 'counties_show' if (level=='comarca') else 'towns_show'
 
 def populate_entities(c, level):
     c['entities'] = Entity.objects.entities(level)

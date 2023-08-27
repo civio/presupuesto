@@ -13,7 +13,7 @@
       {% include 'shared/breadcrumbs.html' %}
       {% else %}
       <p class="history-back">
-        <a href="{{ url('budget_app.views.investments') }}">&larr; {{ _('Volver a Inversiones') }}</a>
+        <a href="{{ url('investments') }}">&larr; {{ _('Volver a Inversiones') }}</a>
       </p>
       {% endif %}
       <h2 class="page-title">{{ area.description }}</h2>
@@ -37,11 +37,11 @@
 
       <!-- Panel Downloads -->
       <div class="panel-downloads">
-        <p class="downloads"">
+        <p class="downloads">
           {{ _('Descarga la tabla de <strong>Inversiones</strong>')|safe }}
-          <a class="icon-file-excel" href="{{ url('budget_app.views.entity_investment_line_breakdown', entity.slug, area.code, 'csv') }}" title="{{ _('Descarga la tabla en CSV') }}"><span class="file-info">CSV</span></a>
+          <a class="icon-file-excel" href="{{ url('entity_investment_line_breakdown', entity.slug, area.code, 'csv') }}" title="{{ _('Descarga la tabla en CSV') }}"><span class="file-info">CSV</span></a>
           o
-          <a class="icon-file-excel" href="{{ url('budget_app.views.entity_investment_line_breakdown', entity.slug, area.code, 'xlsx') }}" title="{{ _('Descarga la tabla en Excel') }}"><span class="file-info">Excel</span></a>
+          <a class="icon-file-excel" href="{{ url('entity_investment_line_breakdown', entity.slug, area.code, 'xlsx') }}" title="{{ _('Descarga la tabla en Excel') }}"><span class="file-info">Excel</span></a>
         </p>
       </div>
     </div>
