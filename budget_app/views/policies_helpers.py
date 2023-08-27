@@ -134,9 +134,9 @@ def programmes_show_helper(request, c, entity, id, title, render_callback=None):
 
     # Back button: go back to parent policy
     if is_secondary_entity(c):
-        back_url = reverse('budget_app.views.entities_policies_show', args=[entity.code, programme.policy, c['policy'].slug()])
+        back_url = reverse('entities_policies_show', args=[entity.code, programme.policy, c['policy'].slug()])
     else:
-        back_url = reverse('budget_app.views.policies_show', args=[programme.policy, c['policy'].slug()])
+        back_url = reverse('policies_show', args=[programme.policy, c['policy'].slug()])
 
     c['back_button'] = {
         'url': back_url,

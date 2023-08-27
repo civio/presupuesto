@@ -31,7 +31,7 @@ def sitemap(request):
 
     # Add static pages.
     # We add a higher priority because it sounds right to give them higher weight.
-    add_sitemap_entry(c, reverse('budget_app_welcome'), 0.8)
+    add_sitemap_entry(c, reverse('welcome'), 0.8)
     add_sitemap_entry(c, reverse('budgets'), 0.8)
     add_sitemap_entry(c, reverse('policies'), 0.8)
     add_sitemap_entry(c, reverse('glossary'), 0.8)
@@ -45,11 +45,11 @@ def sitemap(request):
     functional_categories = FunctionalCategory.objects.filter(budget_id=latest_budget.id).exclude(area='X')
     for fc in functional_categories:
       if fc.subprogramme!=None:
-        view_name = 'policies-subprogrammes-3'
+        view_name = 'subprogrammes_show'
       elif fc.programme!=None:
-        view_name = 'policies-programmes-3'
+        view_name = 'programmes_show'
       elif (fc.function==None and fc.policy!=None):
-        view_name = 'policies-show-2'
+        view_name = 'policies_show'
       else:
         view_name = None
 
@@ -61,9 +61,9 @@ def sitemap(request):
     economic_categories = EconomicCategory.objects.filter(budget_id=latest_budget.id, article__isnull=False, heading__isnull=True)
     for ec in economic_categories:
       if ec.expense:
-        view_name = 'policies-expense-articles-3'
+        view_name = 'expense_articles_show'
       else:
-        view_name = 'policies-income-articles-3'
+        view_name = 'income_articles_show'
 
       add_sitemap_entry(c, reverse(view_name, kwargs={ 'id': ec.uid(), 'title': ec.slug() }))
 

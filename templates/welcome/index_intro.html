@@ -13,7 +13,7 @@
           {% for programme in featured_programmes %}
           {# Items are initially hidden and shown randomly via Javascript, see below #}
           <li class="hidden" data-budget="{{ breakdown.subtotals[programme.uid()].total_expense[latest_budget.year] }}">
-            <a href="{% url 'budget_app.views.programmes_show' programme.uid(), programme.slug() %}">{{ programme.description }}</a>
+            <a href="{{ url('programmes_show', programme.uid(), programme.slug()) }}">{{ programme.description }}</a>
             <strong></strong>
           </li>
           {% endfor %}
