@@ -93,7 +93,7 @@ def subprogrammes_show(request, id, title, render_callback=None):
 
     # Back button: go back to parent programme
     c['back_button'] = {
-        'url': reverse('budget_app.views.programmes_show', args=[subprogramme.programme, c['programme'].slug()]),
+        'url': reverse('programmes_show', args=[subprogramme.programme, c['programme'].slug()]),
         'description': c['descriptions']['functional'].get(subprogramme.programme)
     }
 

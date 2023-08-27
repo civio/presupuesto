@@ -24,10 +24,10 @@ $(function () {
   }
 
   // Make hero boxes react to clicks
-  $('.option-global').click(function(){window.location = '{{ url('budget_app.views.budgets') }}';});
-  $('.option-policies').click(function(){window.location = '{{ url('budget_app.views.policies') }}';});
-  $('.option-payments').click(function(){window.location = '{{ url('budget_app.views.payments') }}';});
-  $('.option-monitoring').click(function(){window.location = '{{ url('budget_app.views.monitoring') }}';});
-  $('.option-tax').click(function(){window.location = '{{ url('budget_app.views.tax_receipt') }}';});
+  $('.option-global').click(function(){window.location = '{{ url('budgets') }}';});
+  $('.option-policies').click(function(){window.location = '{{ url('policies') }}';});
+  $('.option-payments').click(function(){window.location = '{{ url('payments') }}';});
+  $('.option-monitoring').click(function(){window.location = '{{ url('monitoring') }}';});
+  $('.option-tax').click(function(){window.location = '{{ url('tax_receipt') }}';});
 });
 </script>
