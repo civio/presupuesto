@@ -180,14 +180,15 @@ budget_app_urlpatterns += patterns('',
     url(r'^robots\.txt$', lambda request: render(request, 'robots.txt', content_type='text/plain')),
 )
 
-# Include Jasmine urls fot JS Unit Tests only in development
-if settings.DEBUG:
-    budget_app_urlpatterns += patterns('',
-        url(r'^tests/', include('django_jasmine.urls'))
-    )
-
-# Add the theme URL patterns, if they exist, in front of the default app ones
-if hasattr(settings, 'EXTRA_URLS'):
-    urlpatterns = url_patterns(settings.THEME+'.views', *settings.EXTRA_URLS) + budget_app_urlpatterns
-else:
+# Add the theme URL patterns, if they exist, in front of the default app ones.
+#
+# We define the extra URLs in a separate `urls.py` file in the theme. We initially added them to `settings.py`,
+# so we'd have `EXTRA_URLS` without additional imports, as part of the global settings. However, this resulted
+# in circular dependencies when we tried to import the view objects that we need to reference during URL creation
+# in modern Django versions. I.e. when we stopped passing the view name as a string. (#80)
+try:
+    import importlib
+    theme_urls = importlib.import_module(settings.THEME+'.urls')
+    urlpatterns = url_patterns(settings.THEME+'.views', *theme_urls.EXTRA_URLS) + budget_app_urlpatterns
+except:
     urlpatterns = budget_app_urlpatterns
