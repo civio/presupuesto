@@ -46,12 +46,12 @@ DEBUG = ENV.get('DEBUG', False)
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': ENV.get('DATABASE_NAME'),                    # Or path to database file if using sqlite3.
-        'USER': ENV.get('DATABASE_USER'),                    # Not used with sqlite3.
-        'PASSWORD': ENV.get('DATABASE_PASSWORD'),            # Not used with sqlite3.
-        'HOST': ENV.get('DATABASE_HOST', 'localhost'),       # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': ENV.get('DATABASE_PORT', ''),                # Set to empty string for default. Not used with sqlite3.
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': ENV.get('DATABASE_NAME'),
+        'USER': ENV.get('DATABASE_USER'),
+        'PASSWORD': ENV.get('DATABASE_PASSWORD'),
+        'HOST': ENV.get('DATABASE_HOST', 'localhost'),
+        'PORT': ENV.get('DATABASE_PORT', ''),
     }
 }
 
