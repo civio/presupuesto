@@ -305,7 +305,7 @@
                   {# Programme/Article #}
                   {% if payment.programme %}
                   <p class="programme">
-                    <a href="{{ url('policies-programmes', payment.programme, payment.fc_description|slugify) }}">{{ payment.fc_description|safe }}</a>
+                    <a href="{{ url('programmes_show', payment.programme, payment.fc_description|slugify) }}">{{ payment.fc_description|safe }}</a>
                   </p>
                   {% endif %}
                 </td>
