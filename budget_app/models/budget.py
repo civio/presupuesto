@@ -79,10 +79,8 @@ class BudgetManager(models.Manager):
 
     # Get all descriptions available
     def get_all_descriptions(self, entity):
-        cache = caches['default']
-        key = "entity_"+entity.code
-        if cache.get(key) == None:
-            descriptions = {
+        def calculate_all_descriptions(self, entity):
+            return {
                 'functional': self._to_hash(FunctionalCategory.objects \
                     .filter(budget_id__entity=entity).exclude(description='')),
                 'income': self._get_economic_descriptions(EconomicCategory.objects \
@@ -96,10 +94,7 @@ class BudgetManager(models.Manager):
                 'institutional': self._get_institutional_descriptions(InstitutionalCategory.objects \
                     .filter(budget_id__entity=entity).exclude(description=''))
             }
-            cache.set(key, descriptions)
-            return descriptions
-        else:
-            return cache.get(key)
+        return caches['default'].get_or_set('entity_'+entity.code, lambda: calculate_all_descriptions(self, entity))
 
 
 class Budget(models.Model):
