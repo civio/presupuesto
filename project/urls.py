@@ -20,7 +20,7 @@ else:
 
 # Add the application paths
 budget_app_urlpatterns += url_patterns('budget_app.views',
-    url(r'^/?$', 'welcome', name="welcome"),
+    url(r'^$', 'welcome', name="welcome"),
 
     url(r'^resumen$', 'budgets', name="budgets"),
 
