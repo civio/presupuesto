@@ -185,9 +185,9 @@ TEMPLATES = [
             'undefined': None,
             'newstyle_gettext': False,
             'context_processors': [
-                'django.core.context_processors.debug',
-                'django.core.context_processors.i18n',
-                'django.core.context_processors.request',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.request',
                 'budget_app.context_processors.accounts_id_processor',
                 'budget_app.context_processors.cookies_url_processor',
                 'budget_app.context_processors.show_options_processor',
