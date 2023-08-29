@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from budget_app.models import Budget, BudgetBreakdown, FunctionalCategory, EconomicCategory
 from entities import entities_show_helper
 from policies_helpers import policies_show_helper, programmes_show_helper, articles_show_helper
