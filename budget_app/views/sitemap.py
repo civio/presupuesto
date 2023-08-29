@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.utils import translation
 
 from project.settings import LANGUAGES

@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 import json
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from budget_app.models import Budget, BudgetBreakdown, FunctionalCategory, EconomicCategory, Goal, GoalActivity, GoalIndicator
 from helpers import *
