@@ -1,4 +1,4 @@
-<li class="page-budgets {{ 'active' if active_tab == 'general' }}">
+<li class="page-budgets {{ 'active' if active_tab == 'general' else '' }}">
   <a href="{{ url('budgets') }}" class="icon-budget">{{ _('Visión global') }}</a>
 </li>
 
@@ -12,47 +12,47 @@
   </ul>
 </li>
 {% else %}
-<li class="page-policies {{ 'active' if active_tab == 'policies' }}">
+<li class="page-policies {{ 'active' if active_tab == 'policies' else '' }}">
   <a href="{{ url('policies') }}" class="icon-policy">{{ _('Políticas') }}</a>
 </li>
 {% endif %}
         
 {% if show_payments %}
-<li class="page-payments {{ 'active' if active_tab == 'payments' }}">
+<li class="page-payments {{ 'active' if active_tab == 'payments' else '' }}">
   <a href="{{ url('payments') }}" class="icon-payments">{{ _('Pagos e inversiones') }}</a>
 </li>
 {% endif %}
 
 {% if show_tax_receipt %}
-<li class="page-tax-receipt {{ 'active' if active_tab == 'calculator' }}">
+<li class="page-tax-receipt {{ 'active' if active_tab == 'calculator' else '' }}">
   <a href="{{ url('tax_receipt') }}" class="icon-aportacion">{{ _('Lo que tú aportas') }}</a>
 </li>
 {% endif %}
 
 {% if show_investments %}
-<li class="page-investments {{ 'active' if active_tab == 'investments' }}">
+<li class="page-investments {{ 'active' if active_tab == 'investments' else '' }}">
   <a href="{{ url('investments') }}" class="icon-investments">{{ _('Inversiones por distritos') }}</a>
 </li>
 {% endif %}
 
 {% if show_main_investments %}
-<li class="page-investments {{ 'active' if active_tab == 'main_investments' }}">
+<li class="page-investments {{ 'active' if active_tab == 'main_investments' else '' }}">
   <a href="{{ url('main_investments') }}" class="icon-investments">{{ _('Inversiones principales') }}</a>
 </li>
 {% endif %}
 
 {% if show_monitoring %}
-<li class="page-monitoring {{ 'active' if active_tab == 'monitoring' }}">
+<li class="page-monitoring {{ 'active' if active_tab == 'monitoring' else '' }}">
   <a href="{{ url('monitoring') }}" class="icon-monitoring">{{ _('Objetivos') }}</a>
 </li>
 {% endif %}
 
 {% if show_guided_visit %}
-<li class="page-institutions {{ 'active' if active_tab == 'guided_visit' }}">
+<li class="page-institutions {{ 'active' if active_tab == 'guided_visit' else '' }}">
   <a href="{{ url('guided_visit') }}" class="icon-payments">{{ _('Visita guiada') }}</a>
 </li>
 {% endif %}
 
-<li class="page-glossary {{ 'active' if active_tab == 'glossary' }}">
+<li class="page-glossary {{ 'active' if active_tab == 'glossary' else '' }}">
   <a href="{{ url('glossary') }}" class="icon-glossary">{{ _('¿Qué significa...?') }}</a>
 </li>
