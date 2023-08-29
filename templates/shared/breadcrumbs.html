@@ -1,6 +1,6 @@
 <ol class="breadcrumb">
   {# Try to go back to the tab we came from. #}
-  <li><a href="{{ url('policies') }}#view={{ back_to_tab }}">{{ _('Políticas') }}</a></li>
+  <li><a href="{{ url('policies') }}#view={{ back_to_tab if back_to_tab else 'functional' }}">{{ _('Políticas') }}</a></li>
   {% if policy %}
   <li><a href="{{ url('policies_show', policy.uid(), descriptions['functional'].get(policy.uid())|slugify) }}">{{ policy.description }}</a></li>
   {% endif %}
