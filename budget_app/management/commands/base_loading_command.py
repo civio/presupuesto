@@ -8,18 +8,30 @@ from django.core.management.base import BaseCommand
 from django.conf import settings
 from budget_app.loaders import *
 from budget_app.models import Entity
-from optparse import make_option
 
 class BaseLoadingCommand(BaseCommand):
     logging.disable(logging.ERROR)   # Avoid SQL logging on console
 
-    option_list = BaseCommand.option_list + (
-        make_option('--language',
+    def add_arguments(self, parser):
+        parser.add_argument('years')
+
+        parser.add_argument('--language',
             action='store',
             dest='language',
             default=settings.LANGUAGE_CODE,
             help='Set data language'),
-    )
+
+        parser.add_argument('--level',
+            action='store',
+            dest='level',
+            default=settings.MAIN_ENTITY_LEVEL,
+            help='Set entity level'),
+
+        parser.add_argument('--name',
+            action='store',
+            dest='name',
+            default=settings.MAIN_ENTITY_NAME,
+            help='Set entiy name'),
 
     help = u"Carga el presupuesto del año"
 
@@ -46,15 +58,10 @@ class BaseLoadingCommand(BaseCommand):
         return result
 
     def handle(self, loader_name, args, options):
-        if len(args) < 1:
-            print("Por favor indique el año del presupuesto a cargar.")
-            return
-
-        years = self._parse_number_range(args[0])
+        years = self._parse_number_range(options['years'])
         languages = self._parse_languages(options['language'])
-
-        level = settings.MAIN_ENTITY_LEVEL if len(args) < 2 else args[1]
-        name = settings.MAIN_ENTITY_NAME if len(args) < 3 else args[2]
+        level = options['level']
+        name = options['name']
 
         for language in languages:
             entity = self._get_entity(level, name, language)

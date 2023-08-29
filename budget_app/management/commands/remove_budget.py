@@ -5,23 +5,17 @@ import logging
 
 from django.core.management.base import BaseCommand
 from django.conf import settings
-from budget_app.models import Entity
-from optparse import make_option
-
-from budget_app.models import Budget
-
+from budget_app.models import Entity, Budget
 
 class Command(BaseCommand):
     logging.disable(logging.ERROR)   # Avoid SQL logging on console
 
-    option_list = BaseCommand.option_list + (
-        make_option(
-            '--language',
+    def add_arguments(self, parser):
+        parser.add_argument('--language',
             action='store',
             dest='language',
             default=settings.LANGUAGE_CODE,
             help='Set data language'),
-    )
 
     help = u"Elimina el presupuesto del año"
 

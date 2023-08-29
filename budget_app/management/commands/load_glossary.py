@@ -1,31 +1,27 @@
 # -*- coding: UTF-8 -*-
+
 import os.path
 import logging
 
 from django.core.management.base import BaseCommand
 from django.conf import settings
 from budget_app.loaders import GlossaryLoader
-from optparse import make_option
-import project.settings
 
 PATH_TO_DEFAULT = os.path.join(settings.ROOT_PATH, 'budget_app', 'static')
 
 class Command(BaseCommand):
     logging.disable(logging.ERROR)   # Avoid SQL logging on console
 
-    option_list = BaseCommand.option_list + (
-        make_option(
-            '--language',
+    def add_arguments(self, parser):
+        parser.add_argument('--language',
             action='store',
             dest='language',
             default=settings.LANGUAGE_CODE,
-            help='Set data language'),
-        make_option(
-            '--extend',
+            help='Set data language')
+        parser.add_argument('--extend',
             action='store_true',
             dest='extend',
-            help='Extend default glossary with theme one'),
-    )
+            help='Extend default glossary with theme one')
 
     help = u"Carga los términos del glosario desde un fichero, _reemplazando el actual_"
 
