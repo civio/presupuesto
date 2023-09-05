@@ -404,12 +404,14 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
 				sliderMinHandle = document.createElement("div");
 				sliderMinHandle.className = "slider-handle min-slider-handle";
 				sliderMinHandle.setAttribute('role', 'slider');
+				sliderMaxHandle.setAttribute('aria-label', 'Valor mínimo del rango de fechas');
 				sliderMinHandle.setAttribute('aria-valuemin', this.options.min);
 				sliderMinHandle.setAttribute('aria-valuemax', this.options.max);
 
 				sliderMaxHandle = document.createElement("div");
 				sliderMaxHandle.className = "slider-handle max-slider-handle";
 				sliderMaxHandle.setAttribute('role', 'slider');
+				sliderMaxHandle.setAttribute('aria-label', 'Valor máximo del rango de fechas');
 				sliderMaxHandle.setAttribute('aria-valuemin', this.options.min);
 				sliderMaxHandle.setAttribute('aria-valuemax', this.options.max);
 
