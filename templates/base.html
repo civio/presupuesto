@@ -9,11 +9,15 @@
 
   {% include 'shared/fonts.html' %}
 
+  {% compress css %}
   <link href="{{ static('stylesheets/main.css') }}" media="all" rel="stylesheet" type="text/css" />
-  
+  {% endcompress %}
+
+  {% compress js %}
   <script src="{{ static('javascripts/jquery-2.2.4.js') }}"></script>
   <script src="{{ static('javascripts/jquery-migrate-1.4.1.js') }}"></script>
   <script src="{{ static('javascripts/modernizr-2.6.3.min.js') }}"></script>
+  {% endcompress %}
 
   {% if not debug %}
   {% include 'shared/analytics.html' %}
@@ -31,6 +35,7 @@
   </div>
   {% include 'shared/footer.html' %}
 
+  {% compress js %}
   <!-- Jquery plugins -->
   <script src="{{ static('javascripts/jquery.ba-bbq.js') }}"></script>
   <script src="{{ static('javascripts/jquery.cookie.min.js') }}"></script>
@@ -73,6 +78,7 @@
   <script src="{{ static('javascripts/vis/stacked-area-chart.js') }}"></script>
   <script src="{{ static('javascripts/vis/budget-stacked-chart.js') }}"></script>
   <script src="{{ static('javascripts/vis/monitoring-radial-viz.js') }}"></script>
+  {% endcompress %}
 
   {% if debug %}
   <script src="{{ static('javascripts/count-css-rules.js') }}"></script>

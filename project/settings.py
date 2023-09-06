@@ -126,11 +126,6 @@ STATICFILES_FINDERS = (
     'compressor.finders.CompressorFinder',  # add Django Compressor's file finder
 )
 
-# Config to compile LESS files automatically
-COMPRESS_PRECOMPILERS = (
-    ('text/less', 'lessc {infile} {outfile}'),
-)
-
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = ')e2qrwa6e$u30r0)w=52!0j1_&amp;$t+y3z!o-(7ej0=#i!c7pjuy'
 
@@ -175,6 +170,7 @@ INSTALLED_APPS = (
 TEMPLATES = [
     {
         'BACKEND': 'django_jinja.backend.Jinja2',
+        'NAME': 'jinja2',
         'DIRS': [
             os.path.join(THEME_PATH, 'templates'),
             os.path.join(ROOT_PATH, 'templates')
@@ -208,7 +204,26 @@ TEMPLATES = [
             'translation_engine': 'django.utils.translation',
         }
     },
+
+
+    # Django templates for the compressor. See https://github.com/django-compressor/django-compressor/issues/637#issuecomment-149846612
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            os.path.join(ROOT_PATH, 'templates'),
+        ],
+        'APP_DIRS': True,
+    },
+
 ]
+
+# Uncomment next line to force JS compression in development (Debug=True)
+# COMPRESS_ENABLED = True
+
+# As per https://github.com/django-compressor/django-compressor/issues/637#issuecomment-172366494
+def COMPRESS_JINJA2_GET_ENVIRONMENT():
+    from django.template import engines
+    return engines["jinja2"].env
 
 
 # Logging configuration

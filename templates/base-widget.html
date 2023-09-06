@@ -9,7 +9,9 @@
   
   {% include 'shared/fonts.html' %}
 
+  {% compress css %}
   <link href="{{ static('stylesheets/main.css') }}" media="all" rel="stylesheet" type="text/css" />
+  {% endcompress %}
   
   {% compress js %}
   <script src="{{ static('javascripts/jquery-2.2.4.js') }}"></script>
