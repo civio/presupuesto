@@ -287,7 +287,3 @@ CACHES = ENV.get('CACHES', DEFAULT_CACHES)
 CACHE_MIDDLEWARE_ALIAS = 'default'
 CACHE_MIDDLEWARE_SECONDS = 60 * 60 * 24  # 1 Day: data doesn't actually change
 CACHE_MIDDLEWARE_KEY_PREFIX = 'budget_app'
-
-
-# FIXME: Temporary hack, during development of #1216. Remove once deployed
-SHOW_MONITORING = ENV.get('SHOW_MONITORING', False)
