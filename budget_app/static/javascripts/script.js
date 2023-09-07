@@ -36,6 +36,7 @@ $(document).ready(function(){
 
 
 	// iPhone Safari Viewport Scaling Bug
+	// See https://webdesignerwall.com/tutorials/iphone-safari-viewport-scaling-bug
 	(function(doc) {
 		var addEvent = 'addEventListener',
 				type = 'gesturestart',
