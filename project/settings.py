@@ -78,9 +78,9 @@ if 'LANGUAGES' not in locals():
       ('es', 'Castellano'),
     )
 
-# Base language code for this installation. Selects the first from the list of available ones.
-# See https://docs.djangoproject.com/en/1.4//topics/i18n/translation/#how-django-discovers-language-preference
-LANGUAGE_CODE = locals()['LANGUAGES'][0][0]
+# Base language code for this installation.
+# It's always Spanish, because its locale files are empty and the text in the pages is in Spanish.
+LANGUAGE_CODE = 'es'
 
 SITE_ID = 1
 
