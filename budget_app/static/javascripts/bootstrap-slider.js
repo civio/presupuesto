@@ -404,7 +404,7 @@ function _typeof(obj) { return obj && typeof Symbol !== "undefined" && obj.const
 				sliderMinHandle = document.createElement("div");
 				sliderMinHandle.className = "slider-handle min-slider-handle";
 				sliderMinHandle.setAttribute('role', 'slider');
-				sliderMaxHandle.setAttribute('aria-label', 'Valor mínimo del rango de fechas');
+				sliderMinHandle.setAttribute('aria-label', 'Valor mínimo del rango de fechas');
 				sliderMinHandle.setAttribute('aria-valuemin', this.options.min);
 				sliderMinHandle.setAttribute('aria-valuemax', this.options.max);
 
