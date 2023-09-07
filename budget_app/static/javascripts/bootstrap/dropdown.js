@@ -164,32 +164,3 @@
 
 }(jQuery);
 
-
-// a11y improvement: Making Bootstrap Dropdowns More Accessible
-// https://medium.com/@mariusc23/making-bootstrap-dropdowns-more-accessible-27b2566abdda
-
-// On dropdown open
-$(document).on('shown.bs.dropdown', function(event) {
-  var dropdown = $(event.target);
- 
-  // Set aria-expanded to true
-  dropdown.find('.dropdown-menu').attr('aria-expanded', true);
- 
-  // Set focus on the first link in the dropdown
-  setTimeout(function() {
-    dropdown.find('.dropdown-menu li:first-child a').focus();
-  }, 10);
-});
-
-// On dropdown open
-$(document).on('shown.bs.dropdown', function(event) {
-  var dropdown = $(event.target);
- 
-  // Set aria-expanded to true
-  dropdown.find('.dropdown-menu').attr('aria-expanded', true);
- 
-  // Set focus on the first link in the dropdown
-  setTimeout(function() {
-    dropdown.find('.dropdown-menu li:first-child a').focus();
-  }, 10);
-});
