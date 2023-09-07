@@ -2,6 +2,8 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+
+## [4.5] - 2023-09-08
 ### Changed
 - Refactor URL generation to use URL names instead of dotted paths, for future Django compatibility. #80
 - Define URL patterns using callables, not view names, for future Django compatibility. #80
@@ -319,8 +321,9 @@ All notable changes to this project will be documented in this file.
 ### Forked from [aragonopendata/presupuesto](https://github.com/aragonopendata/presupuesto) - 2016-01-28
 
 
-[Unreleased]: https://github.com/civio/presupuesto/compare/v4.4...HEAD
-[4.4]: https://github.com/civio/presupuesto/releases/tag/v5.0
+[Unreleased]: https://github.com/civio/presupuesto/compare/v4.5...HEAD
+[4.5]: https://github.com/civio/presupuesto/releases/tag/v4.5
+[4.4]: https://github.com/civio/presupuesto/releases/tag/v4.4
 [4.3.2]: https://github.com/civio/presupuesto/releases/tag/v4.3.2
 [4.3.1]: https://github.com/civio/presupuesto/releases/tag/v4.3.1
 [4.3]: https://github.com/civio/presupuesto/releases/tag/v4.3
