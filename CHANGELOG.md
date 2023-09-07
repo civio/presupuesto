@@ -2,6 +2,18 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+### Changed
+- Refactor URL generation to use URL names instead of dotted paths, for future Django compatibility. #80
+- Define URL patterns using callables, not view names, for future Django compatibility. #80
+- Split extra URLs in themes into a separate file. #80
+- Monitoring: `SHOW_MONITORING_TAB` is now in `settings.py`, like other properties, not in `local_settings.py`. #1216
+
+### Fixed
+- Fix accessibility compliance issues. #1278
+- Petals in monitoring viz should not clickable when in widget.
+
+### Removed
+- Deleted custom loader for Aragon counties and towns.
 
 ## [4.4] - 2023-08-23
 ### Added
