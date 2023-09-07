@@ -5,15 +5,23 @@ from django.conf.urls import url, include
 from django.conf import settings
 from django.urls import reverse
 from django.http import HttpResponseRedirect
+from django.utils import translation
+from django.views.decorators.cache import never_cache
 from django.shortcuts import render
 
 from budget_app.views import *
 
 # Do we have more than one language? If so, localize the URLs and add Django's i18n paths
 if len(settings.LANGUAGES) > 1:
+    @never_cache
+    def redirect_to_default_homepage(request):
+        if hasattr(settings, 'DEFAULT_HOMEPAGE_LANGUAGE'):
+            translation.activate(settings.DEFAULT_HOMEPAGE_LANGUAGE)
+        return HttpResponseRedirect(reverse('welcome'))
+
     budget_app_urlpatterns = [
         url(r'^i18n/', include('django.conf.urls.i18n')),
-        url(r'^$', lambda x: HttpResponseRedirect(reverse('welcome'))),
+        url(r'^$', redirect_to_default_homepage),
     ]
     add_url_patterns = lambda x: i18n_patterns(*x)
 else:
