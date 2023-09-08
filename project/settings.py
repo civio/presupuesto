@@ -131,24 +131,17 @@ STATICFILES_FINDERS = (
 SECRET_KEY = ')e2qrwa6e$u30r0)w=52!0j1_&amp;$t+y3z!o-(7ej0=#i!c7pjuy'
 
 if DEBUG:
-    MIDDLEWARE_CLASSES = (
+    MIDDLEWARE = (
         'django.middleware.common.CommonMiddleware',
-        # 'django.contrib.sessions.middleware.SessionMiddleware',
-        # 'django.middleware.csrf.CsrfViewMiddleware',
         'django.middleware.locale.LocaleMiddleware',
     )
 else:
-    MIDDLEWARE_CLASSES = (
-        'project.middleware.SmartUpdateCacheMiddleware',
+    MIDDLEWARE = (
+        'project.middleware.RemoveCacheBreakingHeadersMiddleware',
+        'django.middleware.cache.UpdateCacheMiddleware'
         'django.middleware.common.CommonMiddleware',
-        # 'django.contrib.sessions.middleware.SessionMiddleware',
-        # 'django.middleware.csrf.CsrfViewMiddleware',
         'django.middleware.locale.LocaleMiddleware',
-        # 'django.contrib.auth.middleware.AuthenticationMiddleware',
-        # 'django.contrib.messages.middleware.MessageMiddleware',
         'django.middleware.cache.FetchFromCacheMiddleware',
-        # Uncomment the next line for simple clickjacking protection:
-        # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
     )
 
 ROOT_URLCONF = 'project.urls'
