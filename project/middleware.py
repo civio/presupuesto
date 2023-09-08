@@ -15,13 +15,16 @@ class RemoveCacheBreakingHeadersMiddleware(MiddlewareMixin):
         cookie = self.STRIP_RE.sub('', request.META.get('HTTP_COOKIE', ''))
         request.META['HTTP_COOKIE'] = cookie
 
-        # And we're going a step further here: since we don't do language negotiation,
-        # (i.e. we never try to guess what's the user preferred language, we always
-        # default to the same one on the homepage, and every other URL is prefixed
-        # with the locale, so there's no ambiguity) we can remove the Accept-Language
-        # request header.
-        # Copied from https://djangosnippets.org/snippets/218/ (although different goal)
-        if request.META.has_key('HTTP_ACCEPT_LANGUAGE'):
+        # And we're going a step further here: since we don't do language negotiation
+        # outside of the root URL (i.e. every other URL is prefixed with the locale,
+        # so there's no ambiguity) we can remove the Accept-Language request header.
+        # Copied from [1], although for a different goal.
+        # Otherwise, the Vary on Accept-Language added by LocaleMiddleware [2] would break
+        # the cache unnecessarily.
+        #
+        # [1]: https://djangosnippets.org/snippets/218/
+        # [2]: https://docs.djangoproject.com/en/4.2/topics/cache/#order-of-middleware
+        if request.path != '/' and request.META.has_key('HTTP_ACCEPT_LANGUAGE'):
             del request.META['HTTP_ACCEPT_LANGUAGE']
 
         # Remove tracking parameters added by Mailchimp, as they break the cache, i.e.
