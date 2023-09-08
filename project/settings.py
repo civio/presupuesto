@@ -138,7 +138,7 @@ if DEBUG:
 else:
     MIDDLEWARE = (
         'project.middleware.RemoveCacheBreakingHeadersMiddleware',
-        'django.middleware.cache.UpdateCacheMiddleware'
+        'django.middleware.cache.UpdateCacheMiddleware',
         'django.middleware.common.CommonMiddleware',
         'django.middleware.locale.LocaleMiddleware',
         'django.middleware.cache.FetchFromCacheMiddleware',
