@@ -1,8 +1,11 @@
-from django.middleware.cache import UpdateCacheMiddleware
+from django.utils.deprecation import MiddlewareMixin
 
 import re
 
-class SmartUpdateCacheMiddleware(UpdateCacheMiddleware):
+# Use Django 1.10 transitional Mixin.
+# See https://stackoverflow.com/a/52913499
+# Also https://docs.djangoproject.com/en/1.10/topics/http/middleware/#upgrading-middleware
+class RemoveCacheBreakingHeadersMiddleware(MiddlewareMixin):
     STRIP_RE = re.compile(r'\b(_[^=]+=.+?(?:; |$))')
 
     def process_request(self, request):
