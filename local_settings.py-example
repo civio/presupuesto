@@ -4,7 +4,6 @@ ENV = {
   'THEME': 'presupuesto-example',
 
   'DEBUG': True,
-  'TEMPLATE_DEBUG': True,
 
   # Database
   'DATABASE_NAME': 'dvmi_example_dev',
@@ -15,11 +14,7 @@ ENV = {
   # Caching
   'CACHES': {
     'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
+      'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
     }
   },
-
-  # Proxy
-  'HTTP_PROXY': '',
-  'HTTPS_PROXY': ''
 }
