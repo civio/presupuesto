@@ -353,9 +353,11 @@
       if (uiState.view != 'functional') return;
 
       var widget = $('body').hasClass('widget') ? '?widget=1' : '';
-      var label = (event.view == 'policy-selected') ? d.name : d.label;
+      var label = (event.type == 'policy-selected') ? d.name : d.label;
 
-{% if policy_uid %}
+      // In section pages, the stacked area charts show policies, but the treemap
+      // (when only one year is available) shows programmes.
+{% if policy_uid or (section_id and show_treemap) %}
       window.location = getProgrammeLink(d.id, label, getUIState())+widget;
 {% elif programme_id %}
       window.location = getSubprogrammeLink(d.id, label, getUIState())+widget;
