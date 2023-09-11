@@ -131,24 +131,17 @@ STATICFILES_FINDERS = (
 SECRET_KEY = ')e2qrwa6e$u30r0)w=52!0j1_&amp;$t+y3z!o-(7ej0=#i!c7pjuy'
 
 if DEBUG:
-    MIDDLEWARE_CLASSES = (
+    MIDDLEWARE = (
         'django.middleware.common.CommonMiddleware',
-        # 'django.contrib.sessions.middleware.SessionMiddleware',
-        # 'django.middleware.csrf.CsrfViewMiddleware',
         'django.middleware.locale.LocaleMiddleware',
     )
 else:
-    MIDDLEWARE_CLASSES = (
-        'project.middleware.SmartUpdateCacheMiddleware',
+    MIDDLEWARE = (
+        'project.middleware.RemoveCacheBreakingHeadersMiddleware',
+        'django.middleware.cache.UpdateCacheMiddleware',
         'django.middleware.common.CommonMiddleware',
-        # 'django.contrib.sessions.middleware.SessionMiddleware',
-        # 'django.middleware.csrf.CsrfViewMiddleware',
         'django.middleware.locale.LocaleMiddleware',
-        # 'django.contrib.auth.middleware.AuthenticationMiddleware',
-        # 'django.contrib.messages.middleware.MessageMiddleware',
         'django.middleware.cache.FetchFromCacheMiddleware',
-        # Uncomment the next line for simple clickjacking protection:
-        # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
     )
 
 ROOT_URLCONF = 'project.urls'
@@ -246,34 +239,11 @@ if DEBUG:
         }
     }
 else:
-    # A sample logging configuration. The only tangible logging
-    # performed by this configuration is to send an email to
-    # the site admins on every HTTP 500 error when DEBUG=False.
-    # See http://docs.djangoproject.com/en/dev/topics/logging for
+    # Use the default Django logging.
+    # See https://docs.djangoproject.com/en/dev/topics/logging/ for
     # more details on how to customize your logging configuration.
-    LOGGING = {
-        'version': 1,
-        'disable_existing_loggers': False,
-        'filters': {
-            'require_debug_false': {
-                '()': 'django.utils.log.RequireDebugFalse'
-            }
-        },
-        'handlers': {
-            'mail_admins': {
-                'level': 'ERROR',
-                'filters': ['require_debug_false'],
-                'class': 'django.utils.log.AdminEmailHandler'
-            }
-        },
-        'loggers': {
-            'django.request': {
-                'handlers': ['mail_admins'],
-                'level': 'ERROR',
-                'propagate': True,
-            },
-        }
-    }
+    pass
+
 
 SEARCH_CONFIG = ENV.get('SEARCH_CONFIG', 'pg_catalog.english')
 
@@ -287,7 +257,3 @@ CACHES = ENV.get('CACHES', DEFAULT_CACHES)
 CACHE_MIDDLEWARE_ALIAS = 'default'
 CACHE_MIDDLEWARE_SECONDS = 60 * 60 * 24  # 1 Day: data doesn't actually change
 CACHE_MIDDLEWARE_KEY_PREFIX = 'budget_app'
-
-
-# FIXME: Temporary hack, during development of #1216. Remove once deployed
-SHOW_MONITORING = ENV.get('SHOW_MONITORING', False)
