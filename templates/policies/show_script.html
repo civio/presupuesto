@@ -94,6 +94,7 @@
     //
     var stats = {{ stats|safe }};
     var years = {{ years|safe }};
+    var showSlider = (years.length>1);
     var budgetStatuses = {{ budget_statuses|safe }};
 
 {% if include_financial_chapters %}
@@ -211,7 +212,9 @@
         $('.data-controllers .quantity-selection').hide();
         // FIXME: There must be a better way!
         $('.data-controllers .layout-slider').css('margin-left', '10px');
-        $('#year-selection').slider('resize');  // Force a redraw
+        if (showSlider) {
+          $('#year-selection').slider('resize');  // Force a redraw
+        }
 
         redrawMonitoring();
 
@@ -228,7 +231,9 @@
         $('.data-controllers button').show();
         $('.data-controllers .quantity-selection').show();
         $('.data-controllers .layout-slider').css('margin-left', '275px');
-        $('#year-selection').slider('resize');
+        if (showSlider) {
+          $('#year-selection').slider('resize');  // Force a redraw
+        }
 
         $('#tab-monitoring-content').hide();
         $('#tab-grid-content').show();
@@ -382,7 +387,9 @@
     // Setup tabs navigation
     setRedrawOnTabsChange('#tabs', updateTab);
 
-    setRedrawOnSliderChange('#year-selection', {{ starting_year }}, updateYear);
+    if (showSlider) {
+      setRedrawOnSliderChange('#year-selection', {{ starting_year }}, updateYear);
+    }
 
     // Add click embed btn event
     setEmbedModal();
