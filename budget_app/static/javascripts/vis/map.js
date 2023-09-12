@@ -1,9 +1,9 @@
 // See:
-//   - http://bost.ocks.org/mike/map/ (intro)
-//   - http://stackoverflow.com/questions/11909099/overlay-d3-paths-onto-google-maps (panning)
-//   - http://bl.ocks.org/mbostock/5144735 (legend, color scheme)
-//   - http://bl.ocks.org/mbostock/6320825 (legend range using quartiles)
-//   - http://vis4.net/blog/posts/choropleth-maps/ (best practices on colors / categories)
+//   - https://bost.ocks.org/mike/map/ (intro)
+//   - https://stackoverflow.com/questions/11909099/overlay-d3-paths-onto-google-maps (panning)
+//   - https://bl.ocks.org/mbostock/5144735 (legend, color scheme)
+//   - https://bl.ocks.org/mbostock/6320825 (legend range using quartiles)
+//   - https://vis4.net/blog/posts/choropleth-maps/ (best practices on colors / categories)
 //
 function BudgetMap( dataGrid, 
                     years,
@@ -145,8 +145,8 @@ function BudgetMap( dataGrid,
   // Create the map and do a bunch of stuff
   function initialize(obj) {
     // Map Styles:
-    // - Shades of Grey (http://snazzymaps.com/style/38/shades-of-grey)
-    // - Light Monochrome (http://snazzymaps.com/style/29/light-monochrome)
+    // - Shades of Grey (https://snazzymaps.com/style/38/shades-of-grey)
+    // - Light Monochrome (https://snazzymaps.com/style/29/light-monochrome)
     var lightMono = [
       {
           "featureType": "water",

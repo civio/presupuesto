@@ -52,7 +52,7 @@ Es necesario compilar todos los recursos estáticos. Para ello:
 
 ### Configurando el buscador
 
-Por defecto la aplicación usa el método estándar de búsqueda de texto de Postgres. Es posible crear métodos de búsqueda adaptados a un idioma concreto, de forma que -por ejemplo- Postgres ignore los acentos a la hora de buscar resultados. Si deseamos configurar la búsqueda para funcionar en español, creamos primero una nueva configuración de búsqueda, como se explica en la [documentación de Postgres](http://www.postgresql.org/docs/9.1/static/textsearch-configuration.html):
+Por defecto la aplicación usa el método estándar de búsqueda de texto de Postgres. Es posible crear métodos de búsqueda adaptados a un idioma concreto, de forma que -por ejemplo- Postgres ignore los acentos a la hora de buscar resultados. Si deseamos configurar la búsqueda para funcionar en español, creamos primero una nueva configuración de búsqueda, como se explica en la [documentación de Postgres](https://www.postgresql.org/docs/9.1/static/textsearch-configuration.html):
 
     $ psql presupuestos_dev
 
