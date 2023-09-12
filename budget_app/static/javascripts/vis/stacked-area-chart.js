@@ -158,7 +158,7 @@ function StackedAreaChart() {
     _this.x.domain( d3.extent(_this.years) );
 
     // Force x axis ticks values to avoid gaps
-    // http://stackoverflow.com/questions/28129412/d3-non-continuous-dates-domain-gives-gaps-on-x-axis
+    // https://stackoverflow.com/questions/28129412/d3-non-continuous-dates-domain-gives-gaps-on-x-axis
     _this.xAxis.tickValues(_this.years);
 
     // Set X section width

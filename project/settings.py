@@ -27,7 +27,7 @@ HTTPS_PROXY = ENV.get('HTTPS_PROXY') or ENV.get('https_proxy')
 
 # THEME-SPECIFIC SETTINGS
 # Note: After looking into ways of importing modules dynamically, I decided this was the simplest solution
-# Following http://igorsobreira.com/2010/09/12/customize-settingspy-locally-in-django.html
+# Following https://igorsobreira.com/2010/09/12/customize-settingspy-locally-in-django.html
 #
 # Pick a theme by setting the THEME variable in 'local_settings.py'.
 #
@@ -61,7 +61,7 @@ ADMINS = (
 MANAGERS = ADMINS
 
 # Local time zone for this installation. Choices can be found here:
-# http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
+# https://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 TIME_ZONE = 'Europe/Madrid'
 
 # Location of translation files (used by themes to override certain strings)
@@ -73,7 +73,7 @@ LOCALE_PATHS = (
 # Ensure LANGUAGES is defined for LocaleMiddleware. Multilingual themes
 # will have defined this beforehand with their particular language list.
 if 'LANGUAGES' not in locals():
-    # All choices can be found here: http://www.i18nguy.com/unicode/language-identifiers.html
+    # All choices can be found here: https://www.i18nguy.com/unicode/language-identifiers.html
     LANGUAGES = (
       ('es', 'Castellano'),
     )
@@ -107,7 +107,7 @@ MEDIA_URL = ''
 STATIC_ROOT = os.path.join(ROOT_PATH, 'static')
 
 # URL prefix for static files.
-# Example: "http://media.lawrence.com/static/"
+# Example: "https://media.lawrence.com/static/"
 if ENV.get('STATIC_URL'):
     STATIC_URL = ENV.get('STATIC_URL')
 else:

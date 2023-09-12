@@ -67,7 +67,7 @@ function unfoldItem(gridData, itemId) {
   return found;
 }
 
-// Activar slider de años (Documentation: http://seiyria.com/bootstrap-slider/)
+// Activar slider de años (Documentation: https://seiyria.com/bootstrap-slider/)
 function initSlider(selector, years, startValue) {
   // Skip if container not exists
   if ($(selector).length === 0) return;

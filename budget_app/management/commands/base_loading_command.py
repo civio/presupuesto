@@ -89,7 +89,7 @@ class BaseLoadingCommand(BaseCommand):
                     status = ''
 
                 # Import the loader dynamically.
-                # See http://stackoverflow.com/questions/301134/dynamic-module-import-in-python
+                # See https://stackoverflow.com/questions/301134/dynamic-module-import-in-python
                 module = __import__(
                     settings.THEME+'.loaders',
                     globals(),

@@ -9,7 +9,7 @@ from budget_app.models import BudgetBreakdown, Payment
 from helpers import *
 
 # Auxiliary class needed to access arbitrary attributes as objects.
-# See http://stackoverflow.com/a/2827664
+# See https://stackoverflow.com/a/2827664
 class MockPayment(object):
     pass
 
