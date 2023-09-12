@@ -2,6 +2,7 @@
 
 from django.urls import reverse
 from django.utils import translation
+from django.template.defaultfilters import slugify
 
 from project.settings import LANGUAGES
 
@@ -65,12 +66,18 @@ def sitemap(request):
     # Add economic pages for articles
     # We do so only for the ones in the latest budget, which is good enough and way simpler.
     economic_categories = EconomicCategory.objects.filter(budget_id=latest_budget.id, article__isnull=False, heading__isnull=True)
+    # For the article titles, normally we'd use the one from the object itself, but some deployments (Navarra)
+    # have 'gaps' in the data, i.e. the description is missing and we fall back to older years. So, instead,
+    # use the master description table, which should have a proper value always.
+    descriptions = Budget.objects.get_all_descriptions(get_main_entity(c))
     for ec in economic_categories:
       if ec.expense:
         view_name = 'expense_articles_show'
+        title = descriptions['expense'][ec.uid()]
       else:
         view_name = 'income_articles_show'
+        title = descriptions['income'][ec.uid()]
 
-      add_sitemap_entry(request, c, reverse(view_name, kwargs={ 'id': ec.uid(), 'title': ec.slug() }))
+      add_sitemap_entry(request, c, reverse(view_name, kwargs={ 'id': ec.uid(), 'title': slugify(title) }))
 
   return render_response('sitemap.xml', c, content_type='application/xml; charset=utf-8')
