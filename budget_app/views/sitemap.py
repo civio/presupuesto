@@ -42,7 +42,7 @@ def sitemap(request):
     add_sitemap_entry(request, c, reverse('policies'), 0.8)
     add_sitemap_entry(request, c, reverse('glossary'), 0.8)
     if c['show_tax_receipt']:
-      add_sitemap_entry(request, c, reverse('tax-receipt'), 0.8)
+      add_sitemap_entry(request, c, reverse('tax_receipt'), 0.8)
     if c['show_payments']:
       add_sitemap_entry(request, c, reverse('payments'), 0.8)
 
