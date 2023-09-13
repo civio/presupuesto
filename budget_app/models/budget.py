@@ -82,17 +82,17 @@ class BudgetManager(models.Manager):
         def calculate_all_descriptions(self, entity):
             return {
                 'functional': self._to_hash(FunctionalCategory.objects \
-                    .filter(budget_id__entity=entity).exclude(description='')),
+                    .filter(budget_id__entity=entity).exclude(description='').order_by('budget_id__year')),
                 'income': self._get_economic_descriptions(EconomicCategory.objects \
-                    .income().filter(budget_id__entity=entity).exclude(description='')),
+                    .income().filter(budget_id__entity=entity).exclude(description='').order_by('budget_id__year')),
                 'expense': self._get_economic_descriptions(EconomicCategory.objects \
-                    .expenses().filter(budget_id__entity=entity).exclude(description='')),
+                    .expenses().filter(budget_id__entity=entity).exclude(description='').order_by('budget_id__year')),
                 'funding': self._to_hash(FundingCategory.objects \
-                    .filter(budget_id__entity=entity).exclude(description='')),
+                    .filter(budget_id__entity=entity).exclude(description='').order_by('budget_id__year')),
                 'geographic': self._to_hash(GeographicCategory.objects \
-                    .filter(budget_id__entity=entity).exclude(description='')),
+                    .filter(budget_id__entity=entity).exclude(description='').order_by('budget_id__year')),
                 'institutional': self._get_institutional_descriptions(InstitutionalCategory.objects \
-                    .filter(budget_id__entity=entity).exclude(description=''))
+                    .filter(budget_id__entity=entity).exclude(description='').order_by('budget_id__year'))
             }
         return caches['default'].get_or_set('entity_'+entity.code, lambda: calculate_all_descriptions(self, entity))
 
