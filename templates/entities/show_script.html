@@ -103,7 +103,11 @@
       // Show/hide download links based on view
       $('.panel-downloads .downloads').addClass('hidden');
       $('#'+uiState.view +'-downloads').removeClass('hidden');
-      
+
+      // Show/hide notes in tabs (none by default, but potentially added by themes)
+      $('.custom-note').hide();
+      $('.'+uiState.view+'-note').show();
+
       // Redraw
       redraw();
     }
