@@ -280,7 +280,7 @@ function StackedAreaChart() {
   _this.drawStatusesOverlays = function(){
 
     // get years where status is not empty & year is greater than first year in years array
-    var nonexecutedYears = d3.entries(_this.budgetStatuses).filter(function(d){ return d.value !== '' && +d.key > _this.years[0]; });
+    var nonexecutedYears = d3.entries(_this.budgetStatuses).filter(function(d){ return d.value !== '' && _this.years.includes(+d.key); });
 
     if (nonexecutedYears.length > 0) {
       // Setup overlays
