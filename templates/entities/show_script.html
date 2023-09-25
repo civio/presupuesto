@@ -105,8 +105,11 @@
       $('#'+uiState.view +'-downloads').removeClass('hidden');
 
       // Show/hide notes in tabs (none by default, but potentially added by themes)
-      $('.custom-note').hide();
-      $('.'+uiState.view+'-note').show();
+      // XXX: Actually, they're added after we run this code first, so it's not 100% correct.
+      // We should create a container for each tab and show/hide that, with themes adding
+      // notes inside them. But this is good enough for our specific case.
+      $('.custom-note').addClass('hidden');
+      $('.'+uiState.view+'-note').removeClass('hidden');
 
       // Redraw
       redraw();
