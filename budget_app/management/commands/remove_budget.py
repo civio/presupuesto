@@ -11,11 +11,25 @@ class Command(BaseCommand):
     logging.disable(logging.ERROR)   # Avoid SQL logging on console
 
     def add_arguments(self, parser):
+        parser.add_argument('years')
+
         parser.add_argument('--language',
             action='store',
             dest='language',
             default=settings.LANGUAGE_CODE,
             help='Set data language'),
+
+        parser.add_argument('--level',
+            action='store',
+            dest='level',
+            default=settings.MAIN_ENTITY_LEVEL,
+            help='Set entity level'),
+
+        parser.add_argument('--name',
+            action='store',
+            dest='name',
+            default=settings.MAIN_ENTITY_NAME,
+            help='Set entiy name'),
 
     help = u"Elimina el presupuesto del año"
 
@@ -42,15 +56,10 @@ class Command(BaseCommand):
         return result
 
     def handle(self, *args, **options):
-        if len(args) < 1:
-            print("Por favor indique el año del presupuesto a eliminar.")
-            return
-
-        years = self._parse_number_range(args[0])
+        years = self._parse_number_range(options['years'])
         languages = self._parse_languages(options['language'])
-
-        level = settings.MAIN_ENTITY_LEVEL if len(args) < 2 else args[1]
-        name = settings.MAIN_ENTITY_NAME if len(args) < 3 else args[2]
+        level = options['level']
+        name = options['name']
 
         for language in languages:
             entity = self._get_entity(level, name, language)
