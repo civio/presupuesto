@@ -33,10 +33,7 @@ class SimpleBudgetLoader(BaseLoader):
             print "Leyendo datos de %s..." % filename
             reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
             for index, line in enumerate(reader):
-                if re.match("^#", line[0]):         # Ignore comments
-                    continue
-
-                if re.match("^ *$", ''.join(line)): # Ignore empty lines
+                if line==[] or re.match("^#", line[0]):     # Ignore comments and empty lines
                     continue
 
                 # Finally, we have useful data
@@ -176,7 +173,7 @@ class SimpleBudgetLoader(BaseLoader):
         filename = self.get_institutional_classification_path(path)
         reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
         for index, line in enumerate(reader):
-            if re.match("^#", line[0]):  # Ignore comments
+            if line==[] or re.match("^#", line[0]):  # Ignore comments and empty lines
                 continue
 
             institution = line[0]
@@ -201,7 +198,7 @@ class SimpleBudgetLoader(BaseLoader):
         filename = self.get_economic_classification_path(path)
         reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
         for index, line in enumerate(reader):
-            if re.match("^#", line[0]):  # Ignore comments
+            if line==[] or re.match("^#", line[0]):  # Ignore comments and empty lines
                 continue
 
             is_expense = (line[0] != 'I')
@@ -227,10 +224,7 @@ class SimpleBudgetLoader(BaseLoader):
         filename = self.get_functional_classification_path(path)
         reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
         for index, line in enumerate(reader):
-            if len(line)==0:
-                continue
-
-            if re.match("^#", line[0]):     # Ignore comments
+            if line==[] or re.match("^#", line[0]):     # Ignore comments and empty lines
                 continue
 
             # If we're not using subprogrammes, insert an empty column where they would go.
@@ -264,7 +258,7 @@ class SimpleBudgetLoader(BaseLoader):
         if os.path.isfile(filename):
             reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
             for index, line in enumerate(reader):
-                if re.match("^#", line[0]):  # Ignore comments
+                if line==[] or re.match("^#", line[0]):  # Ignore comments and empty lines
                     continue
 
                 code = line[0]
