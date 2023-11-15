@@ -149,6 +149,10 @@ class SimpleBudgetLoader(BaseLoader):
             else:
                 fc = dummy_fc
 
+            # When there is no description for the budget_item take the one from the parent economic category
+            if item['description'] == None or item['description'] == "":
+                item['description'] = ec.description
+
             BudgetItem(institutional_category=ic,
                       functional_category=fc,
                       economic_category=ec,
