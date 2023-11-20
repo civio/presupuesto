@@ -122,9 +122,12 @@ table.table-grid {
         border: none; // Remove default button styles
         cursor: pointer;
         text-align: center;
-        font-size: 26px;
-        line-height: 22px;
         font-weight: 300;
+        
+        // Fix cross alignment issue on buttons
+        font-size: 20px;
+        line-height: 16px;
+        padding:  0 0 2px 0;
 
          &:hover{
           background-color: $panel-default-heading-bg;
