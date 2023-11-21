@@ -195,6 +195,8 @@
     // Redraw all
     function redraw(){
       uiState = getUIState();
+      console.log("uiState.view", uiState.view);
+
     
       // Show/hide panel downloads
       $('#tab-grid-content .panel-downloads > p').hide();
@@ -209,8 +211,8 @@
         // ...and some data controllers don't apply, so we hide them
         $('.data-controllers button').hide();
         $('.data-controllers .quantity-selection').hide();
-        // FIXME: There must be a better way!
-        $('.data-controllers .layout-slider').css('margin-left', '10px');
+        // Adjust layout-slider dimensions consequently if having no selector
+        $('.data-controllers .layout-slider').addClass('withoutSelector');
         $('#year-selection').slider('resize');  // Force a redraw
 
         redrawMonitoring();
@@ -227,7 +229,7 @@
         // And undo the changes introduced by the monitoring tab
         $('.data-controllers button').show();
         $('.data-controllers .quantity-selection').show();
-        $('.data-controllers .layout-slider').css('margin-left', '275px');
+        $('.data-controllers .layout-slider').removeClass('withoutSelector');
         $('#year-selection').slider('resize');
 
         $('#tab-monitoring-content').hide();

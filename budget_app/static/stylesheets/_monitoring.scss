@@ -12,7 +12,7 @@ $monitoring-bar-color: $brand-primary;
 }
 
 .monitoring-content .layout-slider{
-  margin-left: 80px;
+  margin-left: $grid-gutter-width * 2;
 }
 
 //
