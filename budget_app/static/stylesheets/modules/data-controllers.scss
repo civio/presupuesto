@@ -155,6 +155,10 @@
       margin-left: 275px;
     }
 
+    .layout-slider.withoutSelector {
+      margin-left: $grid-gutter-width/3;
+    }
+
     .single-year{
       text-align: right;
 
