@@ -47,4 +47,4 @@ class StatLoader(object):
         entity = Entity.objects.filter(code=code)
         if not entity:
             raise Exception("Entity (%s/%s) not found" % (code, name))
-        return entity[0]
+        return entity.first()

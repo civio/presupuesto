@@ -2,17 +2,17 @@
 
 Para instalar la aplicación en local es necesario seguir los siguientes pasos:
 
-* Instalar Python. La aplicación debería funcionar con Python 2.6, pero el desarrollo y los despliegues actuales usan 2.7.x, que es la versión recomendada.
+* Instalar Python. El desarrollo y los despliegues actuales usan 2.7.x, que es la versión recomendada.
 
-* Instalar los componentes utilizados por la aplicación. Actualmente, la aplicación requiere coffin 0.4.0, así como django 1.4.2:
+* Opcionalmente, crear un entorno separado para la aplicación:
+
+        $ pip install virtualenv
+        $ python -m virtualenv env
+        $ source env/bin/activate
+
+* Instalar los componentes utilizados por la aplicación. Actualmente, la aplicación requiere Django 1.7.x:
     
         $ pip install -r requirements/local.txt
-
-    Incompatibilidad con otras versiones de coffin y django:
-    * En coffin > 0.4.0 desaparece `coffin.common.env`.
-    * En django > 1.6 desaparece el argumento [deprecado][4] `mimetype`.
-    * En django > = 1.5 desaparece `django.views.generic.simple`.
-    * En django < 1.4.2 no se ha incorporado aún la [compatibilidad][5] con `django.utils.six`.
 
 * Borrar base de datos:
 
@@ -26,7 +26,6 @@ Para instalar la aplicación en local es necesario seguir los siguientes pasos:
 
 * Crear el esquema de la base de datos y cargar los datos básicos:
 
-        $ python manage.py syncdb
         $ python manage.py migrate
 
         $ python manage.py load_glossary
@@ -36,7 +35,7 @@ Para instalar la aplicación en local es necesario seguir los siguientes pasos:
 
 ### Adaptando el aspecto visual
 
-La aplicación soporta el concepto de 'themes' capaces de modificar el aspecto visual de la web: tanto recursos estáticos (imágenes, hojas de estilo...) como las plantillas que generan el contenido de la web. El repositorio [`presupuesto-dvmi`](https://github.com/civio/presupuesto-dvmi) de Civio -una adaptación del software de Aragón Open Data a los Presupuestos Generales del Estado- es un buen ejemplo de cómo puede organizarse el contenido de un theme. Si su proyecto tiene ámbito municipal puede basarse en el repositorio de [`presupuesto-torrelodones`](https://github.com/civio/presupuesto-torrelodones)
+La aplicación soporta el concepto de 'themes' capaces de modificar el aspecto visual de la web: tanto recursos estáticos (imágenes, hojas de estilo...) como las plantillas que generan el contenido de la web. El repositorio [`presupuesto-dvmi`](https://github.com/civio/presupuesto-dvmi) de Civio -una adaptación del software de Aragón Open Data a los Presupuestos Generales del Estado- es un buen ejemplo de cómo puede organizarse el contenido de un theme. Si su proyecto tiene ámbito municipal puede basarse en el repositorio de [`presupuesto-polinya`](https://github.com/civio/presupuesto-polinya)
 
 El theme a usar se configura mediante la variable `THEME` en local_settings.py. Es referenciada en diversos puntos de `settings.py` para instalar los directorios del theme (plantillas y recursos estáticos) justo antes de los de la aplicación principal.
 
@@ -53,7 +52,7 @@ Es necesario compilar todos los recursos estáticos. Para ello:
 
 ### Configurando el buscador
 
-Por defecto la aplicación usa el método estándar de búsqueda de texto de Postgres. Es posible crear métodos de búsqueda adaptados a un idioma concreto, de forma que -por ejemplo- Postgres ignore los acentos a la hora de buscar resultados. Si deseamos configurar la búsqueda para funcionar en español, creamos primero una nueva configuración de búsqueda, como se explica en la [documentación de Postgres](http://www.postgresql.org/docs/9.1/static/textsearch-configuration.html):
+Por defecto la aplicación usa el método estándar de búsqueda de texto de Postgres. Es posible crear métodos de búsqueda adaptados a un idioma concreto, de forma que -por ejemplo- Postgres ignore los acentos a la hora de buscar resultados. Si deseamos configurar la búsqueda para funcionar en español, creamos primero una nueva configuración de búsqueda, como se explica en la [documentación de Postgres](https://www.postgresql.org/docs/9.1/static/textsearch-configuration.html):
 
     $ psql presupuestos_dev
 
@@ -82,6 +81,3 @@ Pero para usarlo de manera regular debemos configurar la aplicación, vía `loca
 * Arrancar el servidor en modo livereload:
 
         $ python manage.py livereload
-
-[4]: https://docs.djangoproject.com/en/1.7/internals/deprecation/#deprecation-removed-in-1-7
-[5]: https://docs.djangoproject.com/en/1.5/topics/python3/#philosophy

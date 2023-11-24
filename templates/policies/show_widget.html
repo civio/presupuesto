@@ -19,7 +19,7 @@
       </p>
 
       <a href="{{ request.path|urlencode }}" target="_blank">
-        <h2 class="page-title">{{ entity.name+': ' if is_secondary_entity }}{{ name }}:</h2>
+        <h2 class="page-title">{{ entity.name+': ' if is_secondary_entity else '' }}{{ name }}:</h2>
       </a>
       
       <!-- Subtitle -->

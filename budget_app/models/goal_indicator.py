@@ -32,9 +32,10 @@ class GoalIndicatorsManager(models.Manager):
         sql += "group by b.year, fc.policy " \
             "order by b.year asc, fc.policy asc"
 
-        cursor = connection.cursor()
-        cursor.execute(sql, query_arguments)
-        return list(cursor.fetchall())
+        with connection.cursor() as cursor:
+            cursor.execute(sql, query_arguments)
+            return list(cursor.fetchall())
+
 
     # Get a summary of indicators and scores by programme.
     def get_indicators_summary_by_programme(self, entity_id, field_name, field_id):
@@ -51,9 +52,10 @@ class GoalIndicatorsManager(models.Manager):
                 "b.entity_id = %s " \
             "group by b.year, fc.id, fc.description " \
             "order by fc.description asc"
-        cursor = connection.cursor()
-        cursor.execute(sql, [field_id, entity_id])
-        return list(cursor.fetchall())
+        with connection.cursor() as cursor:
+            cursor.execute(sql, [field_id, entity_id])
+            return list(cursor.fetchall())
+
 
     # Get the number of goals per policy (for the main visualization).
     # Note that some goals don't have indicators, so adding this functionality to
@@ -70,9 +72,11 @@ class GoalIndicatorsManager(models.Manager):
                 "b.entity_id = %s " \
             "group by b.year, fc.policy " \
             "order by year asc, fc.policy asc"
-        cursor = connection.cursor()
-        cursor.execute(sql, [entity_id])
-        return list(cursor.fetchall())
+
+        with connection.cursor() as cursor:
+            cursor.execute(sql, [entity_id])
+            return list(cursor.fetchall())
+
 
     # Get the list of programmes with goals for a given policy.
     # Note that some goals don't have indicators, so `get_indicators_summary_by_programme`
@@ -90,9 +94,11 @@ class GoalIndicatorsManager(models.Manager):
                 "b.entity_id = %s " \
             "group by b.year, fc.id " \
             "order by fc.description asc"
+
         cursor = connection.cursor()
         cursor.execute(sql, [policy_id, entity_id])
         return list(cursor.fetchall())
+
 
     # Get the list of sections with goals for a given programme.
     # Note that some goals don't have indicators, so `get_indicators_summary_by_section`
@@ -111,9 +117,11 @@ class GoalIndicatorsManager(models.Manager):
                 "b.entity_id = %s " \
             "group by b.year, ic.id, ic.description " \
             "order by ic.description asc"
-        cursor = connection.cursor()
-        cursor.execute(sql, [programme_id, entity_id])
-        return list(cursor.fetchall())
+
+        with connection.cursor() as cursor:
+            cursor.execute(sql, [programme_id, entity_id])
+            return list(cursor.fetchall())
+
 
     # Get a summary of indicators and scores for a given programme.
     def get_indicators_summary_by_section(self, entity_id, programme_id):
@@ -130,9 +138,10 @@ class GoalIndicatorsManager(models.Manager):
                 "fc.programme = %s and " \
                 "b.entity_id = %s " \
             "group by ic.id "
-        cursor = connection.cursor()
-        cursor.execute(sql, [programme_id, entity_id])
-        return list(cursor.fetchall())
+        with connection.cursor() as cursor:
+            cursor.execute(sql, [programme_id, entity_id])
+            return list(cursor.fetchall())
+
 
     def get_programme_indicators(self, entity, programme_id):
         return self \
@@ -155,7 +164,6 @@ class GoalIndicator(models.Model):
     objects = GoalIndicatorsManager()
 
     class Meta:
-        app_label = "budget_app"
         db_table = "goal_indicators"
 
     def __unicode__(self):

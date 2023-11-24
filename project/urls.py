@@ -1,27 +1,35 @@
 # -*- coding: UTF-8 -*-
 
 from django.conf.urls.i18n import i18n_patterns
-from django.conf.urls import patterns, url, include
+from django.conf.urls import url, include
 from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.http import HttpResponseRedirect
+from django.utils import translation
+from django.views.decorators.cache import never_cache
 from django.shortcuts import render
 
 from budget_app.views import *
 
 # Do we have more than one language? If so, localize the URLs and add Django's i18n paths
 if len(settings.LANGUAGES) > 1:
-    budget_app_urlpatterns = patterns('',
+    @never_cache
+    def redirect_to_default_homepage(request):
+        if hasattr(settings, 'DEFAULT_HOMEPAGE_LANGUAGE'):
+            translation.activate(settings.DEFAULT_HOMEPAGE_LANGUAGE)
+        return HttpResponseRedirect(reverse('welcome'))
+
+    budget_app_urlpatterns = [
         url(r'^i18n/', include('django.conf.urls.i18n')),
-        url(r'^$', lambda x: HttpResponseRedirect(reverse('welcome'))),
-    )
-    url_patterns = i18n_patterns
+        url(r'^$', redirect_to_default_homepage),
+    ]
+    add_url_patterns = lambda x: i18n_patterns(*x)
 else:
-    budget_app_urlpatterns = patterns('', )
-    url_patterns = patterns
+    budget_app_urlpatterns = []
+    add_url_patterns = lambda x: list(x)
 
 # Add the application paths
-budget_app_urlpatterns += url_patterns('',
+budget_app_urlpatterns += add_url_patterns([
     url(r'^$', welcome, name='welcome'),
 
     url(r'^resumen$', budgets, name='budgets'),
@@ -171,14 +179,14 @@ budget_app_urlpatterns += url_patterns('',
 
     # Payments
     url(r'^(?P<slug>.+)_pagos\.(?P<format>.+)$', entity_payments, name='entity_payments'),
-)
+])
 
 # Add extra application paths, not i18n
-budget_app_urlpatterns += patterns('',
+budget_app_urlpatterns += [
     url(r'^version.json$', version_api),
     url(r'^sitemap\.xml$', sitemap),
     url(r'^robots\.txt$', lambda request: render(request, 'robots.txt', content_type='text/plain')),
-)
+]
 
 # Add the theme URL patterns, if they exist, in front of the default app ones.
 #
@@ -189,6 +197,6 @@ budget_app_urlpatterns += patterns('',
 try:
     import importlib
     theme_urls = importlib.import_module(settings.THEME+'.urls')
-    urlpatterns = url_patterns(settings.THEME+'.views', *theme_urls.EXTRA_URLS) + budget_app_urlpatterns
+    urlpatterns = add_url_patterns(theme_urls.EXTRA_URLS) + budget_app_urlpatterns
 except:
     urlpatterns = budget_app_urlpatterns

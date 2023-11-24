@@ -11,9 +11,9 @@ class PopulationStatManager(models.Manager):
 
         # Now populate the returned table up to the latest year, filling in the gaps.
         # We need to do this because population data is often incomplete or not up to date.
-        last_year = Budget.objects.get_years(entity).order_by('-year')[0]
+        last_year = Budget.objects.get_years(entity).order_by('-year').first()
         last_valid_population = None
-        for year in range(stats[0].year, last_year + 1):
+        for year in range(stats.first().year, last_year + 1):
             if year in table:
                 last_valid_population = table[year]
             table[year] = last_valid_population
@@ -26,7 +26,7 @@ class PopulationStatManager(models.Manager):
         return table
 
     def get_last_year(self):
-        return self.order_by('-year').all()[0].year
+        return self.order_by('-year').first().year
 
 
 class PopulationStat(models.Model):
@@ -39,7 +39,6 @@ class PopulationStat(models.Model):
     objects = PopulationStatManager()
 
     class Meta:
-        app_label = "budget_app"
         db_table = "population_stats"
 
     def __unicode__(self):

@@ -19,7 +19,7 @@
   <!-- Politicas Header -->
   <div class="policies-header section-header">
     
-    <h2 class="page-title">{{ entity.name+': ' if is_secondary_entity }}{{ _('Políticas') }}</h2>
+    <h2 class="page-title">{{ entity.name+': ' if is_secondary_entity else '' }}{{ _('Políticas') }}</h2>
 
     <ul id="tabs" class="nav nav-tabs nav-tabs-centered" role="tablist">
       <li role="presentation">

@@ -34,7 +34,6 @@ class Entity(models.Model):
     objects = EntityManager()
 
     class Meta:
-        app_label = "budget_app"
         db_table = "entities"
 
     def save(self):

@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from budget_app.models import Budget, BudgetBreakdown, FunctionalCategory, EconomicCategory
 from entities import entities_show_helper
 from policies_helpers import policies_show_helper, programmes_show_helper, articles_show_helper
@@ -42,14 +42,14 @@ def subprogrammes_show(request, id, title, render_callback=None):
     # Extra request context info
     c['subprogramme_id'] = id
     subprogramme = FunctionalCategory.objects.filter(budget__entity=main_entity,
-                                                        subprogramme=id)[0]
+                                                        subprogramme=id).first()
     c['programme'] = FunctionalCategory.objects.filter(budget__entity=main_entity,
                                                         programme=subprogramme.programme,
-                                                        subprogramme__isnull=True)[0]
+                                                        subprogramme__isnull=True).first()
     # The policy object is needed for the breadcrumb only
     c['policy'] = FunctionalCategory.objects.filter(budget__entity=main_entity,
                                                     policy=subprogramme.policy,
-                                                    programme__isnull=True)[0]
+                                                    programme__isnull=True).first()
 
     # Ignore if possible the descriptions for execution data, they are truncated and ugly
     programme_descriptions = {}
@@ -100,7 +100,7 @@ def subprogrammes_show(request, id, title, render_callback=None):
     # if parameter widget defined use policies/widget template instead of policies/show
     template = 'policies/show_widget.html' if isWidget(request) else 'policies/show.html'
 
-    return render(c, render_callback, template )
+    return render(c, render_callback, template)
 
 
 def income_articles_show(request, id, title, render_callback=None):

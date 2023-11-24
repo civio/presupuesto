@@ -28,8 +28,8 @@ from openpyxl import Workbook
 # we need to make sure that happens on exported data files also. Hence the need for
 # including the subtotals in the CSV/XLS files.
 #
-# [1]: http://www.sepg.pap.minhap.gob.es/Presup/PGE2013Ley/MaestroDocumentos/PGE-ROM/doc/HTM/N_13_E_V_1_101_1_1_2_2_112_1_2.HTM
-# [2]: http://www.sepg.pap.minhap.gob.es/Presup/PGE2013Ley/MaestroDocumentos/PGE-ROM/doc/HTM/N_13_E_R_31_2_1_G_1_1_1312C_P.HTM
+# [1]: https://www.sepg.pap.minhap.gob.es/Presup/PGE2013Ley/MaestroDocumentos/PGE-ROM/doc/HTM/N_13_E_V_1_101_1_1_2_2_112_1_2.HTM
+# [2]: https://www.sepg.pap.minhap.gob.es/Presup/PGE2013Ley/MaestroDocumentos/PGE-ROM/doc/HTM/N_13_E_R_31_2_1_G_1_1_1312C_P.HTM
 
 #
 # ENTITY BREAKDOWNS
@@ -436,7 +436,7 @@ class CSVGenerator:
 
     def generate_response(self, c):
         # Create the HttpResponse object with the appropriate CSV header
-        response = HttpResponse(mimetype='text/csv; charset=utf-8')
+        response = HttpResponse(content_type='text/csv; charset=utf-8')
         response['Content-Disposition'] = 'attachment; filename="%s"' % self.filename
 
         writer = csv.writer(response)
@@ -470,7 +470,7 @@ class XLSXGenerator:
             workbook.save(tmp.name)
             tmp.seek(0)
 
-            response = HttpResponse(tmp.read(), mimetype='application/ms-excel; charset=utf-8')
+            response = HttpResponse(tmp.read(), content_type='application/ms-excel; charset=utf-8')
             response['Content-Disposition'] = 'attachment; filename="%s"' % self.filename
             return response
 
@@ -481,7 +481,7 @@ def _generator(filename, format, content_generator):
         raise ValueError("Provided format is not valid: {}. valid values are [csv, xlsx]".format(format))
 
 # Remove duplicates from list, maintaining order
-# See http://stackoverflow.com/a/37163210
+# See https://stackoverflow.com/a/37163210
 def _unique(list):
     return reduce(lambda l, x: l.append(x) or l if x not in l else l, list, [])
 

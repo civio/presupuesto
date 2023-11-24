@@ -5,23 +5,31 @@ import logging
 
 from django.core.management.base import BaseCommand
 from django.conf import settings
-from budget_app.models import Entity
-from optparse import make_option
-
-from budget_app.models import Budget
-
+from budget_app.models import Entity, Budget
 
 class Command(BaseCommand):
     logging.disable(logging.ERROR)   # Avoid SQL logging on console
 
-    option_list = BaseCommand.option_list + (
-        make_option(
-            '--language',
+    def add_arguments(self, parser):
+        parser.add_argument('years')
+
+        parser.add_argument('--language',
             action='store',
             dest='language',
             default=settings.LANGUAGE_CODE,
             help='Set data language'),
-    )
+
+        parser.add_argument('--level',
+            action='store',
+            dest='level',
+            default=settings.MAIN_ENTITY_LEVEL,
+            help='Set entity level'),
+
+        parser.add_argument('--name',
+            action='store',
+            dest='name',
+            default=settings.MAIN_ENTITY_NAME,
+            help='Set entiy name'),
 
     help = u"Elimina el presupuesto del año"
 
@@ -48,15 +56,10 @@ class Command(BaseCommand):
         return result
 
     def handle(self, *args, **options):
-        if len(args) < 1:
-            print("Por favor indique el año del presupuesto a eliminar.")
-            return
-
-        years = self._parse_number_range(args[0])
+        years = self._parse_number_range(options['years'])
         languages = self._parse_languages(options['language'])
-
-        level = settings.MAIN_ENTITY_LEVEL if len(args) < 2 else args[1]
-        name = settings.MAIN_ENTITY_NAME if len(args) < 3 else args[2]
+        level = options['level']
+        name = options['name']
 
         for language in languages:
             entity = self._get_entity(level, name, language)
@@ -83,4 +86,4 @@ class Command(BaseCommand):
         entity = Entity.objects.filter(level=level, name=name, language=language)
         if not entity:
             raise Exception("Entity (%s/%s) not found" % (level, name))
-        return entity[0]
+        return entity.first()
