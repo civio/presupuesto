@@ -3,6 +3,28 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [4.6] - 2023-11-24
+### Changed
+- Updated Django to version 1.11.29, and modify internal code as needed for compatibility. #80
+- Update argument handling in management commands to fit new Django style. #80
+- Update `psycopg2` version to 2.8.6 to fix `mod_wsgi` compatibility. #80
+- Update `django-compressor` to version 2.4.1. #80
+- Make base language always "es", but allow forcing it at homepage. #80 #1283
+- Prioritize later-year code descriptions when they are not consistent. #1282
+- Enable themes to add notes to only one tab in main chart. #1277
+- Fill in empty item descriptions in SimpleBudgetLoader, as we do in BudgetLoader. #1256
+
+### Fixed
+- Fix links from treemap in section pages. #1285
+- Fix expand button alignment on tables. #1256
+- Fix year selector alignment on mobile. #1303
+
+### Removed
+- Removed South for database migrations, now part of Django. #80
+- Removed Coffin for templates, not needed in modern Django. #80
+- Removed Jasmine for testing, replacement needed. #80
+
+
 ## [4.5] - 2023-09-08
 ### Changed
 - Refactor URL generation to use URL names instead of dotted paths, for future Django compatibility. #80
@@ -321,7 +343,8 @@ All notable changes to this project will be documented in this file.
 ### Forked from [aragonopendata/presupuesto](https://github.com/aragonopendata/presupuesto) - 2016-01-28
 
 
-[Unreleased]: https://github.com/civio/presupuesto/compare/v4.5...HEAD
+[Unreleased]: https://github.com/civio/presupuesto/compare/v4.6...HEAD
+[4.6]: https://github.com/civio/presupuesto/releases/tag/v4.6
 [4.5]: https://github.com/civio/presupuesto/releases/tag/v4.5
 [4.4]: https://github.com/civio/presupuesto/releases/tag/v4.4
 [4.3.2]: https://github.com/civio/presupuesto/releases/tag/v4.3.2
