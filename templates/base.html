@@ -1,28 +1,27 @@
-{% load i18n %}
 <!DOCTYPE html>
-<html lang="{{ request.LANGUAGE_CODE }}">
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
   {% include 'shared/meta.html' %}
 
-  <title>{{ meta_title|safe }}</title>
+  <title>{{ meta_title|safe }}</title>
   
-  <link href="{{ STATIC_URL }}assets/favicon.png" rel="icon" type="image/x-icon" />
+  <link href="{{ static('assets/favicon.png') }}" rel="icon" type="image/x-icon" />
 
   {% include 'shared/fonts.html' %}
 
-  {% load compress %}
-
   {% compress css %}
-  <link href="{{ STATIC_URL }}stylesheets/main.css" media="all" rel="stylesheet" type="text/css" />
-  {% endcompress %}
-  
-  {% compress js %}
-  <script src="{{ STATIC_URL }}javascripts/jquery-2.2.4.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/jquery-migrate-1.4.1.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/modernizr-2.6.3.min.js"></script>
+  <link href="{{ static('stylesheets/main.css') }}" media="all" rel="stylesheet" type="text/css" />
   {% endcompress %}
 
+  {% compress js %}
+  <script src="{{ static('javascripts/jquery-2.2.4.js') }}"></script>
+  <script src="{{ static('javascripts/jquery-migrate-1.4.1.js') }}"></script>
+  <script src="{{ static('javascripts/modernizr-2.6.3.min.js') }}"></script>
+  {% endcompress %}
+
+  {% if not debug %}
   {% include 'shared/analytics.html' %}
+  {% endif %}
 </head>
 <body class="{{ page_css_class }}">
   <!--[if lt IE 9]>
@@ -38,52 +37,51 @@
 
   {% compress js %}
   <!-- Jquery plugins -->
-  <script src="{{ STATIC_URL }}javascripts/jquery.ba-bbq.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/jquery.cookie.min.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/jquery.cookiebar.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/jquery.event.drag-2.0.min.js"></script>
+  <script src="{{ static('javascripts/jquery.ba-bbq.js') }}"></script>
+  <script src="{{ static('javascripts/jquery.cookie.min.js') }}"></script>
+  <script src="{{ static('javascripts/jquery.cookiebar.js') }}"></script>
+  <script src="{{ static('javascripts/jquery.event.drag-2.0.min.js') }}"></script>
   <!-- Other dependencies -->
-  <script src="{{ STATIC_URL }}javascripts/underscore-1-5-2.min.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/datatables.min.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/datatables.absolute.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/select2.min.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/vis/d3-bundle.js"></script>
+  <script src="{{ static('javascripts/underscore-1-5-2.min.js') }}"></script>
+  <script src="{{ static('javascripts/datatables.min.js') }}"></script>
+  <script src="{{ static('javascripts/datatables.absolute.js') }}"></script>
+  <script src="{{ static('javascripts/select2.min.js') }}"></script>
+  <script src="{{ static('javascripts/vis/d3-bundle.js') }}"></script>
   <!-- Bootstrap plugins -->
-  <script src="{{ STATIC_URL }}javascripts/bootstrap/collapse.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/bootstrap/dropdown.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/bootstrap/modal.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/bootstrap/tooltip.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/bootstrap/popover.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/bootstrap/transition.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/bootstrap-slider.js"></script>
+  <script src="{{ static('javascripts/bootstrap/collapse.js') }}"></script>
+  <script src="{{ static('javascripts/bootstrap/dropdown.js') }}"></script>
+  <script src="{{ static('javascripts/bootstrap/modal.js') }}"></script>
+  <script src="{{ static('javascripts/bootstrap/tooltip.js') }}"></script>
+  <script src="{{ static('javascripts/bootstrap/popover.js') }}"></script>
+  <script src="{{ static('javascripts/bootstrap/transition.js') }}"></script>
+  <script src="{{ static('javascripts/bootstrap-slider.js') }}"></script>
   <!-- Custom modules -->
-  <script src="{{ STATIC_URL }}javascripts/grid_controls.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/grid_formatters.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/grid_helpers.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/total_helpers.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/investment_total_helpers.js"></script>
+  <script src="{{ static('javascripts/grid_controls.js') }}"></script>
+  <script src="{{ static('javascripts/grid_formatters.js') }}"></script>
+  <script src="{{ static('javascripts/grid_helpers.js') }}"></script>
+  <script src="{{ static('javascripts/total_helpers.js') }}"></script>
+  <script src="{{ static('javascripts/investment_total_helpers.js') }}"></script>
   {% if show_tax_receipt %}
-  <script src="{{ STATIC_URL }}javascripts/tax_receipt.js"></script>
+  <script src="{{ static('javascripts/tax_receipt.js') }}"></script>
   {% endif %}
-  <script src="{{ STATIC_URL }}javascripts/script.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/theme.js"></script>
+  <script src="{{ static('javascripts/script.js') }}"></script>
+  <script src="{{ static('javascripts/theme.js') }}"></script>
   <!-- D3 & Visualization modules -->
   {% if overview_use_new_vis %}
-  <script src="{{ STATIC_URL }}javascripts/vis/budget-sankey-2.0.js"></script>
+  <script src="{{ static('javascripts/vis/budget-sankey-2.0.js') }}"></script>
   {% else %}
-  <script src="{{ STATIC_URL }}javascripts/vis/d3.sankey.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/vis/budget-sankey-1.0.js"></script>
+  <script src="{{ static('javascripts/vis/d3.sankey.js') }}"></script>
+  <script src="{{ static('javascripts/vis/budget-sankey-1.0.js') }}"></script>
   {% endif %}
-  <script src="{{ STATIC_URL }}javascripts/vis/budget-treemap.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/vis/budget-summary.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/vis/stacked-area-chart.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/vis/budget-stacked-chart.js"></script>
-  <script src="{{ STATIC_URL }}javascripts/vis/monitoring-radial-viz.js"></script>
-
+  <script src="{{ static('javascripts/vis/budget-treemap.js') }}"></script>
+  <script src="{{ static('javascripts/vis/budget-summary.js') }}"></script>
+  <script src="{{ static('javascripts/vis/stacked-area-chart.js') }}"></script>
+  <script src="{{ static('javascripts/vis/budget-stacked-chart.js') }}"></script>
+  <script src="{{ static('javascripts/vis/monitoring-radial-viz.js') }}"></script>
   {% endcompress %}
 
   {% if debug %}
-  <script src="{{ STATIC_URL }}javascripts/count-css-rules.js"></script>
+  <script src="{{ static('javascripts/count-css-rules.js') }}"></script>
   {% endif %}
 
   {% include 'shared/cookiebar.html' %}

@@ -20,8 +20,7 @@ def search(request):
     # to search across all budgets one needs to request that explicitly.
     if c['selected_year'] != "all":
         year = c['selected_year']
-        budgets = Budget.objects.filter(entity__id=get_main_entity(c).id, year=year)
-        budget = budgets[0] if len(budgets)>0 else None
+        budget = Budget.objects.filter(entity__id=get_main_entity(c).id, year=year).first()
     else:
         year = None
         budget = None

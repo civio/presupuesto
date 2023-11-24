@@ -18,7 +18,6 @@ class GoalActivity(models.Model):
     objects = GoalActivitiesManager()
 
     class Meta:
-        app_label = "budget_app"
         db_table = "goal_activities"
 
     def __unicode__(self):

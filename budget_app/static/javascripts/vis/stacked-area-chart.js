@@ -158,7 +158,7 @@ function StackedAreaChart() {
     _this.x.domain( d3.extent(_this.years) );
 
     // Force x axis ticks values to avoid gaps
-    // http://stackoverflow.com/questions/28129412/d3-non-continuous-dates-domain-gives-gaps-on-x-axis
+    // https://stackoverflow.com/questions/28129412/d3-non-continuous-dates-domain-gives-gaps-on-x-axis
     _this.xAxis.tickValues(_this.years);
 
     // Set X section width
@@ -280,7 +280,7 @@ function StackedAreaChart() {
   _this.drawStatusesOverlays = function(){
 
     // get years where status is not empty & year is greater than first year in years array
-    var nonexecutedYears = d3.entries(_this.budgetStatuses).filter(function(d){ return d.value !== '' && +d.key > _this.years[0]; });
+    var nonexecutedYears = d3.entries(_this.budgetStatuses).filter(function(d){ return d.value !== '' && _this.years.includes(+d.key); });
 
     if (nonexecutedYears.length > 0) {
       // Setup overlays

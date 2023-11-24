@@ -1,3 +1,6 @@
+# Originally taken from https://djangosnippets.org/snippets/773/
+# Should migrate to https://github.com/alrusdi/django_digg_paginator
+
 import math
 from django.core.paginator import \
     Paginator, QuerySetPaginator, Page, InvalidPage

@@ -9,7 +9,7 @@ from budget_app.models import BudgetBreakdown, Payment
 from helpers import *
 
 # Auxiliary class needed to access arbitrary attributes as objects.
-# See http://stackoverflow.com/a/2827664
+# See https://stackoverflow.com/a/2827664
 class MockPayment(object):
     pass
 
@@ -125,13 +125,7 @@ def payment_search_helper(request, c, entity, render_callback=None):
         if not render_callback:
             __populate_detailed_breakdowns(c, active_filters)
 
-    # XXX: We can't use render() as it is now because we need to set the content_type.
-    # Also because of the content type, note we're not using our render_response() wrapper,
-    # which sets meta, although it's not needed for the JSON response.
-    if render_callback:
-        return render(c, render_callback, '')
-    else:
-        return render_to_response('payments/search.json', c, content_type="application/json")
+    return render(c, render_callback, 'payments/search.json', content_type='application/json')
 
 
 def __populate_summary_breakdowns(c, entity, from_year, to_year):

@@ -6,10 +6,11 @@ import os
 import re
 
 from contextlib import contextmanager
-from coffin.shortcuts import render_to_response
 from django.template import RequestContext
+from django.shortcuts import render as django_render
 from django.conf import settings
 from django.core import urlresolvers
+from django.utils import translation
 from django.utils.translation import ugettext as _
 
 from project.settings import ROOT_PATH
@@ -60,6 +61,12 @@ def get_context(request, css_class='', title=''):
 
     c['treemap_global_max_value'] = not hasattr(settings, 'TREEMAP_GLOBAL_MAX_VALUE') or settings.TREEMAP_GLOBAL_MAX_VALUE
 
+    # Starting in Django 1.8, using django-jinja, context processors are run AFAIK **after** the view is done,
+    # so we need to populate those values that we're going to use in the views themselves.
+    # So this is basically a copy of django.template.context_processors.i18n.
+    # See https://docs.djangoproject.com/en/1.8/_modules/django/template/context_processors/
+    c['LANGUAGE_CODE'] = translation.get_language()
+
     try:
         c['active_tab'] = filter(
             lambda k: current_url_equals(c, TABS[k]),
@@ -98,7 +105,7 @@ def is_secondary_entity(c):
 def get_main_entity(c):
     return Entity.objects.filter(level=settings.MAIN_ENTITY_LEVEL,
                                     name=settings.MAIN_ENTITY_NAME,
-                                    language=c['LANGUAGE_CODE'])[0]
+                                    language=c['LANGUAGE_CODE']).first()
 
 def populate_stats(c):  # Convenience: assume it's top level entity
     populate_entity_stats(c, get_main_entity(c))
@@ -321,14 +328,13 @@ def _set_meta_fields(c):
 #
 
 # Wrapper around render_to_response, useful to hold code to be called for all responses
-def render_response(template_name, c):
+def render_response(template_name, c, content_type=None):
     _set_meta_fields(c)
-
-    return render_to_response(template_name, c)
+    return django_render(c.request, template_name, context=c, content_type=content_type)
 
 # Check whether a callback is provided and, based on that, render HTML or call back.
-def render(c, render_callback, template_name):
+def render(c, render_callback, template_name, content_type=None):
     if not render_callback:
-        return render_response(template_name, c)
+        return render_response(template_name, c, content_type=content_type)
     else:
         return render_callback.generate_response(c)

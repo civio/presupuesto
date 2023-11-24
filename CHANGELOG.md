@@ -3,6 +3,20 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [4.5] - 2023-09-08
+### Changed
+- Refactor URL generation to use URL names instead of dotted paths, for future Django compatibility. #80
+- Define URL patterns using callables, not view names, for future Django compatibility. #80
+- Split extra URLs in themes into a separate file. #80
+- Monitoring: `SHOW_MONITORING_TAB` is now in `settings.py`, like other properties, not in `local_settings.py`. #1216
+
+### Fixed
+- Fix accessibility compliance issues. #1278
+- Petals in monitoring viz should not clickable when in widget.
+
+### Removed
+- Deleted custom loader for Aragon counties and towns.
+
 ## [4.4] - 2023-08-23
 ### Added
 - Monitoring: Add new Monitoring section (goals, activities and indicators), controlled via `SHOW_MONITORING_TAB`. #1216 #1213 #1203
@@ -206,7 +220,7 @@ All notable changes to this project will be documented in this file.
 - Major front-end rewrite, now using Bootstrap 3.
 - Policy chart now reimplemented using plain D3.js. NVD3 dependency removed.
 - Default locale changed from `es_ES` to just `es` for clarity and simplicity.
-- Improve year slider changing jslider plugin by [bootstrap-slider](http://seiyria.com/bootstrap-slider/)
+- Improve year slider changing jslider plugin by [bootstrap-slider](https://seiyria.com/bootstrap-slider/)
 - Localised URLs don't have a language prefix if only one language is available.
 - Tax receipt is aware of whether financial chapters have to be included or not.
 - Update & translate metatags & improve base markup.
@@ -307,8 +321,9 @@ All notable changes to this project will be documented in this file.
 ### Forked from [aragonopendata/presupuesto](https://github.com/aragonopendata/presupuesto) - 2016-01-28
 
 
-[Unreleased]: https://github.com/civio/presupuesto/compare/v4.4...HEAD
-[4.4]: https://github.com/civio/presupuesto/releases/tag/v5.0
+[Unreleased]: https://github.com/civio/presupuesto/compare/v4.5...HEAD
+[4.5]: https://github.com/civio/presupuesto/releases/tag/v4.5
+[4.4]: https://github.com/civio/presupuesto/releases/tag/v4.4
 [4.3.2]: https://github.com/civio/presupuesto/releases/tag/v4.3.2
 [4.3.1]: https://github.com/civio/presupuesto/releases/tag/v4.3.1
 [4.3]: https://github.com/civio/presupuesto/releases/tag/v4.3

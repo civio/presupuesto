@@ -33,10 +33,7 @@ class SimpleBudgetLoader(BaseLoader):
             print "Leyendo datos de %s..." % filename
             reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
             for index, line in enumerate(reader):
-                if re.match("^#", line[0]):         # Ignore comments
-                    continue
-
-                if re.match("^ *$", ''.join(line)): # Ignore empty lines
+                if line==[] or re.match("^#", line[0]):     # Ignore comments and empty lines
                     continue
 
                 # Finally, we have useful data
@@ -115,7 +112,7 @@ class SimpleBudgetLoader(BaseLoader):
                 print u"ALERTA: No se encuentra la categoría económica de %s '%s'." % ("gastos" if item['is_expense'] else "ingresos", item['ec_code'], )
                 continue
             else:
-                ec = ec[0]
+                ec = ec.first()
 
             # Fetch institutional category.
             # This category is the trickiest to match, the less standard, so we allow the children
@@ -134,7 +131,7 @@ class SimpleBudgetLoader(BaseLoader):
                 print u"ALERTA: No se encuentra la categoría institucional '%s'." % (item['ic_code'], )
                 continue
             else:
-                ic = ic[0]
+                ic = ic.first()
 
             # Fetch functional category, only for expense items
             if item['is_expense']:
@@ -148,9 +145,13 @@ class SimpleBudgetLoader(BaseLoader):
                     print u"ALERTA: No se encuentra la categoría funcional '%s'." % (item['fc_code'], )
                     continue
                 else:
-                    fc = fc[0]
+                    fc = fc.first()
             else:
                 fc = dummy_fc
+
+            # When there is no description for the budget_item take the one from the parent economic category
+            if item['description'] == None or item['description'] == "":
+                item['description'] = ec.description
 
             BudgetItem(institutional_category=ic,
                       functional_category=fc,
@@ -176,7 +177,7 @@ class SimpleBudgetLoader(BaseLoader):
         filename = self.get_institutional_classification_path(path)
         reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
         for index, line in enumerate(reader):
-            if re.match("^#", line[0]):  # Ignore comments
+            if line==[] or re.match("^#", line[0]):  # Ignore comments and empty lines
                 continue
 
             institution = line[0]
@@ -201,7 +202,7 @@ class SimpleBudgetLoader(BaseLoader):
         filename = self.get_economic_classification_path(path)
         reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
         for index, line in enumerate(reader):
-            if re.match("^#", line[0]):  # Ignore comments
+            if line==[] or re.match("^#", line[0]):  # Ignore comments and empty lines
                 continue
 
             is_expense = (line[0] != 'I')
@@ -227,10 +228,7 @@ class SimpleBudgetLoader(BaseLoader):
         filename = self.get_functional_classification_path(path)
         reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
         for index, line in enumerate(reader):
-            if len(line)==0:
-                continue
-
-            if re.match("^#", line[0]):     # Ignore comments
+            if line==[] or re.match("^#", line[0]):     # Ignore comments and empty lines
                 continue
 
             # If we're not using subprogrammes, insert an empty column where they would go.
@@ -264,7 +262,7 @@ class SimpleBudgetLoader(BaseLoader):
         if os.path.isfile(filename):
             reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
             for index, line in enumerate(reader):
-                if re.match("^#", line[0]):  # Ignore comments
+                if line==[] or re.match("^#", line[0]):  # Ignore comments and empty lines
                     continue
 
                 code = line[0]

@@ -1,28 +1,31 @@
+# XXX: This won't work until we upgrade Python to a supported version (>=3.7).
+# See https://github.com/pypa/pipenv/issues/5604#issuecomment-1426574229
+
 [[source]]
 url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
 
 [packages]
-django-appconf = "==1.0.1"
-django-jasmine = "==0.4.1"
-"psycopg2" = "==2.7.3.1"
-six = "==1.9.0"
-openpyxl = "==2.6.1"
-dj-static = "==0.0.6"
-python-dateutil = "==2.6.0"
-Coffin = "==0.4.0"
-Django = "==1.4.2"
-django_compressor = "==1.5"
-"Jinja2" = "==2.10.1"
-MarkupSafe = "==0.23"
-Pygments = "==2.0.2"
-South = "==1.0.2"
 beautifulsoup4 = "==4.6.3"
+Coffin = "==0.4.0"
+dj-static = "==0.0.6"
+Django = "==1.4.2"
+django-appconf = "==1.0.1"
+django_compressor = "==1.5"
+django-jasmine = "==0.4.1"
+Jinja2 = "==2.10.1"
+MarkupSafe = "==0.23"
+openpyxl = "==2.6.1"
+psycopg2 = "==2.7.3.1"
+Pygments = "==2.0.2"
+python-dateutil = "==2.6.0"
+six = "==1.9.0"
+South = "==1.0.2"
 
 [dev-packages]
-fabric = "*"
 csvkit = "*"
+fabric = "*"
 
 [requires]
 python_version = "2.7"

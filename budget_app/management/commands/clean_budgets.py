@@ -82,11 +82,8 @@ class Command(BaseCommand):
         # waiting for something to happen via 'the normal channels' and our raw query doesn't
         # get commited to the database.
         # Transaction handling has changed much in Django 1.6+. The following is the old
-        # behaviour. See http://django-chinese-docs.readthedocs.io/en/latest/topics/db/transactions.html
+        # behaviour. See https://django-chinese-docs.readthedocs.io/en/latest/topics/db/transactions.html
         with transaction.commit_on_success():
-          cursor = connection.cursor()
-          try:
+          with connection.cursor() as cursor:
             cursor.execute(sql)
             print cursor.rowcount
-          finally:
-            cursor.close()

@@ -22,7 +22,7 @@ class InflationStatManager(models.Manager):
         return table
 
     def get_last_year(self):
-        return self.order_by('-year').all()[0].year
+        return self.order_by('-year').first().year
 
 
 class InflationStat(models.Model):
@@ -34,7 +34,6 @@ class InflationStat(models.Model):
     objects = InflationStatManager()
 
     class Meta:
-        app_label = "budget_app"
         db_table = "inflation_stats"
 
     def __unicode__(self):

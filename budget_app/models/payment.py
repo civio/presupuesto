@@ -33,6 +33,7 @@ class PaymentManager(models.Manager):
                     .distinct() \
                     .order_by('institutional_category__description')
 
+
     # Return the list of payees.
     # Unfortunately we couldn't find a way to bend the Django aggregate functions to do this,
     # and raw() needs the primary key to be in the result list, so we end up having to
@@ -52,9 +53,11 @@ class PaymentManager(models.Manager):
             "group by payee " \
             "order by sum(amount) desc " \
             "limit " + str(limit)
-        cursor = connection.cursor()
-        cursor.execute(sql, [str(entity.id), str(from_year), str(to_year)])
-        return list(cursor.fetchall())
+
+        with connection.cursor() as cursor:
+            cursor.execute(sql, [str(entity.id), str(from_year), str(to_year)])
+            return list(cursor.fetchall())
+
 
     # Return the area breakdown. Same issues as above.
     # Note that we could retrieve all the payments and aggregate them ourselves, but
@@ -72,9 +75,11 @@ class PaymentManager(models.Manager):
                 "b.year <= %s " \
             "group by area " \
             "order by sum(amount) desc"
-        cursor = connection.cursor()
-        cursor.execute(sql, [str(entity.id), str(from_year), str(to_year)])
-        return list(cursor.fetchall())
+
+        with connection.cursor() as cursor:
+            cursor.execute(sql, [str(entity.id), str(from_year), str(to_year)])
+            return list(cursor.fetchall())
+
 
     # Return the department breakdown. Same issues as above.
     def get_department_breakdown(self, entity, from_year, to_year):
@@ -91,9 +96,10 @@ class PaymentManager(models.Manager):
                 "b.year <= %s " \
             "group by department " \
             "order by sum(amount) desc"
-        cursor = connection.cursor()
-        cursor.execute(sql, [str(entity.id), str(from_year), str(to_year)])
-        return list(cursor.fetchall())
+        with connection.cursor() as cursor:
+            cursor.execute(sql, [str(entity.id), str(from_year), str(to_year)])
+            return list(cursor.fetchall())
+
 
     def each_denormalized(self, additional_constraints=None, additional_arguments=None):
         # XXX: Note that this left join syntax works well even when the institutional_category_id is null,
@@ -153,7 +159,6 @@ class Payment(models.Model):
     objects = PaymentManager()
 
     class Meta:
-        app_label = "budget_app"
         db_table = "payments"
 
     def __unicode__(self):

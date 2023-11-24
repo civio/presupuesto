@@ -18,7 +18,6 @@ class GeographicCategory(models.Model):
     objects = GeographicCategoriesManager()
 
     class Meta:
-        app_label = "budget_app"
         db_table = "geographic_categories"
 
     # Return the 'budget domain' id, used to uniquely identify a category

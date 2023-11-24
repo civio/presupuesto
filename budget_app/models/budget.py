@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 
 from django.db import models
-from django.core.cache import get_cache
+from django.core.cache import caches
 from django.utils.translation import ugettext as _
 from django.conf import settings
 
@@ -17,7 +17,8 @@ class BudgetManager(models.Manager):
     def latest(self, entity_id):
         return self.filter(entity_id=entity_id) \
                     .exclude(status='PR') \
-                    .order_by('-year')[0]
+                    .order_by('-year') \
+                    .first()
 
     # Return a list of years for which we have a budget
     # TODO: I don't think we should we using this, without filtering for entity.
@@ -78,27 +79,22 @@ class BudgetManager(models.Manager):
 
     # Get all descriptions available
     def get_all_descriptions(self, entity):
-        cache = get_cache('default')
-        key = "entity_"+entity.code
-        if cache.get(key) == None:
-            descriptions = {
+        def calculate_all_descriptions(self, entity):
+            return {
                 'functional': self._to_hash(FunctionalCategory.objects \
-                    .filter(budget_id__entity=entity).exclude(description='')),
+                    .filter(budget_id__entity=entity).exclude(description='').order_by('budget_id__year')),
                 'income': self._get_economic_descriptions(EconomicCategory.objects \
-                    .income().filter(budget_id__entity=entity).exclude(description='')),
+                    .income().filter(budget_id__entity=entity).exclude(description='').order_by('budget_id__year')),
                 'expense': self._get_economic_descriptions(EconomicCategory.objects \
-                    .expenses().filter(budget_id__entity=entity).exclude(description='')),
+                    .expenses().filter(budget_id__entity=entity).exclude(description='').order_by('budget_id__year')),
                 'funding': self._to_hash(FundingCategory.objects \
-                    .filter(budget_id__entity=entity).exclude(description='')),
+                    .filter(budget_id__entity=entity).exclude(description='').order_by('budget_id__year')),
                 'geographic': self._to_hash(GeographicCategory.objects \
-                    .filter(budget_id__entity=entity).exclude(description='')),
+                    .filter(budget_id__entity=entity).exclude(description='').order_by('budget_id__year')),
                 'institutional': self._get_institutional_descriptions(InstitutionalCategory.objects \
-                    .filter(budget_id__entity=entity).exclude(description=''))
+                    .filter(budget_id__entity=entity).exclude(description='').order_by('budget_id__year'))
             }
-            cache.set(key, descriptions)
-            return descriptions
-        else:
-            return cache.get(key)
+        return caches['default'].get_or_set('entity_'+entity.code, lambda: calculate_all_descriptions(self, entity))
 
 
 class Budget(models.Model):
@@ -111,7 +107,6 @@ class Budget(models.Model):
     objects = BudgetManager()
 
     class Meta:
-        app_label = "budget_app"
         db_table = "budgets"
 
     def __unicode__(self):

@@ -114,7 +114,7 @@ def entities_payments_search(request, id, render_callback=None):
 
 def _fetch_entity(c, id):
     # Retrieve the entity to display
-    entity = Entity.objects.filter(code=id)[0]
+    entity = Entity.objects.filter(code=id).first()
     set_title(c, entity.name)
 
     # Set the entity id and name
