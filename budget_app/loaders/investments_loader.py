@@ -64,26 +64,21 @@ class InvestmentsLoader(BaseLoader):
                 continue
 
             # Fetch functional category
-            fc = FunctionalCategory.objects.filter( area=item.get('fc_area', None),
-                                                    policy=item.get('fc_policy', None),
-                                                    function=item.get('fc_function', None),
-                                                    programme=item.get('fc_programme', None),
-                                                    subprogramme=item.get('fc_subprogramme', None),
-                                                    budget=budget)
+            fc = self.fetch_functional_category(budget,
+                                                item.get('fc_area', None),
+                                                item.get('fc_policy', None),
+                                                item.get('fc_function', None),
+                                                item.get('fc_programme', None),
+                                                item.get('fc_subprogramme', None))
             if not fc:
                 print u"ALERTA: No se encuentra la categoría funcional '%s' para '%s': %s€" % (item['fc_code'], item['description'].decode("utf-8"), item['amount']/100)
                 continue
-            else:
-                fc = fc.first()
 
             # Fetch geographic category
-            gc = GeographicCategory.objects.filter( code=item['gc_code'],
-                                                    budget=budget)
+            gc = self.fetch_geographical_category(budget, item['gc_code'])
             if not gc:
                 print u"ALERTA: No se encuentra la categoría geográfica '%s' para '%s': %s€" % (item['gc_code'], item['description'].decode("utf-8"), item['amount']/100)
                 continue
-            else:
-                gc = gc.first()
 
             # Create the payment record
             Investment( functional_category=fc,

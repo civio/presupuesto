@@ -122,7 +122,7 @@ class SimpleBudgetLoader(BaseLoader):
 
             # Fetch functional category, only for expense items
             if item['is_expense']:
-                fc = self.fetch_functional_category(budget, item['fc_code'])
+                fc = self.fetch_functional_category_by_full_code(budget, item['fc_code'])
                 if not fc:
                     print u"ALERTA: No se encuentra la categoría funcional '%s'." % (item['fc_code'], )
                     continue

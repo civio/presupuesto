@@ -9,6 +9,7 @@ class BaseLoader(object):
         self.economic_category_cache = {}
         self.institutional_category_cache = {}
         self.functional_category_cache = {}
+        self.geographical_category_cache = {}
 
     # Make input file delimiter configurable by children
     def _get_delimiter(self):
@@ -59,17 +60,25 @@ class BaseLoader(object):
 
 
     # Get a functional category from the database, with caching!
-    def fetch_functional_category(self, budget, fc_code):
-        key = (budget, fc_code)
+    def fetch_functional_category(self, budget, fc_area, fc_policy, fc_function, fc_programme, fc_subprogramme):
+        key = (budget, fc_area, fc_policy, fc_function, fc_programme, fc_subprogramme)
         if key not in self.functional_category_cache:
-            fc = FunctionalCategory.objects.filter( area=fc_code[0:1],
-                                                    policy=fc_code[0:2],
-                                                    function=fc_code[0:3],
-                                                    programme=fc_code[0:4] if self._use_subprogrammes() else fc_code,
-                                                    subprogramme=fc_code if self._use_subprogrammes() else None,
+            fc = FunctionalCategory.objects.filter( area=fc_area,
+                                                    policy=fc_policy,
+                                                    function=fc_function,
+                                                    programme=fc_programme,
+                                                    subprogramme=fc_subprogramme,
                                                     budget=budget)
             self.functional_category_cache[key] = fc.first() if fc else None
         return self.functional_category_cache[key]
+
+    def fetch_functional_category_by_full_code(self, budget, fc_code):
+        return self.fetch_functional_category(budget,
+                                                fc_code[0:1],
+                                                fc_code[0:2],
+                                                fc_code[0:3],
+                                                fc_code[0:4] if self._use_subprogrammes() else fc_code,
+                                                fc_code if self._use_subprogrammes() else None)
 
     # Get an economic category from the database, with caching!
     def fetch_economic_category(self, budget, is_expense, ec_code):
@@ -94,6 +103,15 @@ class BaseLoader(object):
                                                         budget=budget)
             self.institutional_category_cache[key] = ic.first() if ic else None
         return self.institutional_category_cache[key]
+
+    # Get a geographical category from the database, with caching!
+    def fetch_geographical_category(self, budget, gc_code):
+        key = (budget, gc_code)
+        if key not in self.geographical_category_cache:
+            gc = GeographicCategory.objects.filter( code=gc_code,
+                                                    budget=budget)
+            self.geographical_category_cache[key] = gc.first() if gc else None
+        return self.geographical_category_cache[key]
 
     # Get a from the database, with caching!
     def fetch_goal(self, budget, goal_uid):
