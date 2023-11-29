@@ -7,12 +7,6 @@ import os
 import re
 
 class SimpleBudgetLoader(BaseLoader):
-    def __init__(self):
-        super(BaseLoader, self).__init__()
-        self.economic_category_cache = {}
-        self.institutional_category_cache = {}
-        self.functional_category_cache = {}
-
     def load(self, entity, year, path, status):
         # Parse the incoming data and keep in memory
         budget_items = []
@@ -178,18 +172,6 @@ class SimpleBudgetLoader(BaseLoader):
                                         budget=budget)
             ic.save()
 
-    # Get an institutional category from the database, with caching!
-    def fetch_institutional_category(self, budget, ic_institution, ic_section, ic_department):
-        key = (budget, ic_institution, ic_section, ic_department)
-        if key not in self.institutional_category_cache:
-            ic = InstitutionalCategory.objects.filter(  institution=ic_institution,
-                                                        section=ic_section,
-                                                        department=ic_department,
-                                                        budget=budget)
-            self.institutional_category_cache[key] = ic.first() if ic else None
-        return self.institutional_category_cache[key]
-
-
 
     # Determine the economic classification file path
     def get_economic_classification_path(self, path):
@@ -216,19 +198,6 @@ class SimpleBudgetLoader(BaseLoader):
                                     description=description,
                                     budget=budget)
             ec.save()
-
-    # Get an economic category from the database, with caching!
-    def fetch_economic_category(self, budget, is_expense, ec_code):
-        key = (budget, is_expense, ec_code)
-        if key not in self.economic_category_cache:
-            ec = EconomicCategory.objects.filter(expense=is_expense,
-                                                chapter=ec_code[0],
-                                                article=ec_code[0:2] if len(ec_code) >= 2 else None,
-                                                heading=ec_code[0:3] if len(ec_code) >= 3 else None,
-                                                subheading = None,
-                                                budget=budget)
-            self.economic_category_cache[key] = ec.first() if ec else None
-        return self.economic_category_cache[key]
 
 
     # Determine the functional classification file path
@@ -263,19 +232,6 @@ class SimpleBudgetLoader(BaseLoader):
                                     description=description,
                                     budget=budget)
             fc.save()
-
-    # Get a functional category from the database, with caching!
-    def fetch_functional_category(self, budget, fc_code):
-        key = (budget, fc_code)
-        if key not in self.functional_category_cache:
-            fc = FunctionalCategory.objects.filter( area=fc_code[0:1],
-                                                    policy=fc_code[0:2],
-                                                    function=fc_code[0:3],
-                                                    programme=fc_code[0:4] if self._use_subprogrammes() else fc_code,
-                                                    subprogramme=fc_code if self._use_subprogrammes() else None,
-                                                    budget=budget)
-            self.functional_category_cache[key] = fc.first() if fc else None
-        return self.functional_category_cache[key]
 
 
     # Determine the functional classification file path
