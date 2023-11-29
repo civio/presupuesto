@@ -8,12 +8,6 @@ import re
 
 # Generic Monitoring loader
 class MonitoringLoader(BaseLoader):
-    def __init__(self):
-        super(BaseLoader, self).__init__()
-        self.goal_cache = {}
-        self.institutional_category_cache = {}
-        self.functional_category_cache = {}
-
     def load(self, entity, year, path, status):
         # Find the budget the monitoring relates to
         budget = Budget.objects.filter(entity=entity, year=year)
@@ -142,36 +136,3 @@ class MonitoringLoader(BaseLoader):
                             actual=indicator['actual'],
                             score=indicator['score'],
                             goal=goal).save()
-
-
-    # Get a functional category from the database, with caching!
-    def fetch_functional_category(self, budget, fc_code):
-        key = (budget, fc_code)
-        if key not in self.functional_category_cache:
-            fc = FunctionalCategory.objects.filter( area=fc_code[0:1],
-                                                    policy=fc_code[0:2],
-                                                    function=fc_code[0:3],
-                                                    programme=fc_code[0:4] if self._use_subprogrammes() else fc_code,
-                                                    subprogramme=fc_code if self._use_subprogrammes() else None,
-                                                    budget=budget)
-            self.functional_category_cache[key] = fc.first() if fc else None
-        return self.functional_category_cache[key]
-
-    # Get an institutional category from the database, with caching!
-    def fetch_institutional_category(self, budget, ic_institution, ic_section, ic_department):
-        key = (budget, ic_institution, ic_section, ic_department)
-        if key not in self.institutional_category_cache:
-            ic = InstitutionalCategory.objects.filter(  institution=ic_institution,
-                                                        section=ic_section,
-                                                        department=ic_department,
-                                                        budget=budget)
-            self.institutional_category_cache[key] = ic.first() if ic else None
-        return self.institutional_category_cache[key]
-
-    # Get a from the database, with caching!
-    def fetch_goal(self, budget, goal_uid):
-        key = (budget, goal_uid)
-        if key not in self.goal_cache:
-            goal = Goal.objects.filter(budget=budget, uid=goal_uid)
-            self.goal_cache[key] = goal.first() if goal else None
-        return self.goal_cache[key]
