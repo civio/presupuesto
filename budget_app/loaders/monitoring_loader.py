@@ -81,7 +81,7 @@ class MonitoringLoader(BaseLoader):
                 loaded_goals_uids.add(goal['uid'])
 
             # Fetch functional category (required)
-            fc = self.fetch_functional_category(budget, goal['fc_code'])
+            fc = self.fetch_functional_category_by_full_code(budget, goal['fc_code'])
             if not fc:
                 print u"ALERTA: No se encuentra la categoría funcional '%s' para '%s'." % (goal['fc_code'], goal['description'])
                 continue
