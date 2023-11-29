@@ -107,7 +107,7 @@ class SimpleBudgetLoader(BaseLoader):
                     budgeted_income += item['amount']
 
             # Fetch economic category
-            ec = self.get_economic_category(budget, item['is_expense'], item['ec_code'])
+            ec = self.fetch_economic_category(budget, item['is_expense'], item['ec_code'])
             if not ec:
                 print u"ALERTA: No se encuentra la categoría económica de %s '%s'." % ("gastos" if item['is_expense'] else "ingresos", item['ec_code'], )
                 continue
@@ -121,14 +121,14 @@ class SimpleBudgetLoader(BaseLoader):
                 item['ic_section'] = item['ic_code'][0:2] if len(item['ic_code']) >= 2 else None
                 item['ic_department'] = item['ic_code'] if len(item['ic_code']) >= 3 else None
 
-            ic = self.get_institutional_category(budget, item['ic_institution'], item['ic_section'], item['ic_department'])
+            ic = self.fetch_institutional_category(budget, item['ic_institution'], item['ic_section'], item['ic_department'])
             if not ic:
                 print u"ALERTA: No se encuentra la categoría institucional '%s'." % (item['ic_code'], )
                 continue
 
             # Fetch functional category, only for expense items
             if item['is_expense']:
-                fc = self.get_functional_category(budget, item['fc_code'])
+                fc = self.fetch_functional_category(budget, item['fc_code'])
                 if not fc:
                     print u"ALERTA: No se encuentra la categoría funcional '%s'." % (item['fc_code'], )
                     continue
@@ -179,7 +179,7 @@ class SimpleBudgetLoader(BaseLoader):
             ic.save()
 
     # Get an institutional category from the database, with caching!
-    def get_institutional_category(self, budget, ic_institution, ic_section, ic_department):
+    def fetch_institutional_category(self, budget, ic_institution, ic_section, ic_department):
         key = (budget, ic_institution, ic_section, ic_department)
         if key not in self.institutional_category_cache:
             ic = InstitutionalCategory.objects.filter(  institution=ic_institution,
@@ -218,7 +218,7 @@ class SimpleBudgetLoader(BaseLoader):
             ec.save()
 
     # Get an economic category from the database, with caching!
-    def get_economic_category(self, budget, is_expense, ec_code):
+    def fetch_economic_category(self, budget, is_expense, ec_code):
         key = (budget, is_expense, ec_code)
         if key not in self.economic_category_cache:
             ec = EconomicCategory.objects.filter(expense=is_expense,
@@ -265,7 +265,7 @@ class SimpleBudgetLoader(BaseLoader):
             fc.save()
 
     # Get a functional category from the database, with caching!
-    def get_functional_category(self, budget, fc_code):
+    def fetch_functional_category(self, budget, fc_code):
         key = (budget, fc_code)
         if key not in self.functional_category_cache:
             fc = FunctionalCategory.objects.filter( area=fc_code[0:1],
@@ -303,7 +303,3 @@ class SimpleBudgetLoader(BaseLoader):
     # This method is here mostly to support easy overloading in child classes
     def _parse_amount(self, amount):
         return self._read_english_number(amount)
-
-    # Are we using subprogrammes? (Default: false)
-    def _use_subprogrammes(self):
-        return hasattr(settings, 'USE_SUBPROGRAMMES') and settings.USE_SUBPROGRAMMES

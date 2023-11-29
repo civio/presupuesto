@@ -8,6 +8,11 @@ import re
 
 # Generic Monitoring loader
 class MonitoringLoader(BaseLoader):
+    def __init__(self):
+        super(BaseLoader, self).__init__()
+        self.goal_cache = {}
+        self.institutional_category_cache = {}
+        self.functional_category_cache = {}
 
     def load(self, entity, year, path, status):
         # Find the budget the monitoring relates to
@@ -82,20 +87,13 @@ class MonitoringLoader(BaseLoader):
                 loaded_goals_uids.add(goal['uid'])
 
             # Fetch functional category (required)
-            fc = FunctionalCategory.objects.filter(area=goal['fc_code'][0:1],
-                                                    policy=goal['fc_code'][0:2],
-                                                    function=goal['fc_code'][0:3],
-                                                    programme=goal['fc_code'],
-                                                    budget=budget)
+            fc = self.fetch_functional_category(budget, goal['fc_code'])
             if not fc:
                 print u"ALERTA: No se encuentra la categoría funcional '%s' para '%s'." % (goal['fc_code'], goal['description'])
                 continue
 
             # Fetch institutional category, if available
-            ic = InstitutionalCategory.objects.filter(institution=goal['ic_code'][0],
-                                                        section=goal['ic_code'][0:2],
-                                                        department=goal['ic_code'],
-                                                        budget=budget)
+            ic = self.fetch_institutional_category(budget, goal['ic_code'][0], goal['ic_code'][0:2], goal['ic_code'])
             if not ic:
                 print u"ALERTA: No se encuentra la categoría institutional '%s' para '%s'." % (goal['ic_code'], goal['description'])
                 continue
@@ -103,13 +101,12 @@ class MonitoringLoader(BaseLoader):
 
             # Create the main investment record
             Goal(uid=goal['uid'],
-                    functional_category=fc.first(),
-                    institutional_category=ic.first(),
+                    functional_category=fc,
+                    institutional_category=ic,
                     goal_number=goal['goal_number'],
                     description=goal['description'],
                     report=goal['report'],
                     budget=budget).save()
-
 
     def load_activities(self, budget, activities):
         for activity in activities:
@@ -117,14 +114,14 @@ class MonitoringLoader(BaseLoader):
                 continue
 
             # Fetch parent goal (required)
-            goal = Goal.objects.filter(uid=activity['goal_uid'], budget=budget)
+            goal = self.fetch_goal(budget, activity['goal_uid'])
             if not goal:
                 print u"ALERTA: No se encuentra el objetivo '%s' para la actividad '%s'." % (activity['goal_uid'], activity['description'])
                 continue
 
             GoalActivity(activity_number=activity['activity_number'],
                             description=activity['description'],
-                            goal=goal.first()).save()
+                            goal=goal).save()
 
 
     def load_indicators(self, budget, indicators):
@@ -133,7 +130,7 @@ class MonitoringLoader(BaseLoader):
                 continue
 
             # Fetch parent goal (required)
-            goal = Goal.objects.filter(uid=indicator['goal_uid'], budget=budget)
+            goal = self.fetch_goal(budget, indicator['goal_uid'])
             if not goal:
                 print u"ALERTA: No se encuentra el objetivo '%s' para el indicador '%s'." % (indicator['goal_uid'], indicator['description'])
                 continue
@@ -144,4 +141,37 @@ class MonitoringLoader(BaseLoader):
                             target=indicator['target'],
                             actual=indicator['actual'],
                             score=indicator['score'],
-                            goal=goal.first()).save()
+                            goal=goal).save()
+
+
+    # Get a functional category from the database, with caching!
+    def fetch_functional_category(self, budget, fc_code):
+        key = (budget, fc_code)
+        if key not in self.functional_category_cache:
+            fc = FunctionalCategory.objects.filter( area=fc_code[0:1],
+                                                    policy=fc_code[0:2],
+                                                    function=fc_code[0:3],
+                                                    programme=fc_code[0:4] if self._use_subprogrammes() else fc_code,
+                                                    subprogramme=fc_code if self._use_subprogrammes() else None,
+                                                    budget=budget)
+            self.functional_category_cache[key] = fc.first() if fc else None
+        return self.functional_category_cache[key]
+
+    # Get an institutional category from the database, with caching!
+    def fetch_institutional_category(self, budget, ic_institution, ic_section, ic_department):
+        key = (budget, ic_institution, ic_section, ic_department)
+        if key not in self.institutional_category_cache:
+            ic = InstitutionalCategory.objects.filter(  institution=ic_institution,
+                                                        section=ic_section,
+                                                        department=ic_department,
+                                                        budget=budget)
+            self.institutional_category_cache[key] = ic.first() if ic else None
+        return self.institutional_category_cache[key]
+
+    # Get a from the database, with caching!
+    def fetch_goal(self, budget, goal_uid):
+        key = (budget, goal_uid)
+        if key not in self.goal_cache:
+            goal = Goal.objects.filter(budget=budget, uid=goal_uid)
+            self.goal_cache[key] = goal.first() if goal else None
+        return self.goal_cache[key]

@@ -1,5 +1,6 @@
 # -*- coding: UTF-8 -*-
 from decimal import *
+from budget_app.models import settings
 
 # Generic utilities for loaders
 class BaseLoader(object):
@@ -45,3 +46,7 @@ class BaseLoader(object):
         try: return str(s)
         except UnicodeEncodeError:
             return s.encode('ascii', 'ignore').decode('ascii')
+
+    # Are we using subprogrammes? (Default: false)
+    def _use_subprogrammes(self):
+        return hasattr(settings, 'USE_SUBPROGRAMMES') and settings.USE_SUBPROGRAMMES
