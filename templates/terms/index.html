@@ -35,7 +35,7 @@
         {% for term in terms %}
         <li>
           <h3 class="icon-term">{{ term.title }}</h3>
-          <div class="term-description">{{ term.description|safe }}</div>
+          <div class="term-description"><p>{{ term.description|safe }}</p></div>
         </li>
         {% endfor %}
       </ul>
