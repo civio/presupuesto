@@ -71,6 +71,8 @@ function PolicyRadialViz(_selector, _data, i18n) {
   // Setup
   this.setup = function() {
 
+    // console.log(data);
+
     ///////////////
     // Set SVG
     svg = d3.select(selector)
@@ -114,6 +116,8 @@ function PolicyRadialViz(_selector, _data, i18n) {
     auxNodeGroup
       .append("a")
       .attr("target", "_self")
+      // TODO: 
+      .attr("alt", d => d.label)
       // The whole invisible path behaves as link
       .append("path")
       .attr("d", auxArcInteractions)
