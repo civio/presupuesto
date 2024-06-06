@@ -8,8 +8,8 @@ function BudgetSummary(_selector) {
       view          = null,
       year          = null,
       bar,
-      barItems;
-  
+      barItems,
+      description;  
 
   // Getters/Setters
   this.colors = function(_) {
@@ -26,8 +26,15 @@ function BudgetSummary(_selector) {
   this.setup = function() {
     // Insert bar element
     bar = d3.select(selector)
+      .select('#budget-summary-chart')
       .append('div')
        .attr('class','budget-summary');
+
+    // a11y: Insert chart description for screen readers
+    description = d3.select(selector)
+    .select('#budget-summary-description')
+    .append('span')
+      .attr('class','budget-summary-description')
 
     // Setup color scale
     setColorScale();
@@ -92,9 +99,12 @@ function BudgetSummary(_selector) {
     // Data Join
     barItems = bar.selectAll('.budget-summary-item')
       .data(data);
+    barDescriptions = description.selectAll('.budget-summary-description')
+      .data(data);
 
     // Exit
     barItems.exit().remove();
+    barDescriptions.exit().remove();
 
     // Update
     barItems
@@ -110,10 +120,24 @@ function BudgetSummary(_selector) {
       .data(data)
       .attr('class', setSummaryItemLabelClass)
       .html(setSummaryItemLabel);
+
+      // TODO: Description pattern - Update
+      barDescriptions
+        .attr('class', "summary-description")
+      // Set description label
+      description.selectAll('.budget-summary-description-label')
+        .data(data)
+        .html(setSummaryItemLabel);
+      // Set description percentage
+      description.selectAll('.budget-summary-description-percentage')
+        .data(data)
+        .html(setSummaryItemPercentage);
   
     // Enter
     barItems.enter()
       .call(setSummaryItem);
+    barDescriptions.enter()
+      .call(setSummaryDescription);
   }
 
   // Enter Summary Items
@@ -134,6 +158,30 @@ function BudgetSummary(_selector) {
     item.append('div')
       .attr('class', setSummaryItemLabelClass)
       .html(setSummaryItemLabel);
+  }
+
+  // TODO: REVIEW
+  function setSummaryDescription(selection){
+    // Set item
+    var description = selection
+      .append('span')
+    // Set description label
+    description.append('span')
+      .html(setSummaryDescriptionLabel)
+    // Set description p
+    description.append('span')
+      .html(setSummaryDescriptionPercentage)
+  }
+
+
+  function setSummaryDescriptionLabel(d, i) {
+    var separator_start = (i == 0) ? '' : '; ';
+    var separator_end = ': ';
+    return separator_start+areaNames[d.key]+separator_end;
+  }
+
+  function setSummaryDescriptionPercentage(d) {
+    return Formatter.decimal(d.percentage, .1)+'<small>%</small>';
   }
 
   function onSummaryItemOver(e){
