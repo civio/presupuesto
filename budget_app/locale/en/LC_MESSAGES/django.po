@@ -1243,3 +1243,6 @@ msgstr "By entity"
 
 msgid "Desglose por organismo"
 msgstr "Breakdown by entity"
+
+msgid "Resumen por áreas"
+msgstr "Summary by area"

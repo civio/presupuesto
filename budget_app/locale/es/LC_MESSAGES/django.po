@@ -1119,3 +1119,6 @@ msgstr "Política"
 
 msgid "department.main_investments"
 msgstr "Organismo"
+
+msgid "Resumen por áreas"
+msgstr ""
