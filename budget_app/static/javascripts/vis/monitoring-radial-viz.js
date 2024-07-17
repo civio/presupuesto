@@ -71,8 +71,6 @@ function PolicyRadialViz(_selector, _data, i18n) {
   // Setup
   this.setup = function() {
 
-    // console.log(data);
-
     ///////////////
     // Set SVG
     svg = d3.select(selector)
