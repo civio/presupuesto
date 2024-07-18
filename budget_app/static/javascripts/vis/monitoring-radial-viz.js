@@ -84,7 +84,6 @@ function PolicyRadialViz(_selector, _data, i18n) {
 
 
     // a11y: Add chart description resume
-    // TODO: set all this well
     svg
     .append("title")
     .attr("id", "chartTitle")
