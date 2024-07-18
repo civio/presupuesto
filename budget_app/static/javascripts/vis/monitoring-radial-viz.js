@@ -75,10 +75,26 @@ function PolicyRadialViz(_selector, _data, i18n) {
     // Set SVG
     svg = d3.select(selector)
     .select("svg")
+    .attr("aria-labelledby", "chartTitle chartDesc")
+    .attr("role", "img")
     // Set dimensions, add resize event & center viz group
     .call(setDimensions)
 
     d3.select(window).on('resize', this.resize);
+
+
+    // a11y: Add chart description resume
+    // TODO: set all this well
+    svg
+    .append("title")
+    .attr("id", "chartTitle")
+    // .text("Gráfico de blablaba")
+    
+    svg
+    .append("desc")
+    .attr("id", "chartDesc")
+    // .text("Resumen por políticas: ladkfjalkd %")
+
     vizGroup = svg.append("g")
       .call(centerViz)
 
@@ -114,7 +130,6 @@ function PolicyRadialViz(_selector, _data, i18n) {
     auxNodeGroup
       .append("a")
       .attr("target", "_self")
-      // TODO: 
       .attr("alt", d => d.label)
       // The whole invisible path behaves as link
       .append("path")
@@ -305,12 +320,22 @@ function PolicyRadialViz(_selector, _data, i18n) {
   // Update
   this.update = function(_year) {
     year = _year;
+    percentProperty = `value_${year}`
+
+    const message = `${data.map (d => ` ${d.label}: ${formatDecimal(d[percentProperty])}%`)}`
+
+    // a11y update
+    svg.select("#chartTitle")
+      .text("El título es balbla")
+    svg.select("#chartDesc")
+      .text(`Resumen de las políticas en ${year}: ${message}`)
 
     ////////
     // 0. Aux elements
     // Update url with current year
     auxNodeGroup.select("a")
       .attr("href", isMobile ? null : (d) => `${d.url}&year=${year}`)
+    //TODO: QUÉ HACEMOS CON ESTO
     auxNodeGroup.selectAll("title")
       .text((d) => `${d.url}&year=${year}`)
 
