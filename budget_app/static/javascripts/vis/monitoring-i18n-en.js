@@ -8,6 +8,11 @@ const POLICYi18nEN = {
     by: "monitored by",
     indicators: " indicators"
   },
+
+  // a11y
+  a11yTitle: "The title is balbla",
+  a11yDescIntro: "Resume of the policies in ",
+
   interactionNote_mobile: ["↓ Click on each of", "the 18 policies to", "see detailed information"],
   interactionNote_desktop: [
     "↑ Hover over each of the 18 policies to see information in detail ",
