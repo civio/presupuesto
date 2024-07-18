@@ -121,7 +121,6 @@ function BudgetSummary(_selector) {
       .attr('class', setSummaryItemLabelClass)
       .html(setSummaryItemLabel);
 
-      // TODO: Description pattern - Update
       barDescriptions
         .attr('class', "summary-description")
       // Set description label
@@ -160,7 +159,6 @@ function BudgetSummary(_selector) {
       .html(setSummaryItemLabel);
   }
 
-  // TODO: REVIEW
   function setSummaryDescription(selection){
     // Set item
     var description = selection
