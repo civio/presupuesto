@@ -325,9 +325,9 @@ function PolicyRadialViz(_selector, _data, i18n) {
 
     // a11y update
     svg.select("#chartTitle")
-      .text("El título es balbla")
+      .text(i18n.a11yTitle)
     svg.select("#chartDesc")
-      .text(`Resumen de las políticas en ${year}: ${message}`)
+      .text(`${i18n.a11yDescIntro} ${year}: ${message}`)
 
     ////////
     // 0. Aux elements

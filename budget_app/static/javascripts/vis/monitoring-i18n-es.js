@@ -8,6 +8,10 @@ const POLICYi18nES = {
     by: "mediante",
     indicators: " indicadores"
   },
+  // a11y
+  a11yTitle: "El título es balbla",
+  a11yDescIntro: "Resumen de las políticas en ",
+  
   interactionNote_mobile:  [
         "↓ Haz click en cada una ",
         "de las 18 políticas de gasto",
