@@ -10,8 +10,8 @@ const POLICYi18nEN = {
   },
 
   // a11y
-  a11yTitle: "The title is balbla",
-  a11yDescIntro: "Resume of the policies in ",
+  a11yTitle: "Visualization of monitoring of the overall objectives",
+  a11yDescIntro: "Spending policies in ",
 
   interactionNote_mobile: ["↓ Click on each of", "the 18 policies to", "see detailed information"],
   interactionNote_desktop: [
