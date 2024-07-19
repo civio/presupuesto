@@ -22,6 +22,7 @@ const POLICYi18nES = {
         "o haz click para ir a su página."
     ],
   linkInfo: "Más información",
+  messageTitle: "Haz click para ver más información sobre ",
 
   policyDetails: [
     {

@@ -82,17 +82,14 @@ function PolicyRadialViz(_selector, _data, i18n) {
 
     d3.select(window).on('resize', this.resize);
 
-
     // a11y: Add chart description resume
     svg
     .append("title")
     .attr("id", "chartTitle")
-    // .text("Gráfico de blablaba")
-    
+
     svg
     .append("desc")
     .attr("id", "chartDesc")
-    // .text("Resumen por políticas: ladkfjalkd %")
 
     vizGroup = svg.append("g")
       .call(centerViz)
@@ -141,6 +138,9 @@ function PolicyRadialViz(_selector, _data, i18n) {
     // Add URL links as svg titles
     auxNodeGroup
       .append("title")
+      .text(d => i18n.messageTitle + d.label)
+
+    auxNodeGroup
       .append("path")
 
   // 1. Petals
@@ -334,9 +334,6 @@ function PolicyRadialViz(_selector, _data, i18n) {
     // Update url with current year
     auxNodeGroup.select("a")
       .attr("href", isMobile ? null : (d) => `${d.url}&year=${year}`)
-    //TODO: QUÉ HACEMOS CON ESTO
-    auxNodeGroup.selectAll("title")
-      .text((d) => `${d.url}&year=${year}`)
 
     ////////
     // 1. Update Petals
