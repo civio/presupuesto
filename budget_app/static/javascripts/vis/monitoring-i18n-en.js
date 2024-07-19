@@ -19,6 +19,7 @@ const POLICYi18nEN = {
     "or click on it to go to its page."
   ],
   linkInfo: "More information",
+  messageTitle: "Click to explore more information about ",
 
   policyDetails: [
     {
