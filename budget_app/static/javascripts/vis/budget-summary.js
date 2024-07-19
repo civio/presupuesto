@@ -9,7 +9,8 @@ function BudgetSummary(_selector) {
       year          = null,
       bar,
       barItems,
-      description;  
+      description,
+      barDescriptions;
 
   // Getters/Setters
   this.colors = function(_) {
@@ -32,9 +33,9 @@ function BudgetSummary(_selector) {
 
     // a11y: Insert chart description for screen readers
     description = d3.select(selector)
-    .select('#budget-summary-description')
-    .append('span')
-      .attr('class','budget-summary-description')
+      .select('#budget-summary-description')
+      .append('span')
+        .attr('class','budget-description')
 
     // Setup color scale
     setColorScale();
@@ -49,9 +50,10 @@ function BudgetSummary(_selector) {
     if (view == _view && year == _year)
       return;
 
-    // Clear bar items if view changes
+    // Clear bar items and description if view changes
     if (view != _view && barItems) {
       bar.selectAll('.budget-summary-item').remove();
+      description.selectAll('.budget-description-item').remove();
     }
 
     areaNames = _areaNames;
@@ -99,7 +101,7 @@ function BudgetSummary(_selector) {
     // Data Join
     barItems = bar.selectAll('.budget-summary-item')
       .data(data);
-    barDescriptions = description.selectAll('.budget-summary-description')
+    barDescriptions = description.selectAll('.budget-description-item')
       .data(data);
 
     // Exit
@@ -122,15 +124,16 @@ function BudgetSummary(_selector) {
       .html(setSummaryItemLabel);
 
       barDescriptions
-        .attr('class', "summary-description")
+        .attr('class', "budget-description-item")
+        .attr("data-year", year)
       // Set description label
-      description.selectAll('.budget-summary-description-label')
+      description.selectAll('.budget-description-label')
         .data(data)
-        .html(setSummaryItemLabel);
+        .html(setSummaryDescriptionLabel);
       // Set description percentage
-      description.selectAll('.budget-summary-description-percentage')
+      description.selectAll('.budget-description-percentage')
         .data(data)
-        .html(setSummaryItemPercentage);
+        .html(setSummaryDescriptionPercentage);
   
     // Enter
     barItems.enter()
@@ -163,11 +166,14 @@ function BudgetSummary(_selector) {
     // Set item
     var description = selection
       .append('span')
+      .attr('class', 'budget-description-item')
     // Set description label
     description.append('span')
+      .attr('class', 'budget-description-label')
       .html(setSummaryDescriptionLabel)
     // Set description p
     description.append('span')
+      .attr('class', 'budget-description-percentage')
       .html(setSummaryDescriptionPercentage)
   }
 
