@@ -9,8 +9,8 @@ const POLICYi18nES = {
     indicators: " indicadores"
   },
   // a11y
-  a11yTitle: "El título es balbla",
-  a11yDescIntro: "Resumen de las políticas en ",
+  a11yTitle: "Visualización sobre el seguimiento de los objetivos globales de Madrid",
+  a11yDescIntro: "Políticas de gasto en ",
   
   interactionNote_mobile:  [
         "↓ Haz click en cada una ",
