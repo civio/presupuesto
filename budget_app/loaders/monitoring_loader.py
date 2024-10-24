@@ -66,8 +66,10 @@ class MonitoringLoader(BaseLoader):
         return {}
 
 
+    # Load goals into the database. Do it in bulk to minimize network traffic.
     def load_goals(self, budget, goals):
         loaded_goals_uids = set()
+        goal_objects = []
         for goal in goals:
             if goal == None:    # Ignore null entries
                 continue
@@ -92,17 +94,21 @@ class MonitoringLoader(BaseLoader):
                 print u"ALERTA: No se encuentra la categoría institutional '%s' para '%s'." % (goal['ic_code'], goal['description'])
                 continue
 
-
             # Create the main investment record
-            Goal(uid=goal['uid'],
+            obj = Goal(uid=goal['uid'],
                     functional_category=fc,
                     institutional_category=ic,
                     goal_number=goal['goal_number'],
                     description=goal['description'],
                     report=goal['report'],
-                    budget=budget).save()
+                    budget=budget)
+            goal_objects.append(obj)
 
+        Goal.objects.bulk_create(goal_objects)
+
+    # Load activities into the database. Do it in bulk to minimize network traffic.
     def load_activities(self, budget, activities):
+        activity_objects = []
         for activity in activities:
             if activity == None:    # Ignore null entries
                 continue
@@ -113,12 +119,18 @@ class MonitoringLoader(BaseLoader):
                 print u"ALERTA: No se encuentra el objetivo '%s' para la actividad '%s'." % (activity['goal_uid'], activity['description'])
                 continue
 
-            GoalActivity(activity_number=activity['activity_number'],
+            # Create the activity object
+            ga = GoalActivity(activity_number=activity['activity_number'],
                             description=activity['description'],
-                            goal=goal).save()
+                            goal=goal)
+            activity_objects.append(ga)
+
+        GoalActivity.objects.bulk_create(activity_objects)
 
 
+    # Load indicators into the database. Do it in bulk to minimize network traffic.
     def load_indicators(self, budget, indicators):
+        indicator_objects = []
         for indicator in indicators:
             if indicator == None:    # Ignore null entries
                 continue
@@ -129,10 +141,14 @@ class MonitoringLoader(BaseLoader):
                 print u"ALERTA: No se encuentra el objetivo '%s' para el indicador '%s'." % (indicator['goal_uid'], indicator['description'])
                 continue
 
-            GoalIndicator(indicator_number=indicator['indicator_number'],
+            # Create the indicator object
+            gi = GoalIndicator(indicator_number=indicator['indicator_number'],
                             description=indicator['description'],
                             unit=indicator['unit'],
                             target=indicator['target'],
                             actual=indicator['actual'],
                             score=indicator['score'],
-                            goal=goal).save()
+                            goal=goal)
+            indicator_objects.append(gi)
+
+        GoalIndicator.objects.bulk_create(indicator_objects)
