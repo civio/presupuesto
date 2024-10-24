@@ -57,6 +57,7 @@ class MainInvestmentsLoader(BaseLoader):
 
 
     def load_items(self, budget, items):
+        investment_objects = []
         for item in items:
             # Ignore null entries
             if item == None:
@@ -88,7 +89,7 @@ class MainInvestmentsLoader(BaseLoader):
                 gc = None
 
             # Create the main investment record
-            MainInvestment( functional_category=fc,
+            obj = MainInvestment( functional_category=fc,
                             geographic_category=gc,
                             project_id=item['project_id'],
                             description=item['description'],
@@ -106,4 +107,7 @@ class MainInvestmentsLoader(BaseLoader):
                             total_expected_amount=item['total_expected_amount'],
                             already_spent_amount=item['already_spent_amount'],
                             current_year_amount=item['current_year_amount'],
-                            budget=budget).save()
+                            budget=budget)
+            investment_objects.append(obj)
+
+        MainInvestment.objects.bulk_create(investment_objects)
