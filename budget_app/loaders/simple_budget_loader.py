@@ -58,6 +58,7 @@ class SimpleBudgetLoader(BaseLoader):
         self.load_budget_items(budget, items)
 
 
+    # Load the budget items into the database. Do it in bulk to avoid hitting the database.
     def load_budget_items(self, budget, budget_items):
         # Since the incoming data is not fully classified along the four dimensions we defined
         # for the main budget (Aragón, the good one), we are forced to assign the items a
@@ -88,6 +89,7 @@ class SimpleBudgetLoader(BaseLoader):
         # Store data in the database
         budgeted_income = 0
         budgeted_expense = 0
+        budget_item_objects = []
         for item in budget_items:
             # Ignore null entries or entries with no amount
             if item == None or item['amount'] == 0:
@@ -133,7 +135,7 @@ class SimpleBudgetLoader(BaseLoader):
             if item['description'] == None or item['description'] == "":
                 item['description'] = ec.description
 
-            BudgetItem(institutional_category=ic,
+            obj = BudgetItem(institutional_category=ic,
                       functional_category=fc,
                       economic_category=ec,
                       funding_category=dummy_fdc,
@@ -142,7 +144,11 @@ class SimpleBudgetLoader(BaseLoader):
                       actual=item['is_actual'],
                       amount=item['amount'],
                       description=item['description'],
-                      budget=budget).save()
+                      budget=budget)
+            budget_item_objects.append(obj)
+
+        # Save the objects in one transaction
+        BudgetItem.objects.bulk_create(budget_item_objects)
 
         if budgeted_income != budgeted_expense:
             print "  Info: los ingresos y gastos del presupuesto no coinciden %0.2f <> %0.2f" % (budgeted_income/100.0, budgeted_expense/100.0)
@@ -156,6 +162,7 @@ class SimpleBudgetLoader(BaseLoader):
     def load_institutional_classification(self, path, budget):
         filename = self.get_institutional_classification_path(path)
         reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
+        category_objects = []
         for index, line in enumerate(reader):
             if line==[] or re.match("^#", line[0]):  # Ignore comments and empty lines
                 continue
@@ -170,7 +177,8 @@ class SimpleBudgetLoader(BaseLoader):
                                         department=institution+section+department if department != "" else None,
                                         description=description,
                                         budget=budget)
-            ic.save()
+            category_objects.append(ic)
+        InstitutionalCategory.objects.bulk_create(category_objects)
 
 
     # Determine the economic classification file path
@@ -181,6 +189,7 @@ class SimpleBudgetLoader(BaseLoader):
     def load_economic_classification(self, path, budget):
         filename = self.get_economic_classification_path(path)
         reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
+        category_objects = []
         for index, line in enumerate(reader):
             if line==[] or re.match("^#", line[0]):  # Ignore comments and empty lines
                 continue
@@ -197,7 +206,8 @@ class SimpleBudgetLoader(BaseLoader):
                                     heading=chapter+article+concept if concept != "" else None,
                                     description=description,
                                     budget=budget)
-            ec.save()
+            category_objects.append(ec)
+        EconomicCategory.objects.bulk_create(category_objects)
 
 
     # Determine the functional classification file path
@@ -208,6 +218,7 @@ class SimpleBudgetLoader(BaseLoader):
     def load_functional_classification(self, path, budget):
         filename = self.get_functional_classification_path(path)
         reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
+        category_objects = []
         for index, line in enumerate(reader):
             if line==[] or re.match("^#", line[0]):     # Ignore comments and empty lines
                 continue
@@ -231,7 +242,8 @@ class SimpleBudgetLoader(BaseLoader):
                                     subprogramme=area+policy+group+programme+subprogramme if subprogramme != "" else None,
                                     description=description,
                                     budget=budget)
-            fc.save()
+            category_objects.append(fc)
+        FunctionalCategory.objects.bulk_create(category_objects)
 
 
     # Determine the functional classification file path
@@ -241,6 +253,7 @@ class SimpleBudgetLoader(BaseLoader):
     # Load the geographic categories (optional)
     def load_geographic_classification(self, path, budget):
         filename = self.get_geographic_classification_path(path)
+        category_objects = []
         if os.path.isfile(filename):
             reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
             for index, line in enumerate(reader):
@@ -253,7 +266,8 @@ class SimpleBudgetLoader(BaseLoader):
                 gc = GeographicCategory(code=code,
                                         description=description,
                                         budget=budget)
-                gc.save()
+                category_objects.append(gc)
+        GeographicCategory.objects.bulk_create(category_objects)
 
     # Get the amount for a budget line.
     # This method is here mostly to support easy overloading in child classes
