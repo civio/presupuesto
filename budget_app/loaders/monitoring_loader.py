@@ -120,10 +120,10 @@ class MonitoringLoader(BaseLoader):
                 continue
 
             # Create the activity object
-            ga = GoalActivity(activity_number=activity['activity_number'],
+            obj = GoalActivity(activity_number=activity['activity_number'],
                             description=activity['description'],
                             goal=goal)
-            activity_objects.append(ga)
+            activity_objects.append(obj)
 
         GoalActivity.objects.bulk_create(activity_objects)
 
@@ -142,13 +142,13 @@ class MonitoringLoader(BaseLoader):
                 continue
 
             # Create the indicator object
-            gi = GoalIndicator(indicator_number=indicator['indicator_number'],
+            obj = GoalIndicator(indicator_number=indicator['indicator_number'],
                             description=indicator['description'],
                             unit=indicator['unit'],
                             target=indicator['target'],
                             actual=indicator['actual'],
                             score=indicator['score'],
                             goal=goal)
-            indicator_objects.append(gi)
+            indicator_objects.append(obj)
 
         GoalIndicator.objects.bulk_create(indicator_objects)
