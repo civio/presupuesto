@@ -57,7 +57,9 @@ class InvestmentsLoader(BaseLoader):
         return {}
 
 
+    # Load investment data into the database. Do it in bulk to avoid network overhead.
     def load_items(self, budget, items):
+        investment_objects = []
         for item in items:
             # Ignore null entries or entries with no amount
             if item == None or item['amount'] == 0:
@@ -80,11 +82,14 @@ class InvestmentsLoader(BaseLoader):
                 print u"ALERTA: No se encuentra la categoría geográfica '%s' para '%s': %s€" % (item['gc_code'], item['description'].decode("utf-8"), item['amount']/100)
                 continue
 
-            # Create the payment record
-            Investment( functional_category=fc,
+            # Create the payment object
+            obj = Investment( functional_category=fc,
                         geographic_category=gc,
                         actual=item['is_actual'],
                         amount=item['amount'],
                         project_id=item['project_id'],
                         description=item['description'],
-                        budget=budget).save()
+                        budget=budget)
+            investment_objects.append(obj)
+
+        Investment.objects.bulk_create(investment_objects)
