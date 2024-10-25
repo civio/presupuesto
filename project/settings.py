@@ -232,7 +232,7 @@ if DEBUG:
             },
         },
         'loggers': {
-            'django.db.backends': {
+            'django': {
                 'level': 'DEBUG',
                 'handlers': ['console'],
             },
