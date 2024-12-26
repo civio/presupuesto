@@ -136,11 +136,18 @@
         InvestmentTotalHelpers.clear('.total-executed');
         InvestmentTotalHelpers.clear('.total-not-attributable-executed');
       }
+
+      // Hide the special investments data from 2021 onwards
+      if ( uiState.year >= 2021 ) {
+        $('.total-special').hide();
+      } else {
+        $('.total-special').show();
+      }
     }
 
     // Set up controls (format selector & year slider)
     $('#select-format').change(redraw);
-      
+
     initSlider("#year-selection", {{ years|safe }}, {{ starting_year }});
     setRedrawOnSliderChange("#year-selection", {{ starting_year }}, redraw);
 
