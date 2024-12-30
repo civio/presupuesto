@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-05-06 13:44+0200\n"
-"PO-Revision-Date: 2024-12-26 22:32+0100\n"
+"PO-Revision-Date: 2024-12-30 17:52+0100\n"
 "Last-Translator: David Cabo <david@civio.es>\n"
 "Language-Team: \n"
 "Language: en\n"
@@ -975,7 +975,7 @@ msgid "Educación, protección y bienestar social, cultura... ¿Qué área te in
 msgstr "Education, social services, culture... What are your interests?"
 
 #: templates/welcome/index.html:71
-msgid "Te mostramos en detalle todos las facturas y pagos efectuados por el Ayuntamiento"
+msgid "Te mostramos en detalle todas las facturas y pagos efectuados por el Ayuntamiento"
 msgstr "We show you in detail all invoices and payments made by the City Council"
 
 #: templates/welcome/index.html:82 templates/welcome/index.html.py:84
