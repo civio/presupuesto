@@ -1,19 +1,20 @@
 # -*- coding: UTF-8 -*-
 from budget_app.loaders import BaseLoader
 from budget_app.models import *
-from decimal import *
 import csv
 import os
 import re
 
 class SimpleBudgetLoader(BaseLoader):
+    # List of files to be read, refactored out to allow easy overloading
+    def _get_input_filenames(self):
+        return ['ingresos.csv', 'gastos.csv', 'ejecucion_ingresos.csv', 'ejecucion_gastos.csv']
+
     def load(self, entity, year, path, status):
         # Parse the incoming data and keep in memory
         budget_items = []
-        self.parse_budget_data(budget_items, os.path.join(path, 'ingresos.csv'))
-        self.parse_budget_data(budget_items, os.path.join(path, 'gastos.csv'))
-        self.parse_budget_data(budget_items, os.path.join(path, 'ejecucion_ingresos.csv'))
-        self.parse_budget_data(budget_items, os.path.join(path, 'ejecucion_gastos.csv'))
+        for filename in self._get_input_filenames():
+            self.parse_budget_data(budget_items, os.path.join(path, filename))
 
         # Now load the data one budget at a time
         self.load_budget(path, entity, year, status, budget_items)
@@ -29,7 +30,7 @@ class SimpleBudgetLoader(BaseLoader):
 
     def parse_budget_data(self, budget_items, filename):
         if os.path.isfile(filename):
-            print "Leyendo datos de %s..." % filename
+            print("Leyendo datos de %s..." % filename)
             reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
             for index, line in enumerate(reader):
                 if line==[] or re.match("^#", line[0]):     # Ignore comments and empty lines
@@ -44,7 +45,7 @@ class SimpleBudgetLoader(BaseLoader):
         Budget.objects.filter(entity=entity, year=year).delete()
 
         # Store the data in the database
-        print u"Cargando presupuesto para entidad '%s' año %s..." % (entity.name, year)
+        print(u"Cargando presupuesto para entidad '%s' año %s..." % (entity.name, year))
         budget = Budget(entity=entity, year=year, status=status)
         budget.save()
 
@@ -105,7 +106,7 @@ class SimpleBudgetLoader(BaseLoader):
             # Fetch economic category
             ec = self.fetch_economic_category(budget, item['is_expense'], item['ec_code'])
             if not ec:
-                print u"ALERTA: No se encuentra la categoría económica de %s '%s'." % ("gastos" if item['is_expense'] else "ingresos", item['ec_code'], )
+                print(u"ALERTA: No se encuentra la categoría económica de %s '%s'." % ("gastos" if item['is_expense'] else "ingresos", item['ec_code'], ))
                 continue
 
             # Fetch institutional category.
@@ -119,14 +120,14 @@ class SimpleBudgetLoader(BaseLoader):
 
             ic = self.fetch_institutional_category(budget, item['ic_institution'], item['ic_section'], item['ic_department'])
             if not ic:
-                print u"ALERTA: No se encuentra la categoría institucional '%s'." % (item['ic_code'], )
+                print(u"ALERTA: No se encuentra la categoría institucional '%s'." % (item['ic_code'], ))
                 continue
 
             # Fetch functional category, only for expense items
             if item['is_expense']:
                 fc = self.fetch_functional_category_by_full_code(budget, item['fc_code'])
                 if not fc:
-                    print u"ALERTA: No se encuentra la categoría funcional '%s'." % (item['fc_code'], )
+                    print(u"ALERTA: No se encuentra la categoría funcional '%s'." % (item['fc_code'], ))
                     continue
             else:
                 fc = dummy_fc
@@ -151,7 +152,7 @@ class SimpleBudgetLoader(BaseLoader):
         BudgetItem.objects.bulk_create(budget_item_objects)
 
         if budgeted_income != budgeted_expense:
-            print "  Info: los ingresos y gastos del presupuesto no coinciden %0.2f <> %0.2f" % (budgeted_income/100.0, budgeted_expense/100.0)
+            print("  Info: los ingresos y gastos del presupuesto no coinciden %0.2f <> %0.2f" % (budgeted_income/100.0, budgeted_expense/100.0))
 
 
     # Determine the institutional classification file path
