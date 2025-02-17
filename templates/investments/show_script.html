@@ -98,11 +98,18 @@
       } else {
         InvestmentTotalHelpers.clear('.total-executed');
       }
+
+      // Show the special investments data only from 2014 to 2020
+      if ( uiState.year < 2014 || uiState.year > 2020 ) {
+        $('.total-special').hide();
+      } else {
+        $('.total-special').show();
+      }
     }
 
     // Set up controls (format selector & year slider)
     $('#select-format').change(redraw);
-      
+
     initSlider('#year-selection', {{ years|safe }}, {{ starting_year }});
     setRedrawOnSliderChange('#year-selection', {{ starting_year }}, redraw);
 
