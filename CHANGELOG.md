@@ -3,6 +3,17 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [4.7] - 2025-03-18
+### Changed
+- Loaders now cache secondary objects to improve performance. #1292
+- Loaders insert data in bulk to improve performanc. #1342
+- Improve accessibility for screen readers. #1322
+- Add placeholder for monitoring page intro text. #1347
+- Hide special investments (IFS) outside the applicable year range. #1347
+- Allow overriding list of budget data files to load from themes. #1348
+
+### Fixed
+
 ## [4.6] - 2023-11-24
 ### Changed
 - Updated Django to version 1.11.29, and modify internal code as needed for compatibility. #80
@@ -343,7 +354,8 @@ All notable changes to this project will be documented in this file.
 ### Forked from [aragonopendata/presupuesto](https://github.com/aragonopendata/presupuesto) - 2016-01-28
 
 
-[Unreleased]: https://github.com/civio/presupuesto/compare/v4.6...HEAD
+[Unreleased]: https://github.com/civio/presupuesto/compare/v4.7...HEAD
+[4.7]: https://github.com/civio/presupuesto/releases/tag/v4.7
 [4.6]: https://github.com/civio/presupuesto/releases/tag/v4.6
 [4.5]: https://github.com/civio/presupuesto/releases/tag/v4.5
 [4.4]: https://github.com/civio/presupuesto/releases/tag/v4.4
