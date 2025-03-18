@@ -1,7 +1,7 @@
 import re
-import urlparse
 
-from urllib import urlencode
+from urllib import parse as urlparse
+from urllib.parse import urlencode
 from django_jinja import library
 
 @library.filter

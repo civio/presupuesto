@@ -8,7 +8,7 @@ from project.settings import LANGUAGES
 
 from budget_app.models import FunctionalCategory, EconomicCategory
 from budget_app.context_processors import show_options_processor
-from helpers import *
+from .helpers import *
 
 def add_sitemap_entry(request, c, location, priority=0.5):
   absolute_uri = request.build_absolute_uri(location)

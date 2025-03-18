@@ -10,7 +10,7 @@ from django.http import JsonResponse
 from local_settings import ENV
 from project.settings import LANGUAGES
 from budget_app.models import InflationStat, PopulationStat, Budget, Payment
-from helpers import *
+from .helpers import *
 
 
 @contextmanager
