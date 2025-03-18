@@ -402,7 +402,7 @@ def entities_income(request, level, format):
 # Helper code to output any CSV/Excel line
 #
 def write_header(writer, columns):
-    writer.writerow(map(lambda column: _(column).encode('utf-8'), columns))
+    writer.writerow(map(lambda column: _(column), columns))
 
 def write_breakdown_item(writer, year, item, field, ids, descriptions=None):
     budget_column_name = str(year)
@@ -415,9 +415,9 @@ def write_breakdown_item(writer, year, item, field, ids, descriptions=None):
     values = [year]
 
     for id in ids:
-        values.append( id.encode("utf-8") if id!=None else id )
+        values.append(id)
         if descriptions!=None:
-            values.append( descriptions.get(id, '').encode("utf-8") )
+            values.append( descriptions.get(id, '') )
 
     # The original amounts are in cents:
     values.append( totals[budget_column_name] / 100.0 if budget_column_name in totals else None )
