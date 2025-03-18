@@ -40,7 +40,7 @@ class Command(BaseCommand):
                   "ec.expense="+is_expense+" and " \
                   "bi.id is null" \
                 ")"
-        print "Borrando conceptos (expense="+is_expense+") no utilizados..."
+        print("Borrando conceptos (expense="+is_expense+") no utilizados...")
         self._execute_transaction(sql)
 
     def _clean_unused_articles(self, is_expense):
@@ -56,7 +56,7 @@ class Command(BaseCommand):
                     "heading is not null and " \
                     "expense="+is_expense+ \
                   ")"
-        print "Borrando artículos (expense="+is_expense+") no utilizados..."
+        print("Borrando artículos (expense="+is_expense+") no utilizados...")
         self._execute_transaction(sql)
 
     # XXX: This may not work correctly when subprogrammes are enabled. See #495
@@ -74,7 +74,7 @@ class Command(BaseCommand):
                   "bi.id is null" \
                 ")"
 
-        print "Borrando categorías funcionales no utilizadas..."
+        print("Borrando categorías funcionales no utilizadas...")
         self._execute_transaction(sql)
 
     def _execute_transaction(self, sql):
@@ -86,4 +86,4 @@ class Command(BaseCommand):
         with transaction.commit_on_success():
           with connection.cursor() as cursor:
             cursor.execute(sql)
-            print cursor.rowcount
+            print(cursor.rowcount)
