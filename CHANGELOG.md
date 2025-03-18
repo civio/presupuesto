@@ -12,8 +12,6 @@ All notable changes to this project will be documented in this file.
 - Hide special investments (IFS) outside the applicable year range. #1347
 - Allow overriding list of budget data files to load from themes. #1348
 
-### Fixed
-
 ## [4.6] - 2023-11-24
 ### Changed
 - Updated Django to version 1.11.29, and modify internal code as needed for compatibility. #80
@@ -34,7 +32,6 @@ All notable changes to this project will be documented in this file.
 - Removed South for database migrations, now part of Django. #80
 - Removed Coffin for templates, not needed in modern Django. #80
 - Removed Jasmine for testing, replacement needed. #80
-
 
 ## [4.5] - 2023-09-08
 ### Changed
