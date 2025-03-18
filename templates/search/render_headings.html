@@ -1,6 +1,6 @@
 {% macro render_headings(headings_per_article, expense_side, descriptions) %}
 {% set view_name = 'expense_articles_show' if expense_side=='expense' else 'income_articles_show' %}
-{% for article_id, headings in headings_per_article.iteritems() %}
+{% for article_id, headings in headings_per_article.items() %}
   {% for heading_id in headings %}
   <tr>
     <td class="col-1">
