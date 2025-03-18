@@ -26,13 +26,13 @@ class InvestmentsLoader(BaseLoader):
 
         # Store the data in the database
         if len(items) > 0:
-            print u"Cargando inversiones para entidad '%s' año %s..." % (entity.name, year)
+            print("Cargando inversiones para entidad '%s' año %s..." % (entity.name, year))
             self.load_items(budget, items)
 
 
     def parse_data(self, items, filename):
         if os.path.isfile(filename):
-            print "Leyendo datos de %s..." % filename
+            print("Leyendo datos de %s..." % filename)
             reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
             for index, line in enumerate(reader):
                 if re.match("^#", line[0]):         # Ignore comments
@@ -44,7 +44,7 @@ class InvestmentsLoader(BaseLoader):
                 # Finally, we have useful data
                 items.append(self.parse_item(filename, line))
         else:
-            print "No se encontró el fichero %s" % filename
+            print("No se encontró el fichero %s" % filename)
 
         return items
 
@@ -73,13 +73,13 @@ class InvestmentsLoader(BaseLoader):
                                                 item.get('fc_programme', None),
                                                 item.get('fc_subprogramme', None))
             if not fc:
-                print u"ALERTA: No se encuentra la categoría funcional '%s' para '%s': %s€" % (item['fc_code'], item['description'].decode("utf-8"), item['amount']/100)
+                print("ALERTA: No se encuentra la categoría funcional '%s' para '%s': %s€" % (item['fc_code'], item['description'].decode("utf-8"), item['amount']/100))
                 continue
 
             # Fetch geographic category
             gc = self.fetch_geographical_category(budget, item['gc_code'])
             if not gc:
-                print u"ALERTA: No se encuentra la categoría geográfica '%s' para '%s': %s€" % (item['gc_code'], item['description'].decode("utf-8"), item['amount']/100)
+                print("ALERTA: No se encuentra la categoría geográfica '%s' para '%s': %s€" % (item['gc_code'], item['description'].decode("utf-8"), item['amount']/100))
                 continue
 
             # Create the payment object
