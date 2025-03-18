@@ -14,7 +14,7 @@ class BudgetLoader(BaseLoader):
         if budget:
             budget.delete()
 
-        print "Cargando presupuesto de %s..." % path
+        print("Cargando presupuesto de %s..." % path)
         budget = Budget(entity=entity, year=year, status=status)
         budget.save()
         self.load_institutional_hierarchy(budget, path)
@@ -23,7 +23,7 @@ class BudgetLoader(BaseLoader):
         self.load_funding_hierarchy(budget, path)
         self.load_data_files(budget, path)
 
-        print "Cargando ejecución presupuestaria de %s..." % path
+        print("Cargando ejecución presupuestaria de %s..." % path)
         self.load_execution_data_files(budget, path)
 
     def get_default_institutional_categories(self):
@@ -43,7 +43,7 @@ class BudgetLoader(BaseLoader):
     def load_institutional_hierarchy(self, budget, path):
         institutional_categories = self.get_default_institutional_categories()
         institutions_filename = os.path.join(path, 'estructura_organica.csv')
-        print "Cargando lista de secciones de %s..." % institutions_filename
+        print("Cargando lista de secciones de %s..." % institutions_filename)
         reader = csv.reader(open(institutions_filename, 'rb'), delimiter=self._get_delimiter())
         for line in reader:
             # Ignore header, empty lines and comments
@@ -78,7 +78,7 @@ class BudgetLoader(BaseLoader):
     def load_economic_hierarchy(self, budget, path):
         economic_categories = self.get_default_economic_categories()
         filename = os.path.join(path, 'estructura_economica.csv')
-        print "Cargando jerarquía económica de %s..." % filename
+        print("Cargando jerarquía económica de %s..." % filename)
         reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
         for line in reader:
             # Ignore header, empty lines and comments
@@ -116,7 +116,7 @@ class BudgetLoader(BaseLoader):
         funding_categories = self.get_default_funding_categories()
         filename = os.path.join(path, 'estructura_financiacion.csv')
         if os.path.isfile(filename):
-            print "Cargando jerarquía de financiación de %s..." % filename
+            print("Cargando jerarquía de financiación de %s..." % filename)
             reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
             for line in reader:
                 # Ignore header, empty lines and comments
@@ -129,7 +129,7 @@ class BudgetLoader(BaseLoader):
                 self.add_funding_category(funding_categories, line)
 
         for item in funding_categories:
-            FundingCategory(budget=budget, **item).save()        
+            FundingCategory(budget=budget, **item).save()
 
 
     def get_default_functional_categories(self):
@@ -137,7 +137,7 @@ class BudgetLoader(BaseLoader):
         # along all dimensions (at least for now), because of the way we denormalize/join the data in the app.
         # So we create a fake functional category that will contain all the income data.
         categories = []
-        categories.append({ 'area':'X', 
+        categories.append({ 'area':'X',
                             'policy': 'XX',
                             'function': 'XXX',
                             'programme': 'XXXX',
@@ -165,7 +165,7 @@ class BudgetLoader(BaseLoader):
     def load_functional_hierarchy(self, budget, path):
         functional_categories = self.get_default_functional_categories()
         filename = os.path.join(path, 'estructura_funcional.csv')
-        print "Cargando jerarquía funcional de %s..." % filename
+        print("Cargando jerarquía funcional de %s..." % filename)
         reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
         for line in reader:
             # Ignore header, empty lines and comments
@@ -183,25 +183,25 @@ class BudgetLoader(BaseLoader):
 
     def load_data_files(self, budget, path):
         filename = os.path.join(path, 'gastos.csv')
-        print "Cargando gastos de %s..." % filename
+        print("Cargando gastos de %s..." % filename)
         self.load_data_file(budget, filename, True, False)
 
         filename = os.path.join(path, 'ingresos.csv')
-        print "Cargando ingresos de %s..." % filename
+        print("Cargando ingresos de %s..." % filename)
         self.load_data_file(budget, filename, False, False)
 
     def load_execution_data_files(self, budget, path):
         filename = os.path.join(path, 'ejecucion_gastos.csv')
         if os.path.isfile(filename):
-            print "Cargando ejecución de gastos de %s..." % filename
+            print("Cargando ejecución de gastos de %s..." % filename)
             self.load_data_file(budget, filename, True, True)
 
         filename = os.path.join(path, 'ejecucion_ingresos.csv')
         if os.path.isfile(filename):
-            print "Cargando ejecución de ingresos de %s..." % filename
+            print("Cargando ejecución de ingresos de %s..." % filename)
             self.load_data_file(budget, filename, False, True)
 
-    # We first load all data lines, and then we process them. This became necessary at 
+    # We first load all data lines, and then we process them. This became necessary at
     # some point when had to deal with subtotals in incoming files, for example.
     def load_data_file(self, budget, filename, is_expense, is_actual):
         reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
@@ -216,7 +216,7 @@ class BudgetLoader(BaseLoader):
                 else:
                     # Para la información de ejecución usamos el año del fichero, diga lo que diga
                     # la primera columna, pero informamos de ello por pantalla
-                    print u"INFO: Usando el año %s para la línea [%s]" % (budget.year, line)
+                    print("INFO: Usando el año %s para la línea [%s]" % (budget.year, line))
 
             self.add_data_item(items, line, is_expense, is_actual)
 
@@ -233,7 +233,7 @@ class BudgetLoader(BaseLoader):
         else:
             amount = line[6]
 
-        # We treat the functional and economic codes a bit differently, we pass it on split into 
+        # We treat the functional and economic codes a bit differently, we pass it on split into
         # its elements, while we pass other codes in one chunk. The only reason is that some
         # child loaders needed to do some manipulation and it's cleaner to override this
         # function, and not the actual loading. We could treat the other categories the same way.
@@ -244,7 +244,7 @@ class BudgetLoader(BaseLoader):
             fc_programme = line[2][0:4] if self._use_subprogrammes() else line[2]
             fc_subprogramme = line[2] if self._use_subprogrammes() else None
         else:
-            # Income data is often not classified functionally, so we use the fake category we 
+            # Income data is often not classified functionally, so we use the fake category we
             # created before.
             fc_area = 'X'
             fc_policy = 'XX'
@@ -285,7 +285,7 @@ class BudgetLoader(BaseLoader):
                                             section=item['ic_section'],
                                             department=item['ic_department'])
             if not ic:
-                print u"ALERTA: No se encuentra la institución '%s' para '%s': %s€" % (item['ic_code'], self._remove_unicode(item['description']), item['amount'])
+                print("ALERTA: No se encuentra la institución '%s' para '%s': %s€" % (item['ic_code'], self._remove_unicode(item['description']), item['amount']))
                 continue
             else:
                 ic = ic.first()
@@ -298,7 +298,7 @@ class BudgetLoader(BaseLoader):
                                                 subprogramme=item['fc_subprogramme'] if self._use_subprogrammes() else None)
             if not fc:
                 code = item['fc_subprogramme'] if self._use_subprogrammes() else item['fc_programme']
-                print u"ALERTA: No se encuentra la categoría funcional '%s' para '%s': %s€" % (code, self._remove_unicode(item['description']), item['amount'])
+                print("ALERTA: No se encuentra la categoría funcional '%s' para '%s': %s€" % (code, self._remove_unicode(item['description']), item['amount']))
                 continue
             else:
                 fc = fc.first()
@@ -310,7 +310,7 @@ class BudgetLoader(BaseLoader):
                                                 heading=item['ec_heading'],
                                                 subheading=item['ec_subheading'])
             if not ec:
-                print u"ALERTA: No se encuentra la categoría económica '%s' para '%s': %s€" % (item['ec_code'], self._remove_unicode(item['description']), item['amount'])
+                print("ALERTA: No se encuentra la categoría económica '%s' para '%s': %s€" % (item['ec_code'], self._remove_unicode(item['description']), item['amount']))
                 continue
             else:
                 ec = ec.first()
@@ -321,7 +321,7 @@ class BudgetLoader(BaseLoader):
                                                 fund_class=item['fdc_code'][0:2],
                                                 fund=item['fdc_code'])
             if not fdc:
-                print u"ALERTA: No se encuentra la categoría de financiación '%s' para '%s': %s€" % (item['fdc_code'], self._remove_unicode(item['description']), item['amount'])
+                print("ALERTA: No se encuentra la categoría de financiación '%s' para '%s': %s€" % (item['fdc_code'], self._remove_unicode(item['description']), item['amount']))
                 continue
             else:
                 fdc = fdc.first()

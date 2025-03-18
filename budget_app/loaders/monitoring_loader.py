@@ -26,7 +26,7 @@ class MonitoringLoader(BaseLoader):
 
         # Store the data in the database
         if len(goals) > 0:
-            print u"Cargando objetivos e indicadores para entidad '%s' año %s..." % (entity.name, year)
+            print("Cargando objetivos e indicadores para entidad '%s' año %s..." % (entity.name, year))
             self.load_goals(budget, goals)
             self.load_activities(budget, activities)
             self.load_indicators(budget, indicators)
@@ -35,7 +35,7 @@ class MonitoringLoader(BaseLoader):
     def parse_items(self, filename, line_parser, year):
         items = []
         if os.path.isfile(filename):
-            print "Leyendo datos de %s..." % filename
+            print("Leyendo datos de %s..." % filename)
             reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
             for index, line in enumerate(reader):
                 if re.match("^#", line[0]):         # Ignore comments
@@ -47,7 +47,7 @@ class MonitoringLoader(BaseLoader):
                 # Finally, we have useful data
                 items.append(line_parser(filename, line, year))
         else:
-            print "No se encontró el fichero %s" % filename
+            print("No se encontró el fichero %s" % filename)
 
         return items
 
@@ -85,13 +85,13 @@ class MonitoringLoader(BaseLoader):
             # Fetch functional category (required)
             fc = self.fetch_functional_category_by_full_code(budget, goal['fc_code'])
             if not fc:
-                print u"ALERTA: No se encuentra la categoría funcional '%s' para '%s'." % (goal['fc_code'], goal['description'])
+                print("ALERTA: No se encuentra la categoría funcional '%s' para '%s'." % (goal['fc_code'], goal['description']))
                 continue
 
             # Fetch institutional category, if available
             ic = self.fetch_institutional_category(budget, goal['ic_code'][0], goal['ic_code'][0:2], goal['ic_code'])
             if not ic:
-                print u"ALERTA: No se encuentra la categoría institutional '%s' para '%s'." % (goal['ic_code'], goal['description'])
+                print("ALERTA: No se encuentra la categoría institutional '%s' para '%s'." % (goal['ic_code'], goal['description']))
                 continue
 
             # Create the main investment record
@@ -116,7 +116,7 @@ class MonitoringLoader(BaseLoader):
             # Fetch parent goal (required)
             goal = self.fetch_goal(budget, activity['goal_uid'])
             if not goal:
-                print u"ALERTA: No se encuentra el objetivo '%s' para la actividad '%s'." % (activity['goal_uid'], activity['description'])
+                print("ALERTA: No se encuentra el objetivo '%s' para la actividad '%s'." % (activity['goal_uid'], activity['description']))
                 continue
 
             # Create the activity object
@@ -138,7 +138,7 @@ class MonitoringLoader(BaseLoader):
             # Fetch parent goal (required)
             goal = self.fetch_goal(budget, indicator['goal_uid'])
             if not goal:
-                print u"ALERTA: No se encuentra el objetivo '%s' para el indicador '%s'." % (indicator['goal_uid'], indicator['description'])
+                print("ALERTA: No se encuentra el objetivo '%s' para el indicador '%s'." % (indicator['goal_uid'], indicator['description']))
                 continue
 
             # Create the indicator object

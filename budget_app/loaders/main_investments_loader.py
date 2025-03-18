@@ -25,13 +25,13 @@ class MainInvestmentsLoader(BaseLoader):
 
         # Store the data in the database
         if len(items) > 0:
-            print u"Cargando inversiones principales para entidad '%s' año %s..." % (entity.name, year)
+            print("Cargando inversiones principales para entidad '%s' año %s..." % (entity.name, year))
             self.load_items(budget, items)
 
 
     def parse_data(self, items, filename):
         if os.path.isfile(filename):
-            print "Leyendo datos de %s..." % filename
+            print("Leyendo datos de %s..." % filename)
             reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
             for index, line in enumerate(reader):
                 if re.match("^#", line[0]):         # Ignore comments
@@ -43,7 +43,7 @@ class MainInvestmentsLoader(BaseLoader):
                 # Finally, we have useful data
                 items.append(self.parse_item(filename, line))
         else:
-            print "No se encontró el fichero %s" % filename
+            print("No se encontró el fichero %s" % filename)
 
         return items
 
@@ -71,7 +71,7 @@ class MainInvestmentsLoader(BaseLoader):
                                                     subprogramme=item.get('fc_subprogramme', None),
                                                     budget=budget)
             if not fc:
-                print u"ALERTA: No se encuentra la categoría funcional '%s' para '%s'" % (item['fc_code'], item['project_id'])
+                print("ALERTA: No se encuentra la categoría funcional '%s' para '%s'" % (item['fc_code'], item['project_id']))
                 continue
             else:
                 fc = fc.first()
@@ -81,7 +81,7 @@ class MainInvestmentsLoader(BaseLoader):
                 gc = GeographicCategory.objects.filter( code=item['gc_code'],
                                                         budget=budget)
                 if not gc:
-                    print u"ALERTA: No se encuentra la categoría geográfica '%s' para '%s'" % (item['gc_code'], item['project_id'])
+                    print("ALERTA: No se encuentra la categoría geográfica '%s' para '%s'" % (item['gc_code'], item['project_id']))
                     continue
                 else:
                     gc = gc.first()
