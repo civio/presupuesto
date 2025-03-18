@@ -1,8 +1,8 @@
 from django.core.paginator import EmptyPage
 from django.conf import settings
 from budget_app.models import *
-from helpers import *
-from paginator import DiggPaginator as Paginator
+from .helpers import *
+from .paginator import DiggPaginator as Paginator
 
 PAGE_LENGTH = 10
 

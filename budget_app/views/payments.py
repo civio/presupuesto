@@ -6,7 +6,7 @@ from django.conf import settings
 from django.http import HttpResponse
 from django.utils.translation import ugettext as _
 from budget_app.models import BudgetBreakdown, Payment
-from helpers import *
+from .helpers import *
 
 # Auxiliary class needed to access arbitrary attributes as objects.
 # See https://stackoverflow.com/a/2827664

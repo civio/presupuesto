@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.utils.translation import ugettext as _
 from budget_app.models import Budget, Entity, FunctionalCategory, BudgetBreakdown, BudgetItem
-from helpers import *
+from .helpers import *
 
 def welcome(request):
     c = get_context(request, css_class='body-welcome', title=_('Inicio'))

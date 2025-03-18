@@ -4,7 +4,7 @@ import json
 from django.urls import reverse
 
 from budget_app.models import Budget, BudgetBreakdown, FunctionalCategory, EconomicCategory, Goal, GoalActivity, GoalIndicator
-from helpers import *
+from .helpers import *
 
 def policies_show_helper(request, c, entity, id, title, render_callback=None):
     c['policy_uid'] = id
@@ -17,7 +17,7 @@ def policies_show_helper(request, c, entity, id, title, render_callback=None):
       'institutional': get_institutional_breakdown(c) if c['show_institutional_tab'] else None
     }
     get_budget_breakdown(   "fc.policy = %s and e.id = %s", [ id, entity.id ],
-                            [ 
+                            [
                                 c['breakdowns']['functional'],
                                 c['breakdowns']['economic'],
                                 c['breakdowns']['funding'],
@@ -153,7 +153,7 @@ def articles_show_helper(request, c, entity, id, title, show_side, render_callba
     # Extra request context info
     c['article_id'] = id
     c['article'] = EconomicCategory.objects.filter( budget__entity=entity,
-                                                    article=id, 
+                                                    article=id,
                                                     expense=(show_side=='expense')).first()
 
     # Ignore if possible the descriptions for execution data, they are truncated and ugly
@@ -173,7 +173,7 @@ def articles_show_helper(request, c, entity, id, title, show_side, render_callba
     }
     get_budget_breakdown(   "ec.article = %s and e.id = %s and i.expense = %s",
                             [ id, entity.id, show_side=='expense' ],
-                            [ 
+                            [
                                 c['breakdowns']['functional'],
                                 c['breakdowns']['economic'],
                                 c['breakdowns']['funding'],

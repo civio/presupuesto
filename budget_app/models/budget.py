@@ -5,11 +5,11 @@ from django.core.cache import caches
 from django.utils.translation import ugettext as _
 from django.conf import settings
 
-from economic_category import EconomicCategory
-from functional_category import FunctionalCategory
-from funding_category import FundingCategory
-from institutional_category import InstitutionalCategory
-from geographic_category import GeographicCategory
+from .economic_category import EconomicCategory
+from .functional_category import FunctionalCategory
+from .funding_category import FundingCategory
+from .institutional_category import InstitutionalCategory
+from .geographic_category import GeographicCategory
 
 
 class BudgetManager(models.Manager):

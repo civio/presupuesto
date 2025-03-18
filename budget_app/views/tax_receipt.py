@@ -2,7 +2,7 @@
 
 from django.utils.translation import ugettext as _
 from budget_app.models import Budget, BudgetBreakdown, BudgetItem, Entity
-from helpers import *
+from .helpers import *
 
 
 def tax_receipt(request):

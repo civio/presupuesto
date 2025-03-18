@@ -1,9 +1,9 @@
 # -*- coding: UTF-8 -*-
 
 from budget_app.models import BudgetBreakdown, Entity, EconomicCategory
-from policies_helpers import policies_show_helper, programmes_show_helper, articles_show_helper
-from payments import payments_helper, payment_search_helper
-from helpers import *
+from .policies_helpers import policies_show_helper, programmes_show_helper, articles_show_helper
+from .payments import payments_helper, payment_search_helper
+from .helpers import *
 
 def entities_policies(request, id, render_callback=None):
     c = get_context(request, css_class='body-entities', title='')
@@ -23,7 +23,7 @@ def entities_show_helper(request, c, entity, render_callback=None):
 
         # We assume here that all items are properly configured across all dimensions
         # (and why wouldn't they? see below). Note that this is a particular case of the
-        # more complex logic below for small entities, and I used for a while the more 
+        # more complex logic below for small entities, and I used for a while the more
         # general code for all scenarios, until I realised performance was much worse,
         # as we do two expensive denormalize-the-whole-db queries!
         get_budget_breakdown(   "e.id = %s", [ entity.id ],

@@ -3,7 +3,7 @@
 from django.conf import settings
 from django.utils.translation import ugettext as _
 from budget_app.models import Budget, BudgetBreakdown, BudgetItem
-from helpers import *
+from .helpers import *
 
 
 def budgets(request, render_callback=None):

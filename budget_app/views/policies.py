@@ -2,9 +2,9 @@
 
 from django.urls import reverse
 from budget_app.models import Budget, BudgetBreakdown, FunctionalCategory, EconomicCategory
-from entities import entities_show_helper
-from policies_helpers import policies_show_helper, programmes_show_helper, articles_show_helper
-from helpers import *
+from .entities import entities_show_helper
+from .policies_helpers import policies_show_helper, programmes_show_helper, articles_show_helper
+from .helpers import *
 import json
 
 
@@ -65,7 +65,7 @@ def subprogrammes_show(request, id, title, render_callback=None):
       'institutional': get_institutional_breakdown(c) if c['show_institutional_tab'] else None
     }
     get_budget_breakdown(   "fc.subprogramme = %s and e.id = %s", [ id, main_entity.id ],
-                            [ 
+                            [
                                 c['breakdowns']['economic'],
                                 c['breakdowns']['funding'],
                                 c['breakdowns']['institutional']

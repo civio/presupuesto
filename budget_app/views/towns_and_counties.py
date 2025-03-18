@@ -3,8 +3,8 @@
 import json
 
 from budget_app.models import BudgetBreakdown, Entity
-from entities import entities_show_helper
-from helpers import *
+from .entities import entities_show_helper
+from .helpers import *
 
 
 def counties(request, render_callback=None):
@@ -33,8 +33,8 @@ def counties_show_functional(request, county_slug, id, render_callback=None):
 def counties_compare(request, county_left_slug, county_right_slug):
     county_left = _get_county(county_left_slug)
     county_right = _get_county(county_right_slug)
-    c = get_context(request, 
-                    css_class='body-counties', 
+    c = get_context(request,
+                    css_class='body-counties',
                     title='Comparativa '+county_left.name+'/'+county_right.name+' - Comarcas')
     return entities_compare(request, c, county_left, county_right)
 
@@ -76,8 +76,8 @@ def towns_show_functional(request, town_slug, id, render_callback=None):
 def towns_compare(request, town_left_slug, town_right_slug):
     town_left = _get_town(town_left_slug)
     town_right = _get_town(town_right_slug)
-    c = get_context(request, 
-                    css_class='body-entities', 
+    c = get_context(request,
+                    css_class='body-entities',
                     title='Comparativa '+town_left.name+'/'+town_right.name+' - Municipios')
     return entities_compare(request, c, town_left, town_right)
 
@@ -99,11 +99,11 @@ def entities_index(request, c, level, render_callback=None):
     c['breakdowns']['economic'] = BudgetBreakdown(['name'])
     # The top level entity has a nicely broken down budget, where each item is classified across
     # 4 dimensions. For smaller entities, however, we have two separate breakdowns as input,
-    # that are loaded separately, with dummy values ('X') assigned to the three unknown dimensions. 
+    # that are loaded separately, with dummy values ('X') assigned to the three unknown dimensions.
     # To avoid double counting, we must calculate breakdowns along a dimension including only
     # those items for which we know the category (i.e. not 'X')
-    get_budget_breakdown(   "e.level = %s and ec.chapter <> 'X'", [ level ], 
-                            [ 
+    get_budget_breakdown(   "e.level = %s and ec.chapter <> 'X'", [ level ],
+                            [
                                 c['breakdowns']['economic']
                             ])
 
@@ -116,7 +116,7 @@ def entities_index(request, c, level, render_callback=None):
     # XXX: The percentage format in pages listing entities is tricky and confusing, partly because
     # we have many gaps in the data which vary each year, so I'm hiding the drop-down option for now.
     c['hide_percentage_format'] = True
-    
+
     return render(c, render_callback, 'entities/index.html')
 
 
@@ -129,13 +129,13 @@ def entities_compare(request, c, entity_left, entity_right):
     # c['functional_breakdown_left'] = BudgetBreakdown(['policy'])
     c['breakdowns']['economic_left'] = BudgetBreakdown(['chapter', 'article'])
     get_budget_breakdown(   "e.name = %s and ec.chapter <> 'X'", [ entity_left.name ],
-                            [ 
+                            [
                                 c['breakdowns']['economic_left']
                             ])
 
     c['breakdowns']['economic_right'] = BudgetBreakdown(['chapter', 'article'])
     get_budget_breakdown(   "e.name = %s and ec.chapter <> 'X'", [ entity_right.name ],
-                            [ 
+                            [
                                 c['breakdowns']['economic_right']
                             ])
 
@@ -166,7 +166,7 @@ def entities_show_policy(request, c, entity, id, title, render_callback=None):
       'economic': BudgetBreakdown(['chapter', 'article', 'heading'])
     }
     get_budget_breakdown(   "fc.policy = %s and e.id = %s", [ id, entity.id ],
-                            [ 
+                            [
                                 c['breakdowns']['functional'],
                                 c['breakdowns']['economic']
                             ])
@@ -201,11 +201,11 @@ def entities_show_article(request, c, entity, id, title, show_side, render_callb
     c['is_chapter'] = len(id) <= 1
     if c['is_chapter']:
         c['article'] = EconomicCategory.objects.filter( budget__entity=entity,
-                                                        chapter=id, 
+                                                        chapter=id,
                                                         expense=(show_side=='expense')).first()
     else:
         c['article'] = EconomicCategory.objects.filter( budget__entity=entity,
-                                                        article=id, 
+                                                        article=id,
                                                         expense=(show_side=='expense')).first()
 
     # Ignore if possible the descriptions for execution data, they are truncated and ugly
@@ -232,7 +232,7 @@ def entities_show_article(request, c, entity, id, title, show_side, render_callb
         c['breakdowns']['economic'] = BudgetBreakdown(['heading', 'uid'])
         query = "ec.article = %s and e.id = %s"
     get_budget_breakdown(   query, [ id, entity.id ],
-                            [ 
+                            [
                                 c['breakdowns']['economic'],
                                 c['breakdowns']['funding'],
                                 c['breakdowns']['institutional']
@@ -260,4 +260,3 @@ def entities_show_article(request, c, entity, id, title, show_side, render_callb
     c['entity'] = entity
 
     return render(c, render_callback, 'policies/show.html')
-

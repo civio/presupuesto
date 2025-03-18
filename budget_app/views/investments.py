@@ -2,7 +2,7 @@
 
 from django.utils.translation import ugettext as _
 from budget_app.models import BudgetBreakdown, Investment, GeographicCategory
-from helpers import *
+from .helpers import *
 
 
 def investments(request, render_callback=None):
