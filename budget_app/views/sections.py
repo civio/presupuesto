@@ -1,10 +1,10 @@
 # -*- coding: UTF-8 -*-
 from budget_app.models import Budget, BudgetBreakdown, InstitutionalCategory
-from helpers import *
+from .helpers import *
 import json
 
 
-# XXX: This view only makes sense -and works- if institutional codes remain constant 
+# XXX: This view only makes sense -and works- if institutional codes remain constant
 # across years, i.e. if the flag CONSISTENT_INSTITUTIONAL_CODES is enabled.
 def sections_show(request, id, title, render_callback=None):
     # Get request context
@@ -15,7 +15,7 @@ def sections_show(request, id, title, render_callback=None):
 
     # Extra request context info
     c['section_id'] = id
-    c['section'] = InstitutionalCategory.objects.filter(  budget__entity=main_entity, 
+    c['section'] = InstitutionalCategory.objects.filter(  budget__entity=main_entity,
                                                           department=id).first()
 
     # Ignore if possible the descriptions for execution data, they are truncated and ugly
@@ -32,7 +32,7 @@ def sections_show(request, id, title, render_callback=None):
       'institutional': None
     }
     get_budget_breakdown(   "ic.department = %s and e.id = %s and i.expense = true", [ id, main_entity.id ],
-                            [ 
+                            [
                                 c['breakdowns']['functional'],
                                 c['breakdowns']['economic'],
                             ],

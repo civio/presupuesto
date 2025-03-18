@@ -17,7 +17,8 @@ APP_PATH = os.path.join(ROOT_PATH, 'budget_app')
 # I could potentially split it in two (like Rails does), but feels overkill
 #
 try:
-    execfile(os.path.join(ROOT_PATH, 'local_settings.py'), globals(), locals())
+    with open(os.path.join(ROOT_PATH, 'local_settings.py'), 'r') as f:
+        exec(f.read(), globals(), locals())
 except IOError:
     pass
 
@@ -34,9 +35,10 @@ HTTPS_PROXY = ENV.get('HTTPS_PROXY') or ENV.get('https_proxy')
 if ENV.get('THEME'):
     THEME = ENV.get('THEME')
     THEME_PATH = os.path.join(ROOT_PATH, THEME)
-    execfile(os.path.join(ROOT_PATH, THEME, 'settings.py'), globals(), locals())
+    with open(os.path.join(THEME_PATH, 'settings.py'), 'r') as f:
+        exec(f.read(), globals(), locals())
 else:
-    print "Please set the environment variable THEME in your local_settings.py file."
+    print("Please set the environment variable THEME in your local_settings.py file.")
     sys.exit(1)
 
 

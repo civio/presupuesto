@@ -7,18 +7,18 @@ from django.utils.translation import ugettext as _
 
 from budget_app.models import Entity, Payment
 from budget_app.views import *
-from helpers import get_context
+from .helpers import get_context
 
 from tempfile import NamedTemporaryFile
 from openpyxl import Workbook
 
 
-# Note that in these exports we include not only the items at the lowest level of detail 
+# Note that in these exports we include not only the items at the lowest level of detail
 # (i.e. the leaves), but also the mid-level subtotals. There's a reason for this:
-# initially there was a clean and consistent budget (Aragon), where all policies and 
+# initially there was a clean and consistent budget (Aragon), where all policies and
 # articles were broken down to the same level of detail. And it was good. And we could
-# output just the leaves knowing all the information was there. Then came the counties 
-# and towns, with variable level of detail each year, and it got harder to know when 
+# output just the leaves knowing all the information was there. Then came the counties
+# and towns, with variable level of detail each year, and it got harder to know when
 # to output chapters and when articles, although theoretically it was still possible.
 # Last came the national budget, where the level of detail depends on the entity publishing
 # the data: so we have expense articles broken down to heading and subheading level for
