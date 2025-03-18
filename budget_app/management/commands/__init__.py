@@ -1,1 +1,1 @@
-from base_loading_command import BaseLoadingCommand
+from .base_loading_command import BaseLoadingCommand

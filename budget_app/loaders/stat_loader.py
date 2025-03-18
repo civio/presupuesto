@@ -12,18 +12,18 @@ class StatLoader(object):
         self.load_population(os.path.join(path, 'poblacion.csv'))
 
     def load_inflation(self, filename):
-        print "Cargando estadísticas oficiales de inflación de %s..." % filename
+        print("Cargando estadísticas oficiales de inflación de %s..." % filename)
         reader = csv.reader(open(filename, 'rb'))
         for index, line in enumerate(reader):
             if re.match("^#", line[0]):  # Ignore comments
                 continue
 
-            print "  Cargando inflación para el año %s..." % line[0]
+            print("  Cargando inflación para el año %s..." % line[0])
             stat = InflationStat(year=line[0], inflation=line[1])
             stat.save()
 
     def load_population(self, filename):
-        print "Cargando estadísticas oficiales de población de %s..." % filename
+        print("Cargando estadísticas oficiales de población de %s..." % filename)
         reader = csv.reader(open(filename, 'rb'))
         for index, line in enumerate(reader):
             if re.match("^#", line[0]):  # Ignore comments
@@ -34,7 +34,7 @@ class StatLoader(object):
             year = line[2]
             population = line[3]
 
-            print "  Cargando población para %s (%s)..." % (name, year)
+            print("  Cargando población para %s (%s)..." % (name, year))
             entity = self._get_entity(code, name)
             stat = PopulationStat(entity=entity, year=year, population=population)
             stat.save()

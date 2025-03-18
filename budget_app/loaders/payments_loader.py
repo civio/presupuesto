@@ -26,13 +26,13 @@ class PaymentsLoader(BaseLoader):
 
         # Store the data in the database
         if len(items) > 0:
-            print u"Cargando pagos para entidad '%s' año %s..." % (entity.name, year)
+            print("Cargando pagos para entidad '%s' año %s..." % (entity.name, year))
             self.load_items(budget, items)
 
     def parse_data(self, filename):
         items = []
         if os.path.isfile(filename):
-            print "Leyendo datos de %s..." % filename
+            print("Leyendo datos de %s..." % filename)
             reader = csv.reader(open(filename, 'rb'))
             for index, line in enumerate(reader):
                 if re.match("^#", line[0]):         # Ignore comments
@@ -44,7 +44,7 @@ class PaymentsLoader(BaseLoader):
                 # Finally, we have useful data
                 items.append(line)
         else:
-            print "No se encontró el fichero %s" % filename
+            print("No se encontró el fichero %s" % filename)
 
         return items
 
@@ -91,7 +91,7 @@ class PaymentsLoader(BaseLoader):
             if ec_code is not None and ec_code != '':
                 ec = self.fetch_economic_category(budget, True, ec_code)
                 if not ec:
-                    print u"ALERTA: No se encuentra la categoría económica '%s' para '%s': %s€" % (ec_code, fields['description'].decode("utf8"), fields['amount']/100)
+                    print("ALERTA: No se encuentra la categoría económica '%s' para '%s': %s€" % (ec_code, fields['description'].decode("utf8"), fields['amount']/100))
                     continue
             else:
                 ec = None
@@ -101,7 +101,7 @@ class PaymentsLoader(BaseLoader):
             if fc_code is not None and fc_code != '':
                 fc = self.fetch_functional_category_by_full_code(budget, fc_code)
                 if not fc:
-                    print u"ALERTA: No se encuentra la categoría funcional '%s' para '%s': %s€" % (fc_code, fields['description'].decode("utf8"), fields['amount']/100)
+                    print("ALERTA: No se encuentra la categoría funcional '%s' para '%s': %s€" % (fc_code, fields['description'].decode("utf8"), fields['amount']/100))
                     continue
             else:
                 fc = None
@@ -111,7 +111,7 @@ class PaymentsLoader(BaseLoader):
             if ic_code is not None and ic_code != '':
                 ic = self.fetch_institutional_category(budget, ic_code[0], ic_code[0:2], ic_code)
                 if not ic:
-                    print u"ALERTA: No se encuentra la categoría institutional '%s' para '%s': %s€" % (ic_code, fields['description'].decode("utf8"), fields['amount']/100)
+                    print("ALERTA: No se encuentra la categoría institutional '%s' para '%s': %s€" % (ic_code, fields['description'].decode("utf8"), fields['amount']/100))
                     continue
             else:
                 ic = None
