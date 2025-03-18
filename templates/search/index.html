@@ -119,7 +119,7 @@
               </tr>
               {% endfor %}
 
-              {% for policy_id, programmes in programmes_per_policy.iteritems() %}
+              {% for policy_id, programmes in programmes_per_policy.items() %}
                 {% for programme_id in programmes %}
                 <tr>
                   <td class="col-1">
@@ -192,7 +192,7 @@
                     {% if item.level==main_entity_level %}
                       <a class="date" href="{{ url('policies') }}#view={{show_side}}">
                       {% if search_entities %}
-                        {{ item.name }} {{ item.year }} 
+                        {{ item.name }} {{ item.year }}
                       {% else %}
                         {{ item.year }}
                       {% endif %}
@@ -221,8 +221,8 @@
                       {% endif %}
                     {% endif %}
                   </p>
-      
-                  
+
+
 
                   {# Concept name #}
                   <p class="concept">
@@ -345,7 +345,7 @@
         </div>
       </div>
       {% endif %}
-      
+
     </div>
   </div>
 </section>
