@@ -17,19 +17,19 @@ class Command(BaseCommand):
             action='store',
             dest='language',
             default=settings.LANGUAGE_CODE,
-            help='Set data language'),
+            help='Set data language')
 
         parser.add_argument('--level',
             action='store',
             dest='level',
             default=settings.MAIN_ENTITY_LEVEL,
-            help='Set entity level'),
+            help='Set entity level')
 
         parser.add_argument('--name',
             action='store',
             dest='name',
             default=settings.MAIN_ENTITY_NAME,
-            help='Set entiy name'),
+            help='Set entiy name')
 
     help = u"Elimina el presupuesto del año"
 
@@ -79,7 +79,7 @@ class Command(BaseCommand):
                 )
 
                 # Delete previous budget for the given entity/year if it exists
-                print u"Eliminando presupuesto para entidad '%s' año %s..." % (entity.name, year)
+                print(u"Eliminando presupuesto para entidad '%s' año %s..." % (entity.name, year))
                 Budget.objects.filter(entity=entity, year=year).delete()
 
     def _get_entity(self, level, name, language=None):
