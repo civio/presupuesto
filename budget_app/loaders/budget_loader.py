@@ -44,7 +44,7 @@ class BudgetLoader(BaseLoader):
         institutional_categories = self.get_default_institutional_categories()
         institutions_filename = os.path.join(path, 'estructura_organica.csv')
         print("Cargando lista de secciones de %s..." % institutions_filename)
-        reader = csv.reader(open(institutions_filename, 'rb'), delimiter=self._get_delimiter())
+        reader = csv.reader(open(institutions_filename, 'r', encoding='utf-8'), delimiter=self._get_delimiter())
         for line in reader:
             # Ignore header, empty lines and comments
             if not line or line[0]=="" or line[0][0]=="#" or line[0] == 'EJERCICIO':
@@ -79,7 +79,7 @@ class BudgetLoader(BaseLoader):
         economic_categories = self.get_default_economic_categories()
         filename = os.path.join(path, 'estructura_economica.csv')
         print("Cargando jerarquía económica de %s..." % filename)
-        reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
+        reader = csv.reader(open(filename, 'r', encoding='utf-8'), delimiter=self._get_delimiter())
         for line in reader:
             # Ignore header, empty lines and comments
             if not line or line[0]=="" or line[0][0]=="#" or line[0] == 'EJERCICIO':
@@ -117,7 +117,7 @@ class BudgetLoader(BaseLoader):
         filename = os.path.join(path, 'estructura_financiacion.csv')
         if os.path.isfile(filename):
             print("Cargando jerarquía de financiación de %s..." % filename)
-            reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
+            reader = csv.reader(open(filename, 'r', encoding='utf-8'), delimiter=self._get_delimiter())
             for line in reader:
                 # Ignore header, empty lines and comments
                 if not line or line[0]=="" or line[0][0]=="#" or line[0] == 'EJERCICIO':
@@ -166,7 +166,7 @@ class BudgetLoader(BaseLoader):
         functional_categories = self.get_default_functional_categories()
         filename = os.path.join(path, 'estructura_funcional.csv')
         print("Cargando jerarquía funcional de %s..." % filename)
-        reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
+        reader = csv.reader(open(filename, 'r', encoding='utf-8'), delimiter=self._get_delimiter())
         for line in reader:
             # Ignore header, empty lines and comments
             if not line or line[0]=="" or line[0][0]=="#" or line[0] == 'EJERCICIO':
@@ -204,7 +204,7 @@ class BudgetLoader(BaseLoader):
     # We first load all data lines, and then we process them. This became necessary at
     # some point when had to deal with subtotals in incoming files, for example.
     def load_data_file(self, budget, filename, is_expense, is_actual):
-        reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
+        reader = csv.reader(open(filename, 'r', encoding='utf-8'), delimiter=self._get_delimiter())
         items = []
         for line in reader:
             if not line or line[0] == "" or line[0].upper() == 'EJERCICIO':  # Ignore header or empty lines

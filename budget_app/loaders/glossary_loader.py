@@ -11,7 +11,7 @@ class GlossaryLoader(object):
     def load(self, filename, language):
 
         print("Cargando glosario de %s..." % filename)
-        reader = csv.reader(open(filename, 'rb'))
+        reader = csv.reader(open(filename, 'r', encoding='utf-8'))
         for index, line in enumerate(reader):
             if re.match("^#", line[0]):  # Ignore comments
                 continue

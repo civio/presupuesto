@@ -31,7 +31,7 @@ class SimpleBudgetLoader(BaseLoader):
     def parse_budget_data(self, budget_items, filename):
         if os.path.isfile(filename):
             print("Leyendo datos de %s..." % filename)
-            reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
+            reader = csv.reader(open(filename, 'r', encoding='utf-8'), delimiter=self._get_delimiter())
             for index, line in enumerate(reader):
                 if line==[] or re.match("^#", line[0]):     # Ignore comments and empty lines
                     continue
@@ -162,7 +162,7 @@ class SimpleBudgetLoader(BaseLoader):
     # Load the institutional categories
     def load_institutional_classification(self, path, budget):
         filename = self.get_institutional_classification_path(path)
-        reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
+        reader = csv.reader(open(filename, 'r', encoding='utf-8'), delimiter=self._get_delimiter())
         category_objects = []
         for index, line in enumerate(reader):
             if line==[] or re.match("^#", line[0]):  # Ignore comments and empty lines
@@ -189,7 +189,7 @@ class SimpleBudgetLoader(BaseLoader):
     # Load the economic categories
     def load_economic_classification(self, path, budget):
         filename = self.get_economic_classification_path(path)
-        reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
+        reader = csv.reader(open(filename, 'r', encoding='utf-8'), delimiter=self._get_delimiter())
         category_objects = []
         for index, line in enumerate(reader):
             if line==[] or re.match("^#", line[0]):  # Ignore comments and empty lines
@@ -218,7 +218,7 @@ class SimpleBudgetLoader(BaseLoader):
     # Load the functional categories
     def load_functional_classification(self, path, budget):
         filename = self.get_functional_classification_path(path)
-        reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
+        reader = csv.reader(open(filename, 'r', encoding='utf-8'), delimiter=self._get_delimiter())
         category_objects = []
         for index, line in enumerate(reader):
             if line==[] or re.match("^#", line[0]):     # Ignore comments and empty lines
@@ -256,7 +256,7 @@ class SimpleBudgetLoader(BaseLoader):
         filename = self.get_geographic_classification_path(path)
         category_objects = []
         if os.path.isfile(filename):
-            reader = csv.reader(open(filename, 'rb'), delimiter=self._get_delimiter())
+            reader = csv.reader(open(filename, 'r', encoding='utf-8'), delimiter=self._get_delimiter())
             for index, line in enumerate(reader):
                 if line==[] or re.match("^#", line[0]):  # Ignore comments and empty lines
                     continue

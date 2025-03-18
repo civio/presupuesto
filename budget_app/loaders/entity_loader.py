@@ -9,7 +9,7 @@ class EntityLoader(object):
         self._delete_all()
 
         print("Cargando lista de organismos de %s..." % filename)
-        reader = csv.reader(open(filename, 'rb'))
+        reader = csv.reader(open(filename, 'r', encoding='utf-8'))
         for index, line in enumerate(reader):
             if re.match("^#", line[0]):  # Ignore comments
                 continue
