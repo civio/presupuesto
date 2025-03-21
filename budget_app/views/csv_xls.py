@@ -94,9 +94,9 @@ def write_entity_payment_breakdown(c, writer):
     for payment in c['payments']:
         writer.writerow([
             payment.year,
-            payment.area.encode("utf-8"),
-            payment.payee.encode("utf-8"),
-            payment.description.encode('utf-8'),
+            payment.area,
+            payment.payee,
+            payment.description,
             payment.amount / 100.0
         ])
 
@@ -178,7 +178,7 @@ def write_policy_monitoring_breakdown(c, writer):
                 writer.writerow([
                     year,
                     programme_number,
-                    programme_description.encode("utf-8"),
+                    programme_description,
                     format_progress(score)
                 ])
 
@@ -205,7 +205,7 @@ def write_programme_monitoring_breakdown(c, writer):
                 score = section_data[1]/section_data[2]
                 writer.writerow([
                     year,
-                    section_description.encode("utf-8"),
+                    section_description,
                     format_progress(score)
                 ])
 
