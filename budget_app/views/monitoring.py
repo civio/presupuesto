@@ -34,8 +34,8 @@ def monitoring(request, render_callback=None):
 
         # Keep track of available years, and the latest year with actual content
         monitoring_years.add(year)
-        if progress>0:
-            last_monitoring_year = max(last_monitoring_year, year)
+        if progress!=None and progress>0:
+            last_monitoring_year = max(last_monitoring_year, year) if last_monitoring_year!=None else year
 
     # Expand information with count of goals.
     # Note that, because some goals don't have indicators, we can't do it in one go,
@@ -50,7 +50,7 @@ def monitoring(request, render_callback=None):
             monitoring_data[policy_id]['objectives_'+year] = count[2]
 
     # Output data as JSON to print it in the template's Javascript
-    c['monitoring_data'] = json.dumps(sorted(monitoring_data.values()))
+    c['monitoring_data'] = json.dumps(list(monitoring_data.values()))
     c['monitoring_years'] = json.dumps(sorted(monitoring_years))
     c['last_monitoring_year'] = last_monitoring_year
 
