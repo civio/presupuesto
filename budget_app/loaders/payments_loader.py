@@ -70,12 +70,15 @@ class PaymentsLoader(BaseLoader):
             'amount': self._get_amount(line)
         }
 
+    # Load payment data into the database. Do it in bulk to avoid network overhead.
+    #
     # Note that the payment data may not be fully classified along the functional or economic
     # categories. When loading budget data for small entities we fill this up using dummy categories,
     # since we have complex queries in the application that expect a number of different tables
     # to match perfectly (and they were built when the data was always fine, for historical reasons).
     # But for payments we're going to leave the fields null in the database, should be cleaner.
     def load_items(self, budget, items):
+        payment_objects = []
         for item in items:
             fields = self.parse_item(budget, item)
 
@@ -124,8 +127,8 @@ class PaymentsLoader(BaseLoader):
             anonymized = fields.get('anonymized', False)
             payee_fiscal_id = fields.get('payee_fiscal_id', '')
 
-            # Create the payment record
-            Payment(area=fields['area'],
+            # Create the payment object
+            obj = Payment(area=fields['area'],
                     programme=programme,
                     functional_category=fc,
                     economic_category=ec,
@@ -137,7 +140,10 @@ class PaymentsLoader(BaseLoader):
                     expense=True,
                     amount=fields['amount'],
                     description=fields['description'],
-                    budget=budget).save()
+                    budget=budget)
+            payment_objects.append(obj)
+
+        Payment.objects.bulk_create(payment_objects)
 
     # Get the amount for a budget line
     def _get_amount(self, item):
