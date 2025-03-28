@@ -86,49 +86,30 @@ class PaymentsLoader(BaseLoader):
             # Fetch economic category, if available
             ec_code = fields.get('ec_code', None)
             if ec_code is not None and ec_code != '':
-                ec = EconomicCategory.objects.filter(expense=True,
-                                                     chapter=ec_code[0],
-                                                     article=ec_code[0:2] if len(ec_code) >= 2 else None,
-                                                     heading=ec_code[0:3] if len(ec_code) >= 3 else None,
-                                                     subheading=None,
-                                                     budget=budget)
+                ec = self.fetch_economic_category(budget, True, ec_code)
                 if not ec:
                     print u"ALERTA: No se encuentra la categoría económica '%s' para '%s': %s€" % (ec_code, fields['description'].decode("utf8"), fields['amount']/100)
                     continue
-                else:
-                    ec = ec.first()
             else:
                 ec = None
 
             # Fetch functional category, if available
             fc_code = fields.get('fc_code', None)
             if fc_code is not None and fc_code != '':
-                fc = FunctionalCategory.objects.filter(area=fc_code[0:1],
-                                                       policy=fc_code[0:2],
-                                                       function=fc_code[0:3],
-                                                       programme=fc_code,
-                                                       budget=budget)
+                fc = self.fetch_functional_category_by_full_code(budget, fc_code)
                 if not fc:
                     print u"ALERTA: No se encuentra la categoría funcional '%s' para '%s': %s€" % (fc_code, fields['description'].decode("utf8"), fields['amount']/100)
                     continue
-                else:
-                    fc = fc.first()
             else:
                 fc = None
 
             # Fetch institutional category, if available
             ic_code = fields.get('ic_code', None)
             if ic_code is not None and ic_code != '':
-                ic = InstitutionalCategory.objects.filter(institution=ic_code[0],
-                                                          section=ic_code[0:2],
-                                                          department=ic_code,
-                                                          budget=budget)
-
+                ic = self.fetch_institutional_category(budget, ic_code[0], ic_code[0:2], ic_code)
                 if not ic:
                     print u"ALERTA: No se encuentra la categoría institutional '%s' para '%s': %s€" % (ic_code, fields['description'].decode("utf8"), fields['amount']/100)
                     continue
-                else:
-                    ic = ic.first()
             else:
                 ic = None
 
