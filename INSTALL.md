@@ -11,7 +11,7 @@ Para instalar la aplicación en local es necesario seguir los siguientes pasos:
         $ source env/bin/activate
 
 * Instalar los componentes utilizados por la aplicación. Actualmente, la aplicación requiere Django 1.7.x:
-    
+
         $ pip install -r requirements/local.txt
 
 * Borrar base de datos:
@@ -39,16 +39,21 @@ La aplicación soporta el concepto de 'themes' capaces de modificar el aspecto v
 
 El theme a usar se configura mediante la variable `THEME` en local_settings.py. Es referenciada en diversos puntos de `settings.py` para instalar los directorios del theme (plantillas y recursos estáticos) justo antes de los de la aplicación principal.
 
-Es necesario compilar todos los recursos estáticos. Para ello:
+Es necesario compilar todos los recursos estáticos. Para ello, instalamos en el _core_ lo necesario para compilar D3.js:
 
-* Instalar herramientas de compresión y generación de bundles:
+    $ nvm use
+		$ npm install
+		$ npm run d3-build
 
-		$ npm install rollup
-		$ ./node_modules/rollup/bin/rollup -c
+Y en la carpeta del tema lo necesario para compilar SCSS:
+
 		$ cd ./<directorio_del_theme>
 		$ npm install
-		$ npm install node-sass
 		$ npm run css-build
+
+Podemos dejar el compilador corriendo en segundo plano, y procesará cambios y refrescará el navegador automáticamente:
+
+		$ npm run start
 
 ### Configurando el buscador
 
@@ -77,7 +82,3 @@ Pero para usarlo de manera regular debemos configurar la aplicación, vía `loca
 * Arrancar el servidor
 
         $ python manage.py runserver
-
-* Arrancar el servidor en modo livereload:
-
-        $ python manage.py livereload
