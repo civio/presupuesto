@@ -1,4 +1,4 @@
-import npm from "rollup-plugin-node-resolve";
+import { nodeResolve } from '@rollup/plugin-node-resolve';
 
 const onwarn = warning => {
   // Silence circular dependency warning for d3
@@ -11,7 +11,7 @@ const onwarn = warning => {
 
 export default {
   input: "rollup-entry.js",
-  plugins: [ npm({ jsnext: true} ) ],
+  plugins: [nodeResolve()],
   onwarn,
   output: {
     format: "umd",
