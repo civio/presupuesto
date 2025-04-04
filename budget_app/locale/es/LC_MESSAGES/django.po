@@ -738,11 +738,27 @@ msgid "Compártelo"
 msgstr ""
 
 #: templates/shared/social_sharing.html:5
-msgid "Comparte esta página en Twitter"
+msgid "Comparte esta página en Facebook"
 msgstr ""
 
-#: templates/shared/social_sharing.html:10
-msgid "Comparte esta página en Facebook"
+#: templates/shared/social_sharing.html:9
+msgid "Comparte esta página en X"
+msgstr ""
+
+#: templates/shared/social_sharing.html:13
+msgid "Comparte esta página en Linkedin"
+msgstr ""
+
+#: templates/shared/social_sharing.html:17
+msgid "Comparte esta página en Instagram"
+msgstr ""
+
+#: templates/shared/social_sharing.html:21
+msgid "Comparte esta página en Whatsapp"
+msgstr ""
+
+#: templates/shared/social_sharing.html:25
+msgid "Comparte esta página por correo electrónico"
 msgstr ""
 
 #: templates/shared/social_sharing.html:14
