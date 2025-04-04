@@ -770,12 +770,28 @@ msgid "Compártelo"
 msgstr "Comparteix-ho"
 
 #: templates/shared/social_sharing.html:5
-msgid "Comparte esta página en Twitter"
-msgstr "Comparteix aquesta pàgina a Twitter"
-
-#: templates/shared/social_sharing.html:10
 msgid "Comparte esta página en Facebook"
 msgstr "Comparteix aquesta pàgina a Facebook"
+
+#: templates/shared/social_sharing.html:9
+msgid "Comparte esta página en X"
+msgstr "Comparteix aquesta pàgina a X"
+
+#: templates/shared/social_sharing.html:13
+msgid "Comparte esta página en Linkedin"
+msgstr "Comparteix aquesta pàgina a Linkedin"
+
+#: templates/shared/social_sharing.html:17
+msgid "Comparte esta página en Instagram"
+msgstr "Comparteix aquesta pàgina a Instagram"
+
+#: templates/shared/social_sharing.html:21
+msgid "Comparte esta página en Whatsapp"
+msgstr "Comparteix aquesta pàgina a Whatsapp"
+
+#: templates/shared/social_sharing.html:25
+msgid "Comparte esta página por correo electrónico"
+msgstr "Comparteix aquesta pàgina per correu electrònic"
 
 #: templates/shared/social_sharing.html:14
 msgid "Comparte esta página en Google Plus"
