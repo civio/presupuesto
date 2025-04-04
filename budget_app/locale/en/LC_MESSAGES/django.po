@@ -811,8 +811,8 @@ msgid "Comparte esta página en Linkedin"
 msgstr "Share this page in Linkedin"
 
 #: templates/shared/social_sharing.html:17
-msgid "Comparte esta página en Instagram"
-msgstr "Share this page in Instagram"
+msgid "Comparte esta página en Bluesky"
+msgstr "Share this page in Bluesky"
 
 #: templates/shared/social_sharing.html:21
 msgid "Comparte esta página en Whatsapp"
@@ -821,10 +821,6 @@ msgstr "Share this page in Whatsapp"
 #: templates/shared/social_sharing.html:25
 msgid "Comparte esta página por correo electrónico"
 msgstr "Share this page via email"
-
-#: templates/shared/social_sharing.html:14
-msgid "Comparte esta página en Google Plus"
-msgstr "Share this page in Google+"
 
 #: templates/tax_receipt/index.html:12
 msgid "Te mostramos de forma aproximada"
