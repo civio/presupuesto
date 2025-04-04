@@ -2,11 +2,29 @@
   <p class="title">{{ _('Compártelo') }}</p>
   <ul class="social-sharing-toolbox">
       <li>
-        <a class="twitter" onClick='window.open("https://twitter.com/intent/tweet?text={{ meta_tweet_text }}&url={{ request.build_absolute_uri() }}","sharer","toolbar=0,status=0,width=548,height=500")' href="javascript: void(0)">{{ _('Comparte esta página en Twitter') }}</a>
+        <a class="facebook" onClick="window.open('https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri()|urlencode }}','pop','toolbar=0,status=0,width=548,height=500,scrollbars=no')" href="javascript: void(0)">{{ _('Comparte esta página en Facebook') }}</a>
       </li>
 
       <li>
-        <a class="facebook" onClick="window.open('https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri()|urlencode }}','pop','toolbar=0,status=0,width=548,height=500,scrollbars=no')" href="javascript: void(0)">{{ _('Comparte esta página en Facebook') }}</a>
+        <a class="x" onClick='window.open("https://twitter.com/intent/tweet?text={{ meta_title|urlencode }}&url={{ request.build_absolute_uri|urlencode }}","sharer","toolbar=0,status=0,width=548,height=500")' href="javascript: void(0)">{{ _('Comparte esta página en X') }}</a>
       </li>
+
+      <li>
+        <a class="linkedin" onClick='window.open("https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri|urlencode }}&title={{ meta_title|urlencode }}&summary={{ meta_description|urlencode }}","sharer","toolbar=0,status=0,width=548,height=500")' href="javascript: void(0)">{{ _('Comparte esta página en Linkedin') }}</a>
+      </li>
+
+      <li>
+        <a class="bluesky" onClick='window.open("https://bsky.app/share?text={{ meta_title|urlencode }}&url={{ request.build_absolute_uri|urlencode }}","sharer","toolbar=0,status=0,width=548,height=500")' href="javascript: void(0)">{{ _('Comparte esta página en Bluesky') }}</a>
+      </li>
+
+      <li>
+        <a class="whatsapp" onClick='window.open("https://api.whatsapp.com/send?text={{ meta_title|urlencode }}%20{{ request.build_absolute_uri|urlencode }}","sharer","toolbar=0,status=0,width=548,height=500")' href="javascript: void(0)">{{ _('Comparte esta página en Whatsapp') }}</a>
+      </li>
+
+      <li>
+        <a class="mail" onClick='window.open("mailto:?subject={{ meta_title|urlencode }}&body={{ meta_description|urlencode }}%20{{ request.build_absolute_uri|urlencode }}","sharer","toolbar=0,status=0,width=548,height=500")' href="javascript: void(0)">{{ _('Comparte esta página por correo electrónico') }}</a>
+      </li>
+
+
   </ul>
 </div>
