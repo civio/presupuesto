@@ -27,7 +27,7 @@
     a {
       display: block;
       background: $brand-secondary url(../assets/social.png) no-repeat center;
-      height: 40px;
+      height: 40px; 
       width: 40px;
       overflow: hidden;
       text-indent: -9999px;
@@ -35,22 +35,40 @@
       @include transition( background-color 0.3s ease-out );
       //@include box-shadow(0 0 0 3px transparentize($brand-primary, 80%), 0 0 .25em transparentize(black, 50%) inset);
 
-      &.twitter {
-        background-position: 0 0;
-        &:hover {
-          background-color: #339CC3;
-        }
-      }
       &.facebook {
-        background-position: -51px 0;
+        background-position: 0px 0; 
         &:hover {
-          background-color: #44619C;
+          background-color: #1877F2; // Facebook main brand color
         }
       }
-      &.gplus {
-        background-position: -103px 0;
+      &.x {
+        background-position: -40px 0;
         &:hover {
-          background-color: #DB4437;
+          background-color: #1DA1F2; // X (formerly Twitter) main brand color
+        }
+      }
+      &.linkedin {
+        background-position: -80px 0;
+        &:hover {
+          background-color: #0077B5; // LinkedIn main brand color
+        }
+      }
+      &.bluesky {
+        background-position: -120px 0;
+        &:hover {
+            background-color: #0057FF; // Bluesky main brand color
+        }
+      }
+      &.whatsapp {
+        background-position: -160px 0;
+        &:hover {
+          background-color: #25D366; // WhatsApp main brand color
+        }
+      }
+      &.mail {
+        background-position: -200px 0;
+        &:hover {
+            background-color: #D44638; // Gmail main brand color
         }
       }
     }
