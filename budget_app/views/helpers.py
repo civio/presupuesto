@@ -320,9 +320,6 @@ def _set_meta_fields(c):
     c['meta_og_title'] = c['meta_title']
     c['meta_og_description'] = c['meta_description']
 
-    c['meta_tweet_text'] = c['meta_title']
-
-
 #
 # RENDER RESPONSE
 #
