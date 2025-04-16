@@ -1,9 +1,11 @@
+@use "sass:color";
+
 // Policies Panel Downloads
 .panel-downloads{
   @extend .panel;
   @extend .panel-default;
   border: none;
-  background: mix( $brand-secondary, white, 30% );
+  background: color.mix($brand-secondary, white, 30%);
   padding: $grid-gutter-width/2;
   margin-top: $grid-gutter-width;
   text-align: center;

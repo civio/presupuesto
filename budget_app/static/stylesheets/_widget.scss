@@ -1,3 +1,5 @@
+@use "sass:color";
+
 body.widget{
 
   .widget-title{
@@ -58,7 +60,7 @@ body.widget{
       display: block;
       font-size: 1.125em;
       padding: 2px 10px 2px 8px;
-      background: mix( $brand-primary, white, 25% );
+      background: color.mix($brand-primary, white, 25%);
       border-left: 3px solid $brand-primary;
 
       &:hover,

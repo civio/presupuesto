@@ -1,3 +1,4 @@
+@use "sass:color";
 
 // Budget Intro
 .budget-intro {
@@ -43,9 +44,7 @@
       background-image: url(../assets/busget-stream-3.png);
     }
 
-    .desc {
-      color: mix( white, $budget-stream-color, 90% );
-      background: darken( $budget-stream-color, 10% );
+    color: color.mix(white, $budget-stream-color, 90%); background: darken( $budget-stream-color, 10% );
       font-size: .875em;
       margin: 0;
       padding: $grid-gutter-width/2;
@@ -97,7 +96,7 @@
 
       > li{
         padding: $grid-gutter-width/3 0;
-        border-top: 1px solid mix( $panel-default-border, white, 40% );
+        border-top: 1px solid color.mix($panel-default-border, white, 40%);
       }
 
       .total-executed{
@@ -115,10 +114,10 @@
       }
       .chapters-sub{
         font-weight: $font-weight-300;
-        border-top-color: mix( $panel-default-border, white, 20% );
+        border-top-color: color.mix($panel-default-border, white, 20%);
 
         &.chapters-sub-first{
-          border-top-color: mix( $panel-default-border, white, 40% );
+          border-top-color: color.mix($panel-default-border, white, 40%);
         }
       }
       .chapters-first{

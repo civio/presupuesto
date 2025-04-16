@@ -1,6 +1,8 @@
 // Header
 // ------------------------
 
+@use "sass:color";
+
 header > .container{
   position: relative;
   text-align: center;
@@ -167,7 +169,7 @@ header > .container{
         text-align: center;
         padding-right: 0;
         padding-left: 0;
-        border-bottom: 1px solid mix(white, $navbar-default-bg, 50%);
+        border-bottom: 1px solid color.mix(white, $navbar-default-bg, 50%);
         text-transform: uppercase;
         @include transition( background 0.3s ease-out );
 
@@ -222,12 +224,12 @@ header > .container{
         width: 100% / $dvmi-menu-length;
 
         > a{
-          border-right: 1px solid mix( $navbar-default-bg, white, 50% );
+          border-right: 1px solid color.mix($navbar-default-bg, white, 50%);
           border-bottom: none;
         }
       
         &:first-child > a{
-          border-left: 1px solid mix( $navbar-default-bg, white, 50% );
+          border-left: 1px solid color.mix($navbar-default-bg, white, 50%);
         }
       }
     }
