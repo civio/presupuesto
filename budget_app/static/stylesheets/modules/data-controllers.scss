@@ -1,3 +1,5 @@
+@use "sass:color";
+
 // Data controllers
 .data-controllers {
   position: relative;
@@ -125,7 +127,7 @@
     cursor: pointer;
 
     &:hover{
-      background-color: lighten( $panel-default-heading-bg, 5% );
+      background-color: color.scale($panel-default-heading-bg, $lightness: 5%);
     }
   }
 
