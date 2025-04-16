@@ -1,48 +1,48 @@
 // Plugins
-@use "dist/bootstrap-slider";
-@use "dist/select2";
-@use "dist/select2-bootstrap";
-//@use "dist/datatables"; // We use DataTable plugin but we don't need its styles
+@import "dist/bootstrap-slider";
+@import "dist/select2";
+@import "dist/select2-bootstrap";
+//@import "dist/datatables"; // We use DataTable plugin but we don't need it's styles
 
 // Default variables
-@use "_variables";
+@import "_variables";
 
 // Bootstrap
-@use "_bootstrap";
+@import "_bootstrap";
 
 // IcoMoon Icons
-@use "_icons";
+@import "_icons";
 
 // DVMI Common Styles
-@use "_common";
+@import "_common";
 
 // DVMI Modules Styles
-@use "modules/jquery-cookiebar";
-@use "modules/select2";
-@use "modules/budget-sankey";
-@use "modules/budget-summary";
-@use "modules/budget-treemap";
-@use "modules/budget-stacked-chart";
-@use "modules/data-controllers";
-@use "modules/data-panel";
-@use "modules/data-sources";
-@use "modules/map";
-@use "modules/navtabs";
-@use "modules/panel-downloads";
-@use "modules/social-sharing";
-@use "modules/table-grid";
+@import "modules/jquery-cookiebar";
+@import "modules/select2";
+@import "modules/budget-sankey";
+@import "modules/budget-summary";
+@import "modules/budget-treemap";
+@import "modules/budget-stacked-chart";
+@import "modules/data-controllers";
+@import "modules/data-panel";
+@import "modules/data-sources";
+@import "modules/map";
+@import "modules/navtabs";
+@import "modules/panel-downloads";
+@import "modules/social-sharing";
+@import "modules/table-grid";
 
 // DVMI Sections Styles
-@use "_header";
-@use "_footer";
-@use "_home";
-@use "_budgets";
-@use "_policies";
-@use "_payments";
-@use "_tax-receipt";
-@use "_investments";
-@use "_main_investments";
-@use "_monitoring";
-@use "_glossary";
-@use "_search";
-@use "_widget";
+@import "_header";
+@import "_footer";
+@import "_home";
+@import "_budgets";
+@import "_policies";
+@import "_payments";
+@import "_tax-receipt";
+@import "_investments";
+@import "_main_investments";
+@import "_monitoring";
+@import "_glossary";
+@import "_search";
+@import "_widget";
