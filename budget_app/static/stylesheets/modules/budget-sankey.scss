@@ -1,9 +1,11 @@
+@use "sass:color";
+
 // Budget Sankey Chart Styles
 
-$sankey-income-color-light: mix($sankey-income-color, white, 60%);
+$sankey-income-color-light: color.mix($sankey-income-color, white, 60%);
 $sankey-income-color-dark: darken($sankey-income-color, 10%);
 
-$sankey-expense-color-light: mix($sankey-expense-color, white, 60%);
+$sankey-expense-color-light: color.mix($sankey-expense-color, white, 60%);
 $sankey-expense-color-dark: darken($sankey-expense-color, 10%);
 
 .sankey-labels{
@@ -65,7 +67,7 @@ $sankey-expense-color-dark: darken($sankey-expense-color, 10%);
       background: $sankey-expense-color;
     }
     .sankey-label-budgeted span{
-      background-color: mix($sankey-expense-color, white, 50%);
+      background-color: color.mix($sankey-expense-color, white, 50%);
       background-image: repeating-linear-gradient(-45deg, transparent, transparent 2px, $sankey-expense-color-dark 3px, $sankey-expense-color-dark 3px);
       border: 1px solid $sankey-expense-color-dark;
     }

@@ -1,3 +1,5 @@
+@use "sass:color";
+
 .stacked-area-chart{
 
   .bkg-rect{
@@ -27,13 +29,13 @@
   .axis path,
   .axis line {
     fill: none;
-    stroke: mix( $gray-light, $gray-lighter, 30% );
+    stroke: color.mix( $gray-light, $gray-lighter, 30% );
     shape-rendering: crispEdges;
   }
 
   .axis.x path,
   .axis.x line {
-    stroke: mix( $gray-light, $gray-lighter, 70% );
+    stroke: color.mix( $gray-light, $gray-lighter, 70% );
   }
 
   .axis.y .domain{

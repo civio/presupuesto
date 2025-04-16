@@ -1,3 +1,5 @@
+@use "sass:color";
+
 .areas-select{
   ul{
     // Hide element but allow access to screen readers
@@ -18,7 +20,7 @@
     padding-top: $grid-gutter-width/3;
   }
   .total-special{
-    border-top: 1px solid mix( $panel-default-border, white, 20% );
+    border-top: 1px solid color.mix($panel-default-border, white, 20%);
     border-bottom: 1px solid $panel-default-border;
     padding-left: $grid-gutter-width/2;
 

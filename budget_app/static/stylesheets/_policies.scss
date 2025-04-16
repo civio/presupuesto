@@ -1,3 +1,5 @@
+@use "sass:color";
+
 // Policies Header (Title + Tabs Menu)
 .policies-header{
   
@@ -24,7 +26,7 @@
       text-transform: uppercase;
       font-weight: $font-weight-700;
       border-left: 2px solid $brand-secondary;
-      background: mix( $brand-secondary, white, 20% );
+      background: color.mix($brand-secondary, white, 20%);
       white-space: nowrap;
       text-overflow: ellipsis;
       max-width: 200px;
@@ -33,7 +35,7 @@
 
       &:hover{
         border-left-width: 3px;
-        background: mix( $brand-secondary, white, 50% );
+        background: color.mix($brand-secondary, white, 50%);
         text-decoration: none;
       }
     }

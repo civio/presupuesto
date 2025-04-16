@@ -1,3 +1,5 @@
+@use "sass:color";
+
 table.table-grid {
   border: 1px solid $panel-default-border;
   border-top: none;
@@ -18,7 +20,7 @@ table.table-grid {
       text-align: right;
 
       &:hover{
-        background: mix( $panel-default-heading-bg, white, 90% );
+        background: color.mix($panel-default-heading-bg, white, 90%);
       }
 
       &:first-child{
@@ -86,7 +88,7 @@ table.table-grid {
     font-size: 1.25em;
     color: $text-color;
     font-weight: $font-weight-400;
-    border-bottom: 1px solid mix( $panel-default-border, white, 50% );
+    border-bottom: 1px solid color.mix($panel-default-border, white, 50%);
     padding: $grid-gutter-width/3 $grid-gutter-width/2;
     text-align: right;
     min-width: 120px;
@@ -97,8 +99,8 @@ table.table-grid {
 
     &.l0:hover{
       color: $text-color;
-      border-color: mix(white, $panel-default-border, 80%);
-      background: mix(white, $panel-default-heading-bg, 80%);
+      border-color: color.mix(white, $panel-default-border, 80%);
+      background: color.mix(white, $panel-default-heading-bg, 80%);
     }
 
     a{

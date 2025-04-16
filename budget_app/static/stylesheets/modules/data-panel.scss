@@ -1,3 +1,5 @@
+@use "sass:color";
+
 // Data Panel
 .data-panel {
 
@@ -106,7 +108,7 @@
           padding-top: 0 !important;
         }
         .col-sm-8{
-          border-top: 1px solid mix( $panel-default-border, white, 40% );
+          border-top: 1px solid color.mix($panel-default-border, white, 40%);
         }
         &:first-child [class^="col-"] {
           border: none;
@@ -175,7 +177,7 @@
 
         .row .col-sm-4{
           padding-top: $grid-gutter-width/2 !important;
-          border-top: 1px solid mix( $panel-default-border, white, 40% );
+          border-top: 1px solid color.mix($panel-default-border, white, 40%);
         }
       }
     }
@@ -238,7 +240,7 @@
   }
 
   #financial-total{
-    border-top-color: mix( $panel-default-border, white, 40% );
+    border-top-color: color.mix($panel-default-border, white, 40%);
   }
 
   @media (min-width: $screen-sm-min) {
