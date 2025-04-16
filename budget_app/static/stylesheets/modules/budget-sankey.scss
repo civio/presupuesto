@@ -103,7 +103,7 @@ $sankey-expense-color-dark: darken($sankey-expense-color, 10%);
     }
     .node:hover .node-executed,
     .totals:hover .total-executed{
-      fill: lighten($sankey-income-color, 5%);
+      fill: color.scale($sankey-income-color, $lightness: 5%);
     }
     .wall{
       fill: darken($sankey-income-color, 6%);
@@ -123,7 +123,7 @@ $sankey-expense-color-dark: darken($sankey-expense-color, 10%);
     }
     .node:hover .node-executed,
     .totals:hover .total-executed{
-      fill: lighten($sankey-expense-color, 5%);
+      fill: color.scale($sankey-expense-color, $lightness: 5%);
     }
     .wall{
       fill: darken($sankey-expense-color, 6%);

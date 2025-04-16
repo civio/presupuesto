@@ -19,7 +19,7 @@
 
       span {
         display: block;
-        color: lighten( $budget-stream-color, 10% );
+        color: color.scale($budget-stream-color, $lightness: 10%);
         font-size: 3.5em;
         background-position: right center;
         background-repeat: no-repeat;
