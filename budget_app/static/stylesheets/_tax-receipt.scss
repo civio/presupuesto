@@ -1,3 +1,5 @@
+@use "sass:color";
+
 .tax-receipt-header{
 
   .lead{
@@ -24,11 +26,11 @@
       text-align: center;
       margin: $grid-gutter-width/2 0;
       padding: $grid-gutter-width/2 0 $grid-gutter-width;
-      border-bottom: 1px solid mix($brand-secondary, white, 50%);
+      border-bottom: 1px solid color.mix($brand-secondary, white, 50%);
     }
 
     .row{
-      border-bottom: 1px solid mix($brand-secondary, white, 25%);
+      border-bottom: 1px solid color.mix($brand-secondary, white, 25%);
       margin-bottom: $grid-gutter-width/2;
       margin-left: 0;
       margin-right: 0;

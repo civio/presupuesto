@@ -1,4 +1,6 @@
 
+@use "sass:color";
+
 // Colors
 // -------------
 
@@ -63,10 +65,10 @@ $dvmi-menu-length: 5 !default;  // Number of items in main menu
 
 // Navbar background color
 $navbar-default-bg:       $brand-primary !default;
-$navbar-default-bg-hover: mix( $navbar-default-bg, white, 75% ) !default;
+$navbar-default-bg-hover: color.mix( $navbar-default-bg, white, 75% ) !default;
 
 // Navbar options text color
-$dvmi-navbar-color: mix( $brand-primary, white, 10% ) !default;
+$dvmi-navbar-color: color.mix( $brand-primary, white, 10% ) !default;
 
 $navbar-default-link-active-color:    $brand-primary !default;
 $navbar-default-link-active-bg:       $brand-terciary !default;
@@ -82,8 +84,8 @@ $footer-bg: $brand-primary !default;
 // Page Header
 // --------------
 
-$page-header-bg:            mix( $brand-secondary, white, 8% ) !default;
-$page-header-border-color:  mix( $brand-secondary, white, 70% ) !default;
+$page-header-bg:            color.mix( $brand-secondary, white, 8% ) !default;
+$page-header-border-color:  color.mix( $brand-secondary, white, 70% ) !default;
 
 
 // Panels
