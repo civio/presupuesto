@@ -5,7 +5,7 @@
 
 @mixin navbar-vertical-align($element-height) {
   & {
-    margin-top: calc(($navbar-height - $element-height) / 2);
-    margin-bottom: calc(($navbar-height - $element-height) / 2);
+    margin-top: calc((#{$navbar-height}px - #{$element-height}px) / 2);
+    margin-bottom: calc((#{$navbar-height}px - #{$element-height}px) / 2);
   }
 }
