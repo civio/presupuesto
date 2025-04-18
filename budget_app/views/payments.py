@@ -33,6 +33,7 @@ def payments_helper(request, c, entity, render_callback=None):
     __populate_summary_breakdowns(c, entity, c['first_year'], c['last_year'])
 
     # Additional information: to populate drop-downs and for the inflation footnote
+    populate_latest_budget(c)
     populate_descriptions(c)
     populate_stats(c)
 
