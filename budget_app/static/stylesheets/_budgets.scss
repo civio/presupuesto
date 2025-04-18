@@ -10,7 +10,7 @@
     @extend .panel-default;
     margin-bottom: $grid-gutter-width;
     overflow: hidden;
-    border-color: darken( $budget-stream-color, 10% ); 
+    border-color: darken( $budget-stream-color, 10% );
     text-align: left;
 
     h3{
@@ -44,7 +44,9 @@
       background-image: url(../assets/busget-stream-3.png);
     }
 
-    color: color.mix(white, $budget-stream-color, 90%); background: darken( $budget-stream-color, 10% );
+    .desc {
+      color: color.mix(white, $budget-stream-color, 90%);
+      background: darken( $budget-stream-color, 10% );
       font-size: .875em;
       margin: 0;
       padding: $grid-gutter-width/2;
@@ -55,7 +57,7 @@
       }
     }
   }
-
+}
 
 // Budgets Sankey Viz
 .budget-viz{
@@ -135,7 +137,7 @@
   .budget-intro {
     display: block;
   }
-  
+
   #budgets-totals .budget-totals{
     .panel-title{
       display: block;
