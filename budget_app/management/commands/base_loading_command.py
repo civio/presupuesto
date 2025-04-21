@@ -19,19 +19,19 @@ class BaseLoadingCommand(BaseCommand):
             action='store',
             dest='language',
             default=settings.LANGUAGE_CODE,
-            help='Set data language'),
+            help='Set data language')
 
         parser.add_argument('--level',
             action='store',
             dest='level',
             default=settings.MAIN_ENTITY_LEVEL,
-            help='Set entity level'),
+            help='Set entity level')
 
         parser.add_argument('--name',
             action='store',
             dest='name',
             default=settings.MAIN_ENTITY_NAME,
-            help='Set entiy name'),
+            help='Set entiy name')
 
     help = u"Carga el presupuesto del año"
 
@@ -58,12 +58,14 @@ class BaseLoadingCommand(BaseCommand):
         return result
 
     def handle(self, loader_name, args, options):
-        years = self._parse_number_range(options['years'])
         languages = self._parse_languages(options['language'])
         level = options['level']
         name = options['name']
 
         for language in languages:
+            # In Python 3 we need a fresh year iterator for every language iteration
+            years = self._parse_number_range(options['years'])
+
             entity = self._get_entity(level, name, language)
             for year in years:
                 path = os.path.join(
@@ -83,8 +85,8 @@ class BaseLoadingCommand(BaseCommand):
                 # Read the budget status. It's only needed when we load a budget,
                 # but it's more consistent to do it always anyway.
                 try:
-                    with open(os.path.join(path, '.budget_status'), 'r') as quarter:
-                        status = quarter.readlines()[0].strip()
+                    with open(os.path.join(path, '.budget_status'), 'r') as f:
+                        status = f.readlines()[0].strip()
                 except (IOError, IndexError):
                     status = ''
 
