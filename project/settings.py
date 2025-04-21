@@ -17,7 +17,7 @@ APP_PATH = os.path.join(ROOT_PATH, 'budget_app')
 # I could potentially split it in two (like Rails does), but feels overkill
 #
 try:
-    with open(os.path.join(ROOT_PATH, 'local_settings.py', encoding='utf-8'), 'r') as f:
+    with open(os.path.join(ROOT_PATH, 'local_settings.py'), 'r', encoding='utf-8') as f:
         exec(f.read(), globals(), locals())
 except IOError:
     pass
