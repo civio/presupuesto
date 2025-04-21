@@ -31,7 +31,7 @@ class BudgetLoader(BaseLoader):
 
     def add_institutional_category(self, items, line):
         description = line[2] if len(line)<=3 or line[3] == "" else line[3]
-        description = self._escape_unicode(description)
+        description = description
 
         items.append({
                 'institution': line[1][0:2],
@@ -64,7 +64,7 @@ class BudgetLoader(BaseLoader):
 
     def add_economic_category(self, items, line):
         description = line[7]
-        description = self._escape_unicode(description)
+        description = description
 
         items.append({
                 'expense': (line[1].upper() == 'G'),
@@ -100,7 +100,7 @@ class BudgetLoader(BaseLoader):
     def add_funding_category(self, items, line):
         # Prefer the long description if it exists, otherwise the short one
         description = line[6] if (line[6] != "") else line[5]
-        description = self._escape_unicode(description)
+        description = description
 
         items.append({
                 'expense': (line[1].upper() == 'G'),
@@ -146,7 +146,7 @@ class BudgetLoader(BaseLoader):
         return categories
 
     def add_functional_category(self, items, line):
-        description = self._escape_unicode(line[6])
+        description = line[6]
 
         # If we're not using subprogrammes, insert an empty column where they would go.
         # This feels better than forcing everybody to add an empty column.
@@ -204,7 +204,7 @@ class BudgetLoader(BaseLoader):
     # We first load all data lines, and then we process them. This became necessary at
     # some point when had to deal with subtotals in incoming files, for example.
     def load_data_file(self, budget, filename, is_expense, is_actual):
-        reader = csv.reader(open(filename, 'r', encoding='utf-8'), delimiter=self._get_delimiter())
+        reader = csv.reader(open(filename, 'r', encoding=self._get_data_files_encoding()), delimiter=self._get_delimiter())
         items = []
         for line in reader:
             if not line or line[0] == "" or line[0].upper() == 'EJERCICIO':  # Ignore header or empty lines
@@ -269,7 +269,7 @@ class BudgetLoader(BaseLoader):
                 'ec_code': line[3], # Redundant, but convenient
                 'fdc_code': line[4],
                 'item_number': '',
-                'description': self._escape_unicode(line[5]),
+                'description': line[5],
                 'amount': self._read_spanish_number(amount)
             })
 
@@ -285,7 +285,7 @@ class BudgetLoader(BaseLoader):
                                             section=item['ic_section'],
                                             department=item['ic_department'])
             if not ic:
-                print("ALERTA: No se encuentra la institución '%s' para '%s': %s€" % (item['ic_code'], self._remove_unicode(item['description']), item['amount']))
+                print("ALERTA: No se encuentra la institución '%s' para '%s': %s€" % (item['ic_code'], item['description'], item['amount']))
                 continue
             else:
                 ic = ic.first()
@@ -298,7 +298,7 @@ class BudgetLoader(BaseLoader):
                                                 subprogramme=item['fc_subprogramme'] if self._use_subprogrammes() else None)
             if not fc:
                 code = item['fc_subprogramme'] if self._use_subprogrammes() else item['fc_programme']
-                print("ALERTA: No se encuentra la categoría funcional '%s' para '%s': %s€" % (code, self._remove_unicode(item['description']), item['amount']))
+                print("ALERTA: No se encuentra la categoría funcional '%s' para '%s': %s€" % (code, item['description'], item['amount']))
                 continue
             else:
                 fc = fc.first()
@@ -310,7 +310,7 @@ class BudgetLoader(BaseLoader):
                                                 heading=item['ec_heading'],
                                                 subheading=item['ec_subheading'])
             if not ec:
-                print("ALERTA: No se encuentra la categoría económica '%s' para '%s': %s€" % (item['ec_code'], self._remove_unicode(item['description']), item['amount']))
+                print("ALERTA: No se encuentra la categoría económica '%s' para '%s': %s€" % (item['ec_code'], item['description'], item['amount']))
                 continue
             else:
                 ec = ec.first()
@@ -321,7 +321,7 @@ class BudgetLoader(BaseLoader):
                                                 fund_class=item['fdc_code'][0:2],
                                                 fund=item['fdc_code'])
             if not fdc:
-                print("ALERTA: No se encuentra la categoría de financiación '%s' para '%s': %s€" % (item['fdc_code'], self._remove_unicode(item['description']), item['amount']))
+                print("ALERTA: No se encuentra la categoría de financiación '%s' para '%s': %s€" % (item['fdc_code'], item['description'], item['amount']))
                 continue
             else:
                 fdc = fdc.first()
@@ -342,10 +342,6 @@ class BudgetLoader(BaseLoader):
                           amount=item['amount'],
                           description=item['description'][0:512],
                           budget=budget).save()
-
-    # Do nothing here, but useful to be overriden in some loaders with input files not in UTF8
-    def _escape_unicode(self, s):
-        return s
 
     # Are we using subprogrammes? (Default: false)
     def _use_subprogrammes(self):
