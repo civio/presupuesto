@@ -36,7 +36,7 @@ class MonitoringLoader(BaseLoader):
         items = []
         if os.path.isfile(filename):
             print("Leyendo datos de %s..." % filename)
-            reader = csv.reader(open(filename, 'r', encoding='utf-8'), delimiter=self._get_delimiter())
+            reader = csv.reader(open(filename, 'r', encoding=self._get_data_files_encoding()), delimiter=self._get_delimiter())
             for index, line in enumerate(reader):
                 if re.match("^#", line[0]):         # Ignore comments
                     continue

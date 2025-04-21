@@ -33,7 +33,7 @@ class InvestmentsLoader(BaseLoader):
     def parse_data(self, items, filename):
         if os.path.isfile(filename):
             print("Leyendo datos de %s..." % filename)
-            reader = csv.reader(open(filename, 'r', encoding='utf-8'), delimiter=self._get_delimiter())
+            reader = csv.reader(open(filename, 'r', encoding=self._get_data_files_encoding()), delimiter=self._get_delimiter())
             for index, line in enumerate(reader):
                 if re.match("^#", line[0]):         # Ignore comments
                     continue
@@ -73,13 +73,13 @@ class InvestmentsLoader(BaseLoader):
                                                 item.get('fc_programme', None),
                                                 item.get('fc_subprogramme', None))
             if not fc:
-                print("ALERTA: No se encuentra la categoría funcional '%s' para '%s': %s€" % (item['fc_code'], item['description'].decode("utf-8"), item['amount']/100))
+                print("ALERTA: No se encuentra la categoría funcional '%s' para '%s': %s€" % (item['fc_code'], item['description'], item['amount']/100))
                 continue
 
             # Fetch geographic category
             gc = self.fetch_geographical_category(budget, item['gc_code'])
             if not gc:
-                print("ALERTA: No se encuentra la categoría geográfica '%s' para '%s': %s€" % (item['gc_code'], item['description'].decode("utf-8"), item['amount']/100))
+                print("ALERTA: No se encuentra la categoría geográfica '%s' para '%s': %s€" % (item['gc_code'], item['description'], item['amount']/100))
                 continue
 
             # Create the payment object
