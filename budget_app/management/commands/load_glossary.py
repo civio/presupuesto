@@ -34,17 +34,10 @@ class Command(BaseCommand):
         return result
 
     def handle(self, *args, **options):
-        # Allow overriding the data path from command line
         glossary_loader = GlossaryLoader()
-
-        if len(args) < 1:
-            # Default: theme data folder
-            path = os.path.join(settings.ROOT_PATH, settings.THEME, 'data')
-        else:
-            path = args[0]
+        path = os.path.join(settings.ROOT_PATH, settings.THEME, 'data')
 
         languages = self._parse_languages(options['language'])
-
         for language in languages:
             filename = "glosario_%s.csv" % (language, )
             default_filename = "glosario_default_%s.csv" % (language)
@@ -64,4 +57,3 @@ class Command(BaseCommand):
                         os.path.join(PATH_TO_DEFAULT, default_filename),
                         language
                     )
-
