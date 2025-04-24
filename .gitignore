@@ -8,6 +8,7 @@ presupuesto-*
 /.sass-cache
 .env
 /env
+/env3
 import
 sys.path
 .python-version
