@@ -24,7 +24,7 @@ class RemoveCacheBreakingHeadersMiddleware(MiddlewareMixin):
         #
         # [1]: https://djangosnippets.org/snippets/218/
         # [2]: https://docs.djangoproject.com/en/4.2/topics/cache/#order-of-middleware
-        if request.path != '/' and request.META.has_key('HTTP_ACCEPT_LANGUAGE'):
+        if request.path != '/' and 'HTTP_ACCEPT_LANGUAGE' in request.META:
             del request.META['HTTP_ACCEPT_LANGUAGE']
 
         # Remove tracking parameters added by Mailchimp, as they break the cache, i.e.
