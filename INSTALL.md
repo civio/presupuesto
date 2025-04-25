@@ -2,7 +2,7 @@
 
 Para instalar la aplicación en local es necesario seguir los siguientes pasos:
 
-* Instalar Python. El desarrollo y los despliegues actuales usan 2.7.x, que es la versión recomendada.
+* Instalar Python. El desarrollo y los despliegues actuales usan Python 3.6, que es la versión recomendada.
 
 * Opcionalmente, crear un entorno separado para la aplicación:
 
@@ -10,7 +10,7 @@ Para instalar la aplicación en local es necesario seguir los siguientes pasos:
         $ python -m virtualenv env
         $ source env/bin/activate
 
-* Instalar los componentes utilizados por la aplicación. Actualmente, la aplicación requiere Django 1.7.x:
+* Instalar los componentes utilizados por la aplicación. Actualmente, la aplicación se basa en Django 1.11.x:
 
         $ pip install -r requirements/local.txt
 
