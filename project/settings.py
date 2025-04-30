@@ -57,6 +57,9 @@ DATABASES = {
     }
 }
 
+# Default auto field type for Django models (AutoField: 32 bits, enough for us)
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
