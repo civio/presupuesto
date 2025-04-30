@@ -238,6 +238,10 @@ if DEBUG:
                 'level': 'DEBUG',
                 'handlers': ['console'],
             },
+            'django.utils.autoreload': {
+                'handlers': ['console'],
+                'level': 'ERROR',
+            },
         }
     }
 else:
