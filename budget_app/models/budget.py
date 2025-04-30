@@ -98,7 +98,7 @@ class BudgetManager(models.Manager):
 
 
 class Budget(models.Model):
-    entity = models.ForeignKey('Entity', db_column='entity_id')
+    entity = models.ForeignKey('Entity', db_column='entity_id', on_delete=models.CASCADE)
     year = models.IntegerField(db_index=True)
     status = models.CharField(max_length=5)     # e.g. DRAFT, 1T, 2T, 3T
     updated_at = models.DateTimeField(auto_now=True)

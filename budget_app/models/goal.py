@@ -7,10 +7,10 @@ class GoalsManager(models.Manager):
             .all()
 
 class Goal(models.Model):
-    budget = models.ForeignKey('Budget')
+    budget = models.ForeignKey('Budget', on_delete=models.CASCADE)
     uid = models.CharField(max_length=20, db_index=True)   # Unique across a whole entity
-    institutional_category = models.ForeignKey('InstitutionalCategory', db_column='institutional_category_id')
-    functional_category = models.ForeignKey('FunctionalCategory', db_column='functional_category_id')
+    institutional_category = models.ForeignKey('InstitutionalCategory', db_column='institutional_category_id', on_delete=models.CASCADE)
+    functional_category = models.ForeignKey('FunctionalCategory', db_column='functional_category_id', on_delete=models.CASCADE)
     goal_number = models.CharField(max_length=2)
     description = models.TextField()
     report = models.TextField()

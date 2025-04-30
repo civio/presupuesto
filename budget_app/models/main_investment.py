@@ -25,7 +25,7 @@ class MainInvestmentManager(models.Manager):
         return self.raw(sql, additional_arguments)
 
 class MainInvestment(models.Model):
-    budget = models.ForeignKey('Budget')
+    budget = models.ForeignKey('Budget', on_delete=models.CASCADE)
     project_id = models.CharField(max_length=20)
     description = models.CharField(max_length=200)
     image_URL = models.CharField(max_length=200, null=True)
@@ -33,8 +33,13 @@ class MainInvestment(models.Model):
     entity_name = models.CharField(max_length=100)
     section_name = models.CharField(max_length=100)
 
-    functional_category = models.ForeignKey('FunctionalCategory', db_column='functional_category_id')
-    geographic_category = models.ForeignKey('GeographicCategory', db_column='geographic_category_id', null=True)
+    functional_category = models.ForeignKey('FunctionalCategory',
+                            db_column='functional_category_id',
+                            on_delete=models.CASCADE)
+    geographic_category = models.ForeignKey('GeographicCategory',
+                            db_column='geographic_category_id',
+                            null=True,
+                            on_delete=models.CASCADE)
     area_name = models.CharField(max_length=100)
 
     address = models.CharField(max_length=200)

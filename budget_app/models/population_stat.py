@@ -30,7 +30,7 @@ class PopulationStatManager(models.Manager):
 
 
 class PopulationStat(models.Model):
-    entity = models.ForeignKey('Entity', db_column='entity_id')
+    entity = models.ForeignKey('Entity', db_column='entity_id', on_delete=models.CASCADE)
     year = models.IntegerField()
     population = models.IntegerField()
     updated_at = models.DateTimeField(auto_now=True)

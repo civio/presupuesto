@@ -9,7 +9,7 @@ class GeographicCategoriesManager(models.Manager):
 
 
 class GeographicCategory(models.Model):
-    budget = models.ForeignKey('Budget')
+    budget = models.ForeignKey('Budget', on_delete=models.CASCADE)
     code = models.CharField(max_length=5)
     description = models.CharField(max_length=200)
     updated_at = models.DateTimeField(auto_now=True)
