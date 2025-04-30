@@ -3,7 +3,7 @@
 
 import math
 
-from django.core.paginator import Paginator, QuerySetPaginator, Page, InvalidPage
+from django.core.paginator import Paginator, Page, InvalidPage
 from functools import reduce
 
 
@@ -183,6 +183,3 @@ class DiggPage(Page):
                             " ".join(map(str, self.leading_range)),
                             " ".join(map(str, self.main_range)),
                             " ".join(map(str, self.trailing_range))]))
-
-class QuerySetDiggPaginator(DiggPaginator, QuerySetPaginator):
-    pass
