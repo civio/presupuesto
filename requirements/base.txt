@@ -1,13 +1,13 @@
 beautifulsoup4==4.6.3
 dj-static==0.0.6
-Django==1.11.29
+Django==2.2.28
 django-appconf==1.0.3
 django-compressor==2.4.1
-django-jinja==2.4.1
-Jinja2==2.10.1
+django-jinja==2.7.1
+Jinja2==2.11.3
 MarkupSafe==0.23
 openpyxl==2.6.1
 psycopg2==2.8.6
 Pygments==2.0.2
 python-dateutil==2.6.0
-six==1.12.0
+six==1.13.0
