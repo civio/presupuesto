@@ -19,7 +19,7 @@ export {
   // pairs,
   // permute,
   // quantile,
-  // range,
+  range,
   // scan,
   // shuffle,
   sum,
