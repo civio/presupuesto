@@ -16,7 +16,7 @@ def main_investments(request, render_callback=None):
     c['department_breakdown'] = BudgetBreakdown(['entity_name', 'section_name', 'description'])
 
     # Current year
-    main_investments = MainInvestment.objects.each_denormalized("current_year_amount", query, [ entity.id ])
+    main_investments = MainInvestment.objects.each_denormalized("current_year_expected_amount", query, [ entity.id ])
     for item in main_investments:
         column_name = str(getattr(item, 'year'))
         c['area_breakdown'].add_item(column_name, item)

@@ -52,7 +52,8 @@ class MainInvestment(models.Model):
 
     total_expected_amount = models.BigIntegerField()
     already_spent_amount = models.BigIntegerField()
-    current_year_amount = models.BigIntegerField()
+    current_year_expected_amount = models.BigIntegerField()
+    current_year_spent_amount = models.BigIntegerField()
 
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)

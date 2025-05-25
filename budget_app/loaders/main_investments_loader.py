@@ -106,7 +106,8 @@ class MainInvestmentsLoader(BaseLoader):
                             actual_end_year=item['actual_end_year'],
                             total_expected_amount=item['total_expected_amount'],
                             already_spent_amount=item['already_spent_amount'],
-                            current_year_amount=item['current_year_amount'],
+                            current_year_expected_amount=item['current_year_expected_amount'],
+                            current_year_spent_amount=item['current_year_spent_amount'],
                             budget=budget)
             investment_objects.append(obj)
 
