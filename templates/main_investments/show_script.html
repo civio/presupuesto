@@ -8,15 +8,18 @@
         departmentBreakdown = {{ department_breakdown.to_json()|safe }},
         myGrid;
 
-    var breakdowns = {
-      'area':       areaBreakdown,
-      'policy':     policyBreakdown,
-      'department': departmentBreakdown,
-    }
     var columnNames = {
       'area':       '{{ _("area.main_investments") }}',
       'policy':     '{{ _("policy.main_investments") }}',
       'department': '{{ _("department.main_investments") }}',
+    }
+
+    // Make the breakdowns global so they be overriden by themes (see civio/presupuesto-management#1363).
+    // Not the cleanest solution long-term, but this area is evolving based on client requests.
+    window.breakdowns = {
+      'area':       areaBreakdown,
+      'policy':     policyBreakdown,
+      'department': departmentBreakdown,
     }
 
     // Translations
@@ -56,7 +59,7 @@
           myGrid.destroy();
         }
 
-        myGrid = createBudgetGrid("#myGrid", breakdownToTable(breakdowns[uiState.view]), [
+        myGrid = createBudgetGrid("#myGrid", breakdownToTable(window.breakdowns[uiState.view]), [
           {
             data: 'key',
             title: columnNames[uiState.view],
@@ -76,8 +79,10 @@
     }
 
     function onYearChange() {
-      updateTab();
       $('#investments-viz').trigger('year-change', getUIState().year);
+
+      // Update the grid last, so the theme -triggered above- can update data if needed.
+      updateTab();
     }
 
     function onTabChange() {
