@@ -101,6 +101,9 @@
     // Setup tabs navigation
     setRedrawOnTabsChange('#tabs', onTabChange);
 
+    // Let themes trigger a grid redraw
+    $('#investments-viz').bind('trigger-grid-redraw', updateTab);
+
     // Add click embed btn event
     setEmbedModal();
   });
