@@ -94,8 +94,11 @@
     $('.payments-content .tab-content').show();
 
     // Setup year navigation
-    initSlider("#year-selection", {{ years|safe }}, {{ starting_year }});
-    setRedrawOnSliderChange("#year-selection", {{ starting_year }}, onYearChange);
+    // initSlider("#year-selection", {{ years|safe }}, {{ starting_year }});
+    // setRedrawOnSliderChange("#year-selection", {{ starting_year }}, onYearChange);
+    // TODO: Set year range dynamically
+    initSlider("#year-selection", {{ years|safe }}, [2020, 2025]);
+    setRedrawOnSliderRangeChange("#year-selection", [2020, 2025], onYearChange);
     onYearChange();
 
     // Setup tabs navigation
