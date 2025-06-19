@@ -3,7 +3,7 @@
 function setRedrawOnTabsChange(container, callback) {
   // Listen changes on url hash
   $(window).bind('hashchange', function(e) {
-    // Get hash states    
+    // Get hash states
     var state = $.deparam.fragment();
 
     // Change tab, but only if really needed!
@@ -84,8 +84,10 @@ function initSlider(selector, years, startValue) {
       max: mostRecentYear,
       value: startValue ? startValue : mostRecentYear,
       tooltip: 'always',
+      tooltip_split: typeof startValue === 'object',  // Only for year ranges
       ticks: years,
-      ticks_labels: years
+      ticks_labels: years,
+      lock_to_ticks: true
     });
   }
   // Hide year slider & add current year
@@ -120,6 +122,33 @@ function setRedrawOnSliderChange(selector, startValue, callback) {
     callback();
   } else {
     state.year = $(selector).val();
+    $.bbq.pushState(state);
+  }
+}
+
+function setRedrawOnSliderRangeChange(selector, startRange, callback) {
+  // Handle change on year slider with pushState
+  $(selector).on('change', function(e) {
+    // When the state is just one number, i.e. one year, the library avoids triggering
+    // duplicate events. But when the state is an object, i.e. a range, we get many events
+    // as the slider moves from one tick to the next, so we have to deduplicate ourselves.
+    if (e.value.newValue[0]!==e.value.oldValue[0] || e.value.newValue[1]!==e.value.oldValue[1]) {
+      $.bbq.pushState({'years': e.value.newValue[0]+","+e.value.newValue[1]});
+    }
+    callback();
+  });
+
+  // Initially trigger hashchange.
+  // XXX: Handling the initial hash handling here is quite confusing once you forget, tbh.
+  var state = $.deparam.fragment();
+  var startYears = startRange[0] + "," + startRange[1];
+  console.log("state.years: " + state.years + "[" + (typeof state.years) + "]");
+  if (state.years && state.years != startYears) {
+    var years = state.years.split(',');
+    $(selector).slider('setValue', [+years[0], +years[1]]);
+    callback();
+  } else {
+    state.years = $(selector).val();
     $.bbq.pushState(state);
   }
 }
