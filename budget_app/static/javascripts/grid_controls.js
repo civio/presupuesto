@@ -142,7 +142,6 @@ function setRedrawOnSliderRangeChange(selector, startRange, callback) {
   // XXX: Handling the initial hash handling here is quite confusing once you forget, tbh.
   var state = $.deparam.fragment();
   var startYears = startRange[0] + "," + startRange[1];
-  console.log("state.years: " + state.years + "[" + (typeof state.years) + "]");
   if (state.years && state.years != startYears) {
     var years = state.years.split(',');
     $(selector).slider('setValue', [+years[0], +years[1]]);
