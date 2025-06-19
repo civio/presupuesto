@@ -38,6 +38,10 @@ def main_investments(request, render_callback=None):
     populate_entity_descriptions(c, entity)
     populate_years(c, c['area_breakdown'])
 
+    # The helper method to populate the starting year can't handle year ranges, so we do it ourselves
+    years = sorted(list(set(c['area_breakdown'].years.values())))
+    c['starting_year'] = [years[0], years[-1]]
+
     # if parameter widget defined use policies/widget template instead of policies/show
     template = 'main_investments/index_widget.html' if isWidget(request) else 'main_investments/index.html'
 
