@@ -9,7 +9,7 @@ from contextlib import contextmanager
 from django.template import RequestContext
 from django.shortcuts import render as django_render
 from django.conf import settings
-from django.core import urlresolvers
+from django.urls import resolve
 from django.utils import translation
 from django.utils.translation import ugettext as _
 
@@ -80,7 +80,7 @@ def get_context(request, css_class='', title=''):
 
 def current_url_equals(context, url_name_pattern, **kwargs):
     try:
-        resolved = urlresolvers.resolve(context.get('request').path)
+        resolved = resolve(context.get('request').path)
     except:
         resolved = None
     matches = resolved and re.match(url_name_pattern, resolved.url_name)

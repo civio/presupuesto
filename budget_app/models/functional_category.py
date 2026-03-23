@@ -25,7 +25,7 @@ class FunctionalCategoriesManager(models.Manager):
 
 
 class FunctionalCategory(models.Model):
-    budget = models.ForeignKey('Budget')
+    budget = models.ForeignKey('Budget', on_delete=models.CASCADE)
     area = models.CharField(max_length=1)
     policy = models.CharField(max_length=3, null=True)
     function = models.CharField(max_length=5, null=True)

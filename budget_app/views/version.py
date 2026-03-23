@@ -34,8 +34,8 @@ def version_api(request):
     c = get_context(request)
 
     with fix_cwd():
-        git_commit = subprocess.check_output(['git', 'rev-parse', 'HEAD']).strip()
-        git_tag = subprocess.check_output(['git', 'describe', '--tags']).strip()
+        git_commit = subprocess.check_output(['git', 'rev-parse', 'HEAD']).strip().decode()
+        git_tag = subprocess.check_output(['git', 'describe', '--tags']).strip().decode()
 
     python_version = fix_version(sys.version_info)
     django_version = fix_version(django.VERSION)

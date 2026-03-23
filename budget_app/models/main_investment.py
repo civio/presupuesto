@@ -4,12 +4,12 @@ from django.conf import settings
 
 class MainInvestmentManager(models.Manager):
     def all_main_investments(self, entity_id):
-        return self.filter(budget__entity=entity_id).all()
+        return self.filter(budget__entity=entity_id).order_by('budget__year').all()
 
     def each_denormalized(self, amount_column_name, additional_constraints=None, additional_arguments=None):
         sql = \
             "select " \
-                "mi.id, mi.description, mi." + amount_column_name + " as amount, TRUE as expense, " \
+                "mi.id, mi.description, " + amount_column_name + " as amount, TRUE as expense, " \
                 "mi.entity_name, mi.section_name, mi.area_name, " \
                 "fc.description as policy, " \
                 "b.year " \
@@ -25,7 +25,7 @@ class MainInvestmentManager(models.Manager):
         return self.raw(sql, additional_arguments)
 
 class MainInvestment(models.Model):
-    budget = models.ForeignKey('Budget')
+    budget = models.ForeignKey('Budget', on_delete=models.CASCADE)
     project_id = models.CharField(max_length=20)
     description = models.CharField(max_length=200)
     image_URL = models.CharField(max_length=200, null=True)
@@ -33,8 +33,13 @@ class MainInvestment(models.Model):
     entity_name = models.CharField(max_length=100)
     section_name = models.CharField(max_length=100)
 
-    functional_category = models.ForeignKey('FunctionalCategory', db_column='functional_category_id')
-    geographic_category = models.ForeignKey('GeographicCategory', db_column='geographic_category_id', null=True)
+    functional_category = models.ForeignKey('FunctionalCategory',
+                            db_column='functional_category_id',
+                            on_delete=models.CASCADE)
+    geographic_category = models.ForeignKey('GeographicCategory',
+                            db_column='geographic_category_id',
+                            null=True,
+                            on_delete=models.CASCADE)
     area_name = models.CharField(max_length=100)
 
     address = models.CharField(max_length=200)
@@ -47,7 +52,8 @@ class MainInvestment(models.Model):
 
     total_expected_amount = models.BigIntegerField()
     already_spent_amount = models.BigIntegerField()
-    current_year_amount = models.BigIntegerField()
+    current_year_expected_amount = models.BigIntegerField()
+    current_year_spent_amount = models.BigIntegerField()
 
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)

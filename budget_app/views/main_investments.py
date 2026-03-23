@@ -16,7 +16,7 @@ def main_investments(request, render_callback=None):
     c['department_breakdown'] = BudgetBreakdown(['entity_name', 'section_name', 'description'])
 
     # Current year
-    main_investments = MainInvestment.objects.each_denormalized("current_year_amount", query, [ entity.id ])
+    main_investments = MainInvestment.objects.each_denormalized("total_expected_amount", query, [ entity.id ])
     for item in main_investments:
         column_name = str(getattr(item, 'year'))
         c['area_breakdown'].add_item(column_name, item)
@@ -24,11 +24,8 @@ def main_investments(request, render_callback=None):
         c['department_breakdown'].add_item(column_name, item)
 
     # All years
-    main_investments = MainInvestment.objects.each_denormalized("total_expected_amount", query, [ entity.id ])
+    main_investments = MainInvestment.objects.each_denormalized("already_spent_amount+current_year_spent_amount", query, [ entity.id ])
     for item in main_investments:
-        # I don't like calling the column "actual_", when "total_" or "all_years_" would be
-        # more appropriate, but the budget/actual two-column design is baked into other parts
-        # of the code. The CSV/XLS generation code, for example. So we do this.
         column_name = "actual_"+str(getattr(item, 'year'))
         c['area_breakdown'].add_item(column_name, item)
         c['policy_breakdown'].add_item(column_name, item)
@@ -40,6 +37,10 @@ def main_investments(request, render_callback=None):
     # Get additional information
     populate_entity_descriptions(c, entity)
     populate_years(c, c['area_breakdown'])
+
+    # The helper method to populate the starting year can't handle year ranges, so we do it ourselves
+    years = sorted(list(set(c['area_breakdown'].years.values())))
+    c['starting_year'] = [years[0], years[-1]]
 
     # if parameter widget defined use policies/widget template instead of policies/show
     template = 'main_investments/index_widget.html' if isWidget(request) else 'main_investments/index.html'

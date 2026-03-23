@@ -24,10 +24,16 @@ class InvestmentManager(models.Manager):
 
 
 class Investment(models.Model):
-    budget = models.ForeignKey('Budget')
+    budget = models.ForeignKey('Budget', on_delete=models.CASCADE)
     actual = models.BooleanField()
-    functional_category = models.ForeignKey('FunctionalCategory', db_column='functional_category_id', null=True)
-    geographic_category = models.ForeignKey('GeographicCategory', db_column='geographic_category_id', null=True)
+    functional_category = models.ForeignKey('FunctionalCategory',
+                            db_column='functional_category_id',
+                            null=True,
+                            on_delete=models.CASCADE)
+    geographic_category = models.ForeignKey('GeographicCategory',
+                            db_column='geographic_category_id',
+                            null=True,
+                            on_delete=models.CASCADE)
     project_id = models.CharField(max_length=20, null=True)
     description = models.CharField(max_length=300)
     amount = models.BigIntegerField()

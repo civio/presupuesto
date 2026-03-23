@@ -140,12 +140,21 @@ class PaymentManager(models.Manager):
 
 
 class Payment(models.Model):
-    budget = models.ForeignKey('Budget')
+    budget = models.ForeignKey('Budget', on_delete=models.CASCADE)
     area = models.CharField(max_length=100, null=True, db_index=True)
     programme = models.CharField(max_length=100, null=True)
-    functional_category = models.ForeignKey('FunctionalCategory', db_column='functional_category_id', null=True)
-    economic_category = models.ForeignKey('EconomicCategory', db_column='economic_category_id', null=True)
-    institutional_category = models.ForeignKey('InstitutionalCategory', db_column='institutional_category_id', null=True)
+    functional_category = models.ForeignKey('FunctionalCategory',
+                            db_column='functional_category_id',
+                            null=True,
+                            on_delete=models.CASCADE)
+    economic_category = models.ForeignKey('EconomicCategory',
+                            db_column='economic_category_id',
+                            null=True,
+                            on_delete=models.CASCADE)
+    institutional_category = models.ForeignKey('InstitutionalCategory',
+                            db_column='institutional_category_id',
+                            null=True,
+                            on_delete=models.CASCADE)
     date = models.DateField(null=True)
     payee = models.CharField(max_length=200, db_index=True)
     payee_fiscal_id = models.CharField(max_length=15, db_index=True)

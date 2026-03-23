@@ -6,7 +6,7 @@ class FundingCategoriesManager(models.Manager):
 
 
 class FundingCategory(models.Model):
-    budget = models.ForeignKey('Budget')
+    budget = models.ForeignKey('Budget', on_delete=models.CASCADE)
     expense = models.BooleanField()
     source = models.CharField(max_length=1)
     fund_class = models.CharField(max_length=2, null=True)

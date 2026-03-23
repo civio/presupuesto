@@ -10,7 +10,7 @@ Para instalar la aplicación en local es necesario seguir los siguientes pasos:
         $ python -m virtualenv env
         $ source env/bin/activate
 
-* Instalar los componentes utilizados por la aplicación. Actualmente, la aplicación se basa en Django 1.11.x:
+* Instalar los componentes utilizados por la aplicación. Actualmente, la aplicación se basa en Django 3.2.x:
 
         $ pip install -r requirements/local.txt
 
@@ -35,9 +35,9 @@ Para instalar la aplicación en local es necesario seguir los siguientes pasos:
 
 ### Adaptando el aspecto visual
 
-La aplicación soporta el concepto de 'themes' capaces de modificar el aspecto visual de la web: tanto recursos estáticos (imágenes, hojas de estilo...) como las plantillas que generan el contenido de la web. El repositorio [`presupuesto-dvmi`](https://github.com/civio/presupuesto-dvmi) de Civio -una adaptación del software de Aragón Open Data a los Presupuestos Generales del Estado- es un buen ejemplo de cómo puede organizarse el contenido de un theme. Si su proyecto tiene ámbito municipal puede basarse en el repositorio de [`presupuesto-polinya`](https://github.com/civio/presupuesto-polinya)
+La aplicación soporta el concepto de 'themes' capaces de modificar el aspecto visual de la web: tanto recursos estáticos (imágenes, hojas de estilo...) como las plantillas que generan el contenido de la web. El repositorio [`presupuesto-pge`](https://github.com/civio/presupuesto-pge) de Civio -una adaptación del software de Aragón Open Data a los Presupuestos Generales del Estado- es un buen ejemplo de cómo puede organizarse el contenido de un theme. Si su proyecto tiene ámbito municipal puede basarse en el repositorio de [`presupuesto-polinya`](https://github.com/civio/presupuesto-polinya)
 
-El theme a usar se configura mediante la variable `THEME` en local_settings.py. Es referenciada en diversos puntos de `settings.py` para instalar los directorios del theme (plantillas y recursos estáticos) justo antes de los de la aplicación principal.
+El theme a usar se configura mediante la variable `THEME` en local_settings.py. Es referenciada en diversos puntos de `settings.py` para instalar los directorios del theme (plantillas y recursos estáticos) justo antes de los de la aplicación principal. (Importante: el nombre de la carpeta donde se despliega el tema no puede incluir guiones, pero sí subrayados: `presupuesto-pge` no, `presupuesto_pge` sí.)
 
 Es necesario compilar todos los recursos estáticos. Para ello, instalamos en el _core_ lo necesario para compilar D3.js:
 

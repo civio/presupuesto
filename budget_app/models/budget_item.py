@@ -70,16 +70,24 @@ class BudgetItemManager(models.Manager):
 
 
 class BudgetItem(models.Model):
-    budget = models.ForeignKey('Budget')
+    budget = models.ForeignKey('Budget', on_delete=models.CASCADE)
     actual = models.BooleanField()
     expense = models.BooleanField()
     item_number = models.CharField(max_length=7)
     description = models.CharField(max_length=512)
     amount = models.BigIntegerField()
-    economic_category = models.ForeignKey('EconomicCategory', db_column='economic_category_id')
-    functional_category = models.ForeignKey('FunctionalCategory', db_column='functional_category_id')
-    funding_category = models.ForeignKey('FundingCategory', db_column='funding_category_id')
-    institutional_category = models.ForeignKey('InstitutionalCategory', db_column='institutional_category_id')
+    economic_category = models.ForeignKey('EconomicCategory',
+                            db_column='economic_category_id',
+                            on_delete=models.CASCADE)
+    functional_category = models.ForeignKey('FunctionalCategory',
+                            db_column='functional_category_id',
+                            on_delete=models.CASCADE)
+    funding_category = models.ForeignKey('FundingCategory',
+                            db_column='funding_category_id',
+                            on_delete=models.CASCADE)
+    institutional_category = models.ForeignKey('InstitutionalCategory',
+                            db_column='institutional_category_id',
+                            on_delete=models.CASCADE)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -99,8 +107,8 @@ class BudgetItem(models.Model):
     # of using only the economic category and the item number.
     # See #135 for a longer discussion around this topic.
     def economic_uid(self):
-        # XXX: The subheading call originally assumed the values do exist; not true anymore 
-        # with smaller entities. I'm working around it for now, partially, but I haven't 
+        # XXX: The subheading call originally assumed the values do exist; not true anymore
+        # with smaller entities. I'm working around it for now, partially, but I haven't
         # thought fully about the implications of all this.
         year = str(getattr(self, 'year'))
         subheading = getattr(self, 'subheading') if getattr(self, 'subheading') else (getattr(self, 'heading') if getattr(self, 'heading') else (getattr(self, 'article') if getattr(self, 'article') else getattr(self, 'chapter')))

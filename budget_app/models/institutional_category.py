@@ -16,7 +16,7 @@ class InstitutionalCategoriesManager(models.Manager):
 
 
 class InstitutionalCategory(models.Model):
-    budget = models.ForeignKey('Budget')
+    budget = models.ForeignKey('Budget', on_delete=models.CASCADE)
     institution = models.CharField(max_length=5)
     section = models.CharField(max_length=8, null=True)
     department = models.CharField(max_length=11, null=True)

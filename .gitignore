@@ -5,6 +5,7 @@
 local_settings*py
 fabfile.*
 presupuesto-*
+presupuesto_*
 /.sass-cache
 .env
 /env
