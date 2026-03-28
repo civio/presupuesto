@@ -12,7 +12,6 @@ presupuesto_*
 /env3
 import
 sys.path
-.python-version
 .node-version
 budget_app/templates
 /node_modules
