@@ -2,7 +2,7 @@
 
 Para instalar la aplicación en local es necesario seguir los siguientes pasos:
 
-* Instalar Python. El desarrollo y los despliegues actuales usan Python 3.6, que es la versión recomendada.
+* Instalar Python. El desarrollo y los despliegues actuales usan Python 3.10, que es la versión recomendada. (La versión 5.0 funciona correctamente en Python 3.6.)
 
 * Opcionalmente, crear un entorno separado para la aplicación:
 
