@@ -3,6 +3,16 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+## [5.0] - 2026-04-02
+### Changed
+- Migrate codebase from Python 2 to Python 3. #1286
+- Upgrade Django from 1.11 through 2.2, 3.0, 3.1 to 3.2.25. #1368
+- Upgrade dependencies for Python 3 compatibility and remove unused ones. #1286
+- Rename theme folders from `presupuesto-X` to `presupuesto_X` convention for Python 3. #1368
+- Main investments: add multi-year range support, allow themes to override breakdowns and other improvements. #1363
+- Update social sharing buttons: add Bluesky, simplify by removing Javascript. #1360
+- Modernize SASS: replace `@import` with `@use`, use `calc()`, `color.mix()`, `color.scale()`, fix nested declarations and unit consistency. #1363
+
 ## [4.7] - 2025-03-18
 ### Changed
 - Loaders now cache secondary objects to improve performance. #1292
@@ -351,7 +361,8 @@ All notable changes to this project will be documented in this file.
 ### Forked from [aragonopendata/presupuesto](https://github.com/aragonopendata/presupuesto) - 2016-01-28
 
 
-[Unreleased]: https://github.com/civio/presupuesto/compare/v4.7...HEAD
+[Unreleased]: https://github.com/civio/presupuesto/compare/v5.0...HEAD
+[5.0]: https://github.com/civio/presupuesto/compare/v4.7...v5.0
 [4.7]: https://github.com/civio/presupuesto/releases/tag/v4.7
 [4.6]: https://github.com/civio/presupuesto/releases/tag/v4.6
 [4.5]: https://github.com/civio/presupuesto/releases/tag/v4.5
