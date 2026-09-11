@@ -95,7 +95,12 @@ class BudgetManager(models.Manager):
                     .filter(budget_id__entity=entity).exclude(description='').order_by('budget_id__year') \
                     .select_related('budget'))
             }
-        return caches['default'].get_or_set('entity_'+entity.code, lambda: calculate_all_descriptions(self, entity))
+        # Never expire descriptions: they only change when loading data, and we restart
+        # the app afterwards anyway, which clears the cache. Otherwise the cache default
+        # (5 minutes) applies, and they get recalculated constantly.
+        return caches['default'].get_or_set('entity_'+entity.code,
+                                            lambda: calculate_all_descriptions(self, entity),
+                                            timeout=None)
 
 
 class Budget(models.Model):
