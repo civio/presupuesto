@@ -16,6 +16,11 @@ All notable changes to this project will be documented in this file.
 - Update social sharing buttons: add Bluesky, simplify by removing Javascript. #1360
 - Modernize SASS: replace `@import` with `@use`, use `calc()`, `color.mix()`, `color.scale()`, fix nested declarations and unit consistency. #1363
 
+## [4.7.1] - 2026-09-11
+### Changed
+- Fix N+1 query when calculating institutional descriptions, which took ~17s on large budgets. #1401
+- Cache descriptions until the app restarts, instead of the default 5 minutes. #1401
+
 ## [4.7] - 2025-03-18
 ### Changed
 - Loaders now cache secondary objects to improve performance. #1292
