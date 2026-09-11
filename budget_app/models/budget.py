@@ -92,7 +92,8 @@ class BudgetManager(models.Manager):
                 'geographic': self._to_hash(GeographicCategory.objects \
                     .filter(budget_id__entity=entity).exclude(description='').order_by('budget_id__year')),
                 'institutional': self._get_institutional_descriptions(InstitutionalCategory.objects \
-                    .filter(budget_id__entity=entity).exclude(description='').order_by('budget_id__year'))
+                    .filter(budget_id__entity=entity).exclude(description='').order_by('budget_id__year') \
+                    .select_related('budget'))
             }
         return caches['default'].get_or_set('entity_'+entity.code, lambda: calculate_all_descriptions(self, entity))
 
