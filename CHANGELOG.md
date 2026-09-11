@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 ### Changed
 - Fix N+1 query when calculating institutional descriptions, which took ~17s on large budgets. #1401
+- Cache descriptions until the app restarts, instead of the default 5 minutes. #1401
 
 ## [5.0] - 2026-04-02
 ### Changed
