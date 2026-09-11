@@ -2,6 +2,8 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+### Changed
+- Fix N+1 query when calculating institutional descriptions, which took ~17s on large budgets. #1401
 
 ## [4.7] - 2025-03-18
 ### Changed
