@@ -5,6 +5,7 @@ from budget_app.models import BudgetBreakdown, Investment, GeographicCategory
 from .helpers import *
 
 
+@requires_setting('SHOW_INVESTMENTS')
 def investments(request, render_callback=None):
     c = get_context(request, css_class='body-investments', title=_(u'Inversiones por distritos'))
     entity = get_main_entity(c)
@@ -47,6 +48,7 @@ def investments(request, render_callback=None):
     return render(c, render_callback, template)
 
 
+@requires_setting('SHOW_INVESTMENTS')
 def investments_show(request, id, title, render_callback=None):
     c = get_context(request, css_class='body-investments', title=_(u'Inversiones por distrito'))
     entity = get_main_entity(c)

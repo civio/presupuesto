@@ -6,9 +6,11 @@ import os
 import re
 
 from contextlib import contextmanager
+from functools import wraps
 from django.template import RequestContext
 from django.shortcuts import render as django_render
 from django.conf import settings
+from django.http import Http404
 from django.urls import resolve
 from django.utils import translation
 from django.utils.translation import ugettext as _
@@ -16,6 +18,19 @@ from django.utils.translation import ugettext as _
 from project.settings import ROOT_PATH
 
 from budget_app.models import Budget, BudgetBreakdown, BudgetItem, InflationStat, PopulationStat, Entity
+
+# Optional features only hide their links when turned off, so we need this for
+# their pages not to be reachable, and fail, anyway. See civio/presupuesto-management#1408
+def requires_setting(name):
+    def decorator(view):
+        @wraps(view)
+        def wrapper(request, *args, **kwargs):
+            if not getattr(settings, name, False):
+                raise Http404
+            return view(request, *args, **kwargs)
+        return wrapper
+    return decorator
+
 
 TABS = {
     'general': r'^budgets.*',

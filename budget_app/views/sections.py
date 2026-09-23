@@ -6,6 +6,7 @@ import json
 
 # XXX: This view only makes sense -and works- if institutional codes remain constant
 # across years, i.e. if the flag CONSISTENT_INSTITUTIONAL_CODES is enabled.
+@requires_setting('SHOW_SECTION_PAGES')
 def sections_show(request, id, title, render_callback=None):
     # Get request context
     c = get_context(request, css_class='body-policies body-sections', title='')

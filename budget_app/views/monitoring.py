@@ -3,6 +3,7 @@
 from budget_app.views.helpers import *
 from budget_app.models import GoalIndicator
 
+@requires_setting('SHOW_MONITORING')
 def monitoring(request, render_callback=None):
     c = get_context(request, css_class='body-monitoring', title='')
     entity = get_main_entity(c)

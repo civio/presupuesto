@@ -5,6 +5,7 @@ from budget_app.models import Budget, BudgetBreakdown, BudgetItem, Entity
 from .helpers import *
 
 
+@requires_setting('SHOW_TAX_RECEIPT')
 def tax_receipt(request):
     c = get_context(request, css_class='body-tax-receipt', title=_(u'Lo que tú aportas'))
 

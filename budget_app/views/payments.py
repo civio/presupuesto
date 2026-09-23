@@ -13,6 +13,7 @@ from .helpers import *
 class MockPayment(object):
     pass
 
+@requires_setting('SHOW_PAYMENTS')
 def payments(request, render_callback=None):
     c = get_context(request, css_class='body-payments', title=_('Inversiones y pagos'))
     main_entity = get_main_entity(c)
@@ -40,6 +41,7 @@ def payments_helper(request, c, entity, render_callback=None):
     return render_response('payments/index.html', c)
 
 
+@requires_setting('SHOW_PAYMENTS')
 def payment_search(request, render_callback=None):
     c = get_context(request)
     main_entity = get_main_entity(c)

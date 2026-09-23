@@ -7,29 +7,35 @@ from .entities import entities_show_helper
 from .helpers import *
 
 
+@requires_setting('SHOW_COUNTIES_AND_TOWNS')
 def counties(request, render_callback=None):
     c = get_context(request, css_class='body-counties', title='Comarcas')
     return entities_index(request, c, 'comarca', render_callback)
 
+@requires_setting('SHOW_COUNTIES_AND_TOWNS')
 def counties_show(request, county_slug, render_callback=None):
     county = _get_county(county_slug)
     return entities_show_helper(request, _get_county_context(request, county), county, render_callback)
 
+@requires_setting('SHOW_COUNTIES_AND_TOWNS')
 def counties_show_income(request, county_slug, id, render_callback=None):
     county = _get_county(county_slug)
     c = _get_county_context(request, county)
     return entities_show_article(request, c, county, id, '', 'income', render_callback)
 
+@requires_setting('SHOW_COUNTIES_AND_TOWNS')
 def counties_show_expense(request, county_slug, id, render_callback=None):
     county = _get_county(county_slug)
     c = _get_county_context(request, county)
     return entities_show_article(request, c, county, id, '', 'expense', render_callback)
 
+@requires_setting('SHOW_COUNTIES_AND_TOWNS')
 def counties_show_functional(request, county_slug, id, render_callback=None):
     county = _get_county(county_slug)
     c = _get_county_context(request, county)
     return entities_show_policy(request, c, county, id, '', render_callback)
 
+@requires_setting('SHOW_COUNTIES_AND_TOWNS')
 def counties_compare(request, county_left_slug, county_right_slug):
     county_left = _get_county(county_left_slug)
     county_right = _get_county(county_right_slug)
@@ -50,29 +56,35 @@ def _get_county_context(request, county):
 
 
 
+@requires_setting('SHOW_COUNTIES_AND_TOWNS')
 def towns(request, render_callback=None):
     c = get_context(request, css_class='body-entities', title='Municipios')
     return entities_index(request, c, 'municipio', render_callback)
 
+@requires_setting('SHOW_COUNTIES_AND_TOWNS')
 def towns_show(request, town_slug, render_callback=None):
     town = _get_town(town_slug)
     return entities_show_helper(request, _get_town_context(request, town), town, render_callback)
 
+@requires_setting('SHOW_COUNTIES_AND_TOWNS')
 def towns_show_income(request, town_slug, id, render_callback=None):
     town = _get_town(town_slug)
     c = _get_town_context(request, town)
     return entities_show_article(request, c, town, id, '', 'income', render_callback)
 
+@requires_setting('SHOW_COUNTIES_AND_TOWNS')
 def towns_show_expense(request, town_slug, id, render_callback=None):
     town = _get_town(town_slug)
     c = _get_town_context(request, town)
     return entities_show_article(request, c, town, id, '', 'expense', render_callback)
 
+@requires_setting('SHOW_COUNTIES_AND_TOWNS')
 def towns_show_functional(request, town_slug, id, render_callback=None):
     town = _get_town(town_slug)
     c = _get_town_context(request, town)
     return entities_show_policy(request, c, town, id, '', render_callback)
 
+@requires_setting('SHOW_COUNTIES_AND_TOWNS')
 def towns_compare(request, town_left_slug, town_right_slug):
     town_left = _get_town(town_left_slug)
     town_right = _get_town(town_right_slug)

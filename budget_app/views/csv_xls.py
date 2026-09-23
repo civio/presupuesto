@@ -10,7 +10,7 @@ from tempfile import NamedTemporaryFile
 
 from budget_app.models import Entity, Payment
 from budget_app.views import *
-from .helpers import get_context
+from .helpers import get_context, requires_setting
 
 
 # Note that in these exports we include not only the items at the lowest level of detail
@@ -182,6 +182,7 @@ def write_policy_monitoring_breakdown(c, writer):
                     format_progress(score)
                 ])
 
+@requires_setting('SHOW_MONITORING')
 def policy_monitoring_breakdown(request, id, format):
     return policies_show(request, id, '', _generator("%s_objetivos" % id, format, write_policy_monitoring_breakdown))
 
@@ -209,6 +210,7 @@ def write_programme_monitoring_breakdown(c, writer):
                     format_progress(score)
                 ])
 
+@requires_setting('SHOW_MONITORING')
 def programme_monitoring_breakdown(request, id, format):
     return programmes_show(request, id, '', _generator("%s_objetivos" % id, format, write_programme_monitoring_breakdown))
 

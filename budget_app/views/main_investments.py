@@ -4,6 +4,7 @@ from django.utils.translation import ugettext as _
 from budget_app.views.helpers import *
 from budget_app.models import MainInvestment
 
+@requires_setting('SHOW_MAIN_INVESTMENTS')
 def main_investments(request, render_callback=None):
     c = get_context(request, css_class='body-entities', title='')
     entity = get_main_entity(c)

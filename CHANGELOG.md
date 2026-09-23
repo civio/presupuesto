@@ -15,6 +15,9 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 - Pass the search year as a query parameter instead of pasting it into the SQL, and fall back to the latest year on invalid input instead of failing. #1404
+- Use the standard `http://` namespace in the sitemap. #1407
+- Hide the institutional downloads, which failed, when there's no institutional breakdown. #1406
+- Return a 404 for the pages and downloads of optional features the theme doesn't turn on, instead of failing or half-working. #1408
 
 ## [5.0] - 2026-04-02
 ### Changed
