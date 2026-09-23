@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Fix N+1 query when calculating institutional descriptions, which took ~17s on large budgets. #1401
 - Cache descriptions until the app restarts, instead of the default 5 minutes. #1401
+- Keep crawlers away from CSV/XLSX downloads: disallow them in `robots.txt` and reject `HEAD` requests to them. #1328
+- Raise the page cache limit from Django's default 300 entries to 1000. #1402
+- Redirect policy, programme and article URLs without a slug to the full URL, and listings without a code to the policies page. #1403
+- Upgrade Jinja2 to 3.1.6, and tornado and wheel in the dev requirements. Remove unused and transitive requirements, and move `dj-static` to the dev requirements. #1289
+- Remove `six`, no longer needed by any theme. #1367
+- Add Dependabot configuration: monthly grouped updates, major versions done by hand.
+
+### Fixed
+- Pass the search year as a query parameter instead of pasting it into the SQL, and fall back to the latest year on invalid input instead of failing. #1404
 
 ## [5.0] - 2026-04-02
 ### Changed
