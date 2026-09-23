@@ -14,12 +14,14 @@ class EconomicCategoriesManager(models.Manager):
         sql = "select * from economic_categories " \
                 "where " + conditions + " and " \
                 "to_tsvector('"+settings.SEARCH_CONFIG+"',description) @@ plainto_tsquery('"+settings.SEARCH_CONFIG+"',%s)"
+        params = [query]
 
         if budget:
-            sql += " and budget_id='%s'" % budget.id
+            sql += " and budget_id=%s"
+            params.append(budget.id)
 
         sql += "order by description asc"
-        return self.raw(sql, (query, ))
+        return self.raw(sql, params)
 
     def search_articles(self, query, budget=None):
         return self._search(query, budget, "article is not null and heading is null")
