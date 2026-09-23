@@ -265,6 +265,8 @@ DEFAULT_CACHES = {
     }
 }
 CACHES = ENV.get('CACHES', DEFAULT_CACHES)
+# Django's default of 300 entries fits only about 150 pages, since each takes two.
+CACHES['default'].setdefault('OPTIONS', {}).setdefault('MAX_ENTRIES', 1000)
 CACHE_MIDDLEWARE_ALIAS = 'default'
 CACHE_MIDDLEWARE_SECONDS = 60 * 60 * 24  # 1 Day: data doesn't actually change
 CACHE_MIDDLEWARE_KEY_PREFIX = 'budget_app'
