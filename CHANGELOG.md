@@ -20,6 +20,7 @@ All notable changes to this project will be documented in this file.
 - Use the standard `http://` namespace in the sitemap. #1407
 - Hide the institutional downloads, which failed, when there's no institutional breakdown. #1406
 - Return a 404 for the pages and downloads of optional features the theme doesn't turn on, instead of failing or half-working. #1408
+- Strip control characters from Excel downloads, which openpyxl rejects: Vitoria-Gasteiz's payments download failed because of them.
 
 ## [5.0] - 2026-04-02
 ### Changed

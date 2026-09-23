@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from django.utils.translation import ugettext as _
 from functools import reduce
 from openpyxl import Workbook
+from openpyxl.cell.cell import ILLEGAL_CHARACTERS_RE
 from tempfile import NamedTemporaryFile
 
 from budget_app.models import Entity, Payment
@@ -453,6 +454,9 @@ class worksheetWrapper:
     def writerow(self, values):
         column = 1
         for value in values:
+            # Excel doesn't accept control characters, and some source data has them
+            if isinstance(value, str):
+                value = ILLEGAL_CHARACTERS_RE.sub('', value)
             self.worksheet.cell(column=column, row=self.current_row, value=value)
             column += 1
         self.current_row += 1
