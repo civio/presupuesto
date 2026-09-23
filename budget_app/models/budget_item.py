@@ -62,11 +62,13 @@ class BudgetItemManager(models.Manager):
             "e.language='"+language+"' and " \
             "to_tsvector('"+settings.SEARCH_CONFIG+"',i.description) @@ plainto_tsquery('"+settings.SEARCH_CONFIG+"',%s)"
 
+        params = [query]
         if year:
-            sql += " and b.year='%s'" % year
+            sql += " and b.year=%s"
+            params.append(year)
 
         sql += " order by i.amount desc"
-        return self.raw(sql, (query, ))
+        return self.raw(sql, params)
 
 
 class BudgetItem(models.Model):

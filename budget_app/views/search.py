@@ -7,12 +7,22 @@ from .paginator import DiggPaginator as Paginator
 PAGE_LENGTH = 10
 
 
+# The year to search in: a year, 'all', or the latest budget if we get anything else.
+def _parse_year(value, latest_year):
+    if value == 'all':
+        return value
+    try:
+        return str(int(value))
+    except (TypeError, ValueError):
+        return str(latest_year)
+
+
 def search(request):
     c = get_context(request, css_class='body-search', title='')
 
     c['query'] = request.GET.get('q', '')
     populate_latest_budget(c)
-    c['selected_year'] = str(request.GET.get('year', c['latest_budget'].year))
+    c['selected_year'] = _parse_year(request.GET.get('year'), c['latest_budget'].year)
     c['page'] = request.GET.get('page', 1)
     c['query_string'] = "year=%s&q=%s&" % (c['selected_year'], c['query'])
 

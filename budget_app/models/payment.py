@@ -133,10 +133,13 @@ class PaymentManager(models.Manager):
           "where " \
             "e.language='"+language+"' and " \
             "to_tsvector('"+settings.SEARCH_CONFIG+"',p.payee||' '||p.description) @@ plainto_tsquery('"+settings.SEARCH_CONFIG+"',%s)"
+
+        params = [query]
         if year:
-            sql += " and b.year='%s'" % year
+            sql += " and b.year=%s"
+            params.append(year)
         sql += " order by p.amount desc"
-        return self.raw(sql, (query, ))
+        return self.raw(sql, params)
 
 
 class Payment(models.Model):
