@@ -13,6 +13,8 @@ updates:
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]
+      # Newer versions need Django 4.2, see civio/presupuesto-management#1405
+      - dependency-name: "django-compressor"
 
   - package-ecosystem: "npm"
     directory: "/"
