@@ -5,6 +5,16 @@ import pytest
 from site_helpers import http_credentials, sample_paths, sitemap_paths
 
 
+def pytest_addoption(parser):
+    parser.addoption('--origin-url', help='where to read sitemap.xml, robots.txt and version.json from, '
+                     'if not from --base-url (e.g. for a site behind a partner\'s proxy)')
+    parser.addoption('--user-agent', help='browser user agent, for proxies that block headless browsers')
+
+
+def origin_url(config):
+    return config.getoption('origin_url') or config.getoption('base_url')
+
+
 def pytest_configure(config):
     if not config.getoption('base_url'):
         raise pytest.UsageError('Pass the site to test with --base-url, e.g. --base-url http://localhost:8000')
@@ -14,7 +24,7 @@ def pytest_generate_tests(metafunc):
     # One test per language and kind of page listed in the sitemap, so the same tests
     # work for any theme without having to know its policy or programme codes.
     if 'sample_path' in metafunc.fixturenames:
-        samples = sample_paths(sitemap_paths(metafunc.config.getoption('base_url')))
+        samples = sample_paths(sitemap_paths(origin_url(metafunc.config)))
         metafunc.parametrize(
             'sample_path',
             [paths[0] for paths in samples.values()],
@@ -23,13 +33,21 @@ def pytest_generate_tests(metafunc):
 
 
 @pytest.fixture
-def browser_context_args(browser_context_args):
-    return {**browser_context_args, 'http_credentials': http_credentials()}
+def browser_context_args(browser_context_args, pytestconfig):
+    args = {**browser_context_args, 'http_credentials': http_credentials()}
+    if pytestconfig.getoption('user_agent'):
+        args['user_agent'] = pytestconfig.getoption('user_agent')
+    return args
 
 
 @pytest.fixture
-def site_paths(base_url):
-    return sitemap_paths(base_url)
+def origin(pytestconfig):
+    return origin_url(pytestconfig).rstrip('/')
+
+
+@pytest.fixture
+def site_paths(origin):
+    return sitemap_paths(origin)
 
 
 @pytest.fixture

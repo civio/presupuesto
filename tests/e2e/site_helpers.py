@@ -40,10 +40,15 @@ def sitemap_paths(base_url):
 def page_type(path):
     """
     Group a path by language and kind of page, e.g. ('eu', 'programas/*') for
-    '/eu/programas/1112/direccion-y-servicios-generales-de-justicia'.
+    '/eu/programas/1112/direccion-y-servicios-generales-de-justicia'. Sites behind a
+    partner's proxy may have a prefix before the language, e.g. '/presupuestofacil/es/'.
     """
     segments = [s for s in path.split('/') if s]
-    language = segments.pop(0) if segments and re.fullmatch(r'[a-z]{2}', segments[0]) else ''
+    language = ''
+    for i, segment in enumerate(segments[:2]):
+        if re.fullmatch(r'[a-z]{2}', segment):
+            language, segments = '/'.join(segments[:i + 1]), segments[i + 1:]
+            break
     if not segments:
         return language, 'welcome'
     if len(segments) == 1:

@@ -4,6 +4,9 @@ Browser tests that run against a live site, local or deployed:
     pytest tests/e2e --base-url http://localhost:8000
     pytest tests/e2e --base-url https://presupuesto.navarra.es
 
+For a site behind a proxy that only forwards some paths and blocks headless browsers,
+--origin-url says where to read the sitemap from, and --user-agent overrides the browser's.
+
 The pages to visit come from the site's sitemap, one of each kind per language.
 """
 
@@ -71,7 +74,7 @@ def test_search(page, errors, site_paths):
     assert errors == []
 
 
-def test_text_files(page):
+def test_text_files(page, origin):
     for path in ['/robots.txt', '/version.json']:
-        response = page.request.get(path)
+        response = page.request.get(origin + path)
         assert response.ok, 'HTTP %s: %s' % (response.status, path)
