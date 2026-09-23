@@ -6,7 +6,7 @@ from .guided_visit import guided_visit
 from .investments import investments, investments_show
 from .main_investments import main_investments
 from .monitoring import monitoring
-from .policies import policies, policies_show, programmes_show, subprogrammes_show, income_articles_show, expense_articles_show
+from .policies import policies, add_slug_redirect, policies_show, programmes_show, subprogrammes_show, income_articles_show, expense_articles_show
 from .policies_helpers import policies_show_helper, programmes_show_helper, articles_show_helper
 from .search import search
 from .sections import sections_show

@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.utils import translation
 from django.views.decorators.cache import never_cache
+from django.views.generic.base import RedirectView
 from django.shortcuts import render
 
 from budget_app.views import *
@@ -27,6 +28,10 @@ if len(settings.LANGUAGES) > 1:
 else:
     budget_app_urlpatterns = []
     add_url_patterns = lambda x: list(x)
+
+# Listings without an item code have no page of their own, so send them to the main one.
+# See civio/presupuesto-management#1403
+to_policies = RedirectView.as_view(pattern_name='policies', permanent=True, query_string=True)
 
 # Add the application paths
 budget_app_urlpatterns += add_url_patterns([
@@ -60,31 +65,31 @@ budget_app_urlpatterns += add_url_patterns([
 
     # Policies (top)
     url(r'^politicas$', policies, name='policies'),
-    url(r'^politicas/(?P<id>[0-9]+)$', policies_show, name='policies_show'),
+    url(r'^politicas/(?P<id>[0-9]+)$', add_slug_redirect, { 'view_name': 'policies_show', 'descriptions_key': 'functional' }),
     url(r'^politicas/(?P<id>[0-9]+)/(?P<title>.+)$', policies_show, name='policies_show'),
 
     # Programme pages
-    url(r'^programas$', programmes_show, name='programmes'),
-    url(r'^programas/(?P<id>[0-9A-Z]+)$', programmes_show, name='programmes_show'),
+    url(r'^programas$', to_policies, name='programmes'),
+    url(r'^programas/(?P<id>[0-9A-Z]+)$', add_slug_redirect, { 'view_name': 'programmes_show', 'descriptions_key': 'functional' }),
     url(r'^programas/(?P<id>[0-9A-Z]+)/(?P<title>.+)$', programmes_show, name='programmes_show'),
 
     # Subprogramme pages
-    url(r'^subprogramas$', subprogrammes_show, name='subprogrammes'),
-    url(r'^subprogramas/(?P<id>[0-9A-Z]+)$', subprogrammes_show, name='subprogrammes_show'),
+    url(r'^subprogramas$', to_policies, name='subprogrammes'),
+    url(r'^subprogramas/(?P<id>[0-9A-Z]+)$', add_slug_redirect, { 'view_name': 'subprogrammes_show', 'descriptions_key': 'functional' }),
     url(r'^subprogramas/(?P<id>[0-9A-Z]+)/(?P<title>.+)$', subprogrammes_show, name='subprogrammes_show'),
 
     # Expense pages (economic breakdown)
-    url(r'^articulos/g$', expense_articles_show, name='expense_articles'),
-    url(r'^articulos/g/(?P<id>[0-9]+)$', expense_articles_show, name='expense_articles_show'),
+    url(r'^articulos/g$', to_policies, name='expense_articles'),
+    url(r'^articulos/g/(?P<id>[0-9]+)$', add_slug_redirect, { 'view_name': 'expense_articles_show', 'descriptions_key': 'expense' }),
     url(r'^articulos/g/(?P<id>[0-9]+)/(?P<title>.+)$', expense_articles_show, name='expense_articles_show'),
 
     # Income pages
-    url(r'^articulos/i$', income_articles_show, name='income_articles'),
-    url(r'^articulos/i/(?P<id>[0-9]+)$', income_articles_show, name='income_articles_show'),
+    url(r'^articulos/i$', to_policies, name='income_articles'),
+    url(r'^articulos/i/(?P<id>[0-9]+)$', add_slug_redirect, { 'view_name': 'income_articles_show', 'descriptions_key': 'income' }),
     url(r'^articulos/i/(?P<id>[0-9]+)/(?P<title>.+)$', income_articles_show, name='income_articles_show'),
 
     # Sections
-    url(r'^secciones$', sections_show, name='sections'),
+    url(r'^secciones$', to_policies, name='sections'),
     url(r'^secciones/(?P<id>[0-9A-Z]+)/(?P<title>.+)$', sections_show, name='sections_show'),
 
     # Child entities

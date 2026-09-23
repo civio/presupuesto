@@ -1,5 +1,7 @@
 # -*- coding: UTF-8 -*-
 
+from django.http import Http404, HttpResponsePermanentRedirect
+from django.template.defaultfilters import slugify
 from django.urls import reverse
 from budget_app.models import Budget, BudgetBreakdown, FunctionalCategory, EconomicCategory
 from .entities import entities_show_helper
@@ -17,6 +19,21 @@ def policies(request, render_callback=None):
     set_title(c, main_entity.name)
 
     return entities_show_helper(request, c, main_entity, render_callback)
+
+
+# The pages below are linked with the item name in the URL, which the views ignore.
+# When someone types the URL without it, redirect to the full one instead of failing.
+# See civio/presupuesto-management#1403
+def add_slug_redirect(request, id, view_name, descriptions_key):
+    c = get_context(request)
+    descriptions = Budget.objects.get_all_descriptions(get_main_entity(c))
+    title = descriptions[descriptions_key].get(id)
+    if not title:
+        raise Http404
+    url = reverse(view_name, kwargs={ 'id': id, 'title': slugify(title) })
+    if request.META.get('QUERY_STRING'):
+        url += '?' + request.META['QUERY_STRING']
+    return HttpResponsePermanentRedirect(url)
 
 
 def policies_show(request, id, title, render_callback=None):
