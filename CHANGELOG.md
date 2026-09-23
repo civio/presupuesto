@@ -11,7 +11,9 @@ All notable changes to this project will be documented in this file.
 - Upgrade Jinja2 to 3.1.6, and tornado and wheel in the dev requirements. Remove unused and transitive requirements, and move `dj-static` to the dev requirements. #1289
 - Remove `six`, no longer needed by any theme. #1367
 - Add Dependabot configuration: monthly grouped updates, major versions done by hand.
-- Add end-to-end tests with Playwright, runnable against local or deployed sites, and a script to compare snapshots of a site before and after a change. #1290
+- Upgrade beautifulsoup4 to 4.15.0, django-jinja to 2.11.0, openpyxl to 3.1.5 and psycopg2 to 2.9.13, and csvkit, SQLAlchemy and xlrd in the dev requirements. django-compressor stays at 4.1 until the Django upgrade. #1405
+- Upgrade rollup and its node-resolve plugin, and picomatch.
+- Add end-to-end tests with Playwright, runnable against local or deployed sites, and a script to compare snapshots of a site before and after a change. Remove the old Jasmine specs, which no longer ran. #1290
 
 ### Fixed
 - Pass the search year as a query parameter instead of pasting it into the SQL, and fall back to the latest year on invalid input instead of failing. #1404
