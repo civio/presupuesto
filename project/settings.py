@@ -137,11 +137,13 @@ SECRET_KEY = ')e2qrwa6e$u30r0)w=52!0j1_&amp;$t+y3z!o-(7ej0=#i!c7pjuy'
 
 if DEBUG:
     MIDDLEWARE = (
+        'project.middleware.BlockHeadOnDownloadsMiddleware',
         'django.middleware.common.CommonMiddleware',
         'django.middleware.locale.LocaleMiddleware',
     )
 else:
     MIDDLEWARE = (
+        'project.middleware.BlockHeadOnDownloadsMiddleware',
         'project.middleware.RemoveCacheBreakingHeadersMiddleware',
         'django.middleware.cache.UpdateCacheMiddleware',
         'django.middleware.common.CommonMiddleware',

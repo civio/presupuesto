@@ -1,4 +1,5 @@
 User-agent: *
-Disallow:
+Disallow: /*.csv$
+Disallow: /*.xlsx$
 
 Sitemap: {{ request.build_absolute_uri('sitemap.xml') }}

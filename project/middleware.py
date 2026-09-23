@@ -1,3 +1,4 @@
+from django.http import HttpResponseNotAllowed
 from django.utils.deprecation import MiddlewareMixin
 
 import re
@@ -35,3 +36,13 @@ class RemoveCacheBreakingHeadersMiddleware(MiddlewareMixin):
         for arg in ['mc_cid', 'mc_eid', 'fbclid', 'fbaid', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content']:
             q.pop(arg, None)
         request.META['QUERY_STRING'] = q.urlencode()
+
+
+# Crawlers pretending to be desktop browsers enumerate the CSV/XLSX downloads with
+# HEAD requests. Django answers a HEAD by running the full view, which is as expensive
+# as the page itself, and no real user ever sends one for a download, so we refuse them.
+# See civio/presupuesto-management#1328
+class BlockHeadOnDownloadsMiddleware(MiddlewareMixin):
+    def process_request(self, request):
+        if request.method == 'HEAD' and request.path.endswith(('.csv', '.xlsx')):
+            return HttpResponseNotAllowed(['GET'])
