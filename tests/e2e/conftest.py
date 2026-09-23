@@ -57,11 +57,19 @@ def errors(page, base_url):
     resources (analytics, fonts...) are left out, since we can't do anything about them.
     """
     host = urlparse(base_url).netloc
+
+    def ours(url):
+        # Cloudflare's bot detection script is injected into the HTML, and fails when the site
+        # is seen through a partner's proxy, but visitors don't notice. We do check the rest of
+        # /cdn-cgi/, since email obfuscation there broke links on the page.
+        url = urlparse(url)
+        return url.netloc == host and not url.path.startswith('/cdn-cgi/challenge-platform/')
+
     found = []
     page.on('pageerror', lambda error: found.append('JavaScript error: %s' % error))
     page.on('requestfailed', lambda request:
-            urlparse(request.url).netloc == host and found.append('Failed request: %s' % request.url))
+            ours(request.url) and found.append('Failed request: %s' % request.url))
     page.on('response', lambda response:
-            urlparse(response.url).netloc == host and response.status >= 400
+            ours(response.url) and response.status >= 400
             and found.append('HTTP %s: %s' % (response.status, response.url)))
     return found
