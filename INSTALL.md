@@ -82,3 +82,19 @@ Pero para usarlo de manera regular debemos configurar la aplicación, vía `loca
 * Arrancar el servidor
 
         $ python manage.py runserver
+
+### Tests
+
+Los _tests_ de `tests/e2e` prueban la aplicación desde fuera, con un navegador (Playwright), así que funcionan igual contra el servidor local que contra un sitio desplegado. Las páginas a visitar salen del `sitemap.xml` del sitio, una de cada tipo por idioma. Se instalan y lanzan así:
+
+        $ pip install -r requirements/test.txt
+        $ playwright install chromium
+        $ pytest tests/e2e --base-url http://localhost:8000
+
+Si el sitio tiene autenticación básica, se pasa como `BASIC_AUTH=usuario:contraseña`.
+
+Para comprobar que un cambio (por ejemplo, actualizar dependencias) no altera nada, `tests/e2e/snapshot.py` guarda una muestra de páginas y descargas que podemos comparar antes y después:
+
+        $ python tests/e2e/snapshot.py http://localhost:8000 /tmp/antes
+        $ python tests/e2e/snapshot.py http://localhost:8000 /tmp/despues
+        $ diff -r /tmp/antes /tmp/despues
