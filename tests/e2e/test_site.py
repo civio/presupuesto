@@ -52,7 +52,8 @@ def test_downloads(page, sample_path):
     links = page.locator('.panel-downloads a[href]').evaluate_all('links => links.map(link => link.href)')
 
     for link in links:
-        response = page.request.get(link)
+        # Big downloads, like a payments Excel file, can take a couple of minutes to generate
+        response = page.request.get(link, timeout=180_000)
         assert response.ok, 'HTTP %s: %s' % (response.status, link)
         if link.endswith('.csv'):
             assert response.headers['content-type'].startswith('text/csv'), 'Not a CSV file: %s' % link
