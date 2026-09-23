@@ -1,7 +1,7 @@
 # ENVIRONMENT-SPECIFIC SETTINGS
 #
 ENV = {
-  'THEME': 'presupuesto-example',
+  'THEME': 'presupuesto_example',
 
   'DEBUG': True,
 
