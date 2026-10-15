@@ -21,6 +21,7 @@ All notable changes to this project will be documented in this file.
 - Hide the institutional downloads, which failed, when there's no institutional breakdown. #1406
 - Return a 404 for the pages and downloads of optional features the theme doesn't turn on, instead of failing or half-working. #1408
 - Strip control characters from Excel downloads, which openpyxl rejects: Vitoria-Gasteiz's payments download failed because of them.
+- Disallow CSV/XLSX downloads in `robots.txt` also when the URL has query parameters, like `?view=area`. #1412
 
 ## [5.0] - 2026-04-02
 ### Changed
