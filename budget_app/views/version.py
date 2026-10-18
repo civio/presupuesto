@@ -9,7 +9,7 @@ from django.http import JsonResponse
 
 from local_settings import ENV
 from project.settings import LANGUAGES
-from budget_app.models import InflationStat, PopulationStat, Budget, Payment
+from budget_app.models import InflationStat, PopulationStat, Budget, BudgetItem, Payment
 from .helpers import *
 
 
@@ -41,8 +41,14 @@ def version_api(request):
     django_version = fix_version(django.VERSION)
     last_inflation = InflationStat.objects.get_last_year()
     last_population = PopulationStat.objects.get_last_year()
-    budget_years = list(Budget.objects.get_years(get_main_entity(c)))
-    payments_years = list(Payment.objects.get_years(get_main_entity(c)))
+    main_entity = get_main_entity(c)
+    budget_years = list(Budget.objects.get_years(main_entity))
+    budget_statuses = Budget.objects.get_statuses(main_entity)
+    execution_years = list(BudgetItem.objects.filter(budget__entity=main_entity, actual=True)
+                                             .values_list('budget__year', flat=True)
+                                             .distinct()
+                                             .order_by('budget__year'))
+    payments_years = list(Payment.objects.get_years(main_entity))
     languages = [key for key, value in LANGUAGES]
 
     return JsonResponse({
@@ -52,6 +58,8 @@ def version_api(request):
         'commit': git_commit,
         'debug': ENV.get('DEBUG', False),
         'budget_years': budget_years,
+        'budget_statuses': budget_statuses,
+        'execution_years': execution_years,
         'payments_years': payments_years,
         'last_inflation': last_inflation,
         'last_population': last_population,

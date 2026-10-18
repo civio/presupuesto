@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 - Add Dependabot configuration: monthly grouped updates, major versions done by hand.
 - Upgrade beautifulsoup4 to 4.15.0, django-jinja to 2.11.0, openpyxl to 3.1.5 and psycopg2 to 2.9.13, and csvkit, SQLAlchemy and xlrd in the dev requirements. django-compressor stays at 4.1 until the Django upgrade. #1405
 - Upgrade rollup and its node-resolve plugin, and picomatch.
+- Add the budget statuses and the years with execution data to `/version.json`.
 - Add end-to-end tests with Playwright, runnable against local or deployed sites, and a script to compare snapshots of a site before and after a change. Remove the old Jasmine specs, which no longer ran. #1290
 
 ### Fixed
