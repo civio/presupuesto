@@ -2,7 +2,10 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+
+## [5.1] - 2026-10-22
 ### Changed
+- Upgrade Django from 3.2 through 4.0 to 4.2.30, and django-compressor to 4.6.0. Themes that add their own URLs must use `re_path()` instead of `url()`, removed in Django 4.0. #1405
 - Fix N+1 query when calculating institutional descriptions, which took ~17s on large budgets. #1401
 - Cache descriptions until the app restarts, instead of the default 5 minutes. #1401
 - Keep crawlers away from CSV/XLSX downloads: disallow them in `robots.txt` and reject `HEAD` requests to them. #1328
@@ -11,11 +14,10 @@ All notable changes to this project will be documented in this file.
 - Upgrade Jinja2 to 3.1.6, and tornado and wheel in the dev requirements. Remove unused and transitive requirements, and move `dj-static` to the dev requirements. #1289
 - Remove `six`, no longer needed by any theme. #1367
 - Add Dependabot configuration: monthly grouped updates, major versions done by hand.
-- Upgrade beautifulsoup4 to 4.15.0, django-jinja to 2.11.0, openpyxl to 3.1.5 and psycopg2 to 2.9.13, and csvkit, SQLAlchemy and xlrd in the dev requirements. django-compressor stays at 4.1 until the Django upgrade. #1405
+- Upgrade beautifulsoup4 to 4.15.0, django-jinja to 2.11.0, openpyxl to 3.1.5 and psycopg2 to 2.9.13, and csvkit, SQLAlchemy and xlrd in the dev requirements. #1405
 - Upgrade rollup and its node-resolve plugin, and picomatch.
 - Add the budget statuses and the years with execution data to `/version.json`.
 - Add end-to-end tests with Playwright, runnable against local or deployed sites, and a script to compare snapshots of a site before and after a change. Remove the old Jasmine specs, which no longer ran. #1290
-- Upgrade Django from 3.2 through 4.0 to 4.2.30, and django-compressor to 4.6.0. Themes that add their own URLs must use `re_path()` instead of `url()`, removed in Django 4.0. #1405
 
 ### Fixed
 - Pass the search year as a query parameter instead of pasting it into the SQL, and fall back to the latest year on invalid input instead of failing. #1404
@@ -389,7 +391,9 @@ All notable changes to this project will be documented in this file.
 ### Forked from [aragonopendata/presupuesto](https://github.com/aragonopendata/presupuesto) - 2016-01-28
 
 
-[Unreleased]: https://github.com/civio/presupuesto/compare/v5.0...HEAD
+[Unreleased]: https://github.com/civio/presupuesto/compare/v5.1...HEAD
+[5.1]: https://github.com/civio/presupuesto/compare/v5.0...v5.1
+[4.7.1]: https://github.com/civio/presupuesto/compare/v4.7...v4.7.1
 [5.0]: https://github.com/civio/presupuesto/compare/v4.7...v5.0
 [4.7]: https://github.com/civio/presupuesto/releases/tag/v4.7
 [4.6]: https://github.com/civio/presupuesto/releases/tag/v4.6
