@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 - Upgrade rollup and its node-resolve plugin, and picomatch.
 - Add the budget statuses and the years with execution data to `/version.json`.
 - Add end-to-end tests with Playwright, runnable against local or deployed sites, and a script to compare snapshots of a site before and after a change. Remove the old Jasmine specs, which no longer ran. #1290
+- Upgrade Django from 3.2 through 4.0 to 4.2.30, and django-compressor to 4.6.0. Themes that add their own URLs must use `re_path()` instead of `url()`, removed in Django 4.0. #1405
 
 ### Fixed
 - Pass the search year as a query parameter instead of pasting it into the SQL, and fall back to the latest year on invalid input instead of failing. #1404
@@ -23,6 +24,7 @@ All notable changes to this project will be documented in this file.
 - Return a 404 for the pages and downloads of optional features the theme doesn't turn on, instead of failing or half-working. #1408
 - Strip control characters from Excel downloads, which openpyxl rejects: Vitoria-Gasteiz's payments download failed because of them.
 - Disallow CSV/XLSX downloads in `robots.txt` also when the URL has query parameters, like `?view=area`. #1412
+- Declare `current_year_spent_amount` nullable in the model, as migration 0002 created it, so `migrate` no longer warns about unapplied model changes. #1405
 
 ## [5.0] - 2026-04-02
 ### Changed
