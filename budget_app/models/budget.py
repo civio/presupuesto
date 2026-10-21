@@ -2,7 +2,7 @@
 
 from django.db import models
 from django.core.cache import caches
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django.conf import settings
 
 from .economic_category import EconomicCategory

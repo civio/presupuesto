@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from budget_app.views.helpers import *
 from budget_app.models import MainInvestment
 

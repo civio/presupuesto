@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from budget_app.models import Budget, Entity, FunctionalCategory, BudgetBreakdown, BudgetItem
 from .helpers import *
 
