@@ -41,6 +41,18 @@ def browser_context_args(browser_context_args, pytestconfig):
 
 
 @pytest.fixture
+def page(page):
+    # Madrid loads the city council's cookie manager, whose modal covers the page and
+    # blocks clicks until the visitor chooses, so hide it.
+    page.add_init_script("""document.addEventListener('DOMContentLoaded', () => {
+        const style = document.createElement('style');
+        style.textContent = '[class^="iam-cookie-control"] { display: none !important; }';
+        document.head.appendChild(style);
+    });""")
+    return page
+
+
+@pytest.fixture
 def origin(pytestconfig):
     return origin_url(pytestconfig).rstrip('/')
 
