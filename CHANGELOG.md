@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+### Changed
+- Upgrade Django from 4.2 through 5.0 and 5.1 to 5.2.18, and drop the `USE_L10N` setting, removed in Django 5.0. #1405
+- Hide Madrid's cookie popup in the end-to-end tests, since it blocked clicks in production.
 
 ## [5.1] - 2026-10-22
 ### Changed
