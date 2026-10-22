@@ -2,6 +2,8 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+
+## [5.2] - 2026-10-22
 ### Changed
 - Upgrade Django from 4.2 through 5.0 and 5.1 to 5.2.18, and drop the `USE_L10N` setting, removed in Django 5.0. #1405
 - Hide Madrid's cookie popup in the end-to-end tests, since it blocked clicks in production.
@@ -394,7 +396,8 @@ All notable changes to this project will be documented in this file.
 ### Forked from [aragonopendata/presupuesto](https://github.com/aragonopendata/presupuesto) - 2016-01-28
 
 
-[Unreleased]: https://github.com/civio/presupuesto/compare/v5.1...HEAD
+[Unreleased]: https://github.com/civio/presupuesto/compare/v5.2...HEAD
+[5.2]: https://github.com/civio/presupuesto/compare/v5.1...v5.2
 [5.1]: https://github.com/civio/presupuesto/compare/v5.0...v5.1
 [4.7.1]: https://github.com/civio/presupuesto/compare/v4.7...v4.7.1
 [5.0]: https://github.com/civio/presupuesto/compare/v4.7...v5.0
