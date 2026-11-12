@@ -11,7 +11,7 @@ from django.template import RequestContext
 from django.shortcuts import render as django_render
 from django.conf import settings
 from django.http import Http404
-from django.urls import resolve
+from django.urls import Resolver404, resolve
 from django.utils import translation
 from django.utils.translation import gettext as _
 
@@ -82,30 +82,15 @@ def get_context(request, css_class='', title=''):
     # See https://docs.djangoproject.com/en/1.8/_modules/django/template/context_processors/
     c['LANGUAGE_CODE'] = translation.get_language()
 
+    # The menu tab to highlight, from the name of the URL we're on
     try:
-        c['active_tab'] = filter(
-            lambda k: current_url_equals(c, TABS[k]),
-            TABS.keys()
-        )[0]
-    except:
-        c['active_tab'] = None
+        url_name = resolve(request.path).url_name or ''
+    except Resolver404:
+        url_name = ''
+    c['active_tab'] = next((tab for tab, pattern in TABS.items() if re.match(pattern, url_name)), None)
 
     return c
 
-
-def current_url_equals(context, url_name_pattern, **kwargs):
-    try:
-        resolved = resolve(context.get('request').path)
-    except:
-        resolved = None
-    matches = resolved and re.match(url_name_pattern, resolved.url_name)
-    if matches and kwargs:
-        for key in kwargs:
-            kwarg = kwargs.get(key)
-            resolved_kwarg = resolved.kwargs.get(key)
-            if not resolved_kwarg or kwarg != resolved_kwarg:
-                return False
-    return matches
 
 def set_title(c, title):
     c['title_prefix'] = title
