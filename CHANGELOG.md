@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 ### Changed
-- `SimpleBudgetLoader` looks for each classification in the year's folder first, and then in the entity's, reads each line through a method themes can override (`parse_economic_category` and company), and loads economic subheadings for loaders that opt in with `_use_subheadings()`. Navarra's and the PGE's loaders move to it, and go from about 100 seconds per year to 4 and 10, because `BudgetLoader` saved lines one at a time with uncached lookups. civio/presupuesto-management#1423
+- `SimpleBudgetLoader` looks for each classification in the year's folder first, and then in the entity's, reads each line through a method themes can override (`parse_economic_category` and company), and splits economic codes through `_split_economic_code()`, which themes override when their codes go down to subheadings or have other quirks. Navarra's and the PGE's loaders move to it, and go from about 100 seconds per year to 4 and 10, because `BudgetLoader` saved lines one at a time with uncached lookups. civio/presupuesto-management#1423
 - Add loading tests for budgets with economic subheadings, against Navarra's 2025, and run them in CI. civio/presupuesto-management#1423
 
 ### Removed

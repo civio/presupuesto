@@ -45,10 +45,15 @@ class BaseLoader(object):
         else:
             return s
 
-    # Does the economic classification go down to subheadings? Only Navarra's does, so far,
-    # so loaders opt in. (Default: false, codes longer than three digits are cut to the heading)
-    def _use_subheadings(self):
-        return False
+    # Split an economic code into its chapter, article, heading and subheading. By default codes
+    # go down to the heading, and anything longer is cut. Themes whose codes are different
+    # override this: Navarra's go down to subheadings, and some of the PGE's headings carry
+    # the managing centre.
+    def _split_economic_code(self, ec_code):
+        return (ec_code[0],
+                ec_code[0:2] if len(ec_code) >= 2 else None,
+                ec_code[0:3] if len(ec_code) >= 3 else None,
+                None)
 
     # Are we using subprogrammes? (Default: false)
     def _use_subprogrammes(self):
@@ -80,11 +85,12 @@ class BaseLoader(object):
     def fetch_economic_category(self, budget, is_expense, ec_code):
         key = (budget, is_expense, ec_code)
         if key not in self.economic_category_cache:
+            chapter, article, heading, subheading = self._split_economic_code(ec_code)
             ec = EconomicCategory.objects.filter(expense=is_expense,
-                                                chapter=ec_code[0],
-                                                article=ec_code[0:2] if len(ec_code) >= 2 else None,
-                                                heading=ec_code[0:3] if len(ec_code) >= 3 else None,
-                                                subheading=ec_code if len(ec_code) >= 4 and self._use_subheadings() else None,
+                                                chapter=chapter,
+                                                article=article,
+                                                heading=heading,
+                                                subheading=subheading,
                                                 budget=budget)
             self.economic_category_cache[key] = ec.first() if ec else None
         return self.economic_category_cache[key]
