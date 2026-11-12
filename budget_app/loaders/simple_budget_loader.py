@@ -3,7 +3,6 @@ from budget_app.loaders import BaseLoader
 from budget_app.models import *
 import csv
 import os
-import re
 
 class SimpleBudgetLoader(BaseLoader):
     # List of files to be read, refactored out to allow easy overloading
@@ -33,7 +32,7 @@ class SimpleBudgetLoader(BaseLoader):
             print("Leyendo datos de %s..." % filename)
             reader = csv.reader(open(filename, 'r', encoding=self._get_data_files_encoding()), delimiter=self._get_delimiter())
             for index, line in enumerate(reader):
-                if line==[] or re.match("^#", line[0]):     # Ignore comments and empty lines
+                if not self._is_data_line(line):
                     continue
 
                 # Finally, we have useful data
@@ -149,13 +148,29 @@ class SimpleBudgetLoader(BaseLoader):
             return year_filename
         return os.path.join(path, '..', '..', filename)
 
-    # Read a classification file, skipping comments and empty lines
+    # Classification files give each level of a code in its own column, with only the digits
+    # it adds to its parent ('1', '2', '0' for chapter 1, article 12 and heading 120), and leave
+    # the column empty when the line is for a higher level. Turn those into whole codes, or None.
+    # (The PGE's are the exception: they have the whole code in each column.)
+    def _join_codes(self, *parts):
+        codes = []
+        code = ''
+        for part in parts:
+            code += part
+            codes.append(code if part else None)
+        return codes
+
+    # Skip empty lines, comments, and the header row of the files that have one
+    # (the PGE's, written by scraper-pge, start with 'EJERCICIO')
+    def _is_data_line(self, line):
+        return line != [] and not line[0].startswith('#') and line[0].upper() != 'EJERCICIO'
+
+    # Read a classification file, skipping comments, empty lines and headers
     def _read_classification_file(self, filename):
         reader = csv.reader(open(filename, 'r', encoding='utf-8'), delimiter=self._get_delimiter())
         for line in reader:
-            if line==[] or re.match("^#", line[0]):
-                continue
-            yield line
+            if self._is_data_line(line):
+                yield line
 
 
     # Determine the institutional classification file path
@@ -165,14 +180,12 @@ class SimpleBudgetLoader(BaseLoader):
     # Turn a line of the institutional classification into the fields of a category, or None to skip it.
     # Themes whose files have a different format override this.
     def parse_institutional_category(self, line):
-        institution = line[0]
-        section = line[1]
-        department = line[2]
-        description = line[3]
+        institution, section, department, description = line[:4]
+        institution, section, department = self._join_codes(institution, section, department)
         return {
-            'institution': institution if institution != "" else None,
-            'section': institution+section if section != "" else None,
-            'department': institution+section+department if department != "" else None,
+            'institution': institution,
+            'section': section,
+            'department': department,
             'description': description
         }
 
@@ -194,15 +207,13 @@ class SimpleBudgetLoader(BaseLoader):
     # Turn a line of the economic classification into the fields of a category, or None to skip it.
     # Themes whose files have a different format, or subheadings, override this.
     def parse_economic_category(self, line):
-        chapter = line[1]
-        article = line[2]
-        concept = line[3]
-        description = line[4]
+        income_or_expense, chapter, article, heading, description = line[:5]
+        chapter, article, heading = self._join_codes(chapter, article, heading)
         return {
-            'expense': (line[0] != 'I'),
-            'chapter': chapter if chapter != "" else None,
-            'article': chapter+article if article != "" else None,
-            'heading': chapter+article+concept if concept != "" else None,
+            'expense': income_or_expense != 'I',
+            'chapter': chapter,
+            'article': article,
+            'heading': heading,
             'description': description
         }
 
@@ -224,23 +235,19 @@ class SimpleBudgetLoader(BaseLoader):
     # Turn a line of the functional classification into the fields of a category, or None to skip it.
     # Themes whose files have a different format override this.
     def parse_functional_category(self, line):
-        # If we're not using subprogrammes, insert an empty column where they would go.
-        # This feels better than forcing everybody to add an empty column.
-        if not self._use_subprogrammes():
-            line.insert(4, "")
-
-        area = line[0]
-        policy = line[1]
-        group = line[2]
-        programme = line[3]
-        subprogramme = line[4]
-        description = line[5]
+        # The subprogramme column is only there for sites that use them
+        if self._use_subprogrammes():
+            area, policy, group, programme, subprogramme, description = line[:6]
+        else:
+            area, policy, group, programme, description = line[:5]
+            subprogramme = ''
+        area, policy, group, programme, subprogramme = self._join_codes(area, policy, group, programme, subprogramme)
         return {
-            'area': area if area != "" else None,
-            'policy': area+policy if policy != "" else None,
-            'function': area+policy+group if group != "" else None,
-            'programme': area+policy+group+programme if programme != "" else None,
-            'subprogramme': area+policy+group+programme+subprogramme if subprogramme != "" else None,
+            'area': area,
+            'policy': policy,
+            'function': group,
+            'programme': programme,
+            'subprogramme': subprogramme,
             'description': description
         }
 
@@ -264,18 +271,9 @@ class SimpleBudgetLoader(BaseLoader):
         filename = self.get_geographic_classification_path(path)
         category_objects = []
         if os.path.isfile(filename):
-            reader = csv.reader(open(filename, 'r', encoding='utf-8'), delimiter=self._get_delimiter())
-            for index, line in enumerate(reader):
-                if line==[] or re.match("^#", line[0]):  # Ignore comments and empty lines
-                    continue
-
-                code = line[0]
-                description = line[1]
-
-                gc = GeographicCategory(code=code,
-                                        description=description,
-                                        budget=budget)
-                category_objects.append(gc)
+            for line in self._read_classification_file(filename):
+                code, description = line[:2]
+                category_objects.append(GeographicCategory(code=code, description=description, budget=budget))
         GeographicCategory.objects.bulk_create(category_objects)
 
     # Get the amount for a budget line.
