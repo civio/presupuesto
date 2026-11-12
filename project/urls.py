@@ -134,26 +134,21 @@ budget_app_urlpatterns += add_url_patterns([
     # Policies
     re_path(r'^politicas/(?P<id>[0-9]+)_functional\.(?P<format>.+)$', functional_policy_breakdown, name='functional_policy_breakdown'),
     re_path(r'^politicas/(?P<id>[0-9]+)_economic\.(?P<format>.+)$', economic_policy_breakdown, name='economic_policy_breakdown'),
-    re_path(r'^politicas/(?P<id>[0-9]+)_funding\.(?P<format>.+)$', funding_policy_breakdown, name='funding_policy_breakdown'),
     re_path(r'^politicas/(?P<id>[0-9]+)_institutional\.(?P<format>.+)$', institutional_policy_breakdown, name='institutional_policy_breakdown'),
 
     # Programmes
     re_path(r'^programas/(?P<id>[0-9A-Z]+)_functional\.(?P<format>.+)$', functional_programme_breakdown, name='functional_programme_breakdown'),
     re_path(r'^programas/(?P<id>[0-9A-Z]+)_economic\.(?P<format>.+)$', economic_programme_breakdown, name='economic_programme_breakdown'),
-    re_path(r'^programas/(?P<id>[0-9A-Z]+)_funding\.(?P<format>.+)$', funding_programme_breakdown, name='funding_programme_breakdown'),
     re_path(r'^programas/(?P<id>[0-9A-Z]+)_institutional\.(?P<format>.+)$', institutional_programme_breakdown, name='institutional_programme_breakdown'),
 
     # Subprogrammes
     re_path(r'^subprogramas/(?P<id>[0-9A-Z]+)_economic\.(?P<format>.+)$', economic_subprogramme_breakdown, name='economic_subprogramme_breakdown'),
-    re_path(r'^subprogramas/(?P<id>[0-9A-Z]+)_funding\.(?P<format>.+)$', funding_subprogramme_breakdown, name='funding_subprogramme_breakdown'),
     re_path(r'^subprogramas/(?P<id>[0-9A-Z]+)_institutional\.(?P<format>.+)$', institutional_subprogramme_breakdown, name='institutional_subprogramme_breakdown'),
 
     # Articles
     re_path(r'^articulos/(?P<id>[0-9]+)_functional\.(?P<format>.+)$', functional_article_expenditures_breakdown, name='functional_article_expenditures_breakdown'),
     re_path(r'^articulos/(?P<id>[0-9]+)_economic_revenues\.(?P<format>.+)$', economic_article_revenues_breakdown, name='economic_article_revenues_breakdown'),
     re_path(r'^articulos/(?P<id>[0-9]+)_economic_expenditures\.(?P<format>.+)$', economic_article_expenditures_breakdown, name='economic_article_expenditures_breakdown'),
-    re_path(r'^articulos/(?P<id>[0-9]+)_funding_revenues\.(?P<format>.+)$', funding_article_revenues_breakdown, name='funding_article_revenues_breakdown'),
-    re_path(r'^articulos/(?P<id>[0-9]+)_funding_expenditures\.(?P<format>.+)$', funding_article_expenditures_breakdown, name='funding_article_expenditures_breakdown'),
     re_path(r'^articulos/(?P<id>[0-9]+)_institutional_revenues\.(?P<format>.+)$', institutional_article_revenues_breakdown, name='institutional_article_revenues_breakdown'),
     re_path(r'^articulos/(?P<id>[0-9]+)_institutional_expenditures\.(?P<format>.+)$', institutional_article_expenditures_breakdown, name='institutional_article_expenditures_breakdown'),
 

@@ -230,7 +230,6 @@ def entities_show_article(request, c, entity, id, title, show_side, render_callb
     # The functional breakdown is an empty one because our small entity data is not fully broken.
     c['breakdowns'] = {
       'functional': None,
-      'funding': BudgetBreakdown(['source', 'fund']) if c['show_funding_tab'] else None,
       'institutional': get_institutional_breakdown(c) if c['show_institutional_tab'] else None
     }
     if c['is_chapter']:
@@ -246,7 +245,6 @@ def entities_show_article(request, c, entity, id, title, show_side, render_callb
     get_budget_breakdown(   query, [ id, entity.id ],
                             [
                                 c['breakdowns']['economic'],
-                                c['breakdowns']['funding'],
                                 c['breakdowns']['institutional']
                             ],
                             _populate_article_descriptions)
@@ -265,7 +263,7 @@ def entities_show_article(request, c, entity, id, title, show_side, render_callb
     populate_entity_stats(c, entity)
     populate_years(c, c['breakdowns']['institutional'])
     populate_budget_statuses(c, entity.id)
-    populate_area_descriptions(c, ['functional', 'funding', show_side])
+    populate_area_descriptions(c, ['functional', show_side])
     populate_csv_settings(c, 'article', id)
     set_show_side(c, show_side)
     set_full_breakdown(c, False)

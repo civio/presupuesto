@@ -25,7 +25,7 @@
       <!-- Subtitle -->
       <!-- The right one will be shown and the other ones hidden via Javascript -->
       <div class="tab-title">
-      {% for tab in ['functional', 'economic', 'funding', 'institutional'] %}
+      {% for tab in ['functional', 'economic', 'institutional'] %}
         {% if breakdowns[tab] %}
         <h3 class="{{ tab }}">{{ _(tab_titles[tab]) }}</h3>
         {% endif %}

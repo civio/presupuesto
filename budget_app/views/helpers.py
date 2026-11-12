@@ -58,7 +58,6 @@ def get_context(request, css_class='', title=''):
     # Global settings
     c['show_institutional_tab'] = not hasattr(settings, 'SHOW_INSTITUTIONAL_TAB') or settings.SHOW_INSTITUTIONAL_TAB
     c['show_global_institutional_treemap'] = hasattr(settings, 'SHOW_GLOBAL_INSTITUTIONAL_TREEMAP') and settings.SHOW_GLOBAL_INSTITUTIONAL_TREEMAP
-    c['show_funding_tab'] = hasattr(settings, 'SHOW_FUNDING_TAB') and settings.SHOW_FUNDING_TAB
     c['show_monitoring'] = hasattr(settings, 'SHOW_MONITORING') and settings.SHOW_MONITORING
     c['show_actual'] = not hasattr(settings, 'SHOW_ACTUAL') or settings.SHOW_ACTUAL
     c['show_breadcrumbs'] = hasattr(settings, 'SHOW_BREADCRUMBS') and settings.SHOW_BREADCRUMBS
@@ -204,14 +203,12 @@ def _get_tab_titles(show_side):
     if show_side == 'income':
         return {
             'economic': u"¿Cómo se ingresa?",
-            'funding': u"Tipo de ingresos",
             'institutional': u"¿Quién recauda?"
         }
     else:
         return {
             'functional': u"¿En qué se gasta?",
             'economic': u"¿Cómo se gasta?",
-            'funding': u"¿Cómo se financia?",
             'institutional': u"¿Quién lo gasta?",
             'monitoring': u"Objetivos"
         }

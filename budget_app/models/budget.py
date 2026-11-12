@@ -7,7 +7,6 @@ from django.conf import settings
 
 from .economic_category import EconomicCategory
 from .functional_category import FunctionalCategory
-from .funding_category import FundingCategory
 from .institutional_category import InstitutionalCategory
 from .geographic_category import GeographicCategory
 
@@ -79,8 +78,6 @@ class BudgetManager(models.Manager):
                     .income().filter(budget_id__entity=entity).exclude(description='').order_by('budget_id__year')),
                 'expense': self._get_economic_descriptions(EconomicCategory.objects \
                     .expenses().filter(budget_id__entity=entity).exclude(description='').order_by('budget_id__year')),
-                'funding': self._to_hash(FundingCategory.objects \
-                    .filter(budget_id__entity=entity).exclude(description='').order_by('budget_id__year')),
                 'geographic': self._to_hash(GeographicCategory.objects \
                     .filter(budget_id__entity=entity).exclude(description='').order_by('budget_id__year')),
                 'institutional': self._get_institutional_descriptions(InstitutionalCategory.objects \

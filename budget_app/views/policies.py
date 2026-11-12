@@ -80,13 +80,11 @@ def subprogrammes_show(request, id, title, render_callback=None):
     # Get the budget breakdown
     c['breakdowns'] = {
       'economic': BudgetBreakdown(['chapter', 'article', 'heading', get_final_element_grouping(c)]),
-      'funding': BudgetBreakdown(['source', 'fund']) if c['show_funding_tab'] else None,
       'institutional': get_institutional_breakdown(c) if c['show_institutional_tab'] else None
     }
     get_budget_breakdown(   "fc.subprogramme = %s and e.id = %s", [ id, main_entity.id ],
                             [
                                 c['breakdowns']['economic'],
-                                c['breakdowns']['funding'],
                                 c['breakdowns']['institutional']
                             ],
                             _populate_programme_descriptions)
@@ -104,7 +102,7 @@ def subprogrammes_show(request, id, title, render_callback=None):
     populate_stats(c)
     populate_years(c, c['breakdowns']['economic'])
     populate_budget_statuses(c, main_entity.id)
-    populate_area_descriptions(c, ['functional', 'funding', show_side])
+    populate_area_descriptions(c, ['functional', show_side])
     populate_csv_settings(c, 'subprogramme', id)
     set_show_side(c, show_side)
     set_full_breakdown(c, True)

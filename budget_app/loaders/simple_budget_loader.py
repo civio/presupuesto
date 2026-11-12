@@ -61,19 +61,6 @@ class SimpleBudgetLoader(BaseLoader):
 
     # Load the budget items into the database. Do it in bulk to avoid hitting the database.
     def load_budget_items(self, budget, budget_items):
-        # Since the incoming data is not fully classified along the four dimensions we defined
-        # for the main budget (Aragón, the good one), we are forced to assign the items a
-        # catch-all fake category. (Leaving the category blank would be another possibility,
-        # but we'd have to modify the DB structure for that, and also our breakdown queries,
-        # so I'm going this slightly hackier way first.)
-        dummy_fdc = FundingCategory(expense=True,   # True/False doesn't really matter
-                                    source='X',
-                                    fund_class=None,
-                                    fund=None,
-                                    description='Desconocido',
-                                    budget=budget)
-        dummy_fdc.save()
-
         # Income data is often not classified functionally, but we need every budget item to be classified
         # along all dimensions (at least for now), because of the way we denormalize/join the data in the app.
         # So we create a fake functional category that will contain all the income data.
@@ -139,7 +126,6 @@ class SimpleBudgetLoader(BaseLoader):
             obj = BudgetItem(institutional_category=ic,
                       functional_category=fc,
                       economic_category=ec,
-                      funding_category=dummy_fdc,
                       item_number=item.get('item_number', ''),
                       expense=item['is_expense'],
                       actual=item['is_actual'],

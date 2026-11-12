@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+### Removed
+- Drop the funding classification: no site used it (`SHOW_FUNDING_TAB` was never on), and every loader created a dummy category only because budget items required one. The migration deletes the `funding_categories` table, and themes must stop referencing `FundingCategory`. civio/presupuesto-management#1423
+
 ### Fixed
 - Highlight the calculator, guided visit and monitoring tabs in the menu, whose patterns never matched their pages.
 - Keep the policies tab highlighted on programme, subprogramme, article and section pages.

@@ -54,8 +54,7 @@
 {% else %}
         'functional': "{{ _('Programa') }}",
 {% endif %}
-        'institutional': "{{ _('Entidad') }}",
-        'funding': "{{ _('Fondo') }}"
+        'institutional': "{{ _('Entidad') }}"
       };
       return titles[tab];
     }
@@ -79,11 +78,10 @@
         'functional': rowNameFormatter
 {% endif %}
 {% if show_section_pages %}
-        'institutional': sectionLinkFormatter,
+        'institutional': sectionLinkFormatter
 {% else %}
-        'institutional': rowNameFormatter,
+        'institutional': rowNameFormatter
 {% endif %}
-        'funding': rowNameFormatter
       };
       return renders[tab];
     }
@@ -104,7 +102,7 @@
 {% endif %}
 
     var breakdowns = {
-      {% for tab in ['functional', 'economic', 'funding', 'institutional'] %}
+      {% for tab in ['functional', 'economic', 'institutional'] %}
       '{{tab}}': {{ breakdowns[tab].to_json( labels=descriptions[tab] )|safe if breakdowns[tab] else 'null' }},
       {% endfor %}
     }
@@ -117,7 +115,6 @@
     var areasData = {
       'economic':       {{ (expense_areas if show_side=='expense' else income_areas)|safe }},
       'functional':     {{ functional_areas|safe if functional_areas else 'null' }},
-      'funding':        {{ funding_areas|safe if funding_areas else 'null' }},
     };
     
 

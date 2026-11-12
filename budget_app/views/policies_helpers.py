@@ -13,14 +13,12 @@ def policies_show_helper(request, c, entity, id, title, render_callback=None):
     c['breakdowns'] = {
       'functional': BudgetBreakdown(['programme']),
       'economic': BudgetBreakdown(['chapter', 'article', 'heading']),
-      'funding': BudgetBreakdown(['source', 'fund']) if c['show_funding_tab'] else None,
       'institutional': get_institutional_breakdown(c) if c['show_institutional_tab'] else None
     }
     get_budget_breakdown(   "fc.policy = %s and e.id = %s", [ id, entity.id ],
                             [
                                 c['breakdowns']['functional'],
                                 c['breakdowns']['economic'],
-                                c['breakdowns']['funding'],
                                 c['breakdowns']['institutional']
                             ])
 
@@ -40,7 +38,7 @@ def policies_show_helper(request, c, entity, id, title, render_callback=None):
     populate_entity_descriptions(c, entity, show_side)
     populate_years(c, c['breakdowns']['functional'])
     populate_budget_statuses(c, entity.id)
-    populate_area_descriptions(c, ['functional', 'funding', show_side])
+    populate_area_descriptions(c, ['functional', show_side])
     populate_csv_settings(c, 'policy', id)
     set_show_side(c, show_side)
     set_full_breakdown(c, True)
@@ -84,14 +82,12 @@ def programmes_show_helper(request, c, entity, id, title, render_callback=None):
     c['breakdowns'] = {
       'functional': BudgetBreakdown(['subprogramme']) if c['use_subprogrammes'] else None,
       'economic': BudgetBreakdown(['chapter', 'article', 'heading', get_final_element_grouping(c)]),
-      'funding': BudgetBreakdown(['source', 'fund']) if c['show_funding_tab'] else None,
       'institutional': get_institutional_breakdown(c) if c['show_institutional_tab'] else None
     }
     get_budget_breakdown(   "fc.programme = %s and e.id = %s", [ id, entity.id ],
                             [
                                 c['breakdowns']['functional'],
                                 c['breakdowns']['economic'],
-                                c['breakdowns']['funding'],
                                 c['breakdowns']['institutional']
                             ],
                             _populate_programme_descriptions)
@@ -128,7 +124,7 @@ def programmes_show_helper(request, c, entity, id, title, render_callback=None):
     populate_stats(c)
     populate_years(c, c['breakdowns']['economic'])
     populate_budget_statuses(c, entity.id)
-    populate_area_descriptions(c, ['functional', 'funding', show_side])
+    populate_area_descriptions(c, ['functional', show_side])
     populate_csv_settings(c, 'programme', id)
     set_show_side(c, show_side)
     set_full_breakdown(c, True)
@@ -170,7 +166,6 @@ def articles_show_helper(request, c, entity, id, title, show_side, render_callba
     c['breakdowns'] = {
       'functional': BudgetBreakdown(['policy', 'programme']) if show_side=='expense' else None,
       'economic': BudgetBreakdown(['heading', get_final_element_grouping(c)]),
-      'funding': BudgetBreakdown(['source', 'fund']) if c['show_funding_tab'] else None,
       'institutional': get_institutional_breakdown(c) if c['show_institutional_tab'] else None
     }
     get_budget_breakdown(   "ec.article = %s and e.id = %s and i.expense = %s",
@@ -178,7 +173,6 @@ def articles_show_helper(request, c, entity, id, title, show_side, render_callba
                             [
                                 c['breakdowns']['functional'],
                                 c['breakdowns']['economic'],
-                                c['breakdowns']['funding'],
                                 c['breakdowns']['institutional']
                             ],
                             _populate_article_descriptions)
@@ -195,7 +189,7 @@ def articles_show_helper(request, c, entity, id, title, show_side, render_callba
     populate_stats(c)
     populate_years(c, c['breakdowns']['economic'])
     populate_budget_statuses(c, entity.id)
-    populate_area_descriptions(c, ['functional', 'funding', show_side])
+    populate_area_descriptions(c, ['functional', show_side])
     populate_csv_settings(c, 'article_revenues' if show_side=='income' else 'article_expenditures', id)
     set_show_side(c, show_side)
     set_full_breakdown(c, True)

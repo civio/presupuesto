@@ -320,34 +320,6 @@ def entity_article_income(request, level, slug, id, format):
 
 
 #
-# FUNDING BREAKDOWN
-#
-def write_funding_breakdown(c, writer):
-    field_username = 'Gastos' if c['show_side'] == 'expense' else 'Ingresos'
-    write_header(writer, [u'Año.csv', 'Id Fuente', 'Nombre Fuente', 'Id Fondo', 'Nombre Fondo', 'Presupuesto '+field_username, field_username+' Reales'])
-    for year in sorted(_unique(c['breakdowns']['funding'].years.values())):
-        for source_id, source in c['breakdowns']['funding'].subtotals.items():
-            write_breakdown_item(writer, year, source, c['show_side'], [source_id, None], c['descriptions']['funding'])
-            for fund_id, fund in source.subtotals.items():
-                write_breakdown_item(writer, year, fund, c['show_side'], [source_id, fund_id], c['descriptions']['funding'])
-
-def funding_policy_breakdown(request, id, format):
-    return policies_show(request, id, '', _generator("%s.financiacion" % id, format, write_funding_breakdown))
-
-def funding_programme_breakdown(request, id, format):
-    return programmes_show(request, id, '', _generator("%s.financiacion" % id, format, write_funding_breakdown))
-
-def funding_subprogramme_breakdown(request, id, format):
-    return subprogrammes_show(request, id, '', _generator("%s.financiacion" % id, format, write_funding_breakdown))
-
-def funding_article_revenues_breakdown(request, id, format):
-    return income_articles_show(request, id, '', _generator("%s.ingresos.financiacion" % id, format, write_funding_breakdown))
-
-def funding_article_expenditures_breakdown(request, id, format):
-    return expense_articles_show(request, id, '', _generator("%s.gastos.financiacion" % id, format, write_funding_breakdown))
-
-
-#
 # INSTITUTIONAL BREAKDOWN
 #
 def write_institutional_breakdown(c, writer):

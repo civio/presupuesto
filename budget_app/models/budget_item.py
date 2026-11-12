@@ -9,7 +9,6 @@ class BudgetItemManager(models.Manager):
                 "fc.policy, fc.function, fc.programme, fc.subprogramme, " \
                 "ec.chapter, ec.article, ec.heading, ec.subheading, " \
                 "ic.institution, ic.department, " \
-                "fdc.source, fdc.fund, "\
                 "i.id, i.item_number, i.description, i.expense, i.actual, i.amount, " \
                 "b.year, " \
                 "e.name " \
@@ -18,14 +17,12 @@ class BudgetItemManager(models.Manager):
                 "functional_categories fc, " \
                 "institutional_categories ic, " \
                 "economic_categories ec, " \
-                "funding_categories fdc, " \
                 "budgets b, " \
                 "entities e " \
             "where " \
                 "i.functional_category_id = fc.id and " \
                 "i.institutional_category_id = ic.id and " \
                 "i.economic_category_id = ec.id and " \
-                "i.funding_category_id = fdc.id and " \
                 "i.budget_id = b.id and " \
                 "b.entity_id = e.id"
 
@@ -83,9 +80,6 @@ class BudgetItem(models.Model):
                             on_delete=models.CASCADE)
     functional_category = models.ForeignKey('FunctionalCategory',
                             db_column='functional_category_id',
-                            on_delete=models.CASCADE)
-    funding_category = models.ForeignKey('FundingCategory',
-                            db_column='funding_category_id',
                             on_delete=models.CASCADE)
     institutional_category = models.ForeignKey('InstitutionalCategory',
                             db_column='institutional_category_id',

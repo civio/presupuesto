@@ -4,7 +4,6 @@ from .budget_item import *
 from .budget_breakdown import *
 from .economic_category import *
 from .functional_category import *
-from .funding_category import *
 from .geographic_category import *
 from .glossary_term import *
 from .goal import *

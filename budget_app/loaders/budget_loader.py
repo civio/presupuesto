@@ -20,7 +20,6 @@ class BudgetLoader(BaseLoader):
         self.load_institutional_hierarchy(budget, path)
         self.load_economic_hierarchy(budget, path)
         self.load_functional_hierarchy(budget, path)
-        self.load_funding_hierarchy(budget, path)
         self.load_data_files(budget, path)
 
         print("Cargando ejecución presupuestaria de %s..." % path)
@@ -92,44 +91,6 @@ class BudgetLoader(BaseLoader):
 
         for item in economic_categories:
             EconomicCategory(budget=budget, **item).save()
-
-
-    def get_default_funding_categories(self):
-        return []
-
-    def add_funding_category(self, items, line):
-        # Prefer the long description if it exists, otherwise the short one
-        description = line[6] if (line[6] != "") else line[5]
-        description = description
-
-        items.append({
-                'expense': (line[1].upper() == 'G'),
-                'source': (line[2] if line[2] != "" else None),
-                'fund_class': (line[3] if line[3] != "" else None),
-                'fund': (line[4] if line[4] != "" else None),
-                'description': description.title()
-            })
-
-    # This is a quite particular classification, only seen in Aragón for now,
-    # so we treat it as optional: if the file doesn't exist, continue
-    def load_funding_hierarchy(self, budget, path):
-        funding_categories = self.get_default_funding_categories()
-        filename = os.path.join(path, 'estructura_financiacion.csv')
-        if os.path.isfile(filename):
-            print("Cargando jerarquía de financiación de %s..." % filename)
-            reader = csv.reader(open(filename, 'r', encoding='utf-8'), delimiter=self._get_delimiter())
-            for line in reader:
-                # Ignore header, empty lines and comments
-                if not line or line[0]=="" or line[0][0]=="#" or line[0] == 'EJERCICIO':
-                    continue
-
-                if budget.year != line[0]:
-                    raise Exception("Years should match (%s <> %s)" % (budget.year, line[0]))
-
-                self.add_funding_category(funding_categories, line)
-
-        for item in funding_categories:
-            FundingCategory(budget=budget, **item).save()
 
 
     def get_default_functional_categories(self):
@@ -267,7 +228,6 @@ class BudgetLoader(BaseLoader):
                 'ec_heading': (line[3][0:3] if len(line[3])>=3 else None),
                 'ec_subheading': (line[3] if len(line[3])>=4 else None),
                 'ec_code': line[3], # Redundant, but convenient
-                'fdc_code': line[4],
                 'item_number': '',
                 'description': line[5],
                 'amount': self._read_spanish_number(amount)
@@ -315,17 +275,6 @@ class BudgetLoader(BaseLoader):
             else:
                 ec = ec.first()
 
-            fdc = FundingCategory.objects.filter(budget=budget,
-                                                expense=is_expense,
-                                                source=item['fdc_code'][0],
-                                                fund_class=item['fdc_code'][0:2],
-                                                fund=item['fdc_code'])
-            if not fdc:
-                print("ALERTA: No se encuentra la categoría de financiación '%s' para '%s': %s€" % (item['fdc_code'], item['description'], item['amount']))
-                continue
-            else:
-                fdc = fdc.first()
-
             # When there is no description for the budget_item take the one from the parent economic category
             if item['description'] == None or item['description'] == "":
                 item['description'] = ec.description
@@ -335,7 +284,6 @@ class BudgetLoader(BaseLoader):
                 BudgetItem(institutional_category=ic,
                           functional_category=fc,
                           economic_category=ec,
-                          funding_category=fdc,
                           expense=is_expense,
                           actual=is_actual,
                           item_number=item['item_number'],
