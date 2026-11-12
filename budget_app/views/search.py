@@ -36,7 +36,7 @@ def search(request):
         budget = None
 
     # Get search results
-    c['years'] = map(str, Budget.objects.get_years(get_main_entity(c).id))
+    c['years'] = [str(year) for year in Budget.objects.get_years(get_main_entity(c).id)]
 
     c['terms'] = list(GlossaryTerm.objects.search(c['query'], c['LANGUAGE_CODE']))
 

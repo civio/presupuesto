@@ -19,3 +19,8 @@ def test_finds_glossary_terms(client):
 def test_any_year_parameter_works(client, year):
     # Invalid years fall back to the latest one instead of failing. See civio/presupuesto-management#1404
     assert client.get('/es/busqueda', {'q': 'impuesto', 'year': year}).status_code == 200
+
+
+def test_lists_the_years_to_search_in(client):
+    content = client.get('/es/busqueda', {'q': 'impuesto'}).content.decode()
+    assert '2024' in content and '2025' in content
