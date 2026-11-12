@@ -29,3 +29,4 @@ def test_version(client):
     assert version['budget_years'] == [2024, 2025]
     assert version['execution_years'] == [2024, 2025]
     assert version['languages'] == ['ca', 'es']
+    assert version['debug'] is False

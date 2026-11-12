@@ -5,9 +5,9 @@ import subprocess
 import sys
 
 import django
+from django.conf import settings
 from django.http import JsonResponse
 
-from local_settings import ENV
 from project.settings import LANGUAGES
 from budget_app.models import InflationStat, PopulationStat, Budget, BudgetItem, Payment
 from .helpers import *
@@ -56,7 +56,7 @@ def version_api(request):
         'django_version': django_version,
         'tag': git_tag,
         'commit': git_commit,
-        'debug': ENV.get('DEBUG', False),
+        'debug': settings.DEBUG,
         'budget_years': budget_years,
         'budget_statuses': budget_statuses,
         'execution_years': execution_years,
