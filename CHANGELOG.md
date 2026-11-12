@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Move to Node 24 for building the D3 bundle and the themes' CSS, which come out byte-identical. #1415
 - Move local development to Python 3.12, the version the servers run, since 3.10 reached end of life in October 2026.
-- Upgrade Django to 5.2.19, tornado to 6.6 in the dev requirements, and pytest to 9.2.0 and pytest-playwright to 0.10.0 in the test requirements.
+- Upgrade Django to 5.2.19, tornado to 6.6 and csvkit to 2.2.0 in the dev requirements, drop the SQLAlchemy pin (csvkit brings it in), and pytest to 9.2.0 and pytest-playwright to 0.10.0 in the test requirements.
 - Stop holding back django-compressor in Dependabot, now that we're on Django 5.2.
 
 ## [5.2] - 2026-10-22
