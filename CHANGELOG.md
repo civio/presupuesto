@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+### Changed
+- Add loading tests for budgets with economic subheadings, against Navarra's 2025, and run them in CI. civio/presupuesto-management#1423
+
 ### Removed
 - Drop the funding classification: no site used it (`SHOW_FUNDING_TAB` was never on), and every loader created a dummy category only because budget items required one. The migration deletes the `funding_categories` table, and themes must stop referencing `FundingCategory`. civio/presupuesto-management#1423
 

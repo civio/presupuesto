@@ -90,11 +90,15 @@ Los _tests_ de `tests/app` prueban la aplicación por dentro (cargas, páginas, 
         $ pip install -r requirements/test.txt
         $ pytest tests/app
 
+Los de `tests/subheadings` hacen lo mismo con 2025 de Navarra, en castellano y euskera, y necesitan el tema en `presupuesto_navarra`. Solo prueban la carga de un presupuesto con subconceptos, que es la única web que los tiene, con un `item_number` por cada descripción distinta. Van aparte porque Django solo admite un tema por proceso, y tardan unos minutos:
+
+        $ pytest tests/subheadings
+
 El código Python se revisa con [ruff](https://docs.astral.sh/ruff/), con la configuración de `ruff.toml`:
 
         $ ruff check
 
-La integración continua de GitHub (`.github/workflows/ci.yml`) pasa ruff, los _tests_ de `tests/app` y los de punta a punta contra una copia local de El Prat en cada _push_ y en cada _pull request_.
+La integración continua de GitHub (`.github/workflows/ci.yml`) pasa ruff, los _tests_ de `tests/app` y `tests/subheadings` y los de punta a punta contra una copia local de El Prat en cada _push_ y en cada _pull request_.
 
 Los _tests_ de `tests/e2e` prueban la aplicación desde fuera, con un navegador (Playwright), así que funcionan igual contra el servidor local que contra un sitio desplegado. Las páginas a visitar salen del `sitemap.xml` del sitio, una de cada tipo por idioma. Se instalan y lanzan así:
 
