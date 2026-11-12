@@ -2,6 +2,9 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+### Fixed
+- Highlight the calculator, guided visit and monitoring tabs in the menu, whose patterns never matched their pages.
+- Keep the policies tab highlighted on programme, subprogramme, article and section pages.
 
 ## [5.3] - 2026-11-12
 ### Changed
