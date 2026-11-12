@@ -53,18 +53,16 @@ class BaseLoadingCommand(BaseCommand):
             else:
                 year = int(part)
                 result.append(year)
-        result = map(str, result)
-        return result
+        # A list, not map()'s iterator, which would run out after the first language
+        return [str(year) for year in result]
 
     def handle(self, loader_name, args, options):
+        years = self._parse_number_range(options['years'])
         languages = self._parse_languages(options['language'])
         level = options['level']
         name = options['name']
 
         for language in languages:
-            # In Python 3 we need a fresh year iterator for every language iteration
-            years = self._parse_number_range(options['years'])
-
             entity = self._get_entity(level, name, language)
             for year in years:
                 path = os.path.join(

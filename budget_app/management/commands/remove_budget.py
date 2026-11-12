@@ -51,8 +51,8 @@ class Command(BaseCommand):
             else:
                 year = int(part)
                 result.append(year)
-        result = map(str, result)
-        return result
+        # A list, not map()'s iterator, which would run out after the first language
+        return [str(year) for year in result]
 
     def handle(self, *args, **options):
         years = self._parse_number_range(options['years'])
