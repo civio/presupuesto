@@ -10,7 +10,7 @@ Para instalar la aplicación en local es necesario seguir los siguientes pasos:
         $ python -m virtualenv env
         $ source env/bin/activate
 
-* Instalar los componentes utilizados por la aplicación. Actualmente, la aplicación se basa en Django 3.2.x:
+* Instalar los componentes utilizados por la aplicación. Actualmente, la aplicación se basa en Django 5.2.x:
 
         $ pip install -r requirements/local.txt
 
@@ -84,6 +84,17 @@ Pero para usarlo de manera regular debemos configurar la aplicación, vía `loca
         $ python manage.py runserver
 
 ### Tests
+
+Los _tests_ de `tests/app` prueban la aplicación por dentro (cargas, páginas, búsqueda, descargas) con los datos de El Prat de Llobregat, así que necesitan el tema clonado en `presupuesto_elprat`. Crean su propia base de datos de PostgreSQL (`test_dvmi_elprat_tests`), cargan en ella 2024 y 2025 y la borran al terminar, sin tocar el `local_settings.py` del sitio con el que estemos trabajando:
+
+        $ pip install -r requirements/test.txt
+        $ pytest tests/app
+
+El código Python se revisa con [ruff](https://docs.astral.sh/ruff/), con la configuración de `ruff.toml`:
+
+        $ ruff check
+
+La integración continua de GitHub (`.github/workflows/ci.yml`) pasa ruff, los _tests_ de `tests/app` y los de punta a punta contra una copia local de El Prat en cada _push_ y en cada _pull request_.
 
 Los _tests_ de `tests/e2e` prueban la aplicación desde fuera, con un navegador (Playwright), así que funcionan igual contra el servidor local que contra un sitio desplegado. Las páginas a visitar salen del `sitemap.xml` del sitio, una de cada tipo por idioma. Se instalan y lanzan así:
 

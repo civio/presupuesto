@@ -8,6 +8,14 @@ All notable changes to this project will be documented in this file.
 - Upgrade Django to 5.2.19, tornado to 6.6 and csvkit to 2.2.0 in the dev requirements, drop the SQLAlchemy pin (csvkit brings it in), and pytest to 9.2.0 and pytest-playwright to 0.10.0 in the test requirements.
 - Stop holding back django-compressor in Dependabot, now that we're on Django 5.2.
 - Upgrade rollup from 2 to 4 for building the D3 bundle, which only loses the unused `__esModule` marker.
+- Add tests of the app with pytest-django against El Prat's data, lint the Python code with ruff, and run both, plus the end-to-end tests, in GitHub Actions. Dependabot now also updates the actions.
+- Let `LOCAL_SETTINGS` point to a settings file other than `local_settings.py`, which the tests use.
+
+### Fixed
+- Highlight the current section in the menu again, broken since the move to Python 3.
+- Return a 404 for institutional downloads on sites without an institutional breakdown, instead of a 500.
+- `/version.json` read `DEBUG` straight from `local_settings.py`, so the app couldn't start without that file.
+- A theme's `urls.py` that fails to load now raises an error, instead of silently dropping the theme's extra pages.
 
 ## [5.2] - 2026-10-22
 ### Changed
