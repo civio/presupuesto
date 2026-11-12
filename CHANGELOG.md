@@ -14,7 +14,8 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - Highlight the current section in the menu again, broken since the move to Python 3.
 - Return a 404 for institutional downloads on sites without an institutional breakdown, instead of a 500.
-- `/version.json` read `DEBUG` straight from `local_settings.py`, so the app couldn't start without that file.
+- Return a 404 for policies, programmes, subprogrammes, articles and sections that don't exist, and their downloads, instead of an empty page or a 500.
+- `/version.json` read `DEBUG` from `local_settings.py` even when `LOCAL_SETTINGS` pointed elsewhere, and failed without a git repository or a reachable tag; now it falls back to the commit, or leaves the git details empty.
 - A theme's `urls.py` that fails to load now raises an error, instead of silently dropping the theme's extra pages.
 
 ## [5.2] - 2026-10-22
