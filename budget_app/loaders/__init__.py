@@ -1,5 +1,4 @@
 from .base_loader import BaseLoader
-from .budget_loader import BudgetLoader
 from .entity_loader import EntityLoader
 from .glossary_loader import GlossaryLoader
 from .investments_loader import InvestmentsLoader

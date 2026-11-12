@@ -141,101 +141,123 @@ class SimpleBudgetLoader(BaseLoader):
             print("  Info: los ingresos y gastos del presupuesto no coinciden %0.2f <> %0.2f" % (budgeted_income/100.0, budgeted_expense/100.0))
 
 
+    # Classifications can change from one year to the next, so look first in the year's folder,
+    # and then in the entity's, where most sites keep a single one for all years
+    def _find_classification_file(self, path, filename):
+        year_filename = os.path.join(path, filename)
+        if os.path.isfile(year_filename):
+            return year_filename
+        return os.path.join(path, '..', '..', filename)
+
+    # Read a classification file, skipping comments and empty lines
+    def _read_classification_file(self, filename):
+        reader = csv.reader(open(filename, 'r', encoding='utf-8'), delimiter=self._get_delimiter())
+        for line in reader:
+            if line==[] or re.match("^#", line[0]):
+                continue
+            yield line
+
+
     # Determine the institutional classification file path
     def get_institutional_classification_path(self, path):
-        return os.path.join(path, '..', '..', 'clasificacion_organica.csv')
+        return self._find_classification_file(path, 'clasificacion_organica.csv')
+
+    # Turn a line of the institutional classification into the fields of a category, or None to skip it.
+    # Themes whose files have a different format override this.
+    def parse_institutional_category(self, line):
+        institution = line[0]
+        section = line[1]
+        department = line[2]
+        description = line[3]
+        return {
+            'institution': institution if institution != "" else None,
+            'section': institution+section if section != "" else None,
+            'department': institution+section+department if department != "" else None,
+            'description': description
+        }
 
     # Load the institutional categories
     def load_institutional_classification(self, path, budget):
         filename = self.get_institutional_classification_path(path)
-        reader = csv.reader(open(filename, 'r', encoding='utf-8'), delimiter=self._get_delimiter())
         category_objects = []
-        for index, line in enumerate(reader):
-            if line==[] or re.match("^#", line[0]):  # Ignore comments and empty lines
-                continue
-
-            institution = line[0]
-            section = line[1]
-            department = line[2]
-            description = line[3]
-
-            ic = InstitutionalCategory( institution=institution if institution != "" else None,
-                                        section=institution+section if section != "" else None,
-                                        department=institution+section+department if department != "" else None,
-                                        description=description,
-                                        budget=budget)
-            category_objects.append(ic)
+        for line in self._read_classification_file(filename):
+            category = self.parse_institutional_category(line)
+            if category:
+                category_objects.append(InstitutionalCategory(budget=budget, **category))
         InstitutionalCategory.objects.bulk_create(category_objects)
 
 
     # Determine the economic classification file path
     def get_economic_classification_path(self, path):
-        return os.path.join(path, '..', '..', 'clasificacion_economica.csv')
+        return self._find_classification_file(path, 'clasificacion_economica.csv')
+
+    # Turn a line of the economic classification into the fields of a category, or None to skip it.
+    # Themes whose files have a different format, or subheadings, override this.
+    def parse_economic_category(self, line):
+        chapter = line[1]
+        article = line[2]
+        concept = line[3]
+        description = line[4]
+        return {
+            'expense': (line[0] != 'I'),
+            'chapter': chapter if chapter != "" else None,
+            'article': chapter+article if article != "" else None,
+            'heading': chapter+article+concept if concept != "" else None,
+            'description': description
+        }
 
     # Load the economic categories
     def load_economic_classification(self, path, budget):
         filename = self.get_economic_classification_path(path)
-        reader = csv.reader(open(filename, 'r', encoding='utf-8'), delimiter=self._get_delimiter())
         category_objects = []
-        for index, line in enumerate(reader):
-            if line==[] or re.match("^#", line[0]):  # Ignore comments and empty lines
-                continue
-
-            is_expense = (line[0] != 'I')
-            chapter = line[1]
-            article = line[2]
-            concept = line[3]
-            description = line[4]
-
-            ec = EconomicCategory(  expense=is_expense,
-                                    chapter=chapter if chapter != "" else None,
-                                    article=chapter+article if article != "" else None,
-                                    heading=chapter+article+concept if concept != "" else None,
-                                    description=description,
-                                    budget=budget)
-            category_objects.append(ec)
+        for line in self._read_classification_file(filename):
+            category = self.parse_economic_category(line)
+            if category:
+                category_objects.append(EconomicCategory(budget=budget, **category))
         EconomicCategory.objects.bulk_create(category_objects)
 
 
     # Determine the functional classification file path
     def get_functional_classification_path(self, path):
-        return os.path.join(path, '..', '..', 'areas_funcionales.csv')
+        return self._find_classification_file(path, 'areas_funcionales.csv')
+
+    # Turn a line of the functional classification into the fields of a category, or None to skip it.
+    # Themes whose files have a different format override this.
+    def parse_functional_category(self, line):
+        # If we're not using subprogrammes, insert an empty column where they would go.
+        # This feels better than forcing everybody to add an empty column.
+        if not self._use_subprogrammes():
+            line.insert(4, "")
+
+        area = line[0]
+        policy = line[1]
+        group = line[2]
+        programme = line[3]
+        subprogramme = line[4]
+        description = line[5]
+        return {
+            'area': area if area != "" else None,
+            'policy': area+policy if policy != "" else None,
+            'function': area+policy+group if group != "" else None,
+            'programme': area+policy+group+programme if programme != "" else None,
+            'subprogramme': area+policy+group+programme+subprogramme if subprogramme != "" else None,
+            'description': description
+        }
 
     # Load the functional categories
     def load_functional_classification(self, path, budget):
         filename = self.get_functional_classification_path(path)
-        reader = csv.reader(open(filename, 'r', encoding='utf-8'), delimiter=self._get_delimiter())
         category_objects = []
-        for index, line in enumerate(reader):
-            if line==[] or re.match("^#", line[0]):     # Ignore comments and empty lines
-                continue
-
-            # If we're not using subprogrammes, insert an empty column where they would go.
-            # This feels better than forcing everybody to add an empty column.
-            if not self._use_subprogrammes():
-                line.insert(4, "")
-
-            area = line[0]
-            policy = line[1]
-            group = line[2]
-            programme = line[3]
-            subprogramme = line[4]
-            description = line[5]
-
-            fc = FunctionalCategory(area=area if area != "" else None,
-                                    policy=area+policy if policy != "" else None,
-                                    function=area+policy+group if group != "" else None,
-                                    programme=area+policy+group+programme if programme != "" else None,
-                                    subprogramme=area+policy+group+programme+subprogramme if subprogramme != "" else None,
-                                    description=description,
-                                    budget=budget)
-            category_objects.append(fc)
+        for line in self._read_classification_file(filename):
+            category = self.parse_functional_category(line)
+            if category:
+                category_objects.append(FunctionalCategory(budget=budget, **category))
         FunctionalCategory.objects.bulk_create(category_objects)
 
 
     # Determine the functional classification file path
     def get_geographic_classification_path(self, path):
-        return os.path.join(path, '..', '..', 'clasificacion_geografica.csv')
+        return self._find_classification_file(path, 'clasificacion_geografica.csv')
 
     # Load the geographic categories (optional)
     def load_geographic_classification(self, path, budget):

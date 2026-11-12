@@ -45,6 +45,11 @@ class BaseLoader(object):
         else:
             return s
 
+    # Does the economic classification go down to subheadings? Only Navarra's does, so far,
+    # so loaders opt in. (Default: false, codes longer than three digits are cut to the heading)
+    def _use_subheadings(self):
+        return False
+
     # Are we using subprogrammes? (Default: false)
     def _use_subprogrammes(self):
         return hasattr(settings, 'USE_SUBPROGRAMMES') and settings.USE_SUBPROGRAMMES
@@ -79,7 +84,7 @@ class BaseLoader(object):
                                                 chapter=ec_code[0],
                                                 article=ec_code[0:2] if len(ec_code) >= 2 else None,
                                                 heading=ec_code[0:3] if len(ec_code) >= 3 else None,
-                                                subheading = None,
+                                                subheading=ec_code if len(ec_code) >= 4 and self._use_subheadings() else None,
                                                 budget=budget)
             self.economic_category_cache[key] = ec.first() if ec else None
         return self.economic_category_cache[key]
