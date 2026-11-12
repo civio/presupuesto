@@ -39,8 +39,6 @@ jobs:
       LOCAL_SETTINGS: tests/env.py
     steps:
       - uses: actions/checkout@v7
-        with:
-          fetch-depth: 0  # /version.json runs `git describe --tags`
       # The tests run against El Prat's theme and data
       - uses: actions/checkout@v7
         with:

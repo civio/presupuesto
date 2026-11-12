@@ -8,17 +8,17 @@ import django
 from django.conf import settings
 from django.http import JsonResponse
 
-from project.settings import LANGUAGES
+from project.settings import LANGUAGES, ROOT_PATH
 from budget_app.models import InflationStat, PopulationStat, Budget, BudgetItem, Payment
 from .helpers import *
 
 
-@contextmanager
-def fix_cwd():
-    old_dir = os.getcwd()
-    os.chdir(ROOT_PATH)
-    yield
-    os.chdir(old_dir)
+# Git details of the deployed code, or None where git can't tell (e.g. no repository)
+def git(*args):
+    try:
+        return subprocess.check_output(['git', *args], cwd=ROOT_PATH, stderr=subprocess.DEVNULL).strip().decode()
+    except (OSError, subprocess.CalledProcessError):
+        return None
 
 
 def fix_version(version):
@@ -33,9 +33,9 @@ def fix_version(version):
 def version_api(request):
     c = get_context(request)
 
-    with fix_cwd():
-        git_commit = subprocess.check_output(['git', 'rev-parse', 'HEAD']).strip().decode()
-        git_tag = subprocess.check_output(['git', 'describe', '--tags']).strip().decode()
+    git_commit = git('rev-parse', 'HEAD')
+    # Falls back to the abbreviated commit if no tag is reachable, as in a shallow clone
+    git_tag = git('describe', '--tags', '--always')
 
     python_version = fix_version(sys.version_info)
     django_version = fix_version(django.VERSION)

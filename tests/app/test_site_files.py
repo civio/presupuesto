@@ -30,3 +30,13 @@ def test_version(client):
     assert version['execution_years'] == [2024, 2025]
     assert version['languages'] == ['ca', 'es']
     assert version['debug'] is False
+
+
+def test_version_without_git(client, monkeypatch):
+    # A copy of the code without its repository still answers, with no git details
+    import budget_app.views.version as version_view
+    monkeypatch.setattr(version_view, 'ROOT_PATH', '/')
+    version = json.loads(client.get('/version.json').content)
+    assert version['commit'] is None
+    assert version['tag'] is None
+    assert version['budget_years'] == [2024, 2025]
