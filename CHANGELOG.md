@@ -2,6 +2,8 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+
+## [5.3] - 2026-11-12
 ### Changed
 - Move to Node 24 for building the D3 bundle and the themes' CSS, which come out byte-identical. #1415
 - Move local development to Python 3.12, the version the servers run, since 3.10 reached end of life in October 2026.
@@ -17,6 +19,7 @@ All notable changes to this project will be documented in this file.
 - Return a 404 for policies, programmes, subprogrammes, articles and sections that don't exist, and their downloads, instead of an empty page or a 500.
 - `/version.json` read `DEBUG` from `local_settings.py` even when `LOCAL_SETTINGS` pointed elsewhere, and failed without a git repository or a reachable tag; now it falls back to the commit, or leaves the git details empty.
 - A theme's `urls.py` that fails to load now raises an error, instead of silently dropping the theme's extra pages.
+- `remove_budget` with several languages removed only the first one's budget, since the move to Python 3.
 
 ## [5.2] - 2026-10-22
 ### Changed
