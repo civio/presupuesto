@@ -1,3 +1,4 @@
 -r base.txt
 pytest==9.2.0
 pytest-playwright==0.10.0
+pytest-django==4.14.0

@@ -16,8 +16,11 @@ APP_PATH = os.path.join(ROOT_PATH, 'budget_app')
 # but it turns out it's more useful to load it at the beginning, so I can set the database credentials.
 # I could potentially split it in two (like Rails does), but feels overkill
 #
+# The tests point LOCAL_SETTINGS to their own file, so they don't depend on the site we're working on.
+#
 try:
-    with open(os.path.join(ROOT_PATH, 'local_settings.py'), 'r', encoding='utf-8') as f:
+    local_settings_path = os.environ.get('LOCAL_SETTINGS', os.path.join(ROOT_PATH, 'local_settings.py'))
+    with open(local_settings_path, 'r', encoding='utf-8') as f:
         exec(f.read(), globals(), locals())
 except IOError:
     pass
