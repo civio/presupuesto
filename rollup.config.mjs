@@ -2,7 +2,7 @@ import { nodeResolve } from '@rollup/plugin-node-resolve';
 
 const onwarn = warning => {
   // Silence circular dependency warning for d3
-  if (warning.code === 'CIRCULAR_DEPENDENCY' && !warning.importer.indexOf('node_modules/d3')) {
+  if (warning.code === 'CIRCULAR_DEPENDENCY' && warning.ids.every(id => id.includes('node_modules/d3-'))) {
     return
   }
 
