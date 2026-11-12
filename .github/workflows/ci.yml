@@ -11,7 +11,7 @@ concurrency:
 
 jobs:
   lint:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04  # as midas, and setup-python has no 3.12.8 for 26.04
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v7
@@ -22,7 +22,7 @@ jobs:
       - run: ruff check --output-format github
 
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04  # as midas, and setup-python has no 3.12.8 for 26.04
     timeout-minutes: 15
     services:
       postgres:
