@@ -60,6 +60,8 @@ def subprogrammes_show(request, id, title, render_callback=None):
     c['subprogramme_id'] = id
     subprogramme = FunctionalCategory.objects.filter(budget__entity=main_entity,
                                                         subprogramme=id).first()
+    if subprogramme is None:
+        raise Http404
     c['programme'] = FunctionalCategory.objects.filter(budget__entity=main_entity,
                                                         programme=subprogramme.programme,
                                                         subprogramme__isnull=True).first()
@@ -94,7 +96,7 @@ def subprogrammes_show(request, id, title, render_callback=None):
     c['descriptions'] = Budget.objects.get_all_descriptions(main_entity).copy()
     programme_descriptions.update(c['descriptions']['expense'])
     c['descriptions']['economic'] = programme_descriptions
-    c['name'] = c['descriptions']['functional'].get(c['subprogramme_id'])
+    c['name'] = description_or_404(c['descriptions']['functional'], c['subprogramme_id'])
     c['title_prefix'] = c['name']
 
     # Additional data needed by the view

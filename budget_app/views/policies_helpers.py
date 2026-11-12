@@ -46,7 +46,7 @@ def policies_show_helper(request, c, entity, id, title, render_callback=None):
     set_full_breakdown(c, True)
     set_starting_tab(c, 'functional')
 
-    c['name'] = c['descriptions']['functional'].get(c['policy_uid'])
+    c['name'] = description_or_404(c['descriptions']['functional'], c['policy_uid'])
     c['title_prefix'] = c['name']
 
     # Back button: specify which tab in the main page to go to
@@ -64,6 +64,8 @@ def programmes_show_helper(request, c, entity, id, title, render_callback=None):
     programme = FunctionalCategory.objects.filter(budget__entity=entity,
                                                     programme=id,
                                                     subprogramme__isnull=True).first()
+    if programme is None:
+        raise Http404
     c['policy'] = FunctionalCategory.objects.filter(budget__entity=entity,
                                                     policy=programme.policy,
                                                     function__isnull=True).first()
@@ -99,7 +101,7 @@ def programmes_show_helper(request, c, entity, id, title, render_callback=None):
     c['descriptions'] = Budget.objects.get_all_descriptions(entity).copy()
     programme_descriptions.update(c['descriptions']['expense'])
     c['descriptions']['economic'] = programme_descriptions
-    c['name'] = c['descriptions']['functional'].get(c['programme_id'])
+    c['name'] = description_or_404(c['descriptions']['functional'], c['programme_id'])
     c['title_prefix'] = c['name']
 
     # Add monitoring information, if needed
@@ -186,7 +188,7 @@ def articles_show_helper(request, c, entity, id, title, show_side, render_callba
     c['descriptions'] = Budget.objects.get_all_descriptions(entity).copy()
     article_descriptions.update(c['descriptions'][show_side])
     c['descriptions']['economic'] = article_descriptions
-    c['name'] = c['descriptions']['economic'].get(c['article_id'])
+    c['name'] = description_or_404(c['descriptions']['economic'], c['article_id'])
     c['title_prefix'] = c['name']
 
     # Additional data needed by the view

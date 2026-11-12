@@ -44,7 +44,7 @@ def sections_show(request, id, title, render_callback=None):
     c['descriptions'] = Budget.objects.get_all_descriptions(main_entity).copy()
     programme_descriptions.update(c['descriptions']['expense'])
     c['descriptions']['economic'] = programme_descriptions
-    c['name'] = c['descriptions']['institutional'].get(c['section_id'])
+    c['name'] = description_or_404(c['descriptions']['institutional'], c['section_id'])
     c['title_prefix'] = c['name']
 
     # Additional data needed by the view

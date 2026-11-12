@@ -92,6 +92,13 @@ def get_context(request, css_class='', title=''):
     return c
 
 
+# The name of the policy, programme, article... a page is about, or a 404 if there's no such code
+def description_or_404(descriptions, code):
+    name = descriptions.get(code)
+    if name is None:
+        raise Http404
+    return name
+
 def set_title(c, title):
     c['title_prefix'] = title
 

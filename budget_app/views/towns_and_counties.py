@@ -196,7 +196,7 @@ def entities_show_policy(request, c, entity, id, title, render_callback=None):
     set_full_breakdown(c, False)
     c['entity'] = entity
 
-    c['name'] = c['descriptions']['functional'].get(c['policy_uid'])
+    c['name'] = description_or_404(c['descriptions']['functional'], c['policy_uid'])
     c['title_prefix'] = c['name']
 
     return render(c, render_callback, 'policies/show.html')
@@ -257,7 +257,7 @@ def entities_show_article(request, c, entity, id, title, show_side, render_callb
     c['descriptions'] = Budget.objects.get_all_descriptions(entity).copy()
     article_descriptions.update(c['descriptions'][show_side])
     c['descriptions'][show_side] = article_descriptions
-    c['name'] = c['descriptions'][show_side].get(c['article_id'])
+    c['name'] = description_or_404(c['descriptions'][show_side], c['article_id'])
     c['title_prefix'] = c['name'] + ' - ' + entity.name
 
     # Additional data needed by the view

@@ -10,6 +10,8 @@ pytestmark = pytest.mark.django_db
     'politicas',
     'politicas/13/seguridad',
     'programas/1320/seguridad',
+    'articulos/g/12/retribuciones',
+    'articulos/i/11/impuestos',
     'glosario',
     'busqueda?q=impuesto',
     'recibo',
@@ -46,3 +48,15 @@ def test_features_the_theme_does_not_turn_on_are_not_found(client, path):
 @pytest.mark.parametrize('path, tab', [('resumen', 'page-budgets'), ('politicas/13/seguridad', 'page-policies')])
 def test_menu_highlights_the_current_section(client, path, tab):
     assert '%s active' % tab in client.get('/es/' + path).content.decode()
+
+
+@pytest.mark.parametrize('path', [
+    'politicas/99/nada',
+    'programas/9999/nada',
+    'subprogramas/99999/nada',
+    'articulos/g/99/nada',
+    'articulos/i/99/nada',
+    'politicas/99_economic.csv',
+])
+def test_unknown_codes_are_not_found(client, path):
+    assert client.get('/es/' + path).status_code == 404
