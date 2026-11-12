@@ -1,0 +1,84 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version-file: .python-version
+      - run: pip install $(grep '^ruff==' requirements/test.txt)
+      - run: ruff check --output-format github
+
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    services:
+      postgres:
+        image: postgres:16  # as on midas
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      PGHOST: localhost
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      LOCAL_SETTINGS: tests/env.py
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0  # /version.json runs `git describe --tags`
+      # The tests run against El Prat's theme and data
+      - uses: actions/checkout@v7
+        with:
+          repository: civio/presupuesto-elprat
+          path: presupuesto_elprat
+      - uses: actions/setup-python@v7
+        with:
+          python-version-file: .python-version
+          cache: pip
+          cache-dependency-path: requirements/*.txt
+      - run: pip install -r requirements/test.txt
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+      - name: Build the D3 bundle and the theme's CSS, as a deploy does
+        run: |
+          npm ci && npm run d3-build
+          cd presupuesto_elprat && npm ci && npm run css-build
+
+      - name: App tests
+        run: pytest tests/app
+
+      - name: Load El Prat's data and start the site
+        run: |
+          createdb dvmi_elprat_tests
+          psql -q dvmi_elprat_tests -f tests/search_config.sql
+          python manage.py migrate -v0
+          python manage.py collectstatic --noinput -v0
+          python manage.py load_entities
+          python manage.py load_stats
+          python manage.py load_glossary --language=es,ca
+          python manage.py load_budget 2024-2025 --language=es,ca
+          # DEBUG is off, as in production, so the server needs --insecure to serve the static files
+          python manage.py runserver 8000 --insecure --noreload > runserver.log 2>&1 &
+          curl --retry 30 --retry-connrefused --retry-delay 1 -sf -o /dev/null http://localhost:8000/es/
+      - run: playwright install --with-deps chromium
+      - name: End-to-end tests
+        run: pytest tests/e2e --base-url http://localhost:8000
+      - name: Server log
+        if: failure()
+        run: cat runserver.log

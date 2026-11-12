@@ -6,7 +6,7 @@ import os
 ENV = {
   'THEME': 'presupuesto_elprat',
 
-  # Pytest-django creates and destroys a database called test_dvmi_elprat_tests
+  # Pytest-django creates and destroys test_dvmi_elprat_tests; CI loads this one for the end-to-end tests
   'DATABASE_NAME': 'dvmi_elprat_tests',
   'DATABASE_USER': os.environ.get('PGUSER', ''),
   'DATABASE_PASSWORD': os.environ.get('PGPASSWORD', ''),
@@ -21,3 +21,6 @@ ENV = {
     }
   },
 }
+
+# For the end-to-end tests in CI, which run the server with DEBUG off, as in production
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
