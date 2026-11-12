@@ -2,7 +2,7 @@
 
 import csv
 
-from django.http import HttpResponse
+from django.http import Http404, HttpResponse
 from django.utils.translation import gettext as _
 from functools import reduce
 from openpyxl import Workbook
@@ -354,6 +354,9 @@ def funding_article_expenditures_breakdown(request, id, format):
 # INSTITUTIONAL BREAKDOWN
 #
 def write_institutional_breakdown(c, writer):
+    # Themes without an institutional breakdown hide these downloads, but crawlers still find them
+    if c['breakdowns']['institutional'] is None:
+        raise Http404
     field_username = 'Gastos' if c['show_side'] == 'expense' else 'Ingresos'
     write_header(writer, [u'Año.csv', 'Id Organismo', 'Nombre Organismo', 'Id Departamento', 'Nombre Departamento', 'Presupuesto '+field_username, field_username+' Reales'])
     for year in sorted(_unique(c['breakdowns']['institutional'].years.values())):
