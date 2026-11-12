@@ -215,7 +215,7 @@ def set_full_breakdown(c, full_breakdown):
     c['full_breakdown'] = full_breakdown
 
 def set_starting_tab(c, tab):
-    c['starting_tab'] = tab;
+    c['starting_tab'] = tab
 
 # Get widget parameter
 def isWidget(request):

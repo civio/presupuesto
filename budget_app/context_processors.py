@@ -1,4 +1,3 @@
-import project.settings as settings
 from django.conf import settings
 
 def accounts_id_processor(request):

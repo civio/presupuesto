@@ -11,7 +11,6 @@ __all__ = (
     'InvalidPage',
     'ExPaginator',
     'DiggPaginator',
-    'QuerySetDiggPaginator',
 )
 
 class ExPaginator(Paginator):

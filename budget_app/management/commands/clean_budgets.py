@@ -1,11 +1,10 @@
 # -*- coding: UTF-8 -*-
 # See #372 for further info.
 
-import os.path
 import logging
 
 from django.core.management.base import BaseCommand
-from django.db import models, connection, transaction
+from django.db import connection, transaction
 
 class Command(BaseCommand):
     logging.disable(logging.ERROR)   # Avoid SQL logging on console

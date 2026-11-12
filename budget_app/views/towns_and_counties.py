@@ -223,7 +223,7 @@ def entities_show_article(request, c, entity, id, title, show_side, render_callb
     # Ignore if possible the descriptions for execution data, they are truncated and ugly
     article_descriptions = {}
     def _populate_article_descriptions(column_name, item):
-        if not item.actual or not item.uid() in article_descriptions:
+        if not item.actual or item.uid() not in article_descriptions:
             article_descriptions[item.uid()] = getattr(item, 'description')
 
     # Get the budget breakdown.

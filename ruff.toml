@@ -1,0 +1,15 @@
+line-length = 120  # as in our Ruby repositories
+
+[lint]
+# Pyflakes and pycodestyle's errors: ruff's long-standing defaults, which newer versions extend
+select = ["E4", "E7", "E9", "F"]
+ignore = [
+  "F403", "F405",  # the views and models are built on star imports
+  "E711", "E712",  # `== None` and `== False` all over the old code, harmless with plain values
+]
+
+[lint.per-file-ignores]
+"__init__.py" = ["F401"]  # re-exports for those star imports
+# Their imports reach the themes through `from budget_app.views import *`, so unused doesn't mean unneeded
+"budget_app/{models,views}/*.py" = ["F401"]
+"project/settings.py" = ["F821"]  # ENV comes from local_settings.py, through exec

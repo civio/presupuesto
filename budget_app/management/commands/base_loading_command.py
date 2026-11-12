@@ -1,7 +1,6 @@
 # -*- coding: UTF-8 -*-
 
 import os.path
-import sys
 import logging
 
 from django.core.management.base import BaseCommand
@@ -39,7 +38,7 @@ class BaseLoadingCommand(BaseCommand):
     def _parse_languages(languages):
         try:
             result = languages.split(',')
-        except:
+        except AttributeError:  # no language given
             result = [None]
         return result
 

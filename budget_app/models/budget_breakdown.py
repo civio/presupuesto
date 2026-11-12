@@ -13,7 +13,7 @@ class BudgetBreakdown:
     # Add a new budget item to the breakdown
     def add_item(self, column, item):
         # Check whether the column exist, and add if needed
-        if not column in self.names:
+        if column not in self.names:
             self.names.append(column)
             self.years[column] = item.year if hasattr(item, 'year') else ''
 

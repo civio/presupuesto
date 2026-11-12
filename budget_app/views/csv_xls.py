@@ -127,11 +127,9 @@ def write_entity_investment_line_breakdown(c, writer):
                 write_breakdown_item(writer, year, investment, 'expense', [line_id, investment_id], c['descriptions']['functional'])
 
 def entity_investments_breakdown(request, slug, format):
-    c = get_context(request)
     return investments(request, _generator('inversiones-%s' % (slug), format, write_entity_investments_breakdown))
 
 def entity_investment_line_breakdown(request, slug, id, format):
-    c = get_context(request)
     return investments_show(request, id, '', _generator('inversiones-%s-%s' % (slug, id), format, write_entity_investment_line_breakdown))
 
 
@@ -147,7 +145,6 @@ def write_entity_main_investments_breakdown(c, writer):
                 write_breakdown_item(writer, year, investment, 'expense', [area_id, investment_id], None)
 
 def entity_main_investments_breakdown(request, slug, format):
-    c = get_context(request)
     return main_investments(request, _generator('inversiones-principales-%s' % (slug), format, write_entity_main_investments_breakdown))
 
 
@@ -300,10 +297,10 @@ def write_economic_article_breakdown(c, field, writer):
                 write_breakdown_item(writer, year, item, field, [c['article_id'], heading_id, item_uid], c['descriptions']['economic'])
 
 def write_economic_article_expense_breakdown(c, writer):
-    return write_economic_article_breakdown(c, 'expense', writer);
+    return write_economic_article_breakdown(c, 'expense', writer)
 
 def write_economic_article_income_breakdown(c, writer):
-    return write_economic_article_breakdown(c, 'income', writer);
+    return write_economic_article_breakdown(c, 'income', writer)
 
 def economic_article_revenues_breakdown(request, id, format):
     return income_articles_show(request, id, format, _generator("%s.ingresos.economica" % id, format, write_economic_article_income_breakdown))
@@ -486,13 +483,13 @@ class XLSXGenerator:
 def _generator(filename, format, content_generator):
     try:
         return GENERATORS[format]('%s.%s' % (filename, format), content_generator)
-    except KeyError as e:
+    except KeyError:
         raise ValueError("Provided format is not valid: {}. valid values are [csv, xlsx]".format(format))
 
 # Remove duplicates from list, maintaining order
 # See https://stackoverflow.com/a/37163210
 def _unique(list):
-    return reduce(lambda l, x: l.append(x) or l if x not in l else l, list, [])
+    return reduce(lambda result, x: result.append(x) or result if x not in result else result, list, [])
 
 
 GENERATORS = {

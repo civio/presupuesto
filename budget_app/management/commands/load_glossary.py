@@ -29,7 +29,7 @@ class Command(BaseCommand):
     def _parse_languages(languages):
         try:
             result = languages.split(',')
-        except:
+        except AttributeError:  # no language given
             result = [None]
         return result
 

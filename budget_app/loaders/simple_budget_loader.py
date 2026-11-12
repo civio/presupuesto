@@ -113,7 +113,7 @@ class SimpleBudgetLoader(BaseLoader):
             # This category is the trickiest to match, the less standard, so we allow the children
             # to specify the institution/section/department triad explicitly. If not, we default
             # to the original breakdown, one character per level.
-            if not 'ic_institution' in item:
+            if 'ic_institution' not in item:
                 item['ic_institution'] = item['ic_code'][0]
                 item['ic_section'] = item['ic_code'][0:2] if len(item['ic_code']) >= 2 else None
                 item['ic_department'] = item['ic_code'] if len(item['ic_code']) >= 3 else None

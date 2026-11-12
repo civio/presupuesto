@@ -1,5 +1,7 @@
 # -*- coding: UTF-8 -*-
 
+import importlib
+
 from django.conf.urls.i18n import i18n_patterns
 from django.urls import include, re_path
 from django.conf import settings
@@ -24,10 +26,12 @@ if len(settings.LANGUAGES) > 1:
         re_path(r'^i18n/', include('django.conf.urls.i18n')),
         re_path(r'^$', redirect_to_default_homepage),
     ]
-    add_url_patterns = lambda x: i18n_patterns(*x)
+    def add_url_patterns(patterns):
+        return i18n_patterns(*patterns)
 else:
     budget_app_urlpatterns = []
-    add_url_patterns = lambda x: list(x)
+    def add_url_patterns(patterns):
+        return list(patterns)
 
 # Listings without an item code have no page of their own, so send them to the main one.
 # See civio/presupuesto-management#1403
@@ -200,8 +204,11 @@ budget_app_urlpatterns += [
 # in circular dependencies when we tried to import the view objects that we need to reference during URL creation
 # in modern Django versions. I.e. when we stopped passing the view name as a string. (#80)
 try:
-    import importlib
     theme_urls = importlib.import_module(settings.THEME+'.urls')
-    urlpatterns = add_url_patterns(theme_urls.EXTRA_URLS) + budget_app_urlpatterns
-except:
+except ModuleNotFoundError as e:
+    # Most themes have no urls.py, but if one has it and it fails, we want to know
+    if e.name != settings.THEME+'.urls':
+        raise
     urlpatterns = budget_app_urlpatterns
+else:
+    urlpatterns = add_url_patterns(theme_urls.EXTRA_URLS) + budget_app_urlpatterns

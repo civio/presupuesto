@@ -72,7 +72,7 @@ def programmes_show_helper(request, c, entity, id, title, render_callback=None):
     programme_descriptions = {}
     def _populate_programme_descriptions(column_name, item):
         item_uid = getattr(item, get_final_element_grouping(c))()
-        if not item.actual or not item_uid in programme_descriptions:
+        if not item.actual or item_uid not in programme_descriptions:
             programme_descriptions[item_uid] = getattr(item, 'description')
 
     # Get the budget breakdown
@@ -160,7 +160,7 @@ def articles_show_helper(request, c, entity, id, title, show_side, render_callba
     article_descriptions = {}
     def _populate_article_descriptions(column_name, item):
         item_uid = getattr(item, get_final_element_grouping(c))()
-        if not item.actual or not item_uid in article_descriptions:
+        if not item.actual or item_uid not in article_descriptions:
             article_descriptions[item_uid] = getattr(item, 'description')
 
     # Get the budget breakdown.

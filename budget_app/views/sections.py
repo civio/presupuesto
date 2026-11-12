@@ -23,7 +23,7 @@ def sections_show(request, id, title, render_callback=None):
     programme_descriptions = {}
     def _populate_programme_descriptions(column_name, item):
         item_uid = getattr(item, get_final_element_grouping(c))()
-        if not item.actual or not item_uid in programme_descriptions:
+        if not item.actual or item_uid not in programme_descriptions:
             programme_descriptions[item_uid] = getattr(item, 'description')
 
     # Get the budget breakdown

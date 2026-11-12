@@ -24,7 +24,7 @@ def monitoring(request, render_callback=None):
         indicators = summary[3]
         progress = (summary[2] / indicators * 100.0) if summary[2]!=None else None
 
-        if not policy_id in monitoring_data:
+        if policy_id not in monitoring_data:
             monitoring_data[policy_id] = {
                 'code': policy_id,
                 'label': c['descriptions']['functional'][policy_id]

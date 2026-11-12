@@ -6,7 +6,6 @@ if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project.settings")
 
     from django.core.management import execute_from_command_line
-    from local_settings import ENV
 
     if len(sys.argv) >= 2 and sys.argv[1] == 'livereload':
 

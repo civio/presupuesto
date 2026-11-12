@@ -21,5 +21,5 @@ sys.path.append(os.path.join(BASE_DIR, '..'))
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'project.settings'
 
-from django.core.wsgi import get_wsgi_application
+from django.core.wsgi import get_wsgi_application  # noqa: E402 (needs the path and settings above)
 application = get_wsgi_application()
