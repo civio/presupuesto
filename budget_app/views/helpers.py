@@ -34,7 +34,8 @@ def requires_setting(name):
 
 TABS = {
     'general': r'^budgets.*',
-    'policies': r'^policies.*',
+    # Programmes, articles and sections hang from the policies page
+    'policies': r'^(policies|programmes|subprogrammes|expense_articles|income_articles|sections).*',
     'payments': r'^payments.*',
     'calculator': r'^tax_receipt.*',
     'glossary': r'^glossary.*',

@@ -48,6 +48,9 @@ def test_features_the_theme_does_not_turn_on_are_not_found(client, path):
 @pytest.mark.parametrize('path, tab', [
     ('resumen', 'page-budgets'),
     ('politicas/13/seguridad', 'page-policies'),
+    ('programas/1320/seguridad', 'page-policies'),
+    ('articulos/g/12/retribuciones', 'page-policies'),
+    ('articulos/i/11/impuestos', 'page-policies'),
     ('recibo', 'page-tax-receipt'),
     ('glosario', 'page-glossary'),
 ])
