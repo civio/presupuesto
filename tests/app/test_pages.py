@@ -45,7 +45,12 @@ def test_features_the_theme_does_not_turn_on_are_not_found(client, path):
     assert client.get('/es/' + path).status_code == 404
 
 
-@pytest.mark.parametrize('path, tab', [('resumen', 'page-budgets'), ('politicas/13/seguridad', 'page-policies')])
+@pytest.mark.parametrize('path, tab', [
+    ('resumen', 'page-budgets'),
+    ('politicas/13/seguridad', 'page-policies'),
+    ('recibo', 'page-tax-receipt'),
+    ('glosario', 'page-glossary'),
+])
 def test_menu_highlights_the_current_section(client, path, tab):
     assert '%s active' % tab in client.get('/es/' + path).content.decode()
 

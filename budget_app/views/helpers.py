@@ -36,11 +36,13 @@ TABS = {
     'general': r'^budgets.*',
     'policies': r'^policies.*',
     'payments': r'^payments.*',
-    'calculator': r'^tax-receipt.*',
+    'calculator': r'^tax_receipt.*',
     'glossary': r'^glossary.*',
-    'guided_visit': r'^guidedvisit.*',
+    # The core's guided visit is `guided_visit`; Madrid, Menorca and Navarra have their own, `guidedvisit`
+    'guided_visit': r'^guided_?visit.*',
     'investments': r'^investments.*',
     'main_investments': r'^main_investments.*',
+    'monitoring': r'^monitoring.*',
 }
 
 #
