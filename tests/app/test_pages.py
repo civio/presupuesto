@@ -68,3 +68,15 @@ def test_menu_highlights_the_current_section(client, path, tab):
 ])
 def test_unknown_codes_are_not_found(client, path):
     assert client.get('/es/' + path).status_code == 404
+
+
+@pytest.mark.parametrize('path', [
+    'programas/XXXX/ingresos',
+    'programas/XXXX_economic.csv',
+    'subprogramas/XXXX/ingresos',
+    'subprogramas/XXXX_economic.csv',
+])
+def test_the_fake_income_programme_is_not_found(client, path):
+    # Income hangs from a fake functional category, whose pages used to fail with a 500.
+    # (El Prat doesn't use subprogrammes either, so those pages aren't found anyway.)
+    assert client.get('/es/' + path).status_code == 404

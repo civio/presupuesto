@@ -62,7 +62,7 @@ def programmes_show_helper(request, c, entity, id, title, render_callback=None):
     programme = FunctionalCategory.objects.filter(budget__entity=entity,
                                                     programme=id,
                                                     subprogramme__isnull=True).first()
-    if programme is None:
+    if programme is None or is_income_functional_category(programme):
         raise Http404
     c['policy'] = FunctionalCategory.objects.filter(budget__entity=entity,
                                                     policy=programme.policy,

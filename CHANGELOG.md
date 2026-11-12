@@ -11,6 +11,8 @@ All notable changes to this project will be documented in this file.
 - Drop the funding classification: no site used it (`SHOW_FUNDING_TAB` was never on), and every loader created a dummy category only because budget items required one. The migration deletes the `funding_categories` table, and themes must stop referencing `FundingCategory`. civio/presupuesto-management#1423
 
 ### Fixed
+- Return a 404 for the programme and subprogramme pages of the fake functional category that income hangs from, and their downloads, instead of a 500 or a page with the income.
+- Return a 404 for subprogramme pages, and their downloads, on sites that don't use subprogrammes.
 - Highlight the calculator, guided visit and monitoring tabs in the menu, whose patterns never matched their pages.
 - Keep the policies tab highlighted on programme, subprogramme, article and section pages.
 

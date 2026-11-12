@@ -49,6 +49,7 @@ def programmes_show(request, id, title, render_callback=None):
 
 
 # FIXME: This is just like the programme function above. Should refactor common parts
+@requires_setting('USE_SUBPROGRAMMES')
 def subprogrammes_show(request, id, title, render_callback=None):
     # Get request context
     c = get_context(request, css_class='body-policies body-subprogrammes', title='')
@@ -60,7 +61,7 @@ def subprogrammes_show(request, id, title, render_callback=None):
     c['subprogramme_id'] = id
     subprogramme = FunctionalCategory.objects.filter(budget__entity=main_entity,
                                                         subprogramme=id).first()
-    if subprogramme is None:
+    if subprogramme is None or is_income_functional_category(subprogramme):
         raise Http404
     c['programme'] = FunctionalCategory.objects.filter(budget__entity=main_entity,
                                                         programme=subprogramme.programme,

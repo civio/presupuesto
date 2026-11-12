@@ -32,6 +32,12 @@ def requires_setting(name):
     return decorator
 
 
+# Income isn't classified functionally, so the loaders hang it from a fake functional
+# category ('X', 'XX', 'XXX', 'XXXX'). It has no programme or subprogramme page.
+def is_income_functional_category(category):
+    return category.policy == 'XX'
+
+
 TABS = {
     'general': r'^budgets.*',
     # Programmes, articles and sections hang from the policies page
