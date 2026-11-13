@@ -2,6 +2,8 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+### Fixed
+- Return a 404 for the entity payment pages on sites without payments, instead of a 500. civio/presupuesto-management#254
 
 ## [5.4] - 2026-11-13
 ### Changed

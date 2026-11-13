@@ -101,11 +101,13 @@ def entities_expense_articles_show(request, id, article_id, title, render_callba
     return articles_show_helper(request, c, entity, article_id, title, 'expense', render_callback)
 
 
+@requires_setting('SHOW_PAYMENTS')
 def entities_payments(request, id, render_callback=None):
     c = get_context(request, css_class='body-payments', title='')
     entity = _fetch_entity(c, id)
     return payments_helper(request, c, entity, render_callback)
 
+@requires_setting('SHOW_PAYMENTS')
 def entities_payments_search(request, id, render_callback=None):
     c = get_context(request)
     entity = _fetch_entity(c, id)

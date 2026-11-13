@@ -39,7 +39,8 @@ def test_listing_without_a_code_redirects_to_policies(client):
     assert response['Location'] == '/es/politicas'
 
 
-@pytest.mark.parametrize('path', ['pagos', 'inversiones', 'inversiones-principales', 'objetivos', 'municipios'])
+@pytest.mark.parametrize('path', ['pagos', 'inversiones', 'inversiones-principales', 'objetivos', 'municipios',
+                                  'entidades/1/pagos', 'entidades/1/pagos/search'])
 def test_features_the_theme_does_not_turn_on_are_not_found(client, path):
     # See civio/presupuesto-management#1408
     assert client.get('/es/' + path).status_code == 404
