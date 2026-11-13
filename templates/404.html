@@ -4,11 +4,12 @@
 <section class="glossary" role="region">
   <div class="glossary-header section-header">
     <div class="container">
-      <h2 class="page-title">{{ _('No encontramos esta página') }}</h2>
+      <h2 class="page-title">404 · {{ _('No encontramos esta página') }}</h2>
     </div>
   </div>
 
-  <div class="glossary-content">
+  {# Inline, so it looks the same in every theme without touching their stylesheets #}
+  <div class="glossary-content" style="padding: 2em 0 4em;">
     <div class="container">
       <p>{{ _('Puede que la dirección esté mal escrita, o que la página ya no exista.') }}</p>
       <p><a href="{{ url('welcome') }}">{{ _('Volver a la portada') }}</a></p>
