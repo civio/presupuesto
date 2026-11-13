@@ -986,58 +986,58 @@ msgid "Fecha.csv"
 msgstr "Data"
 
 msgid "Id Política"
-msgstr ""
+msgstr "Politika Id"
 
 msgid "Nombre Política"
-msgstr ""
+msgstr "Politika izena"
 
 msgid "Id Programa"
-msgstr ""
+msgstr "Programa Id"
 
 msgid "Nombre Programa"
-msgstr ""
+msgstr "Programa izena"
 
 msgid "Id Subprograma"
-msgstr ""
+msgstr "Subprograma Id"
 
 msgid "Nombre Subprograma"
-msgstr ""
+msgstr "Subprograma izena"
 
 msgid "Id Capítulo"
-msgstr ""
+msgstr "Kapitulu Id"
 
 msgid "Nombre Capítulo"
-msgstr ""
+msgstr "Kapitulu izena"
 
 msgid "Id Artículo"
-msgstr ""
+msgstr "Artikulu Id"
 
 msgid "Nombre Artículo"
-msgstr ""
+msgstr "Artikulu izena"
 
 msgid "Id Concepto"
-msgstr ""
+msgstr "Kontzeptu Id"
 
 msgid "Nombre Concepto"
-msgstr ""
+msgstr "Kontzeptu izena"
 
 msgid "Id Área"
-msgstr ""
+msgstr "Arlo Id"
 
 msgid "Nombre Área"
-msgstr ""
+msgstr "Arlo izena"
 
 msgid "Área/Política"
-msgstr ""
+msgstr "Arloa/Politika"
 
 msgid "Id Línea"
-msgstr ""
+msgstr "Lerro Id"
 
 msgid "Nombre Línea"
-msgstr ""
+msgstr "Lerro izena"
 
 msgid "Inversión"
-msgstr ""
+msgstr "Inbertsioa"
 
 msgid "Id Fuente"
 msgstr ""
@@ -1052,46 +1052,46 @@ msgid "Nombre Fondo"
 msgstr ""
 
 msgid "Id Institución"
-msgstr ""
+msgstr "Instituzio Id"
 
 msgid "Nombre Institución"
-msgstr ""
+msgstr "Instituzio izena"
 
 msgid "Id Sección"
-msgstr ""
+msgstr "Atal Id"
 
 msgid "Nombre Sección"
-msgstr ""
+msgstr "Atal izena"
 
 msgid "Id Organismo"
-msgstr ""
+msgstr "Erakunde Id"
 
 msgid "Nombre Organismo"
-msgstr ""
+msgstr "Erakunde izena"
 
 msgid "Id Departamento"
-msgstr ""
+msgstr "Sail Id"
 
 msgid "Nombre Departamento"
-msgstr ""
+msgstr "Sail izena"
 
 msgid "Presupuesto Gasto"
-msgstr ""
+msgstr "Gastu aurrekontua"
 
 msgid "Gasto Real"
-msgstr ""
+msgstr "Benetako gastua"
 
 msgid "Presupuesto Gastos"
-msgstr ""
+msgstr "Gastuen aurrekontua"
 
 msgid "Presupuesto Ingresos"
-msgstr ""
+msgstr "Diru-sarreren aurrekontua"
 
 msgid "Gastos Reales"
-msgstr ""
+msgstr "Benetako gastuak"
 
 msgid "Ingresos Reales"
-msgstr ""
+msgstr "Benetako diru-sarrerak"
 
 msgid "payment.query.join"
 msgstr " + "
@@ -1133,10 +1133,10 @@ msgid "Año.payment.query"
 msgstr "Urtea"
 
 msgid "Código Partida"
-msgstr ""
+msgstr "Partida kodea"
 
 msgid "Número Partida"
-msgstr ""
+msgstr "Partida zenbakia"
 
 msgid "Nombre Partida"
-msgstr ""
+msgstr "Partida izena"

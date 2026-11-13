@@ -959,58 +959,58 @@ msgid "Fecha.csv"
 msgstr "Data"
 
 msgid "Id Política"
-msgstr ""
+msgstr "Id Política"
 
 msgid "Nombre Política"
-msgstr ""
+msgstr "Nome Política"
 
 msgid "Id Programa"
-msgstr ""
+msgstr "Id Programa"
 
 msgid "Nombre Programa"
-msgstr ""
+msgstr "Nome Programa"
 
 msgid "Id Subprograma"
-msgstr ""
+msgstr "Id Subprograma"
 
 msgid "Nombre Subprograma"
-msgstr ""
+msgstr "Nome Subprograma"
 
 msgid "Id Capítulo"
-msgstr ""
+msgstr "Id Capítulo"
 
 msgid "Nombre Capítulo"
-msgstr ""
+msgstr "Nome Capítulo"
 
 msgid "Id Artículo"
-msgstr ""
+msgstr "Id Artigo"
 
 msgid "Nombre Artículo"
-msgstr ""
+msgstr "Nome Artigo"
 
 msgid "Id Concepto"
-msgstr ""
+msgstr "Id Concepto"
 
 msgid "Nombre Concepto"
-msgstr ""
+msgstr "Nome Concepto"
 
 msgid "Id Área"
-msgstr ""
+msgstr "Id Área"
 
 msgid "Nombre Área"
-msgstr ""
+msgstr "Nome Área"
 
 msgid "Área/Política"
-msgstr ""
+msgstr "Área/Política"
 
 msgid "Id Línea"
-msgstr ""
+msgstr "Id Liña"
 
 msgid "Nombre Línea"
-msgstr ""
+msgstr "Nome Liña"
 
 msgid "Inversión"
-msgstr ""
+msgstr "Investimento"
 
 msgid "Id Fuente"
 msgstr ""
@@ -1025,46 +1025,46 @@ msgid "Nombre Fondo"
 msgstr ""
 
 msgid "Id Institución"
-msgstr ""
+msgstr "Id Institución"
 
 msgid "Nombre Institución"
-msgstr ""
+msgstr "Nome Institución"
 
 msgid "Id Sección"
-msgstr ""
+msgstr "Id Sección"
 
 msgid "Nombre Sección"
-msgstr ""
+msgstr "Nome Sección"
 
 msgid "Id Organismo"
-msgstr ""
+msgstr "Id Organismo"
 
 msgid "Nombre Organismo"
-msgstr ""
+msgstr "Nome Organismo"
 
 msgid "Id Departamento"
-msgstr ""
+msgstr "Id Departamento"
 
 msgid "Nombre Departamento"
-msgstr ""
+msgstr "Nome Departamento"
 
 msgid "Presupuesto Gasto"
-msgstr ""
+msgstr "Orzamento Gasto"
 
 msgid "Gasto Real"
-msgstr ""
+msgstr "Gasto Real"
 
 msgid "Presupuesto Gastos"
-msgstr ""
+msgstr "Orzamento Gastos"
 
 msgid "Presupuesto Ingresos"
-msgstr ""
+msgstr "Orzamento Ingresos"
 
 msgid "Gastos Reales"
-msgstr ""
+msgstr "Gastos Reais"
 
 msgid "Ingresos Reales"
-msgstr ""
+msgstr "Ingresos Reais"
 
 msgid "payment.query.join"
 msgstr " + "
@@ -1106,10 +1106,10 @@ msgid "Año.payment.query"
 msgstr "Ano"
 
 msgid "Código Partida"
-msgstr ""
+msgstr "Código Partida"
 
 msgid "Número Partida"
-msgstr ""
+msgstr "Número Partida"
 
 msgid "Nombre Partida"
-msgstr ""
+msgstr "Nome Partida"
