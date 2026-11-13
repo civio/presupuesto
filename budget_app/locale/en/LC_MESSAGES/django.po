@@ -1094,6 +1094,9 @@ msgstr "Total budget"
 msgid "Año.csv"
 msgstr "Year"
 
+msgid "Fecha.csv"
+msgstr "Date"
+
 msgid "Id Política"
 msgstr "Policy Id"
 

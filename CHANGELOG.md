@@ -10,6 +10,9 @@ All notable changes to this project will be documented in this file.
 - Don't create a budget when loading a year without data files, which left an empty budget as the latest one. civio/presupuesto-management#442
 - Update the README, which still described the original Aragón app and the funding classification. civio/presupuesto-management#76
 
+### Added
+- Add the payment date to the payments downloads. civio/presupuesto-management#458
+
 ## [5.4] - 2026-11-13
 ### Changed
 - `SimpleBudgetLoader` looks for each classification in the year's folder first, and then in the entity's, reads each line through a method themes can override (`parse_economic_category` and company), and splits economic codes through `_split_economic_code()`, which themes override when their codes go down to subheadings or have other quirks. Navarra's and the PGE's loaders move to it, and go from about 100 seconds per year to 4 and 10, because `BudgetLoader` saved lines one at a time with uncached lookups. civio/presupuesto-management#1423

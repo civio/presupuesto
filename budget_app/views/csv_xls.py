@@ -91,10 +91,11 @@ def entity_income(request, level, slug, format):
 # PAYMENTS BREAKDOWN
 #
 def write_entity_payment_breakdown(c, writer):
-    write_header(writer, [u'Año.csv', u'Área/Política', 'Beneficiario', 'Concepto', 'Cantidad'])
+    write_header(writer, [u'Año.csv', 'Fecha.csv', u'Área/Política', 'Beneficiario', 'Concepto', 'Cantidad'])
     for payment in c['payments']:
         writer.writerow([
             payment.year,
+            payment.date,
             payment.area,
             payment.payee,
             payment.description,

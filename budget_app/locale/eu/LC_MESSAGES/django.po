@@ -1016,6 +1016,9 @@ msgstr ""
 msgid "Año.csv"
 msgstr "Urtea"
 
+msgid "Fecha.csv"
+msgstr "Data"
+
 msgid "Id Política"
 msgstr ""
 

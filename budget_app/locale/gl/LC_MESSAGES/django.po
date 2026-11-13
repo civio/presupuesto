@@ -989,6 +989,9 @@ msgstr ""
 msgid "Año.csv"
 msgstr "Ano"
 
+msgid "Fecha.csv"
+msgstr "Data"
+
 msgid "Id Política"
 msgstr ""
 
