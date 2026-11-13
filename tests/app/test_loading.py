@@ -38,3 +38,9 @@ def test_remove_budget():
     call_command('remove_budget', '2024', language='es,ca')
     assert sorted(Budget.objects.values_list('year', flat=True)) == [2025, 2025]
     assert not BudgetItem.objects.filter(budget__year=2024).exists()
+
+
+def test_a_year_without_data_is_not_loaded():
+    # Loading it would create an empty budget, which would become the latest one
+    call_command('load_budget', '2099', language='es')
+    assert not Budget.objects.filter(year=2099).exists()

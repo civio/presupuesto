@@ -10,10 +10,17 @@ class SimpleBudgetLoader(BaseLoader):
         return ['ingresos.csv', 'gastos.csv', 'ejecucion_ingresos.csv', 'ejecucion_gastos.csv']
 
     def load(self, entity, year, path, status):
+        # Don't touch the database if there's no data for the year: an empty budget
+        # would become the latest one, and the home page would show nothing
+        filenames = [os.path.join(path, filename) for filename in self._get_input_filenames()]
+        if not any(os.path.isfile(filename) for filename in filenames):
+            print("No hay datos en %s, no se carga el presupuesto de %s." % (path, year))
+            return
+
         # Parse the incoming data and keep in memory
         budget_items = []
-        for filename in self._get_input_filenames():
-            self.parse_budget_data(budget_items, os.path.join(path, filename))
+        for filename in filenames:
+            self.parse_budget_data(budget_items, filename)
 
         # Now load the data one budget at a time
         self.load_budget(path, entity, year, status, budget_items)
