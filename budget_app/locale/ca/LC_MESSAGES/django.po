@@ -534,6 +534,12 @@ msgstr "Import màxim"
 msgid "Borrar filtros"
 msgstr "Esborrar filtres"
 
+msgid "Por organismo"
+msgstr "Per organisme"
+
+msgid "Desglose por organismo"
+msgstr "Desglossament per organisme"
+
 #: templates/policies/show.html:22
 msgid "Volver a Políticas"
 msgstr "Tornar a Polítiques"

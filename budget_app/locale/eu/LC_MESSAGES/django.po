@@ -524,6 +524,12 @@ msgstr "Zenbateko"
 msgid "Borrar filtros"
 msgstr "Iragazkiak ezabatu"
 
+msgid "Por organismo"
+msgstr "Erakundearen arabera"
+
+msgid "Desglose por organismo"
+msgstr "Erakundearen araberako banaketa"
+
 #: templates/payments/payments_search.html:113
 #: templates/payments/payments_script.html:68
 msgid "Importe mínimo"
