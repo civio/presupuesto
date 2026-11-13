@@ -175,10 +175,8 @@
       if (uiState !== null) {
 
         // Setup & Update Budget Summary
-        // Like the treemap, use the execution figures unless the year isn't over yet (#244)
-        var summaryColumn = breakdowns[uiState.view].years['actual_'+uiState.year] !== undefined &&
-                            !(budgetStatuses[uiState.year] && budgetStatuses[uiState.year] !== '') ?
-                            'actual_'+uiState.year : uiState.year;
+        // Show the same figures as the treemap (#244)
+        var summaryColumn = BreakdownHelpers.latestCompleteColumns(breakdowns[uiState.view], budgetStatuses)[uiState.year] || uiState.year;
         budgetSummary.update( breakdowns[uiState.view], areas[uiState.view], uiState.field, uiState.view, summaryColumn );
 
         // Setup & Update Budget Treemap

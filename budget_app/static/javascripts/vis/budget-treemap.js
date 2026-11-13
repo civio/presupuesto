@@ -498,28 +498,15 @@ function BudgetTreemap(_selector, _stats, _budgetStatuses) {
     if ( breakdown === null )
       return;
 
-    // Pick the right column for each year: execution preferred over 'just' budget...
-    // TODO: This bit is duplicated in BudgetStackedChart
-    var columns = {}, year;
-    for (var column_name in breakdown.years) {
-      year = breakdown.years[column_name];
-
-      // ...unless we know the execution data is not complete (the year is not over),
-      // in which case we go with the budget.
-      if ( budgetStatuses[year] && budgetStatuses[year]!=='' && column_name.indexOf("actual_")===0 )
-        continue;
-
-      // Normally we do this:
-      if ( !columns[year] || column_name.indexOf("actual_")===0 )
-        columns[year] = column_name;
-    }
+    // Pick the right column for each year: execution preferred over 'just' budget
+    var columns = BreakdownHelpers.latestCompleteColumns(breakdown, budgetStatuses);
 
     // In some rather unusual cases we actually have no data: we may have one year of execution
     // data for a year that is not complete, for example. It happens. In those cases, we
     // hide the visualization. It's not ideal for a visualization to hide its parent container,
     // but there's not a simple clean solution: the way the code is structured now,
     // the calling code doesn't know whether there's data, since it involves looking into
-    // budget statuses and so on (i.e. the code we just above)
+    // budget statuses and so on (see BreakdownHelpers.latestCompleteColumns)
     if ( Object.keys(columns).length === 0 )
       $(selector).hide();
 

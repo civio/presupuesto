@@ -37,22 +37,9 @@ function BudgetStackedChart(_selector, _stats, _colorScale, i18n) {
   
   function loadBreakdownField(breakdown, field) {
     // Pick the right dataset for each year: execution preferred over 'just' budget
-    // TODO: This bit is duplicated in BudgetTreemap
-    var columns = {};
-    for (var column_name in breakdown.years) {
-      var year = breakdown.years[column_name];
-
-      // ...unless we know the execution data is not complete (the year is not over),
-      // in which case we go with the budget.
-      if (budgetStatuses[year] !== undefined && budgetStatuses[year] !== '' && column_name.indexOf('actual_') === 0)
-        continue;
-
-      // Normally we do this:
-      if ( !columns[year] || column_name.indexOf('actual_') === 0 ) {
-        columns[year] = column_name;
-        totals[year] = breakdown[field][column_name];
-      }
-    }
+    var columns = BreakdownHelpers.latestCompleteColumns(breakdown, budgetStatuses);
+    for (var year in columns)
+      totals[year] = breakdown[field][columns[year]];
 
     // Keep the years for later, when drawing the axis
     years = Object.keys(columns);
