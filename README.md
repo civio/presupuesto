@@ -1,22 +1,25 @@
-Este repositorio contiene el código de la aplicación de visualización de [Dónde van mis impuestos][1], desarrollada originalmente como parte del proyecto [Aragón Open Data][3].
+Este repositorio contiene el código de [¿Dónde van mis impuestos?][1], la aplicación de [Civio][4] para visualizar presupuestos públicos. Es un _fork_ de la aplicación desarrollada originalmente para el [Presupuesto Abierto de Aragón][3], que ha evolucionado mucho desde entonces y que usan hoy los Presupuestos Generales del Estado y varios ayuntamientos y comunidades autónomas.
 
 ### Introducción
-El objetivo del proyecto consiste en ofrecer una visualización de los Presupuestos Generales del Estado suficientemente intuitiva como para ser comprendida por personas sin experiencia previa en política presupuestaria, pero a la vez suficientemente detallada para permitir a aquellas personas interesadas y expertas en este asunto profundizar más de una manera ágil y efectiva. Así, se muestra la realidad del presupuesto en su conjunto, cubriendo tanto el lado de los ingresos como el de los gastos, y tanto las cantidades presupuestadas como las finalmente ejecutadas (cuando la información esté disponible).
+El objetivo del proyecto consiste en ofrecer una visualización de los presupuestos suficientemente intuitiva como para ser comprendida por personas sin experiencia previa en política presupuestaria, pero a la vez suficientemente detallada para permitir a aquellas personas interesadas y expertas en este asunto profundizar más de una manera ágil y efectiva. Así, se muestra la realidad del presupuesto en su conjunto, cubriendo tanto el lado de los ingresos como el de los gastos, y tanto las cantidades presupuestadas como las finalmente ejecutadas (cuando la información esté disponible).
 
 Las principales funcionalidades de la aplicación son:
 
- * Visualización de gastos e ingresos presupuestados, de forma jerárquica y según las cuatro clasificaciones usadas en los presupuestos: funcional (para qué se gasta), económica (en qué se gasta, o cómo se ingresa), financiación (origen y tipo de los fondos) y orgánica/institucional (quién gasta/ingresa).
+ * Visualización de gastos e ingresos presupuestados, de forma jerárquica y según las tres clasificaciones usadas en los presupuestos: funcional (para qué se gasta), económica (en qué se gasta, o cómo se ingresa) y orgánica/institucional (quién gasta/ingresa).
 
  * Mostrar la información de los programas presupuestarios al máximo nivel de desglose existente, el nivel de partida.
 
  * Mostrar la evolución de los presupuestos a lo largo del tiempo.
 
- * Permitir la búsqueda de texto libre en el conjunto de los presupuestos para encontrar cualquier dato de forma sencilla
+ * Permitir la búsqueda de texto libre en el conjunto de los presupuestos para encontrar cualquier dato de forma sencilla.
 
-Para más información, consulta la [memoria del proyecto](docs/Memoria%20Fase%201.pdf) y las instrucciones de instalación en el fichero [`INSTALL.md`](INSTALL.md).
+ * Opcionalmente, mostrar pagos a proveedores, inversiones por distritos y otras secciones que cada instalación activa en su configuración.
 
-[1]: https://presupuesto.aragon.es
-[3]: https://opendata.aragon.es/
+Cada instalación tiene su propio tema, con sus datos, plantillas y estilos. Las instrucciones de instalación están en el fichero [`INSTALL.md`](INSTALL.md), y los cambios de cada versión en el [`CHANGELOG.md`](CHANGELOG.md).
+
+[1]: https://dondevanmisimpuestos.es
+[3]: https://presupuesto.aragon.es
+[4]: https://civio.es
 
 ### Licencia
 
