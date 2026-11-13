@@ -32,6 +32,7 @@ class SimpleBudgetLoader(BaseLoader):
             print("Leyendo datos de %s..." % filename)
             reader = csv.reader(open(filename, 'r', encoding=self._get_data_files_encoding()), delimiter=self._get_delimiter())
             for index, line in enumerate(reader):
+                line = self._strip_fields(line)
                 if not self._is_data_line(line):
                     continue
 
@@ -160,6 +161,11 @@ class SimpleBudgetLoader(BaseLoader):
             codes.append(code if part else None)
         return codes
 
+    # Some sources pad their fields with spaces, ordinary or not ('\xa0'), or put a space
+    # in empty ones (Navarra's, see civio/presupuesto-management#410), so we strip them
+    def _strip_fields(self, line):
+        return [field.strip() for field in line]
+
     # Skip empty lines, comments, and the header row of the files that have one
     # (the PGE's, written by scraper-pge, start with 'EJERCICIO')
     def _is_data_line(self, line):
@@ -169,6 +175,7 @@ class SimpleBudgetLoader(BaseLoader):
     def _read_classification_file(self, filename):
         reader = csv.reader(open(filename, 'r', encoding='utf-8'), delimiter=self._get_delimiter())
         for line in reader:
+            line = self._strip_fields(line)
             if self._is_data_line(line):
                 yield line
 
