@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 - Don't list economic articles without data in the search results, since their pages are empty. civio/presupuesto-management#495
 - Escape the names in the data tables, so a payee like `<Dades anonimitzades>` shows up instead of an empty cell. civio/presupuesto-management#652
 - Don't create a budget when loading a year without data files, which left an empty budget as the latest one. civio/presupuesto-management#442
+- Show the payments tables when a payment has an empty description, instead of failing with a JavaScript error. civio/presupuesto-management#487
 - Update the README, which still described the original Aragón app and the funding classification. civio/presupuesto-management#76
 
 ### Added

@@ -53,11 +53,11 @@ class BudgetBreakdown:
             'income': self.total_income
         }
         # Add year information only at the root level, waste of space otherwise
-        if not uid:
+        if uid is None:
             data['years'] = self.years
 
         # Add a label to the item, if provided
-        if labels and uid:
+        if labels and uid is not None:
             data['label'] = labels.get(uid)
 
         # Iterate through the children. Let them know the uid they represent
@@ -67,5 +67,6 @@ class BudgetBreakdown:
                 data['sub'][subtotal] = self.subtotals[subtotal].to_json(uid=subtotal, labels=labels)
 
         # Since we're calling this method recursively, we only convert to JSON
-        # at the root level, i.e. when the uid is null
-        return data if uid else json.dumps(data)
+        # at the root level, i.e. when the uid is null. Not just falsy: a payment
+        # with an empty description is a child whose uid is ''
+        return data if uid is not None else json.dumps(data)
