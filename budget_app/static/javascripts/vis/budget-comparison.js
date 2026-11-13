@@ -69,24 +69,32 @@ function BudgetComparison(container_id, leftBreakdown, rightBreakdown, leftStats
   // Get the max value across categories and years for both left and right data, in order
   // to scale the horizontal visualization bars.
   function getMaxValue(leftData, rightData, uiState) {
-    var maxCategory = _.max(categories, function(category_id) { 
+    var maxValues = categories.map(function(category_id) {
       return Math.max(  leftData.items[category_id] ? leftData.items[category_id].max[uiState.format] : 0,
                         rightData.items[category_id] ? rightData.items[category_id].max[uiState.format] : 0 );
     });
-    return Math.max(  leftData.items[maxCategory] ? leftData.items[maxCategory].max[uiState.format] : 0, 
-                      rightData.items[maxCategory] ? rightData.items[maxCategory].max[uiState.format] : 0 );
+    return Math.max.apply(null, [0].concat(maxValues));
   }
 
   function getCategories(leftData, rightData) {
-    var categories = _.union(_.keys(leftData.items), _.keys(rightData.items));
-    var lastYear = Math.max(_.max(leftData.years), _.max(rightData.years));
+    var categories = Object.keys(leftData.items);
+    Object.keys(rightData.items).forEach(function(category_id) {
+      if ( categories.indexOf(category_id) < 0 )
+        categories.push(category_id);
+    });
+    var lastYear = Math.max(Math.max.apply(null, leftData.years), Math.max.apply(null, rightData.years));
     // Sort by amounts in the left for the last year. Break ties at the bottom using right amounts.
-    return _.sortBy(categories, function(category_id) {
+    function sortKey(category_id) {
       var left = leftData.items[category_id] ? leftData.items[category_id][lastYear] : undefined;
       var right = rightData.items[category_id] ? rightData.items[category_id][lastYear] : 1;
       // Breaking ties at the bottom requires a bit of a trick (1/right), since we want big
       // right amounts first, i.e. they need to be lower numbers, without interfering with left ones.
       return (left === undefined || left == 0) ? 1/right : -left;
+    }
+    // Compare rather than subtract, since 1/right can be Infinity
+    return categories.sort(function(a, b) {
+      var keyA = sortKey(a), keyB = sortKey(b);
+      return keyA < keyB ? -1 : (keyA > keyB ? 1 : 0);
     });
   }
 
@@ -128,7 +136,7 @@ function BudgetComparison(container_id, leftBreakdown, rightBreakdown, leftStats
         // Keep track of max value along time
         // Note that we're forced to track different max values, one for each 'format', since
         // real, per-capita and percentage amounts are not directly proportional to the original nominal ones
-        _.keys(policy.max).forEach(function(format) {
+        Object.keys(policy.max).forEach(function(format) {
           policy.max[format] = Math.max(policy.max[format], getValue(policy[year], format, year, stats, yearTotals));
         });
       }
@@ -137,15 +145,15 @@ function BudgetComparison(container_id, leftBreakdown, rightBreakdown, leftStats
 
     return { 
       'items': items, 
-      'years': _.keys(columns),
+      'years': Object.keys(columns),
       'yearTotals': yearTotals,
       'stats': stats
     };
   }
 
   function getValues(data, categories, uiState) {
-    return _.map(categories, function(category_id) {
-      if ( _.contains(data.years, uiState.year) )
+    return categories.map(function(category_id) {
+      if ( data.years.indexOf(uiState.year) >= 0 )
         return data.items[category_id] ? getValue(data.items[category_id][uiState.year], uiState.format, uiState.year, data.stats, data.yearTotals) : 0;
       else
         return undefined;

@@ -7,7 +7,7 @@ function getSum(breakdown, ids, field, year, budgetStatuses) {
                             budgetStatuses[year]=='' &&
                             breakdown.years['actual_'+year];
   var column_name = use_execution_data ? 'actual_'+year : year;
-  return _.reduce(ids, function(sum, id) {
+  return [].concat(ids).reduce(function(sum, id) {  // ids can be an array or a single id
       // It's rare, but it may happen that a chapter is missing, so double check
       return sum + ((breakdown.sub[id]&&breakdown.sub[id][field][column_name]) || 0);
     }, 0);
@@ -73,8 +73,8 @@ function calculateIndicators(chapterBreakdown, budgetStatuses, adjustInflationFn
     return Formatter.amount(adjustInflationFn(amount, uiState.year));
   }
 
-  var gross_savings = getSum(chapterBreakdown, _.range(1, 6), 'income', uiState.year, budgetStatuses) -
-                      getSum(chapterBreakdown, _.range(1, 6), 'expense', uiState.year, budgetStatuses);
+  var gross_savings = getSum(chapterBreakdown, [1, 2, 3, 4, 5], 'income', uiState.year, budgetStatuses) -
+                      getSum(chapterBreakdown, [1, 2, 3, 4, 5], 'expense', uiState.year, budgetStatuses);
   var net_savings = gross_savings - getSum(chapterBreakdown, '9', 'expense', uiState.year, budgetStatuses);
   var funding_capacity = gross_savings +
                           getSum(chapterBreakdown, [6, 7], 'income', uiState.year, budgetStatuses) -

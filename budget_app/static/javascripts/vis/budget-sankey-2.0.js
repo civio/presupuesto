@@ -113,7 +113,7 @@ function BudgetSankey(_functionalBreakdown, _economicBreakdown, _budgetStatuses,
       if ( typeof item_ids == 'string' ) {      // Standard, an id
         return [ breakdown.sub[item_ids] ];
       } else {                                  // We got ourselves a hash
-        return _.map(item_ids, function(item) {
+        return item_ids.map(function(item) {
           if ( typeof item == 'string' ) {      // Standard, an article id
             return breakdown.sub[item];
           } else {                              // A two-element array, a concept id

@@ -411,7 +411,7 @@
           results = [],
           that = this;
         if (q.term && q.term !== '') {
-          results = _.filter(that.data, function(e) {
+          results = that.data.filter(function(e) {
             return e.text.toUpperCase().indexOf(q.term.toUpperCase()) >= 0;
           });
         } else {

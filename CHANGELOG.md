@@ -14,6 +14,9 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Add the payment date to the payments downloads. civio/presupuesto-management#458
 
+### Removed
+- Drop underscore.js, replaced by native array methods. Themes that call `_.` in their own templates or scripts must do the same. civio/presupuesto-management#392
+
 ## [5.4] - 2026-11-13
 ### Changed
 - `SimpleBudgetLoader` looks for each classification in the year's folder first, and then in the entity's, reads each line through a method themes can override (`parse_economic_category` and company), and splits economic codes through `_split_economic_code()`, which themes override when their codes go down to subheadings or have other quirks. Navarra's and the PGE's loaders move to it, and go from about 100 seconds per year to 4 and 10, because `BudgetLoader` saved lines one at a time with uncached lookups. civio/presupuesto-management#1423
