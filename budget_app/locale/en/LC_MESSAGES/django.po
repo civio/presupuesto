@@ -1230,3 +1230,18 @@ msgstr "Budget Line Number"
 
 msgid "Nombre Partida"
 msgstr "Budget Line Name"
+
+msgid "No encontramos esta página"
+msgstr "We can't find this page"
+
+msgid "Puede que la dirección esté mal escrita, o que la página ya no exista."
+msgstr "The address may be mistyped, or the page may no longer exist."
+
+msgid "Volver a la portada"
+msgstr "Back to the home page"
+
+msgid "Algo ha fallado"
+msgstr "Something went wrong"
+
+msgid "Ha habido un error al preparar esta página. Prueba de nuevo dentro de un rato."
+msgstr "There was an error preparing this page. Please try again in a while."

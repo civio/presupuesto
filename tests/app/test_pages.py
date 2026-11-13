@@ -81,3 +81,20 @@ def test_the_fake_income_programme_is_not_found(client, path):
     # Income hangs from a fake functional category, whose pages used to fail with a 500.
     # (El Prat doesn't use subprogrammes either, so those pages aren't found anyway.)
     assert client.get('/es/' + path).status_code == 404
+
+
+def test_not_found_page_uses_the_site_template(client, settings):
+    # See civio/presupuesto-management#263
+    settings.DEBUG = False
+    response = client.get('/es/no-existe')
+    assert response.status_code == 404
+    page = response.content.decode()
+    assert 'No encontramos esta página' in page and '<header' in page
+
+
+def test_server_error_page_renders_without_context(rf):
+    # Django renders it with no context, so it can't depend on the request or the context processors
+    from django.views.defaults import server_error
+    response = server_error(rf.get('/'))
+    assert response.status_code == 500
+    assert 'Algo ha fallado' in response.content.decode()

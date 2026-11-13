@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<section class="glossary" role="region">
+  <div class="glossary-header section-header">
+    <div class="container">
+      <h2 class="page-title">{{ _('No encontramos esta página') }}</h2>
+    </div>
+  </div>
+
+  <div class="glossary-content">
+    <div class="container">
+      <p>{{ _('Puede que la dirección esté mal escrita, o que la página ya no exista.') }}</p>
+      <p><a href="{{ url('welcome') }}">{{ _('Volver a la portada') }}</a></p>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

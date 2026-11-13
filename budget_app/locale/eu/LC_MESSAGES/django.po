@@ -1140,3 +1140,18 @@ msgstr "Partida zenbakia"
 
 msgid "Nombre Partida"
 msgstr "Partida izena"
+
+msgid "No encontramos esta página"
+msgstr "Ez dugu orri hau aurkitu"
+
+msgid "Puede que la dirección esté mal escrita, o que la página ya no exista."
+msgstr "Baliteke helbidea gaizki idatzita egotea, edo orria jada ez egotea."
+
+msgid "Volver a la portada"
+msgstr "Itzuli hasierako orrira"
+
+msgid "Algo ha fallado"
+msgstr "Zerbaitek huts egin du"
+
+msgid "Ha habido un error al preparar esta página. Prueba de nuevo dentro de un rato."
+msgstr "Errore bat egon da orri hau prestatzean. Saiatu berriro geroxeago."

@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - Add the payment date to the payments downloads. civio/presupuesto-management#458
+- Add 404 and 500 pages. The 404 uses the site's layout; the 500 is a plain page, since Django renders it without any context. civio/presupuesto-management#263
 
 ### Removed
 - Drop underscore.js, replaced by native array methods. Themes that call `_.` in their own templates or scripts must do the same. civio/presupuesto-management#392

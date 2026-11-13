@@ -1,0 +1,21 @@
+{#
+  Django renders this page without any context when something fails, so it can't use the
+  base template, which needs the request and the context processors. Keep it standalone.
+#}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ _('Algo ha fallado') }}</title>
+  <style>
+    body { font-family: sans-serif; color: #333; max-width: 40em; margin: 4em auto; padding: 0 1em; line-height: 1.5; }
+    h1 { font-size: 1.6em; }
+  </style>
+</head>
+<body>
+  <h1>{{ _('Algo ha fallado') }}</h1>
+  <p>{{ _('Ha habido un error al preparar esta página. Prueba de nuevo dentro de un rato.') }}</p>
+  <p><a href="/">{{ _('Volver a la portada') }}</a></p>
+</body>
+</html>

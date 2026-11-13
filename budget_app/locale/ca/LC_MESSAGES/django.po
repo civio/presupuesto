@@ -1183,3 +1183,18 @@ msgstr "Número Partida"
 
 msgid "Nombre Partida"
 msgstr "Nom Partida"
+
+msgid "No encontramos esta página"
+msgstr "No trobem aquesta pàgina"
+
+msgid "Puede que la dirección esté mal escrita, o que la página ya no exista."
+msgstr "Potser l'adreça està mal escrita, o la pàgina ja no existeix."
+
+msgid "Volver a la portada"
+msgstr "Tornar a la portada"
+
+msgid "Algo ha fallado"
+msgstr "Alguna cosa ha fallat"
+
+msgid "Ha habido un error al preparar esta página. Prueba de nuevo dentro de un rato."
+msgstr "Hi ha hagut un error en preparar aquesta pàgina. Torna-ho a provar d'aquí a una estona."
