@@ -1,12 +1,13 @@
 # -*- coding: UTF-8 -*-
 
+from django.db.models import Exists, OuterRef
 from django.urls import reverse
 from django.utils import translation
 from django.template.defaultfilters import slugify
 
 from project.settings import LANGUAGES
 
-from budget_app.models import FunctionalCategory, EconomicCategory
+from budget_app.models import BudgetItem, FunctionalCategory, EconomicCategory
 from budget_app.context_processors import show_options_processor
 from .helpers import *
 
@@ -65,7 +66,12 @@ def sitemap(request):
 
     # Add economic pages for articles
     # We do so only for the ones in the latest budget, which is good enough and way simpler.
-    economic_categories = EconomicCategory.objects.filter(budget_id=latest_budget.id, article__isnull=False, heading__isnull=True)
+    # Skip articles without items, which classifications often list: their pages are empty (#1424)
+    article_items = BudgetItem.objects.filter(budget_id=latest_budget.id,
+                                              economic_category__expense=OuterRef('expense'),
+                                              economic_category__article=OuterRef('article'))
+    economic_categories = EconomicCategory.objects.filter(budget_id=latest_budget.id, article__isnull=False, heading__isnull=True) \
+                                                  .filter(Exists(article_items))
     # For the article titles, normally we'd use the one from the object itself, but some deployments (Navarra)
     # have 'gaps' in the data, i.e. the description is missing and we fall back to older years. So, instead,
     # use the master description table, which should have a proper value always.

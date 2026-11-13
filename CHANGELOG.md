@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 - Return a 404 for the entity payment pages on sites without payments, instead of a 500. civio/presupuesto-management#254
 - Translate the payments breakdown by entity into Catalan and Basque. civio/presupuesto-management#765
 - Don't list economic articles without data in the search results, since their pages are empty. civio/presupuesto-management#495
+- Don't list economic articles without data in the sitemap either. civio/presupuesto-management#1424
 - Escape the names in the data tables, so a payee like `<Dades anonimitzades>` shows up instead of an empty cell. civio/presupuesto-management#652
 - Don't create a budget when loading a year without data files, which left an empty budget as the latest one. civio/presupuesto-management#442
 - The detailed economic downloads (programmes, subprogrammes, sections and articles) list concepts, and then each item with its department (on sites that keep them apart), economic code and item number in separate columns, instead of an internal id (`000/2015/120/04`) in a column wrongly called "Subconcepto". civio/presupuesto-management#1422

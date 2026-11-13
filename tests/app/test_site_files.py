@@ -40,3 +40,16 @@ def test_version_without_git(client, monkeypatch):
     assert version['commit'] is None
     assert version['tag'] is None
     assert version['budget_years'] == [2024, 2025]
+
+
+def test_sitemap_skips_articles_without_items(client):
+    # Classifications list more articles than are used, and their pages are empty. See civio/presupuesto-management#1424
+    import re
+    from budget_app.models import Budget, BudgetItem
+    latest = Budget.objects.order_by('-year').first()
+    sitemap = client.get('/sitemap.xml').content.decode()
+    articles = set(re.findall(r'/articulos/([gi])/(\d+)/', sitemap))
+    assert articles
+    for side, article in articles:
+        assert BudgetItem.objects.filter(budget__year=latest.year, economic_category__expense=(side == 'g'),
+                                         economic_category__article=article).exists()
