@@ -20,7 +20,7 @@ Cada instalación tiene su propio tema, con sus datos, plantillas y estilos. Las
 [1]: https://dondevanmisimpuestos.es
 [3]: https://presupuesto.aragon.es
 [4]: https://civio.es
-[5]: https://graphs.civio.es/map-dvmi/dist/
+[5]: https://civio.es/sector-publico/
 
 ### Licencia
 
