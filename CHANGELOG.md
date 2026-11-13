@@ -2,6 +2,8 @@
 All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
+
+## [5.5] - 2026-11-13
 ### Fixed
 - Return a 404 for the entity payment pages on sites without payments, instead of a 500. civio/presupuesto-management#254
 - Translate the payments breakdown by entity into Catalan and Basque. civio/presupuesto-management#765
@@ -9,10 +11,13 @@ All notable changes to this project will be documented in this file.
 - Don't list economic articles without data in the sitemap either. civio/presupuesto-management#1424
 - Escape the names in the data tables, so a payee like `<Dades anonimitzades>` shows up instead of an empty cell. civio/presupuesto-management#652
 - Don't create a budget when loading a year without data files, which left an empty budget as the latest one. civio/presupuesto-management#442
-- The detailed economic downloads (programmes, subprogrammes, sections and articles) list concepts, and then each item with its department (on sites that keep them apart), economic code and item number in separate columns, instead of an internal id (`000/2015/120/04`) in a column wrongly called "Subconcepto". civio/presupuesto-management#1422
+- The detailed economic downloads (programmes, subprogrammes, sections and articles) list concepts, and then each item with its department (on sites that keep them apart), economic code and item number in separate columns, instead of an internal id (`000/2015/120/04`) in a column wrongly called "Subconcepto". The column names of every download are now translated into Basque and Galician too. civio/presupuesto-management#1422
 - Show the payments tables when a payment has an empty description, instead of failing with a JavaScript error. civio/presupuesto-management#487
 - Update the README, which still described the original Aragón app and the funding classification. civio/presupuesto-management#76
 - The guided visit page has a title, "Visita guiada", like the rest of the pages. civio/presupuesto-management#1287
+
+### Changed
+- The menu only highlights the core's guided visit (`guided_visit`). Themes with their own `guidedvisit` URL should use the core's, as Madrid, Menorca and Navarra now do, keeping their template in `guided_visit/index.html`. civio/presupuesto-management#1287
 
 ### Added
 - Add the payment date to the payments downloads. civio/presupuesto-management#458
@@ -450,7 +455,10 @@ All notable changes to this project will be documented in this file.
 ### Forked from [aragonopendata/presupuesto](https://github.com/aragonopendata/presupuesto) - 2016-01-28
 
 
-[Unreleased]: https://github.com/civio/presupuesto/compare/v5.2...HEAD
+[Unreleased]: https://github.com/civio/presupuesto/compare/v5.5...HEAD
+[5.5]: https://github.com/civio/presupuesto/compare/v5.4...v5.5
+[5.4]: https://github.com/civio/presupuesto/compare/v5.3...v5.4
+[5.3]: https://github.com/civio/presupuesto/compare/v5.2...v5.3
 [5.2]: https://github.com/civio/presupuesto/compare/v5.1...v5.2
 [5.1]: https://github.com/civio/presupuesto/compare/v5.0...v5.1
 [4.7.1]: https://github.com/civio/presupuesto/compare/v4.7...v4.7.1
