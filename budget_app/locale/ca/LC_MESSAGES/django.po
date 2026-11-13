@@ -299,42 +299,12 @@ msgstr "a dia d'avui"
 msgid "(Cantidades actualizadas con la inflación)"
 msgstr "(Quantitats actualitzades amb la inflació)"
 
-#: templates/entities/compare.html:14 templates/entities/show.html:8
-msgid "Volver a la lista de comarcas"
-msgstr "Tornar a la llista de comarques"
-
-#: templates/entities/compare.html:16 templates/entities/show.html:10
-msgid "Volver a la lista de municipios"
-msgstr "Tornar a la llista de municipis"
-
-#: templates/entities/compare.html:20
-msgid "Comparativa"
-msgstr "Comparativa"
-
 #: templates/entities/compare.html:30 templates/entities/compare.html.py:45
 #: templates/entities/show.html:22 templates/entities/show_widget.html:19
 #: templates/shared/header.html:53 templates/shared/header.html.py:62
 #: templates/welcome/index.html:61
 msgid "Políticas"
 msgstr "Polítiques"
-
-#: templates/entities/index.html:10 templates/shared/header.html:56
-#: templates/welcome/index.html:55
-msgid "Comarcas"
-msgstr "Comarques"
-
-#: templates/entities/index.html:12 templates/shared/header.html:57
-#: templates/welcome/index.html:56
-msgid "Municipios"
-msgstr "Municipis"
-
-#: templates/entities/index.html:25
-msgid "Habitantes"
-msgstr "Habitants"
-
-#: templates/entities/index.html:29
-msgid "Previsto"
-msgstr "Previst"
 
 #: templates/entities/index.html:30 templates/entities/show_script.html:23
 #: templates/entities/show_script.html:95 templates/entities/totals.html:5
@@ -591,10 +561,6 @@ msgstr "Mostrar resultats de"
 #: templates/search/index.html:35 templates/search/index.html.py:37
 msgid "cualquier año"
 msgstr "qualsevol any"
-
-#: templates/search/index.html:56 templates/search/index.html.py:60
-msgid "Comarcas y municipios"
-msgstr "Comarques i municipis"
 
 #: templates/search/index.html:84
 msgid "Políticas y Programas"

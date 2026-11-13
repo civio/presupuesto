@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 ### Removed
 - Drop underscore.js, replaced by native array methods. Themes that call `_.` in their own templates or scripts must do the same. civio/presupuesto-management#392
 - Drop Modernizr, `jquery.event.drag` (a leftover from SlickGrid) and `count-css-rules.js`, which nothing used any more. civio/presupuesto-management#392
+- Drop the county and town pages inherited from Aragón (`/comarcas`, `/municipios`, their comparisons, map and downloads), along with the `SHOW_COUNTIES_AND_TOWNS` and `SEARCH_ENTITIES` settings. Pages for secondary entities under `/entidades/` stay. civio/presupuesto-management#105
 
 ## [5.4] - 2026-11-13
 ### Changed

@@ -16,15 +16,7 @@
       <div class="option-policies">
         <div data-icon="P" aria-hidden="true" class="icon mega"></div>
         <a href="{{ url('policies') }}" class="option-title"><h3>{{ _('Políticas concretas') }}</h3></a>
-        {% if show_counties_and_towns %}
-          <ul>
-            <li><a href="{{ url('policies') }}">{{ _('Gobierno de Aragón') }}</a></li>
-            <li><a href="{{ url('counties') }}">{{ _('Comarcas') }}</a></li>
-            <li><a href="{{ url('towns') }}">{{ _('Municipios') }}</a></li>
-          </ul>
-        {% else %}
         <p class="desc">{{ _('Educación, protección y bienestar social, cultura... ¿Qué área te interesa?') }}</p>
-        {% endif %}
         <a href="{{ url('policies') }}" class="btn btn-default btn-primary blue icon-plus">{{ _('Políticas') }}</a>
       </div>
     </div>

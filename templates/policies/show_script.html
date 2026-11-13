@@ -4,20 +4,6 @@
     // GRID RENDERING
     //
 
-{% if is_chapter %}
-    // Convert an article name into a link
-    function articleLinkFormatter(value, type, item) {
-      if ( item.indent==0 )
-        return rowNameFormatter(value, type, item);
-
-      var getIncomeLink = {{ 'getCountyIncomeLink' if is_county else 'getTownIncomeLink' }};
-      var getExpenseLink = {{ 'getCountyExpenseLink' if is_county else 'getTownExpenseLink' }};
-      var getLink = (uiState.view == 'expense') ? getExpenseLink : getIncomeLink;
-      var link = getLink('{{ entity.slug }}', item.key);
-      var linkedValue = "<a href='"+link+"'>"+value+"</a>";
-      return rowNameFormatter(value, type, item);
-    };
-{% endif %}
 
     function getColumnDefinition(uiState) {
       var getBreakdownValue = getBreakdownValueFunction(uiState.field, uiState.year);
@@ -44,11 +30,7 @@
 
     function getLabelColumnTitle(tab) {
       var titles = {
-{% if is_chapter %}
-        'economic': "{{ _('Artículo') }}",
-{% else %}
         'economic': "{{ _('Concepto') }}",
-{% endif %}
 {% if programme_id %}
         'functional': "{{ _('Subprograma') }}",
 {% else %}
@@ -61,11 +43,7 @@
 
     function getLabelColumnRender(tab) {
       var renders = {
-{% if is_chapter %}
-        'economic': articleLinkFormatter,
-{% else %}
         'economic': rowNameFormatter,
-{% endif %}
 {% if full_breakdown %}
   {% if programme_id %}
         'functional': getPolicyLinkFormatter(-1), // Subprogrammes at root level

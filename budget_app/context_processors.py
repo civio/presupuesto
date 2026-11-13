@@ -16,7 +16,6 @@ def show_options_processor(request):
     'show_guided_visit':        hasattr(settings, 'SHOW_GUIDED_VISIT') and settings.SHOW_GUIDED_VISIT,
     'show_investments':         hasattr(settings, 'SHOW_INVESTMENTS') and settings.SHOW_INVESTMENTS,
     'show_main_investments':    hasattr(settings, 'SHOW_MAIN_INVESTMENTS') and settings.SHOW_MAIN_INVESTMENTS,
-    'show_counties_and_towns':  hasattr(settings, 'SHOW_COUNTIES_AND_TOWNS') and settings.SHOW_COUNTIES_AND_TOWNS,
     'show_section_pages':       hasattr(settings, 'SHOW_SECTION_PAGES') and settings.SHOW_SECTION_PAGES,
     'breakdown_by_uid':         True if not hasattr(settings, 'BREAKDOWN_BY_UID') else settings.BREAKDOWN_BY_UID,
     'institutional_max_levels': settings.INSTITUTIONAL_MAX_LEVELS if hasattr(settings, 'INSTITUTIONAL_MAX_LEVELS') else 1
@@ -35,9 +34,6 @@ def data_sources_processor(request):
     'data_source_population':    hasattr(settings, 'DATA_SOURCE_POPULATION') and settings.DATA_SOURCE_POPULATION,
     'data_source_inflation':     hasattr(settings, 'DATA_SOURCE_INFLATION') and settings.DATA_SOURCE_INFLATION
   }
-
-def search_entities_processor(request):
-  return { 'search_entities': False if not hasattr(settings, 'SEARCH_ENTITIES') else settings.SEARCH_ENTITIES }
 
 def overview_use_new_vis(request):
   return { 'overview_use_new_vis': False if not hasattr(settings, 'OVERVIEW_USE_NEW_VIS') else settings.OVERVIEW_USE_NEW_VIS }

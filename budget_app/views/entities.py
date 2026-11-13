@@ -49,7 +49,6 @@ def entities_show_helper(request, c, entity, render_callback=None):
                                 [ c['breakdowns']['economic'] ] )
 
     # Additional data needed by the view
-    populate_level(c, entity.level)
     populate_entity_stats(c, entity)
     # TODO: We're doing this also for Aragon, check performance!
     populate_entity_descriptions(c, entity)
@@ -123,9 +122,9 @@ def _fetch_entity(c, id):
     # is_secondary_entity is only set when accessing the URL for a particular entity,
     # (that is, in a context with multiple entities), not when accessing the main
     # policies page. See #105.
-    # XXX: Would it make sense to have this as a setting for the whole site (replacing
-    # maybe the too-specific SEARCH_ENTITIES)? I.e. do we need to support an scenario where
-    # the entity name is shown for child entities but not the default? For PGE maybe?
+    # XXX: Would it make sense to have this as a setting for the whole site? I.e. do we
+    # need to support an scenario where the entity name is shown for child entities but
+    # not the default? For PGE maybe?
     # If not, we could even set this automatically based on whether there're multiple
     # entities in the database for a given language.
     set_entity(c, entity, is_secondary_entity=True)

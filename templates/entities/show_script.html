@@ -59,18 +59,6 @@
       };
     }
 
-{% if entities %}
-    // Convert an article name into a link
-    function getEntityLinkFormatter(value, type, item) {
-      var getIncomeLink = {{ 'getCountyIncomeLink' if is_county else 'getTownIncomeLink' }};
-      var getFunctionalLink = {{ 'getCountyFunctionalLink' if is_county else 'getTownFunctionalLink' }};
-      var getExpenseLink = {{ 'getCountyExpenseLink' if is_county else 'getTownExpenseLink' }};
-      var getLink = (uiState.view == 'expense') ? getExpenseLink : (uiState.view == 'income' ? getIncomeLink : getFunctionalLink);
-      var link = getLink('{{ entity.slug }}', item.key);
-      var linkedValue = "<a href='"+link+"'>"+value+"</a>";
-      return rowNameFormatter;
-    };
-{% else %}
     // The top level and small entities have different URLs at this point
     function getEntityLinkFormatter(value, type, item) {
       if ( uiState.view == 'functional' )
@@ -83,7 +71,6 @@
         var formatter = incomeArticleLinkFormatter;
       return formatter;
     }
-{% endif %}
 
     //Update Tab
     function updateTab() {
@@ -208,20 +195,6 @@
     // Listen click on Treemap & link to selected programme
     function onBudgetTreemapClick(e, d) {
       var widget = $('body').hasClass('widget') ? '?widget=1' : '';
-{% if entities %}
-      var getExpenseLink    = {{ 'getCountyExpenseLink' if is_county else 'getTownExpenseLink' }},
-          getFunctionalLink = {{ 'getCountyFunctionalLink' if is_county else 'getTownFunctionalLink' }},
-          getIncomeLink     = {{ 'getCountyIncomeLink' if is_county else 'getTownIncomeLink' }},
-          entitySlug        = '{{ entity.slug }}';
-
-      if (uiState.view === 'expense') {
-        window.location = getExpenseLink(entitySlug, d.id)+widget;
-      } else if (uiState.view === 'functional') {
-        window.location = getFunctionalLink(entitySlug, d.id)+widget;
-      } else if (uiState.view === 'income') {
-        window.location = getIncomeLink(entitySlug, d.id)+widget;
-      }
-{% else %}
       if (uiState.view === 'expense') {
         window.location = getExpenseArticleLink(d.id, d.name)+widget;
       } else if (uiState.view === 'functional') {
@@ -233,7 +206,6 @@
         window.location = getSectionLink(d.id, d.name)+widget;
 {% endif %}
       }
-{% endif %}
     }
 
     // Listen mouse over Summary item
@@ -313,14 +285,6 @@
       
     initSlider('#year-selection', years, {{ starting_year }});
 
-    // Entity select dropdown
-    $('#entity-select').submit(function(e) {
-      e.preventDefault();
-      entity_slug = $('#entity-select select').val();
-      if ( entity_slug != '' ) {
-        window.location.href = {{ 'getCountyCompareLink' if is_county else 'getTownCompareLink' }}('{{ entity.slug }}', entity_slug);
-      }
-    });
 
     // Setup tabs navigation
     // This will also show the tab selected in the URL hash (if any). Do it

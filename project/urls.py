@@ -109,22 +109,10 @@ budget_app_urlpatterns += add_url_patterns([
     re_path(r'^entidades/(?P<id>[0-9A-Z]+)/pagos/search$', entities_payments_search, name='entities_payments_search'),
 
     # Counties
-    re_path(r'^comarcas$', counties, name='counties'),
-    re_path(r'^comarcas/(?P<county_slug>[a-z\-]+)$', counties_show),
-    re_path(r'^comarcas/(?P<county_slug>[a-z\-]+)/ingresos/(?P<id>[0-9]+)$', counties_show_income),
-    re_path(r'^comarcas/(?P<county_slug>[a-z\-]+)/gastosf/(?P<id>[0-9]+)$', counties_show_functional),
-    re_path(r'^comarcas/(?P<county_slug>[a-z\-]+)/gastos/(?P<id>[0-9]+)$', counties_show_expense),
 
     # Towns
-    re_path(r'^municipios$', towns, name='towns'),
-    re_path(r'^municipios/(?P<town_slug>[a-z\-]+)$', towns_show),
-    re_path(r'^municipios/(?P<town_slug>[a-z\-]+)/ingresos/(?P<id>[0-9]+)$', towns_show_income),
-    re_path(r'^municipios/(?P<town_slug>[a-z\-]+)/gastosf/(?P<id>[0-9]+)$', towns_show_functional),
-    re_path(r'^municipios/(?P<town_slug>[a-z\-]+)/gastos/(?P<id>[0-9]+)$', towns_show_expense),
 
     # Comparison pages
-    re_path(r'^comarcas/(?P<county_left_slug>.+)/(?P<county_right_slug>.+)$', counties_compare),
-    re_path(r'^municipios/(?P<town_left_slug>.+)/(?P<town_right_slug>.+)$', towns_compare),
 
 
     #
@@ -168,8 +156,6 @@ budget_app_urlpatterns += add_url_patterns([
     re_path(r'^programas/(?P<id>.+)_objetivos\.(?P<format>.+)$', programme_monitoring_breakdown, name='programme_monitoring_breakdown'),
 
     # Entities lists
-    re_path(r'^gastos_entidades_(?P<level>.+)\.(?P<format>.+)$', entities_expenses, name='entities_expenses'),
-    re_path(r'^ingresos_entidades_(?P<level>.+)\.(?P<format>.+)$', entities_income, name='entities_income'),
 
     # Entity income/expenses
     re_path(r'^(?P<level>.+)_(?P<slug>.+)_gastos\.(?P<format>.+)$', entity_expenses, name='entity_expenses'),
@@ -177,9 +163,6 @@ budget_app_urlpatterns += add_url_patterns([
     re_path(r'^(?P<level>.+)_(?P<slug>.+)_gastosi\.(?P<format>.+)$', entity_institutional, name='entity_institutional'),
     re_path(r'^(?P<level>.+)_(?P<slug>.+)_ingresos\.(?P<format>.+)$', entity_income, name='entity_income'),
 
-    re_path(r'^(?P<level>.+)_(?P<slug>.+)_gastosf_(?P<id>[0-9]+)\.(?P<format>.+)$', entity_article_functional, name='entity_article_functional'),
-    re_path(r'^(?P<level>.+)_(?P<slug>.+)_gastos_(?P<id>[0-9]+)\.(?P<format>.+)$', entity_article_expenses, name='entity_article_expenses'),
-    re_path(r'^(?P<level>.+)_(?P<slug>.+)_ingresos_(?P<id>[0-9]+)\.(?P<format>.+)$', entity_article_income, name='entity_article_income'),
 
     # Payments
     re_path(r'^(?P<slug>.+)_pagos\.(?P<format>.+)$', entity_payments, name='entity_payments'),

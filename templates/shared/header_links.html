@@ -2,20 +2,9 @@
   <a href="{{ url('budgets') }}" class="icon-budget">{{ _('Visión global') }}</a>
 </li>
 
-{% if show_counties_and_towns %}
-<li class="page-policies dropdown">
-  <a class="icon-policy dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ _('Políticas') }} <span class="caret"></span></a>
-  <ul class="dropdown-menu">
-    <li><a href="{{ url('policies') }}">{{ _('Gobierno de Aragón') }}</a></li>
-    <li><a href="{{ url('counties') }}">{{ _('Comarcas') }}</a></li>
-    <li><a href="{{ url('towns') }}">{{ _('Municipios') }}</a></li>
-  </ul>
-</li>
-{% else %}
 <li class="page-policies {{ 'active' if active_tab == 'policies' else '' }}">
   <a href="{{ url('policies') }}" class="icon-policy">{{ _('Políticas') }}</a>
 </li>
-{% endif %}
         
 {% if show_payments %}
 <li class="page-payments {{ 'active' if active_tab == 'payments' else '' }}">

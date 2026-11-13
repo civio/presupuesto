@@ -47,32 +47,6 @@
         </div>
       </div>
 
-      {% if entities %}
-      <div class="results-terms panel">
-        <div class="panel-heading">
-          <h3>{{ _('Comarcas y municipios') }}</h3>
-        </div>
-        <div class="panel-body">
-          <table class="table" summary="Resultados encontrados en Comarcas y municipios para el término buscado">
-            <caption class="hidden">{{ _('Comarcas y municipios') }}</caption>
-            <tbody>
-            {% for entity in entities %}
-              <tr>
-                <th data-th="Política" headers="policy-program" id="programme1" scope="row">
-                  {% if entity.level==main_entity_level %}
-                    <a href="{{ url('policies') }}">{{ entity.name }}</a>
-                  {% else %}
-                  {% set view_name = 'counties_show' if entity.level=='comarca' else 'towns_show' %}
-                    <a href="{{ url(view_name, entity.name|slugify) }}">{{ entity.name }}</a>
-                  {% endif %}
-                </th>
-              </tr>
-            {% endfor %}
-            </tbody>
-          </table>
-        </div>
-      </div>
-      {% endif %}
 
       {% if departments %}
       <div class="results-terms panel">
@@ -189,27 +163,11 @@
                 <td class="col-1">
                   <p class="concept-heading">
                     {# Year and location #}
-                    {% if item.level==main_entity_level %}
                       <a class="date" href="{{ url('policies') }}#view={{show_side}}">
-                      {% if search_entities %}
-                        {{ item.name }} {{ item.year }}
-                      {% else %}
                         {{ item.year }}
-                      {% endif %}
                       </a>
-                    {% else %}
-                    {% set view_name = 'counties_show' if item.level=='comarca' else 'towns_show' %}
-                      <a class="date" href="{{ url(view_name, item.name|slugify) }}#view={{show_side}}">
-                      {% if search_entities %}
-                        {{ item.name }} {{ item.year }}
-                      {% else %}
-                        {{ item.year }}
-                      {% endif %}
-                      </a>
-                    {% endif %}
                     {# Programme/Article #}
                     {# XXX: We could try to show this for small entities, but we only have descriptions for top-level one #}
-                    {% if item.level==main_entity_level %}
                       {% if item.expense %}
                         {% if item.subprogramme %}
                           | <a class="programme" href="{{ url('subprogrammes_show', item.subprogramme, descriptions['functional'].get(item.subprogramme)|slugify) }}">{{ descriptions['functional'].get(item.subprogramme) }}</a>
@@ -219,7 +177,6 @@
                       {% else %}
                         | <a class="programme" href="{{ url('income_articles_show', item['article'], descriptions['income'].get(item['article'])|slugify) }}" id="policy-name-link">{{ descriptions['income'].get(item.article) }}</a>
                       {% endif %}
-                    {% endif %}
                   </p>
 
 
@@ -227,7 +184,6 @@
                   {# Concept name #}
                   <p class="concept">
                     {% set item_uid = item.uid() if breakdown_by_uid else item.economic_uid() %}
-                    {% if item.level==main_entity_level %}
                       {% if item.expense %}
                         {% if item.subprogramme %}
                           <a href="{{ url('subprogrammes_show', item['subprogramme'], descriptions['functional'].get(item['subprogramme'])|slugify) }}#item={{item_uid}}&year={{item.year}}" id="policy-name-link">{{ item.description|safe }}</a>
@@ -237,20 +193,6 @@
                       {% else %}
                         <a href="{{ url('income_articles_show', item['article'], descriptions['income'].get(item['article'])|slugify) }}#item={{item_uid}}&year={{item.year}}" id="policy-name-link">{{ item.description|safe }}</a>
                       {% endif %}
-                    {% else %}
-                      {% set view_name_prefix = 'counties_show_' if item.level=='comarca' else 'towns_show_' %}
-                      {% set view_name = view_name_prefix+show_side %}
-                      {% if show_side == 'functional' %}
-                        {% set item_id = item.policy %}
-                        {# TODO: Anchoring into functional breakdown pages not supported, only economic ones. Only relevant #}
-                        {% set item_anchor = '' %}
-                      {% else %}
-                        {# TODO: link to chapter page will not work #}
-                        {% set item_id = item.article %}
-                        {% set item_anchor = item_uid %}
-                      {% endif %}
-                      <a href="{{ url(view_name, item.name|slugify, item_id) }}?year={{item.year}}#item={{item_anchor}}" id="policy-name-link">{{ item.description|safe }}</a>
-                    {% endif %}
                   </p>
                 </td>
 

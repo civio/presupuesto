@@ -96,46 +96,6 @@ function getInvestmentAreaLink(area_id, title) {
 }
 
 
-// Return path to a county page
-function getCountyLink(slug) {
-  var url = "{{ url('counties') }}/"+slug;
-  return url;
-}
-function getCountyIncomeLink(slug, article_id) {
-  return "{{ url('counties') }}/"+slug+'/ingresos/'+article_id;
-}
-function getCountyFunctionalLink(slug, article_id) {
-  return "{{ url('counties') }}/"+slug+'/gastosf/'+article_id;
-}
-function getCountyExpenseLink(slug, article_id) {
-  return "{{ url('counties') }}/"+slug+'/gastos/'+article_id;
-}
-function getCountyCompareLink(left_slug, right_slug) {
-  var url = "{{ url('counties') }}/"+left_slug+'/'+right_slug;
-  return url;
-}
-
-
-// Return path to a town page
-function getTownLink(slug) {
-  var url = "{{ url('towns') }}/"+slug;
-  return url;
-}
-function getTownIncomeLink(slug, article_id) {
-  return "{{ url('towns') }}/"+slug+'/ingresos/'+article_id;
-}
-function getTownFunctionalLink(slug, article_id) {
-  return "{{ url('towns') }}/"+slug+'/gastosf/'+article_id;
-}
-function getTownExpenseLink(slug, article_id) {
-  return "{{ url('towns') }}/"+slug+'/gastos/'+article_id;
-}
-function getTownCompareLink(left_slug, right_slug) {
-  var url = "{{ url('towns') }}/"+left_slug+'/'+right_slug;
-  return url;
-}
-
-
 // Convert a programme/policy name into a link
 function getPolicyLinkFormatter(programme_level) {
   return function(value, type, item) {
@@ -184,17 +144,4 @@ function investmentAreaLinkFormatter(value, type, item) {
   var link = getInvestmentAreaLink(item.key, item.label);
   return rowLinkFormatter(link, value, type, item);
 }
-
-// Convert a region name into a link
-function countyLinkFormatter(value, type, item) {
-  var link = getCountyLink(columnDef.entities[value].slug);
-  return rowLinkFormatter(link, value, type, item);
-};
-
-// Convert a town name into a link
-function townLinkFormatter(value, type, item) {
-  var link = getTownLink(columnDef.entities[value].slug);
-  var linkedValue = "<a href='"+link+"'>"+value+"</a>";
-  return rowNameFormatter(value, type, item);
-};
 </script>

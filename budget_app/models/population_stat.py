@@ -19,12 +19,6 @@ class PopulationStatManager(models.Manager):
             table[year] = last_valid_population
         return table
 
-    def get_level_table(self, level):
-        table = {}
-        for entity in Entity.objects.entities(level):
-            table[entity.name] = self.get_entity_table(entity)
-        return table
-
     def get_last_year(self):
         return self.order_by('-year').first().year
 

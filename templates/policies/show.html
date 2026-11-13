@@ -79,33 +79,11 @@
 {# XXX: Disable CSV downloads for entities. See #105 #}
 {% if not is_secondary_entity %}
         <div class="panel-downloads">
-    {% if full_breakdown %}
       {% for tab in ['functional', 'economic', 'institutional'] %}
         {% if breakdowns[tab] %}
           {{ panel_downloads(_(tab_titles[tab]), tab, csv_type, csv_id) }}
         {% endif %}
       {% endfor %}
-    {% else %}
-        {# The download links for small entities are too cumbersome to calculate in the macro #}
-      {% if policy_uid %}
-        {% set download_view_name = 'entity_article_functional' %}
-        {{ panel_downloads(_(tab_titles['functional']), 
-                      'functional',
-                      csv_type, 
-                      csv_id,  
-                      csv_link=url(download_view_name, level, entity.slug, csv_id, 'csv'),
-                      xls_link=url(download_view_name, level, entity.slug, csv_id, 'xlsx') ) }} 
-      {% else %}
-        {% set download_view_name = 'entity_article_expenses' if show_side=='expense' 
-                                    else 'entity_article_income'%}
-        {{ panel_downloads(_(tab_titles['economic']), 
-                      'economic',
-                      csv_type, 
-                      csv_id,
-                      csv_link=url(download_view_name, level, entity.slug, csv_id, 'csv'),
-                      xls_link=url(download_view_name, level, entity.slug, csv_id, 'xlsx') ) }} 
-      {% endif %}
-    {% endif %}
         </div>
 {% endif %}
       </div>  <!-- tab-grid-content -->

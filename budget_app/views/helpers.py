@@ -132,13 +132,6 @@ def populate_entity_stats(c, entity, stats_name='stats'):
     })
     c['last_inflation_year'] = InflationStat.objects.get_last_year()
 
-def populate_level_stats(c, level):
-    c['stats'] = json.dumps({
-        'inflation': InflationStat.objects.get_table(),
-        'population': PopulationStat.objects.get_level_table(level)
-    })
-    c['last_inflation_year'] = InflationStat.objects.get_last_year()
-
 # Assumes we're dealing with the top-level entity here
 # TODO: Don't like this method, should get rid of it
 def populate_descriptions(c):
@@ -163,27 +156,12 @@ def populate_years(c, breakdown):
     latest_budget = populate_latest_budget(c)
     c['starting_year'] = latest_budget.year if (not years or latest_budget.year in years) else years[-1]
 
-def populate_comparison_years(c, breakdown_left, breakdown_right):
-    years = sorted(list(set(breakdown_left.years.values() + breakdown_right.years.values())))
-    c['years'] = json.dumps([str(year) for year in years])
-    c['starting_year'] = years[-1]
-
 def populate_budget_statuses(c, entity_id):
     c['budget_statuses'] = json.dumps(Budget.objects.get_statuses(entity_id))
 
 def populate_latest_budget(c):
     c['latest_budget'] = Budget.objects.latest(get_main_entity(c).id)
     return c['latest_budget']
-
-def populate_level(c, level):
-    c['level'] = level
-    c['is_county'] = (level=='comarca')
-    c['show_entity_url'] = 'counties_show' if (level=='comarca') else 'towns_show'
-
-def populate_entities(c, level):
-    c['entities'] = Entity.objects.entities(level)
-    c['entities_json'] = json.dumps(Entity.objects.get_entities_table(level))
-
 
 #
 # POLICIES TEMPLATE - variables and flags driving the template

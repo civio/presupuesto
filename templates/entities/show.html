@@ -1,16 +1,6 @@
 {% extends 'base.html' %}
-{% from 'shared/entity_select.html' import render_entity_select as render_entity_select %}
 
 {% block content %}
-{% if entities %}
-<p><a href="{{ url('counties') if is_county else url('towns') }}" class="button button-3d grey tupper hide-when-embedded">
-  {% if is_county %}
-  ← {{ _('Volver a la lista de comarcas') }}
-  {% else %}
-  ← {{ _('Volver a la lista de municipios') }}
-  {% endif %}
-</a></p>
-{% endif %}
 
 
 <!-- Politicas -->
@@ -49,9 +39,6 @@
       <!-- Policies Chart -->
       {% include 'entities/policies-chart.html' %}
 
-      {% if entities %}
-      {{ render_entity_select('entity-select', entities, entity) }}
-      {% endif %}
 
       {% include 'shared/data_controllers.html' %}
 

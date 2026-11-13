@@ -40,10 +40,6 @@ def search(request):
 
     c['terms'] = list(GlossaryTerm.objects.search(c['query'], c['LANGUAGE_CODE']))
 
-    if hasattr(settings, 'SEARCH_ENTITIES') and settings.SEARCH_ENTITIES:
-        c['entities'] = list(Entity.objects.search(c['query']))
-        c['show_entity_names'] = True
-
     if hasattr(settings, 'SHOW_SECTION_PAGES') and settings.SHOW_SECTION_PAGES:
         c['departments'] = list(InstitutionalCategory.objects.search_departments(c['query'], budget))
 

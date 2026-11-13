@@ -1,5 +1,4 @@
 {% extends 'base-widget.html' %}
-{% from 'shared/entity_select.html' import render_entity_select as render_entity_select %}
 
 {% block content %}
 
@@ -16,9 +15,6 @@
       <!-- Policies Chart -->
       {% include 'entities/policies-chart.html' %}
 
-      {% if entities %}
-      {{ render_entity_select('entity-select', entities, entity) }}
-      {% endif %}
 
       {% include 'shared/data_controllers.html' %}
 

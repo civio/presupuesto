@@ -241,12 +241,6 @@ def functional_article_expenditures_breakdown(request, id, format):
 def functional_section_breakdown(request, id, format):
     return sections_show(request, id, format, _generator("%s.funcional" % id, format, write_entity_functional_breakdown))
 
-def entity_article_functional(request, level, slug, id, format):
-    c = get_context(request)
-    entity = Entity.objects.get(level=level, slug=slug, language=c['LANGUAGE_CODE'])
-    return entities_show_policy(request, c, entity, id, '', _generator('gastosf-%s-%s-%s' % (level, slug, id), format, write_entity_functional_breakdown))
-
-
 #
 # ECONOMIC BREAKDOWN
 #
@@ -309,17 +303,6 @@ def economic_article_revenues_breakdown(request, id, format):
 def economic_article_expenditures_breakdown(request, id, format):
     return expense_articles_show(request, id, format, _generator("%s.gastos.economica" % id, format, write_economic_article_expense_breakdown))
 
-def entity_article_expenses(request, level, slug, id, format):
-    c = get_context(request)
-    entity = Entity.objects.get(level=level, slug=slug, language=c['LANGUAGE_CODE'])
-    return entities_show_article(request, c, entity, id, '', 'expense', _generator('ingresos-%s-%s-%s' % (level, slug, id), format, write_economic_article_expense_breakdown))
-
-def entity_article_income(request, level, slug, id, format):
-    c = get_context(request)
-    entity = Entity.objects.get(level=level, slug=slug, language=c['LANGUAGE_CODE'])
-    return entities_show_article(request, c, entity, id, '', 'income', _generator('ingresos-%s-%s-%s' % (level, slug, id), format, write_economic_article_income_breakdown))
-
-
 #
 # INSTITUTIONAL BREAKDOWN
 #
@@ -349,29 +332,6 @@ def institutional_article_revenues_breakdown(request, id, format):
 
 def institutional_article_expenditures_breakdown(request, id, format):
     return expense_articles_show(request, id, '', _generator("%s.gastos.organica" % id, format, write_institutional_breakdown))
-
-
-#
-# ENTITIES LISTS
-#
-def write_entities_breakdown(c, field, writer):
-    field_username = 'Gastos' if field == 'expense' else 'Ingresos'
-    write_header(writer, [u'Año.csv', 'Entidad', 'Presupuesto '+field_username, field_username+' Reales'])
-    for year in sorted(_unique(c['breakdowns']['economic'].years.values())):
-        for entity_id, entity in c['breakdowns']['economic'].subtotals.items():
-            write_breakdown_item(writer, year, entity, field, [entity_id])
-
-def write_entities_expenses_breakdown(c, writer):
-    return write_entities_breakdown(c, 'expense', writer)
-
-def entities_expenses(request, level, format):
-    return entities_index(request, get_context(request), level, _generator('gastos_%ss' % level, format, write_entities_expenses_breakdown))
-
-def write_entities_income_breakdown(c, writer):
-    return write_entities_breakdown(c, 'income', writer)
-
-def entities_income(request, level, format):
-    return entities_index(request, get_context(request), level, _generator('ingresos_%ss' % level, format, write_entities_income_breakdown))
 
 
 #

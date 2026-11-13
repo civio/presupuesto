@@ -189,7 +189,6 @@ TEMPLATES = [
                 'budget_app.context_processors.show_options_processor',
                 'budget_app.context_processors.main_entity_processor',
                 'budget_app.context_processors.data_sources_processor',
-                'budget_app.context_processors.search_entities_processor',
                 'budget_app.context_processors.overview_use_new_vis',
                 'budget_app.context_processors.debug'
             ],
