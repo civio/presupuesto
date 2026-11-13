@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 
 ### Removed
 - Drop underscore.js, replaced by native array methods. Themes that call `_.` in their own templates or scripts must do the same. civio/presupuesto-management#392
+- Drop Modernizr, `jquery.event.drag` (a leftover from SlickGrid) and `count-css-rules.js`, which nothing used any more. civio/presupuesto-management#392
 
 ## [5.4] - 2026-11-13
 ### Changed
