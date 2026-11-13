@@ -10,9 +10,15 @@ class EconomicCategoriesManager(models.Manager):
     def income(self):
         return self.filter(expense=False)
 
+    # Results link to the article page, so we skip categories whose article has no
+    # items in that budget, since classifications often list more than is used
     def _search(self, query, budget, conditions):
-        sql = "select * from economic_categories " \
+        sql = "select * from economic_categories ec " \
                 "where " + conditions + " and " \
+                "exists (select 1 from budget_items i " \
+                    "join economic_categories item_ec on item_ec.id = i.economic_category_id " \
+                    "where item_ec.budget_id = ec.budget_id and item_ec.expense = ec.expense " \
+                    "and item_ec.chapter = ec.chapter and item_ec.article = ec.article) and " \
                 "to_tsvector('"+settings.SEARCH_CONFIG+"',description) @@ plainto_tsquery('"+settings.SEARCH_CONFIG+"',%s)"
 
         if budget:
