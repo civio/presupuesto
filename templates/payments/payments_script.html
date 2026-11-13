@@ -56,19 +56,19 @@
     // Render payee name with a link to search for that payee
     function mainPayeeFormatter(value, type, item) {
       var url = jQuery.param( jQuery.extend( getFormStatus(), { 'view': 'area', 'payee': value }) )
-      return '<a href="#' + url + '">' + value + '</a>';
+      return '<a href="#' + url + '">' + escapeHtml(value) + '</a>';
     }
 
     // Render area name with a link to search for that area
     function areaFormatter(value, type, item) {
       var url = jQuery.param( jQuery.extend( getFormStatus(), { 'view': 'payee', 'area': value }) )
-      return '<a href="#' + url + '">' + value + '</a>';
+      return '<a href="#' + url + '">' + escapeHtml(value) + '</a>';
     }
 
     // Render department name with a link to search for that department
     function departmentFormatter(value, type, item) {
       var url = jQuery.param( jQuery.extend( getFormStatus(), { 'view': 'payee', 'department': value }) )
-      return '<a href="#' + url + '">' + departmentDescriptions[value] + '</a>';
+      return '<a href="#' + url + '">' + escapeHtml(departmentDescriptions[value]) + '</a>';
     }
 
     // Render department code as a name

@@ -147,8 +147,7 @@ function getPolicyLinkFormatter(programme_level) {
     } else {
       var link = getPolicyLink(item.key, value);
     }
-    var linkedValue = "<a href='"+link+"'>"+value+"</a>";
-    return rowNameFormatter(linkedValue, type, item);
+    return rowLinkFormatter(link, value, type, item);
   }
 };
 
@@ -159,8 +158,7 @@ function articleLinkFormatter(value, type, item, linkGetter) {
   } else {
     var link = linkGetter(item.key, item.label);
   }
-  var linkedValue = "<a href='"+link+"'>"+value+"</a>";
-  return rowNameFormatter(linkedValue, type, item);
+  return rowLinkFormatter(link, value, type, item);
 };
 function incomeArticleLinkFormatter(value, type, item) {
   return articleLinkFormatter(value, type, item, getIncomeArticleLink);
@@ -178,22 +176,19 @@ function sectionLinkFormatter(value, type, item) {
     return rowNameFormatter(value, type, item);
 
   var link = getSectionLink(item.key, item.label);
-  var linkedValue = "<a href='"+link+"'>"+value+"</a>";
-  return rowNameFormatter(linkedValue, type, item);
+  return rowLinkFormatter(link, value, type, item);
 }
 
 // Convert an area name into an investment page link
 function investmentAreaLinkFormatter(value, type, item) {
   var link = getInvestmentAreaLink(item.key, item.label);
-  var linkedValue = "<a href='"+link+"'>"+value+"</a>";
-  return rowNameFormatter(linkedValue, type, item);
+  return rowLinkFormatter(link, value, type, item);
 }
 
 // Convert a region name into a link
 function countyLinkFormatter(value, type, item) {
   var link = getCountyLink(columnDef.entities[value].slug);
-  var linkedValue = "<a href='"+link+"'>"+value+"</a>";
-  return rowNameFormatter(linkedValue, type, item);
+  return rowLinkFormatter(link, value, type, item);
 };
 
 // Convert a town name into a link

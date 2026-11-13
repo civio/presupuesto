@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 - Return a 404 for the entity payment pages on sites without payments, instead of a 500. civio/presupuesto-management#254
 - Translate the payments breakdown by entity into Catalan and Basque. civio/presupuesto-management#765
 - Don't list economic articles without data in the search results, since their pages are empty. civio/presupuesto-management#495
+- Escape the names in the data tables, so a payee like `<Dades anonimitzades>` shows up instead of an empty cell. civio/presupuesto-management#652
 - Update the README, which still described the original Aragón app and the funding classification. civio/presupuesto-management#76
 
 ## [5.4] - 2026-11-13

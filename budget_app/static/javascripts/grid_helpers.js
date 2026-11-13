@@ -14,9 +14,23 @@ var id = 0;
 // TODO: Is there a better way? Feels like a waste of effort, plus dirty.
 var itemUidRegexp = /(\d+)\/?$/;
 
+// Escape text from the data (payee names, descriptions...) before adding it to the grid's HTML
+function escapeHtml(text) {
+  return $('<div>').text(text).html();
+}
+
 // Display column name depending on multi-level status
 function rowNameFormatter(value, type, item) {
-  var valuewrap = "<span class='toggle'>" + value + "</span>";
+  return rowHtmlFormatter(escapeHtml(value), type, item);
+}
+
+// Display a column name that has already been turned into HTML, like a link
+function rowLinkFormatter(link, value, type, item) {
+  return rowHtmlFormatter("<a href='" + link + "'>" + escapeHtml(value) + "</a>", type, item);
+}
+
+function rowHtmlFormatter(html, type, item) {
+  var valuewrap = "<span class='toggle'>" + html + "</span>";
   var toggleStatus = '';
   if (item.sub && !$.isEmptyObject(item.sub)) {
     toggleStatus = item._expanded ? 'collapse' : 'expand';
