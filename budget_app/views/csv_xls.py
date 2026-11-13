@@ -261,30 +261,35 @@ def economic_policy_breakdown(request, id, format):
 # Item keys are internal ids, `year/code/item_number` with the department in front when
 # grouping by uid (see BREAKDOWN_BY_UID). The code is the subheading or the heading, and
 # may contain slashes in the PGE (`420/07001`).
-ITEM_KEY = re.compile(r'^(?:[^/]*/)?\d{4}/(.+)/([^/]*)$')
+ITEM_KEY = re.compile(r'^(?:([^/]*)/)?(\d{4})/(.+)/([^/]*)$')
 
-# Split an item key into its economic code and item number, e.g. `000/2015/120/04` into `120`, `04`
-def _item_code_and_number(key):
+# Split an item key into department, year, economic code and item number,
+# e.g. `000/2015/120/04` into `000`, `2015`, `120`, `04`
+def _split_item_key(key):
     match = ITEM_KEY.match(key)
-    return match.groups() if match else (key, '')
+    return match.groups() if match else (None, None, key, '')
+
+# The columns describing an item: its department, if items are kept apart by department, and its code
+def _item_columns(c, key):
+    department, year, code, number = _split_item_key(key)
+    institutional = c['descriptions'].get('institutional', {})
+    department_name = institutional.get('%s/%s' % (department, year), institutional.get(department, '')) if department else ''
+    return [department, department_name, code, number, c['descriptions']['economic'].get(key, '')]
 
 def write_detailed_economic_breakdown(c, writer):
-    write_header(writer, [u'Año.csv', u'Id Capítulo', u'Nombre Capítulo', u'Id Artículo', u'Nombre Artículo', 'Id Concepto', 'Nombre Concepto', 'Código Partida', 'Número Partida', 'Nombre Partida', 'Presupuesto Gastos', 'Gastos Reales'])
+    write_header(writer, [u'Año.csv', u'Id Capítulo', u'Nombre Capítulo', u'Id Artículo', u'Nombre Artículo', 'Id Concepto', 'Nombre Concepto', 'Id Organismo', 'Nombre Organismo', 'Código Partida', 'Número Partida', 'Nombre Partida', 'Presupuesto Gastos', 'Gastos Reales'])
     descriptions = c['descriptions']['economic']
     for year in sorted(_unique(c['breakdowns']['economic'].years.values())):
         for chapter_id, chapter in c['breakdowns']['economic'].subtotals.items():
-            write_breakdown_item(writer, year, chapter, 'expense', [chapter_id, None, None], descriptions, padding=3)
+            write_breakdown_item(writer, year, chapter, 'expense', [chapter_id, None, None], descriptions, padding=5)
             for article_id, article in chapter.subtotals.items():
-                write_breakdown_item(writer, year, article, 'expense', [chapter_id, article_id, None], descriptions, padding=3)
+                write_breakdown_item(writer, year, article, 'expense', [chapter_id, article_id, None], descriptions, padding=5)
                 for heading_id, heading in article.subtotals.items():
-                    write_breakdown_item(writer, year, heading, 'expense', [chapter_id, article_id, heading_id], descriptions, padding=3)
+                    write_breakdown_item(writer, year, heading, 'expense', [chapter_id, article_id, heading_id], descriptions, padding=5)
                     for item_key, item in heading.subtotals.items():
-                        # The item's name is looked up by its key, but we show its code and number
-                        code, number = _item_code_and_number(item_key)
                         names = [chapter_id, descriptions.get(chapter_id, ''),
                                  article_id, descriptions.get(article_id, ''),
-                                 heading_id, descriptions.get(heading_id, ''),
-                                 code, number, descriptions.get(item_key, '')]
+                                 heading_id, descriptions.get(heading_id, '')] + _item_columns(c, item_key)
                         write_breakdown_item(writer, year, item, 'expense', names)
 
 def economic_programme_breakdown(request, id, format):
@@ -302,18 +307,16 @@ def economic_section_breakdown(request, id, format):
 #
 def write_economic_article_breakdown(c, field, writer):
     field_username = 'Gastos' if field == 'expense' else 'Ingresos'
-    write_header(writer, [u'Año.csv', u'Id Artículo', u'Nombre Artículo', 'Id Concepto', 'Nombre Concepto', 'Código Partida', 'Número Partida', 'Nombre Partida', 'Presupuesto '+field_username, field_username+' Reales'])
+    write_header(writer, [u'Año.csv', u'Id Artículo', u'Nombre Artículo', 'Id Concepto', 'Nombre Concepto', 'Id Organismo', 'Nombre Organismo', 'Código Partida', 'Número Partida', 'Nombre Partida', 'Presupuesto '+field_username, field_username+' Reales'])
     descriptions = c['descriptions']['economic']
     article_id = c['article_id']
     for year in sorted(_unique(c['breakdowns']['economic'].years.values())):
-        write_breakdown_item(writer, year, c['breakdowns']['economic'], field, [article_id, None], descriptions, padding=3)
+        write_breakdown_item(writer, year, c['breakdowns']['economic'], field, [article_id, None], descriptions, padding=5)
         for heading_id, heading in c['breakdowns']['economic'].subtotals.items():
-            write_breakdown_item(writer, year, heading, field, [article_id, heading_id], descriptions, padding=3)
+            write_breakdown_item(writer, year, heading, field, [article_id, heading_id], descriptions, padding=5)
             for item_key, item in heading.subtotals.items():
-                code, number = _item_code_and_number(item_key)
                 names = [article_id, descriptions.get(article_id, ''),
-                         heading_id, descriptions.get(heading_id, ''),
-                         code, number, descriptions.get(item_key, '')]
+                         heading_id, descriptions.get(heading_id, '')] + _item_columns(c, item_key)
                 write_breakdown_item(writer, year, item, field, names)
 
 def write_economic_article_expense_breakdown(c, writer):

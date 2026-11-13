@@ -45,11 +45,11 @@ def test_programme_download_lists_concepts_and_items(client):
     # The last level used to show the internal id (000/2025/120/04). See civio/presupuesto-management#1422
     response = client.get('/es/programas/1532_economic.csv')
     rows = list(csv.reader(io.StringIO(response.content.decode())))
-    assert rows[0][5:10] == ['Id Concepto', 'Nombre Concepto', 'Código Partida', 'Número Partida', 'Nombre Partida']
+    assert rows[0][5:12] == ['Id Concepto', 'Nombre Concepto', 'Id Organismo', 'Nombre Organismo', 'Código Partida', 'Número Partida', 'Nombre Partida']
     assert all(len(row) == len(rows[0]) for row in rows)
-    items = [row for row in rows[1:] if row[7]]
-    assert items and all(row[7] == row[5] and row[8] for row in items)
-    concepts = {row[5] for row in rows[1:] if row[5] and not row[7]}
+    items = [row for row in rows[1:] if row[9]]
+    assert items and all(row[9] == row[5] and row[10] for row in items)
+    concepts = {row[5] for row in rows[1:] if row[5] and not row[9]}
     assert {row[5] for row in items} <= concepts
 
 
@@ -57,17 +57,17 @@ def test_downloads_for_missing_programmes_are_not_found(client):
     assert client.get('/es/programas/9999_economic.csv').status_code == 404
 
 
-def test_item_code_and_number():
-    from budget_app.views.csv_xls import _item_code_and_number
-    assert _item_code_and_number('000/2025/120/04') == ('120', '04')
-    assert _item_code_and_number('2025/2269/17') == ('2269', '17')
+def test_split_item_key():
+    from budget_app.views.csv_xls import _split_item_key
+    assert _split_item_key('000/2025/120/04') == ('000', '2025', '120', '04')
+    assert _split_item_key('2025/2269/17') == (None, '2025', '2269', '17')
     # PGE headings carry the managing centre
-    assert _item_code_and_number('19101/2023/420/07001/3') == ('420/07001', '3')
+    assert _split_item_key('19101/2023/420/07001/3') == ('19101', '2023', '420/07001', '3')
 
 
 def test_article_download_lists_items_with_their_code_and_number(client):
     response = client.get('/es/articulos/12_economic_expenditures.csv')
     rows = list(csv.reader(io.StringIO(response.content.decode())))
-    assert rows[0][5:8] == ['Código Partida', 'Número Partida', 'Nombre Partida']
+    assert rows[0][5:10] == ['Id Organismo', 'Nombre Organismo', 'Código Partida', 'Número Partida', 'Nombre Partida']
     assert all(len(row) == len(rows[0]) for row in rows)
-    assert all('/' not in row[5] for row in rows[1:])
+    assert all('/' not in row[7] for row in rows[1:])
