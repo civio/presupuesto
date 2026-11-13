@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 
 import csv
+import re
 
 from django.http import Http404, HttpResponse
 from django.utils.translation import gettext as _
@@ -257,16 +258,32 @@ def write_economic_breakdown(c, writer):
 def economic_policy_breakdown(request, id, format):
     return policies_show(request, id, '', _generator("%s.economica" % id, format, write_economic_breakdown))
 
+# Item keys are internal ids, `year/code/item_number` with the department in front when
+# grouping by uid (see BREAKDOWN_BY_UID). The code may contain slashes in the PGE (`420/07001`).
+ITEM_KEY = re.compile(r'^(?:[^/]*/)?\d{4}/(.+)/([^/]*)$')
+
+# Turn an item key into the code people know from the budget, e.g. `000/2015/120/04` into `12004`
+def _item_code(key):
+    match = ITEM_KEY.match(key)
+    return match.group(1) + match.group(2) if match else key
+
 def write_detailed_economic_breakdown(c, writer):
-    write_header(writer, [u'Año.csv', u'Id Capítulo', u'Nombre Capítulo', u'Id Artículo', u'Nombre Artículo', 'Id Subconcepto', 'Nombre Subconcepto', 'Presupuesto Gastos', 'Gastos Reales'])
+    write_header(writer, [u'Año.csv', u'Id Capítulo', u'Nombre Capítulo', u'Id Artículo', u'Nombre Artículo', 'Id Concepto', 'Nombre Concepto', 'Id Partida', 'Nombre Partida', 'Presupuesto Gastos', 'Gastos Reales'])
+    descriptions = c['descriptions']['economic']
     for year in sorted(_unique(c['breakdowns']['economic'].years.values())):
         for chapter_id, chapter in c['breakdowns']['economic'].subtotals.items():
-            write_breakdown_item(writer, year, chapter, 'expense', [chapter_id, None, None], c['descriptions']['economic'])
+            write_breakdown_item(writer, year, chapter, 'expense', [chapter_id, None, None, None], descriptions)
             for article_id, article in chapter.subtotals.items():
-                write_breakdown_item(writer, year, article, 'expense', [chapter_id, article_id, None], c['descriptions']['economic'])
+                write_breakdown_item(writer, year, article, 'expense', [chapter_id, article_id, None, None], descriptions)
                 for heading_id, heading in article.subtotals.items():
-                    for subheading_id, subheading in heading.subtotals.items():
-                        write_breakdown_item(writer, year, subheading, 'expense', [chapter_id, article_id, subheading_id], c['descriptions']['economic'])
+                    write_breakdown_item(writer, year, heading, 'expense', [chapter_id, article_id, heading_id, None], descriptions)
+                    for item_key, item in heading.subtotals.items():
+                        # The item's name is looked up by its key, but we show its code
+                        names = [chapter_id, descriptions.get(chapter_id, ''),
+                                 article_id, descriptions.get(article_id, ''),
+                                 heading_id, descriptions.get(heading_id, ''),
+                                 _item_code(item_key), descriptions.get(item_key, '')]
+                        write_breakdown_item(writer, year, item, 'expense', names)
 
 def economic_programme_breakdown(request, id, format):
     return programmes_show(request, id, '', _generator("%s.economica" % id, format, write_detailed_economic_breakdown))
