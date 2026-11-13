@@ -1064,12 +1064,6 @@ msgstr "Id Concepte"
 msgid "Nombre Concepto"
 msgstr "Nom Concepte"
 
-msgid "Id Subconcepto"
-msgstr "Id Subconcepte"
-
-msgid "Nombre Subconcepto"
-msgstr "Nom Subconcepte"
-
 msgid "Id Área"
 msgstr "Id Àrea"
 
@@ -1180,3 +1174,12 @@ msgstr "Anys"
 #: templates/payments/payments_script.html:161
 msgid "Año.payment.query"
 msgstr "Any"
+
+msgid "Código Partida"
+msgstr "Codi Partida"
+
+msgid "Número Partida"
+msgstr "Número Partida"
+
+msgid "Nombre Partida"
+msgstr "Nom Partida"

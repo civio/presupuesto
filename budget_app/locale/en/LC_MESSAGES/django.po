@@ -1099,12 +1099,6 @@ msgstr "Item Id"
 msgid "Nombre Concepto"
 msgstr "Item Name"
 
-msgid "Id Subconcepto"
-msgstr "Subitem Id"
-
-msgid "Nombre Subconcepto"
-msgstr "Subitem Name"
-
 msgid "Id Área"
 msgstr "Area Id"
 
@@ -1227,3 +1221,12 @@ msgstr "Breakdown by entity"
 
 msgid "Resumen por áreas"
 msgstr "Summary by area"
+
+msgid "Código Partida"
+msgstr "Budget Line Code"
+
+msgid "Número Partida"
+msgstr "Budget Line Number"
+
+msgid "Nombre Partida"
+msgstr "Budget Line Name"

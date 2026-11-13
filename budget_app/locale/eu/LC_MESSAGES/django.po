@@ -1021,12 +1021,6 @@ msgstr ""
 msgid "Nombre Concepto"
 msgstr ""
 
-msgid "Id Subconcepto"
-msgstr ""
-
-msgid "Nombre Subconcepto"
-msgstr ""
-
 msgid "Id Área"
 msgstr ""
 
@@ -1137,3 +1131,12 @@ msgstr "Urteak"
 #: templates/payments/payments_script.html:161
 msgid "Año.payment.query"
 msgstr "Urtea"
+
+msgid "Código Partida"
+msgstr ""
+
+msgid "Número Partida"
+msgstr ""
+
+msgid "Nombre Partida"
+msgstr ""

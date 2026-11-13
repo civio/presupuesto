@@ -8,7 +8,7 @@ All notable changes to this project will be documented in this file.
 - Don't list economic articles without data in the search results, since their pages are empty. civio/presupuesto-management#495
 - Escape the names in the data tables, so a payee like `<Dades anonimitzades>` shows up instead of an empty cell. civio/presupuesto-management#652
 - Don't create a budget when loading a year without data files, which left an empty budget as the latest one. civio/presupuesto-management#442
-- The economic downloads of programmes, subprogrammes and sections list concepts, and then each item with its code (`12004`) instead of an internal id (`000/2015/120/04`) in a column wrongly called "Subconcepto". civio/presupuesto-management#1422
+- The detailed economic downloads (programmes, subprogrammes, sections and articles) list concepts, and then each item with its economic code and item number in separate columns, instead of an internal id (`000/2015/120/04`) in a column wrongly called "Subconcepto". civio/presupuesto-management#1422
 - Show the payments tables when a payment has an empty description, instead of failing with a JavaScript error. civio/presupuesto-management#487
 - Update the README, which still described the original Aragón app and the funding classification. civio/presupuesto-management#76
 - The guided visit page has a title, "Visita guiada", like the rest of the pages. civio/presupuesto-management#1287
