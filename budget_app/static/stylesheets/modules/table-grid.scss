@@ -178,3 +178,21 @@ table.table-grid {
     white-space: normal;
   }
 }
+
+// Phones: drop the minimum widths and make the table more compact, so the usual three
+// columns fit; tables with more columns scroll inside their box, not the whole page (#1374)
+@media (max-width: $screen-xs-max) {
+  .dataTables_wrapper {
+    overflow-x: auto;
+  }
+  table.table-grid {
+    tr th, tr td {
+      min-width: 0;
+      padding: 10px 6px;
+      white-space: normal;
+    }
+    tr th { font-size: 0.85em; }
+    tr td { font-size: 1em; }
+    tr td:not(:first-child) { white-space: nowrap; }  // Amounts on one line
+  }
+}

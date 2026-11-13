@@ -4,6 +4,7 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 ### Fixed
 - The summary bar above the treemap uses the execution figures when the year is over, like the treemap below it, instead of always the budget. civio/presupuesto-management#244
+- The data tables fit on phone screens: they no longer push the page sideways and cut off the execution column. civio/presupuesto-management#1374
 
 ## [5.5] - 2026-11-13
 ### Fixed
