@@ -9,10 +9,6 @@ All notable changes to this project will be documented in this file.
 - Show an error message when the payments search fails, instead of silently leaving the previous results on screen.
 - The 500 page asks to try again "más tarde" rather than "dentro de un rato".
 
-### Changed
-- Upgrade tornado to 6.6.1 in the dev requirements.
-- Group Dependabot's npm security updates, which ignore the monthly schedule, into a single pull request.
-
 ## [5.5] - 2026-11-13
 ### Fixed
 - Return a 404 for the entity payment pages on sites without payments, instead of a 500. civio/presupuesto-management#254
