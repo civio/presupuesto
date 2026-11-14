@@ -4,5 +4,5 @@ dj-static==0.0.6
 formic2==1.0.3
 livereload==2.7.1
 static3==0.7.0
-tornado==6.6
+tornado==6.6.1
 xlrd==2.0.2
