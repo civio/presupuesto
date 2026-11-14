@@ -1128,3 +1128,7 @@ msgstr "Algo fallou"
 
 msgid "Ha habido un error al preparar esta página. Prueba de nuevo dentro de un rato."
 msgstr "Houbo un erro ao preparar esta páxina. Proba de novo dentro dun anaco."
+
+#: templates/base.html:49
+msgid "No hay datos para este año"
+msgstr "Non hai datos para este ano"

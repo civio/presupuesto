@@ -1155,3 +1155,7 @@ msgstr "Zerbaitek huts egin du"
 
 msgid "Ha habido un error al preparar esta página. Prueba de nuevo dentro de un rato."
 msgstr "Errore bat egon da orri hau prestatzean. Saiatu berriro geroxeago."
+
+#: templates/base.html:49
+msgid "No hay datos para este año"
+msgstr "Ez dago daturik urte honetarako"

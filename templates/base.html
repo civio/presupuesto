@@ -42,6 +42,14 @@
   <!-- Other dependencies -->
   <script src="{{ static('javascripts/datatables.min.js') }}"></script>
   <script src="{{ static('javascripts/datatables.absolute.js') }}"></script>
+  <script>
+    // DataTables shows these messages on its own, when a table is empty or all its rows are filtered
+    // out (e.g. a year without data). They're translated here, since the Javascript files aren't
+    $.extend(true, $.fn.dataTable.defaults, { language: {
+      emptyTable: '{{ _("No hay datos para este año") }}',
+      zeroRecords: '{{ _("No hay datos para este año") }}'
+    } });
+  </script>
   <script src="{{ static('javascripts/select2.min.js') }}"></script>
   <script src="{{ static('javascripts/vis/d3-bundle.js') }}"></script>
   <!-- Bootstrap plugins -->

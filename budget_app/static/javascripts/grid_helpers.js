@@ -192,13 +192,11 @@ function createBudgetGrid(containerName, data, userColumns, i18n, startingSort) 
     dom: 't', // Only the table
     // responsive: true, See https://datatables.net/extensions/responsive/
     columns: columns,
-    // Sort at startup by the previously chosen column; or by the rightmost column at startup
-    // TODO: Actually, we're going to sort by the second column, I should use the rightmost... with data
+    // Sort at startup by the previously chosen column, or by the second one (the budget). Sorting
+    // by execution when there is some was discussed and dropped in civio/presupuesto-management#550
     order: lastSort ? lastSort : (startingSort===undefined ? [[1, 'desc']] : startingSort),
     rowCallback: function(row, data) { $(row).addClass('indent-'+data.indent); },
-    // i18n (TODO: enable translations)
     language: {
-      'zeroRecords': 'No hay datos para este año',
       'aria': i18n
     }
   });

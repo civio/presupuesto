@@ -1245,3 +1245,7 @@ msgstr "Something went wrong"
 
 msgid "Ha habido un error al preparar esta página. Prueba de nuevo dentro de un rato."
 msgstr "There was an error preparing this page. Please try again in a while."
+
+#: templates/base.html:49
+msgid "No hay datos para este año"
+msgstr "No data for this year"
