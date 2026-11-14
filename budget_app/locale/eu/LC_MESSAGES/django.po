@@ -1153,9 +1153,13 @@ msgstr "Itzuli hasierako orrira"
 msgid "Algo ha fallado"
 msgstr "Zerbaitek huts egin du"
 
-msgid "Ha habido un error al preparar esta página. Prueba de nuevo dentro de un rato."
-msgstr "Errore bat egon da orri hau prestatzean. Saiatu berriro geroxeago."
+msgid "Ha habido un error al preparar esta página. Inténtalo de nuevo más tarde."
+msgstr "Errore bat egon da orri hau prestatzean. Saiatu berriro geroago."
 
 #: templates/base.html:49
 msgid "No hay datos para este año"
 msgstr "Ez dago daturik urte honetarako"
+
+#: templates/payments/index.html:19
+msgid "Ha habido un error al hacer la búsqueda. Inténtalo de nuevo más tarde."
+msgstr "Errore bat egon da bilaketa egitean. Saiatu berriro geroago."

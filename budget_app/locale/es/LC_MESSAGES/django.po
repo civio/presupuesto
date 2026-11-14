@@ -1119,9 +1119,13 @@ msgstr ""
 msgid "Algo ha fallado"
 msgstr ""
 
-msgid "Ha habido un error al preparar esta página. Prueba de nuevo dentro de un rato."
+msgid "Ha habido un error al preparar esta página. Inténtalo de nuevo más tarde."
 msgstr ""
 
 #: templates/base.html:49
 msgid "No hay datos para este año"
+msgstr ""
+
+#: templates/payments/index.html:19
+msgid "Ha habido un error al hacer la búsqueda. Inténtalo de nuevo más tarde."
 msgstr ""

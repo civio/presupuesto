@@ -1243,9 +1243,13 @@ msgstr "Back to the home page"
 msgid "Algo ha fallado"
 msgstr "Something went wrong"
 
-msgid "Ha habido un error al preparar esta página. Prueba de nuevo dentro de un rato."
-msgstr "There was an error preparing this page. Please try again in a while."
+msgid "Ha habido un error al preparar esta página. Inténtalo de nuevo más tarde."
+msgstr "There was an error preparing this page. Please try again later."
 
 #: templates/base.html:49
 msgid "No hay datos para este año"
 msgstr "No data for this year"
+
+#: templates/payments/index.html:19
+msgid "Ha habido un error al hacer la búsqueda. Inténtalo de nuevo más tarde."
+msgstr "There was an error running the search. Please try again later."

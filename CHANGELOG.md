@@ -6,6 +6,8 @@ All notable changes to this project will be documented in this file.
 - The summary bar above the treemap uses the execution figures when the year is over, like the treemap below it, instead of always the budget. civio/presupuesto-management#244
 - The data tables fit on phone screens: they no longer push the page sideways and cut off the execution column. civio/presupuesto-management#1374
 - The message for a data table without data, "No hay datos para este año", is translated into Catalan, Basque, Galician and English, and also replaces DataTables' default in English when a table is completely empty.
+- Show an error message when the payments search fails, instead of silently leaving the previous results on screen.
+- The 500 page asks to try again "más tarde" rather than "dentro de un rato".
 
 ## [5.5] - 2026-11-13
 ### Fixed

@@ -214,6 +214,7 @@
     }
 
     function sendSearchQuery(){
+      $('#payments-search-error').prop('hidden', true);
       $.ajax({
         url: "pagos/search",
         data: {
@@ -249,8 +250,10 @@
     }
 
     function onSearchError(response) {
-      //TODO!!! Add error message
       $('#payments-search button[type="submit"]').attr('disabled', false).children('.glyphicon').addClass('hide');
+      // Hide the previous results, so they aren't taken for this search's
+      $('.payments-content .tab-content').hide();
+      $('#payments-search-error').prop('hidden', false);
     }
 
     function setupInputs() {
