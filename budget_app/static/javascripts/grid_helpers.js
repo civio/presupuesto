@@ -6,8 +6,7 @@
 // the year), since we rebuild the grid on each page update.
 var lastSort = null;
 
-// TODO: Can we get rid of this now that we removed SlickGrid? See below.
-// Poor-man's auto key generator
+// Poor-man's auto key generator. SlickGrid needed it, and we still use it to break ties when sorting
 var id = 0;
 
 // Used by addEconomicCategoryPrefix to get the economic bit out an item's uid

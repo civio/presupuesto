@@ -103,7 +103,6 @@ var TaxReceipt = (function() {
 
     // Show formatted total tax paid
     $('#tax-amount-paid').html(that.formatTaxAmount(that.totalTaxPaid));
-    // XXX: window.location.hash = 'ingresos='+getIncomeInEuros();
   
     // Redraw grid
     that.redrawGrid();

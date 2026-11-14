@@ -569,22 +569,6 @@ function StackedAreaChart() {
   };
 
 
-  // !!!TODO --> we need this?
-  var fillGapsInValues = function( _values ) {
-    // Check if array_length equals last_year_value - first_year_value + 1
-    if ( _values.length !== _values[_values.length-1][0]-_values[0][0]+1 ) {
-      var i = _values.length-1;
-      while (i > 0) {
-        if (_values[i][0] - _values[i-1][0] > 1) {
-          _values.splice(i, 0, [_values[i][0]-1, 0]);
-          i++;
-        }
-        i--;
-      }
-    }
-    return _values;
-  };
-
   var getColor =  function(d) {
     return _this.color(d.key);
   };

@@ -50,7 +50,6 @@ def entities_show_helper(request, c, entity, render_callback=None):
 
     # Additional data needed by the view
     populate_entity_stats(c, entity)
-    # TODO: We're doing this also for Aragon, check performance!
     populate_entity_descriptions(c, entity)
     populate_years(c, c['breakdowns']['economic'])
     populate_budget_statuses(c, entity.id)
